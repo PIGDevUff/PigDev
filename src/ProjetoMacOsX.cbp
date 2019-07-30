@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Projeto" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Release">
+				<Option output="Projeto" prefix_auto="1" extension_auto="1" />
+				<Option object_output="." />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-march=core2" />
+					<Add option="-O3" />
+					<Add option="-w" />
+					<Add option="-std=c++11" />
+					<Add directory="../include" />
+					<Add directory="../include/SDL" />
+					<Add directory="../include/SDL_image" />
+					<Add directory="../include/video" />
+				</Compiler>
+				<Linker>
+					<Add option="-pthread" />
+					<Add option="-lm" />
+					<Add option="-lavcodec" />
+					<Add option="-lavdevice" />
+					<Add option="-lavfilter" />
+					<Add option="-lavformat" />
+					<Add option="-lavutil" />
+					<Add option="-lswresample" />
+					<Add option="-lswscale" />
+					<Add option="-lSDL2main" />
+					<Add option="-lSDL2" />
+					<Add option="-lSDL2_image" />
+					<Add option="-lSDL2_ttf" />
+					<Add option="-lSDL2_mixer" />
+					<Add option="-lSDL2_net" />
+					<Add directory="../lib" />
+					<Add directory="../bin" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="main.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+			<DoxyBlocks>
+				<comment_style block="0" line="0" />
+				<doxyfile_project />
+				<doxyfile_build />
+				<doxyfile_warnings />
+				<doxyfile_output />
+				<doxyfile_dot />
+				<general />
+			</DoxyBlocks>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
