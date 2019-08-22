@@ -32,7 +32,6 @@
 					<Add library="..\libWindows\libavfilter.dll.a" />
 					<Add library="..\libWindows\libpostproc.dll.a" />
 					<Add directory="../libWindows" />
-					<Add directory="../bin" />
 				</Linker>
 			</Target>
 		</Build>
