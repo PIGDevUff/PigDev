@@ -140,7 +140,7 @@ public:
                 ultimoEvento.mouse.relX = event.motion.xrel;
                 ultimoEvento.mouse.relY = -event.motion.yrel;
                 //if (cursorPadrao!=0)
-                    CMouse::Move(ultimoEvento.mouse.posX,ultimoEvento.mouse.posY-33);//CGerenciadorJanelas::GetAltura(ultimoEvento.mouse.numeroJanela)-ultimoEvento.mouse.posY);
+                    CMouse::Move(ultimoEvento.mouse.posX, CGerenciadorJanelas::GetAltura(ultimoEvento.mouse.numeroJanela)-(ultimoEvento.mouse.posY));//CGerenciadorJanelas::GetAltura(ultimoEvento.mouse.numeroJanela)-ultimoEvento.mouse.posY);
                 break;
             case SDL_MOUSEWHEEL:
                 ultimoEvento.tipoEvento = EVENTO_MOUSE;
@@ -479,73 +479,46 @@ public:
         int minX=99999,maxX=-1,minY=99999,maxY=-1;
         int cx=0,cy=0;
 
+        //calcula o bounding-box do poligono
         for (int i=0;i<lados;i++){
-            if (px[i]<minX)
-                minX = px[i];
-            if (py[i]<minY)
-                minY = py[i];
-            if (px[i]>maxX)
-                maxX = px[i];
-            if (py[i]>maxY)
-                maxY = py[i];
-            cx += px[i];
-            cy += py[i];
+            if (px[i]<minX) minX = px[i];
+            if (py[i]<minY) minY = py[i];
+            if (px[i]>maxX) maxX = px[i];
+            if (py[i]>maxY) maxY = py[i];
+            cx += px[i]; //centro do poligono
+            cy += py[i]; //centro do poligono
         }
-        cx /= lados;
-        cy /= lados;
+        cx /= lados; //centro do poligono
+        cy /= lados; //centro do poligono
 
-        int alt = maxY-minY+1;
-        int larg = maxX-minX+1;
+        int alt = maxY-minY+1;  //altura absoluta do poligono
+        int larg = maxX-minX+1; //altura absoluta do poligono
 
-        OffscreenRenderer off = new COffscreenRenderer(alt,larg);
+        OffscreenRenderer off = new COffscreenRenderer(alt,larg); //ajustado extamente com a altura e largura
 
         if (CORESIGUAIS(cor,PRETO)){
             off->PintarFundo(BRANCO);
         }else off->PintarFundo(PRETO);
 
-        for (int i=0;i<lados;i++){
+        for (int i=0;i<lados;i++)
             off->DesenharLinha(px[i]-minX,py[i]-minY,px[(i+1)%lados]-minX,py[(i+1)%lados]-minY,cor);
-        }
+
+        off->PintarArea(cx-minX,cy-minY,cor,NULL);
 
         SDL_Surface *surf = off->GetSurface();
-        SDL_LockSurface(surf);
-
-        Uint32 color = SDL_MapRGBA((const SDL_PixelFormat*) &surf->format->format,cor.r,cor.g,cor.b,cor.a);
-
-        CPilhaCoordenada *pilha = new CPilhaCoordenada();
-        pilha->Empilha(cx-minX,cy-minY);
-        int x,y;
-        Uint32 *p;
-        while (pilha->Desempilha(x,y)){
-
-            if (x>=0&&y>=0&&x<larg&&y<alt){
-                p = (Uint32*) surf->pixels;
-                p += (x+(alt-y-1)*larg);
-
-                if ( *p != color){
-                    *p = color;     //muda efetivamente a cor
-                    pilha->Empilha(x+1,y+0);
-                    pilha->Empilha(x+0,y+1);
-                    pilha->Empilha(x-1,y+0);
-                    pilha->Empilha(x+0,y-1);
-                }
-            }
-        }
-
-        delete pilha;
-        SDL_UnlockSurface(surf);
-
         if (CORESIGUAIS(cor,PRETO)){
             SDL_SetColorKey( surf, SDL_TRUE, SDL_MapRGBA(surf->format, 255, 255, 255, 255) );
         }else SDL_SetColorKey( surf, SDL_TRUE, SDL_MapRGBA(surf->format, 0, 0, 0, 255) );
 
-        SDL_Texture *text = SDL_CreateTextureFromSurface(CGerenciadorJanelas::GetJanela(idJanela)->GetRenderer(), surf);
+        SDL_Renderer *renderer = CGerenciadorJanelas::GetJanela(idJanela)->GetRenderer();
+        SDL_Texture *text = SDL_CreateTextureFromSurface(renderer, surf);
         SDL_Rect r;
         r.h = alt;
         r.w = larg;
         r.x = minX;
-        r.y = CGerenciadorJanelas::GetAltura(idJanela)-minY;
-        SDL_RenderCopy(CGerenciadorJanelas::GetJanela(idJanela)->GetRenderer(),text,NULL,&r);
+        r.y = CGerenciadorJanelas::GetAltura(idJanela)-minY-alt;
+        //printf("%d,%d %d,%d\n",r.x,r.y,r.h,r.w);
+        SDL_RenderCopy(renderer,text,NULL,&r);
         SDL_DestroyTexture(text);
         delete off;
     }

@@ -8,6 +8,7 @@ int dx,dy;
 int menorX,maiorX,menorY,maiorY;
 int hp;
 int fading;
+double escalaIniX,escalaIniY;//usados para ajustar o tamanho da particula em relação ao tamanho origninal. Se a particula aumentar ou diminuir com o tempo, ainda será aplicado outro fator no método Move();
 float limTempo;
 float angRot;
 float escalaInicial,escalaFinal;
@@ -22,6 +23,7 @@ void IniciaBase(int x, int y, int deslocX, int deslocY, int vida, float anguloRo
     angRot = anguloRot;
     escalaInicial = escalaIni;
     escalaFinal = escalaFim;
+    escalaIniX = escalaIniY = 1.0;
     fading = fadeOut;
 
     if (usaGerenciadorTimer){
@@ -48,12 +50,14 @@ public:
         CAnimacao(animacaoBase,usaGerenciadorTimer,NULL,1,idJanela){
         tenhoAnimacaoBase = 1;
         IniciaBase(x,y,deslocX,deslocY,vida,anguloRot,escalaIni,escalaFim,fadeOut,usaGerenciadorTimer);
+        SetDimensoes(alt,larg);//para definir o valor de escalaIniX e escalaIniY
     }
 
     CParticula(int x, int y, int deslocX,int deslocY,int vida, float anguloRot, float escalaIni, float escalaFim, int fadeOut, Objeto objBase,int usaGerenciadorTimer=1,int idJanela=0):
         CAnimacao(objBase,usaGerenciadorTimer,NULL,1,idJanela){
         tenhoAnimacaoBase = 0;
         IniciaBase(x,y,deslocX,deslocY,vida,anguloRot,escalaIni,escalaFim,fadeOut,usaGerenciadorTimer);
+        SetDimensoes(alt,larg);//para definir o valor de escalaIniX e escalaIniY
     }
 
     void DefineLimites(int xMenor,int xMaior,int yMenor,int yMaior, float tempoMax){
@@ -89,14 +93,8 @@ public:
         if (fading)
             CAnimacao::SetOpacidade(255*(1-porcTempoVida));
 
-        int altura,largura;
-        if (tenhoAnimacaoBase){
-            altura = alt;
-            largura = larg;
-        }else CAnimacao::GetDimensoesOriginais(altura,largura);
-
         float fatorDim = escalaInicial*(1-porcTempoVida)+escalaFinal*(porcTempoVida);
-        CAnimacao::SetDimensoes(altura*fatorDim,largura*fatorDim);
+        CAnimacao::SetDimensoes(altOriginal*escalaIniY*fatorDim,largOriginal*escalaIniX*fatorDim);
         CAnimacao::SetPivo(0.5f,0.5f);
         CAnimacao::SetAngulo(decorrido*angRot);
 
@@ -105,6 +103,12 @@ public:
 
         CAnimacao::Move(inix+dx*decorrido,iniy+dy*decorrido);
         viva = (x>menorX)&&(x<maiorX)&&(y>menorY)&&(y<maiorY);
+    }
+
+    void SetDimensoes(int altura, int largura){
+        CAnimacao::SetDimensoes(altura,largura);
+        escalaIniX = largura*1.0/largOriginal;
+        escalaIniY = altura*1.0/altOriginal;
     }
 
     void MudaDirecao(int deslocX,int deslocY){

@@ -173,7 +173,7 @@ void GetXY(int &x,int &y){
 
 void SetColoracao(PIG_Cor cor){
     coloracao = cor;
-    //SDL_SetTextureColorMod(text,cor.r,cor.g,cor.b);
+    SDL_SetTextureColorMod(text,cor.r,cor.g,cor.b);
 }
 
 /*virtual int Desenha(OffscreenRenderer offRender=NULL)=0;{
@@ -245,7 +245,7 @@ void GetDimensoesOriginais(int &altura,int &largura){
 
 void SetOpacidade(int valor){
     opacidade = valor;
-    //SDL_SetTextureAlphaMod(text,valor);
+    SDL_SetTextureAlphaMod(text,valor);
 }
 
 int GetOpacidade(){

@@ -40,7 +40,7 @@ Jogo jogo=NULL;
 
 /********************************
 A função CriaJogo() é responsável pela criação da janela do jogo e pelos componentes audio-visuais.
-Ela deve ser chamada antes de qualquer outra função da biblioetac PIG.h. Não é possível criar dois
+Ela deve ser chamada antes de qualquer outra função da biblioteca PIG.h. Não é possível criar dois
 jogos no mesmo progama. Logo, somente a primeira chamada terá efeito. A janela padrão da aplicação terá o tamanho definido pelas constantes ALT_TELA e LARG_TELA
 definidas no arquivo Tipos.PIG.h, exceto se forem passados outros valores.
 Parâmetros:
@@ -166,9 +166,9 @@ int JogoRodando(){
 }
 
 /********************************
-A função Espera() "congela" a tela do jogo por alguns milisegundos, impedindo que qualquer outro comando seja executado enquanto isso.
+A função Espera() "congela" a tela do jogo por alguns milissegundos, impedindo que qualquer outro comando seja executado enquanto isso.
 Parâmetros:
-tempo (entrada, passagem por valor): indica a quantidade de milisegundos durante a qual o jogo será pausado.
+tempo (entrada, passagem por valor): indica a quantidade de milissegundos durante a qual o jogo será pausado.
 ********************************/
 void Espera(int tempo){
     SDL_Delay(tempo);
@@ -896,7 +896,6 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 void EscreverCentralizada(char *str,int posicaoX,int posicaoY,int numFonte=0){
     jogo->EscreverCentralizada(str,posicaoX,posicaoY,numFonte);
 }
-
 
 /********************************
 A função EscreverLongaDireita() é responsável por exibir uma string longa na tela de jogo, com alinhamento à direita do valor de X.
