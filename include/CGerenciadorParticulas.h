@@ -3,7 +3,7 @@ class CGerenciadorParticulas{
 
 private:
 
-    static SDL_Renderer *render;
+    //static SDL_Renderer *render;
     static int totalGeradores;
     static PoolNumeros numGeradores;
     static GeradorParticulas geradores[MAX_GERADORPARTICULAS];

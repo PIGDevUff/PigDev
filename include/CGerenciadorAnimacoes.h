@@ -71,12 +71,20 @@ public:
         animacoes[idAnimacao]->InsereFrame(idModo,idFrame,delayFrame,idAudio);
     }
 
-    inline static void MudaModo(int idAnimacao,int idModo,int inicia){
-        animacoes[idAnimacao]->MudaModo(idModo,inicia);
+    inline static int GetModo(int idAnimacao){
+        return animacoes[idAnimacao]->GetModoAtual();
+    }
+
+    inline static void MudaModo(int idAnimacao,int idModo,int indiceFrame){
+        animacoes[idAnimacao]->MudaModo(idModo,indiceFrame);
     }
 
     inline static void SetOpacidade(int idAnimacao,int valor){
         animacoes[idAnimacao]->SetOpacidade(valor);
+    }
+
+    inline static int GetOpacidade(int idAnimacao){
+        return animacoes[idAnimacao]->GetOpacidade();
     }
 
     inline static void SetColoracao(int idAnimacao,PIG_Cor cor){
@@ -177,6 +185,37 @@ public:
         return resp;
     }
 
+    inline static void PausaAnimacao(int idAnimacao){
+        animacoes[idAnimacao]->Pausa();
+    }
+
+    inline static void DespausaAnimacao(int idAnimacao){
+        animacoes[idAnimacao]->Despausa();
+    }
+
+    inline static void SetTempoFrameAnimacao(int idAnimacao, int idModo, int indiceFrame, double tempo){
+        animacoes[idAnimacao]->SetTempoFrame(idModo,indiceFrame,tempo);
+    }
+
+    inline static void SetAudioFrameAnimacao(int idAnimacao, int idModo, int indiceFrame, int idAudio){
+        animacoes[idAnimacao]->SetAudioFrame(idModo,indiceFrame,idAudio);
+    }
+
+    inline static void SetLoopModoAnimacao(int idAnimacao, int idModo, bool loop){
+        animacoes[idAnimacao]->SetLoopModo(idModo,loop);
+    }
+
+    inline static double GetTempoFrameAnimacao(int idAnimacao, int idModo, int indiceFrame){
+        return animacoes[idAnimacao]->GetTempoFrame(idModo,indiceFrame);
+    }
+
+    inline static bool GetLoopModoAnimacao(int idAnimacao, int idModo){
+        return animacoes[idAnimacao]->GetLoopModo(idModo);
+    }
+
+    inline static int GetAudioFrameAnimacao(int idAnimacao, int idModo, int indiceFrame){
+        return animacoes[idAnimacao]->GetAudioFrame(idModo,indiceFrame);
+    }
 };
 
 PoolNumeros CGerenciadorAnimacoes::numAnimacoes;

@@ -169,10 +169,17 @@ void SetModo(int valor){
     if (window==NULL) return;
     modo = valor;
     SDL_SetWindowFullscreen(window,modo);
+    SDL_GetWindowSize(window,&largura,&altura);
 }
 
 int GetModo(){
     return modo;
+}
+
+int SetTamanho(int alt, int larg){
+    altura = alt;
+    largura = larg;
+    SDL_SetWindowSize(window,larg,alt);
 }
 
 };

@@ -1,37 +1,45 @@
-class CAnimacao:public CObjeto{
+#include "CModoAnimacao.h"
 
-typedef struct {
-    int loop;
-    int qtdFrames;
-    int frames[MAX_FRAMES_MODO];
-    int audio[MAX_FRAMES_MODO];
-    float delays[MAX_FRAMES_MODO];
-}Modo;
+class CAnimacao:public CObjeto{
 
 private:
 
-int souCopia;
-int qtdTotalFrames;
-Modo *modos[MAX_MODOS];
-int frameDoModo;
-SDL_Rect *frames[MAX_FRAMES];
-Timer tempoFrame;
-int idTimer;
-int offx,offy;
-int modoAtual;
-int frameAtual;
+int souCopia;                   //indica se esta animação é cópia (foi criada a partir) de outra animação
+int qtdTotalFrames;             //indica o total de frames existentes nesta animação
+ModoAnimacao modos[MAX_MODOS];  //modos da animaçãoi
+SDL_Rect *frames[MAX_FRAMES];   //frames da animação
+Timer tempoFrame;               //timer da animação (se estiver sendo utilizado um timer específico)
+int idTimer;                    //timer da animação (se estiver sendo utilizado o gerenciador de timers)
+int offx,offy;                  //offset (x,y) a ser utilizado junto com a posição (x,y) para desenhar oa animação
+int modoAtual;                  //número que indica o modo atual
+int frameAtual;                 //número que indica o frame atual
+
+
+//muda o frame a ser exibido do modo atual
+void AtualizaFrameAtual(ModoAnimacao modo){
+    frameAtual = modo->GetFrameAtual();
+    CObjeto::DefineFrame(*(frames[frameAtual]));
+
+    int audio = modo->GetAudioAtual();
+    if (audio>=0){
+        CGerenciadorAudios::Play(audio);
+    }
+
+    if (tempoFrame)
+        tempoFrame->Reinicia(false);
+    else CGerenciadorTimers::ReiniciaTimer(idTimer);
+}
 
 public:
 
+//cria uma animação a partir de um arquivo de spritesheet
 CAnimacao(char *nomeArq,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NULL,int retiraFundo=1,int idJanela=0):CObjeto(nomeArq,corFundo,retiraFundo,idJanela){
     souCopia = 0;
     offx = offy = 0;
     modoAtual = 0;
-    frameDoModo=-1;
-    //printf("retirado\n");
 
     for (int i=0;i<MAX_FRAMES;i++)
-        frames[i] = (SDL_Rect*)malloc(sizeof(SDL_Rect));
+        frames[i] = NULL;
 
     qtdTotalFrames = 0;
     for (int i=0;i<MAX_MODOS;i++){
@@ -47,9 +55,9 @@ CAnimacao(char *nomeArq,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NULL,int ret
     }
 }
 
+//cria uma animaçãoa partir deoutra animação já existente
 CAnimacao(CAnimacao* base,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NULL,int retiraFundo=1,int idJanela=0):CObjeto(base->nomeArquivo,corFundo,retiraFundo,idJanela){
     souCopia= 1;
-    frameDoModo=-1;
 
     qtdTotalFrames = base->qtdTotalFrames;
     for (int i=0;i<MAX_FRAMES;i++){
@@ -74,10 +82,10 @@ CAnimacao(CAnimacao* base,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NULL,int r
     }
 }
 
+//cria uma animação a aprtir de um objeto
 CAnimacao(Objeto base,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NULL,int retiraFundo=1,int idJanela=0):CObjeto(base,corFundo,retiraFundo,idJanela){
     offx = offy = 0;
     modoAtual = 0;
-    frameDoModo=-1;
 
     for (int i=0;i<MAX_FRAMES;i++){
         frames[i] = NULL;
@@ -91,14 +99,16 @@ CAnimacao(Objeto base,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NULL,int retir
     tempoFrame = NULL;
 }
 
+//destroi uma animação
 ~CAnimacao(){
     if (!souCopia){
         for (int i=0;i<MAX_MODOS;i++){
             if (modos[i])
-                free(modos[i]);
+                delete modos[i];
         }
         for (int i=0;i<MAX_FRAMES;i++)
-            free(frames[i]);
+            if (frames[i])
+                free(frames[i]);
     }
 
     if (tempoFrame)
@@ -109,6 +119,8 @@ CAnimacao(Objeto base,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NULL,int retir
 
 //define o retangulo da imagem que corresponde ao frame
 void CriaFrame(int codFrame,int x,int y,int altura,int largura){
+    if (frames[codFrame]) free(frames[codFrame]);
+    frames[codFrame] = (SDL_Rect*)malloc(sizeof(SDL_Rect));
     frames[codFrame]->x = x;
     frames[codFrame]->y = y;
     frames[codFrame]->h = altura;
@@ -117,81 +129,43 @@ void CriaFrame(int codFrame,int x,int y,int altura,int largura){
 
 //cria um modo vazio, sem frames associados
 void CriaModo(int idModo, int loop){
-    if (modos[idModo]) free(modos[idModo]);
-    modos[idModo] = (Modo*) malloc(sizeof(Modo));
-    Modo *atual = modos[idModo];
-    atual->loop = loop;
-    atual->qtdFrames = 0;
+    if (modos[idModo]) delete modos[idModo];
+    modos[idModo] = new CModoAnimacao(loop);
 }
 
 //insere um frame em um dos modos
 void InsereFrame(int idModo, int idFrame, float delayFrame,int audio){
-    int aux = modos[idModo]->qtdFrames;
-    modos[idModo]->frames[ aux ] = idFrame;
-    modos[idModo]->delays[ aux ] = delayFrame;
-    modos[idModo]->audio[ aux ] = audio;
-    //printf("inserido %d na posicao %d\n",audio,aux);
-    modos[idModo]->qtdFrames++;
+    modos[idModo]->InsereEstagio(idFrame,delayFrame,audio);
 }
 
 //muda o modo atual
-void MudaModo(int idModo,int inicia){
+void MudaModo(int idModo,int indiceFrame=0){
     modoAtual = idModo;
 
-    if (inicia){
-        frameDoModo = 0;
-        int audio = modos[modoAtual]->audio[frameDoModo];
-        if (audio>=0){
-            //printf("vou tocar %d\n",audio);
-            CGerenciadorAudios::Play(audio);
-        }
-        frameAtual = modos[modoAtual]->frames[frameDoModo];
-        CObjeto::DefineFrame(*(frames[frameAtual]));
-    }
-    else frameDoModo = modos[idModo]->qtdFrames-1;
+    modos[modoAtual]->SetIndiceFrameAtual(indiceFrame);
 
-    if (tempoFrame)
-        tempoFrame->Reinicia(false);
-    else CGerenciadorTimers::ReiniciaTimer(idTimer);
+    AtualizaFrameAtual(modos[modoAtual]);
+}
+
+//retorna o númerodo modo atual
+int GetModoAtual(){
+    return modoAtual;
 }
 
 //desenha a animação
 int Desenha(){
-    int resp=0; //0 indica que que o modo de animação atual não terminou
-    Modo *modo = modos[modoAtual];
+    int resp=0; //0 indica que que o modo de animação atual não encerrou
 
-    if (modo!=NULL){
-
-        float tempo = modo->delays[frameDoModo];
+    if (modos[modoAtual]!=NULL){
         float tempoDecorrido;
 
         if (tempoFrame)
             tempoDecorrido = tempoFrame->GetTempoDecorrido();
         else tempoDecorrido = CGerenciadorTimers::GetTempoDecorrido(idTimer);
 
-        if (tempoDecorrido>tempo){//já passou o tempo de exibição do frame atual
-            if (frameDoModo==modo->qtdFrames-1){//se estamos no último frame do modo
-                if (modo->loop){//se deve voltar ao primeiro frame
-                    frameDoModo=0;
-                }else resp=1;//indica que acabou a exibição dos frames deste modo
-            }else{//se devemos passar para o próximo frame
-                frameDoModo++;
-                int audio = modo->audio[frameDoModo];
-                //printf("audio seria %d (frame %d)\n",audio,frameDoModo);
-                if (audio>=0){//se devemos tocar algum audio para este frame neste modo
-                    //printf("desenha audio %d\n",audio);
-                    CGerenciadorAudios::Play(audio);
-                }
-            }
-
-            if (tempoFrame)
-                tempoFrame->Reinicia(false);
-            else CGerenciadorTimers::ReiniciaTimer(idTimer);
-
-            frameAtual = modo->frames[frameDoModo];
-            CObjeto::DefineFrame(*(frames[frameAtual]));
-        }
-
+        if (modos[modoAtual]->TestaTempo(tempoDecorrido)){
+            AtualizaFrameAtual(modos[modoAtual]);
+        }else resp = modos[modoAtual]->GetEncerrou();//pode ter encerrado de desenhar todos os estágios do modo
     }
 
     int px = x+offx;
@@ -208,7 +182,50 @@ int Desenha(){
     return resp;
 }
 
-};
+//pausa a animação
+void Pausa(){
+    if (tempoFrame)
+        tempoFrame->Pausa();
+    else CGerenciadorTimers::PausaTimer(idTimer);
+}
 
+//despausa a animação
+void Despausa(){
+    if (tempoFrame)
+        tempoFrame->Despausa();
+    else CGerenciadorTimers::DespausaTimer(idTimer);
+}
+
+//define o tempo de um frame já criado
+void SetTempoFrame(int modo, int indiceFrame, double tempo){
+    modos[modo]->SetTempo(indiceFrame,tempo);
+}
+
+//define se um modo já criado terá ou não loop
+void SetLoopModo(int modo, int loop){
+    modos[modo]->SetLoop(loop);
+}
+
+//define o audio de um frame já criado
+void SetAudioFrame(int modo, int indiceFrame, int idAudio){
+    modos[modo]->SetAudio(indiceFrame,idAudio);
+}
+
+//retorna o tempo de duração de um frame já criado
+double GetTempoFrame(int modo, int indiceFrame){
+    return modos[modo]->GetTempoFrame(indiceFrame);
+}
+
+//retorna se um modo tem ou não loop
+bool GetLoopModo(int modo){
+    return modos[modo]->GetLoop();
+}
+
+//retorna o audio de um frame já criado
+int GetAudioFrame(int modo, int indiceFrame){
+    return modos[modo]->GetAudioFrame(indiceFrame);
+}
+
+};
 
 typedef CAnimacao* Animacao;

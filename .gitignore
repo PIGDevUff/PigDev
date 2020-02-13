@@ -6,3 +6,13 @@ src/ProjetoMacOsX.layout
 libLinux/*
 libMacOsX/*
 libWindows/*
+*.wav
+*.mp3
+*.aif
+*.midi
+*.bmp
+*.png
+*.jpg
+*.jpeg
+*.o
+*.zip

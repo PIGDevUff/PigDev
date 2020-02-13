@@ -319,6 +319,17 @@ int GetLarguraJanela(int idJanela=0){
 }
 
 /********************************
+A função SetTamanhoJanela() é responsável por definir o tamanho para a janela.
+Parâmetros:
+altura (entrada, passagem por valor): indica a quantidade de linhas da janela (em pixels).
+largura (entrada, passagem por valor): indica a quantidade de colunas da janela (em pixels).
+idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela a ser alterada.
+********************************/
+void SetTamanhoJanela(int altura, int largura,int idJanela=0){
+    CGerenciadorJanelas::SetTamanho(altura,largura,idJanela);
+}
+
+/********************************
 A função GetTituloJanela() é responsável por recuperar o título (caption) atual da janela.
 Parâmetros:
 tituloJanela (saída, passagem por referência): armazena o título da janela que foi recuperado.
@@ -1833,6 +1844,19 @@ valor (entrada,passagem por valor): nível de opacidade da animação na faixa 0-25
 void SetOpacidadeAnimacao(int idAnimacao,int valor){
     CGerenciadorAnimacoes::SetOpacidade(idAnimacao,valor);
 }
+
+/********************************
+A função GetOpacidadeAnimacao() é responsável por recuperar o nível de opacidade da animação.
+O nível de opacidade varia de 0-255, sendo 0 totalmente transparente e 255 totalmente opaco.
+Parâmetros:
+idAnimacao (entrada, passagem por valor): identificador da animação.
+Retorno:
+Retorna o nível de opacidade da animação na faixa 0-255.
+********************************/
+int GetOpacidadeAnimacao(int idAnimacao){
+    return CGerenciadorAnimacoes::GetOpacidade(idAnimacao);
+}
+
 
 /********************************
 A função SetColoracaoAnimacao() é responsável por mesclar uma determinada cor com os pixels do arquivo de imagem.

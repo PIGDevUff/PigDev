@@ -92,6 +92,10 @@ static int GetLargura(int idJanela=0){
     return janelas[idJanela]->GetLargura();
 }
 
+static int SetTamanho(int altura,int largura,int idJanela=0){
+    janelas[idJanela]->SetTamanho(altura,largura);
+}
+
 static void GetTitulo(char *tituloJanela,int idJanela=0){
     janelas[idJanela]->GetTitulo(tituloJanela);
 }
@@ -135,6 +139,8 @@ static void SetModo(int modo,int idJanela=0){
 static int GetModo(int idJanela=0){
     return janelas[idJanela]->GetModo();
 }
+
+
 
 };
 

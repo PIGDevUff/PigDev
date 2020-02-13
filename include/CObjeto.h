@@ -158,6 +158,7 @@ public:
     CObjeto(CObjeto *objBase,PIG_Cor *corFundo=NULL,int retiraFundo=1,int janela=0):CVisual(objBase,retiraFundo,corFundo,janela){
         AtualizaBB();
         ExtraiPixels();
+        SetDimensoes(objBase->alt,objBase->larg);
     }
 
     ~CObjeto(){
