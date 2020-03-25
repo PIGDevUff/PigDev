@@ -11,22 +11,19 @@ private:
     static int cursorAtual;
     static InfoCursor *cursores[MAX_CURSORES];
     static SDL_Rect rect;
-    //static SDL_Renderer *renderer;
+    static int mx,my;
 
 public:
 
     static void Inicia(SDL_Renderer *render=NULL){
-        //renderer = render;
         rect.w = rect.h = 32;
         cursorAtual = 0;
         SDL_ShowCursor(0);
-        //printf("Mouse iniciado\n");
         for (int i=0;i<MAX_CURSORES;i++)
             cursores[i] = NULL;
     }
 
     static void Encerra(){
-        //printf("Encerrando mouse...");
         for (int i=0;i<MAX_CURSORES;i++){
             if (cursores[i]){
                 CAssetLoader::FreeImage(cursores[i]->nomeArquivo);
@@ -34,12 +31,11 @@ public:
                 free(cursores[i]);
             }
         }
-        //printf("encerrado\n");
     }
 
     static void PegaXY(int &x, int &y){
-        x = rect.x;
-        y = rect.y+32;
+        x = mx;
+        y = my;
     }
 
     static void MudaCursor(int indice){
@@ -51,9 +47,11 @@ public:
         SDL_RenderCopy(jan->GetRenderer(),cursores[cursorAtual]->text,NULL,&rect);
     }
 
-    static void Move(int x,int y){
+    static void Move(int x,int y, int idJanela=0){
         rect.x = x;
-        rect.y = y;
+        rect.y = CGerenciadorJanelas::GetJanela(idJanela)->GetAltura() - y;
+        mx = x;
+        my = y;
     }
 
     static void CarregaCursor(int indice,char *nomeArquivo,int idJanela=0){
@@ -84,4 +82,5 @@ public:
 int CMouse::cursorAtual;
 InfoCursor* CMouse::cursores[MAX_CURSORES];
 SDL_Rect CMouse::rect;
-//SDL_Renderer* CMouse::renderer;
+int CMouse::mx;
+int CMouse::my;

@@ -869,7 +869,7 @@ retorno:
 inteiro que representa o total de pixels (no eixo x) necessários para escrever a string.
 ********************************/
 int CalculaLarguraPixels(char *str,int numFonte=0){
-    return jogo->GetLarguraPixels(str);
+    return jogo->GetLarguraPixels(str,numFonte);
 }
 
 /********************************

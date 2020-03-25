@@ -16,12 +16,7 @@ void GetDiretorioAtual(){
     diretorioAtual = SDL_GetBasePath();
     if (!diretorioAtual)
         diretorioAtual = SDL_strdup("./");
-    /*char *base_path = SDL_GetBasePath();
-    if (base_path) {
-        diretorioAtual = base_path;
-    } else {
-        diretorioAtual = SDL_strdup("./");
-    }*/
+
     CHDIR(diretorioAtual);
 }
 
@@ -40,7 +35,7 @@ public:
         cursorPadrao = cursor;
 
         GetDiretorioAtual();
-        printf("path: %s\n",diretorioAtual);
+        //printf("path: %s\n",diretorioAtual);//exibir a pasta original da PIG
 
 
 		//SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS,"1");
@@ -84,9 +79,6 @@ public:
     PIG_Evento PegaEvento(){
         SDL_Event event;
         int resp;
-        //if (despausa)
-        //    resp = SDL_PeepEvents(&event,1,SDL_GETEVENT,EVENTO_VIDEO,EVENTO_VIDEO);
-        //else
 
         resp =SDL_PollEvent(&event);
         if (resp){
@@ -120,7 +112,7 @@ public:
                 ultimoEvento.mouse.numeroJanela = event.window.windowID-JANELA_INICIAL;
                 ultimoEvento.mouse.cliques = event.button.clicks;
                 ultimoEvento.mouse.posX = event.button.x;
-                ultimoEvento.mouse.posY = CGerenciadorJanelas::GetAltura(ultimoEvento.mouse.numeroJanela) - event.button.y;
+                ultimoEvento.mouse.posY = CGerenciadorJanelas::GetAltura(ultimoEvento.mouse.numeroJanela) - event.button.y-1;
                 break;
             case SDL_MOUSEBUTTONUP:
                 ultimoEvento.tipoEvento = EVENTO_MOUSE;
@@ -129,7 +121,7 @@ public:
                 ultimoEvento.mouse.numeroJanela = event.window.windowID-JANELA_INICIAL;
                 ultimoEvento.mouse.cliques = event.button.clicks;
                 ultimoEvento.mouse.posX = event.button.x;
-                ultimoEvento.mouse.posY = CGerenciadorJanelas::GetAltura(ultimoEvento.mouse.numeroJanela) - event.button.y;
+                ultimoEvento.mouse.posY = CGerenciadorJanelas::GetAltura(ultimoEvento.mouse.numeroJanela) - event.button.y-1;
                 break;
             case SDL_MOUSEMOTION:
                 ultimoEvento.tipoEvento = EVENTO_MOUSE;
@@ -139,8 +131,7 @@ public:
                 ultimoEvento.mouse.posY = CGerenciadorJanelas::GetAltura(ultimoEvento.mouse.numeroJanela) - event.motion.y-1;
                 ultimoEvento.mouse.relX = event.motion.xrel;
                 ultimoEvento.mouse.relY = -event.motion.yrel;
-                //if (cursorPadrao!=0)
-                    CMouse::Move(ultimoEvento.mouse.posX, CGerenciadorJanelas::GetAltura(ultimoEvento.mouse.numeroJanela)-(ultimoEvento.mouse.posY));//CGerenciadorJanelas::GetAltura(ultimoEvento.mouse.numeroJanela)-ultimoEvento.mouse.posY);
+                CMouse::Move(ultimoEvento.mouse.posX, ultimoEvento.mouse.posY,ultimoEvento.mouse.numeroJanela);
                 break;
             case SDL_MOUSEWHEEL:
                 ultimoEvento.tipoEvento = EVENTO_MOUSE;
