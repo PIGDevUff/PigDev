@@ -29,8 +29,9 @@ void CriaTextura(int retiraFundo, PIG_Cor *corFundo=NULL){
             Uint32 *pixel = (Uint32*)bitmap->pixels;
             SDL_GetRGBA(*pixel,bitmap->format,&red,&green,&blue,&alpha);
         }
+
         SDL_SetColorKey( bitmap, SDL_TRUE, SDL_MapRGBA(bitmap->format, red, green, blue,alpha) );
-    }
+    }else SDL_SetColorKey( bitmap, SDL_FALSE, 0);
 
     if (text) SDL_DestroyTexture(text);
     text = SDL_CreateTextureFromSurface(renderer, bitmap);
@@ -188,7 +189,7 @@ void SetColoracao(PIG_Cor cor){
     }
 }*/
 
-void SetAngulo(float a){
+virtual void SetAngulo(float a){
     angulo = a;
 }
 
@@ -231,6 +232,8 @@ void SetDimensoes(int altura,int largura){
     dest.w = larg = largura;
     dest.x = x;
     dest.y = altJanela-y-alt;
+
+    pivoRelativo.y = alt;//necessário porque o poivô relativo é usado com eixo Y invertido (para baixo)
 }
 
 void GetDimensoes(int &altura, int &largura){

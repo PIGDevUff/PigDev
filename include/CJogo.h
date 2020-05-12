@@ -16,7 +16,12 @@ void GetDiretorioAtual(){
     diretorioAtual = SDL_GetBasePath();
     if (!diretorioAtual)
         diretorioAtual = SDL_strdup("./");
-
+    /*char *base_path = SDL_GetBasePath();
+    if (base_path) {
+        diretorioAtual = base_path;
+    } else {
+        diretorioAtual = SDL_strdup("./");
+    }*/
     CHDIR(diretorioAtual);
 }
 
@@ -55,7 +60,7 @@ public:
             fontes[i] = NULL;
 
         //criação da fonte padrão da PIG (fonte com identificador 0)
-        fontes[0] = new CMapaCaracteres("..//fontes//arial.ttf",CGerenciadorJanelas::GetJanela(0)->GetRenderer(),CGerenciadorJanelas::GetJanela(0)->GetAltura(),36,ESTILO_NORMAL,BRANCO,0,BRANCO);
+        fontes[0] = new CMapaCaracteres("..//fontes//arial.ttf",36,ESTILO_NORMAL,BRANCO,0,BRANCO,0);
         fontesUsadas = 1;
 
         SDLNet_Init();
@@ -79,6 +84,9 @@ public:
     PIG_Evento PegaEvento(){
         SDL_Event event;
         int resp;
+        //if (despausa)
+        //    resp = SDL_PeepEvents(&event,1,SDL_GETEVENT,EVENTO_VIDEO,EVENTO_VIDEO);
+        //else
 
         resp =SDL_PollEvent(&event);
         if (resp){
@@ -131,7 +139,7 @@ public:
                 ultimoEvento.mouse.posY = CGerenciadorJanelas::GetAltura(ultimoEvento.mouse.numeroJanela) - event.motion.y-1;
                 ultimoEvento.mouse.relX = event.motion.xrel;
                 ultimoEvento.mouse.relY = -event.motion.yrel;
-                CMouse::Move(ultimoEvento.mouse.posX, ultimoEvento.mouse.posY,ultimoEvento.mouse.numeroJanela);
+                CMouse::Move(ultimoEvento.mouse.posX, ultimoEvento.mouse.posY);
                 break;
             case SDL_MOUSEWHEEL:
                 ultimoEvento.tipoEvento = EVENTO_MOUSE;
@@ -358,14 +366,14 @@ public:
 
     int CriaFonteFundo(char *nome,int tamanho,int estilo,char *arquivoFundo,int contorno,PIG_Cor corContorno,int idJanela=0){
         int aux = fontesUsadas;
-        fontes[fontesUsadas] = new CMapaCaracteres(nome,CGerenciadorJanelas::GetJanela(idJanela)->GetRenderer(),CGerenciadorJanelas::GetJanela(idJanela)->GetAltura(),tamanho,estilo,arquivoFundo,contorno,corContorno);
+        fontes[fontesUsadas] = new CMapaCaracteres(nome,tamanho,estilo,arquivoFundo,contorno,corContorno,idJanela);
         fontesUsadas++;
         return aux;
     }
 
     int CriaFonteNormal(char *nome,int tamanho,int estilo,PIG_Cor corLetra,int contorno,PIG_Cor corContorno,int idJanela=0){
         int aux = fontesUsadas;
-        fontes[fontesUsadas] = new CMapaCaracteres(nome,CGerenciadorJanelas::GetJanela(idJanela)->GetRenderer(),CGerenciadorJanelas::GetJanela(idJanela)->GetAltura(),tamanho,estilo,corLetra,contorno,corContorno);
+        fontes[fontesUsadas] = new CMapaCaracteres(nome,tamanho,estilo,corLetra,contorno,corContorno,idJanela);
         fontesUsadas++;
         return aux;
     }
@@ -399,6 +407,30 @@ public:
     inline void EscreverLongaEsquerda(char *str,int x,int y,int largMax,int espacoEntreLinhas,int numFonte=0){
         std::string texto(str);
         fontes[numFonte]->EscreveStringLongaEsquerda(texto,x,y,largMax,espacoEntreLinhas);
+    }
+
+    inline std::vector<std::string> ExtraiLinhasString(std::string texto,int largMax,int numFonte=0){
+
+        return fontes[numFonte]->ExtraiLinhasString(texto,largMax);
+
+    }
+
+    inline int GetAlturaLetra(char letra,int numFonte = 0){
+
+        return fontes[numFonte]->GetAlturaLetra(letra);
+
+    }
+
+    inline int GetLarguraLetra(char letra,int numFonte = 0){
+
+        return fontes[numFonte]->GetLarguraLetra(letra);
+
+    }
+
+    inline int GetTamanhoFonte(int numFonte = 0){
+
+        return fontes[numFonte]->GetTamanhoFonte();
+
     }
 
     SDL_Surface *GetGlyph(char *ch,int numFonte=0){

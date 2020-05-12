@@ -20,7 +20,9 @@ Versão 0.7.2 da Biblioteca PIG.h
 #include "CGerenciadorJanelas.h"
 #include "CGerenciadorSockets.h"
 #include "CAssetLoader.h"
+#include "COffscreenRenderer.h"
 #include "CMapaCaracteres.h"
+#include "CMapaCaracteresDinamicos.h"
 #include "CVisual.h"
 #include "CGerenciadorObjetos.h"
 #include "CGerenciadorTimers.h"
@@ -31,7 +33,6 @@ Versão 0.7.2 da Biblioteca PIG.h
 #include "CMouse.h"
 #include "CGerenciadorControles.h"
 #include "CJogo.h"
-
 
 /********************************
 / Variáveis Globais
@@ -50,6 +51,17 @@ cursorProprio (entrada, passagem por valor): indica se o jogo utilizará cursores
 altura (entrada, passagem por valor não-obrigatório): indica a altura em pixels da janela principal do jogo.
 largura (entrada, passagem por valor não-obrigatório): indica a largura em pixels da janela principal do jogo.
 ********************************/
+/**
+ *  \brief Cria o jogo.
+ *
+ *  \param nomeJanela   Título da janela do jogo.
+ *  \param cursorProrio Se diferente de zero, indica que o usuário definirá cursores
+ *  \param altura       Altura da tela do jogo
+ *  \param largura      Largura da tela do jogo
+ *
+ *
+ *  \sa FinalizaJogo()
+ */
 void CriaJogo(char *nomeJanela,int cursorProprio=0,int altura=ALT_TELA,int largura=LARG_TELA){
     if (jogo==NULL){
         jogo = new CJogo(nomeJanela,cursorProprio,altura,largura);
@@ -938,6 +950,22 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 ********************************/
 void EscreverLongaEsquerda(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,int numFonte=0){
     jogo->EscreverLongaEsquerda(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,numFonte);
+}
+
+std::vector<std::string> ExtraiLinhasString(std::string texto,int largMax,int numFonte=0){
+        return jogo->ExtraiLinhasString(texto,largMax,numFonte);
+}
+
+int GetAlturaLetra(char letra,int numFonte = 0){
+    return jogo->GetAlturaLetra(letra,numFonte);
+}
+
+int GetLarguraLetra(char letra,int numFonte = 0){
+    return jogo->GetLarguraLetra(letra,numFonte);
+}
+
+int GetTamanhoFonte(int numFonte = 0){
+    return jogo->GetTamanhoFonte(numFonte);
 }
 
 /********************************
