@@ -2,6 +2,8 @@ class CMapaCaracteres{
 
 protected:
 
+    static std::string PigDelimitadores;
+
     int **alturaExtra;
     int **larguraLetra;
     int janela;
@@ -15,7 +17,29 @@ protected:
     std::string nome;
     int tamFonte;
 
-    std::string TrataRetornoSeparaPalavraCaracterEspecial(int posAtual,int &posAnt,std::string txt,std::string Retorno){
+    std::vector<std::string> SeparaPalavras(std::string texto,std::string delim){
+        std::vector<std::string> resp;
+        int indice;
+
+        std::string strAtual;
+        for (int i=0;i<texto.size();i++){
+            strAtual += texto[i];
+
+            indice = delim.find(texto[i]);
+            if (indice != std::string::npos){//achou delimitadores
+                resp.push_back(strAtual);
+                //strAtual.Print();
+                strAtual = "";
+            }
+        }
+        if (strAtual!=""){
+            resp.push_back(strAtual);
+        }
+        return resp;
+    }
+
+    //versão antiga usada pelo David
+    /*std::string TrataRetornoSeparaPalavraCaracterEspecial(int posAtual,int &posAnt,std::string txt,std::string Retorno){
         std::string aux;
 
         if(posAtual == posAnt){
@@ -26,10 +50,10 @@ protected:
         aux.assign(txt,posAnt,posAtual - posAnt);
         posAnt = posAtual;
         return aux;
+    }*/
 
-   }
-
-    virtual std::string SeparaPalavra(int &posAnt,std::string txt){
+    //versão antiga usada pelo David
+    /*virtual std::string SeparaPalavra(int &posAnt,std::string txt){
 
         if(posAnt == txt.size()) return "";
 
@@ -43,7 +67,7 @@ protected:
         posAnt = txt.size();
         return aux;
 
-    }
+    }*/
 
     //funcao que desenha o outline na fonte que está sendo produzida(o render precisa estar direcionado para a textura em questão)
     void FazOutline(Uint16 letra, int nivelOutline,PIG_Cor corOutline){
@@ -217,7 +241,46 @@ public:
         return larguraLetra[estilo][aux-PRIMEIRO_CAR];
     }
 
-    std::vector<std::string> ExtraiLinhasString(std::string texto,int largMax){
+    std::vector<std::string> ExtraiLinhas(std::string texto, int largMax, std::string delim=PigDelimitadores){
+        std::vector<std::string> resp;
+        std::vector<std::string> palavras = SeparaPalavras(texto,delim);
+
+        std::string linhaAtual = palavras[0];   //linha atual (que está sendo montada) contém pelo menos a primeira palavra
+        int tamanhoAtual = GetLarguraPixelsString(linhaAtual);
+
+        for (int i=1;i<palavras.size();i++){
+            std::string palavra = palavras[i];   //pega a próxima palavra
+            int largPalavra = GetLarguraPixelsString(palavra);
+
+            if (tamanhoAtual + largPalavra > largMax){//a palavra estouraria a largura máxima se fosse agregada                if (ttttt==0){
+                resp.push_back(linhaAtual); //coloca a linha que está montada no vetor de linhas
+                linhaAtual = palavra; //a palavra que estouraria o limite começa a próxima linha
+                tamanhoAtual = largPalavra;
+            }else{//não estourou o limite
+                linhaAtual += palavra;
+                tamanhoAtual += largPalavra;
+            }
+
+            if (palavra[palavra.size()-1]=='\n'){//se existe uma quebra de linha forçada
+                resp.push_back(linhaAtual);
+
+                //i++;
+                if (++i<palavras.size()){
+                    linhaAtual = palavras[i]; //começa uma nova linha com a p´roxima palavra
+                }else linhaAtual = "";
+            }
+        }
+
+        if (linhaAtual != ""){
+            resp.push_back(linhaAtual); //pega a linha que sobrou do processamento (última linha que não foi quebrada)
+        }
+
+        palavras.clear();
+        return resp;
+    }
+
+    //versão antiga usada pelo David
+    /*std::vector<std::string> ExtraiLinhasString(std::string texto,int largMax){
         std::vector<std::string> linhas;
         std::string linhaAtual("");
         std::string linhaMaior("");
@@ -257,7 +320,7 @@ public:
         }
         linhas.push_back(linhaAtual);
         return linhas;
-    }
+    }*/
 
     virtual int GetLarguraPixelsString(std::string texto){
         int resp=0;
@@ -307,7 +370,7 @@ public:
     }
 
     virtual void EscreveStringLongaCentralizado(std::string texto,int x,int y,int largMax,int espacoEntreLinhas,float angulo=0){
-        std::vector<std::string> linhas = ExtraiLinhasString(texto,largMax);
+        std::vector<std::string> linhas = ExtraiLinhas(texto,largMax);
         int yTotal=y;
         for (int k=0;k<linhas.size();k++){
             int larguraPixels = GetLarguraPixelsString((char*)linhas[k].c_str());
@@ -317,7 +380,7 @@ public:
     }
 
     virtual void EscreveStringLongaEsquerda(std::string texto,int x,int y,int largMax,int espacoEntreLinhas,float angulo=0){
-        std::vector<std::string> linhas = ExtraiLinhasString(texto,largMax);
+        std::vector<std::string> linhas = ExtraiLinhas(texto,largMax);
         int yTotal=y;
         for (int k=0;k<linhas.size();k++){
             int larguraPixels = GetLarguraPixelsString((char*)linhas[k].c_str());
@@ -327,7 +390,7 @@ public:
     }
 
     virtual void EscreveStringLongaDireita(std::string texto,int x,int y,int largMax,int espacoEntreLinhas,float angulo=0){
-        std::vector<std::string> linhas = ExtraiLinhasString(texto,largMax);
+        std::vector<std::string> linhas = ExtraiLinhas(texto,largMax);
         int yTotal=y;
         for (int k=0;k<linhas.size();k++){
             int larguraPixels = GetLarguraPixelsString((char*)linhas[k].c_str());
@@ -379,3 +442,4 @@ public:
 };
 
 typedef CMapaCaracteres* MapaCaracteres;
+std::string CMapaCaracteres::PigDelimitadores = " \n";

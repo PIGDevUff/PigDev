@@ -4,7 +4,7 @@ class CMapaCaracteresDinamicos:public CMapaCaracteres{
 
 private:
 
-    const std::string PigDelimitadores = " \n";
+
 
     //cria uma cor a partir de uma string com um valor hexadecimal de 8 algarismos RRGGBBAA. Ex: 0xFF0000FF (vermelho)
     static PIG_Cor CriaCor(char *stringHexa){
@@ -40,7 +40,7 @@ private:
             letraAnt = letra;
             letra = textoOrig[i];
             letra = letra %256;
-            //printf("Aux %c i %d estado %d textoProc<%d>\n",letra,i,estado,resp.size());
+
             switch (estado){
             case 0://estado sem formatacao
                 if (letra == '<'){//alerta de entrada de formatacao
@@ -52,8 +52,6 @@ private:
                 }else{
                     larguraTotal += larguraLetra[estilo][letra-PRIMEIRO_CAR];
                     resp.Adiciona(letra,larguraTotal,cor,estilo);
-                    //if (ttttt==0)
-                    //printf("Letra processada %c %d\n",letra,larguraLetra[estilo][letra-PRIMEIRO_CAR]);
                 }
                 break;
             case 1://alerta para inicio de formatacao
@@ -75,16 +73,12 @@ private:
                     estilo |= ESTILO_CORTADO;
                     pilhaEstilo.push_back(estilo);
                     estado = 0;
-                }else{//não é entrada de cor nemd e formatacao de estilo
+                }else{//não é entrada de cor nem de formatacao de estilo
                     larguraTotal += larguraLetra[estilo][letraAnt-PRIMEIRO_CAR];
                     resp.Adiciona(letraAnt,larguraTotal,cor,estilo);//devolve o token anterior
-                    //if (ttttt==0)
-                    //printf("Letra processada %c %d\n",letra,larguraLetra[estilo][letraAnt-PRIMEIRO_CAR]);
 
                     larguraTotal += larguraLetra[estilo][letra-PRIMEIRO_CAR];
                     resp.Adiciona(letra,larguraTotal,cor,estilo);
-                    //if (ttttt==0)
-                    //printf("Letra processada %c %d\n",letra,larguraLetra[estilo][letra-PRIMEIRO_CAR]);
 
                     estado = 0;
                 }
@@ -93,12 +87,10 @@ private:
                 char stringCor[11];
                 strncpy(stringCor,&textoOrig[i],10); //pega os caracteres em hexadecimal (ex: 0xffa64312)
                 stringCor[10]='\0';
-                //printf("Cor reconhecida %s\n",stringCor);
+
                 i+=9;//avança os outros 9 caracteres
                 cor = CriaCor(stringCor);//converte para cor
                 pilhaCor.push_back(cor);
-                //resp.insert({textoProc.size(),std::pair<PIG_Cor,PIG_Estilo>(cor,estilo)});
-                //printf("inserindo (%d) %d,%d,%d  %d\n",textoProc.size(),cor.r,cor.g,cor.b,estilo);
                 estado = 0;
                 break;
             case 3://alerta para saida de cor
@@ -107,21 +99,12 @@ private:
                     if (pilhaCor.size()>1)//tira a cor da pilha e pega a de baixo
                         cor = pilhaCor[pilhaCor.size()-1];
                     else cor = BRANCO;
-                    //estilo = pilhaEstilo[pilhaEstilo.size()-1];
-                    //resp.insert({textoProc.size(),{cor,estilo}});
-                    //printf("Saindo da cor\n");
-                    //printf("inserindo (%d) %d,%d,%d  %d\n",textoProc.size(),cor.r,cor.g,cor.b,estilo);
                 }else{//não é saída de cor
                     larguraTotal += larguraLetra[estilo][letraAnt-PRIMEIRO_CAR];
                     resp.Adiciona(letraAnt,larguraTotal,cor,estilo);//devolve o token anterior
-                    //if (ttttt==0)
-                    //printf("Letra processada %c %d\n",letra,larguraLetra[estilo][letraAnt-PRIMEIRO_CAR]);
 
                     larguraTotal += larguraLetra[estilo][letra-PRIMEIRO_CAR];
                     resp.Adiciona(letra,larguraTotal,cor,estilo);
-                    //if (ttttt==0)
-                    //printf("Letra processada %c %d\n",letra,larguraLetra[estilo][letra-PRIMEIRO_CAR]);
-
                 }
                 estado = 0;
                 break;
@@ -134,13 +117,9 @@ private:
                 }else{//não é saída de cor
                     larguraTotal += larguraLetra[estilo][letraAnt-PRIMEIRO_CAR];
                     resp.Adiciona(letraAnt,larguraTotal,cor,estilo);//devolve o token anterior
-                    //if (ttttt==0)
-                    //printf("Letra processada %c %d\n",letra,larguraLetra[estilo][letraAnt-PRIMEIRO_CAR]);
 
                     larguraTotal += larguraLetra[estilo][letra-PRIMEIRO_CAR];
                     resp.Adiciona(letra,larguraTotal,cor,estilo);
-                    //if (ttttt==0)
-                    //printf("Letra processada %c %d\n",letra,larguraLetra[estilo][letra-PRIMEIRO_CAR]);
                 }
                 estado = 0;
                 break;

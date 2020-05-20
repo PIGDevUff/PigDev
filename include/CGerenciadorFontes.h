@@ -121,7 +121,7 @@ public:
     }
 
     inline static std::vector<std::string> ExtraiLinhasString(std::string texto,int largMax,int numFonte=0){
-        return fontes[numFonte]->ExtraiLinhasString(texto,largMax);
+        return fontes[numFonte]->ExtraiLinhas(texto,largMax);
     }
 
     inline static PIG_Metricas_Fonte GetMetricas(Uint16 letra, PIG_Estilo estilo=ESTILO_NORMAL, int numFonte=0){
