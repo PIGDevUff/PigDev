@@ -122,11 +122,10 @@ void SetAudio(int audio) override{
         i->SetAudio(audio);
 }
 
-int Move(int nx,int ny){
+void Move(int nx,int ny){
     CVisual::Move(nx,ny);
     for(int i=0;i<itens.size();i++)
         itens[i]->Move(nx , ny + (espacoLinha + altItem) * i);
-    return 1;
 }
 
 int OnMouseOn(){return 1;} //o evento é repassado para cada item

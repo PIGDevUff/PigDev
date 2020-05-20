@@ -21,8 +21,7 @@ Versão 0.7.2 da Biblioteca PIG.h
 #include "CGerenciadorSockets.h"
 #include "CAssetLoader.h"
 #include "COffscreenRenderer.h"
-#include "CMapaCaracteres.h"
-#include "CMapaCaracteresDinamicos.h"
+#include "CGerenciadorFontes.h"
 #include "CVisual.h"
 #include "CGerenciadorObjetos.h"
 #include "CGerenciadorTimers.h"
@@ -68,6 +67,7 @@ void CriaJogo(char *nomeJanela,int cursorProprio=0,int altura=ALT_TELA,int largu
         CAssetLoader::Inicia();
         if (cursorProprio)
             CMouse::Inicia();
+        CGerenciadorFontes::Inicia();
         CGerenciadorTimers::Inicia();
         CGerenciadorAudios::Inicia();
         CGerenciadorObjetos::Inicia();
@@ -192,6 +192,7 @@ a função deve ser chamada e ela irá realizar a liberação de memória dos elemento
 ********************************/
 void FinalizaJogo(){
     CGerenciadorControles::Encerra();
+    CGerenciadorFontes::Encerra();
     CGerenciadorAnimacoes::Encerra();
     CGerenciadorParticulas::Encerra();
     CGerenciadorObjetos::Encerra();
@@ -851,7 +852,22 @@ retono:
 inteiro que representa a ideintificação única da fonte. Futuras referência a esta fonte devem idenitificá-las pelo número.
 ********************************/
 int CriaFonteNormal(char *nome,int tamanho,PIG_Cor corLetra,int contorno,PIG_Cor corContorno,PIG_Estilo estilo=ESTILO_NORMAL,int idJanela=0){
-    return jogo->CriaFonteNormal(nome,tamanho,estilo,corLetra,contorno,corContorno,idJanela);
+    return CGerenciadorFontes::CriaFonteNormal(nome,tamanho,estilo,corLetra,contorno,corContorno,idJanela);
+}
+
+/********************************
+A função CriaFonteDinamica() é responsável por disponibilizar uma nova fonte dinâmica com preenchimento sólido. As fontes dinâmicas são capazes
+de escrever strings com diferentes formatações (negrito, itálico, sublinhado, cortado) e cores nas letras. A string a ser utilizada pela fonte
+pode conter ou não os marcadores de formtação. Caso não contenham, será utilizada uma letra branca, sem formatação.
+Parâmetros:
+nome (entrada, passagem por referência): nome do arquivo que contém a fonte (normalmente com extensão ttf).
+tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura média (em pixels) dos caracteres da fonte.
+idJanela (entrada, passagem por valor não-obrigatório): indica qual janela vai receber a fonte. Uma fonte só pode ser usada na janela na qual foi criada.
+retono:
+inteiro que representa a ideintificação única da fonte. Futuras referência a esta fonte devem idenitificá-las pelo número.
+********************************/
+int CriaFonteDinamica(char *nome,int tamanho,int idJanela=0){
+    return CGerenciadorFontes::CriaFonteDinamica(nome,tamanho,idJanela);
 }
 
 /********************************
@@ -869,11 +885,11 @@ retono:
 inteiro que representa a ideintificação única da fonte. Futuras referência a esta fonte devem idenitificá-las pelo número.
 ********************************/
 int CriaFonteFundo(char *nome,int tamanho,char *arquivoFundo,int contorno,PIG_Cor corContorno,PIG_Estilo estilo=ESTILO_NORMAL,int idJanela=0){
-    return jogo->CriaFonteFundo(nome,tamanho,estilo,arquivoFundo,contorno,corContorno,idJanela);
+    return CGerenciadorFontes::CriaFonteFundo(nome,tamanho,estilo,arquivoFundo,contorno,corContorno,idJanela);
 }
 
 /********************************
-A função CalculaLarguraPixels() por realizar a soma das larguras de cada letra da string informada.
+A função CalculaLarguraPixels() é responsável por realizar a soma das larguras de cada letra da string informada.
 Parâmetros:
 str (entrada, passagem por referência): string a ser escrita na tela.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
@@ -881,7 +897,7 @@ retorno:
 inteiro que representa o total de pixels (no eixo x) necessários para escrever a string.
 ********************************/
 int CalculaLarguraPixels(char *str,int numFonte=0){
-    return jogo->GetLarguraPixels(str,numFonte);
+    return CGerenciadorFontes::GetLarguraPixels(str,numFonte);
 }
 
 /********************************
@@ -890,10 +906,11 @@ Parâmetros:
 str (entrada, passagem por referência): string a ser escrita na tela.
 posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever a string.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever a string.
+angulo (entrada, passagem por valor): ângulo, em graus, para a rotação da string.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 ********************************/
-void EscreverDireita(char *str,int posicaoX,int posicaoY,int numFonte=0){
-    jogo->EscreverDireita(str,posicaoX,posicaoY,numFonte);
+void EscreverDireita(char *str,int posicaoX,int posicaoY,float angulo=0,int numFonte=0){
+    CGerenciadorFontes::EscreverDireita(str,posicaoX,posicaoY,angulo,numFonte);
 }
 
 /********************************
@@ -902,10 +919,11 @@ Parâmetros:
 str (entrada, passagem por referência): string a ser escrita na tela.
 posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever a string.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever a string.
+angulo (entrada, passagem por valor): ângulo, em graus, para a rotação da string.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 ********************************/
-void EscreverEsquerda(char *str,int posicaoX,int posicaoY,int numFonte=0){
-    jogo->EscreverEsquerda(str,posicaoX,posicaoY,numFonte);
+void EscreverEsquerda(char *str,int posicaoX,int posicaoY,float angulo=0,int numFonte=0){
+    CGerenciadorFontes::EscreverEsquerda(str,posicaoX,posicaoY,angulo,numFonte);
 }
 
 /********************************
@@ -914,26 +932,11 @@ Parâmetros:
 str (entrada, passagem por referência): string a ser escrita na tela.
 posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever a string.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever a string.
+angulo (entrada, passagem por valor): ângulo, em graus, para a rotação da string.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 ********************************/
-void EscreverCentralizada(char *str,int posicaoX,int posicaoY,int numFonte=0){
-    jogo->EscreverCentralizada(str,posicaoX,posicaoY,numFonte);
-}
-
-/********************************
-A função EscreverLongaDireita() é responsável por exibir uma string longa na tela de jogo, com alinhamento à direita do valor de X.
-A string se expande palavra por palavra até a largura máxima definida (maxLarg). Se ainda houver palavras, elas serão escritas na linha abaixo,
-tendo um espaçamento entre as linhas (espacoEntreLinhas) também definido por parâmetro.
-Parâmetros:
-str (entrada, passagem por referência): string a ser escrita na tela.
-posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever a string.
-posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever a string.
-largMax (entrada, passagem por valor): largura máxima em pixels que pode ser utilizada para escrever as palavras em cada linha do texto. ao atingir esse limite, as palavras seguintes são escritas na linha abaixo.
-espacoEntreLinhas (entrada, passagem por valor): distância em pixels entre o valor Y de uma linha e o valor Y da linha abaixo.
-numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
-********************************/
-void EscreverLongaDireita(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,int numFonte=0){
-    jogo->EscreverLongaDireita(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,numFonte);
+void EscreverCentralizada(char *str,int posicaoX,int posicaoY,float angulo=0,int numFonte=0){
+    CGerenciadorFontes::EscreverCentralizada(str,posicaoX,posicaoY,angulo,numFonte);
 }
 
 /********************************
@@ -946,26 +949,28 @@ posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever a string.
 largMax (entrada, passagem por valor): largura máxima em pixels que pode ser utilizada para escrever as palavras em cada linha do texto. ao atingir esse limite, as palavras seguintes são escritas na linha abaixo.
 espacoEntreLinhas (entrada, passagem por valor): distância em pixels entre o valor Y de uma linha e o valor Y da linha abaixo.
+angulo (entrada, passagem por valor): ângulo, em graus, para a rotação das strings.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 ********************************/
-void EscreverLongaEsquerda(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,int numFonte=0){
-    jogo->EscreverLongaEsquerda(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,numFonte);
+void EscreverLongaEsquerda(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,float angulo=0,int numFonte=0){
+    CGerenciadorFontes::EscreverLongaEsquerda(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,angulo,numFonte);
 }
 
-std::vector<std::string> ExtraiLinhasString(std::string texto,int largMax,int numFonte=0){
-        return jogo->ExtraiLinhasString(texto,largMax,numFonte);
-}
-
-int GetAlturaLetra(char letra,int numFonte = 0){
-    return jogo->GetAlturaLetra(letra,numFonte);
-}
-
-int GetLarguraLetra(char letra,int numFonte = 0){
-    return jogo->GetLarguraLetra(letra,numFonte);
-}
-
-int GetTamanhoFonte(int numFonte = 0){
-    return jogo->GetTamanhoFonte(numFonte);
+/********************************
+A função EscreverLongaDireita() é responsável por exibir uma string longa na tela de jogo, com alinhamento à direita do valor de X.
+A string se expande palavra por palavra até a largura máxima definida (maxLarg). Se ainda houver palavras, elas serão escritas na linha abaixo,
+tendo um espaçamento entre as linhas (espacoEntreLinhas) também definido por parâmetro.
+Parâmetros:
+str (entrada, passagem por referência): string a ser escrita na tela.
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever a string.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever a string.
+largMax (entrada, passagem por valor): largura máxima em pixels que pode ser utilizada para escrever as palavras em cada linha do texto. ao atingir esse limite, as palavras seguintes são escritas na linha abaixo.
+espacoEntreLinhas (entrada, passagem por valor): distância em pixels entre o valor Y de uma linha e o valor Y da linha abaixo.
+angulo (entrada, passagem por valor): ângulo, em graus, para a rotação das strings.
+numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+********************************/
+void EscreverLongaDireita(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,float angulo=0,int numFonte=0){
+    CGerenciadorFontes::EscreverLongaDireita(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,angulo,numFonte);
 }
 
 /********************************
@@ -978,12 +983,171 @@ posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever a string.
 largMax (entrada, passagem por valor): largura máxima em pixels que pode ser utilizada para escrever as palavras em cada linha do texto. ao atingir esse limite, as palavras seguintes são escritas na linha abaixo.
 espacoEntreLinhas (entrada, passagem por valor): distância em pixels entre o valor Y de uma linha e o valor Y da linha abaixo.
+angulo (entrada, passagem por valor): ângulo, em graus, para a rotação das strings.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 ********************************/
-void EscreverLongaCentralizada(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,int numFonte=0){
-    jogo->EscreverLongaCentralizada(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,numFonte);
+void EscreverLongaCentralizada(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,float angulo=0,int numFonte=0){
+    CGerenciadorFontes::EscreverLongaCentralizada(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,angulo,numFonte);
 }
 
+/********************************
+A função EscreverInteiroEsquerda() é responsável por exibir um número inteiro na tela de jogo, com alinhamento à esquerda em relação ao valor de X.
+Parâmetros:
+valor (entrada, passagem por referência): número inteiro a ser escrito na tela.
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever o número.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever o número.
+angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número inteiro.
+numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+********************************/
+void EscreveInteiroEsquerda(int valor, int x, int y, float angulo=0,int numFonte=0){
+    CGerenciadorFontes::EscreveInteiroEsquerda(valor,x,y,angulo,numFonte);
+}
+
+/********************************
+A função EscreverInteiroDireita() é responsável por exibir um número inteiro na tela de jogo, com alinhamento à direita em relação ao valor de X.
+Parâmetros:
+valor (entrada, passagem por referência): número inteiro a ser escrito na tela.
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever o número.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever o número.
+angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número inteiro.
+numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+********************************/
+void EscreveInteiroDireita(int valor, int x, int y, float angulo=0,int numFonte=0){
+    CGerenciadorFontes::EscreveInteiroDireita(valor,x,y,angulo,numFonte);
+}
+
+/********************************
+A função EscreverInteiroCentralizado() é responsável por exibir um número inteiro na tela de jogo, com alinhamento em relação ao valor de X.
+Parâmetros:
+valor (entrada, passagem por referência): número inteiro a ser escrito na tela.
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever o número.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever o número.
+angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número inteiro.
+numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+********************************/
+void EscreveInteiroCentralizado(int valor, int x, int y, float angulo=0,int numFonte=0){
+    CGerenciadorFontes::EscreveInteiroCentralizado(valor,x,y,angulo,numFonte);
+}
+
+
+/********************************
+A função EscreverDoubleEsquerda() é responsável por exibir um número real na tela de jogo, com alinhamento à esquerda em relação ao valor de X.
+Parâmetros:
+valor (entrada, passagem por referência): número inteiro a ser escrito na tela.
+casas (entrada, passagem por referência): número de casas decimais a ser usado na escrita.
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever o número.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever o número.
+angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número real.
+numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+********************************/
+void EscreveDoubleEsquerda(double valor, int casas, int x, int y, float angulo=0,int numFonte=0){
+    CGerenciadorFontes::EscreveDoubleEsquerda(valor,x,y,angulo,numFonte);
+}
+
+/********************************
+A função EscreverDoubleDireita() é responsável por exibir um número real na tela de jogo, com alinhamento à direita em relação ao valor de X.
+Parâmetros:
+valor (entrada, passagem por referência): número inteiro a ser escrito na tela.
+casas (entrada, passagem por referência): número de casas decimais a ser usado na escrita.
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever o número.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever o número.
+angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número real.
+numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+********************************/
+void EscreveDoubleDireita(double valor, int casas, int x, int y, float angulo=0,int numFonte=0){
+    CGerenciadorFontes::EscreveDoubleDireita(valor,x,y,angulo,numFonte);
+}
+
+/********************************
+A função EscreverDoubleCentralizado() é responsável por exibir um número real na tela de jogo, com alinhamento em relação ao valor de X.
+Parâmetros:
+valor (entrada, passagem por referência): número inteiro a ser escrito na tela.
+casas (entrada, passagem por referência): número de casas decimais a ser usado na escrita.
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever o número.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever o número.
+angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número real.
+numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+********************************/
+void EscreveDoubleCentralizado(double valor, int casas, int x, int y, float angulo=0,int numFonte=0){
+    CGerenciadorFontes::EscreveDoubleCentralizado(valor,x,y,angulo,numFonte);
+}
+
+
+/********************************
+A função GetMatricas() recupera as principais métricas de uma letra em um estilo específico.
+As métricas incluem as posições mínimas e máximas nos eixos X e Y, onde a letra é desenhada.
+Se a fonte não for dinâmica, qualquer valor de estilo passado será descartado e será utilizado o estilo indicado na criação da fonte.
+Parâmetros:
+letra (entrada, passagem por valor): caractere cuja largura será calculada.
+estilo (entrada, passagem por valor): estilo desejado no cálculo da largura. O valor só será utilizado em fontes dinâmicas. Em fontes não-dinâmicas, o valor de estilo será o mesmo do informado na criação da fonte.
+numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+retorno:
+struct que representa as métricas principais ao escrever a letra.
+********************************/
+PIG_Metricas_Fonte GetMetricas(char letra, PIG_Estilo estilo=ESTILO_NORMAL,int numFonte=0){
+    return CGerenciadorFontes::GetMetricas(letra,estilo,numFonte);
+}
+
+/********************************
+A função CalculaLarguraLetra() é responsável por calcular a largura específica de uma letra com um estilo.
+Se a fonte não for dinâmica, qualquer valor de estilo passado será descartado e será utilizado o estilo indicado na criação da fonte.
+Parâmetros:
+letra (entrada, passagem por valor): caractere cuja largura será calculada.
+estilo (entrada, passagem por valor): estilo desejado no cálculo da largura. O valor só será utilizado em fontes dinâmicas. Em fontes não-dinâmicas, o valor de estilo será o mesmo do informado na criação da fonte.
+numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+retorno:
+inteiro que representa o total de pixels (no eixo x) necessários para escrever a letra.
+********************************/
+int GetLarguraLetra(char letra,PIG_Estilo estilo=ESTILO_NORMAL,int numFonte = 0){
+    return CGerenciadorFontes::GetLarguraLetra(letra,estilo,numFonte);
+}
+
+/********************************
+A função GetTamanhoBaseFonte() é responsável por recuperar o tamanho da fonte informado na criação da mesma.
+Parâmetros:
+numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+retorno:
+inteiro que representa o tamanho base da fonte, ou seja, a quantidade de pixels no eixo Y para desenhar qualquer caractere da fonte (exceto vogais maiúsuclas acentuadas: Á, É, Í, Ó, Ú.
+********************************/
+int GetTamanhoBaseFonte(int numFonte = 0){
+    return CGerenciadorFontes::GetTamanhoBaseFonte(numFonte);
+}
+
+/********************************
+A função GetFonteDescent() calcula a quantidade de pixels que podem ser utilizados por partes de letras que fiquem abaixo da linha horizontal de base da fonte.
+Essa parte inferior é usada para desenhar a cedilha, a parte inferior da letra 'g', 'q', 'y', por exemplo.
+Parâmetros:
+numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+retorno:
+inteiro que representa o total de pixels abaixo da linha horizontal de base da fonte.
+********************************/
+int GetFonteDescent(int numFonte=0){
+    return CGerenciadorFontes::GetFonteDescent(numFonte);
+}
+
+/********************************
+A função GetFonteAscent() calcula a quantidade de pixels necessários acima da linha horizontal de base da fonte. Essa medida exclui os pixels utilizados
+nas partes inferiores das letras 'g', 'q', 'y', por exemplo. Também não são considerados acentos em vogais maiúsculas como 'Á', 'Ó', 'É', por exemplo.
+Parâmetros:
+numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+retorno:
+inteiro que representa o total de pixels acima da linha horizontal de base da fonte.
+********************************/
+int GetFonteAscent(int numFonte=0){
+    return CGerenciadorFontes::GetFonteAscent(numFonte);
+}
+
+/********************************
+A função GetFonteLineSkip() calcula a quantidade de pixels necessários para um espaçamento vertical ideal, ou seja, para que duas frases possam
+ser escritas sem se sobreporem verticalmente.
+Parâmetros:
+numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+retorno:
+inteiro que representa o espaçamento vertical ideal para que duas frases não se sobreponham verticalmente.
+********************************/
+int GetFonteLineSkip(int numFonte=0){
+    return CGerenciadorFontes::GetLineSkip(numFonte);
+}
 
 
 /********************************
@@ -1390,7 +1554,7 @@ Retorno:
 Inteiro indicando se houve colisão (valor diferente de zero) ou não (valor igual a 0, zero).
 ********************************/
 int TestaColisaoObjetos(int idObjeto1,int idObjeto2){
-    return CGerenciadorObjetos::TestaColisao(idObjeto1,idObjeto2);
+    return CGerenciadorObjetos::TestaColisao(idObjeto1,idObjeto2)&&CGerenciadorObjetos::TestaColisao(idObjeto2,idObjeto1);
 }
 
 /********************************

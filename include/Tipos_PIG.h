@@ -31,9 +31,9 @@ Principais definições utilizadas pela PIG
     #define CHDIR chdir
 #endif
 
-#define FF_REFRESH_EVENT 3333
-#define FF_QUIT_EVENT 2222
-#define FF_ALLOC_EVENT  1111
+#define FF_REFRESH_EVENT        3333
+#define FF_QUIT_EVENT           2222
+#define FF_ALLOC_EVENT          1111
 
 #define MAX_CURSORES            20
 #define MAX_FONTES              100
@@ -292,7 +292,6 @@ typedef struct PIG_Evento{
     InfoEventoRede rede;
 } PIG_Evento;
 
-
 #define PIG_Teclado             const Uint8*
 
 //Seção de flips de objetos
@@ -306,11 +305,27 @@ typedef struct PIG_Evento{
 //Seção de estilos
 
 #define PIG_Estilo              int
+#define PIG_TOTALESTILOS        16
+
 #define ESTILO_NORMAL           TTF_STYLE_NORMAL
 #define ESTILO_NEGRITO          TTF_STYLE_BOLD
 #define ESTILO_ITALICO          TTF_STYLE_ITALIC
 #define ESTILO_SUBLINHADO       TTF_STYLE_UNDERLINE
 #define ESTILO_CORTADO          TTF_STYLE_STRIKETHROUGH
+
+#define PIG_SIMBOLO_NEGRITO     '*'
+#define PIG_SIMBOLO_ITALICO     '~'
+#define PIG_SIMBOLO_SUBLINHADO  '_'
+#define PIG_SIMBOLO_CORTADO     '#'
+
+typedef struct PIG_Metricas_Fonte{
+    int ascent;         //quantidade de pixels acima da linha horizontal de base da letra (sempre positivo)
+    int descent;        //quantidade de pixels abaixo da linha horizontal de base da letra (sempre positivo)
+    int altura;         //total de pixels na altura (soma dos dois campos anteriores)
+    int recuo;          //quantidade pixels entre a linha vertical de base e o primeiro pixel do eixo X da letra (pode ser negativo)
+    int avanco;         //quantidade de pixels entre a linha vertical de base e o último pixel do eixo X da letra (sempre positivo)
+    int largura;        //total de pixels na largura (diferença dos dois anteriores)
+}PIG_Metricas_Fonte;
 
 //Seção de teclas
 

@@ -220,7 +220,7 @@ void GetPivo(int &px,int &py){
     py = pivoRelativo.y;
 }
 
-void Move(int nx,int ny){
+virtual void Move(int nx,int ny){
     x = nx;
     y = ny;
     dest.x = x;

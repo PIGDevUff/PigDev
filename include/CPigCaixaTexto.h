@@ -15,7 +15,7 @@ private:
     void DesenhaCursor(){
         if (estado==COMPONENTE_EDITANDO){
             if (cursorExibido){
-                DesenhaLinhaSimples(xCursor,yCursor,xCursor,yCursor+GetTamanhoFonte(fonteTexto),corCursor,idJanela);
+                DesenhaLinhaSimples(xCursor,yCursor,xCursor,yCursor+GetTamanhoBaseFonte(fonteTexto),corCursor,idJanela);
             }
             if (timer&&timer->GetTempoDecorrido()>1){
                 cursorExibido = !cursorExibido;

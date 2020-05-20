@@ -49,7 +49,7 @@ public:
     }
 
     void Print(){
-        printf("__%s__ (%d)\n",letras.c_str(),LargTotalPixels());
+        EXECUTA_SE_DEBUG(printf("__%s__ (%d)\n",letras.c_str(),LargTotalPixels()));
     }
 
     int LargTotalPixels(){
@@ -63,7 +63,6 @@ public:
     }
 
     std::vector<CPigStringFormatada> SeparaPalavras(std::string delim){
-        //std::string delim(delimitadores);
         std::vector<CPigStringFormatada> resp;
         int indice;
         int largBase=0;
@@ -80,7 +79,7 @@ public:
         }
         if (strAtual.letras!=""){
             resp.push_back(strAtual);
-            strAtual.Print();
+            //strAtual.Print();
         }
         return resp;
     }

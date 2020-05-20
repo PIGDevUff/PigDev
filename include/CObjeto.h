@@ -13,7 +13,8 @@ protected:
     SDL_Point bb[4];
     PIG_Cor **pixels;
 
-    void DesenhaBB(){
+    void DesenhaBB()
+    {
         SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);//retângulo verde para o OOBB (com ângulo)
         SDL_RenderDrawLine(renderer, bb[0].x, altJanela - bb[0].y, bb[1].x, altJanela - bb[1].y);
         SDL_RenderDrawLine(renderer, bb[1].x, altJanela - bb[1].y, bb[2].x, altJanela - bb[2].y);
@@ -21,9 +22,11 @@ protected:
         SDL_RenderDrawLine(renderer, bb[3].x, altJanela - bb[3].y, bb[0].x, altJanela - bb[0].y);
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
         SDL_RenderDrawRect(renderer, &dest);//retângulo vermelhor para o AABB (sem ângulo)
+        //printf("%d,%d,%d,%d\n",dest.x,dest.y,dest.w,dest.h);
     }
 
-    void AtualizaBB(){
+    void AtualizaBB()
+    {
         SDL_Point pivoAbs;
 
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
@@ -312,12 +315,17 @@ public:
         SDL_SetTextureColorMod(text,cor.r,cor.g,cor.b);
     }*/
 
+    //virtual void Move(int nx,int ny){
+        //CVisual::Move(nx,ny);
+        //AtualizaBB();
+    //}
+
     int Desenha(OffscreenRenderer offRender = NULL)
     {
         if (offRender == NULL)
         {
             SDL_RenderCopyEx(renderer, text, &frame, &dest, -angulo, &pivoRelativo, flip);
-            //DesenhaBB();
+            DesenhaBB();
         }
         else
         {
@@ -329,6 +337,7 @@ public:
         }
         return 0;
     }
+
     void SetAngulo(float a) override{
         angulo = a;
         AtualizaBB();
@@ -342,7 +351,7 @@ public:
         return valor;
     }
 
-    void calculaVertices()
+    void calculaVertice2s()
     {
         /*vertices[0][0] = x;
         vertices[0][1] = y;
@@ -367,40 +376,97 @@ public:
         }
     }
 
-    float projecaoY(float coefAngular, int p[2])
+    double projecaoY(double coefAngular, SDL_Point p)
     {
         if (std::isinf(coefAngular))
-            return (float)p[1];
-        return coefAngular * (-p[0]) + p[1];
+            return (double)p.y;
+        return coefAngular * (-p.x) + p.y;
     }
 
-    float projecaoX(float coefAngular, int p[2])
+    double projecaoX(double coefAngular, SDL_Point p)
     {
         if (std::isinf(coefAngular))
-            return (float)p[0];
+            return (double)p.x;
 
-        return (-p[1] + (coefAngular * p[0])) / coefAngular;
+        return (-p.y + (coefAngular * p.x)) / coefAngular;
     }
 
-    float min(float vetor[4])
+    double  min(double  vetor[4])
     {
-        float menor = vetor[0];
+        double  menor = vetor[0];
         for (int i = 1; i < 4; i++)
             if (vetor[i] < menor)
                 menor = vetor[i];
         return menor;
     }
 
-    float max(float vetor[4])
+    double  max(double  vetor[4])
     {
-        float maior = vetor[0];
+        double  maior = vetor[0];
         for (int i = 1; i < 4; i++)
             if (vetor[i] > maior)
                 maior = vetor[i];
         return maior;
     }
 
+    SDL_Point GetBB(int i)
+    {
+        return bb[i];
+    }
+
     int Colisao(CObjeto *outro)
+    {
+        AtualizaBB();
+
+        // caso em q o angulo é 0
+        // caso em que o vetor que vai de bb[0] para bb[1] é paralelo ao eixo X, ou seja, nao ira existir uma "projecao" no eixo X
+        // os pontos sao trocados para que seja usado o antigo bb[3] para bb[0]
+        if (bb[1].y == bb[0].y)
+        {
+            for (int i = 1; i < 4; i++)
+            {
+                std::swap(bb[i].x, bb[0].x);
+                std::swap(bb[i].y, bb[0].y);
+            }
+        }
+
+        // projecao dos vetores no eixo X deste objeto
+        double projecaoAB = projecaoX((double)(bb[1].y - bb[0].y) / (double)(bb[1].x - bb[0].x), bb[0]);
+        double projecaoCD = projecaoX((double)(bb[3].y - bb[2].y) / (double)(bb[3].x - bb[2].x), bb[2]);
+
+        SDL_SetRenderDrawColor(renderer,255,255,255,255);
+        SDL_RenderDrawLine(renderer,(int)projecaoAB,300,(int)projecaoCD,300);
+
+        // projecao dos pontos(com o angulo dos anteriores) no eixo X do outro objeto
+        double projecao[4];
+        for (int i = 0; i < 4; i++)
+            projecao[i] = projecaoX((double)(bb[1].y - bb[0].y) / (double)(bb[1].x - bb[0].x), outro->GetBB(i));
+
+        double menorA = (projecaoAB < projecaoCD) ? projecaoAB : projecaoCD;
+        double maiorA = (projecaoAB > projecaoCD) ? projecaoAB : projecaoCD;
+        double menorB = min(projecao);
+        double maiorB = max(projecao);
+
+        if (!(menorA < maiorB && maiorA > menorB))
+            return false;
+
+        // projecao dos vetores no eixo Y deste objeto
+        projecaoAB = projecaoY((double )(bb[2].y - bb[1].y) / (double )(bb[2].x - bb[1].x), bb[1]);
+        projecaoCD = projecaoY((double )(bb[0].y - bb[3].y) / (double )(bb[0].x - bb[3].x), bb[3]);
+
+        // projecao dos pontos(com o angulo dos anteriores) no eixo Y do outro objeto
+        for (int i = 0; i < 4; i++)
+            projecao[i] = projecaoY((double )(bb[2].y - bb[1].y) / (double )(bb[2].x - bb[1].x), outro->GetBB(i));
+
+        menorA = (projecaoAB < projecaoCD) ? projecaoAB : projecaoCD;
+        maiorA = (projecaoAB > projecaoCD) ? projecaoAB : projecaoCD;
+        menorB = min(projecao);
+        maiorB = max(projecao);
+
+        return (menorA < maiorB && maiorA > menorB);
+    }
+
+    /*int Colisao2(CObjeto *outro)
     {
         calculaVertices();
         outro->calculaVertices();
@@ -453,7 +519,7 @@ public:
         maiorB = max(projecao);
 
         return (menorA < maiorB && maiorA > menorB);
-    }
+    }*/
 
     PIG_Cor **GetPixels()
     {
@@ -507,6 +573,14 @@ public:
 
         SetOpacidade(opacidadeObj);
         CriaTextura(retiraFundo);
+    }
+
+    void Move(int nx,int ny)override{
+        x = nx;
+        y = ny;
+        dest.x = x;
+        dest.y = altJanela-alt-y;
+        AtualizaBB();
     }
 };
 

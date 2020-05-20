@@ -6,8 +6,6 @@ private:
     PIG_Teclado teclado;
     int contFPS;
     Timer timerFPS;
-    int fontesUsadas;
-    MapaCaracteres fontes[MAX_FONTES];
     int estado;
     int rodando;
     char *diretorioAtual;
@@ -53,16 +51,6 @@ public:
         // Initialize the joystick subsystem
         SDL_InitSubSystem(SDL_INIT_JOYSTICK);
 
-        TTF_Init();
-
-        //inicializa o vetor contendo as fontes a serem usadas no jogo
-        for (int i=0;i<MAX_FONTES;i++)
-            fontes[i] = NULL;
-
-        //criação da fonte padrão da PIG (fonte com identificador 0)
-        fontes[0] = new CMapaCaracteres("..//fontes//arial.ttf",36,ESTILO_NORMAL,BRANCO,0,BRANCO,0);
-        fontesUsadas = 1;
-
         SDLNet_Init();
     }
 
@@ -73,10 +61,6 @@ public:
 
         delete timerFPS;
         if (offRenderer) delete offRenderer;
-
-        for (int i=0;i<MAX_FONTES;i++)
-            if (fontes[i]) delete fontes[i];
-        TTF_Quit();
 
         CGerenciadorJanelas::Encerra();
     }
@@ -343,7 +327,7 @@ public:
 
     void DesenhaLinhaSimples(int x1,int y1,int x2,int y2,PIG_Cor cor,int idJanela=0){
         SDL_SetRenderDrawColor(CGerenciadorJanelas::GetJanela(idJanela)->GetRenderer(),cor.r,cor.g,cor.b,255);
-        SDL_RenderDrawLine(CGerenciadorJanelas::GetJanela(idJanela)->GetRenderer(),x1,CGerenciadorJanelas::GetAltura(idJanela)-y1,x2,CGerenciadorJanelas::GetAltura(idJanela)-y2);
+        SDL_RenderDrawLine(CGerenciadorJanelas::GetJanela(idJanela)->GetRenderer(),x1,CGerenciadorJanelas::GetAltura(idJanela)-y1-1,x2,CGerenciadorJanelas::GetAltura(idJanela)-y2-1);
     }
 
     void DesenhaLinhasDisjuntas(int *x,int *y,int qtd,PIG_Cor cor,int idJanela=0){
@@ -362,79 +346,6 @@ public:
         for (int k=0;k<qtd-1;k++){
             SDL_RenderDrawLine(renderer,x[k],CGerenciadorJanelas::GetAltura(idJanela)-y[k],x[k+1],CGerenciadorJanelas::GetAltura(idJanela)-y[k+1]);
         }
-    }
-
-    int CriaFonteFundo(char *nome,int tamanho,int estilo,char *arquivoFundo,int contorno,PIG_Cor corContorno,int idJanela=0){
-        int aux = fontesUsadas;
-        fontes[fontesUsadas] = new CMapaCaracteres(nome,tamanho,estilo,arquivoFundo,contorno,corContorno,idJanela);
-        fontesUsadas++;
-        return aux;
-    }
-
-    int CriaFonteNormal(char *nome,int tamanho,int estilo,PIG_Cor corLetra,int contorno,PIG_Cor corContorno,int idJanela=0){
-        int aux = fontesUsadas;
-        fontes[fontesUsadas] = new CMapaCaracteres(nome,tamanho,estilo,corLetra,contorno,corContorno,idJanela);
-        fontesUsadas++;
-        return aux;
-    }
-
-    inline int GetLarguraPixels(char *str,int numFonte=0){
-        return fontes[numFonte]->GetLarguraPixelsString(str);
-    }
-
-    inline void EscreverCentralizada(char *str,int x,int y,int numFonte=0){
-        fontes[numFonte]->EscreveStringCentralizado(str,x,y);
-    }
-
-    inline void EscreverDireita(char *str,int x,int y,int numFonte=0){
-        fontes[numFonte]->EscreveStringDireita(str,x,y);
-    }
-
-    inline void EscreverEsquerda(char *str,int x,int y,int numFonte=0){
-        fontes[numFonte]->EscreveStringEsquerda(str,x,y);
-    }
-
-    inline void EscreverLongaCentralizada(char *str,int x,int y,int largMax,int espacoEntreLinhas,int numFonte=0){
-        std::string texto(str);
-        fontes[numFonte]->EscreveStringLongaCentralizado(texto,x,y,largMax,espacoEntreLinhas);
-    }
-
-    inline void EscreverLongaDireita(char *str,int x,int y,int largMax,int espacoEntreLinhas,int numFonte=0){
-        std::string texto(str);
-        fontes[numFonte]->EscreveStringLongaDireita(texto,x,y,largMax,espacoEntreLinhas);
-    }
-
-    inline void EscreverLongaEsquerda(char *str,int x,int y,int largMax,int espacoEntreLinhas,int numFonte=0){
-        std::string texto(str);
-        fontes[numFonte]->EscreveStringLongaEsquerda(texto,x,y,largMax,espacoEntreLinhas);
-    }
-
-    inline std::vector<std::string> ExtraiLinhasString(std::string texto,int largMax,int numFonte=0){
-
-        return fontes[numFonte]->ExtraiLinhasString(texto,largMax);
-
-    }
-
-    inline int GetAlturaLetra(char letra,int numFonte = 0){
-
-        return fontes[numFonte]->GetAlturaLetra(letra);
-
-    }
-
-    inline int GetLarguraLetra(char letra,int numFonte = 0){
-
-        return fontes[numFonte]->GetLarguraLetra(letra);
-
-    }
-
-    inline int GetTamanhoFonte(int numFonte = 0){
-
-        return fontes[numFonte]->GetTamanhoFonte();
-
-    }
-
-    SDL_Surface *GetGlyph(char *ch,int numFonte=0){
-        return fontes[numFonte]->GetGlyph(ch);
     }
 
     void GetPixel(int x,int y,int *r,int *g,int *b,int idJanela=0) {

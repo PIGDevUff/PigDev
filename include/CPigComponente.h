@@ -41,7 +41,7 @@ void EscreveHint(){
     if (agoraOn&&hint){
         int mx,my;
         CMouse::PegaXY(mx,my);
-        jogo->EscreverEsquerda(hint,mx+16,my+5,fonteHint);
+        CGerenciadorFontes::EscreverEsquerda(hint,mx+16,my+5,fonteHint);
     }
 }
 
