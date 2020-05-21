@@ -50,12 +50,12 @@ private:
 
     void AlinhaDireita(int nx,int ny){
         CVisual::Move(nx+largBase-larg,ny);
-        SetPosicaoPadraoLabel(COMPONENTE_ESQUERDA);
+        SetPosicaoPadraoLabel(PIG_COMPONENTE_ESQ_CENTRO);
     }
 
     void AlinhaEsquerda(int nx,int ny){
         CVisual::Move(nx,ny);
-        SetPosicaoPadraoLabel(COMPONENTE_DIREITA);
+        SetPosicaoPadraoLabel(PIG_COMPONENTE_DIR_CENTRO);
     }
 
     void IniciaBase(int larguraLista,int posXLista){
@@ -63,7 +63,7 @@ private:
         timer = NULL;
         largBase = larguraLista;
         xBase = posXLista;
-        posItem = COMPONENTE_ESQUERDA;
+        posItem = PIG_COMPONENTE_ESQ_CENTRO;
 
     }
 
@@ -100,8 +100,8 @@ public:
     }
 
     void Move(int nx,int ny){
-        if(posItem == COMPONENTE_DIREITA) AlinhaDireita(nx,ny);
-        if(posItem == COMPONENTE_ESQUERDA) AlinhaEsquerda(nx,ny);
+        if(posItem == PIG_COMPONENTE_DIR_CENTRO) AlinhaDireita(nx,ny);
+        if(posItem == PIG_COMPONENTE_ESQ_CENTRO) AlinhaEsquerda(nx,ny);
         xBase = nx;
     }
 

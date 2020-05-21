@@ -113,10 +113,10 @@ protected:
             if (nivelOutline>0)//faz o outline da letra, se houver
                 FazOutline(letra,nivelOutline,corOutline);
 
-            SDL_SetRenderDrawColor(render,255,0,0,255);
-            SDL_Rect rect = {0,0,surf->w,surf->h};
+            //SDL_SetRenderDrawColor(render,255,0,0,255);
+            //SDL_Rect rect = {0,0,surf->w,surf->h};
 
-            SDL_RenderDrawRect(render,&rect);
+            //SDL_RenderDrawRect(render,&rect);
 
             SDL_DestroyTexture(textLetra);
             SDL_FreeSurface(surf);

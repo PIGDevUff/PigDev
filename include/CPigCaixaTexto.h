@@ -15,7 +15,7 @@ private:
     void DesenhaCursor(){
         if (estado==COMPONENTE_EDITANDO){
             if (cursorExibido){
-                DesenhaLinhaSimples(xCursor,yCursor,xCursor,yCursor+GetTamanhoBaseFonte(fonteTexto),corCursor,idJanela);
+                DesenhaLinhaSimples(xCursor,yCursor,xCursor,yCursor+altLetra,corCursor,idJanela);
             }
             if (timer&&timer->GetTempoDecorrido()>1){
                 cursorExibido = !cursorExibido;
@@ -95,6 +95,7 @@ protected:
     int xBase,xCursor,yCursor,yBase;
     int xBaseOriginal,yBaseOriginal;
     int margemHorEsq,margemHorDir,margemVertCima,margemVertBaixo;
+    int altLetra;
 
     virtual void DesenhaElementosEspecificos() =0;//pure virtual, porque cada classe derivada vai desenhar coisas diferentes
 
@@ -221,12 +222,12 @@ protected:
 
 public:
 
-    CPigCaixaTexto(int idComponente,int px, int py, int alt,int larg,char *nomeArq,int fonteDoTexto = 0,int fonteDoLabel = 0,int maxCars = 200,bool apenasNumeros=false,int retiraFundo=1,int janela=0):
+    CPigCaixaTexto(int idComponente,int px, int py, int alt,int larg,char *nomeArq,int maxCars = 200,bool apenasNumeros=false,int retiraFundo=1,int janela=0):
         CPigComponente(idComponente,px,py,alt,larg,nomeArq,retiraFundo,janela){
-        margemHorEsq = margemHorDir = margemVertCima = margemVertBaixo = 30;
-        posLabel = COMPONENTE_ESQUERDA;//posição padrão do label
-        fonteLabel = fonteDoLabel;
-        fonteTexto = fonteDoTexto;//fonte padrão
+        margemHorEsq = margemHorDir = margemVertCima = margemVertBaixo = 0;
+        posLabel = PIG_COMPONENTE_ESQ_BAIXO;//posição padrão do label
+        fonteLabel = fonteTexto = 0;//fonte padrão
+        altLetra = CGerenciadorFontes::GetTamanhoBaseFonte(fonteTexto);
         posCursor = 0;//cursor no início do texto
         cursorExibido = true;
         timer = NULL;//o timer só será criado quando estiver editando
@@ -268,6 +269,12 @@ public:
         texto = frase;
         posCursor=0;
         return 1;
+    }
+
+    void SetFonteTexto(int fonte){
+        fonteTexto = fonte;
+        altLetra = CGerenciadorFontes::GetTamanhoBaseFonte(fonteTexto);
+        yBaseOriginal = y+alt-margemVertCima-altLetra;
     }
 
     //recupera o texto armazenado no componente

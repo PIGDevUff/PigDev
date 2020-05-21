@@ -1,6 +1,6 @@
 typedef int (*AcaoBotao)(int,void*);
 
-class CPigImagemSecundaria : public CPigComponente{
+/*class CPigImagemSecundaria : public CPigComponente{
 
 private:
 
@@ -19,20 +19,20 @@ public:
         SDL_RenderCopyEx(renderer, text, &frame,&dest,-angulo,&pivoRelativo,flip);
     }
 
-};
+};*/
 
 class CPigBotao: public CPigComponente{
 
 private:
 
-    char *texto;
+    //char *texto;
     int tecla;
     int largFrame;
     int fonteTexto;
-    int xImgSecundaria,yImgSecundaria;
-    CPigImagemSecundaria *imgSecundaria;
-    PIG_PosicaoComponente posTexto;
-    PIG_PosicaoComponente posImagem;
+    //int xImgSecundaria,yImgSecundaria;
+    //CPigImagemSecundaria *imgSecundaria;
+    //PIG_PosicaoComponente posTexto;
+    //PIG_PosicaoComponente posImagem;
     AcaoBotao acao;
     void *param;
     Timer timer;
@@ -95,15 +95,15 @@ private:
         timer = NULL;//sem timer para "soltar" o botão
         acao = NULL;//não tem ação registrada
         param = NULL;//não tem parâmetro associado à ação
-        posTexto = COMPONENTE_CENTRO;
-        SetPosicaoPadraoLabel(posTexto);
-        imgSecundaria = NULL;
-        posImagem = COMPONENTE_ESQUERDA;
-        texto = "";
+        //posTexto = PIG_COMPONENTE_CENTRO_CENTRO;
+        SetPosicaoPadraoLabel(PIG_COMPONENTE_CENTRO_CENTRO);
+        //imgSecundaria = NULL;
+        //posImagem = COMPONENTE_ESQUERDA;
+        //texto = "";
         fonteTexto = 0;
     }
 
-    void DesenhaTexto(){
+    /*void DesenhaTexto(){
         if (texto!=NULL && strcmp(texto,"")) {
             switch(posTexto){
             case COMPONENTE_ESQUERDA:
@@ -117,7 +117,7 @@ private:
                 break;
             }
         }
-    }
+    }*/
 
 public:
 
@@ -136,75 +136,23 @@ public:
 
     ~CPigBotao(){
         if (timer) delete timer;
-        if(imgSecundaria) delete imgSecundaria;
+        //if(imgSecundaria) delete imgSecundaria;
     }
 
-    void SetTexto(char *novoTexto){
-        if (texto)
-            free(texto);
+    /*void SetTexto(char *novoTexto){
+        //if (texto)
+        //    free(texto);
         if (novoTexto){
             texto = (char*) malloc(strlen(novoTexto));
             strcpy(texto,novoTexto);
         }
-    }
+    }*
 
-    void GetTexto(char *buffer){
+    /*void GetTexto(char *buffer){
 
         strcpy(buffer,texto);
 
-    }
-
-    void SetFonteTexto(int fonte){
-
-        fonteTexto = fonte;
-
-    }
-
-    int SetPosPadraoImagemSecundaria(PIG_PosicaoComponente posDaImagem){
-
-        if(imgSecundaria==NULL) return 0;
-
-        int altura,largura;
-        imgSecundaria->GetDimensoes(altura,largura);
-        posImagem = posDaImagem;
-
-        if(posImagem == COMPONENTE_ESQUERDA) imgSecundaria->Move(x,y);
-
-        if(posImagem == COMPONENTE_DIREITA) imgSecundaria->Move(x + larg - largura,y);
-
-        if(posImagem == COMPONENTE_POSICAO_PERSONALIZADA) imgSecundaria->Move(xImgSecundaria,yImgSecundaria);
-
-        return 1;
-
-    }
-
-    int SetPosicaoPadraoTexto(PIG_PosicaoComponente pos){
-        posTexto = pos;
-        return 1;
-    }
-
-    int CriaImagemSecundaria(int altura,int largura,char *nomeArq,PIG_PosicaoComponente posDaImagem = COMPONENTE_ESQUERDA,int retiraFundo = 1){
-
-        if(imgSecundaria!=NULL) delete imgSecundaria;
-        imgSecundaria = NULL;
-
-        if(nomeArq !=NULL && nomeArq !=""){
-
-            imgSecundaria = new CPigImagemSecundaria(id+1,x,y,altura,largura,nomeArq,retiraFundo,idJanela);
-            return SetPosPadraoImagemSecundaria(posDaImagem);
-
-        }
-
-        return 0;
-    }
-
-    void Move(int nx,int ny){
-
-        CVisual::Move(nx,ny);
-        SetPosicaoPadraoLabel(posLabel);
-        if(imgSecundaria!=NULL)SetPosPadraoImagemSecundaria(posImagem);
-
-    }
+    }*/
 
     void DefineAcao(AcaoBotao funcao,void *parametro){
         acao = funcao;
@@ -249,29 +197,21 @@ public:
         return 0;
     }
 
-    CPigImagemSecundaria *GetImagemSecundaria(){
+    /*CPigImagemSecundaria *GetImagemSecundaria(){
 
         return imgSecundaria;
 
-    }
-
-    PIG_PosicaoComponente GetPosImagemSecundaria(){
-
-        return posImagem;
-
-    }
+    }*/
 
     int Desenha(){
-
         if (estado==COMPONENTE_INVISIVEL) return 0;
 
         if (timer) TrataTimer();
 
         SDL_RenderCopyEx(renderer, text, &frame,&dest,-angulo,&pivoRelativo,flip);
 
-        if(imgSecundaria !=NULL) imgSecundaria->Desenha();
         DesenhaLabel();
-        DesenhaTexto();
+        EscreveHint();
 
         return 1;
     }

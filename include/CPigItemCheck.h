@@ -47,7 +47,7 @@ public:
         timer = NULL;
         largFrame = largOriginal/6;
         marcado = false;
-        posLabel = COMPONENTE_DIREITA;
+        posLabel = PIG_COMPONENTE_DIR_CENTRO;
         SetLabel(labelItem);
         DefineEstado(COMPONENTE_NORMAL);
     }
@@ -121,18 +121,18 @@ public:
 
     void AlinhaDireita(int largTotal){
         Move(x+largTotal-larg,y);
-        SetPosicaoPadraoLabel(COMPONENTE_ESQUERDA);
+        SetPosicaoPadraoLabel(PIG_COMPONENTE_ESQ_CENTRO);
     }
 
     void AlinhaEsquerda(int largTotal){
         Move(x-largTotal+larg,y);
-        SetPosicaoPadraoLabel(COMPONENTE_DIREITA);
+        SetPosicaoPadraoLabel(PIG_COMPONENTE_DIR_CENTRO);
     }
 
     //define a posição do label (dentre posições pré-estabelecidas)
     int SetPosicaoPadraoLabel(PIG_PosicaoComponente pos) override{
-        if (pos!=COMPONENTE_ESQUERDA)
-            pos = COMPONENTE_DIREITA;
+        if (pos!=PIG_COMPONENTE_ESQ_CENTRO)
+            pos = PIG_COMPONENTE_DIR_CENTRO;
         CPigComponente::SetPosicaoPadraoLabel(pos);
         return 0;
     }

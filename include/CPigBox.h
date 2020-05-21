@@ -9,12 +9,12 @@ PIG_PosicaoComponente posItens;
 std::vector <CPigItemCheck*> itens;
 
 void IniciaBase(int alturaItem, int larguraItem, int espacoVertical, char *nomeArqItem){
-    SetPosicaoPadraoLabel(COMPONENTE_CIMA);//posição padrão do label
+    SetPosicaoPadraoLabel(PIG_COMPONENTE_CIMA_ESQ);//posição padrão do label
     nomeImgItem.assign(nomeArqItem);
     largItem = larguraItem;
     altItem = alturaItem;
     espacoLinha = espacoVertical;
-    posItens = COMPONENTE_DIREITA;//só pode ser posicionamento à esquerda ou à direita
+    posItens = PIG_COMPONENTE_DIR_CENTRO;//só pode ser posicionamento à esquerda ou à direita
 }
 
 public:
@@ -36,18 +36,18 @@ CPigBox(int idComponente, int posX, int posY, int largura, char *nomeArqItem,int
 }
 
 void AlinhaDireita(){
-    if (posItens==COMPONENTE_DIREITA){//se os labels estão à direita do botões, inverte
+    if (posItens==PIG_COMPONENTE_DIR_CENTRO){//se os labels estão à direita do botões, inverte
         for (CPigItemCheck* i: itens)
             i->AlinhaDireita(larg);
-        posItens = COMPONENTE_ESQUERDA;
+        posItens = PIG_COMPONENTE_ESQ_CENTRO;
     }
 }
 
 void AlinhaEsquerda(){
-    if (posItens==COMPONENTE_ESQUERDA){//se os labels estão à esquerda dos botões, inverte
+    if (posItens==PIG_COMPONENTE_ESQ_CENTRO){//se os labels estão à esquerda dos botões, inverte
         for (CPigItemCheck* i: itens)
             i->AlinhaEsquerda(larg);
-        posItens = COMPONENTE_DIREITA;
+        posItens = PIG_COMPONENTE_DIR_CENTRO;
     }
 }
 

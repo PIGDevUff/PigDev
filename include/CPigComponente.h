@@ -1,5 +1,11 @@
 typedef enum {COMPONENTE_NORMAL,COMPONENTE_MOUSEOVER,COMPONENTE_ACIONADO,COMPONENTE_DESABILITADO,COMPONENTE_EDITANDO,COMPONENTE_INVISIVEL} PIG_EstadoComponente;
-typedef enum {COMPONENTE_CIMA,COMPONENTE_CIMADIR,COMPONENTE_DIREITA,COMPONENTE_BAIXODIR,COMPONENTE_BAIXO,COMPONENTE_BAIXOESQ,COMPONENTE_ESQUERDA,COMPONENTE_CIMAESQ,COMPONENTE_CENTRO,COMPONENTE_POSICAO_PERSONALIZADA} PIG_PosicaoComponente;
+//typedef enum {COMPONENTE_CIMA,COMPONENTE_CIMADIR,COMPONENTE_DIREITA,COMPONENTE_BAIXODIR,COMPONENTE_BAIXO,COMPONENTE_BAIXOESQ,COMPONENTE_ESQUERDA,COMPONENTE_CIMAESQ,COMPONENTE_CENTRO,COMPONENTE_POSICAO_PERSONALIZADA} PIG_PosicaoComponente;
+typedef enum{PIG_COMPONENTE_CIMA_CENTRO,PIG_COMPONENTE_CIMA_ESQ,PIG_COMPONENTE_CIMA_DIR,
+             PIG_COMPONENTE_BAIXO_CENTRO,PIG_COMPONENTE_BAIXO_DIR,PIG_COMPONENTE_BAIXO_ESQ,
+             PIG_COMPONENTE_DIR_CIMA,PIG_COMPONENTE_DIR_BAIXO,PIG_COMPONENTE_DIR_CENTRO,
+             PIG_COMPONENTE_ESQ_BAIXO,PIG_COMPONENTE_ESQ_CENTRO,PIG_COMPONENTE_ESQ_CIMA,
+             PIG_COMPONENTE_CENTRO_CENTRO,PIG_COMPONENTE_PERSONALIZADA}PIG_PosicaoComponente;
+
 class CPigComponente: public CVisual{
 
 protected:
@@ -67,37 +73,50 @@ int MouseSobre(int mx, int my){
 
 //desenha o label
 void DesenhaLabel(){
+    int alturaLetra = CGerenciadorFontes::GetTamanhoBaseFonte(fonteLabel)+CGerenciadorFontes::GetFonteDescent(fonteLabel);
     if (label!=NULL && strcmp(label,"")) {
         switch(posLabel){
-        case COMPONENTE_CIMA:
+        case PIG_COMPONENTE_CIMA_CENTRO:
             EscreverCentralizada(label,x+larg/2,y+alt+5,fonteLabel);
             break;
-        case COMPONENTE_CIMADIR:
+        case PIG_COMPONENTE_CIMA_DIR:
             EscreverDireita(label,x+larg,y+alt+5,fonteLabel);
             break;
-        case COMPONENTE_CIMAESQ:
+        case PIG_COMPONENTE_CIMA_ESQ:
             EscreverEsquerda(label,x,y+alt+5,fonteLabel);
             break;
-        case COMPONENTE_BAIXO:
-            EscreverCentralizada(label,x+larg/2,y-30,fonteLabel);
+        case PIG_COMPONENTE_BAIXO_CENTRO:
+            EscreverCentralizada(label,x+larg/2,y-alturaLetra,fonteLabel);
             break;
-        case COMPONENTE_BAIXODIR:
-            EscreverDireita(label,x+larg,y-30,fonteLabel);
+        case PIG_COMPONENTE_BAIXO_DIR:
+            EscreverDireita(label,x+larg,y-alturaLetra,fonteLabel);
             break;
-        case COMPONENTE_BAIXOESQ:
-            EscreverEsquerda(label,x,y-30,fonteLabel);
+        case PIG_COMPONENTE_BAIXO_ESQ:
+            EscreverEsquerda(label,x,y-alturaLetra,fonteLabel);
             break;
-        case COMPONENTE_ESQUERDA:
+        case PIG_COMPONENTE_ESQ_BAIXO:
             EscreverDireita(label,x-5,y,fonteLabel);
             break;
-        case COMPONENTE_DIREITA:
+        case PIG_COMPONENTE_ESQ_CENTRO:
+            EscreverDireita(label,x-5,y+(alt-alturaLetra)/2,fonteLabel);
+            break;
+        case PIG_COMPONENTE_ESQ_CIMA:
+            EscreverDireita(label,x-5,y + (alt-alturaLetra),fonteLabel);
+            break;
+        case PIG_COMPONENTE_DIR_BAIXO:
             EscreverEsquerda(label,x+larg+5,y,fonteLabel);
             break;
-        case COMPONENTE_CENTRO:
-            EscreverCentralizada(label,x+larg/2,y+(alt-20)/2,fonteLabel);
+        case PIG_COMPONENTE_DIR_CENTRO:
+            EscreverEsquerda(label,x+larg+5,y + (alt-alturaLetra)/2,fonteLabel);
             break;
-        case COMPONENTE_POSICAO_PERSONALIZADA:
-            EscreverEsquerda(label,x+labelX,y+labelY,fonteLabel);
+        case PIG_COMPONENTE_DIR_CIMA:
+            EscreverEsquerda(label,x+larg+5,y + (alt-alturaLetra),fonteLabel);
+            break;
+        case PIG_COMPONENTE_CENTRO_CENTRO:
+            EscreverCentralizada(label,x+larg/2,y+(alt-alturaLetra)/2,fonteLabel);
+            break;
+        case PIG_COMPONENTE_PERSONALIZADA:
+            EscreverEsquerda(label,labelX,labelY,fonteLabel);
         }
     }
 }
@@ -179,6 +198,7 @@ virtual int SetPosicaoPadraoLabel(PIG_PosicaoComponente pos){
 virtual int SetPosicaoPersonalizadaLabel(int rx, int ry){
     labelX = rx;
     labelY = ry;
+    posLabel = PIG_COMPONENTE_PERSONALIZADA;
     return 1;
 }
 
@@ -189,6 +209,11 @@ virtual void DefineEstado(PIG_EstadoComponente estadoComponente)=0;
 PIG_EstadoComponente GetEstado(){
     return estado;
 }
+
+void GetLabel(char *buffer){
+    strcpy(buffer,label);
+}
+
 
 };
 

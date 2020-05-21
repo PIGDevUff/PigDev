@@ -59,10 +59,10 @@ public:
     CPigDropDown(int idComponente,int px, int py, int alt,int larg,char *nomeArq,char *fundoLista,int retiraFundoLista,int retiraFundo=1,int janela=0):
         CPigComponente(idComponente,px,py,alt,larg,nomeArq,retiraFundo,janela){
 
-            posLista = COMPONENTE_BAIXO;
+            posLista = PIG_COMPONENTE_BAIXO_CENTRO;
             marcado = false;
             timer = NULL;
-            posLabel = COMPONENTE_CIMA;
+            posLabel = PIG_COMPONENTE_CIMA_CENTRO;
             xLista = 0;
             yLista = 0;
             itemSelecionado = NULL;
@@ -102,25 +102,25 @@ public:
 
         switch(pos){
 
-        case COMPONENTE_BAIXODIR:
+        case PIG_COMPONENTE_BAIXO_DIR:
             lista->Move(x+larg,y+alt-altura);break;
 
-        case COMPONENTE_BAIXO:
+        case PIG_COMPONENTE_BAIXO_CENTRO:
             lista->Move(x,y-altura);break;
 
-        case COMPONENTE_CIMA:
+        case PIG_COMPONENTE_CIMA_CENTRO:
             lista->Move(x,y+alt);break;
 
-        case COMPONENTE_CIMADIR:
+        case PIG_COMPONENTE_CIMA_DIR:
             lista->Move(x+larg,y);break;
 
-        case COMPONENTE_BAIXOESQ:
+        case PIG_COMPONENTE_BAIXO_ESQ:
             lista->Move(x-largura,y+alt-altura);break;
 
-        case COMPONENTE_CIMAESQ:
+        case PIG_COMPONENTE_CIMA_ESQ:
             lista->Move(x-largura,y);break;
 
-        case COMPONENTE_POSICAO_PERSONALIZADA:
+        case PIG_COMPONENTE_PERSONALIZADA:
             lista->Move(xLista,yLista);break;
 
         }

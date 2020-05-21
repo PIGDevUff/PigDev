@@ -6,7 +6,6 @@ private:
 
     int largMaxTexto;
     int espacoEntreLinhas;
-    int altLetra;
     bool linhasAbaixoTexto;
     bool marcarMargem;
     std::vector<std::string> linhas;
@@ -21,36 +20,38 @@ private:
     //ajusta o alinhamento do texto dentro da área
     void AjustaAlinhamento() override{
         std::string textoBase = GetTextoVisivel();
-        linhas = ExtraiLinhasString(textoBase,largMaxTexto,fonteTexto);
         std::string aux;
+
+        linhas = CGerenciadorFontes::ExtraiLinhasString(textoBase,largMaxTexto,fonteTexto);
 
         xBase = xBaseOriginal;
         yBase = yBaseOriginal;
 
         aux.assign(textoBase,GetPosInicialDeUmaLinha(GetLinhaDeUmaPos(posCursor)),posCursor - GetPosInicialDeUmaLinha(GetLinhaDeUmaPos(posCursor)));
-        yCursor = yBase - ( espacoEntreLinhas*GetLinhaDeUmaPos(posCursor));
 
+        yCursor = yBase - ( (espacoEntreLinhas + altLetra)*GetLinhaDeUmaPos(posCursor));
         xCursor = xBase + CalculaLarguraPixels((char*)aux.c_str(),fonteTexto);
 
         AjustaBaseTextoEixoX(CalculaLarguraPixels((char*)aux.c_str(),fonteTexto));
+        AjustaBaseTextoEixoY();
     }
 
     //desenha o texto e as linhas (se for o caso)
     void DesenhaElementosEspecificos()override{
-        EscreverLongaEsquerda((char*)texto.c_str(),xBase,yBase,largMaxTexto,espacoEntreLinhas,fonteTexto);
+        EscreverLongaEsquerda((char*)texto.c_str(),xBase,yBase,largMaxTexto,(espacoEntreLinhas + altLetra),fonteTexto);
         if(linhasAbaixoTexto) DesenhaLinhasHorizontais();
         if(marcarMargem) DesenhaMarcacaoMargem();
     }
 
     //
-    void AjustaBaseTextoEixoY(int largParcial){
+    void AjustaBaseTextoEixoY(){
         while(yCursor < y + margemVertBaixo){
             yBase+=5;
-            yCursor = yBase - ( espacoEntreLinhas * GetLinhaDeUmaPos(posCursor));
+            yCursor = yBase - ( (espacoEntreLinhas + altLetra) * GetLinhaDeUmaPos(posCursor));
         }
-        while(yCursor > y +alt - margemVertCima){
+        while(yCursor > y + alt - margemVertCima){
             yBase-=5;
-            yCursor = yBase - ( espacoEntreLinhas * GetLinhaDeUmaPos(posCursor));
+            yCursor = yBase - ( (espacoEntreLinhas + altLetra) * GetLinhaDeUmaPos(posCursor));
         }
     }
 
@@ -88,7 +89,7 @@ private:
             }
 
             if(evento.mouse.relY <0){
-                if( yBase < yBaseOriginal + ( espacoEntreLinhas*(linhas.size()-1))){
+                if( yBase < yBaseOriginal + ( (espacoEntreLinhas + altLetra)*(linhas.size()-1))){
                     yBase+=10;
                     yCursor+=10;
                 }
@@ -106,8 +107,8 @@ private:
 
         for(int i=0;i<linhas.size();i++){
 
-            yLinha = yBase - (espacoEntreLinhas*i);
-            if(p.y > yLinha && p.y <(yLinha + espacoEntreLinhas) ){
+            yLinha = yBase - ((espacoEntreLinhas + altLetra)*i);
+            if(p.y > yLinha && p.y <(yLinha + (espacoEntreLinhas + altLetra)) ){
                 return i;
             }
         }
@@ -164,7 +165,7 @@ private:
         while(yLinha >= y + margemVertBaixo){
             DesenhaLinhaSimples(xLinha,yLinha,xLinha+larg-margemHorDir,yLinha,corLinhasTexto);
             i++;
-            yLinha = yBase - (espacoEntreLinhas *i);
+            yLinha = yBase - ((espacoEntreLinhas + altLetra) *i);
         }
     }
 
@@ -172,11 +173,9 @@ private:
 
 public:
 
-    CPigAreaDeTexto(int idComponente,int px, int py, int alt,int larg,char *nomeArq,int fonteDoTexto = 0,int fonteDoLabel = 0,int maxCars  = 200, bool apenasNumeros=false, int retiraFundo=1,int janela=0,int EspacoEntreLinhas =50,int LargMaxTexto =200,bool LinhasAbaixoTexto = false,bool marcarMargens = false):
-        CPigCaixaTexto(idComponente,px,py,alt,larg,nomeArq,fonteDoTexto,fonteDoLabel,maxCars,apenasNumeros,retiraFundo,janela){
-        margemHorEsq = margemHorDir = margemVertCima = margemVertBaixo = 60;
-        altLetra = GetTamanhoFonte(fonteTexto); // A altura é um vetor, mas eu preciso dela, entao eu acabei colocando como o tamanho da fonte, qualquer coisa só mudar aqui
-        espacoEntreLinhas = EspacoEntreLinhas + altLetra;
+    CPigAreaDeTexto(int idComponente,int px, int py, int alt,int larg,char *nomeArq,int maxCars  = 200, bool apenasNumeros=false, int retiraFundo=1,int janela=0,int LargMaxTexto =200,bool LinhasAbaixoTexto = false,bool marcarMargens = false):
+        CPigCaixaTexto(idComponente,px,py,alt,larg,nomeArq,maxCars,apenasNumeros,retiraFundo,janela){ // A altura é um vetor, mas eu preciso dela, entao eu acabei colocando como o tamanho da fonte, qualquer coisa só mudar aqui
+        espacoEntreLinhas = 0;
         yBaseOriginal = y+alt-margemVertCima-altLetra;
         xBaseOriginal = x+margemHorEsq;
         yBase = yBaseOriginal;
@@ -187,6 +186,7 @@ public:
         linhasAbaixoTexto = LinhasAbaixoTexto;
         corLinhasTexto = PRETO;
         marcarMargem = marcarMargens;
+        AjustaAlinhamento();
     }
 
     //define as margens da áre de texto
@@ -257,7 +257,7 @@ public:
 
     //define o espaçamento entre as linhas
     void SetEspacoEntreAsLinhas(int espaco){
-        espacoEntreLinhas = espaco + altLetra;
+        espacoEntreLinhas = espaco;
     }
 
     //recupera o texto separado em linhas

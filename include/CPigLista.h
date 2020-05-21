@@ -19,10 +19,10 @@ private:
 
         itemMarcado = -1;
         qntItens = 0;
-        SetPosicaoPadraoLabel(COMPONENTE_ESQUERDA);
+        SetPosicaoPadraoLabel(PIG_COMPONENTE_ESQ_CENTRO);
         altItem = alturaItens;
         fonteItens = 0;
-        posItens = COMPONENTE_ESQUERDA;
+        posItens = PIG_COMPONENTE_ESQ_CENTRO;
         retanguloMarcado = true;
 
     }

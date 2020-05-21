@@ -306,6 +306,9 @@ typedef struct PIG_Evento{
 
 #define PIG_Estilo              int
 #define PIG_TOTALESTILOS        16
+#define PIG_FONTE_PADRAO_NOME   "..//fontes//arial.ttf"
+#define PIG_FONTE_PADRAO_TAM    36
+#define PIG_FONTE_PADRAO_COR    BRANCO
 
 #define ESTILO_NORMAL           TTF_STYLE_NORMAL
 #define ESTILO_NEGRITO          TTF_STYLE_BOLD
