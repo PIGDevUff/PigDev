@@ -60,10 +60,10 @@ public:
             HashNodeImagem imagem = new CHashNodeImagem(nomeArq);
             mapImagens[nomeArq]=imagem;
             totalBitmaps++;
-            return imagem->bitmap;
+            return imagem->imagem;
         }else{
             it->second->cont++;
-            return it->second->bitmap;
+            return it->second->imagem;
         }
 
     }

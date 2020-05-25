@@ -912,7 +912,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação da string.
 ********************************/
 void EscreverDireita(char *str,int posicaoX,int posicaoY,int numFonte=0,float angulo=0){
-    CGerenciadorFontes::EscreverDireita(str,posicaoX,posicaoY,angulo,numFonte);
+    CGerenciadorFontes::EscreverDireita(str,posicaoX,posicaoY,numFonte,angulo);
 }
 
 /********************************
@@ -925,7 +925,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação da string.
 ********************************/
 void EscreverEsquerda(char *str,int posicaoX,int posicaoY,int numFonte=0,float angulo=0){
-    CGerenciadorFontes::EscreverEsquerda(str,posicaoX,posicaoY,angulo,numFonte);
+    CGerenciadorFontes::EscreverEsquerda(str,posicaoX,posicaoY,numFonte,angulo);
 }
 
 /********************************
@@ -938,7 +938,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação da string.
 ********************************/
 void EscreverCentralizada(char *str,int posicaoX,int posicaoY,int numFonte=0,float angulo=0){
-    CGerenciadorFontes::EscreverCentralizada(str,posicaoX,posicaoY,angulo,numFonte);
+    CGerenciadorFontes::EscreverCentralizada(str,posicaoX,posicaoY,numFonte,angulo);
 }
 
 /********************************
@@ -955,7 +955,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação das strings.
 ********************************/
 void EscreverLongaEsquerda(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,int numFonte=0,float angulo=0){
-    CGerenciadorFontes::EscreverLongaEsquerda(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,angulo,numFonte);
+    CGerenciadorFontes::EscreverLongaEsquerda(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,numFonte,angulo);
 }
 
 /********************************
@@ -972,7 +972,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação das strings.
 ********************************/
 void EscreverLongaDireita(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,int numFonte=0,float angulo=0){
-    CGerenciadorFontes::EscreverLongaDireita(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,angulo,numFonte);
+    CGerenciadorFontes::EscreverLongaDireita(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,numFonte,angulo);
 }
 
 /********************************
@@ -989,7 +989,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação das strings.
 ********************************/
 void EscreverLongaCentralizada(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,int numFonte=0,float angulo=0){
-    CGerenciadorFontes::EscreverLongaCentralizada(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,angulo,numFonte);
+    CGerenciadorFontes::EscreverLongaCentralizada(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,numFonte,angulo);
 }
 
 /********************************
@@ -1002,7 +1002,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número inteiro.
 ********************************/
 void EscreveInteiroEsquerda(int valor, int x, int y, int numFonte=0,float angulo=0){
-    CGerenciadorFontes::EscreveInteiroEsquerda(valor,x,y,angulo,numFonte);
+    CGerenciadorFontes::EscreveInteiroEsquerda(valor,x,y,numFonte,angulo);
 }
 
 /********************************
@@ -1015,7 +1015,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número inteiro.
 ********************************/
 void EscreveInteiroDireita(int valor, int x, int y, int numFonte=0,float angulo=0){
-    CGerenciadorFontes::EscreveInteiroDireita(valor,x,y,angulo,numFonte);
+    CGerenciadorFontes::EscreveInteiroDireita(valor,x,y,numFonte,angulo);
 }
 
 /********************************
@@ -1028,7 +1028,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número inteiro.
 ********************************/
 void EscreveInteiroCentralizado(int valor, int x, int y, int numFonte=0,float angulo=0){
-    CGerenciadorFontes::EscreveInteiroCentralizado(valor,x,y,angulo,numFonte);
+    CGerenciadorFontes::EscreveInteiroCentralizado(valor,x,y,numFonte,angulo);
 }
 
 /********************************
@@ -1042,7 +1042,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número real.
 ********************************/
 void EscreveDoubleEsquerda(double valor, int casas, int x, int y, int numFonte=0,float angulo=0){
-    CGerenciadorFontes::EscreveDoubleEsquerda(valor,x,y,angulo,numFonte);
+    CGerenciadorFontes::EscreveDoubleEsquerda(valor,casas,x,y,numFonte,angulo);
 }
 
 /********************************
@@ -1056,7 +1056,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número real.
 ********************************/
 void EscreveDoubleDireita(double valor, int casas, int x, int y, int numFonte=0,float angulo=0){
-    CGerenciadorFontes::EscreveDoubleDireita(valor,x,y,angulo,numFonte);
+    CGerenciadorFontes::EscreveDoubleDireita(valor,casas,x,y,numFonte,angulo);
 }
 
 /********************************
@@ -1070,7 +1070,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número real.
 ********************************/
 void EscreveDoubleCentralizado(double valor, int casas, int x, int y, int numFonte=0,float angulo=0){
-    CGerenciadorFontes::EscreveDoubleCentralizado(valor,x,y,angulo,numFonte);
+    CGerenciadorFontes::EscreveDoubleCentralizado(valor,casas,x,y,numFonte,angulo);
 }
 
 /********************************
@@ -1085,7 +1085,7 @@ retorno:
 struct que representa as métricas principais ao escrever a letra.
 ********************************/
 PIG_Metricas_Fonte GetMetricas(char letra, PIG_Estilo estilo=ESTILO_NORMAL,int numFonte=0){
-    return CGerenciadorFontes::GetMetricas(letra,estilo,numFonte);
+    return CGerenciadorFontes::GetMetricas(letra,numFonte,estilo);
 }
 
 /********************************
@@ -1099,7 +1099,7 @@ retorno:
 inteiro que representa o total de pixels (no eixo x) necessários para escrever a letra.
 ********************************/
 int GetLarguraLetra(char letra,PIG_Estilo estilo=ESTILO_NORMAL,int numFonte = 0){
-    return CGerenciadorFontes::GetLarguraLetra(letra,estilo,numFonte);
+    return CGerenciadorFontes::GetLarguraLetra(letra,numFonte,estilo);
 }
 
 /********************************
