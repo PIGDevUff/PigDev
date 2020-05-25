@@ -15,7 +15,7 @@ private:
     void DesenhaCursor(){
         if (estado==COMPONENTE_EDITANDO){
             if (cursorExibido){
-                DesenhaLinhaSimples(xCursor,yCursor,xCursor,yCursor+altLetra,corCursor,idJanela);
+                CGerenciadorJanelas::DesenhaLinhaSimples(xCursor,yCursor,xCursor,yCursor+altLetra,corCursor,idJanela);
             }
             if (timer&&timer->GetTempoDecorrido()>1){
                 cursorExibido = !cursorExibido;
@@ -72,8 +72,8 @@ private:
     int TrataEventoTeclado(PIG_Evento evento){
         if (evento.teclado.acao==TECLA_EDICAO) return 1;
         if (evento.teclado.acao==TECLA_INPUT){//caracteres normais
-            if (AdicionaTexto((char*)ConverteString(evento.teclado.texto).c_str())){
-                if (audioComponente>=0) PlayAudio(audioComponente);
+            if (AdicionaTexto( ConverteString(evento.teclado.texto).c_str() ) ){
+                if (audioComponente>=0) CGerenciadorAudios::Play(audioComponente);
                 return 1;
             }
             return 0;
@@ -100,6 +100,8 @@ protected:
     virtual void DesenhaElementosEspecificos() =0;//pure virtual, porque cada classe derivada vai desenhar coisas diferentes
 
     virtual void AjustaAlinhamento() =0;//pure virtual, porque cada classe derivada vai fazer ajustes diferentes
+
+
 
     //posiciona o cursor no eixo X (necessário, pois pode haver texto "escondido" à esquerda)
     void AjustaBaseTextoEixoX(int largParcial){
@@ -136,7 +138,7 @@ protected:
         texto.erase(posCursor-1,1);//retira o caracter imediatamente atrás do cursor e retrocede com ele
         VoltaCursor();
 
-        if (audioComponente>=0) PlayAudio(audioComponente);
+        if (audioComponente>=0) CGerenciadorAudios::Play(audioComponente);
         return 1;
     }
 
@@ -146,7 +148,7 @@ protected:
 
         texto.erase(posCursor,1);//retira o caracter imediatamente a frente do cursor
 
-        if (audioComponente>=0) PlayAudio(audioComponente);
+        if (audioComponente>=0) CGerenciadorAudios::Play(audioComponente);
         return 1;
     }
 
@@ -159,8 +161,8 @@ protected:
     virtual std::string GetTextoVisivel() =0;//pure virtual, porque cada classe derivada vai retornar um texto de forma diferente
 
     //adiciona um texto (caracter ou string) na posição indicada pelo cursor (se possível)
-    int AdicionaTexto(char *frase){
-        if (texto.size()+strlen(frase)>maxCaracteres) return 0;//ultrapassa o limite máximo de carcteres
+    int AdicionaTexto(std::string frase){
+        if (texto.size()+frase.size()>maxCaracteres) return 0;//ultrapassa o limite máximo de carcteres
         if (somenteNumeros&&!SomenteNumeros(frase)) return 0;//não é número
 
         texto.insert(posCursor,frase);
@@ -199,10 +201,12 @@ protected:
 
             aux.assign(textoBase,inicioLinha,i - inicioLinha);
 
-            largParcial += CalculaLarguraPixels((char*)aux.c_str(),fonteTexto);
+            largParcial += CGerenciadorFontes::GetLarguraPixels(aux,fonteTexto);
 
             if (delta<largParcial-largUltimaLetra){
                 posCursor = i-1;
+                if (textoBase[posCursor]=='\n')
+                    posCursor--;
                 AjustaAlinhamento();
                 return 1;
             }
@@ -222,19 +226,17 @@ protected:
 
 public:
 
-    CPigCaixaTexto(int idComponente,int px, int py, int alt,int larg,char *nomeArq,int maxCars = 200,bool apenasNumeros=false,int retiraFundo=1,int janela=0):
+    CPigCaixaTexto(int idComponente,int px, int py, int alt,int larg,std::string nomeArq,int maxCars = 200,bool apenasNumeros=false,int retiraFundo=1,int janela=0):
         CPigComponente(idComponente,px,py,alt,larg,nomeArq,retiraFundo,janela){
         margemHorEsq = margemHorDir = margemVertCima = margemVertBaixo = 0;
         posLabel = PIG_COMPONENTE_ESQ_BAIXO;//posição padrão do label
-        fonteLabel = fonteTexto = 0;//fonte padrão
-        altLetra = CGerenciadorFontes::GetTamanhoBaseFonte(fonteTexto);
+        //altLetra = CGerenciadorFontes::GetTamanhoBaseFonte(fonteTexto)+CGerenciadorFontes::GetFonteDescent(fonteTexto);
         posCursor = 0;//cursor no início do texto
         cursorExibido = true;
         timer = NULL;//o timer só será criado quando estiver editando
+        SetFonteTexto(0);
         estado = COMPONENTE_NORMAL;
         maxCaracteres = maxCars;
-        texto="";
-        label="";
         somenteNumeros = apenasNumeros;
         corCursor = PRETO;
     }
@@ -248,7 +250,6 @@ public:
         //imagem de fundo
         SDL_RenderCopyEx(renderer, text, &frame,&dest,-angulo,&pivoRelativo,flip);
 
-        //SDL_Rect r={x+margemHor-2,altJanela-y-alt,larg-2*(margemHor-2),alt};
         SDL_Rect r={x+margemHorEsq,altJanela-y-alt+margemVertCima,larg-(margemHorEsq+margemHorDir),alt-(margemVertBaixo+margemVertCima)+1};
         SDL_RenderSetClipRect(renderer,&r);
 
@@ -265,16 +266,17 @@ public:
     virtual void SetMargens(int horEsq,int horDir, int vertBaixo,int vertCima) =0;//cada classe derivada vai definir as margens de forma diferente
 
     //define o texto a ser mostrado no componente
-    int SetTexto(std::string frase){
+    virtual int SetTexto(std::string frase){
         texto = frase;
         posCursor=0;
         return 1;
     }
 
-    void SetFonteTexto(int fonte){
+    virtual void SetFonteTexto(int fonte){
         fonteTexto = fonte;
-        altLetra = CGerenciadorFontes::GetTamanhoBaseFonte(fonteTexto);
+        altLetra = CGerenciadorFontes::GetTamanhoBaseFonte(fonteTexto)+CGerenciadorFontes::GetFonteDescent(fonteTexto);
         yBaseOriginal = y+alt-margemVertCima-altLetra;
+        //AjustaAlinhamento();
     }
 
     //recupera o texto armazenado no componente

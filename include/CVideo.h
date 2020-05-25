@@ -89,15 +89,8 @@ double volume;
 VideoState *is;
 SDL_Thread *hParseThread;
 SDL_Thread *hVideoThread;
-//SDL_Rect destVideo;
 int quit;
 bool janelaToda;
-//double angulo;
-//int altJanela;
-//PIG_Flip flip;
-//SDL_Point pivoRelativo;
-//PIG_Cor coloracao;
-//int opacidade;
 PIG_StatusVideo estado;
 int64_t pausa;
 bool decodeEncerrado;
@@ -726,7 +719,7 @@ int StreamAudioComponentOpen(){
 
 int CriaVideoState(){
     //SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_BLUE);
-    printf( "Alocando VideoState\n" );
+    //printf( "Alocando VideoState\n" );
     is = (VideoState*)av_mallocz(sizeof(VideoState));
     if (!is){
         Stop();
@@ -742,7 +735,7 @@ int CriaVideoState(){
     is->videoStream = -1;
     is->seek_req = 0;
 
-    printf("Alocando Contexto Geral\n");
+    //printf("Alocando Contexto Geral\n");
     is->pFormatCtx = avformat_alloc_context();
     if (!is->pFormatCtx){
         Stop();
@@ -753,15 +746,15 @@ int CriaVideoState(){
     is->pFormatCtx->interrupt_callback.callback = DecodeInterruptCallback;
     is->pFormatCtx->interrupt_callback.opaque = this;
 
-    printf("Abrindo midia\n");
-    int rv = avformat_open_input(&is->pFormatCtx, nomeArquivo, NULL, NULL);
+    //printf("Abrindo midia\n");
+    int rv = avformat_open_input(&is->pFormatCtx, nomeArquivo.c_str(), NULL, NULL);
     if (rv < 0){
         Stop();
         printf("Erro Video: nao foi possivel abrir a midia %s!!!\n",nomeArquivo);
         return -3;
     }
 
-    printf("Buscando informacoes dos streams\n");
+    //printf("Buscando informacoes dos streams\n");
     rv = avformat_find_stream_info(is->pFormatCtx, NULL);
     if (rv < 0){
         Stop();
@@ -786,7 +779,7 @@ int CriaVideoState(){
         return -5;
     }
 
-    printf("Criando Stream de Audio\n");
+    //printf("Criando Stream de Audio\n");
     if (is->audioStream >= 0){
         rv = StreamAudioComponentOpen();
         if (rv < 0){
@@ -796,7 +789,7 @@ int CriaVideoState(){
         }
     }
 
-    printf("Criando Stream de Video\n");
+    //printf("Criando Stream de Video\n");
     if (is->videoStream >= 0){
         is->pictqCs = SDL_CreateMutex();
         is->pictqCv = SDL_CreateCond();
@@ -808,9 +801,9 @@ int CriaVideoState(){
         }
     }
 
-    printf("Calculando tempo de Frame\n");
+    //printf("Calculando tempo de Frame\n");
     tempoFrame = 1.0/av_q2d(is->pFormatCtx->streams[is->videoStream]->r_frame_rate);
-    printf("CriaVideoState() encerrado com sucesso!!!\n");
+    //printf("CriaVideoState() encerrado com sucesso!!!\n");
     return 0;
 }
 
@@ -829,31 +822,31 @@ void DestroiStream(AVStream *stream){
 void DestroiVideoState(){
     if (!is) return;
 
-    printf("Encerrando mutex e variavel de sessao critica\n");
+    //printf("Encerrando mutex e variavel de sessao critica\n");
     SDL_CondSignal(is->pictqCv);
     if (is->videoStream >= 0){
         SDL_DestroyMutex(is->pictqCs);
         SDL_DestroyCond(is->pictqCv);
     }
 
-    printf("Liberando texturas\n");
+    //printf("Liberando texturas\n");
     for (int i=0;i<VIDEO_PICTURE_QUEUE_SIZE;i++)
         if (is->pictq[i].texture){
             SDL_DestroyTexture(is->pictq[i].texture);
         }
 
-    printf("Liberando Frames\n");
+    //printf("Liberando Frames\n");
     if (is->pAudioFrame)    av_frame_free(&is->pAudioFrame);
     if (is->pFrameRGB)      av_frame_free(&is->pFrameRGB);
     if (is->pFrameBuffer)   av_free(is->pFrameBuffer);
 
-    printf("Liberando Contextos\n");
+    //printf("Liberando Contextos\n");
     if (is->videoCtx)       avcodec_free_context(&is->videoCtx);
     if (is->audioCtx)       avcodec_free_context(&is->audioCtx);
     if (is->pSwrCtx)        swr_free(&is->pSwrCtx);
     if (is->pSwsCtx)        sws_freeContext(is->pSwsCtx);
 
-    printf("Destruindo Streams\n");
+    //printf("Destruindo Streams\n");
     DestroiStream(is->videoSt);
     DestroiStream(is->audioSt);
 
@@ -867,19 +860,19 @@ void DestroiVideoState(){
         is->audioSt->codec = NULL;
     }*/
 
-    printf("Encerrando Contexto geral\n");
+    //printf("Encerrando Contexto geral\n");
     avio_flush(is->pFormatCtx->pb);
-    printf("Liberando memoria do Contexto\n");
+    //printf("Liberando memoria do Contexto\n");
     avformat_flush(is->pFormatCtx);
-    printf("Liberando VideoState\n");
+    //printf("Liberando VideoState\n");
     if (is) av_free(is);
     is = NULL;
-    printf("DestroiVideoState() encerrado com sucesso!!!\n");
+    //printf("DestroiVideoState() encerrado com sucesso!!!\n");
 }
 
 public:
 
-CVideo(char *nomeArq,int idJanela=0):CVisual(CGerenciadorJanelas::GetJanela(idJanela)->GetAltura(),CGerenciadorJanelas::GetJanela(idJanela)->GetLargura(),nomeArq,idJanela){
+CVideo(std::string nomeArq,int idJanela=0):CVisual(CGerenciadorJanelas::GetJanela(idJanela)->GetAltura(),CGerenciadorJanelas::GetJanela(idJanela)->GetLargura(),nomeArq,idJanela){
     volume = 0.5;
     janelaAtual = CGerenciadorJanelas::GetJanela(idJanela);
 
@@ -915,7 +908,7 @@ CVideo(char *nomeArq,int idJanela=0):CVisual(CGerenciadorJanelas::GetJanela(idJa
     }
 
     //DestroiVideoState();
-    printf("Fim do stop");
+    //printf("Fim do stop");
 
     if (timerProx)
         delete timerProx;
@@ -944,14 +937,14 @@ void Play(){
     int erro = CriaVideoState();
 
     //SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
-    printf("Vou criar thread de video\n");
+    //printf("Vou criar thread de video\n");
     hVideoThread = SDL_CreateThread(VideoThread,"iii",this);
     if (!hVideoThread){
         Stop();
         return;
     }
 
-    printf("Vou criar thread de decodificacao\n");
+    //printf("Vou criar thread de decodificacao\n");
     hParseThread = SDL_CreateThread(DecodeThread,"ddd", this);
     if (!hParseThread){
         Stop();
@@ -961,7 +954,7 @@ void Play(){
     pausa = av_gettime();
 
     timerProx->Reinicia(0);// = new CTimer(0);
-    printf("Audio device: %d\n",audioDeviceId);
+    //printf("Audio device: %d\n",audioDeviceId);
     SDL_PauseAudioDevice(audioDeviceId,0);
 
     printf("Play() encerrado com sucesso\n");
@@ -969,14 +962,14 @@ void Play(){
 
 void Stop(){
     //SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 111);
-    printf("Vou fazer stop\n");
+    //printf("Vou fazer stop\n");
     if (estado==VIDEO_PARADO) return;//Stop() pode ser chamado isoladamente ou pelo destrutor, mas não deve ser executado 2 vezes
     estado = VIDEO_PARADO;
     quit = 1;
 
     SDL_CondSignal(is->pictqCv);
 
-    printf("Vou encerrar audio device\n");
+    //printf("Vou encerrar audio device\n");
     if (audioDeviceId != -1){
         SDL_PauseAudioDevice(audioDeviceId,1);
         SDL_CloseAudioDevice(audioDeviceId);
@@ -984,15 +977,15 @@ void Stop(){
     filaAudio->Flush();
     filaVideo->Flush();
 
-    printf("vou remover threads\n");
+    //printf("vou remover threads\n");
     int status=0;
     if (hParseThread)   SDL_WaitThread(hParseThread,&status);
-    printf("Liberado1\n");
+    //printf("Liberado1\n");
     if (hVideoThread)   SDL_WaitThread(hVideoThread,&status);
 
     DestroiVideoState();
 
-    printf("Finalizei stop()\n\n");
+    //printf("Finalizei stop()\n\n");
 }
 
 void Pause(){
@@ -1042,28 +1035,30 @@ double GetTempoAtual(){
     return is->videoClock;
 }
 
-void GetTempoAtual(char *str){
+std::string GetTempoAtualString(){
     double base = is->videoClock;
     double fH = base / 3600.;
     int     H = static_cast<int>(fH);
     double fM = (fH - H) * 60.;
     int     M = static_cast<int>(fM);
     double fS = (fM - M) * 60.;
-    sprintf(str,"%d:%02d:%06.3f",H,M,fS);
+    //sprintf(str,"%d:%02d:%06.3f",H,M,fS);
+    return std::to_string(H) + ":" + std::to_string(M) + ":" + std::to_string(fS);
 }
 
 double GetTempoTotal(){
     return (is->pFormatCtx->duration*1.0/AV_TIME_BASE);
 }
 
-void GetTempoTotal(char *str){
+std::string GetTempoTotalString(){
     double base = GetTempoTotal();
     double fH = base / 3600.;
     int     H = static_cast<int>(fH);
     double fM = (fH - H) * 60.;
     int     M = static_cast<int>(fM);
     double fS = (fM - M) * 60.;
-    sprintf(str,"%d:%d:%.3f",H,M,fS);
+    //sprintf(str,"%d:%d:%.3f",H,M,fS);
+    return std::to_string(H) + ":" + std::to_string(M) + ":" + std::to_string(fS);
 }
 
 double GetTempoFrame(){

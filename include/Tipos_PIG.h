@@ -41,8 +41,8 @@ Principais definições utilizadas pela PIG
 #define ULTIMO_CAR              256
 #define NOME_ARQ_TEMP           "fontess.bmp"
 
-#define MAX_SLOTS_AL_IMAGEM     4000
-#define MAX_SLOTS_AL_AUDIO      1000
+//#define MAX_SLOTS_AL_IMAGEM     4000
+//#define MAX_SLOTS_AL_AUDIO      1000
 
 #define FREQ_AUDIO_PADRAO       22050
 #define QTD_CANAIS_PADRAO       128
@@ -256,12 +256,12 @@ typedef struct InfoEventoControlador{
 #define CONTROLADOR_EIXOZ_DIREITO       SDL_CONTROLLER_AXIS_TRIGGERRIGHT
 #define CONTROLADOR_EIXOZ_ESQUERDO      SDL_CONTROLLER_AXIS_TRIGGERLEFT
 
-#define MAX_MENSAGEM_REDE_TCP 2048
-#define TAMANHO_PACOTE_UDP 1024
-#define TAMANHO_MAXIMO_HOSTNAME 50
-#define DELAY_CHECK_TCP_SERVIDOR 1
-#define DELAY_CHECK_TCP_CLIENTE 1
-#define DELAY_CHECK_UDP 1
+#define MAX_MENSAGEM_REDE_TCP       2048
+#define TAMANHO_PACOTE_UDP          1024
+#define TAMANHO_MAXIMO_HOSTNAME     50
+#define DELAY_CHECK_TCP_SERVIDOR    1
+#define DELAY_CHECK_TCP_CLIENTE     1
+#define DELAY_CHECK_UDP             1
 typedef enum PIG_TipoMensagemRede{REDE_CONEXAO,
                             REDE_MENSAGEM_TCP,
                             REDE_MENSAGEM_UDP,

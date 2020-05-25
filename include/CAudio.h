@@ -7,16 +7,16 @@ int volume;
 int tempoExecucao;
 PIG_StatusAudio status;
 int loops;
-char nomeArq[200];
+std::string nomeArq;
 
 public:
 
-CAudio(char *nomeArquivo,int nLoops,int tempoPlay=-1){
-    strcpy(nomeArq,nomeArquivo);
+CAudio(std::string nomeArquivo,int nLoops,int tempoPlay=-1){
+    nomeArq = nomeArquivo;
     #ifdef SHARE_AUDIO
         chunk = CAssetLoader::LoadAudio(nomeArq);
     #else
-        chunk = Mix_LoadWAV(nomeArq);
+        chunk = Mix_LoadWAV(nomeArq.c_str());
     #endif
 
     volume = VOLUME_PADRAO;

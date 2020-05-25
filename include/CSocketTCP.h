@@ -5,8 +5,8 @@ protected:
 int id;
 TCPsocket socket;
 SDLNet_SocketSet socketSet;
-char hostRemoto[TAMANHO_MAXIMO_HOSTNAME];
-char hostLocal[TAMANHO_MAXIMO_HOSTNAME];
+std::string hostRemoto;
+std::string hostLocal;
 int portaRemota;
 int tamPacote;
 long tempoPacoteRecebido;
@@ -46,23 +46,23 @@ void InicializaValoresBasicos(int valorId,int maxBytesPacote){
 
 public:
 
-CSocketTCP(int id,char *host,int porta,int maxBytesPacote){
+CSocketTCP(int id,std::string host,int porta,int maxBytesPacote){
     IPaddress ipAux;
 
     SDLNet_ResolveHost(&ipAux,getenv("COMPUTERNAME"),porta);
     Uint8 *part = (Uint8*)&(ipAux.host);
-    sprintf(hostLocal,"%d.%d.%d.%d",(int)part[0],(int)part[1],(int)part[2],(int)part[3]);
+    hostLocal = std::to_string((int)part[0])+"." + std::to_string((int)part[1])+"."+std::to_string((int)part[2])+"."+std::to_string((int)part[3]);
+    //%d.%d.%d.%d",(int)part[0],(int)part[1],(int)part[2],(int)part[3]);
 
     InicializaValoresBasicos(id,maxBytesPacote);
 
-    if (SDLNet_ResolveHost(&ipAux,host,porta)==-1){
+    portaRemota = porta;
+    hostRemoto = host;
+
+    const char *strHost = host==""?NULL:host.c_str();
+    if (SDLNet_ResolveHost(&ipAux,strHost,porta)==-1){
          printf("SDLNet_ResolveHost: %s\n", SDLNet_GetError());
     }
-
-    portaRemota = porta;
-    if (host!=NULL){
-        strcpy(hostRemoto,host);
-    }else strcpy(hostRemoto,"");
 
     socket = SDLNet_TCP_Open(&ipAux);
     ativo = socket!=NULL;
@@ -81,7 +81,7 @@ CSocketTCP(int id,TCPsocket serverSocket,int maxBytesPacote,SDLNet_SocketSet soc
     ativo = socket!=NULL;
     if(ativo){
         ipAux = *(SDLNet_TCP_GetPeerAddress(socket));
-        strcpy(hostRemoto,SDLNet_ResolveIP(&ipAux));
+        hostRemoto.assign(SDLNet_ResolveIP(&ipAux));
         portaRemota = ipAux.port;
         socketSet = socketSetClientes;
         SDLNet_TCP_AddSocket(socketSet,socket);
@@ -110,12 +110,12 @@ bool GetAtivo(){
     return ativo;
 }
 
-void GetHostRemoto(char *host){
-    strcpy(host,hostRemoto);
+std::string GetHostRemoto(){
+    return hostRemoto;
 }
 
-void GetHostLocal(char *host){
-    strcpy(host,hostLocal);
+std::string GetHostLocal(){
+    return hostLocal;
 }
 
 int GetPortaRemota(){

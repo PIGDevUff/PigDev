@@ -78,13 +78,13 @@ CSocketUDP(int idSocket,int porta){
         free(pacoteRecebimento);
 }
 
-bool EnviaDados(const void *buffer, int tamanhoBuffer, char *host, int porta){
+bool EnviaDados(const void *buffer, int tamanhoBuffer, std::string host, int porta){
     if (!ativo) return false;
     if (tamanhoBuffer>TAMANHO_PACOTE_UDP) return false;
 
     IPaddress ipRemoto;
     //printf("Vou dar send para %s na porta %u\n",host,porta);
-    if ( SDLNet_ResolveHost(&ipRemoto, host, porta) == -1 ){
+    if ( SDLNet_ResolveHost(&ipRemoto, host.c_str(), porta) == -1 ){
         printf("Erro de resolucao de host UDP: %s\n",SDLNet_GetError());
         return false;
     }
@@ -119,8 +119,8 @@ int GetPortaLocal(){
     return portaLocal;
 }
 
-void GetHostLocal(char *host){
-    strcpy(host,hostLocal);
+std::string GetHostLocal(){
+    return hostLocal;
 }
 
 long GetBytesEnviados(){

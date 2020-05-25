@@ -182,6 +182,7 @@ public:
         //printf("derivada\n");
         SDL_Rect rectDestino;
         rectDestino.x = x;
+        int altJanela = CGerenciadorJanelas::GetJanela(janela)->GetAltura();
         //rectDestino.y = CGerenciadorJanelas::GetJanela(janela)->GetAltura()-y-tamFonte;
         PIG_Cor corAtual = BRANCO;
         PIG_Estilo estiloAtual = ESTILO_NORMAL;
@@ -190,6 +191,7 @@ public:
         for (int i=0;i<str.size();i++){
             Uint16 aux = str.GetLetra(i);
             aux = aux %256;
+            if (aux-PRIMEIRO_CAR<0) continue;
             corAtual = str.GetCor(i);
             estiloAtual = str.GetEstilo(i);
 
@@ -197,7 +199,7 @@ public:
 
             rectDestino.w = larguraLetra[estiloAtual][aux-PRIMEIRO_CAR];
             rectDestino.h = tamFonte+alturaExtra[estiloAtual][aux-PRIMEIRO_CAR];
-            rectDestino.y = CGerenciadorJanelas::GetJanela(janela)->GetAltura()-y-rectDestino.h;
+            rectDestino.y = altJanela-y-rectDestino.h;
 
             SDL_RenderCopyEx(render,glyphsT[estiloAtual][aux-PRIMEIRO_CAR],NULL,&rectDestino,-ang,&ponto,FLIP_NENHUM);
 

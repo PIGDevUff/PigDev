@@ -168,28 +168,24 @@ protected:
 public:
     int vertices[4][2];
 
-    CObjeto(char *nomeArquivo, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0) : CVisual(nomeArquivo, retiraFundo, corFundo, janela)
-    {
+    CObjeto(std::string nomeArquivo, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0) : CVisual(nomeArquivo, retiraFundo, corFundo, janela){
         //printf("visual chamado %d\n",retiraFundo);
         AtualizaBB();
         ExtraiPixels();
     }
 
-    CObjeto(OffscreenRenderer offRender, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0) : CVisual(offRender, retiraFundo, corFundo, janela)
-    {
+    CObjeto(OffscreenRenderer offRender, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0) : CVisual(offRender, retiraFundo, corFundo, janela){
         AtualizaBB();
         ExtraiPixels();
     }
 
-    CObjeto(CObjeto *objBase, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0) : CVisual(objBase, retiraFundo, corFundo, janela)
-    {
+    CObjeto(CObjeto *objBase, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0) : CVisual(objBase, retiraFundo, corFundo, janela){
         AtualizaBB();
         ExtraiPixels();
         SetDimensoes(objBase->alt, objBase->larg);
     }
 
-    ~CObjeto()
-    {
+    ~CObjeto(){
         for (int i = 0; i < bitmap->h; i++)
             free(pixels[i]);
         free(pixels);
@@ -211,38 +207,31 @@ public:
         return idJanela;
     }*/
 
-    void SetValoresInt(int chave, int valor)
-    {
+    void SetValoresInt(int chave, int valor){
         valoresIntInt[chave] = valor;
     }
 
-    void SetValoresInt(std::string chave, int valor)
-    {
+    void SetValoresInt(std::string chave, int valor){
         valoresStringInt[chave] = valor;
     }
 
-    void SetValoresFloat(int chave, float valor)
-    {
+    void SetValoresFloat(int chave, float valor){
         valoresIntFloat[chave] = valor;
     }
 
-    void SetValoresFloat(std::string chave, float valor)
-    {
+    void SetValoresFloat(std::string chave, float valor){
         valoresStringFloat[chave] = valor;
     }
 
-    void SetValoresString(int chave, std::string valor)
-    {
+    void SetValoresString(int chave, std::string valor){
         valoresIntString[chave] = valor;
     }
 
-    void SetValoresString(std::string chave, std::string valor)
-    {
+    void SetValoresString(std::string chave, std::string valor){
         valoresStringString[chave] = valor;
     }
 
-    bool GetValoresInt(int chave, int &valor)
-    {
+    bool GetValoresInt(int chave, int &valor){
         std::map<int, int>::iterator it;
         it = valoresIntInt.find(chave);
         if (it == valoresIntInt.end())
@@ -251,8 +240,7 @@ public:
         return true;
     }
 
-    bool GetValoresInt(std::string chave, int &valor)
-    {
+    bool GetValoresInt(std::string chave, int &valor){
         std::map<std::string, int>::iterator it;
         it = valoresStringInt.find(chave);
         if (it == valoresStringInt.end())
@@ -261,8 +249,7 @@ public:
         return true;
     }
 
-    bool GetValoresFloat(int chave, float &valor)
-    {
+    bool GetValoresFloat(int chave, float &valor){
         std::map<int, float>::iterator it;
         it = valoresIntFloat.find(chave);
         if (it == valoresIntFloat.end())
@@ -271,8 +258,7 @@ public:
         return true;
     }
 
-    bool GetValoresFloat(std::string chave, float &valor)
-    {
+    bool GetValoresFloat(std::string chave, float &valor){
         std::map<std::string, float>::iterator it;
         it = valoresStringFloat.find(chave);
         if (it == valoresStringFloat.end())
@@ -281,8 +267,7 @@ public:
         return true;
     }
 
-    bool GetValoresString(int chave, std::string &valor)
-    {
+    bool GetValoresString(int chave, std::string &valor){
         std::map<int, std::string>::iterator it;
         it = valoresIntString.find(chave);
         if (it == valoresIntString.end())
@@ -291,8 +276,7 @@ public:
         return true;
     }
 
-    bool GetValoresString(std::string chave, std::string &valor)
-    {
+    bool GetValoresString(std::string chave, std::string &valor){
         std::map<std::string, std::string>::iterator it;
         it = valoresStringString.find(chave);
         if (it == valoresStringString.end())
@@ -320,15 +304,11 @@ public:
         //AtualizaBB();
     //}
 
-    int Desenha(OffscreenRenderer offRender = NULL)
-    {
-        if (offRender == NULL)
-        {
+    int Desenha(OffscreenRenderer offRender = NULL){
+        if (offRender == NULL){
             SDL_RenderCopyEx(renderer, text, &frame, &dest, -angulo, &pivoRelativo, flip);
             DesenhaBB();
-        }
-        else
-        {
+        }else{
             SDL_Texture *textAux = SDL_CreateTextureFromSurface(offRender->GetRenderer(), bitmap);
             SDL_Rect rectAux = dest;
             rectAux.y = offRender->GetAltura() - alt - y;
@@ -343,16 +323,14 @@ public:
         AtualizaBB();
     }
 
-    int arredonda(float valor)
-    {
+    int arredonda(float valor){
         int resultado = (int)valor;
         if (valor - resultado >= 0.5)
             return valor + 1;
         return valor;
     }
 
-    void calculaVertice2s()
-    {
+    void calculaVertice2s(){
         /*vertices[0][0] = x;
         vertices[0][1] = y;
         vertices[1][0] = arredonda(x + larg * cos(angulo * M_PI / 180));

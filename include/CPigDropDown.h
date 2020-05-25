@@ -36,7 +36,7 @@ private:
         if (timer) delete timer;
         timer = new CTimer(false);
         marcado = !(marcado == true);
-        if (audioComponente>=0) PlayAudio(audioComponente);
+        if (audioComponente>=0) CGerenciadorAudios::Play(audioComponente);
         DefineEstado(COMPONENTE_MOUSEOVER);
         return 1;
     }

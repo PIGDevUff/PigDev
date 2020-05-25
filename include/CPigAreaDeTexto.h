@@ -6,7 +6,7 @@ private:
 
     int largMaxTexto;
     int espacoEntreLinhas;
-    bool linhasAbaixoTexto;
+    bool linhasPauta;
     bool marcarMargem;
     std::vector<std::string> linhas;
 
@@ -27,19 +27,23 @@ private:
         xBase = xBaseOriginal;
         yBase = yBaseOriginal;
 
-        aux.assign(textoBase,GetPosInicialDeUmaLinha(GetLinhaDeUmaPos(posCursor)),posCursor - GetPosInicialDeUmaLinha(GetLinhaDeUmaPos(posCursor)));
+        int linhaPos = GetLinhaDeUmaPos(posCursor);
+        int posInicial = GetPosInicialDeUmaLinha(linhaPos);
+
+        aux.assign(textoBase,posInicial,posCursor - posInicial);
 
         yCursor = yBase - ( (espacoEntreLinhas + altLetra)*GetLinhaDeUmaPos(posCursor));
-        xCursor = xBase + CalculaLarguraPixels((char*)aux.c_str(),fonteTexto);
+        xCursor = xBase + CGerenciadorFontes::GetLarguraPixels(aux,fonteTexto);
 
-        AjustaBaseTextoEixoX(CalculaLarguraPixels((char*)aux.c_str(),fonteTexto));
+        AjustaBaseTextoEixoX(CGerenciadorFontes::GetLarguraPixels(aux,fonteTexto));
+
         AjustaBaseTextoEixoY();
     }
 
     //desenha o texto e as linhas (se for o caso)
     void DesenhaElementosEspecificos()override{
-        EscreverLongaEsquerda((char*)texto.c_str(),xBase,yBase,largMaxTexto,(espacoEntreLinhas + altLetra),fonteTexto);
-        if(linhasAbaixoTexto) DesenhaLinhasHorizontais();
+        CGerenciadorFontes::EscreverLongaEsquerda(texto,xBase,yBase,largMaxTexto,(espacoEntreLinhas + altLetra),fonteTexto);
+        if(linhasPauta) DesenhaLinhasHorizontais();
         if(marcarMargem) DesenhaMarcacaoMargem();
     }
 
@@ -57,7 +61,6 @@ private:
 
     //trata o evento do botao esquerdo
     int TrataMouseBotaoEsquerdo(SDL_Point p,int inicioLinha = 0)override{
-
         TrataMouseBotaoEsquerdoESobeDesceCursor(p,GetPosInicialDeUmaLinha(GetLinhaComMouseEmCima()),GetLinhaComMouseEmCima());
     }
 
@@ -65,10 +68,14 @@ private:
     int TrataMouseBotaoEsquerdoESobeDesceCursor(SDL_Point p,int inicioLinha = 0,int linha = 0){
         int delta = p.x-xBase;
 
-        if(delta < CalculaLarguraPixels((char*)linhas[linha].c_str(),fonteTexto)){
+        if(delta < CGerenciadorFontes::GetLarguraPixels(linhas[linha],fonteTexto)){
             CPigCaixaTexto::TrataMouseBotaoEsquerdo(p,inicioLinha);
         }else{
             posCursor = inicioLinha + linhas[linha].size();
+        }
+
+        if (texto[posCursor-1]=='\n'){//se o cursor parou depois do fim da linha forçada pelo '\n', escreve antes deste caracter terminador
+            posCursor--;
         }
 
         AjustaAlinhamento();
@@ -118,6 +125,7 @@ private:
 
     //
     int GetPosInicialDeUmaLinha(int linha){
+        if (linhas.size()==0) return 0;
         int posPercorridas = 0;
 
         for(int i=0;i<linhas.size();i++){
@@ -129,11 +137,11 @@ private:
         }
 
         return posPercorridas - linhas[linhas.size()-1].size();
-
     }
 
     //
     int GetLinhaDeUmaPos(int pos){
+        if (linhas.size()==0) return 0;
         int qntLinhas = 0;
 
         for(int i=0;i<linhas.size();i++){
@@ -149,11 +157,11 @@ private:
 
     //
     void DesenhaMarcacaoMargem(){
-        DesenhaLinhaSimples(x+margemHorEsq,y+margemVertBaixo,x+ margemHorEsq,y+alt-margemVertCima,BRANCO);
-        DesenhaLinhaSimples(x+larg-margemHorDir-1,y+margemVertBaixo,x+larg-margemHorDir-1,y+alt-margemVertCima,BRANCO);
+        CGerenciadorJanelas::DesenhaLinhaSimples(x+margemHorEsq,y+margemVertBaixo,x+ margemHorEsq,y+alt-margemVertCima,BRANCO);
+        CGerenciadorJanelas::DesenhaLinhaSimples(x+larg-margemHorDir-1,y+margemVertBaixo,x+larg-margemHorDir-1,y+alt-margemVertCima,BRANCO);
 
-        DesenhaLinhaSimples(x+margemHorEsq,y+alt-margemVertCima,x+larg-margemHorDir,y+alt-margemVertCima,BRANCO);
-        DesenhaLinhaSimples(x+margemHorEsq,y+margemVertBaixo,x+larg-margemHorDir,y+margemVertBaixo,BRANCO);
+        CGerenciadorJanelas::DesenhaLinhaSimples(x+margemHorEsq,y+alt-margemVertCima,x+larg-margemHorDir,y+alt-margemVertCima,BRANCO);
+        CGerenciadorJanelas::DesenhaLinhaSimples(x+margemHorEsq,y+margemVertBaixo,x+larg-margemHorDir,y+margemVertBaixo,BRANCO);
     }
 
     //
@@ -163,42 +171,13 @@ private:
         int i=0;
 
         while(yLinha >= y + margemVertBaixo){
-            DesenhaLinhaSimples(xLinha,yLinha,xLinha+larg-margemHorDir,yLinha,corLinhasTexto);
+            CGerenciadorJanelas::DesenhaLinhaSimples(xLinha,yLinha,xLinha+larg-margemHorDir,yLinha,corLinhasTexto);
             i++;
             yLinha = yBase - ((espacoEntreLinhas + altLetra) *i);
         }
     }
 
     int TrataMouseBotaoDireito(PIG_Evento evento,SDL_Point p){return 1;}//não usa o botão direito
-
-public:
-
-    CPigAreaDeTexto(int idComponente,int px, int py, int alt,int larg,char *nomeArq,int maxCars  = 200, bool apenasNumeros=false, int retiraFundo=1,int janela=0,int LargMaxTexto =200,bool LinhasAbaixoTexto = false,bool marcarMargens = false):
-        CPigCaixaTexto(idComponente,px,py,alt,larg,nomeArq,maxCars,apenasNumeros,retiraFundo,janela){ // A altura é um vetor, mas eu preciso dela, entao eu acabei colocando como o tamanho da fonte, qualquer coisa só mudar aqui
-        espacoEntreLinhas = 0;
-        yBaseOriginal = y+alt-margemVertCima-altLetra;
-        xBaseOriginal = x+margemHorEsq;
-        yBase = yBaseOriginal;
-        xBase = xBaseOriginal;
-        xCursor = xBase;
-        yCursor = yBase;
-        largMaxTexto = LargMaxTexto;
-        linhasAbaixoTexto = LinhasAbaixoTexto;
-        corLinhasTexto = PRETO;
-        marcarMargem = marcarMargens;
-        AjustaAlinhamento();
-    }
-
-    //define as margens da áre de texto
-    void SetMargens(int horEsq,int horDir, int vertBaixo,int vertCima){
-        margemVertCima = vertCima;
-        margemVertBaixo = vertBaixo;
-        margemHorDir = horDir;
-        margemHorEsq = horEsq;
-        yBaseOriginal = y+alt-margemVertCima-altLetra;
-        xBaseOriginal = x+margemHorEsq;
-        AjustaAlinhamento();
-    }
 
     //move o cursor uma linha para cima
     int SobeCursor(){
@@ -245,6 +224,35 @@ public:
 
     };
 
+public:
+
+    CPigAreaDeTexto(int idComponente,int px, int py, int alt,int larg,std::string nomeArq,int maxCars = 200, bool apenasNumeros=false, int retiraFundo=1,int janela=0,int largMaxTexto =200,bool linhasAbaixoTexto = false,bool marcarMargens = false):
+        CPigCaixaTexto(idComponente,px,py,alt,larg,nomeArq,maxCars,apenasNumeros,retiraFundo,janela){ // A altura é um vetor, mas eu preciso dela, entao eu acabei colocando como o tamanho da fonte, qualquer coisa só mudar aqui
+        espacoEntreLinhas = 0;
+        yBaseOriginal = y+alt-margemVertCima-altLetra;
+        xBaseOriginal = x+margemHorEsq;
+        yBase = yBaseOriginal;
+        xBase = xBaseOriginal;
+        xCursor = xBase;
+        yCursor = yBase;
+        largMaxTexto = largMaxTexto;
+        linhasPauta = linhasAbaixoTexto;
+        corLinhasTexto = PRETO;
+        marcarMargem = marcarMargens;
+        AjustaAlinhamento();
+    }
+
+    //define as margens da áre de texto
+    void SetMargens(int horEsq,int horDir, int vertBaixo,int vertCima){
+        margemVertCima = vertCima;
+        margemVertBaixo = vertBaixo;
+        margemHorDir = horDir;
+        margemHorEsq = horEsq;
+        yBaseOriginal = y+alt-margemVertCima-altLetra;
+        xBaseOriginal = x+margemHorEsq;
+        AjustaAlinhamento();
+    }
+
     //define a cor da linhas horizontais
     void SetCorLinhasHorizontais(PIG_Cor cor){
         corLinhasTexto = cor;
@@ -253,6 +261,7 @@ public:
     //define a largura máxima do texto
     void SetLargMaxTexto(int largMax){
         largMaxTexto = largMax;
+        AjustaAlinhamento();
     }
 
     //define o espaçamento entre as linhas
@@ -260,11 +269,20 @@ public:
         espacoEntreLinhas = espaco;
     }
 
+    int SetTexto(std::string frase)override{
+        CPigCaixaTexto::SetTexto(frase);
+        AjustaAlinhamento();
+    }
+
+    void SetFonteTexto(int fonte) override{
+        CPigCaixaTexto::SetFonteTexto(fonte);
+        AjustaAlinhamento();
+    }
+
     //recupera o texto separado em linhas
     std::vector<std::string> GetLinhasTexto(){
         return linhas;
     }
-
 
 };
 

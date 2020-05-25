@@ -35,19 +35,19 @@ private:
         if (timer) delete timer;
         timer = new CTimer(false);
         marcado = !marcado;
-        if (audioComponente>=0) PlayAudio(audioComponente);
+        if (audioComponente>=0) CGerenciadorAudios::Play(audioComponente);
         DefineEstado(COMPONENTE_MOUSEOVER);
         return 1;
     }
 
 public:
 
-    CPigItemCheck(int idComponente,int px, int py, int alt,int larg,char *nomeArq,char *labelItem,int retiraFundo=1,int janela=0):
+    CPigItemCheck(int idComponente,int px, int py, int alt,int larg,std::string nomeArq,std::string labelItem,int retiraFundo=1,int janela=0):
         CPigComponente(idComponente,px,py,alt,larg,nomeArq,janela){
         timer = NULL;
         largFrame = largOriginal/6;
         marcado = false;
-        posLabel = PIG_COMPONENTE_DIR_CENTRO;
+        SetPosicaoPadraoLabel(PIG_COMPONENTE_DIR_CENTRO);
         SetLabel(labelItem);
         DefineEstado(COMPONENTE_NORMAL);
     }
@@ -99,7 +99,6 @@ public:
         }
         DefineFrame(r);
     }
-
 
     int TrataEvento(PIG_Evento evento){
         if (estado==COMPONENTE_DESABILITADO||estado==COMPONENTE_INVISIVEL)

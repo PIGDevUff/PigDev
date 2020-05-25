@@ -9,7 +9,7 @@ static Janela janelas[MAX_JANELAS];
 public:
 
 
-static void Inicia(char *nome,int altura=ALT_TELA,int largura=LARG_TELA){
+static void Inicia(std::string nome,int altura=ALT_TELA,int largura=LARG_TELA){
     qtdJanelas = 0;
     for (int i=0;i<MAX_JANELAS;i++)
         janelas[i] = NULL;
@@ -30,7 +30,7 @@ static int GetQtdJanelas(){
     return resp;
 }
 
-static int CriaJanela(char *nome,int altura=ALT_TELA,int largura=LARG_TELA){
+static int CriaJanela(std::string nome,int altura=ALT_TELA,int largura=LARG_TELA){
     if (qtdJanelas==MAX_JANELAS) return -1;
     janelas[qtdJanelas++] = new CJanela(nome,qtdJanelas,altura,largura);
     return qtdJanelas-1;//foi incrmentada log acima
@@ -76,12 +76,16 @@ static void EncerraDesenho(int idJanela=-1){
     }
 }
 
-static void DefineFundo(char *nomeArquivo,int idJanela=0){
+static void DefineFundo(std::string nomeArquivo,int idJanela=0){
     janelas[idJanela]->DefineFundo(nomeArquivo);
 }
 
-static void SaveScreenshotBMP(char *nomeArquivo,int idJanela=0) {
-    janelas[idJanela]->SaveScreenshotBMP(nomeArquivo);
+static void SaveScreenshotBMP(std::string nomeArquivo,int idJanela=0) {
+    janelas[idJanela]->SaveScreenshot(nomeArquivo,true);//true == bitmap
+}
+
+static void SaveScreenshotPNG(std::string nomeArquivo,int idJanela=0) {
+    janelas[idJanela]->SaveScreenshot(nomeArquivo,false);//false == PNG
 }
 
 static int GetAltura(int idJanela=0){
@@ -96,11 +100,11 @@ static int SetTamanho(int altura,int largura,int idJanela=0){
     janelas[idJanela]->SetTamanho(altura,largura);
 }
 
-static void GetTitulo(char *tituloJanela,int idJanela=0){
-    janelas[idJanela]->GetTitulo(tituloJanela);
+static std::string GetTitulo(int idJanela=0){
+    return janelas[idJanela]->GetTitulo();
 }
 
-static void SetTitulo(char *novoTitulo,int idJanela=0){
+static void SetTitulo(std::string novoTitulo,int idJanela=0){
     janelas[idJanela]->SetTitulo(novoTitulo);
 }
 
@@ -140,7 +144,29 @@ static int GetModo(int idJanela=0){
     return janelas[idJanela]->GetModo();
 }
 
+static void DesenhaRetangulo(int x, int y, int alturaRet, int larguraRet, PIG_Cor cor, int idJanela=0){
+    janelas[idJanela]->DesenhaRetangulo(x,y,alturaRet,larguraRet,cor);
+}
 
+static void DesenhaRetanguloVazado(int x, int y, int alturaRet, int larguraRet, PIG_Cor cor, int idJanela=0){
+    janelas[idJanela]->DesenhaRetanguloVazado(x,y,alturaRet,larguraRet,cor);
+}
+
+static void DesenhaLinhaSimples(int x1,int y1,int x2,int y2,PIG_Cor cor,int idJanela=0){
+    janelas[idJanela]->DesenhaLinhaSimples(x1,y1,x2,y2,cor);
+}
+
+static void DesenhaLinhasDisjuntas(int *x,int *y,int qtd,PIG_Cor cor,int idJanela=0){
+    janelas[idJanela]->DesenhaLinhasDisjuntas(x,y,qtd,cor);
+}
+
+static void DesenhaLinhasSequencia(int *x,int *y,int qtd,PIG_Cor cor,int idJanela=0){
+    janelas[idJanela]->DesenhaLinhasSequencia(x,y,qtd,cor);
+}
+
+static PIG_Cor GetPixel(int x, int y, int idJanela=0){
+    return janelas[idJanela]->GetPixel(x,y);
+}
 
 };
 

@@ -33,7 +33,7 @@ void AtualizaFrameAtual(ModoAnimacao modo){
 public:
 
 //cria uma animação a partir de um arquivo de spritesheet
-CAnimacao(char *nomeArq,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NULL,int retiraFundo=1,int idJanela=0):CObjeto(nomeArq,corFundo,retiraFundo,idJanela){
+CAnimacao(std::string nomeArq,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NULL,int retiraFundo=1,int idJanela=0):CObjeto(nomeArq,corFundo,retiraFundo,idJanela){
     souCopia = 0;
     offx = offy = 0;
     modoAtual = 0;

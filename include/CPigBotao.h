@@ -1,38 +1,11 @@
 typedef int (*AcaoBotao)(int,void*);
 
-/*class CPigImagemSecundaria : public CPigComponente{
-
-private:
-
-    virtual int TrataEvento(PIG_Evento evento){return 0;}
-    virtual void DefineEstado(PIG_EstadoComponente estadoComponente){};
-    virtual int OnMouseOn(){return 0;};
-    virtual int OnMouseOff(){return 0;};
-
-public:
-
-    CPigImagemSecundaria(int idComponente,int px,int py, int alt, int larg, char *nomeArq,int retiraFundo=1,int janela=0):
-        CPigComponente(idComponente,px,py,alt,larg,nomeArq,retiraFundo,janela){
-    }
-
-    int Desenha(){
-        SDL_RenderCopyEx(renderer, text, &frame,&dest,-angulo,&pivoRelativo,flip);
-    }
-
-};*/
-
 class CPigBotao: public CPigComponente{
 
 private:
 
-    //char *texto;
     int tecla;
     int largFrame;
-    int fonteTexto;
-    //int xImgSecundaria,yImgSecundaria;
-    //CPigImagemSecundaria *imgSecundaria;
-    //PIG_PosicaoComponente posTexto;
-    //PIG_PosicaoComponente posImagem;
     AcaoBotao acao;
     void *param;
     Timer timer;
@@ -50,22 +23,23 @@ private:
 
     int TrataTeclado(PIG_Evento evento){
         if (evento.teclado.acao==TECLA_PRESSIONADA)
-            if (evento.teclado.tecla==tecla)return OnMouseClick();
+            if (evento.teclado.tecla==tecla) return OnMouseClick();
 
         return 0;
     }
 
     void TrataTimer(){
-
         if (timer->GetTempoDecorrido()<0.2){
-            DefineEstado(COMPONENTE_ACIONADO);
+            if(estado!=COMPONENTE_DESABILITADO)
+                DefineEstado(COMPONENTE_ACIONADO);
         }else{
             delete timer;
             timer = NULL;
-            if (agoraOn) DefineEstado(COMPONENTE_MOUSEOVER);
-            else DefineEstado(COMPONENTE_NORMAL);
+            if (estado==COMPONENTE_ACIONADO){
+                if (agoraOn) DefineEstado(COMPONENTE_MOUSEOVER);
+                else DefineEstado(COMPONENTE_NORMAL);
+            }
         }
-
     }
 
     int OnMouseClick(){
@@ -73,7 +47,7 @@ private:
         if (timer) delete timer;
         timer = new CTimer(false);
         if (acao) acao(id,param);//rever se NULL é necessário
-        if (audioComponente>=0) PlayAudio(audioComponente);
+        if (audioComponente>=0) CGerenciadorAudios::Play(audioComponente);
         return 1;
     }
 
@@ -90,69 +64,25 @@ private:
     }
 
     void IniciaBase(){
-
         tecla = -1;//sem tecla de atalho
         timer = NULL;//sem timer para "soltar" o botão
         acao = NULL;//não tem ação registrada
         param = NULL;//não tem parâmetro associado à ação
-        //posTexto = PIG_COMPONENTE_CENTRO_CENTRO;
+        largFrame = largOriginal/4;
+        DefineEstado(COMPONENTE_NORMAL);
         SetPosicaoPadraoLabel(PIG_COMPONENTE_CENTRO_CENTRO);
-        //imgSecundaria = NULL;
-        //posImagem = COMPONENTE_ESQUERDA;
-        //texto = "";
-        fonteTexto = 0;
     }
-
-    /*void DesenhaTexto(){
-        if (texto!=NULL && strcmp(texto,"")) {
-            switch(posTexto){
-            case COMPONENTE_ESQUERDA:
-                EscreverEsquerda(texto,x,y,fonteTexto);
-                break;
-            case COMPONENTE_DIREITA:
-                EscreverDireita(texto,x+larg,y,fonteTexto);
-                break;
-            case COMPONENTE_CENTRO:
-                EscreverCentralizada(texto,x+larg/2,y+(alt-20)/2,fonteTexto);
-                break;
-            }
-        }
-    }*/
 
 public:
 
     CPigBotao(int idComponente,int px, int py, int alt,int larg,char *nomeArq, int retiraFundo=1,int janela=0):
         CPigComponente(idComponente,px,py,alt,larg,nomeArq,retiraFundo,janela){
         IniciaBase();
-        largFrame = largOriginal/4;//a imgem deve ter 4 frames (normal,mouse_over,acionado,desabilitado)
-        DefineEstado(COMPONENTE_NORMAL); //começa normal
-
-    }
-
-    CPigBotao(int idComponente,int px, int py, int alt,int larg,int janela=0):
-        CPigComponente(idComponente,px,py,alt,larg,janela){
-            IniciaBase();
     }
 
     ~CPigBotao(){
         if (timer) delete timer;
-        //if(imgSecundaria) delete imgSecundaria;
     }
-
-    /*void SetTexto(char *novoTexto){
-        //if (texto)
-        //    free(texto);
-        if (novoTexto){
-            texto = (char*) malloc(strlen(novoTexto));
-            strcpy(texto,novoTexto);
-        }
-    }*
-
-    /*void GetTexto(char *buffer){
-
-        strcpy(buffer,texto);
-
-    }*/
 
     void DefineAcao(AcaoBotao funcao,void *parametro){
         acao = funcao;
@@ -197,13 +127,8 @@ public:
         return 0;
     }
 
-    /*CPigImagemSecundaria *GetImagemSecundaria(){
-
-        return imgSecundaria;
-
-    }*/
-
     int Desenha(){
+
         if (estado==COMPONENTE_INVISIVEL) return 0;
 
         if (timer) TrataTimer();

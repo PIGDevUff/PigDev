@@ -243,6 +243,8 @@ public:
 
     std::vector<std::string> ExtraiLinhas(std::string texto, int largMax, std::string delim=PigDelimitadores){
         std::vector<std::string> resp;
+        if (texto=="") return resp;
+
         std::vector<std::string> palavras = SeparaPalavras(texto,delim);
 
         std::string linhaAtual = palavras[0];   //linha atual (que está sendo montada) contém pelo menos a primeira palavra
@@ -344,18 +346,20 @@ public:
     virtual void EscreveStringEsquerda(std::string texto,int x,int y,float ang=0,int delta=0){
         SDL_Rect rectDestino;
         rectDestino.x = x;
-        //rectDestino.y = CGerenciadorJanelas::GetJanela(janela)->GetAltura()-y-tamFonte+fontDescent;
 
+        int altJanela = CGerenciadorJanelas::GetJanela(janela)->GetAltura();
         SDL_Point ponto = {delta,tamFonte};
         Uint16 aux;
 
         for (int i=0;i<texto.size();i++){
             aux = texto[i];
             aux = aux % 256;//UTF16 string, retirando só o byte que interessa
+            if (aux-PRIMEIRO_CAR<0) continue;
+            //printf("aux: %d  %d",aux,aux-PRIMEIRO_CAR);
 
             rectDestino.w = larguraLetra[estiloFixo][aux-PRIMEIRO_CAR];
             rectDestino.h = tamFonte+alturaExtra[estiloFixo][aux-PRIMEIRO_CAR];
-            rectDestino.y = CGerenciadorJanelas::GetJanela(janela)->GetAltura()-y-rectDestino.h;
+            rectDestino.y = altJanela-y-rectDestino.h;
 
             SDL_RenderCopyEx(render,glyphsT[estiloFixo][aux-PRIMEIRO_CAR],NULL,&rectDestino,-ang,&ponto,FLIP_NENHUM);
 
@@ -373,8 +377,8 @@ public:
         std::vector<std::string> linhas = ExtraiLinhas(texto,largMax);
         int yTotal=y;
         for (int k=0;k<linhas.size();k++){
-            int larguraPixels = GetLarguraPixelsString((char*)linhas[k].c_str());
-            EscreveStringEsquerda((char*)linhas[k].c_str(),x-larguraPixels/2,yTotal,angulo);
+            int larguraPixels = GetLarguraPixelsString(linhas[k]);
+            EscreveStringEsquerda(linhas[k],x-larguraPixels/2,yTotal,angulo);
             yTotal -= espacoEntreLinhas;
         }
     }
@@ -383,8 +387,8 @@ public:
         std::vector<std::string> linhas = ExtraiLinhas(texto,largMax);
         int yTotal=y;
         for (int k=0;k<linhas.size();k++){
-            int larguraPixels = GetLarguraPixelsString((char*)linhas[k].c_str());
-            EscreveStringEsquerda((char*)linhas[k].c_str(),x,yTotal,angulo);
+            int larguraPixels = GetLarguraPixelsString(linhas[k]);
+            EscreveStringEsquerda(linhas[k],x,yTotal,angulo);
             yTotal -= espacoEntreLinhas;
         }
     }

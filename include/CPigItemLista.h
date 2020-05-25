@@ -17,7 +17,7 @@ private:
         DefineEstado(COMPONENTE_ACIONADO);
         if (timer) delete timer;
         timer = new CTimer(false);
-        if (audioComponente>=0) PlayAudio(audioComponente);
+        if (audioComponente>=0) CGerenciadorAudios::Play(audioComponente);
         return 1;
     }
 
@@ -69,7 +69,7 @@ private:
 
 public:
 
-    CPigItemLista(int idComponente,int px, int py, int altItem,int largItem,int larguraLista,int posXLista,char *nomeArq, int retiraFundo=1,int janela=0):
+    CPigItemLista(int idComponente,int px, int py, int altItem,int largItem,int larguraLista,int posXLista,std::string nomeArq, int retiraFundo=1,int janela=0):
         CPigComponente(idComponente,px,py,altItem,largItem,nomeArq,retiraFundo,janela){
             IniciaBase(larguraLista,posXLista);
     }

@@ -1,22 +1,17 @@
 typedef enum {COMPONENTE_NORMAL,COMPONENTE_MOUSEOVER,COMPONENTE_ACIONADO,COMPONENTE_DESABILITADO,COMPONENTE_EDITANDO,COMPONENTE_INVISIVEL} PIG_EstadoComponente;
-//typedef enum {COMPONENTE_CIMA,COMPONENTE_CIMADIR,COMPONENTE_DIREITA,COMPONENTE_BAIXODIR,COMPONENTE_BAIXO,COMPONENTE_BAIXOESQ,COMPONENTE_ESQUERDA,COMPONENTE_CIMAESQ,COMPONENTE_CENTRO,COMPONENTE_POSICAO_PERSONALIZADA} PIG_PosicaoComponente;
-typedef enum{PIG_COMPONENTE_CIMA_CENTRO,PIG_COMPONENTE_CIMA_ESQ,PIG_COMPONENTE_CIMA_DIR,
-             PIG_COMPONENTE_BAIXO_CENTRO,PIG_COMPONENTE_BAIXO_DIR,PIG_COMPONENTE_BAIXO_ESQ,
-             PIG_COMPONENTE_DIR_CIMA,PIG_COMPONENTE_DIR_BAIXO,PIG_COMPONENTE_DIR_CENTRO,
-             PIG_COMPONENTE_ESQ_BAIXO,PIG_COMPONENTE_ESQ_CENTRO,PIG_COMPONENTE_ESQ_CIMA,
-             PIG_COMPONENTE_CENTRO_CENTRO,PIG_COMPONENTE_PERSONALIZADA}PIG_PosicaoComponente;
-
+typedef enum{PIG_COMPONENTE_CIMA_CENTRO,PIG_COMPONENTE_CIMA_ESQ,PIG_COMPONENTE_CIMA_DIR,PIG_COMPONENTE_BAIXO_CENTRO,PIG_COMPONENTE_BAIXO_DIR,PIG_COMPONENTE_BAIXO_ESQ,PIG_COMPONENTE_DIR_CIMA,PIG_COMPONENTE_DIR_BAIXO,PIG_COMPONENTE_DIR_CENTRO,PIG_COMPONENTE_ESQ_BAIXO,PIG_COMPONENTE_ESQ_CENTRO,PIG_COMPONENTE_ESQ_CIMA,PIG_COMPONENTE_CENTRO_CENTRO,PIG_COMPONENTE_PERSONALIZADA}PIG_PosicaoComponente;
 class CPigComponente: public CVisual{
 
 protected:
 
 PIG_EstadoComponente estado;
-char *hint,*label;
+std::string hint,label;
 int fonteHint,fonteLabel;
 int audioComponente;
 int antesOn,agoraOn;
 int id;
 int labelX,labelY;
+int altLetraLabel;
 PIG_PosicaoComponente posLabel;
 
 virtual int OnMouseOn()=0;
@@ -24,9 +19,9 @@ virtual int OnMouseOff()=0;
 
 void IniciaBase(int idComponente, int px, int py){
     id = idComponente;
-    hint = NULL;
-    label = NULL;
-    fonteHint = fonteLabel = 0;
+    hint = label = "";
+    SetFonteHint(0);
+    SetFonteLabel(0);
     audioComponente = -1;
     estado = COMPONENTE_NORMAL;
     x = px;
@@ -35,8 +30,8 @@ void IniciaBase(int idComponente, int px, int py){
 }
 
 //verifica se uma string possui apenas digitos de 0 a 9
-bool SomenteNumeros(char *frase){
-    for (int i=0;i<strlen(frase);i++)
+bool SomenteNumeros(std::string frase){
+    for (int i=0;i<frase.size();i++)
         if (frase[i]<'0'||frase[i]>'9')
             return false;
     return true;
@@ -44,7 +39,7 @@ bool SomenteNumeros(char *frase){
 
 //escreve o hint do componente na tela
 void EscreveHint(){
-    if (agoraOn&&hint){
+    if (agoraOn&&hint!=""){
         int mx,my;
         CMouse::PegaXY(mx,my);
         CGerenciadorFontes::EscreverEsquerda(hint,mx+16,my+5,fonteHint);
@@ -73,50 +68,50 @@ int MouseSobre(int mx, int my){
 
 //desenha o label
 void DesenhaLabel(){
-    int alturaLetra = CGerenciadorFontes::GetTamanhoBaseFonte(fonteLabel)+CGerenciadorFontes::GetFonteDescent(fonteLabel);
-    if (label!=NULL && strcmp(label,"")) {
+    //printf("vai <%s> %d\n",label.c_str(),fonteLabel);
+    if (label!="") {
         switch(posLabel){
         case PIG_COMPONENTE_CIMA_CENTRO:
-            EscreverCentralizada(label,x+larg/2,y+alt+5,fonteLabel);
+            CGerenciadorFontes::EscreverCentralizada(label,x+larg/2,y+alt+5,fonteLabel);
             break;
         case PIG_COMPONENTE_CIMA_DIR:
-            EscreverDireita(label,x+larg,y+alt+5,fonteLabel);
+            CGerenciadorFontes::EscreverDireita(label,x+larg,y+alt+5,fonteLabel);
             break;
         case PIG_COMPONENTE_CIMA_ESQ:
-            EscreverEsquerda(label,x,y+alt+5,fonteLabel);
+            CGerenciadorFontes::EscreverEsquerda(label,x,y+alt+5,fonteLabel);
             break;
         case PIG_COMPONENTE_BAIXO_CENTRO:
-            EscreverCentralizada(label,x+larg/2,y-alturaLetra,fonteLabel);
+            CGerenciadorFontes::EscreverCentralizada(label,x+larg/2,y-altLetraLabel,fonteLabel);
             break;
         case PIG_COMPONENTE_BAIXO_DIR:
-            EscreverDireita(label,x+larg,y-alturaLetra,fonteLabel);
+            CGerenciadorFontes::EscreverDireita(label,x+larg,y-altLetraLabel,fonteLabel);
             break;
         case PIG_COMPONENTE_BAIXO_ESQ:
-            EscreverEsquerda(label,x,y-alturaLetra,fonteLabel);
+            CGerenciadorFontes::EscreverEsquerda(label,x,y-altLetraLabel,fonteLabel);
             break;
         case PIG_COMPONENTE_ESQ_BAIXO:
-            EscreverDireita(label,x-5,y,fonteLabel);
+            CGerenciadorFontes::EscreverDireita(label,x-5,y,fonteLabel);
             break;
         case PIG_COMPONENTE_ESQ_CENTRO:
-            EscreverDireita(label,x-5,y+(alt-alturaLetra)/2,fonteLabel);
+            CGerenciadorFontes::EscreverDireita(label,x-5,y+(alt-altLetraLabel)/2,fonteLabel);
             break;
         case PIG_COMPONENTE_ESQ_CIMA:
-            EscreverDireita(label,x-5,y + (alt-alturaLetra),fonteLabel);
+            CGerenciadorFontes::EscreverDireita(label,x-5,y + (alt-altLetraLabel),fonteLabel);
             break;
         case PIG_COMPONENTE_DIR_BAIXO:
-            EscreverEsquerda(label,x+larg+5,y,fonteLabel);
+            CGerenciadorFontes::EscreverEsquerda(label,x+larg+5,y,fonteLabel);
             break;
         case PIG_COMPONENTE_DIR_CENTRO:
-            EscreverEsquerda(label,x+larg+5,y + (alt-alturaLetra)/2,fonteLabel);
+            CGerenciadorFontes::EscreverEsquerda(label,x+larg+5,y + (alt-altLetraLabel)/2,fonteLabel);
             break;
         case PIG_COMPONENTE_DIR_CIMA:
-            EscreverEsquerda(label,x+larg+5,y + (alt-alturaLetra),fonteLabel);
+            CGerenciadorFontes::EscreverEsquerda(label,x+larg+5,y + (alt-altLetraLabel),fonteLabel);
             break;
         case PIG_COMPONENTE_CENTRO_CENTRO:
-            EscreverCentralizada(label,x+larg/2,y+(alt-alturaLetra)/2,fonteLabel);
+            CGerenciadorFontes::EscreverCentralizada(label,x+larg/2,y+(alt-altLetraLabel)/2,fonteLabel);
             break;
         case PIG_COMPONENTE_PERSONALIZADA:
-            EscreverEsquerda(label,labelX,labelY,fonteLabel);
+            CGerenciadorFontes::EscreverEsquerda(label,labelX,labelY,fonteLabel);
         }
     }
 }
@@ -130,16 +125,14 @@ CPigComponente(int idComponente,int px,int py, int altura, int largura, int jane
     IniciaBase(idComponente,px,py);
 }
 
-CPigComponente(int idComponente,int px,int py, int altura, int largura, char *nomeArq,int retiraFundo=1,int janela=0):CVisual(nomeArq,retiraFundo,NULL,janela){
+CPigComponente(int idComponente,int px,int py, int altura, int largura, std::string nomeArq,int retiraFundo=1,int janela=0):CVisual(nomeArq,retiraFundo,NULL,janela){
     IniciaBase(idComponente,px,py);
     CVisual::SetDimensoes(altura,largura);
 }
 
 ~CPigComponente(){
-    if (hint)
-        free(hint);
-    if (label)
-        free(label);
+    hint.clear();
+    label.clear();
 }
 
 //recupera o id do componente
@@ -154,23 +147,13 @@ virtual int Desenha()=0;
 virtual int TrataEvento(PIG_Evento evento)=0;
 
 //define a mensagem de hint do componente
-void SetHint(char *mensagem){
-    if (hint)
-        free(hint);
-    if (mensagem){
-        hint = (char*) malloc(strlen(mensagem));
-        strcpy(hint,mensagem);
-    }
+void SetHint(std::string novoHint){
+    hint = novoHint;
 }
 
 //define o label do componente
-void SetLabel(char *novoLabel){
-    if (label)
-        free(label);
-    if (novoLabel){
-        label = (char*) malloc(strlen(novoLabel));
-        strcpy(label,novoLabel);
-    }
+void SetLabel(std::string novoLabel){
+    label = novoLabel;
 }
 
 //define o audio padrão do componente
@@ -184,8 +167,14 @@ virtual void SetFonteHint(int fonte){
 }
 
 //define a fonte do label
-void SetFonteLabel(int fonte){
+virtual void SetFonteLabel(int fonte){
     fonteLabel = fonte;
+    altLetraLabel = CGerenciadorFontes::GetTamanhoBaseFonte(fonteLabel)+CGerenciadorFontes::GetFonteDescent(fonteLabel);
+}
+
+//recupera o label
+std::string GetLabel(){
+    return label;
 }
 
 //define a posição do label (dentre posições pré-estabelecidas)
@@ -198,7 +187,7 @@ virtual int SetPosicaoPadraoLabel(PIG_PosicaoComponente pos){
 virtual int SetPosicaoPersonalizadaLabel(int rx, int ry){
     labelX = rx;
     labelY = ry;
-    posLabel = PIG_COMPONENTE_PERSONALIZADA;
+    posLabel = PIG_COMPONENTE_PERSONALIZADA;//evitar que o usuário esqueça de chamar também a SetPosicaoPadraoLabel
     return 1;
 }
 
@@ -209,11 +198,6 @@ virtual void DefineEstado(PIG_EstadoComponente estadoComponente)=0;
 PIG_EstadoComponente GetEstado(){
     return estado;
 }
-
-void GetLabel(char *buffer){
-    strcpy(buffer,label);
-}
-
 
 };
 

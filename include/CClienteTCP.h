@@ -10,7 +10,7 @@ void CriaEventoMensagem(PIG_TipoMensagemRede tipoMensagem, const void *buffer, i
     infoRede->idSocket = id;
     infoRede->idSecundario = -1;
     memcpy(infoRede->mensagem,buffer,tamanhoDados);
-    GetHostRemoto(infoRede->host);
+    strcpy(infoRede->host,GetHostRemoto().c_str());
     infoRede->porta = GetPortaRemota();
     SDL_Event event;
     event.type = SDL_USEREVENT;
@@ -21,7 +21,7 @@ void CriaEventoMensagem(PIG_TipoMensagemRede tipoMensagem, const void *buffer, i
 
 public:
 
-CClienteTCP(int idSocket,char *host, int porta, int maxBytesPacote):CSocketTCP(idSocket,host,porta,maxBytesPacote){
+CClienteTCP(int idSocket,std::string host, int porta, int maxBytesPacote):CSocketTCP(idSocket,host,porta,maxBytesPacote){
     if (!ativo){
         printf("Erro: Cliente TCP nao esta ativo\n");
         return;

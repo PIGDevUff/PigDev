@@ -55,7 +55,7 @@ static void Encerra(){
     delete numSocketsUDP;
 }
 
-static int CriaCliente(char *hostname, int porta, int maxBytesPacote=MAX_MENSAGEM_REDE_TCP){
+static int CriaCliente(std::string hostname, int porta, int maxBytesPacote=MAX_MENSAGEM_REDE_TCP){
     int resp = numClientes->RetiraLivre();
     clientes[resp] = new CClienteTCP(resp,hostname,porta,maxBytesPacote);
     totalClientes++;
@@ -193,20 +193,20 @@ static int GetPortaLocalSocketUDP(int idSocket){
     return socketsUDP[idSocket]->GetPortaLocal();
 }
 
-static void GetHostRemotoCliente(int idSocket,char *hostname){
-    clientes[idSocket]->GetHostRemoto(hostname);
+static std::string GetHostRemotoCliente(int idSocket){
+    return clientes[idSocket]->GetHostRemoto();
 }
 
-static void GetHostLocalCliente(int idSocket,char *hostname){
-    clientes[idSocket]->GetHostLocal(hostname);
+static std::string GetHostLocalCliente(int idSocket){
+    return clientes[idSocket]->GetHostLocal();
 }
 
-static void GetHostLocalServidor(int idSocket,char *hostname){
-    servidores[idSocket]->GetHostLocal(hostname);
+static std::string GetHostLocalServidor(int idSocket){
+    return servidores[idSocket]->GetHostLocal();
 }
 
-static void GetHostLocalSocketUDP(int idSocket,char *hostname){
-    socketsUDP[idSocket]->GetHostLocal(hostname);
+static std::string GetHostLocalSocketUDP(int idSocket){
+    return socketsUDP[idSocket]->GetHostLocal();
 }
 
 static int GetTamanhoPacoteCliente(int idSocket){
@@ -233,7 +233,7 @@ static int EnviaDadosServidor(int idSocket,int socketSecundario,void *buffer, in
     return servidores[idSocket]->EnviaDados(buffer,tamanhoBuffer,socketSecundario);
 }
 
-static int EnviaDadosSocketUDP(int idSocket,void *buffer,int tamanhoBuffer, char *hostRemoto, int porta){
+static int EnviaDadosSocketUDP(int idSocket,void *buffer,int tamanhoBuffer, std::string hostRemoto, int porta){
     return socketsUDP[idSocket]->EnviaDados(buffer,tamanhoBuffer,hostRemoto,porta);
 }
 

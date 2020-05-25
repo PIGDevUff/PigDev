@@ -26,7 +26,7 @@ public:
         delete numObjetos;
     }
 
-    static int CriaObjeto(char* nomeArquivoBMP,PIG_Cor *corFundo=NULL,int retiraFundo=1,int idJanela=0){
+    static int CriaObjeto(std::string nomeArquivoBMP,PIG_Cor *corFundo=NULL,int retiraFundo=1,int idJanela=0){
         int resp = numObjetos->RetiraLivre();
         objetos[resp] = new CObjeto(nomeArquivoBMP,corFundo,retiraFundo,idJanela);
         totalObjetos++;
@@ -170,20 +170,20 @@ public:
         return objetos[idObjeto]->GetOpacidade();
     }
 
-    inline static void Desenha(int id_objeto,OffscreenRenderer offRender=NULL){
-        objetos[id_objeto]->Desenha(offRender);
+    inline static void Desenha(int idObjeto,OffscreenRenderer offRender=NULL){
+        objetos[idObjeto]->Desenha(offRender);
     }
 
-    inline static int TestaColisao(int id_objeto1,int id_objeto2){
-        return objetos[id_objeto1]->Colisao(objetos[id_objeto2]);
+    inline static int TestaColisao(int idObjeto1,int idObjeto2){
+        return objetos[idObjeto1]->Colisao(objetos[idObjeto2]);
     }
 
-    inline static PIG_Cor **GetPixels(int id_objeto){
-        return objetos[id_objeto]->GetPixels();
+    inline static PIG_Cor **GetPixels(int idObjeto){
+        return objetos[idObjeto]->GetPixels();
     }
 
-    inline static void AtualizaPixels(int id_objeto,int retiraFundo=1){
-        objetos[id_objeto]->AtualizaPixels(retiraFundo);
+    inline static void AtualizaPixels(int idObjeto,int retiraFundo=1){
+        objetos[idObjeto]->AtualizaPixels(retiraFundo);
     }
 };
 

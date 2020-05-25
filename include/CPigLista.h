@@ -31,7 +31,7 @@ private:
         if(itemMarcado !=-1 && retanguloMarcado){
             int posX,posY;
             itens[itemMarcado]->GetXY(posX,posY);
-            DesenhaRetanguloVazado(x,posY,altItem,larg,AZUL,idJanela);
+            CGerenciadorJanelas::DesenhaRetanguloVazado(x,posY,altItem,larg,AZUL,idJanela);
         }
     }
 

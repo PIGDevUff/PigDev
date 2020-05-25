@@ -6,11 +6,12 @@ private:
     static int totalFontes;
     static PoolNumeros numFontes;
     static MapaCaracteres fontes[MAX_FONTES];
+    CGerenciadorFontes(){}
 
 public:
 
-    static MapaCaracteres GetFonte(int id_fonte){
-        return fontes[id_fonte];
+    static MapaCaracteres GetFonte(int idFonte){
+        return fontes[idFonte];
     }
 
     static void Inicia(){
@@ -56,8 +57,8 @@ public:
         return resp;
     }
 
-    inline static int GetLarguraPixels(char *str,int numFonte=0){
-        return fontes[numFonte]->GetLarguraPixelsString(str);
+    inline static int GetLarguraPixels(std::string texto,int numFonte=0){
+        return fontes[numFonte]->GetLarguraPixelsString(texto);
     }
 
     inline static int GetFonteDescent(int numFonte=0){
@@ -68,56 +69,53 @@ public:
         return fontes[numFonte]->GetFonteAscent();
     }
 
-    inline static void EscreverCentralizada(char *str,int x,int y,float ang,int numFonte=0){
-        fontes[numFonte]->EscreveStringCentralizado(str,x,y,ang);
+    inline static void EscreverCentralizada(std::string str,int x,int y,int numFonte=0,float angulo=0){
+        fontes[numFonte]->EscreveStringCentralizado(str,x,y,angulo);
     }
 
-    inline static void EscreverDireita(char *str,int x,int y,float ang,int numFonte=0){
-        fontes[numFonte]->EscreveStringDireita(str,x,y);
+    inline static void EscreverDireita(std::string str,int x,int y,int numFonte=0,float angulo=0){
+        fontes[numFonte]->EscreveStringDireita(str,x,y,angulo);
     }
 
-    inline static void EscreverEsquerda(char *str,int x,int y,float ang,int numFonte=0){
-        fontes[numFonte]->EscreveStringEsquerda(str,x,y);
+    inline static void EscreverEsquerda(std::string str,int x,int y,int numFonte=0,float angulo=0){
+        fontes[numFonte]->EscreveStringEsquerda(str,x,y,angulo);
     }
 
-    inline static void EscreverLongaCentralizada(char *str,int x,int y,int largMax,int espacoEntreLinhas,float angulo=0,int numFonte=0){
-        std::string texto(str);
-        fontes[numFonte]->EscreveStringLongaCentralizado(texto,x,y,largMax,espacoEntreLinhas,angulo);
+    inline static void EscreverLongaCentralizada(std::string str,int x,int y,int largMax,int espacoEntreLinhas,int numFonte=0,float angulo=0){
+        fontes[numFonte]->EscreveStringLongaCentralizado(str,x,y,largMax,espacoEntreLinhas,angulo);
     }
 
-    inline static void EscreverLongaDireita(char *str,int x,int y,int largMax,int espacoEntreLinhas,float angulo=0,int numFonte=0){
-        std::string texto(str);
-        fontes[numFonte]->EscreveStringLongaDireita(texto,x,y,largMax,espacoEntreLinhas,angulo);
+    inline static void EscreverLongaDireita(std::string str,int x,int y,int largMax,int espacoEntreLinhas,int numFonte=0,float angulo=0){
+        fontes[numFonte]->EscreveStringLongaDireita(str,x,y,largMax,espacoEntreLinhas,angulo);
     }
 
-    inline static void EscreverLongaEsquerda(char *str,int x,int y,int largMax,int espacoEntreLinhas,float angulo=0,int numFonte=0){
-        std::string texto(str);
-        fontes[numFonte]->EscreveStringLongaEsquerda(texto,x,y,largMax,espacoEntreLinhas,angulo);
+    inline static void EscreverLongaEsquerda(std::string str,int x,int y,int largMax,int espacoEntreLinhas,int numFonte=0,float angulo=0){
+        fontes[numFonte]->EscreveStringLongaEsquerda(str,x,y,largMax,espacoEntreLinhas,angulo);
     }
 
 
-    inline static void EscreveInteiroEsquerda(int valor, int x, int y, float ang=0,int numFonte=0){
-        fontes[numFonte]->EscreveInteiroEsquerda(valor,x,y,ang,0);
+    inline static void EscreveInteiroEsquerda(int valor, int x, int y, int numFonte=0,float angulo=0){
+        fontes[numFonte]->EscreveInteiroEsquerda(valor,x,y,angulo,0);
     }
 
-    inline static void EscreveInteiroCentralizado(int valor, int x, int y, float ang=0,int numFonte=0){
-        fontes[numFonte]->EscreveInteiroCentralizado(valor,x,y,ang);
+    inline static void EscreveInteiroCentralizado(int valor, int x, int y, int numFonte=0, float angulo=0){
+        fontes[numFonte]->EscreveInteiroCentralizado(valor,x,y,angulo);
     }
 
-    inline static void EscreveInteiroDireita(int valor, int x, int y, float ang=0,int numFonte=0){
-        fontes[numFonte]->EscreveInteiroDireita(valor,x,y,ang);
+    inline static void EscreveInteiroDireita(int valor, int x, int y, int numFonte=0,float angulo=0){
+        fontes[numFonte]->EscreveInteiroDireita(valor,x,y,angulo);
     }
 
-    inline static void EscreveDoubleEsquerda(double valor, int casas, int x, int y, float ang=0,int numFonte=0){
-        fontes[numFonte]->EscreveDoubleEsquerda(valor,x,y,ang,0);
+    inline static void EscreveDoubleEsquerda(double valor, int casas, int x, int y, int numFonte=0,float angulo=0){
+        fontes[numFonte]->EscreveDoubleEsquerda(valor,x,y,angulo,0);
     }
 
-    inline static void EscreveDoubleCentralizado(double valor, int casas, int x, int y, float ang=0,int numFonte=0){
-        fontes[numFonte]->EscreveDoubleCentralizado(valor,x,y,ang);
+    inline static void EscreveDoubleCentralizado(double valor, int casas, int x, int y, int numFonte=0,float angulo=0){
+        fontes[numFonte]->EscreveDoubleCentralizado(valor,x,y,angulo);
     }
 
-    inline static void EscreveDoubleDireita(double valor, int casas, int x, int y, float ang=0,int numFonte=0){
-        fontes[numFonte]->EscreveDoubleDireita(valor,x,y,ang);
+    inline static void EscreveDoubleDireita(double valor, int casas, int x, int y, int numFonte=0,float angulo=0){
+        fontes[numFonte]->EscreveDoubleDireita(valor,x,y,angulo);
     }
 
     inline static std::vector<std::string> ExtraiLinhasString(std::string texto,int largMax,int numFonte=0){

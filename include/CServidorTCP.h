@@ -16,7 +16,7 @@ void CriaEventoMensagem(PIG_TipoMensagemRede tipoMensagem, const void *buffer, i
     infoRede->idSocket = id;
     infoRede->idSecundario = indiceSlot;
     memcpy(infoRede->mensagem,buffer,tamanhoDados);
-    clientesTCP[indiceSlot]->GetHostRemoto(infoRede->host);
+    strcpy(infoRede->host,clientesTCP[indiceSlot]->GetHostRemoto().c_str());
     infoRede->porta = clientesTCP[indiceSlot]->GetPortaRemota();
     SDL_Event event;
     event.type = SDL_USEREVENT;
@@ -53,7 +53,7 @@ void InicializaValoresBasicos(int valorId,int maxBytesPacote){
 
 public:
 
-CServidorTCP(int idSocket, int maximoConexoes, int porta, int maxBytesPacote):CSocketTCP(idSocket,NULL,porta,maxBytesPacote){
+CServidorTCP(int idSocket, int maximoConexoes, int porta, int maxBytesPacote):CSocketTCP(idSocket,"",porta,maxBytesPacote){
     if (!ativo){
         printf("Erro: Servidor TCP nao esta ativo\n");
         return;
@@ -76,6 +76,7 @@ CServidorTCP(int idSocket, int maximoConexoes, int porta, int maxBytesPacote):CS
     clientesTCP = (SocketTCP*) malloc(maxConexoes*sizeof(SocketTCP));
     for (int i=0;i<maxConexoes;i++)
         clientesTCP[i] = NULL;
+
 
     clienteSet = SDLNet_AllocSocketSet(maxConexoes);
     socketSet = SDLNet_AllocSocketSet(1);
@@ -165,7 +166,7 @@ static int receive_code(void *data){
             if (servidor->clientesTCP[indice]){
                 int bytes = servidor->clientesTCP[indice]->RecebeDados(buffer);
                 //printf("Bytes %d do cliente %d\n",bytes,indice);
-                if (bytes==0){//nao tem atividade
+                if (bytes<=0){//nao tem atividade
                     servidor->CriaEventoMensagem(REDE_DESCONEXAO,"",1,indice);
                     delete servidor->clientesTCP[indice];
                     servidor->clientesTCP[indice] = NULL;

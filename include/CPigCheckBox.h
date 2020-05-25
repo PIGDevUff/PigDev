@@ -2,17 +2,17 @@ class CPigCheckBox: public CPigBox{
 
 public:
 
-CPigCheckBox(int idComponente, int posX, int posY, int largura, char *nomeArqFundo, char *nomeArqItem, int alturaItem, int larguraItem, int espacoVertical, int retiraFundo=1):
+CPigCheckBox(int idComponente, int posX, int posY, int largura, std::string nomeArqFundo, char *nomeArqItem, int alturaItem, int larguraItem, int espacoVertical, int retiraFundo=1):
     CPigBox(idComponente,posX,posY,largura,nomeArqFundo,nomeArqItem,alturaItem,larguraItem,espacoVertical,retiraFundo){
 
 }
 
-CPigCheckBox(int idComponente, int posX, int posY, int largura, char *nomeArqItem,int alturaItem, int larguraItem, int espacoVertical):
+CPigCheckBox(int idComponente, int posX, int posY, int largura, std::string nomeArqItem,int alturaItem, int larguraItem, int espacoVertical):
     CPigBox(idComponente,posX,posY,largura,nomeArqItem,alturaItem,larguraItem,espacoVertical){
 
 }
 
-void CriaItem(char *itemLabel, bool itemMarcado, bool itemHabilitado, int audio=-1, char *hintMsg=NULL, int retiraFundo=1,int janela=0){
+void CriaItem(std::string itemLabel, bool itemMarcado = false, bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1,int janela=0){
     alt =( espacoLinha*itens.size() ) + ( altItem*(itens.size()+1) );
     CPigItemCheck *item = new CPigItemCheck(itens.size(),x,y+(espacoLinha + altItem)*(itens.size()),altItem,largItem,(char*)nomeImgItem.c_str(),itemLabel,retiraFundo,janela);
     itens.push_back(item);
@@ -35,6 +35,22 @@ int TrataEvento(PIG_Evento evento)override{
 void SetMarcadoTodos(bool marcado){
     for (CPigItemCheck* i: itens)
         i->SetMarcado(false);
+}
+
+int SetMarcadoItem(int indice, bool marcado){
+    if (indice<0||indice>=itens.size()) return -1;
+    itens[indice]->SetMarcado(marcado);
+    return 1;
+}
+
+std::vector <int> GetItensMarcados(){
+
+    std::vector <int> resp;
+    for(int i=0;i<itens.size();i++)
+        if(itens[i]->GetMarcado())resp.push_back(i);
+
+    return resp;
+
 }
 
 };

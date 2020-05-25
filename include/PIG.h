@@ -23,14 +23,15 @@ Versão 0.7.2 da Biblioteca PIG.h
 #include "COffscreenRenderer.h"
 #include "CGerenciadorFontes.h"
 #include "CVisual.h"
+#include "CMouse.h"
 #include "CGerenciadorObjetos.h"
 #include "CGerenciadorTimers.h"
 #include "CGerenciadorVideos.h"
 #include "CGerenciadorAudios.h"
 #include "CGerenciadorAnimacoes.h"
 #include "CGerenciadorParticulas.h"
-#include "CMouse.h"
 #include "CGerenciadorControles.h"
+#include "CPigForm.h"
 #include "CJogo.h"
 
 /********************************
@@ -349,7 +350,8 @@ tituloJanela (saída, passagem por referência): armazena o título da janela que f
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela a ser consultada.
 ********************************/
 void GetTituloJanela(char *tituloJanela,int idJanela=0){
-    CGerenciadorJanelas::GetTitulo(tituloJanela,idJanela);
+    std::string resp = CGerenciadorJanelas::GetTitulo(idJanela);
+    strcpy(tituloJanela,resp.c_str());
 }
 
 /********************************
@@ -553,7 +555,7 @@ cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho da
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde a linha será desenhada.
 ********************************/
 void DesenhaLinhaSimples(int pontoX1,int pontoY1,int pontoX2,int pontoY2, PIG_Cor cor, int idJanela=0){
-    jogo->DesenhaLinhaSimples(pontoX1,pontoY1,pontoX2,pontoY2,cor,idJanela);
+    CGerenciadorJanelas::DesenhaLinhaSimples(pontoX1,pontoY1,pontoX2,pontoY2,cor,idJanela);
 }
 
 /********************************
@@ -567,7 +569,7 @@ cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho da
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde as linhas serão desenhadas.
 ********************************/
 void DesenhaLinhasDisjuntas(int *pontosX,int *pontosY,int qtd, PIG_Cor cor, int idJanela=0){
-    jogo->DesenhaLinhasDisjuntas(pontosX,pontosY,qtd,cor,idJanela);
+    CGerenciadorJanelas::DesenhaLinhasDisjuntas(pontosX,pontosY,qtd,cor,idJanela);
 }
 
 /********************************
@@ -581,7 +583,7 @@ cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho da
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde as linhas serão desenhadas.
 ********************************/
 void DesenhaLinhasSequencia(int *pontosX,int *pontosY,int qtd, PIG_Cor cor, int idJanela=0){
-    jogo->DesenhaLinhasSequencia(pontosX,pontosY,qtd,cor,idJanela);
+    CGerenciadorJanelas::DesenhaLinhasSequencia(pontosX,pontosY,qtd,cor,idJanela);
 }
 
 /********************************
@@ -596,7 +598,7 @@ cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho do
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde o retângulo será desenhado.
 ********************************/
 void DesenhaRetangulo(int posicaoX, int posicaoY, int altura, int largura, PIG_Cor cor, int idJanela=0){
-    jogo->DesenhaRetangulo(posicaoX,posicaoY,altura,largura,cor,idJanela);
+    CGerenciadorJanelas::DesenhaRetangulo(posicaoX,posicaoY,altura,largura,cor,idJanela);
 }
 
 /********************************
@@ -611,7 +613,7 @@ cor (entrada, passagem por valor): indica a cor no sistema RGB para a borda do r
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde o retângulo será desenhado.
 ********************************/
 void DesenhaRetanguloVazado(int posicaoX, int posicaoY, int altura, int largura, PIG_Cor cor, int idJanela=0){
-    jogo->DesenhaRetanguloVazado(posicaoX,posicaoY,altura,largura,cor,idJanela);
+    CGerenciadorJanelas::DesenhaRetanguloVazado(posicaoX,posicaoY,altura,largura,cor,idJanela);
 }
 
 /********************************
@@ -906,10 +908,10 @@ Parâmetros:
 str (entrada, passagem por referência): string a ser escrita na tela.
 posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever a string.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever a string.
-angulo (entrada, passagem por valor): ângulo, em graus, para a rotação da string.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+angulo (entrada, passagem por valor): ângulo, em graus, para a rotação da string.
 ********************************/
-void EscreverDireita(char *str,int posicaoX,int posicaoY,float angulo=0,int numFonte=0){
+void EscreverDireita(char *str,int posicaoX,int posicaoY,int numFonte=0,float angulo=0){
     CGerenciadorFontes::EscreverDireita(str,posicaoX,posicaoY,angulo,numFonte);
 }
 
@@ -919,10 +921,10 @@ Parâmetros:
 str (entrada, passagem por referência): string a ser escrita na tela.
 posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever a string.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever a string.
-angulo (entrada, passagem por valor): ângulo, em graus, para a rotação da string.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+angulo (entrada, passagem por valor): ângulo, em graus, para a rotação da string.
 ********************************/
-void EscreverEsquerda(char *str,int posicaoX,int posicaoY,float angulo=0,int numFonte=0){
+void EscreverEsquerda(char *str,int posicaoX,int posicaoY,int numFonte=0,float angulo=0){
     CGerenciadorFontes::EscreverEsquerda(str,posicaoX,posicaoY,angulo,numFonte);
 }
 
@@ -932,10 +934,10 @@ Parâmetros:
 str (entrada, passagem por referência): string a ser escrita na tela.
 posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever a string.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever a string.
-angulo (entrada, passagem por valor): ângulo, em graus, para a rotação da string.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+angulo (entrada, passagem por valor): ângulo, em graus, para a rotação da string.
 ********************************/
-void EscreverCentralizada(char *str,int posicaoX,int posicaoY,float angulo=0,int numFonte=0){
+void EscreverCentralizada(char *str,int posicaoX,int posicaoY,int numFonte=0,float angulo=0){
     CGerenciadorFontes::EscreverCentralizada(str,posicaoX,posicaoY,angulo,numFonte);
 }
 
@@ -949,10 +951,10 @@ posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever a string.
 largMax (entrada, passagem por valor): largura máxima em pixels que pode ser utilizada para escrever as palavras em cada linha do texto. ao atingir esse limite, as palavras seguintes são escritas na linha abaixo.
 espacoEntreLinhas (entrada, passagem por valor): distância em pixels entre o valor Y de uma linha e o valor Y da linha abaixo.
-angulo (entrada, passagem por valor): ângulo, em graus, para a rotação das strings.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+angulo (entrada, passagem por valor): ângulo, em graus, para a rotação das strings.
 ********************************/
-void EscreverLongaEsquerda(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,float angulo=0,int numFonte=0){
+void EscreverLongaEsquerda(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,int numFonte=0,float angulo=0){
     CGerenciadorFontes::EscreverLongaEsquerda(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,angulo,numFonte);
 }
 
@@ -966,10 +968,10 @@ posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever a string.
 largMax (entrada, passagem por valor): largura máxima em pixels que pode ser utilizada para escrever as palavras em cada linha do texto. ao atingir esse limite, as palavras seguintes são escritas na linha abaixo.
 espacoEntreLinhas (entrada, passagem por valor): distância em pixels entre o valor Y de uma linha e o valor Y da linha abaixo.
-angulo (entrada, passagem por valor): ângulo, em graus, para a rotação das strings.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+angulo (entrada, passagem por valor): ângulo, em graus, para a rotação das strings.
 ********************************/
-void EscreverLongaDireita(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,float angulo=0,int numFonte=0){
+void EscreverLongaDireita(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,int numFonte=0,float angulo=0){
     CGerenciadorFontes::EscreverLongaDireita(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,angulo,numFonte);
 }
 
@@ -983,10 +985,10 @@ posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever a string.
 largMax (entrada, passagem por valor): largura máxima em pixels que pode ser utilizada para escrever as palavras em cada linha do texto. ao atingir esse limite, as palavras seguintes são escritas na linha abaixo.
 espacoEntreLinhas (entrada, passagem por valor): distância em pixels entre o valor Y de uma linha e o valor Y da linha abaixo.
-angulo (entrada, passagem por valor): ângulo, em graus, para a rotação das strings.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+angulo (entrada, passagem por valor): ângulo, em graus, para a rotação das strings.
 ********************************/
-void EscreverLongaCentralizada(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,float angulo=0,int numFonte=0){
+void EscreverLongaCentralizada(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,int numFonte=0,float angulo=0){
     CGerenciadorFontes::EscreverLongaCentralizada(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,angulo,numFonte);
 }
 
@@ -996,10 +998,10 @@ Parâmetros:
 valor (entrada, passagem por referência): número inteiro a ser escrito na tela.
 posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever o número.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever o número.
-angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número inteiro.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número inteiro.
 ********************************/
-void EscreveInteiroEsquerda(int valor, int x, int y, float angulo=0,int numFonte=0){
+void EscreveInteiroEsquerda(int valor, int x, int y, int numFonte=0,float angulo=0){
     CGerenciadorFontes::EscreveInteiroEsquerda(valor,x,y,angulo,numFonte);
 }
 
@@ -1009,10 +1011,10 @@ Parâmetros:
 valor (entrada, passagem por referência): número inteiro a ser escrito na tela.
 posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever o número.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever o número.
-angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número inteiro.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número inteiro.
 ********************************/
-void EscreveInteiroDireita(int valor, int x, int y, float angulo=0,int numFonte=0){
+void EscreveInteiroDireita(int valor, int x, int y, int numFonte=0,float angulo=0){
     CGerenciadorFontes::EscreveInteiroDireita(valor,x,y,angulo,numFonte);
 }
 
@@ -1022,13 +1024,12 @@ Parâmetros:
 valor (entrada, passagem por referência): número inteiro a ser escrito na tela.
 posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever o número.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever o número.
-angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número inteiro.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número inteiro.
 ********************************/
-void EscreveInteiroCentralizado(int valor, int x, int y, float angulo=0,int numFonte=0){
+void EscreveInteiroCentralizado(int valor, int x, int y, int numFonte=0,float angulo=0){
     CGerenciadorFontes::EscreveInteiroCentralizado(valor,x,y,angulo,numFonte);
 }
-
 
 /********************************
 A função EscreverDoubleEsquerda() é responsável por exibir um número real na tela de jogo, com alinhamento à esquerda em relação ao valor de X.
@@ -1037,10 +1038,10 @@ valor (entrada, passagem por referência): número inteiro a ser escrito na tela.
 casas (entrada, passagem por referência): número de casas decimais a ser usado na escrita.
 posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever o número.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever o número.
-angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número real.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número real.
 ********************************/
-void EscreveDoubleEsquerda(double valor, int casas, int x, int y, float angulo=0,int numFonte=0){
+void EscreveDoubleEsquerda(double valor, int casas, int x, int y, int numFonte=0,float angulo=0){
     CGerenciadorFontes::EscreveDoubleEsquerda(valor,x,y,angulo,numFonte);
 }
 
@@ -1051,10 +1052,10 @@ valor (entrada, passagem por referência): número inteiro a ser escrito na tela.
 casas (entrada, passagem por referência): número de casas decimais a ser usado na escrita.
 posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever o número.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever o número.
-angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número real.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número real.
 ********************************/
-void EscreveDoubleDireita(double valor, int casas, int x, int y, float angulo=0,int numFonte=0){
+void EscreveDoubleDireita(double valor, int casas, int x, int y, int numFonte=0,float angulo=0){
     CGerenciadorFontes::EscreveDoubleDireita(valor,x,y,angulo,numFonte);
 }
 
@@ -1065,13 +1066,12 @@ valor (entrada, passagem por referência): número inteiro a ser escrito na tela.
 casas (entrada, passagem por referência): número de casas decimais a ser usado na escrita.
 posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever o número.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever o número.
-angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número real.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número real.
 ********************************/
-void EscreveDoubleCentralizado(double valor, int casas, int x, int y, float angulo=0,int numFonte=0){
+void EscreveDoubleCentralizado(double valor, int casas, int x, int y, int numFonte=0,float angulo=0){
     CGerenciadorFontes::EscreveDoubleCentralizado(valor,x,y,angulo,numFonte);
 }
-
 
 /********************************
 A função GetMatricas() recupera as principais métricas de uma letra em um estilo específico.
@@ -2263,7 +2263,10 @@ Retorno:
 Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo não existir, a função retorna o valor 0 (zero).
 ********************************/
 int GetValorStringAnimacao(int idAnimacao,int indice,char *valor){
-    return CGerenciadorAnimacoes::GetValorStringAnimacao(idAnimacao,indice,valor);
+    std::string str;
+    bool resp = CGerenciadorAnimacoes::GetValorStringAnimacao(idAnimacao,indice,str);
+    strcpy(valor,str.c_str());
+    return resp;
 }
 
 /********************************
@@ -2302,7 +2305,10 @@ Retorno:
 Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo não existir, a função retorna o valor 0 (zero).
 ********************************/
 int GetValorStringAnimacao(int idAnimacao,char *indice,char *valor){
-    return CGerenciadorAnimacoes::GetValorStringAnimacao(idAnimacao,indice,valor);
+    std::string str;
+    bool resp = CGerenciadorAnimacoes::GetValorStringAnimacao(idAnimacao,indice,str);
+    strcpy(valor,str.c_str());
+    return resp;
 }
 
 /********************************
@@ -2852,7 +2858,8 @@ idSocket (entrada, passagem por valor): identificador do socket.
 hostname (saída, passagem por referência): nome do computador (da rede local) ou do endereço IP ao qual está conectado o socket cliente.
 ********************************/
 void GetHostRemotoSocketCliente(int idSocket,char *hostname){
-    CGerenciadorSockets::GetHostRemotoCliente(idSocket,hostname);
+    std::string resp = CGerenciadorSockets::GetHostRemotoCliente(idSocket);
+    strcpy(hostname,resp.c_str());
 }
 
 /********************************
@@ -2862,7 +2869,8 @@ idSocket (entrada, passagem por valor): identificador do socket.
 hostname (saída, passagem por referência): nome do computador (na rede local) ou do endereço IP da máquina no qual está aberto o socket cliente.
 ********************************/
 void GetHostLocalSocketCliente(int idSocket,char *hostname){
-    CGerenciadorSockets::GetHostLocalCliente(idSocket,hostname);
+    std::string resp = CGerenciadorSockets::GetHostLocalCliente(idSocket);
+    strcpy(hostname,resp.c_str());
 }
 
 /********************************
@@ -2872,7 +2880,8 @@ idSocket (entrada, passagem por valor): identificador do socket.
 hostname (saída, passagem por referência): nome do computador (na rede local) ou do endereço IP da máquina no qual está aberto o socket servidor.
 ********************************/
 void GetHostLocalSocketServidor(int idSocket,char *hostname){
-    CGerenciadorSockets::GetHostLocalServidor(idSocket,hostname);
+    std::string resp = CGerenciadorSockets::GetHostLocalServidor(idSocket);
+    strcpy(hostname,resp.c_str());
 }
 
 /********************************
@@ -2882,7 +2891,8 @@ idSocket (entrada, passagem por valor): identificador do socket.
 hostname (saída, passagem por referência): nome do computador (na rede local) ou do endereço IP da máquina no qual está aberto o socket UDP.
 ********************************/
 void GetHostLocalSocketUDP(int idSocket,char *hostname){
-    CGerenciadorSockets::GetHostLocalSocketUDP(idSocket,hostname);
+    std::string resp = CGerenciadorSockets::GetHostLocalSocketUDP(idSocket);
+    strcpy(hostname,resp.c_str());
 }
 
 /********************************
@@ -3086,7 +3096,8 @@ idVideo (entrada, passagem por valor): indentificador do vídeo.
 nome (saída, passagem por referência): nome do arquivo utilizado para criar o video.
 ********************************/
 void GetNomeArquivoVideo(int idVideo, char *nome){
-    CGerenciadorVideos::GetNomeArquivo(idVideo,nome);
+    std::string resp = CGerenciadorVideos::GetNomeArquivo(idVideo);
+    strcpy(nome,resp.c_str());
 }
 
 /********************************
@@ -3107,7 +3118,8 @@ idVideo (entrada, passagem por valor): indentificador do vídeo.
 str (saída, passagem por referência): posição do frame atual, definido em hora, minuto, segundo e milissegundo.
 ********************************/
 void GetTempoAtualVideo(int idVideo, char *str){
-    CGerenciadorVideos::GetTempoAtual(idVideo,str);
+    std::string resp = CGerenciadorVideos::GetTempoAtualString(idVideo);
+    strcpy(str,resp.c_str());
 }
 
 /********************************
@@ -3128,7 +3140,8 @@ idVideo (entrada, passagem por valor): indentificador do vídeo.
 str (saída, passagem por referência): duração do vídeo, definido em hora, minuto, segundo e milissegundo.
 ********************************/
 void GetTempoTotalVideo(int idVideo, char *str){
-    CGerenciadorVideos::GetTempoTotal(idVideo,str);
+    std::string resp = CGerenciadorVideos::GetTempoTotalString(idVideo);
+    strcpy(str,resp.c_str());
 }
 
 /********************************

@@ -40,7 +40,7 @@ void IniciaBase(int x, int y, int deslocX, int deslocY, int vida, float anguloRo
 public:
     int viva;
 
-    CParticula(int x, int y, int deslocX,int deslocY,int vida, float anguloRot, float escalaIni, float escalaFim, int fadeOut, char *nomeArq,int usaGerenciadorTimer=1,int idJanela=0):
+    CParticula(int x, int y, int deslocX,int deslocY,int vida, float anguloRot, float escalaIni, float escalaFim, int fadeOut, std::string nomeArq,int usaGerenciadorTimer=1,int idJanela=0):
         CAnimacao(nomeArq,usaGerenciadorTimer,NULL,1,idJanela){
         tenhoAnimacaoBase = 0;
         IniciaBase(x,y,deslocX,deslocY,vida,anguloRot,escalaIni,escalaFim,fadeOut,usaGerenciadorTimer);

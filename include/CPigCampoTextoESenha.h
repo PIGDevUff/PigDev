@@ -19,7 +19,7 @@ private:
 
     //desenha apenas o texto
     void DesenhaElementosEspecificos(){
-        EscreverEsquerda((char*)GetTextoVisivel().c_str(),xBase,yBase,fonteTexto);
+        CGerenciadorFontes::EscreverEsquerda(GetTextoVisivel(),xBase,yBase,fonteTexto);
     }
 
     //ajusta o alinhamento do cursor
@@ -30,9 +30,9 @@ private:
         xBase = xBaseOriginal;
 
         aux.assign(textoBase,0,posCursor);
-        xCursor = xBase + CalculaLarguraPixels((char*)aux.c_str(),fonteTexto);
+        xCursor = xBase + CGerenciadorFontes::GetLarguraPixels(aux,fonteTexto);
 
-        AjustaBaseTextoEixoX(CalculaLarguraPixels((char*)aux.c_str(),fonteTexto));
+        AjustaBaseTextoEixoX(CGerenciadorFontes::GetLarguraPixels(aux,fonteTexto));
     }
 
 public:
@@ -79,4 +79,4 @@ public:
     int PulaLinha(){return 1;}//não usa o PulaLinha
 };
 
-typedef CPigCampoTextoESenha PigCampoTextoESenha;
+typedef CPigCampoTextoESenha *PigCampoTextoESenha;

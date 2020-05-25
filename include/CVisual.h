@@ -14,7 +14,7 @@ SDL_Surface* bitmap;
 PIG_Cor coloracao;
 int opacidade;
 int x,y;
-char nomeArquivo[1024];
+std::string nomeArquivo;
 
 void CriaTextura(int retiraFundo, PIG_Cor *corFundo=NULL){
     if (retiraFundo){
@@ -77,8 +77,8 @@ void IniciaOrientacao(){
 
 public:
 
-CVisual(int altura,int largura,char *nomeArq,int janela=0){
-    strcpy(nomeArquivo,nomeArq);
+CVisual(int altura,int largura,std::string nomeArq,int janela=0){
+    nomeArquivo = nomeArq;
 
     IniciaCor();
     IniciaJanela(janela);
@@ -86,17 +86,19 @@ CVisual(int altura,int largura,char *nomeArq,int janela=0){
     IniciaOrientacao();
 }
 
-CVisual(char* nomeArq,int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
+CVisual(std::string nomeArq,int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
     //printf("vamos visual %d\n",retiraFundo);
-    strcpy(nomeArquivo,nomeArq);
+    nomeArquivo = nomeArq;
 
     #ifdef SHARE_BITMAP
+    //printf("vai %s",nomeArquivo.c_str());
     bitmap = CAssetLoader::LoadImage(nomeArquivo);
+    //printf("foi");
     #else
-    bitmap = IMG_Load(nomeArquivo);
+    bitmap = IMG_Load(nomeArquivo.c_str());
     #endif
     if (!bitmap)
-        printf("Erro ao ler arquivo: %s\n",nomeArquivo);
+        printf("Erro ao ler arquivo: %s\n",nomeArquivo.c_str());
 
     //opacidade = 255;
     //text = NULL;
@@ -108,7 +110,7 @@ CVisual(char* nomeArq,int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
 }
 
 CVisual(OffscreenRenderer offRender, int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
-    strcpy(nomeArquivo,"");
+    nomeArquivo = "";
 
     SDL_Surface *surface = offRender->GetSurface();
     //printf("depth %d  wid  %d  hei %d\n",offRender->GetDepth(),surface->w,surface->h);
@@ -126,7 +128,7 @@ CVisual(OffscreenRenderer offRender, int retiraFundo=1,PIG_Cor *corFundo=NULL,in
 }
 
 CVisual(CVisual *visualBase,int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
-    strcpy(nomeArquivo,visualBase->nomeArquivo);
+    nomeArquivo = visualBase->nomeArquivo;
 
     #ifdef SHARE_BITMAP
     bitmap = CAssetLoader::LoadImage(visualBase->nomeArquivo);
@@ -148,7 +150,7 @@ CVisual(CVisual *visualBase,int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=
 ~CVisual(){
     if (text) SDL_DestroyTexture(text);
 
-    if (strcmp(nomeArquivo,"")==0){
+    if (nomeArquivo == ""){
         if (bitmap) SDL_FreeSurface(bitmap);
     }else{
         #ifdef SHARE_BITMAP
@@ -255,8 +257,8 @@ int GetOpacidade(){
     return opacidade;
 }
 
-void GetNomeArquivo(char *nome){
-    strcpy(nome,nomeArquivo);
+std::string GetNomeArquivo(){
+    return nomeArquivo;
 }
 
 };

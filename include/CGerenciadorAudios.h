@@ -64,10 +64,10 @@ static void Encerra(){
     Mix_CloseAudio();
 }
 
-static void CarregaBackground(char *nomeArquivo){
+static void CarregaBackground(std::string nomeArquivo){
     if (background)
         Mix_FreeMusic(background);
-    background = Mix_LoadMUS(nomeArquivo);
+    background = Mix_LoadMUS(nomeArquivo.c_str());
 }
 
 static void PlayBackground(int nVezes){
@@ -111,7 +111,7 @@ static int GetVolumeBackground(){
     return volumeBackground;
 }
 
-static int CriaAudio(char *nomeArquivo,int nLoops,int tempoExecucao=-1){
+static int CriaAudio(std::string nomeArquivo,int nLoops,int tempoExecucao=-1){
     int resp = numAudios->RetiraLivre();
     audios[resp] = new CAudio(nomeArquivo,nLoops,tempoExecucao);
     totalAudios++;

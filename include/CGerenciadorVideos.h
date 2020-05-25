@@ -30,7 +30,7 @@ static void Encerra(){
     avformat_network_deinit();
 }
 
-static int CriaVideo(char *nomeArquivo,int idJanela=0){
+static int CriaVideo(std::string nomeArquivo,int idJanela=0){
     int resp = numVideos->RetiraLivre();
     videos[resp] = new CVideo(nomeArquivo,idJanela);
     totalVideos++;
@@ -76,24 +76,24 @@ static double GetVolume(int idVideo){
     return videos[idVideo]->GetVolume();
 }
 
-static void GetNomeArquivo(int idVideo, char *nome){
-    videos[idVideo]->GetNomeArquivo(nome);
+static std::string GetNomeArquivo(int idVideo){
+    return videos[idVideo]->GetNomeArquivo();
 }
 
 static double GetTempoAtual(int idVideo){
     return videos[idVideo]->GetTempoAtual();
 }
 
-static void GetTempoAtual(int idVideo, char *str){
-    videos[idVideo]->GetTempoAtual();
+static std::string GetTempoAtualString(int idVideo){
+    return videos[idVideo]->GetTempoAtualString();
 }
 
 static double GetTempoTotal(int idVideo){
     return videos[idVideo]->GetTempoTotal();
 }
 
-static void GetTempoTotal(int idVideo, char *str){
-    videos[idVideo]->GetTempoTotal(str);
+static std::string GetTempoTotalString(int idVideo){
+    return videos[idVideo]->GetTempoTotalString();
 }
 
 static double GetTempoFrame(int idVideo){

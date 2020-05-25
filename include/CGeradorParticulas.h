@@ -8,12 +8,12 @@ int inix,iniy,dx,dy;            //posicao e direcao atual das particulas
 int pivoAbsX,pivoAbsY;          //pivo das particulas
 float pivoRelX,pivoRelY;
 bool modoPivoRelativo;
-SDL_Renderer* renderer;
+int idJanela;
 int hp;
 float anguloRot;
 float escalaInicial,escalaFinal;
 int maxParticulas;
-char nomeArqImagem[50];
+std::string nomeArqImagem;
 int ativas;
 int usaGerTimer,tipoGerador;
 int audioInicio,audioFim;
@@ -21,15 +21,15 @@ PIG_Cor corAtual;
 Animacao animacaoBase;
 Objeto objetoBase;
 
-void IniciaBase(int maximoParticulas,char *nomeArq,int usaGerenciadorTimer, int audioCriacao, int audioEncerramento,SDL_Renderer* renderizador,Objeto objBase,Animacao animaBase){
+void IniciaBase(int maximoParticulas,std::string nomeArq,int usaGerenciadorTimer, int audioCriacao, int audioEncerramento,int janela,Objeto objBase,Animacao animaBase){
     maxParticulas = maximoParticulas;
-    strcpy(nomeArqImagem,nomeArq);
+    nomeArqImagem = nomeArq;
     usaGerTimer = usaGerenciadorTimer;
     audioInicio = audioCriacao;
     audioFim = audioEncerramento;
-    renderer = renderizador;
     animacaoBase = animaBase;
     objetoBase = objBase;
+    idJanela = janela;
 
     for (int i=0;i<maxParticulas;i++)
         parts[i] = NULL;
@@ -47,18 +47,18 @@ void IniciaBase(int maximoParticulas,char *nomeArq,int usaGerenciadorTimer, int 
 
 public:
 
-    CGeradorParticulas(int maximoParticulas,SDL_Renderer* renderizador, Objeto objBase, int audioCriacao,int audioEncerramento, int usaGerenciadorTimer){
-        IniciaBase(maximoParticulas,"",usaGerenciadorTimer,audioCriacao,audioEncerramento,renderizador,objBase,NULL);
+    CGeradorParticulas(int maximoParticulas,Objeto objBase, int audioCriacao,int audioEncerramento, int usaGerenciadorTimer, int idJanela){
+        IniciaBase(maximoParticulas,"",usaGerenciadorTimer,audioCriacao,audioEncerramento,idJanela,objBase,NULL);
         tipoGerador = 1;
     }
 
-    CGeradorParticulas(int maximoParticulas,SDL_Renderer* renderizador, Animacao animaBase, int audioCriacao,int audioEncerramento, int usaGerenciadorTimer){
-        IniciaBase(maximoParticulas,"",usaGerenciadorTimer,audioCriacao,audioEncerramento,renderizador,NULL,animaBase);
+    CGeradorParticulas(int maximoParticulas,Animacao animaBase, int audioCriacao,int audioEncerramento, int usaGerenciadorTimer,int idJanela){
+        IniciaBase(maximoParticulas,"",usaGerenciadorTimer,audioCriacao,audioEncerramento,idJanela,NULL,animaBase);
         tipoGerador = 2;
     }
 
-    CGeradorParticulas(int maximoParticulas,SDL_Renderer* renderizador, char *nomeArq,int audioCriacao,int audioEncerramento, int usaGerenciadorTimer){
-        IniciaBase(maximoParticulas,nomeArq,usaGerenciadorTimer,audioCriacao,audioEncerramento,renderizador,NULL,NULL);
+    CGeradorParticulas(int maximoParticulas,std::string nomeArq,int audioCriacao,int audioEncerramento, int usaGerenciadorTimer, int idJanela){
+        IniciaBase(maximoParticulas,nomeArq,usaGerenciadorTimer,audioCriacao,audioEncerramento,idJanela,NULL,NULL);
         tipoGerador = 3;
     }
 
@@ -139,11 +139,11 @@ public:
             i++;
         //printf("sou do tipo %d\n",tipoGerador);
         switch (tipoGerador){
-        case 1: parts[i] = new CParticula(inix,iniy,dx,dy,hp,anguloRot,escalaInicial,escalaFinal,fadingOut,objetoBase,usaGerTimer);
+        case 1: parts[i] = new CParticula(inix,iniy,dx,dy,hp,anguloRot,escalaInicial,escalaFinal,fadingOut,objetoBase,usaGerTimer,idJanela);
             break;
-        case 2: parts[i] = new CParticula(inix,iniy,dx,dy,hp,anguloRot,escalaInicial,escalaFinal,fadingOut,animacaoBase,usaGerTimer);
+        case 2: parts[i] = new CParticula(inix,iniy,dx,dy,hp,anguloRot,escalaInicial,escalaFinal,fadingOut,animacaoBase,usaGerTimer,idJanela);
             break;
-        case 3: parts[i] = new CParticula(inix,iniy,dx,dy,hp,anguloRot,escalaInicial,escalaFinal,fadingOut,nomeArqImagem,usaGerTimer);
+        case 3: parts[i] = new CParticula(inix,iniy,dx,dy,hp,anguloRot,escalaInicial,escalaFinal,fadingOut,nomeArqImagem,usaGerTimer,idJanela);
             break;
         }
         //printf("Gerei\n");

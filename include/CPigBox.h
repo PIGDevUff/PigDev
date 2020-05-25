@@ -8,9 +8,9 @@ int espacoLinha; //espaço vertical entre os itens
 PIG_PosicaoComponente posItens;
 std::vector <CPigItemCheck*> itens;
 
-void IniciaBase(int alturaItem, int larguraItem, int espacoVertical, char *nomeArqItem){
-    SetPosicaoPadraoLabel(PIG_COMPONENTE_CIMA_ESQ);//posição padrão do label
-    nomeImgItem.assign(nomeArqItem);
+void IniciaBase(int alturaItem, int larguraItem, int espacoVertical, std::string nomeArqItem){
+    SetPosicaoPadraoLabel(PIG_COMPONENTE_CIMA_CENTRO);//posição padrão do label
+    nomeImgItem = nomeArqItem;
     largItem = larguraItem;
     altItem = alturaItem;
     espacoLinha = espacoVertical;
@@ -19,12 +19,12 @@ void IniciaBase(int alturaItem, int larguraItem, int espacoVertical, char *nomeA
 
 public:
 
-CPigBox(int idComponente, int posX, int posY, int largura, char *nomeArqFundo, char *nomeArqItem, int alturaItem, int larguraItem, int espacoVertical, int retiraFundo=1):
+CPigBox(int idComponente, int posX, int posY, int largura, std::string nomeArqFundo, std::string nomeArqItem, int alturaItem, int larguraItem, int espacoVertical, int retiraFundo=1):
     CPigComponente(idComponente,posX,posY,0,largura,nomeArqFundo,retiraFundo){
     IniciaBase(alturaItem, larguraItem, espacoVertical, nomeArqItem);
 }
 
-CPigBox(int idComponente, int posX, int posY, int largura, char *nomeArqItem,int alturaItem, int larguraItem, int espacoVertical):
+CPigBox(int idComponente, int posX, int posY, int largura, std::string nomeArqItem,int alturaItem, int larguraItem, int espacoVertical):
     CPigComponente(idComponente,posX,posY,0,largura){
     IniciaBase(alturaItem, larguraItem, espacoVertical, nomeArqItem);
 }
@@ -70,12 +70,6 @@ int GetMarcadoItem(int indice){
     return itens[indice]->GetMarcado();
 }
 
-int SetMarcadoItem(int indice, bool marcado){
-    if (indice<0||indice>=itens.size()) return -1;
-    itens[indice]->SetMarcado(marcado);
-    return 1;
-}
-
 int SetAudioItem(int indice, int audio){
     if (indice<0||indice>=itens.size()) return -1;
     itens[indice]->SetAudio(audio);
@@ -105,7 +99,7 @@ int SetHabilitado(bool habilitado){
     return 1;
 }
 
-int SetLabelIndice(int indice, char *label){
+int SetLabelIndice(int indice, std::string label){
     if (indice<0||indice>=itens.size()) return -1;
     itens[indice]->SetLabel(label);
     return 1;

@@ -26,7 +26,7 @@ public:
         delete numAnimacoes;
     }
 
-    static int CriaAnimacao(char* nomeArquivoBMP,PIG_Cor *corFundo=NULL,int retiraFundo=1,int idJanela=0){
+    static int CriaAnimacao(std::string nomeArquivoBMP,PIG_Cor *corFundo=NULL,int retiraFundo=1,int idJanela=0){
         int resp = numAnimacoes->RetiraLivre();
         animacoes[resp] = new CAnimacao(nomeArquivoBMP,0,corFundo,retiraFundo,idJanela);
         totalAnimacoes++;
@@ -163,11 +163,8 @@ public:
         return animacoes[idAnimacao]->GetValoresFloat(indice,*valor);
     }
 
-    inline static bool GetValorStringAnimacao(int idAnimacao, int indice, char *valor){
-        std::string str;
-        bool resp = animacoes[idAnimacao]->GetValoresString(indice,str);
-        strcpy(valor,str.c_str());
-        return resp;
+    inline static bool GetValorStringAnimacao(int idAnimacao, int indice, std::string &valor){
+        return animacoes[idAnimacao]->GetValoresString(indice,valor);
     }
 
     inline static bool GetValorIntAnimacao(int idAnimacao, std::string indice, int *valor){
@@ -178,11 +175,8 @@ public:
         return animacoes[idAnimacao]->GetValoresFloat(indice,*valor);
     }
 
-    inline static bool GetValorStringAnimacao(int idAnimacao, std::string indice, char *valor){
-        std::string str;
-        bool resp = animacoes[idAnimacao]->GetValoresString(indice,str);
-        strcpy(valor,str.c_str());
-        return resp;
+    inline static bool GetValorStringAnimacao(int idAnimacao, std::string indice, std::string &valor){
+        return animacoes[idAnimacao]->GetValoresString(indice,valor);
     }
 
     inline static void PausaAnimacao(int idAnimacao){

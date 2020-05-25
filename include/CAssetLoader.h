@@ -1,139 +1,108 @@
-typedef struct hnode1{
-    char str[100];
-    int cont;
-    SDL_Surface *bitmap;
-} HashNodeImagem;
+class CHashNodeImagem{
 
-typedef struct hnode2{
-    char str[100];
+public:
+    int cont;
+    SDL_Surface *imagem;
+    CHashNodeImagem(std::string nomeArq){
+        cont = 1;
+        imagem = IMG_Load(nomeArq.c_str());
+    }
+    ~CHashNodeImagem(){
+        SDL_FreeSurface(imagem);
+    }
+
+};
+typedef CHashNodeImagem *HashNodeImagem;
+
+class CHashNodeAudio{
+
+public:
     int cont;
     Mix_Chunk *chunk;
-} HashNodeAudio;
+    CHashNodeAudio(std::string nomeArq){
+        cont = 1;
+        chunk = Mix_LoadWAV(nomeArq.c_str());
+    }
+    ~CHashNodeAudio(){
+        Mix_FreeChunk(chunk);
+    }
+};
+typedef CHashNodeAudio *HashNodeAudio;
 
 class CAssetLoader{
 
 private:
 
     static int totalBitmaps;
-    static PoolNumeros numBitmaps;
-    static HashNodeImagem *slotsImagem[MAX_SLOTS_AL_IMAGEM];
-
     static int totalAudios;
-    static PoolNumeros numAudios;
-    static HashNodeAudio *slotsAudio[MAX_SLOTS_AL_AUDIO];
-
-    static int BuscaNomeImagem(char *str){
-        for (int i=0;i<MAX_SLOTS_AL_IMAGEM;i++){
-            if (slotsImagem[i]){
-                if (strcmp(slotsImagem[i]->str,str)==0)
-                    return i;
-            }
-        }
-        return -1;
-    }
-
-    static int BuscaNomeAudio(char *str){
-        for (int i=0;i<MAX_SLOTS_AL_AUDIO;i++){
-            if (slotsAudio[i]){
-                if (strcmp(slotsAudio[i]->str,str)==0)
-                    return i;
-            }
-        }
-        return -1;
-    }
+    static std::map<std::string,HashNodeImagem> mapImagens;
+    static std::map<std::string,HashNodeAudio> mapAudios;
 
 public:
 
     static void Inicia(){
-        numBitmaps = new CPoolNumeros(MAX_SLOTS_AL_IMAGEM);
         totalBitmaps=0;
-        for (int i=0;i<MAX_SLOTS_AL_IMAGEM;i++)
-            slotsImagem[i]=NULL;
-
-        numAudios = new CPoolNumeros(MAX_SLOTS_AL_AUDIO);
         totalAudios=0;
-        for (int i=0;i<MAX_SLOTS_AL_AUDIO;i++)
-            slotsAudio[i]=NULL;
     }
 
     static void Encerra(){
-        for (int i=0;i<MAX_SLOTS_AL_IMAGEM;i++){
-            if (slotsImagem[i]){
-                SDL_FreeSurface(slotsImagem[i]->bitmap);
-                free(slotsImagem[i]);
-            }
+        for(std::map<std::string,HashNodeImagem>::iterator it = mapImagens.begin(); it != mapImagens.end(); ++it) {
+            delete it->second;
         }
-        delete numBitmaps;
-
-        for (int i=0;i<MAX_SLOTS_AL_AUDIO;i++){
-            if (slotsAudio[i]){
-                Mix_FreeChunk(slotsAudio[i]->chunk);
-                free(slotsAudio[i]);
-            }
+        for(std::map<std::string,HashNodeAudio>::iterator it = mapAudios.begin(); it != mapAudios.end(); ++it) {
+            delete it->second;
         }
-        delete numAudios;
     }
 
-    static SDL_Surface *LoadImage(char *nomeArq){
-        int indice = BuscaNomeImagem(nomeArq);
-        if (indice==MAX_SLOTS_AL_IMAGEM){
-            printf("Asset loader sobrecarregado\n");
-        }else if (indice==-1){
-            indice = numBitmaps->RetiraLivre();
-            slotsImagem[indice] = (HashNodeImagem*)malloc(sizeof(HashNodeImagem));
-            slotsImagem[indice]->bitmap = IMG_Load(nomeArq);
-            slotsImagem[indice]->cont = 1;
-            strcpy(slotsImagem[indice]->str,nomeArq);
+    static SDL_Surface *LoadImage(std::string nomeArq){
+        std::map<std::string, HashNodeImagem>::iterator it = mapImagens.find(nomeArq);
+        if (it == mapImagens.end()){//não achou
+            HashNodeImagem imagem = new CHashNodeImagem(nomeArq);
+            mapImagens[nomeArq]=imagem;
             totalBitmaps++;
+            return imagem->bitmap;
         }else{
-            slotsImagem[indice]->cont++;
+            it->second->cont++;
+            return it->second->bitmap;
         }
-        return slotsImagem[indice]->bitmap;
+
     }
 
-    static void FreeImage(char *nomeArq){
-        int indice = BuscaNomeImagem(nomeArq);
-        if (indice==-1){
-            printf("Nao existe asset carregado: %s\n",nomeArq);
+    static void FreeImage(std::string nomeArq){
+        std::map<std::string, HashNodeImagem>::iterator it = mapImagens.find(nomeArq);
+        if (it == mapImagens.end()){//não achou
+            printf("Nao existe asset carregado: %s\n",nomeArq.c_str());
         }else{
-            slotsImagem[indice]->cont--;
-            if (slotsImagem[indice]->cont==0){
-                SDL_FreeSurface(slotsImagem[indice]->bitmap);
-                free(slotsImagem[indice]);
-                slotsImagem[indice] = NULL;
-                numBitmaps->DevolveUsado(indice);
+            it->second->cont--;
+            if (it->second->cont==0){
+                delete it->second;
+                mapImagens.erase(it);
             }
         }
     }
 
-    static Mix_Chunk *LoadAudio(char *nomeArq){
-        int indice = BuscaNomeAudio(nomeArq);
-        if (indice==MAX_SLOTS_AL_AUDIO){
-            printf("Asset loader sobrecarregado\n");
-        }else if (indice==-1){
-            indice = numAudios->RetiraLivre();
-            slotsAudio[indice] = (HashNodeAudio*)malloc(sizeof(HashNodeAudio));
-            slotsAudio[indice]->chunk = Mix_LoadWAV(nomeArq);
-            slotsAudio[indice]->cont = 1;
-            strcpy(slotsAudio[indice]->str,nomeArq);
+    static Mix_Chunk *LoadAudio(std::string nomeArq){
+        std::map<std::string, HashNodeAudio>::iterator it = mapAudios.find(nomeArq);
+        if (it == mapAudios.end()){//não achou
+            HashNodeAudio audio = new CHashNodeAudio(nomeArq);
+            mapAudios[nomeArq] = audio;
             totalAudios++;
+            return audio->chunk;
         }else{
-            slotsAudio[indice]->cont++;
+            it->second->cont++;
+            return it->second->chunk;
         }
-        return slotsAudio[indice]->chunk;
     }
 
-    static void FreeAudio(char *nomeArq){
-        int indice = BuscaNomeAudio(nomeArq);
-        if (indice==-1){
-            printf("Nao existe asset carregado: %s\n",nomeArq);
+    static void FreeAudio(std::string nomeArq){
+        std::map<std::string, HashNodeAudio>::iterator it = mapAudios.find(nomeArq);
+        if (it == mapAudios.end()){//não achou
+            printf("Nao existe asset carregado: %s\n",nomeArq.c_str());
         }else{
-            slotsAudio[indice]->cont--;
-            if (slotsAudio[indice]->cont==0){
-                Mix_FreeChunk(slotsAudio[indice]->chunk);
-                free(slotsAudio[indice]);
-                slotsAudio[indice] = NULL;
-                numAudios->DevolveUsado(indice);
+            it->second->cont--;
+            if (it->second->cont==0){
+                delete it->second;
+                mapAudios.erase(it);
             }
         }
     }
@@ -141,8 +110,6 @@ public:
 };
 
 int CAssetLoader::totalBitmaps;
-PoolNumeros CAssetLoader::numBitmaps;
-HashNodeImagem* CAssetLoader::slotsImagem[MAX_SLOTS_AL_IMAGEM];
+std::map<std::string,HashNodeImagem> CAssetLoader::mapImagens;
 int CAssetLoader::totalAudios;
-PoolNumeros CAssetLoader::numAudios;
-HashNodeAudio* CAssetLoader::slotsAudio[MAX_SLOTS_AL_AUDIO];
+std::map<std::string,HashNodeAudio> CAssetLoader::mapAudios;

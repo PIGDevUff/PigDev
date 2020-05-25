@@ -7,6 +7,9 @@
 #include "CPigBox.h"
 #include "CPigRadioBox.h"
 #include "CPigCheckBox.h"
+#include "CPigItemLista.h"
+#include "CPigLista.h"
+#include "CPigDropDown.h"
 
 class CPigForm{
 

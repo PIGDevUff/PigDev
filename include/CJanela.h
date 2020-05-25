@@ -10,16 +10,16 @@ int altura,largura,px,py;
 int id;
 int fechada,modo;
 float opacidade;
-char titulo[50];
+std::string titulo;
 
 public:
 
-CJanela(char tituloJanela[],int idJanela,int altTela,int largTela){
+CJanela(std::string tituloJanela,int idJanela,int altTela,int largTela){
     id = idJanela;
-    strcpy(titulo,tituloJanela);
+    titulo = tituloJanela;
     altura = altTela;
     largura = largTela;
-    window = SDL_CreateWindow( tituloJanela, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, largura, altura, SDL_WINDOW_SHOWN|SDL_WINDOW_OPENGL );
+    window = SDL_CreateWindow( tituloJanela.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, largura, altura, SDL_WINDOW_SHOWN|SDL_WINDOW_OPENGL );
     if( window == NULL ){
         printf( "Janela %d nao pode ser criada! Erro da SDL: %s\n",id, SDL_GetError() );
     }else{
@@ -74,14 +74,15 @@ void GanhaFoco(){
     SDL_RaiseWindow(window);
 }
 
-void DefineFundo(char *nomeArquivo){
-    SDL_Surface* bitmap = IMG_Load(nomeArquivo);
-    if (textFundo) SDL_DestroyTexture(textFundo);
+void DefineFundo(std::string nomeArquivo){
+    SDL_Surface* bitmap = IMG_Load(nomeArquivo.c_str());
+    if (textFundo)
+        SDL_DestroyTexture(textFundo);
     textFundo = SDL_CreateTextureFromSurface(renderer,bitmap);
     SDL_FreeSurface(bitmap);
 }
 
-void SaveScreenshotBMP(char *nomeArquivo) {
+void SaveScreenshot(std::string nomeArquivo, bool BMP) {
     if (window==NULL) return;
     SDL_Surface* saveSurface = NULL;
     SDL_Surface* infoSurface = NULL;
@@ -92,7 +93,9 @@ void SaveScreenshotBMP(char *nomeArquivo) {
             if (SDL_RenderReadPixels(renderer, &infoSurface->clip_rect, infoSurface->format->format, pixels, infoSurface->w * infoSurface->format->BytesPerPixel) == 0) {
                 saveSurface = SDL_CreateRGBSurfaceFrom(pixels, infoSurface->w, infoSurface->h, infoSurface->format->BitsPerPixel, infoSurface->w * infoSurface->format->BytesPerPixel, infoSurface->format->Rmask, infoSurface->format->Gmask, infoSurface->format->Bmask, infoSurface->format->Amask);
                 if (saveSurface != NULL) {
-                    SDL_SaveBMP(saveSurface, nomeArquivo);
+                    if (BMP)
+                        SDL_SaveBMP(saveSurface, nomeArquivo.c_str());
+                    else IMG_SavePNG(saveSurface, nomeArquivo.c_str());
                     SDL_FreeSurface(saveSurface);
                 }
             }
@@ -123,14 +126,14 @@ int GetLargura(){
     return largura;
 }
 
-void GetTitulo(char *tituloJanela){
-    strcpy(tituloJanela,titulo);
+std::string GetTitulo(){
+    return titulo;
 }
 
-void SetTitulo(char *novoTitulo){
+void SetTitulo(std::string novoTitulo){
     if (window==NULL) return;
-    strcpy(titulo,novoTitulo);
-    SDL_SetWindowTitle(window,titulo);
+    titulo = novoTitulo;
+    SDL_SetWindowTitle(window,titulo.c_str());
 }
 
 PIG_Cor GetCorFundo(){
@@ -181,6 +184,66 @@ int SetTamanho(int alt, int larg){
     largura = larg;
     SDL_SetWindowSize(window,larg,alt);
 }
+
+    void DesenhaRetangulo(int x, int y, int alturaRet, int larguraRet, PIG_Cor cor){
+        SDL_Rect rect;
+        rect.x = x;
+        rect.y = altura-(y+alturaRet);
+        rect.h = alturaRet;
+        rect.w = larguraRet;
+
+        SDL_SetRenderDrawColor(renderer, cor.r,cor.g,cor.b,cor.a);
+        SDL_RenderFillRect(renderer,&rect);
+    }
+
+    void DesenhaRetanguloVazado(int x, int y, int alturaRet, int larguraRet, PIG_Cor cor){
+        SDL_Rect rect;
+        rect.x = x;
+        rect.y = altura-(y+alturaRet);
+        rect.h = alturaRet;
+        rect.w = larguraRet;
+
+        SDL_SetRenderDrawColor(renderer, cor.r,cor.g,cor.b,cor.a);
+        SDL_RenderDrawRect(renderer,&rect);
+    }
+
+    void DesenhaLinhaSimples(int x1,int y1,int x2,int y2,PIG_Cor cor){
+        SDL_SetRenderDrawColor(renderer,cor.r,cor.g,cor.b,255);
+        SDL_RenderDrawLine(renderer,x1,altura-y1-1,x2,altura-y2-1);
+    }
+
+    void DesenhaLinhasDisjuntas(int *x,int *y,int qtd,PIG_Cor cor){
+        SDL_SetRenderDrawColor(renderer,cor.r,cor.g,cor.b,255);
+        for (int k=0;k<qtd*2;k+=2){
+            SDL_RenderDrawLine(renderer,x[k],altura-y[k],x[k+1],altura-y[k+1]);
+        }
+    }
+
+    void DesenhaLinhasSequencia(int *x,int *y,int qtd,PIG_Cor cor){
+        SDL_SetRenderDrawColor(renderer,cor.r,cor.g,cor.b,255);
+        for (int k=0;k<qtd-1;k++){
+            SDL_RenderDrawLine(renderer,x[k],altura-y[k],x[k+1],altura-y[k+1]);
+        }
+    }
+
+    PIG_Cor GetPixel(int x,int y) {
+        if (x<0 || x>=largura  ||y<0 ||y>=altura) return PRETO;
+        PIG_Cor resp;
+        SDL_Surface* infoSurface = SDL_GetWindowSurface(window);
+        if (infoSurface != NULL) {
+            unsigned char * pixels = new unsigned char[infoSurface->w * infoSurface->h * infoSurface->format->BytesPerPixel];
+            if (pixels != 0) {
+                if (SDL_RenderReadPixels(renderer, &infoSurface->clip_rect, infoSurface->format->format, pixels, infoSurface->w * infoSurface->format->BytesPerPixel) == 0) {
+                    Uint32 *p = (Uint32*) pixels;
+                    p += (x+(altura-y)*largura);
+                    SDL_GetRGBA(*p,(const SDL_PixelFormat*) &infoSurface->format->format,&resp.r,&resp.g,&resp.b,&resp.a);
+                }
+                delete[] pixels;
+            }
+            SDL_FreeSurface(infoSurface);
+        }
+        return resp;
+    }
 
 };
 
