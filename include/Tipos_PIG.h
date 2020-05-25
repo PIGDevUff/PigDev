@@ -72,6 +72,8 @@ Principais definições utilizadas pela PIG
 
 #define MAX_VIDEOS  10
 
+#define PIG_INTERVALO_FPS           1.0
+
 #define SHARE_BITMAP
 #define SHARE_AUDIO
 

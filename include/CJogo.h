@@ -4,7 +4,7 @@ private:
 
     PIG_Evento ultimoEvento;
     PIG_Teclado teclado;
-    int contFPS;
+    int contFPS,lastFPS;
     Timer timerFPS;
     int estado;
     int rodando;
@@ -32,7 +32,7 @@ public:
         rodando = true;
         teclado = SDL_GetKeyboardState(NULL);
         estado = 0;
-        contFPS = 0;
+        contFPS = lastFPS = 0;
         timerFPS = new CTimer(false);
         offRenderer = NULL;
         cursorPadrao = cursor;
@@ -280,8 +280,10 @@ public:
         //SDL_RenderPresent(renderer);
 
         contFPS++;
-        if (timerFPS->GetTempoDecorrido()>1.0){
+        if (timerFPS->GetTempoDecorrido()>PIG_INTERVALO_FPS){
+            lastFPS=contFPS;
             contFPS=0;
+
             timerFPS->Reinicia(false);
         }
     }
@@ -300,7 +302,7 @@ public:
 
 
     inline float GetFPS(){
-        return contFPS/timerFPS->GetTempoDecorrido();
+        return lastFPS/PIG_INTERVALO_FPS;
     }
 
     void PreparaOffScreenRenderer(int altura,int largura){

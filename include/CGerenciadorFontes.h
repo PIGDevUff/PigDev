@@ -107,15 +107,15 @@ public:
     }
 
     inline static void EscreveDoubleEsquerda(double valor, int casas, int x, int y, int numFonte,float angulo=0){
-        fontes[numFonte]->EscreveDoubleEsquerda(valor,x,y,angulo,0);
+        fontes[numFonte]->EscreveDoubleEsquerda(valor,casas,x,y,angulo,0);
     }
 
     inline static void EscreveDoubleCentralizado(double valor, int casas, int x, int y, int numFonte,float angulo=0){
-        fontes[numFonte]->EscreveDoubleCentralizado(valor,x,y,angulo);
+        fontes[numFonte]->EscreveDoubleCentralizado(valor,casas,x,y,angulo);
     }
 
     inline static void EscreveDoubleDireita(double valor, int casas, int x, int y, int numFonte,float angulo=0){
-        fontes[numFonte]->EscreveDoubleDireita(valor,x,y,angulo);
+        fontes[numFonte]->EscreveDoubleDireita(valor,casas,x,y,angulo);
     }
 
     inline static std::vector<std::string> ExtraiLinhasString(std::string texto,int largMax,int numFonte){
