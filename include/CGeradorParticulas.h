@@ -89,6 +89,11 @@ public:
         iniy = ny;
     }
 
+    void Desloca(int dx,int dy){
+        inix += dx;
+        iniy += dy;
+    }
+
     void MudaDirecao(int novaDx,int novaDy){
         dx = novaDx;
         dy = novaDy;

@@ -229,6 +229,13 @@ virtual void Move(int nx,int ny){
     dest.y = altJanela-alt-y;
 }
 
+virtual void Desloca(int dx, int dy){
+    x += dx;
+    y += dy;
+    dest.x = x;
+    dest.y = altJanela-alt-y;
+}
+
 void SetDimensoes(int altura,int largura){
     dest.h = alt = altura;
     dest.w = larg = largura;

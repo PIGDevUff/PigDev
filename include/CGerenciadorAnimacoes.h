@@ -51,6 +51,10 @@ public:
         animacoes[idAnimacao]->Move(px,py);
     }
 
+    inline static void Desloca(int idAnimacao,int dx,int dy){
+        animacoes[idAnimacao]->Desloca(dx,dy);
+    }
+
     inline static void GetPosicaoXY(int idAnimacao, int *x,int *y){
         animacoes[idAnimacao]->GetXY(*x,*y);
     }
@@ -75,8 +79,8 @@ public:
         return animacoes[idAnimacao]->GetModoAtual();
     }
 
-    inline static void MudaModo(int idAnimacao,int idModo,int indiceFrame){
-        animacoes[idAnimacao]->MudaModo(idModo,indiceFrame);
+    inline static void MudaModo(int idAnimacao,int idModo,int indiceFrame,int forcado){
+        animacoes[idAnimacao]->MudaModo(idModo,indiceFrame,forcado);
     }
 
     inline static void SetOpacidade(int idAnimacao,int valor){

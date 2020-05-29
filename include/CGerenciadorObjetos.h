@@ -109,6 +109,10 @@ public:
         objetos[idObjeto]->Move(x,y);
     }
 
+    inline static void Desloca(int idObjeto, int dx, int dy){
+        objetos[idObjeto]->Desloca(dx,dy);
+    }
+
     inline static void SetAngulo(int idObjeto, float angulo){
         objetos[idObjeto]->SetAngulo(angulo);
     }

@@ -57,6 +57,10 @@ public:
         geradores[idGerador]->Move(px,py);
     }
 
+    inline static void Desloca(int idGerador,int dx,int dy){
+        geradores[idGerador]->Desloca(dx,dy);
+    }
+
     inline static void MudaDirecaoParticulas(int idGerador,int dx,int dy){
         geradores[idGerador]->MudaDirecao(dx,dy);
     }

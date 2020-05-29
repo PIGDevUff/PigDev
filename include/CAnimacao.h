@@ -139,12 +139,14 @@ void InsereFrame(int idModo, int idFrame, float delayFrame,int audio){
 }
 
 //muda o modo atual
-void MudaModo(int idModo,int indiceFrame=0){
-    modoAtual = idModo;
+void MudaModo(int idModo,int indiceFrame=0,int forcado=1){
+    if (forcado||(modos[modoAtual]&&modos[modoAtual]->GetEncerrou())){
+        modoAtual = idModo;
 
-    modos[modoAtual]->SetIndiceFrameAtual(indiceFrame);
+        modos[modoAtual]->SetIndiceFrameAtual(indiceFrame);
 
-    AtualizaFrameAtual(modos[modoAtual]);
+        AtualizaFrameAtual(modos[modoAtual]);
+    }
 }
 
 //retorna o númerodo modo atual

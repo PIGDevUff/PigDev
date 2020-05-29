@@ -307,7 +307,7 @@ public:
     int Desenha(OffscreenRenderer offRender = NULL){
         if (offRender == NULL){
             SDL_RenderCopyEx(renderer, text, &frame, &dest, -angulo, &pivoRelativo, flip);
-            DesenhaBB();
+            //DesenhaBB();
         }else{
             SDL_Texture *textAux = SDL_CreateTextureFromSurface(offRender->GetRenderer(), bitmap);
             SDL_Rect rectAux = dest;

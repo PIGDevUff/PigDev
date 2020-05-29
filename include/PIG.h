@@ -1358,6 +1358,17 @@ void MoveObjeto(int idObjeto,int posicaoX,int posicaoY){
 }
 
 /********************************
+A função DeslocaObjeto() é responsável por deslocar um determinado objeto em relação à sua posição atual.
+Parâmetros:
+idObjeto (entrada, passagem por valor): identificador do objeto a ser movido.
+deltaX (entrada, passagem por valor): valor a ser somado ou subtraído na componente X da posição do objeto.
+deltaY (entrada, passagem por valor): valor a ser somado ou subtraído na componente Y da posição do objeto.
+********************************/
+void DeslocaObjeto(int idObjeto,int deltaX,int deltaY){
+    CGerenciadorObjetos::Desloca(idObjeto,deltaX,deltaY);
+}
+
+/********************************
 A função SetAnguloObjeto() é responsável pela angulação de determinado objeto. A angulação é calculada em sentido
 horário a partir do eixo X (0 graus). O objeto será desenhado com a angulação informada no próximo comando
 DesenhaObjeto(). A detecção de colisão não funciona com objetos fora da angulação padrão (0 graus).
@@ -1653,6 +1664,17 @@ posicaoY (entrada, passagem por valor): informa a nova posição Y do GDP, em rela
 ********************************/
 void MoveGeradorParticulas(int idGerador,int posicaoX,int posicaoY){
     CGerenciadorParticulas::Move(idGerador,posicaoX,posicaoY);
+}
+
+/********************************
+A função DeslocaGeradorParticulas() é responsável por deslocar uma determinado gerador de partículas (GDP) em relação à sua posição atual.
+Parâmetros:
+idGerador (entrada, passagem por valor): identificador do GDP a ser deslocada.
+deltaX (entrada, passagem por valor): valor a ser somado ou subtraído na componente X da posição do GDP.
+deltaY (entrada, passagem por valor): valor a ser somado ou subtraído na componente Y da posição do GDP.
+********************************/
+void DeslocaGeradorParticulas(int idGerador,int deltaX,int deltaY){
+    CGerenciadorParticulas::Desloca(idGerador,deltaX,deltaY);
 }
 
 /********************************
@@ -1971,10 +1993,11 @@ A função MudaModoAnimacao() é responsável por alterar a animação para um outro m
 Parâmetros:
 idAnimacao (entrada, passagem por valor): identificador da animação em questão.
 codigoModo (entrada, passagem por valor): numero do novo modo.
-inicia (entrada, passagem por valor): valor lógico que indica se a novo modo deve começar do primeiro sprite (valor 1) ou do último sprite (valor 0).
+indiceFrame (entrada, passagem por valor): indica a partir de qual frame o modo deve ser exibido. O valor 0 significa aprtir do primeiro frame.
+forcado (entrada, passagem por valor): valor lógico que indica se a mudança de modo deve ser feita forçosamente ou não. Se não for forçada, a mudança só ocorrerá se o modo atual já tiver terminado de ser animado.
 ********************************/
-void MudaModoAnimacao(int idAnimacao,int codigoModo,int inicia){
-    CGerenciadorAnimacoes::MudaModo(idAnimacao,codigoModo,inicia);
+void MudaModoAnimacao(int idAnimacao,int codigoModo,int indiceFrame,int forcado=1){
+    CGerenciadorAnimacoes::MudaModo(idAnimacao,codigoModo,indiceFrame,forcado);
 }
 
 /********************************
@@ -2024,6 +2047,17 @@ posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu
 ********************************/
 void MoveAnimacao(int idAnimacao,int x,int y){
     CGerenciadorAnimacoes::Move(idAnimacao,x,y);
+}
+
+/********************************
+A função DeslocaAnimcao() é responsável por deslocar uma determinada animacao em relação à sua posição atual.
+Parâmetros:
+idAnimacao (entrada, passagem por valor): identificador da animacao a ser deslocada.
+deltaX (entrada, passagem por valor): valor a ser somado ou subtraído na componente X da posição da animação.
+deltaY (entrada, passagem por valor): valor a ser somado ou subtraído na componente Y da posição da animação.
+********************************/
+void DeslocaAnimacao(int idAnimacao,int deltaX,int deltaY){
+    CGerenciadorAnimacoes::Desloca(idAnimacao,deltaX,deltaY);
 }
 
 /********************************
