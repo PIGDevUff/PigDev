@@ -4,7 +4,7 @@ class CPigAreaDeTexto: public CPigCaixaTexto{
 
 private:
 
-    int largMaxTexto;
+    int largMax;
     int espacoEntreLinhas;
     bool linhasPauta;
     bool marcarMargem;
@@ -22,7 +22,7 @@ private:
         std::string textoBase = GetTextoVisivel();
         std::string aux;
 
-        linhas = CGerenciadorFontes::ExtraiLinhasString(textoBase,largMaxTexto,fonteTexto);
+        linhas = CGerenciadorFontes::ExtraiLinhasString(textoBase,largMax,fonteTexto);
 
         xBase = xBaseOriginal;
         yBase = yBaseOriginal;
@@ -42,7 +42,7 @@ private:
 
     //desenha o texto e as linhas (se for o caso)
     void DesenhaElementosEspecificos()override{
-        CGerenciadorFontes::EscreverLongaEsquerda(texto,xBase,yBase,largMaxTexto,(espacoEntreLinhas + altLetra),fonteTexto);
+        CGerenciadorFontes::EscreverLonga(texto,xBase,yBase,largMax,(espacoEntreLinhas + altLetra),fonteTexto,CPIG_TEXTO_ESQUERDA);
         if(linhasPauta) DesenhaLinhasHorizontais();
         if(marcarMargem) DesenhaMarcacaoMargem();
     }
@@ -68,16 +68,17 @@ private:
     int TrataMouseBotaoEsquerdoESobeDesceCursor(SDL_Point p,int inicioLinha = 0,int linha = 0){
         int delta = p.x-xBase;
 
-        if(delta < CGerenciadorFontes::GetLarguraPixels(linhas[linha],fonteTexto)){
-            CPigCaixaTexto::TrataMouseBotaoEsquerdo(p,inicioLinha);
-        }else{
-            posCursor = inicioLinha + linhas[linha].size();
+        if(linha!=-1){
+            if(delta < CGerenciadorFontes::GetLarguraPixels(linhas[linha],fonteTexto)){
+                CPigCaixaTexto::TrataMouseBotaoEsquerdo(p,inicioLinha);
+            }else{
+                posCursor = inicioLinha + linhas[linha].size();
+            }
         }
 
         if (texto[posCursor-1]=='\n'){//se o cursor parou depois do fim da linha forçada pelo '\n', escreve antes deste caracter terminador
             posCursor--;
         }
-
         AjustaAlinhamento();
         if (estado==COMPONENTE_NORMAL)
             DefineEstado(COMPONENTE_EDITANDO);
@@ -119,8 +120,7 @@ private:
                 return i;
             }
         }
-
-        return (linhas.size()-1);
+        return linhas.size()-1;
     }
 
     //
@@ -235,7 +235,7 @@ public:
         xBase = xBaseOriginal;
         xCursor = xBase;
         yCursor = yBase;
-        largMaxTexto = largMaxTexto;
+        largMax = largMaxTexto;
         linhasPauta = linhasAbaixoTexto;
         corLinhasTexto = PRETO;
         marcarMargem = marcarMargens;
@@ -259,8 +259,8 @@ public:
     }
 
     //define a largura máxima do texto
-    void SetLargMaxTexto(int largMax){
-        largMaxTexto = largMax;
+    void SetLargMaxTexto(int largMaxTexto){
+        largMax = largMaxTexto;
         AjustaAlinhamento();
     }
 

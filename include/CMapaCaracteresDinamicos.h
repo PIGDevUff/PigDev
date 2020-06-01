@@ -4,8 +4,6 @@ class CMapaCaracteresDinamicos:public CMapaCaracteres{
 
 private:
 
-
-
     //cria uma cor a partir de uma string com um valor hexadecimal de 8 algarismos RRGGBBAA. Ex: 0xFF0000FF (vermelho)
     static PIG_Cor CriaCor(char *stringHexa){
         unsigned long total = strtoul(stringHexa,0,16);//transforma a string em um inteiro (decimal)
@@ -129,6 +127,7 @@ private:
         //system("pause");
         pilhaCor.clear();
         pilhaEstilo.clear();
+
         return resp;
     }
 
@@ -144,42 +143,20 @@ public:
         SDL_SetRenderTarget(render, NULL);
     }
 
+    //escreve uma string já formatada, alinhada com o ponto x,y e o parâmetro pos
+    void Escreve(CPigStringFormatada formatada,int x,int y,PIG_PosTexto pos=CPIG_TEXTO_ESQUERDA,float ang=0){
+        int delta = 0;
+        switch(pos){
+        case CPIG_TEXTO_ESQUERDA:
+            break;
+        case CPIG_TEXTO_DIREITA:
+            //EscreveStringEsquerda(texto,x-formatada.LargTotalPixels(),y,ang,formatada.LargTotalPixels());break;
+            x -= formatada.LargTotalPixels();delta = formatada.LargTotalPixels();break;
+        case CPIG_TEXTO_CENTRO:
+            //EscreveStringEsquerda(texto,x-formatada.LargTotalPixels()/2,y,ang,formatada.LargTotalPixels()/2);break;
+            x -= formatada.LargTotalPixels()/2;delta = formatada.LargTotalPixels()/2;break;
+        }
 
-    //escreve uma string simples, incluindo formatação interna, alinhada à direita do ponto x,y
-    void EscreveStringDireita(std::string texto, int x, int y, float ang=0)override{
-        CPigStringFormatada formatada = Processa(texto);
-        EscreveStringEsquerda(formatada,x-formatada.LargTotalPixels(),y,ang,formatada.LargTotalPixels());
-        formatada.Clear();
-    }
-
-    //escreve uma string simples, incluindo formatação interna, alinhada no ponto x,y
-    void EscreveStringCentralizado(std::string texto, int x, int y, float ang=0)override{
-        CPigStringFormatada formatada = Processa(texto);
-        EscreveStringEsquerda(formatada,x-formatada.LargTotalPixels()/2,y,ang,formatada.LargTotalPixels()/2);
-        formatada.Clear();
-    }
-
-    //escreve uma string simples, incluindo formatação interna, alinhada à esquerda do ponto x,y
-    void EscreveStringEsquerda(std::string texto, int x, int y, float ang=0, int delta=0)override{
-        CPigStringFormatada formatada = Processa(texto);
-        EscreveStringEsquerda(formatada,x,y,ang,delta);
-        formatada.Clear();
-    }
-
-
-    //escreve uma string simples, com formatação já processada e fornecida, alinhada à direita do ponto x,y
-    void EscreveStringDireita(CPigStringFormatada str,int x, int y,float ang=0){
-        EscreveStringEsquerda(str,x-str.LargTotalPixels(),y,ang,str.LargTotalPixels());
-    }
-
-    //escreve uma string simples, com formatação já processada e fornecida, alinhada no ponto x,y
-    void EscreveStringCentralizado(CPigStringFormatada str,int x, int y,float ang=0){
-        EscreveStringEsquerda(str,x-str.LargTotalPixels()/2,y,ang,str.LargTotalPixels()/2);
-    }
-
-    //escreve uma string simples, com formatação já processada e fornecida, alinhada à esquerda do ponto x,y
-    void EscreveStringEsquerda(CPigStringFormatada str,int x, int y,float ang=0, int delta=0){
-        //printf("derivada\n");
         SDL_Rect rectDestino;
         rectDestino.x = x;
         int altJanela = CGerenciadorJanelas::GetJanela(janela)->GetAltura();
@@ -188,12 +165,12 @@ public:
         PIG_Estilo estiloAtual = ESTILO_NORMAL;
         SDL_Point ponto = {delta,tamFonte};
 
-        for (int i=0;i<str.size();i++){
-            Uint16 aux = str.GetLetra(i);
+        for (int i=0;i<formatada.size();i++){
+            Uint16 aux = formatada.GetLetra(i);
             aux = aux %256;
             if (aux-PRIMEIRO_CAR<0) continue;
-            corAtual = str.GetCor(i);
-            estiloAtual = str.GetEstilo(i);
+            corAtual = formatada.GetCor(i);
+            estiloAtual = formatada.GetEstilo(i);
 
             SDL_SetTextureColorMod(glyphsT[estiloAtual][aux-PRIMEIRO_CAR],corAtual.r,corAtual.g,corAtual.b);
 
@@ -208,68 +185,36 @@ public:
         }
     }
 
+    //escreve ums string normal, alinha com o ponto x,y e o parâmetro pos
+    void Escreve(std::string texto,int x,int y,PIG_PosTexto pos=CPIG_TEXTO_ESQUERDA,float ang=0)override{
+        if (texto=="") return;
+        CPigStringFormatada formatada = Processa(texto);
+        Escreve(formatada,x,y,pos,ang);
+    }
 
-    //escreve uma string longa (múltiplas linhas), incluindo formatação interna, alinhada à direita do ponto x,y
-    void EscreveStringLongaDireita(std::string texto,int x,int y,int largMax,int espacoEntreLinhas,float angulo=0) override{
+    //escreve uma string longa (múltiplas linhas), incluindo formatação interna, alinhada de acordo com o ponto x,y e o parâmetro pos
+    void EscreveLonga(std::string texto,int x,int y,int largMax,int espacoEntreLinhas,PIG_PosTexto pos=CPIG_TEXTO_ESQUERDA,float angulo=0) override{
+        if (texto=="") return;
         CPigStringFormatada formatada = Processa(texto);
         //formatada.Print();
         std::vector<CPigStringFormatada> linhas = formatada.ExtraiLinhas(largMax,PigDelimitadores);
-        EscreveStringLongaDireita(linhas,x,y,espacoEntreLinhas,angulo);
+        EscreveLonga(linhas,x,y,espacoEntreLinhas,pos,angulo);
         linhas.clear();
         formatada.Clear();
     }
 
-    //escreve uma string longa (múltiplas linhas), incluindo formatação interna, alinhada no ponto x,y
-    void EscreveStringLongaCentralizado(std::string texto,int x,int y,int largMax,int espacoEntreLinhas,float angulo=0) override{
-        CPigStringFormatada formatada = Processa(texto);
-        //formatada.Print();
-        std::vector<CPigStringFormatada> linhas = formatada.ExtraiLinhas(largMax,PigDelimitadores);
-        EscreveStringLongaCentralizado(linhas,x,y,espacoEntreLinhas,angulo);
-        linhas.clear();
-        formatada.Clear();
-    }
-
-    //escreve uma string longa (múltiplas linhas), incluindo formatação interna, alinhada à esquerda do ponto x,y
-    void EscreveStringLongaEsquerda(std::string texto,int x,int y,int largMax,int espacoEntreLinhas,float angulo=0) override{
-        CPigStringFormatada formatada = Processa(texto);
-        //formatada.Print();
-        std::vector<CPigStringFormatada> linhas = formatada.ExtraiLinhas(largMax,PigDelimitadores);
-        EscreveStringLongaEsquerda(linhas,x,y,espacoEntreLinhas,angulo);
-        linhas.clear();
-        formatada.Clear();
-    }
-
-
-    //escreve uma string longa (múltiplas linhas), com formatação já processada e fornecida, alinhada à direita do ponto x,y
-    void EscreveStringLongaDireita(std::vector<CPigStringFormatada> linhas, int x, int y, int espacoEntreLinhas,float angulo=0){
+    //escreve uma string longa (múltiplas linhas), com formatação já processada e fornecida, alinhada de acordo com o ponto x,y e o parâmetro pos
+    void EscreveLonga(std::vector<CPigStringFormatada> linhas, int x, int y, int espacoEntreLinhas,PIG_PosTexto pos=CPIG_TEXTO_ESQUERDA,float angulo=0){
         int yTotal=y;
         for (int k=0;k<linhas.size();k++){
-            EscreveStringDireita(linhas[k],x,yTotal,angulo);
+            Escreve(linhas[k],x,yTotal,pos,angulo);
             yTotal -= espacoEntreLinhas;
         }
     }
-
-    //escreve uma string longa (múltiplas linhas), com formatação já processada e fornecida, alinhada no ponto x,y
-    void EscreveStringLongaCentralizado(std::vector<CPigStringFormatada> linhas, int x, int y, int espacoEntreLinhas,float angulo=0){
-        int yTotal=y;
-        for (int k=0;k<linhas.size();k++){
-            EscreveStringCentralizado(linhas[k],x,yTotal,angulo);
-            yTotal -= espacoEntreLinhas;
-        }
-    }
-
-    //escreve uma string longa (múltiplas linhas), com formatação já processada e fornecida, alinhada à esquerda do ponto x,y
-    void EscreveStringLongaEsquerda(std::vector<CPigStringFormatada> linhas, int x, int y, int espacoEntreLinhas,float angulo=0){
-        int yTotal=y;
-        for (int k=0;k<linhas.size();k++){
-            EscreveStringEsquerda(linhas[k],x,yTotal,angulo);
-            yTotal -= espacoEntreLinhas;
-        }
-    }
-
 
     //retorna a largura em pixels da string fornecida (faz a formatação internamente)
     int GetLarguraPixelsString(std::string texto) override{
+        if (texto=="") return 0;
         CPigStringFormatada formatada = Processa(texto);
         int resp = formatada.LargTotalPixels();
         formatada.Clear();

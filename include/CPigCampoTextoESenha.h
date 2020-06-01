@@ -19,7 +19,7 @@ private:
 
     //desenha apenas o texto
     void DesenhaElementosEspecificos(){
-        CGerenciadorFontes::EscreverEsquerda(GetTextoVisivel(),xBase,yBase,fonteTexto);
+        CGerenciadorFontes::EscreverString(GetTextoVisivel(),xBase,yBase,fonteTexto,CPIG_TEXTO_ESQUERDA);
     }
 
     //ajusta o alinhamento do cursor

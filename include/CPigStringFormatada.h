@@ -64,6 +64,7 @@ public:
 
     std::vector<CPigStringFormatada> SeparaPalavras(std::string delim){
         std::vector<CPigStringFormatada> resp;
+        if (letras.size()==0) return resp;
         int indice;
         int largBase=0;
         CPigStringFormatada strAtual;
@@ -86,6 +87,7 @@ public:
 
     std::vector<CPigStringFormatada> ExtraiLinhas(int largMax, std::string delim){
         std::vector<CPigStringFormatada> resp;
+        if (letras.size()==0) return resp;
         std::vector<CPigStringFormatada> palavras = SeparaPalavras(delim);
 
         CPigStringFormatada linhaAtual = palavras[0];   //linha atual (que está sendo montada) contém pelo menos a primeira palavra

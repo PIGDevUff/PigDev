@@ -1,3 +1,5 @@
+typedef enum {CPIG_TEXTO_ESQUERDA,CPIG_TEXTO_DIREITA,CPIG_TEXTO_CENTRO} PIG_PosTexto;
+
 class CMapaCaracteres{
 
 protected:
@@ -21,7 +23,7 @@ protected:
         std::vector<std::string> resp;
         int indice;
 
-        std::string strAtual;
+        std::string strAtual = "";
         for (int i=0;i<texto.size();i++){
             strAtual += texto[i];
 
@@ -37,37 +39,6 @@ protected:
         }
         return resp;
     }
-
-    //versão antiga usada pelo David
-    /*std::string TrataRetornoSeparaPalavraCaracterEspecial(int posAtual,int &posAnt,std::string txt,std::string Retorno){
-        std::string aux;
-
-        if(posAtual == posAnt){
-            posAnt+=1;
-            return Retorno;
-        }
-
-        aux.assign(txt,posAnt,posAtual - posAnt);
-        posAnt = posAtual;
-        return aux;
-    }*/
-
-    //versão antiga usada pelo David
-    /*virtual std::string SeparaPalavra(int &posAnt,std::string txt){
-
-        if(posAnt == txt.size()) return "";
-
-        for(int i = posAnt;i<txt.size();i++){
-            if(txt[i] == '\n') return TrataRetornoSeparaPalavraCaracterEspecial(i,posAnt,txt,"\n");
-            if(txt[i] == ' ') return TrataRetornoSeparaPalavraCaracterEspecial(i,posAnt,txt," ");
-        }
-
-        std::string aux;
-        aux.assign(txt,posAnt,txt.size() - posAnt);
-        posAnt = txt.size();
-        return aux;
-
-    }*/
 
     //funcao que desenha o outline na fonte que está sendo produzida(o render precisa estar direcionado para a textura em questão)
     void FazOutline(Uint16 letra, int nivelOutline,PIG_Cor corOutline){
@@ -225,14 +196,6 @@ public:
         return TTF_FontLineSkip(font);
     }
 
-    /*int GetAlturaTotalLetra(Uint16 letra, int estilo=0){
-        Uint16 aux = letra;
-        aux = aux % 256;
-        if(estiloFixo>=0)
-            estilo = estiloFixo;
-        return tamFonte+alturaExtra[estilo][aux-PRIMEIRO_CAR];
-    }*/
-
     int GetLarguraLetra(Uint16 letra, int estilo=0){
         Uint16 aux = letra;
         aux = aux % 256;
@@ -263,7 +226,7 @@ public:
                 tamanhoAtual += largPalavra;
             }
 
-            if (palavra[palavra.size()-1]=='\n'){//se existe uma quebra de linha forçada
+            if (palavra.size()>0&&palavra[palavra.size()-1]=='\n'){//se existe uma quebra de linha forçada
                 resp.push_back(linhaAtual);
 
                 //i++;
@@ -281,49 +244,6 @@ public:
         return resp;
     }
 
-    //versão antiga usada pelo David
-    /*std::vector<std::string> ExtraiLinhasString(std::string texto,int largMax){
-        std::vector<std::string> linhas;
-        std::string linhaAtual("");
-        std::string linhaMaior("");
-        std::string palavra = "";
-        int posAnt=0;
-
-        const std::string QUEBRALINHA = "\n";
-
-        palavra = SeparaPalavra(posAnt,texto);
-
-        while (palavra != ""){
-
-            linhaMaior = linhaAtual + palavra;
-
-            if(palavra == QUEBRALINHA){
-                linhas.push_back(linhaAtual);
-                linhaAtual = QUEBRALINHA;
-            }else{
-
-                if (GetLarguraPixelsString((char*)linhaMaior.c_str()) >largMax){
-
-                    if(linhaAtual == QUEBRALINHA){
-                        linhas.push_back(linhaMaior);
-                        linhaAtual ="";
-                    }else{
-                        if(linhaAtual!=""){
-                            linhas.push_back(linhaAtual);
-                        }
-                        linhaAtual = palavra;
-                    }
-
-                }else{
-                    linhaAtual = linhaMaior;
-                }
-            }
-            palavra = SeparaPalavra(posAnt,texto);
-        }
-        linhas.push_back(linhaAtual);
-        return linhas;
-    }*/
-
     virtual int GetLarguraPixelsString(std::string texto){
         int resp=0;
         Uint16 aux;
@@ -338,12 +258,19 @@ public:
         return resp;
     }
 
-    virtual void EscreveStringCentralizado(std::string texto,int x,int y,float ang=0){
+    virtual void Escreve(std::string texto,int x,int y,PIG_PosTexto pos=CPIG_TEXTO_ESQUERDA,float ang=0){
+        if (texto=="") return;
         int larguraPixels = GetLarguraPixelsString(texto);
-        EscreveStringEsquerda(texto,x-larguraPixels/2,y,ang,larguraPixels/2);
-    }
+        int delta=0;
+        switch(pos){
+        case CPIG_TEXTO_ESQUERDA:
+            break;
+        case CPIG_TEXTO_DIREITA:
+            x -= larguraPixels; delta = larguraPixels;break;
+        case CPIG_TEXTO_CENTRO:
+            x -= larguraPixels/2; delta = larguraPixels/2;break;
+        }
 
-    virtual void EscreveStringEsquerda(std::string texto,int x,int y,float ang=0,int delta=0){
         SDL_Rect rectDestino;
         rectDestino.x = x;
 
@@ -366,79 +293,18 @@ public:
             rectDestino.x += rectDestino.w;
             ponto.x -= rectDestino.w;
         }
+
     }
 
-    virtual void EscreveStringDireita(std::string texto,int x,int y,float ang=0){
-        int larguraPixels = GetLarguraPixelsString(texto);
-        EscreveStringEsquerda(texto,x-larguraPixels,y,ang,larguraPixels);
-    }
-
-    virtual void EscreveStringLongaCentralizado(std::string texto,int x,int y,int largMax,int espacoEntreLinhas,float angulo=0){
+    virtual void EscreveLonga(std::string texto,int x,int y,int largMax,int espacoEntreLinhas,PIG_PosTexto pos=CPIG_TEXTO_ESQUERDA,float angulo=0){
+        if (texto=="") return;
         std::vector<std::string> linhas = ExtraiLinhas(texto,largMax);
         int yTotal=y;
         for (int k=0;k<linhas.size();k++){
-            int larguraPixels = GetLarguraPixelsString(linhas[k]);
-            EscreveStringEsquerda(linhas[k],x-larguraPixels/2,yTotal,angulo);
+            Escreve(linhas[k],x,yTotal,pos,angulo);
             yTotal -= espacoEntreLinhas;
         }
     }
-
-    virtual void EscreveStringLongaEsquerda(std::string texto,int x,int y,int largMax,int espacoEntreLinhas,float angulo=0){
-        std::vector<std::string> linhas = ExtraiLinhas(texto,largMax);
-        int yTotal=y;
-        for (int k=0;k<linhas.size();k++){
-            int larguraPixels = GetLarguraPixelsString(linhas[k]);
-            EscreveStringEsquerda(linhas[k],x,yTotal,angulo);
-            yTotal -= espacoEntreLinhas;
-        }
-    }
-
-    virtual void EscreveStringLongaDireita(std::string texto,int x,int y,int largMax,int espacoEntreLinhas,float angulo=0){
-        std::vector<std::string> linhas = ExtraiLinhas(texto,largMax);
-        int yTotal=y;
-        for (int k=0;k<linhas.size();k++){
-            int larguraPixels = GetLarguraPixelsString((char*)linhas[k].c_str());
-            EscreveStringEsquerda((char*)linhas[k].c_str(),x-larguraPixels,yTotal,angulo);
-            yTotal -= espacoEntreLinhas;
-        }
-    }
-
-    void EscreveInteiroEsquerda(int valor, int x, int y, float angulo=0,int delta=0){
-        EscreveStringEsquerda(std::to_string(valor),x,y,angulo,delta);
-    }
-
-    void EscreveInteiroCentralizado(int valor, int x, int y, float angulo=0){
-        EscreveStringCentralizado(std::to_string(valor),x,y,angulo);
-    }
-
-    void EscreveInteiroDireita(int valor, int x, int y, float angulo=0){
-        EscreveStringDireita(std::to_string(valor),x,y,angulo);
-    }
-
-    void EscreveDoubleEsquerda(double valor, int casas, int x, int y, float angulo=0,int delta=0){
-        char str[100]="";
-        char aux[20]="";
-        sprintf(aux,"%%.%df",casas);
-        sprintf(str,aux,valor);
-        EscreveStringEsquerda(str,x,y,angulo,delta);
-    }
-
-    void EscreveDoubleCentralizado(double valor, int casas, int x, int y, float angulo=0){
-        char str[100]="";
-        char aux[20]="";
-        sprintf(aux,"%%.%df",casas);
-        sprintf(str,aux,valor);
-        EscreveStringCentralizado(str,x,y,angulo);
-    }
-
-    void EscreveDoubleDireita(double valor, int casas, int x, int y, float angulo=0){
-        char str[100]="";
-        char aux[20]="";
-        sprintf(aux,"%%.%df",casas);
-        sprintf(str,aux,valor);
-        EscreveStringDireita(str,x,y,angulo);
-    }
-
 
     SDL_Surface *GetGlyph(Uint16 *emoji, PIG_Cor cor=BRANCO){
         return TTF_RenderUNICODE_Blended(font,emoji,cor);

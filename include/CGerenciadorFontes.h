@@ -1,5 +1,8 @@
 #include "CMapaCaracteres.h"
 #include "CMapaCaracteresDinamicos.h"
+#include <sstream>
+#include <iomanip>
+
 class CGerenciadorFontes{
 
 private:
@@ -69,53 +72,27 @@ public:
         return fontes[numFonte]->GetFonteAscent();
     }
 
-    inline static void EscreverCentralizada(std::string str,int x,int y,int numFonte,float angulo=0){
-        fontes[numFonte]->EscreveStringCentralizado(str,x,y,angulo);
+/*****************Novas Funçoes******************/
+
+    inline static void EscreverString(std::string str,int x,int y,int numFonte,PIG_PosTexto pos = CPIG_TEXTO_ESQUERDA,float angulo=0){
+        fontes[numFonte]->Escreve(str,x,y,pos,angulo);
     }
 
-    inline static void EscreverDireita(std::string str,int x,int y,int numFonte,float angulo=0){
-        fontes[numFonte]->EscreveStringDireita(str,x,y,angulo);
+    inline static void EscreverInteiro(int valor,int x,int y,int numFonte,PIG_PosTexto pos = CPIG_TEXTO_ESQUERDA,float angulo=0){
+        std::stringstream str;
+        str<<valor;
+        fontes[numFonte]->Escreve(str.str(),x,y,pos,angulo);
     }
 
-    inline static void EscreverEsquerda(std::string str,int x,int y,int numFonte,float angulo=0){
-        fontes[numFonte]->EscreveStringEsquerda(str,x,y,angulo);
+    inline static void EscreverReal(double valor,int x,int y,int numFonte,int casas=2,PIG_PosTexto pos = CPIG_TEXTO_ESQUERDA,float angulo=0){
+        std::stringstream str;
+        str.setf(std::ios_base::fixed, std::ios_base::floatfield);
+        str<<std::setprecision(casas)<<valor;
+        fontes[numFonte]->Escreve(str.str(),x,y,pos,angulo);
     }
 
-    inline static void EscreverLongaCentralizada(std::string str,int x,int y,int largMax,int espacoEntreLinhas,int numFonte,float angulo=0){
-        fontes[numFonte]->EscreveStringLongaCentralizado(str,x,y,largMax,espacoEntreLinhas,angulo);
-    }
-
-    inline static void EscreverLongaDireita(std::string str,int x,int y,int largMax,int espacoEntreLinhas,int numFonte,float angulo=0){
-        fontes[numFonte]->EscreveStringLongaDireita(str,x,y,largMax,espacoEntreLinhas,angulo);
-    }
-
-    inline static void EscreverLongaEsquerda(std::string str,int x,int y,int largMax,int espacoEntreLinhas,int numFonte,float angulo=0){
-        fontes[numFonte]->EscreveStringLongaEsquerda(str,x,y,largMax,espacoEntreLinhas,angulo);
-    }
-
-
-    inline static void EscreveInteiroEsquerda(int valor, int x, int y, int numFonte,float angulo=0){
-        fontes[numFonte]->EscreveInteiroEsquerda(valor,x,y,angulo,0);
-    }
-
-    inline static void EscreveInteiroCentralizado(int valor, int x, int y, int numFonte, float angulo=0){
-        fontes[numFonte]->EscreveInteiroCentralizado(valor,x,y,angulo);
-    }
-
-    inline static void EscreveInteiroDireita(int valor, int x, int y, int numFonte,float angulo=0){
-        fontes[numFonte]->EscreveInteiroDireita(valor,x,y,angulo);
-    }
-
-    inline static void EscreveDoubleEsquerda(double valor, int casas, int x, int y, int numFonte,float angulo=0){
-        fontes[numFonte]->EscreveDoubleEsquerda(valor,casas,x,y,angulo,0);
-    }
-
-    inline static void EscreveDoubleCentralizado(double valor, int casas, int x, int y, int numFonte,float angulo=0){
-        fontes[numFonte]->EscreveDoubleCentralizado(valor,casas,x,y,angulo);
-    }
-
-    inline static void EscreveDoubleDireita(double valor, int casas, int x, int y, int numFonte,float angulo=0){
-        fontes[numFonte]->EscreveDoubleDireita(valor,casas,x,y,angulo);
+    inline static void EscreverLonga(std::string str,int x,int y,int largMax,int espacoEntreLinhas,int numFonte,PIG_PosTexto pos = CPIG_TEXTO_ESQUERDA,float angulo=0){
+        fontes[numFonte]->EscreveLonga(str,x,y,largMax,espacoEntreLinhas,pos,angulo);
     }
 
     inline static std::vector<std::string> ExtraiLinhasString(std::string texto,int largMax,int numFonte){

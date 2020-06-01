@@ -42,7 +42,7 @@ void EscreveHint(){
     if (agoraOn&&hint!=""){
         int mx,my;
         CMouse::PegaXY(mx,my);
-        CGerenciadorFontes::EscreverEsquerda(hint,mx+16,my+5,fonteHint);
+        CGerenciadorFontes::EscreverString(hint,mx+16,my+5,fonteHint);
     }
 }
 
@@ -72,46 +72,46 @@ void DesenhaLabel(){
     if (label!="") {
         switch(posLabel){
         case PIG_COMPONENTE_CIMA_CENTRO:
-            CGerenciadorFontes::EscreverCentralizada(label,x+larg/2,y+alt+5,fonteLabel);
+            CGerenciadorFontes::EscreverString(label,x+larg/2,y+alt+5,fonteLabel,CPIG_TEXTO_CENTRO);
             break;
         case PIG_COMPONENTE_CIMA_DIR:
-            CGerenciadorFontes::EscreverDireita(label,x+larg,y+alt+5,fonteLabel);
+            CGerenciadorFontes::EscreverString(label,x+larg,y+alt+5,fonteLabel,CPIG_TEXTO_DIREITA);
             break;
         case PIG_COMPONENTE_CIMA_ESQ:
-            CGerenciadorFontes::EscreverEsquerda(label,x,y+alt+5,fonteLabel);
+            CGerenciadorFontes::EscreverString(label,x,y+alt+5,fonteLabel,CPIG_TEXTO_ESQUERDA);
             break;
         case PIG_COMPONENTE_BAIXO_CENTRO:
-            CGerenciadorFontes::EscreverCentralizada(label,x+larg/2,y-altLetraLabel,fonteLabel);
+            CGerenciadorFontes::EscreverString(label,x+larg/2,y-altLetraLabel,fonteLabel,CPIG_TEXTO_CENTRO);
             break;
         case PIG_COMPONENTE_BAIXO_DIR:
-            CGerenciadorFontes::EscreverDireita(label,x+larg,y-altLetraLabel,fonteLabel);
+            CGerenciadorFontes::EscreverString(label,x+larg,y-altLetraLabel,fonteLabel,CPIG_TEXTO_DIREITA);
             break;
         case PIG_COMPONENTE_BAIXO_ESQ:
-            CGerenciadorFontes::EscreverEsquerda(label,x,y-altLetraLabel,fonteLabel);
+            CGerenciadorFontes::EscreverString(label,x,y-altLetraLabel,fonteLabel,CPIG_TEXTO_ESQUERDA);
             break;
         case PIG_COMPONENTE_ESQ_BAIXO:
-            CGerenciadorFontes::EscreverDireita(label,x-5,y,fonteLabel);
+            CGerenciadorFontes::EscreverString(label,x-5,y,fonteLabel,CPIG_TEXTO_DIREITA);
             break;
         case PIG_COMPONENTE_ESQ_CENTRO:
-            CGerenciadorFontes::EscreverDireita(label,x-5,y+(alt-altLetraLabel)/2,fonteLabel);
+            CGerenciadorFontes::EscreverString(label,x-5,y+(alt-altLetraLabel)/2,fonteLabel,CPIG_TEXTO_DIREITA);
             break;
         case PIG_COMPONENTE_ESQ_CIMA:
-            CGerenciadorFontes::EscreverDireita(label,x-5,y + (alt-altLetraLabel),fonteLabel);
+            CGerenciadorFontes::EscreverString(label,x-5,y + (alt-altLetraLabel),fonteLabel,CPIG_TEXTO_ESQUERDA);
             break;
         case PIG_COMPONENTE_DIR_BAIXO:
-            CGerenciadorFontes::EscreverEsquerda(label,x+larg+5,y,fonteLabel);
+            CGerenciadorFontes::EscreverString(label,x+larg+5,y,fonteLabel,CPIG_TEXTO_ESQUERDA);
             break;
         case PIG_COMPONENTE_DIR_CENTRO:
-            CGerenciadorFontes::EscreverEsquerda(label,x+larg+5,y + (alt-altLetraLabel)/2,fonteLabel);
+            CGerenciadorFontes::EscreverString(label,x+larg+5,y + (alt-altLetraLabel)/2,fonteLabel,CPIG_TEXTO_ESQUERDA);
             break;
         case PIG_COMPONENTE_DIR_CIMA:
-            CGerenciadorFontes::EscreverEsquerda(label,x+larg+5,y + (alt-altLetraLabel),fonteLabel);
+            CGerenciadorFontes::EscreverString(label,x+larg+5,y + (alt-altLetraLabel),fonteLabel,CPIG_TEXTO_ESQUERDA);
             break;
         case PIG_COMPONENTE_CENTRO_CENTRO:
-            CGerenciadorFontes::EscreverCentralizada(label,x+larg/2,y+(alt-altLetraLabel)/2,fonteLabel);
+            CGerenciadorFontes::EscreverString(label,x+larg/2,y+(alt-altLetraLabel)/2,fonteLabel,CPIG_TEXTO_CENTRO);
             break;
         case PIG_COMPONENTE_PERSONALIZADA:
-            CGerenciadorFontes::EscreverEsquerda(label,labelX,labelY,fonteLabel);
+            CGerenciadorFontes::EscreverString(label,labelX,labelY,fonteLabel,CPIG_TEXTO_ESQUERDA);
         }
     }
 }
