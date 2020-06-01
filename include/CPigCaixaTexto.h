@@ -250,7 +250,7 @@ public:
         //imagem de fundo
         SDL_RenderCopyEx(renderer, text, &frame,&dest,-angulo,&pivoRelativo,flip);
 
-        SDL_Rect r={x+margemHorEsq,altJanela-y-alt+margemVertCima,larg-(margemHorEsq+margemHorDir),alt-(margemVertBaixo+margemVertCima)+1};
+        SDL_Rect r={x+margemHorEsq+1,altJanela-y-alt+margemVertCima,larg-(margemHorEsq+margemHorDir),alt-(margemVertBaixo+margemVertCima)+1};
         SDL_RenderSetClipRect(renderer,&r);
 
         DesenhaElementosEspecificos();//cada classe derivada pode desenhar elementos específicos

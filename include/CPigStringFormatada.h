@@ -69,14 +69,21 @@ public:
         int largBase=0;
         CPigStringFormatada strAtual;
         for (int i=0;i<letras.size();i++){
-            strAtual.Adiciona(letras[i],largAcumulada[i]-largBase,cores[i],estilos[i]);
+
             indice = delim.find(letras[i]);
             if (indice != std::string::npos){//achou delimitadores
                 resp.push_back(strAtual);
                 //strAtual.Print();
+
+                if (letras[i]!='\n'){
+                    strAtual.Clear();
+                    strAtual.Adiciona(letras[i],largAcumulada[i]-largBase,cores[i],estilos[i]);
+                    resp.push_back(strAtual);
+                }
+
                 strAtual.Clear();
                 largBase = largAcumulada[i];
-            }
+            }else strAtual.Adiciona(letras[i],largAcumulada[i]-largBase,cores[i],estilos[i]);
         }
         if (strAtual.letras!=""){
             resp.push_back(strAtual);

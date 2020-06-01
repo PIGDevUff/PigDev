@@ -31,10 +31,13 @@ protected:
             if (indice != std::string::npos){//achou delimitadores
                 resp.push_back(strAtual);
                 //strAtual.Print();
-                strAtual = "";
-            }
 
-            strAtual += texto[i];
+                if (texto[i]!='\n'){
+                    strAtual = texto[i];
+                    resp.push_back(strAtual);
+                }
+                strAtual = "";
+            }else strAtual += texto[i];
         }
         if (strAtual!=""){
             resp.push_back(strAtual);
