@@ -25,7 +25,7 @@ protected:
 
         std::string strAtual = "";
         for (int i=0;i<texto.size();i++){
-            strAtual += texto[i];
+            //strAtual += texto[i];
 
             indice = delim.find(texto[i]);
             if (indice != std::string::npos){//achou delimitadores
@@ -33,6 +33,8 @@ protected:
                 //strAtual.Print();
                 strAtual = "";
             }
+
+            strAtual += texto[i];
         }
         if (strAtual!=""){
             resp.push_back(strAtual);
@@ -209,6 +211,41 @@ public:
         if (texto=="") return resp;
 
         std::vector<std::string> palavras = SeparaPalavras(texto,delim);
+        std::string linhaAtual = "";   //linha atual (que está sendo montada) contém pelo menos a primeira palavra
+        int tamanhoAtual = 0;
+
+        for (std::string palavra : palavras){
+            int largPalavra = GetLarguraPixelsString(palavra);
+
+            if (palavra[0]=='\n'){//se existe uma quebra de linha forçada
+                resp.push_back(linhaAtual);
+                linhaAtual = "";
+                tamanhoAtual = 0;
+            }
+
+            if (tamanhoAtual + largPalavra > largMax && linhaAtual!=""){//a palavra estouraria a largura máxima se fosse agregada                if (ttttt==0){
+                resp.push_back(linhaAtual); //coloca a linha que está montada no vetor de linhas
+                linhaAtual = palavra; //a palavra que estouraria o limite começa a próxima linha
+                tamanhoAtual = largPalavra;
+            }else{//não estourou o limite
+                linhaAtual += palavra;
+                tamanhoAtual += largPalavra;
+            }
+        }
+
+        if (linhaAtual != ""){
+            resp.push_back(linhaAtual); //pega a linha que sobrou do processamento (última linha que não foi quebrada)
+        }
+
+        palavras.clear();
+        return resp;
+    }
+
+    /*std::vector<std::string> ExtraiLinhas(std::string texto, int largMax, std::string delim=PigDelimitadores){
+        std::vector<std::string> resp;
+        if (texto=="") return resp;
+
+        std::vector<std::string> palavras = SeparaPalavras(texto,delim);
 
         std::string linhaAtual = palavras[0];   //linha atual (que está sendo montada) contém pelo menos a primeira palavra
         int tamanhoAtual = GetLarguraPixelsString(linhaAtual);
@@ -242,7 +279,7 @@ public:
 
         palavras.clear();
         return resp;
-    }
+    }*/
 
     virtual int GetLarguraPixelsString(std::string texto){
         int resp=0;

@@ -61,7 +61,10 @@ private:
 
     //trata o evento do botao esquerdo
     int TrataMouseBotaoEsquerdo(SDL_Point p,int inicioLinha = 0)override{
-        TrataMouseBotaoEsquerdoESobeDesceCursor(p,GetPosInicialDeUmaLinha(GetLinhaComMouseEmCima()),GetLinhaComMouseEmCima());
+        int posInicial = GetPosInicialDeUmaLinha(GetLinhaComMouseEmCima());
+        int linha = GetLinhaComMouseEmCima();
+        printf("pos %d linha %d\n",posInicial,linha);
+        TrataMouseBotaoEsquerdoESobeDesceCursor(p,posInicial,linha);
     }
 
     //Trata evento botao esquerdo e sobe e desce o cursor pelas setas
@@ -76,9 +79,9 @@ private:
             }
         }
 
-        if (texto[posCursor-1]=='\n'){//se o cursor parou depois do fim da linha forçada pelo '\n', escreve antes deste caracter terminador
-            posCursor--;
-        }
+        //if (texto[posCursor-1]=='\n'){//se o cursor parou depois do fim da linha forçada pelo '\n', escreve antes deste caracter terminador
+        //    posCursor--;
+        //}
         AjustaAlinhamento();
         if (estado==COMPONENTE_NORMAL)
             DefineEstado(COMPONENTE_EDITANDO);
