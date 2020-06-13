@@ -24,6 +24,7 @@ void IniciaBase(int idComponente, int px, int py){
     SetFonteLabel(0);
     audioComponente = -1;
     estado = COMPONENTE_NORMAL;
+    posLabel = PIG_COMPONENTE_CENTRO_CENTRO;
     x = px;
     y = py;
     agoraOn = antesOn = 0;

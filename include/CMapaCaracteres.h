@@ -21,6 +21,30 @@ protected:
 
     std::vector<std::string> SeparaPalavras(std::string texto,std::string delim){
         std::vector<std::string> resp;
+        std::string strAtual = "";
+
+        for (int i=0;i<texto.size();i++){
+
+            if (delim.find(texto[i]) != std::string::npos){//achou delimitadores
+                resp.push_back(strAtual);
+
+                strAtual = texto[i];
+                if (texto[i]!='\n'){
+                    resp.push_back(strAtual);
+                    strAtual = "";
+                }
+
+            }else strAtual += texto[i];
+        }
+
+        if (strAtual!=""){
+            resp.push_back(strAtual);
+        }
+        return resp;
+    }
+/* //Versao Antiga//
+    std::vector<std::string> SeparaPalavras(std::string texto,std::string delim){
+        std::vector<std::string> resp;
         int indice;
 
         std::string strAtual = "";
@@ -44,7 +68,7 @@ protected:
         }
         return resp;
     }
-
+    */
     //funcao que desenha o outline na fonte que está sendo produzida(o render precisa estar direcionado para a textura em questão)
     void FazOutline(Uint16 letra, int nivelOutline,PIG_Cor corOutline){
         TTF_SetFontOutline(font,nivelOutline);

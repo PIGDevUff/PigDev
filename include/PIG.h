@@ -1182,6 +1182,7 @@ int CriaObjetoOffScreen(PIG_Cor *corFundo=NULL,int retiraFundo=1){
     return CGerenciadorObjetos::CriaObjetoOffScreen(jogo->offRenderer,corFundo,retiraFundo);
 }
 
+
 /********************************
 A função DestroiObjeto() é responsável por eliminar o objeto em questão do jogo.
 Parâmetros:
@@ -1564,9 +1565,20 @@ idObjeto2 (entrada, passagem por valor): identificador do segundo objeto.
 Retorno:
 Inteiro indicando se houve colisão (valor diferente de zero) ou não (valor igual a 0, zero).
 ********************************/
+//int TestaColisaoObjetos(int idObjeto1,int idObjeto2){
+//    return CGerenciadorObjetos::TestaColisao(idObjeto1,idObjeto2)&&CGerenciadorObjetos::TestaColisao(idObjeto2,idObjeto1);
+//}
+
 int TestaColisaoObjetos(int idObjeto1,int idObjeto2){
-    return CGerenciadorObjetos::TestaColisao(idObjeto1,idObjeto2)&&CGerenciadorObjetos::TestaColisao(idObjeto2,idObjeto1);
+    if (CGerenciadorObjetos::TestaColisao(idObjeto1, idObjeto2))
+        return CGerenciadorObjetos::TestaColisaoPoligono(idObjeto1, idObjeto2);
+    return false;
 }
+
+void DefineAreaColisao(int id_objeto, int* x, int* y, int quantidadePontos) {
+    CGerenciadorObjetos::DefineAreaColisao(id_objeto, x, y, quantidadePontos);
+}
+
 
 /********************************
 A função GetPixelsObjeto() é responsável por extrair os pixels da imagem que originou o objeto, devolvendo-os como

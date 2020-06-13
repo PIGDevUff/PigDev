@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <cmath>
-class CObjeto : public CVisual
-{
+class CObjeto : public CVisual {
 
 protected:
     std::map<int, int> valoresIntInt;
@@ -13,8 +12,11 @@ protected:
     SDL_Point bb[4];
     PIG_Cor **pixels;
 
-    void DesenhaBB()
-    {
+    std::vector<SDL_Point> vertices;
+    std::vector<SDL_Point> verticesOriginais;
+    bool bbAlterado = true;
+
+    void DesenhaBB() {
         SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);//retângulo verde para o OOBB (com ângulo)
         SDL_RenderDrawLine(renderer, bb[0].x, altJanela - bb[0].y, bb[1].x, altJanela - bb[1].y);
         SDL_RenderDrawLine(renderer, bb[1].x, altJanela - bb[1].y, bb[2].x, altJanela - bb[2].y);
@@ -25,8 +27,30 @@ protected:
         //printf("%d,%d,%d,%d\n",dest.x,dest.y,dest.w,dest.h);
     }
 
-    void AtualizaBB()
-    {
+    void DesenhaAreaDeColisao(PIG_Cor cor) {
+        int i = 0;
+
+        if (vertices.empty()) return;
+
+        do {
+            SDL_Rect rect;
+            rect.x = vertices[i].x;
+            rect.y = altJanela - (vertices[i].y + 10);
+            rect.h = 10;
+            rect.w = 10;
+
+            SDL_SetRenderDrawColor(renderer, cor.r, cor.g, cor.b, 255);
+            SDL_RenderDrawLine(
+                renderer, vertices[i].x, altJanela - vertices[i].y,
+                vertices[(i + 1) % vertices.size()].x,
+                altJanela - vertices[(i + 1) % vertices.size()].y);
+            SDL_RenderFillRect(renderer, &rect);
+
+            i = (i + 1) % vertices.size();
+        } while (i != 0);
+    }
+
+    void AtualizaBB() {
         SDL_Point pivoAbs;
 
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
@@ -62,35 +86,45 @@ protected:
         //printf("bb3: %d %d\n",bb[3].x,bb[3].y);
     }
 
-    void ExtraiPixels()
-    {
+    void AtualizaVertices() {
+        double _angulo = M_PI * angulo / 180.0;
+
+        SDL_Point pivo = {pivoRelativo.x + x, -pivoRelativo.y + y + alt};
+
+        for (int i = 0; i < vertices.size(); i++) {
+            vertices[i] = {verticesOriginais[i].x + x, verticesOriginais[i].y + y};
+
+            int deltaX = vertices[i].x - pivo.x;
+            int deltaY = vertices[i].y - pivo.y;
+
+            vertices[i].x =
+                (cos(_angulo) * deltaX) - (sin(_angulo) * deltaY) + pivo.x;
+            vertices[i].y =
+                (sin(_angulo) * deltaX) + (cos(_angulo) * deltaY) + pivo.y;
+        }
+    }
+
+    void ExtraiPixels() {
         Uint8 *pix8;
         Uint32 *pix32;
 
         pixels = (PIG_Cor **)malloc(sizeof(PIG_Cor *) * bitmap->h);
-        for (int i = 0; i < bitmap->h; i++)
-        {
+        for (int i = 0; i < bitmap->h; i++) {
             pixels[i] = (PIG_Cor *)calloc(sizeof(PIG_Cor), bitmap->w);
         }
 
-        if (bitmap->format->BytesPerPixel == 3)
-        {
-            for (int h = 0; h < bitmap->h; h++)
-            {
+        if (bitmap->format->BytesPerPixel == 3) {
+            for (int h = 0; h < bitmap->h; h++) {
                 pix8 = (Uint8 *)bitmap->pixels + (h * bitmap->pitch);
-                for (int w = 0; w < bitmap->w; w++)
-                {
-                    if (bitmap->format->format == SDL_PIXELFORMAT_RGB24)
-                    {
+                for (int w = 0; w < bitmap->w; w++) {
+                    if (bitmap->format->format == SDL_PIXELFORMAT_RGB24) {
                         pixels[h][w].r = *pix8;
                         pix8++;
                         pixels[h][w].g = *pix8;
                         pix8++;
                         pixels[h][w].b = *pix8;
                         pix8++;
-                    }
-                    else
-                    {
+                    } else {
                         pixels[h][w].b = *pix8;
                         pix8++;
                         pixels[h][w].g = *pix8;
@@ -101,14 +135,10 @@ protected:
                     pixels[h][w].a = 255;
                 }
             }
-        }
-        else if (bitmap->format->BytesPerPixel == 4)
-        {
+        } else if (bitmap->format->BytesPerPixel == 4) {
             pix32 = (Uint32 *)bitmap->pixels;
-            for (int h = 0; h < bitmap->h; h++)
-            {
-                for (int w = 0; w < bitmap->w; w++)
-                {
+            for (int h = 0; h < bitmap->h; h++) {
+                for (int w = 0; w < bitmap->w; w++) {
                     SDL_GetRGBA((Uint32)*pix32, bitmap->format, &(pixels[h][w].r), &(pixels[h][w].g), &(pixels[h][w].b), &(pixels[h][w].a));
                     pix32++;
                 }
@@ -116,71 +146,18 @@ protected:
         }
     }
 
-    /*void CriaTextura(int retiraFundo){
-        if (retiraFundo){
-            Uint8 red, green, blue, alpha;
-            Uint32 *pixel = (Uint32*)bitmap->pixels;
-            SDL_GetRGBA(*pixel,bitmap->format,&red,&green,&blue,&alpha);
-            SDL_SetColorKey( bitmap, SDL_TRUE, SDL_MapRGBA(bitmap->format, red, green, blue,alpha) );
-        }
-
-
-        if (text) SDL_DestroyTexture(text);
-        text = SDL_CreateTextureFromSurface(renderer, bitmap);
-
-        //SDL_SetTextureAlphaMod(text,opacidade);
-    }
-
-    void Inicia(char *nomeArquivo,int janela,int posx,int posy, int retiraFundo, int opacidadeObj){
-        strcpy(nomeImagem,nomeArquivo);
-        idJanela = janela;
-        altJanela = CGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
-        renderer = CGerenciadorJanelas::GetJanela(idJanela)->GetRenderer();
-
-        x = posx;
-        y = posy;
-        angulo = 0;
-        opacidade = opacidadeObj;
-
-        flip = SDL_FLIP_NONE;
-
-        altOriginal = alt = bitmap->h;
-        largOriginal = larg = bitmap->w;
-
-        pivoRelativo.x = 0;
-        pivoRelativo.y = alt;
-        AtualizaBB();
-
-        dest.x = x;
-        dest.y = altJanela-y-alt;
-        dest.h = alt;
-        dest.w = larg;
-
-        frame.x = frame.y = 0;
-        frame.h = alt;
-        frame.w = larg;
-
-        text = NULL;
-        ExtraiPixels();
-        CriaTextura(retiraFundo);
-    }*/
-
 public:
-    int vertices[4][2];
 
     CObjeto(std::string nomeArquivo, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0) : CVisual(nomeArquivo, retiraFundo, corFundo, janela){
         //printf("visual chamado %d\n",retiraFundo);
-        AtualizaBB();
         ExtraiPixels();
     }
 
     CObjeto(OffscreenRenderer offRender, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0) : CVisual(offRender, retiraFundo, corFundo, janela){
-        AtualizaBB();
         ExtraiPixels();
     }
 
     CObjeto(CObjeto *objBase, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0) : CVisual(objBase, retiraFundo, corFundo, janela){
-        AtualizaBB();
         ExtraiPixels();
         SetDimensoes(objBase->alt, objBase->larg);
     }
@@ -189,18 +166,6 @@ public:
         for (int i = 0; i < bitmap->h; i++)
             free(pixels[i]);
         free(pixels);
-
-        /*if (text) SDL_DestroyTexture(text);
-
-        if (strcmp(nomeImagem,"")==0){
-            SDL_FreeSurface(bitmap);
-        }else{
-            #ifdef SHARE_BITMAP
-            CAssetLoader::FreeImage(nomeImagem);
-            #else
-            SDL_FreeSurface(bitmap);
-            #endif
-        }*/
     }
 
     /*int GetIdJanela(){
@@ -229,6 +194,16 @@ public:
 
     void SetValoresString(std::string chave, std::string valor){
         valoresStringString[chave] = valor;
+    }
+
+    void SetVertices(std::vector<SDL_Point> vertices) {
+        this->vertices = vertices;
+        this->verticesOriginais = vertices;
+    }
+
+    void SetAngulo(float a) override{
+        angulo = a;
+        bbAlterado = true;
     }
 
     bool GetValoresInt(int chave, int &valor){
@@ -285,29 +260,30 @@ public:
         return true;
     }
 
-    /*void DefineFrame(SDL_Rect r){
-        frame = r;
-    }*/
-
-    /*void GetXY(int &x,int &y){
-        x = this->x;
-        y = this->y;
+    SDL_Point GetBB(int i) {
+        return bb[i];
     }
 
-    void SetColoracao(PIG_Cor cor){
-        coloracao = cor;
-        SDL_SetTextureColorMod(text,cor.r,cor.g,cor.b);
-    }*/
+    std::vector<SDL_Point> GetVertices() {
+        return vertices;
+    }
 
-    //virtual void Move(int nx,int ny){
-        //CVisual::Move(nx,ny);
-        //AtualizaBB();
-    //}
+    void Move(int nx, int ny) override {
+        SDL_Point pivo = {x, y};
+
+        x = nx;
+        y = ny;
+        dest.x = x;
+        dest.y = altJanela - alt - y;
+
+        bbAlterado = true;
+    }
 
     int Desenha(OffscreenRenderer offRender = NULL){
         if (offRender == NULL){
             SDL_RenderCopyEx(renderer, text, &frame, &dest, -angulo, &pivoRelativo, flip);
             //DesenhaBB();
+            //DesenhaAreaDeColisao({0, 0, 255, 255});
         }else{
             SDL_Texture *textAux = SDL_CreateTextureFromSurface(offRender->GetRenderer(), bitmap);
             SDL_Rect rectAux = dest;
@@ -318,91 +294,32 @@ public:
         return 0;
     }
 
-    void SetAngulo(float a) override{
-        angulo = a;
-        AtualizaBB();
-    }
-
-    int arredonda(float valor){
-        int resultado = (int)valor;
-        if (valor - resultado >= 0.5)
-            return valor + 1;
-        return valor;
-    }
-
-    void calculaVertice2s(){
-        /*vertices[0][0] = x;
-        vertices[0][1] = y;
-        vertices[1][0] = arredonda(x + larg * cos(angulo * M_PI / 180));
-        vertices[1][1] = arredonda(y + larg * sin(angulo * M_PI / 180));
-        vertices[2][0] = arredonda(x + (larg * cos(angulo * M_PI / 180)) - (alt * sin(angulo * M_PI / 180)));
-        vertices[2][1] = arredonda(y + (larg * sin(angulo * M_PI / 180)) + (alt * cos(angulo * M_PI / 180)));
-        vertices[3][0] = arredonda(x - (alt * sin(angulo * M_PI / 180)));
-        vertices[3][1] = arredonda(y + (alt * cos(angulo * M_PI / 180)));
-
-        if (vertices[1][1] == vertices[0][1])
-        {
-            for (int i = 1; i < 4; i++)
-            {
-                std::swap(vertices[i][0], vertices[0][0]);
-                std::swap(vertices[i][1], vertices[0][1]);
-            }
-        }*/
-        for(int i=0;i<4;i++){
-            vertices[i][0] = bb[i].x;
-            vertices[i][1] = bb[i].y;
+    void Atualiza()
+    {
+        if(bbAlterado) {
+            AtualizaBB();
+            AtualizaVertices();
+            bbAlterado = false;
         }
     }
 
-    double projecaoY(double coefAngular, SDL_Point p)
-    {
-        if (std::isinf(coefAngular))
-            return (double)p.y;
-        return coefAngular * (-p.x) + p.y;
+    bool Colisao(CObjeto *outro) {
+        Atualiza();
+        outro->Atualiza();
+
+        if(ColisaoBB(outro) && outro->ColisaoBB(this)) {
+            return ColisaoPoligono(outro) || outro->ColisaoPoligono(this);
+        }
+        return false;
     }
 
-    double projecaoX(double coefAngular, SDL_Point p)
-    {
-        if (std::isinf(coefAngular))
-            return (double)p.x;
-
-        return (-p.y + (coefAngular * p.x)) / coefAngular;
-    }
-
-    double  min(double  vetor[4])
-    {
-        double  menor = vetor[0];
-        for (int i = 1; i < 4; i++)
-            if (vetor[i] < menor)
-                menor = vetor[i];
-        return menor;
-    }
-
-    double  max(double  vetor[4])
-    {
-        double  maior = vetor[0];
-        for (int i = 1; i < 4; i++)
-            if (vetor[i] > maior)
-                maior = vetor[i];
-        return maior;
-    }
-
-    SDL_Point GetBB(int i)
-    {
-        return bb[i];
-    }
-
-    int Colisao(CObjeto *outro)
-    {
-        AtualizaBB();
+    int ColisaoBB(CObjeto *outro) {
 
         // caso em q o angulo é 0
         // caso em que o vetor que vai de bb[0] para bb[1] é paralelo ao eixo X, ou seja, nao ira existir uma "projecao" no eixo X
         // os pontos sao trocados para que seja usado o antigo bb[3] para bb[0]
-        if (bb[1].y == bb[0].y)
-        {
-            for (int i = 1; i < 4; i++)
-            {
+        if (bb[1].y == bb[0].y) {
+            for (int i = 1; i < 4; i++) {
                 std::swap(bb[i].x, bb[0].x);
                 std::swap(bb[i].y, bb[0].y);
             }
@@ -444,88 +361,46 @@ public:
         return (menorA < maiorB && maiorA > menorB);
     }
 
-    /*int Colisao2(CObjeto *outro)
-    {
-        calculaVertices();
-        outro->calculaVertices();
+    bool PontoDentro(SDL_Point p) {
+        int i = 0;
+        int quant_intersecoes = 0;
 
-        // for (int i = 0; i < 4; i++)
-        // {
-        //     printf("%c(x, y) - %d %d\n", 'A' + i, vertices[i][0], vertices[i][1]);
-        // }
-        // printf("\n\n\n");
+        do {
+            if (Intersecao(i, (i + 1) % vertices.size(), p))
+                quant_intersecoes++;
 
-        // printf("%f\n\n\n", (float)(vertices[1][1] - vertices[0][1]) / (float)(vertices[1][0] - vertices[0][0]));
+            i = (i + 1) % vertices.size();
+        } while (i != 0);
 
-        // projecao dos vetores no eixo X deste objeto
-        float projecaoAB = projecaoX((float)(vertices[1][1] - vertices[0][1]) / (float)(vertices[1][0] - vertices[0][0]), vertices[0]);
-        float projecaoCD = projecaoX((float)(vertices[3][1] - vertices[2][1]) / (float)(vertices[3][0] - vertices[2][0]), vertices[2]);
+        return !(quant_intersecoes % 2 == 0);
+    }
 
-        // printf("projAB: %f p: (%d, %d) | projCD: %f p: (%d, %d) \n\n\n", projecaoAB, vertices[0][0], vertices[0][1], projecaoCD, vertices[2][0], vertices[2][1]);
-
-        // projecao dos pontos(com o angulo dos anteriores) no eixo X do outro objeto
-        float projecao[4];
-        for (int i = 0; i < 4; i++)
-        {
-            projecao[i] = projecaoX((float)(vertices[1][1] - vertices[0][1]) / (float)(vertices[1][0] - vertices[0][0]), outro->vertices[i]);
-            // printf("%c - %f (%d, %d)\n\n\n", 'A' + i, projecao[i], outro->vertices[i][0], outro->vertices[i][1]);
+    bool ColisaoPoligono(CObjeto *outro) {
+        for (auto vertice : outro->GetVertices()) {
+            if (PontoDentro(vertice)) return true;
         }
+        return false;
+    }
 
-        float menorA = (projecaoAB < projecaoCD) ? projecaoAB : projecaoCD;
-        float maiorA = (projecaoAB > projecaoCD) ? projecaoAB : projecaoCD;
-        float menorB = min(projecao);
-        float maiorB = max(projecao);
-
-        if (!(menorA < maiorB && maiorA > menorB))
-            return false;
-
-        projecaoAB = projecaoY((float)(vertices[2][1] - vertices[1][1]) / (float)(vertices[2][0] - vertices[1][0]), vertices[1]);
-        projecaoCD = projecaoY((float)(vertices[0][1] - vertices[3][1]) / (float)(vertices[0][0] - vertices[3][0]), vertices[3]);
-
-        // printf("projAB: %f p: (%d, %d) | projCD: %f p: (%d, %d) \n\n\n", projecaoAB, vertices[1][0], vertices[1][1], projecaoCD, vertices[3][0], vertices[3][1]);
-
-        // projecao dos pontos(com o angulo dos anteriores) no eixo X do outro objeto
-        for (int i = 0; i < 4; i++)
-        {
-            projecao[i] = projecaoY((float)(vertices[2][1] - vertices[1][1]) / (float)(vertices[2][0] - vertices[1][0]), outro->vertices[i]);
-            // printf("%c - %f (%d, %d)\n\n\n", 'A' + i, projecao[i], outro->vertices[i][0], outro->vertices[i][1]);
-        }
-
-        menorA = (projecaoAB < projecaoCD) ? projecaoAB : projecaoCD;
-        maiorA = (projecaoAB > projecaoCD) ? projecaoAB : projecaoCD;
-        menorB = min(projecao);
-        maiorB = max(projecao);
-
-        return (menorA < maiorB && maiorA > menorB);
-    }*/
-
-    PIG_Cor **GetPixels()
-    {
+    PIG_Cor **GetPixels() {
         return pixels;
     }
 
-    void AtualizaPixels(int retiraFundo = 1, int opacidadeObj = 255)
-    {
+    void AtualizaPixels(int retiraFundo = 1, int opacidadeObj = 255) {
         Uint8 *pix8;
         Uint32 *pix32;
-        if (bitmap->format->BytesPerPixel == 3)
-        {
-            for (int h = 0; h < bitmap->h; h++)
-            {
+        if (bitmap->format->BytesPerPixel == 3) {
+            for (int h = 0; h < bitmap->h; h++) {
                 pix8 = (Uint8 *)bitmap->pixels + (h * bitmap->pitch);
-                for (int w = 0; w < bitmap->w; w++)
-                {
-                    if (bitmap->format->format == SDL_PIXELFORMAT_RGB24)
-                    {
+                for (int w = 0; w < bitmap->w; w++) {
+                    if (bitmap->format->format == SDL_PIXELFORMAT_RGB24) {
                         *pix8 = pixels[h][w].r;
                         pix8++;
                         *pix8 = pixels[h][w].g;
                         pix8++;
                         *pix8 = pixels[h][w].b;
                         pix8++;
-                    }
-                    else
-                    {
+                    } else {
                         *pix8 = pixels[h][w].b;
                         pix8++;
                         *pix8 = pixels[h][w].g;
@@ -535,14 +410,10 @@ public:
                     }
                 }
             }
-        }
-        else if (bitmap->format->BytesPerPixel == 4)
-        {
+        } else if (bitmap->format->BytesPerPixel == 4) {
             pix32 = (Uint32 *)bitmap->pixels;
-            for (int h = 0; h < bitmap->h; h++)
-            {
-                for (int w = 0; w < bitmap->w; w++)
-                {
+            for (int h = 0; h < bitmap->h; h++) {
+                for (int w = 0; w < bitmap->w; w++) {
                     SDL_GetRGBA((Uint32)*pix32, bitmap->format, &(pixels[h][w].r), &(pixels[h][w].g), &(pixels[h][w].b), &(pixels[h][w].a));
                     pix32++;
                 }
@@ -553,13 +424,71 @@ public:
         CriaTextura(retiraFundo);
     }
 
-    void Move(int nx,int ny)override{
-        x = nx;
-        y = ny;
-        dest.x = x;
-        dest.y = altJanela-alt-y;
-        AtualizaBB();
+private:
+
+    int arredonda(float valor) {
+        int resultado = (int)valor;
+        if (valor - resultado >= 0.5)
+            return valor + 1;
+        return valor;
     }
+
+    double projecaoY(double coefAngular, SDL_Point p) {
+        if (std::isinf(coefAngular))
+            return (double)p.y;
+        return coefAngular * (-p.x) + p.y;
+    }
+
+    double projecaoX(double coefAngular, SDL_Point p) {
+        if (std::isinf(coefAngular))
+            return (double)p.x;
+
+        return (-p.y + (coefAngular * p.x)) / coefAngular;
+    }
+
+    double  min(double  vetor[4]) {
+        double  menor = vetor[0];
+        for (int i = 1; i < 4; i++)
+            if (vetor[i] < menor)
+                menor = vetor[i];
+        return menor;
+    }
+
+    double  max(double  vetor[4]) {
+        double  maior = vetor[0];
+        for (int i = 1; i < 4; i++)
+            if (vetor[i] > maior)
+                maior = vetor[i];
+        return maior;
+    }
+
+    bool Entre(int x, int a, int b) {
+        return ((x > a) && (x < b) || (x < a) && (x > b));
+    }
+
+    bool Intersecao(int i, int f, SDL_Point p) {
+        float m = ((float)vertices[f].y - vertices[i].y) /
+                  ((float)vertices[f].x - vertices[i].x);
+        int x;
+
+        if (m == 0)
+            return p.y == vertices[i].y &&
+                   Entre(p.x, vertices[i].x, vertices[f].x);
+
+        if (p.y == vertices[i].y && p.x <= vertices[i].x) {
+            int anterior = i == 0 ? vertices.size() - 1 : i - 1;
+            return Entre(p.y, vertices[anterior].y, vertices[f].y);
+        }
+
+        if (std::isinf(m))
+            x = vertices[i].x;
+        else
+            x = (((float)p.y - vertices[i].y) / (float)m) +
+                ((float)vertices[i].x);
+
+        return (x >= p.x) && Entre(p.y, vertices[i].y, vertices[f].y);
+    }
+
 };
 
 typedef CObjeto *Objeto;

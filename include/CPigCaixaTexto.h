@@ -101,7 +101,13 @@ protected:
 
     virtual void AjustaAlinhamento() =0;//pure virtual, porque cada classe derivada vai fazer ajustes diferentes
 
+    virtual int SobeCursor() = 0;
 
+    virtual int DesceCursor() = 0;
+
+    virtual int PulaLinha() = 0;
+
+    virtual std::string GetTextoVisivel() =0;//pure virtual, porque cada classe derivada vai retornar um texto de forma diferente
 
     //posiciona o cursor no eixo X (necessário, pois pode haver texto "escondido" à esquerda)
     void AjustaBaseTextoEixoX(int largParcial){
@@ -151,14 +157,6 @@ protected:
         if (audioComponente>=0) CGerenciadorAudios::Play(audioComponente);
         return 1;
     }
-
-    virtual int SobeCursor() = 0;
-
-    virtual int DesceCursor() = 0;
-
-    virtual int PulaLinha() = 0;
-
-    virtual std::string GetTextoVisivel() =0;//pure virtual, porque cada classe derivada vai retornar um texto de forma diferente
 
     //adiciona um texto (caracter ou string) na posição indicada pelo cursor (se possível)
     int AdicionaTexto(std::string frase){
@@ -250,7 +248,7 @@ public:
         //imagem de fundo
         SDL_RenderCopyEx(renderer, text, &frame,&dest,-angulo,&pivoRelativo,flip);
 
-        SDL_Rect r={x+margemHorEsq+1,altJanela-y-alt+margemVertCima,larg-(margemHorEsq+margemHorDir),alt-(margemVertBaixo+margemVertCima)+1};
+        SDL_Rect r={x+margemHorEsq+1,altJanela-y-alt+margemVertCima,larg-(margemHorEsq+margemHorDir),alt-(margemVertBaixo+margemVertCima)};
         SDL_RenderSetClipRect(renderer,&r);
 
         DesenhaElementosEspecificos();//cada classe derivada pode desenhar elementos específicos

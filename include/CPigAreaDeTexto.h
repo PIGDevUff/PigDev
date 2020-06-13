@@ -79,9 +79,6 @@ private:
             }
         }
 
-        //if (texto[posCursor-1]=='\n'){//se o cursor parou depois do fim da linha forçada pelo '\n', escreve antes deste caracter terminador
-        //    posCursor--;
-        //}
         AjustaAlinhamento();
         if (estado==COMPONENTE_NORMAL)
             DefineEstado(COMPONENTE_EDITANDO);
@@ -109,6 +106,8 @@ private:
             return 2;
         }
     }
+
+    int TrataMouseBotaoDireito(PIG_Evento evento,SDL_Point p){return 1;}//não usa o botão direito
 
     //
     int GetLinhaComMouseEmCima(){
@@ -163,7 +162,7 @@ private:
         CGerenciadorJanelas::DesenhaLinhaSimples(x+margemHorEsq,y+margemVertBaixo,x+ margemHorEsq,y+alt-margemVertCima,BRANCO);
         CGerenciadorJanelas::DesenhaLinhaSimples(x+larg-margemHorDir-1,y+margemVertBaixo,x+larg-margemHorDir-1,y+alt-margemVertCima,BRANCO);
 
-        CGerenciadorJanelas::DesenhaLinhaSimples(x+margemHorEsq,y+alt-margemVertCima,x+larg-margemHorDir,y+alt-margemVertCima,BRANCO);
+        CGerenciadorJanelas::DesenhaLinhaSimples(x+margemHorEsq,y+alt-margemVertCima-1,x+larg-margemHorDir,y+alt-margemVertCima-1,BRANCO);
         CGerenciadorJanelas::DesenhaLinhaSimples(x+margemHorEsq,y+margemVertBaixo,x+larg-margemHorDir,y+margemVertBaixo,BRANCO);
     }
 
@@ -179,8 +178,6 @@ private:
             yLinha = yBase - ((espacoEntreLinhas + altLetra) *i);
         }
     }
-
-    int TrataMouseBotaoDireito(PIG_Evento evento,SDL_Point p){return 1;}//não usa o botão direito
 
     //move o cursor uma linha para cima
     int SobeCursor(){
@@ -229,8 +226,8 @@ private:
 
 public:
 
-    CPigAreaDeTexto(int idComponente,int px, int py, int alt,int larg,std::string nomeArq,int maxCars = 200, bool apenasNumeros=false, int retiraFundo=1,int janela=0,int largMaxTexto =200,bool linhasAbaixoTexto = false,bool marcarMargens = false):
-        CPigCaixaTexto(idComponente,px,py,alt,larg,nomeArq,maxCars,apenasNumeros,retiraFundo,janela){ // A altura é um vetor, mas eu preciso dela, entao eu acabei colocando como o tamanho da fonte, qualquer coisa só mudar aqui
+    CPigAreaDeTexto(int idComponente,int px, int py, int alt,int larg,std::string nomeArq,int maxCars = 200,int retiraFundo=1,int janela=0):
+        CPigCaixaTexto(idComponente,px,py,alt,larg,nomeArq,maxCars,false,retiraFundo,janela){ // A altura é um vetor, mas eu preciso dela, entao eu acabei colocando como o tamanho da fonte, qualquer coisa só mudar aqui
         espacoEntreLinhas = 0;
         yBaseOriginal = y+alt-margemVertCima-altLetra;
         xBaseOriginal = x+margemHorEsq;
@@ -238,10 +235,10 @@ public:
         xBase = xBaseOriginal;
         xCursor = xBase;
         yCursor = yBase;
-        largMax = largMaxTexto;
-        linhasPauta = linhasAbaixoTexto;
+        largMax = larg;
+        linhasPauta = false;
         corLinhasTexto = PRETO;
-        marcarMargem = marcarMargens;
+        marcarMargem = false;
         AjustaAlinhamento();
     }
 
@@ -256,9 +253,14 @@ public:
         AjustaAlinhamento();
     }
 
+    void SetMarcarMargem(bool marcarMargens){
+         marcarMargem = marcarMargens;
+    }
+
     //define a cor da linhas horizontais
-    void SetCorLinhasHorizontais(PIG_Cor cor){
+    void SetLinhasAbaixoTexto(bool visivel,PIG_Cor cor = PRETO){
         corLinhasTexto = cor;
+        linhasPauta = visivel;
     }
 
     //define a largura máxima do texto

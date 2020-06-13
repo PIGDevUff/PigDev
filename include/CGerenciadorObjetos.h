@@ -178,8 +178,23 @@ public:
         objetos[idObjeto]->Desenha(offRender);
     }
 
-    inline static int TestaColisao(int idObjeto1,int idObjeto2){
-        return objetos[idObjeto1]->Colisao(objetos[idObjeto2]);
+    inline static int TestaColisaoPoligono(int id_objeto1, int id_objeto2) {
+        return objetos[id_objeto1]->ColisaoPoligono(objetos[id_objeto2]) || objetos[id_objeto2]->ColisaoPoligono(objetos[id_objeto1]);
+    }
+
+    inline static int TestaColisao(int id_objeto1, int id_objeto2) {
+        return objetos[id_objeto1]->Colisao(objetos[id_objeto2]) && objetos[id_objeto2]->Colisao(objetos[id_objeto1]);
+    }
+
+    inline static void DefineAreaColisao(int id_objeto, int *x, int *y, int quantidadePontos) {
+        std::vector<SDL_Point> vertices;
+
+        for (int i = 0; i < quantidadePontos; i++) {
+            SDL_Point aux = {x[i], y[i]};
+            vertices.push_back(aux);
+        }
+
+        objetos[id_objeto]->SetVertices(vertices);
     }
 
     inline static PIG_Cor **GetPixels(int idObjeto){

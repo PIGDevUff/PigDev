@@ -74,10 +74,9 @@ public:
             if (indice != std::string::npos){//achou delimitadores
                 resp.push_back(strAtual);
                 //strAtual.Print();
-
+                strAtual.Clear();
+                strAtual.Adiciona(letras[i],largAcumulada[i]-largBase,cores[i],estilos[i]);
                 if (letras[i]!='\n'){
-                    strAtual.Clear();
-                    strAtual.Adiciona(letras[i],largAcumulada[i]-largBase,cores[i],estilos[i]);
                     resp.push_back(strAtual);
                 }
 
