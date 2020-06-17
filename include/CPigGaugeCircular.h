@@ -19,7 +19,7 @@ private:
     bool crescimentoHorario;
     int valor,valorMin,valorMax;
     double porcentagemConcluida;
-    SDL_Texture *textFundo;
+    SDL_Texture *textGauge;
     void DefineEstado(PIG_EstadoComponente estadoComponente){}
     int OnMouseOn(){return 0;}
     int OnMouseOff(){return 0;}
@@ -33,19 +33,39 @@ CPigGaugeCircular(int idComponente,int px, int py,int altura,int largura,int rai
     angBase = 0;
     deltaAng = 360;
     raioInterno = raioInterior;
-    valor = 40;
+    valor = 0;
     valorMin = 0;
     valorMax = 100;
-    porcentagemConcluida = 0.4;
+    porcentagemConcluida = 0.0;
     corInicial = corFinal = LARANJA;
     corFundo = PRETO;
     off = new COffscreenRenderer(altura,largura,3);
 
     Move(px,py);
     SetPivo(larg/2,alt/2);
-    textFundo = NULL;
+    textGauge = NULL;
     AtualizaTextura();
-    AtualizaTexturaFundo();
+    crescimentoHorario=true;
+}
+
+CPigGaugeCircular(int idComponente,int px, int py,int altura,int largura,int raioInterior,std::string nomeArq,int retiraFundo=1,int janela=0):
+    CPigComponente(idComponente,px,py,altura,largura,nomeArq,retiraFundo,janela){
+
+    angBase = 0;
+    deltaAng = 360;
+    raioInterno = raioInterior;
+    valor = 0;
+    valorMin = 0;
+    valorMax = 100;
+    porcentagemConcluida = 0.0;
+    corInicial = corFinal = LARANJA;
+    corFundo = PRETO;
+    off = new COffscreenRenderer(altura,largura,3);
+
+    Move(px,py);
+    SetPivo(larg/2,alt/2);
+    textGauge = NULL;
+    AtualizaTextura();
     crescimentoHorario=true;
 }
 
@@ -57,19 +77,18 @@ void SetRaioInterno(int valorRaio){
     if (valorRaio<0||valorRaio>0.9*larg/2) return;
 
     raioInterno = valorRaio;
-    printf("atualizei %d\n",raioInterno);
+    //printf("atualizei %d\n",raioInterno);
     AtualizaTextura();
-    AtualizaTexturaFundo();
 }
 
 void SetAnguloBase(double novoAng){
     angBase = novoAng;
+    AtualizaTextura();
 }
 
 void SetDeltaAngulo(double novoDelta){
     deltaAng = novoDelta;
     AtualizaTextura();
-    AtualizaTexturaFundo();
 }
 
 void IncrementaValor(int delta){
@@ -107,6 +126,11 @@ void SetCorFinal(PIG_Cor cor){
     AtualizaTextura();
 }
 
+void SetCorFundo(PIG_Cor cor){
+    corFundo = cor;
+    AtualizaTextura();
+}
+
 int GetValor(){
     return valor;
 }
@@ -132,32 +156,60 @@ void AtualizaValor(int novoValor){
 }
 
 void AtualizaTextura(){
-    off->LimpaLayer(0,VERDE);
-    off->DesenhaCirculo(raioInterno,95,MixCor(corInicial,corFinal,porcentagemConcluida*(deltaAng)),porcentagemConcluida*(deltaAng),true,0);
-    off->SetCorTransparente(0,valor>0,VERDE);
-    //off->SalvarImagemPNG("circulo0.png",0);
-    bitmap = off->GetSurface(0);
-    CriaTextura(1);
-}
+    PIG_Cor corBarra = MixCor(corInicial,corFinal,porcentagemConcluida);//cor da barra mizada entre a cor inicial e a final
+    PIG_Cor opcoes[4] = {VERDE,AZUL,ROXO,LARANJA}; //4 cores quaisquer
+    PIG_Cor croma1, croma2; //cores usada como cromakey para transparencias (não podem ser nem a cor da barra, nem a cor do fundo)
 
-void AtualizaTexturaFundo(){
-    off->LimpaLayer(1,VERDE);
-    off->DesenhaCirculo(raioInterno,95,corFundo,deltaAng,true,1);
-    off->SetCorTransparente(1,true,VERDE);
-    off->SalvarImagemPNG("circulo1.png",1);
-    //if (textFundo) SDL_DestroyTexture(textFundo);
-    textFundo = SDL_CreateTextureFromSurface(renderer,off->GetSurface(1));
+    //escolha das cores
+    int i=0;
+    croma1=opcoes[i];
+    while (CORESIGUAIS(croma1,corBarra)||CORESIGUAIS(croma1,corFundo)){//não pode ser a cor da barra nem do fundo
+        croma1=opcoes[++i];
+    }
+    croma2=opcoes[i];
+    while (CORESIGUAIS(croma2,corBarra)||CORESIGUAIS(croma2,corFundo)||CORESIGUAIS(croma2,croma1)){//não pode ser a cor da barra, nem do fundo, nem a cor croma1
+        croma2=opcoes[++i];
+    }
+
+    //circulo interno para criar efeito de coroa circular
+    off->DesenhaCirculoFinal(raioInterno,croma2,croma1,0,360.0,2);
+    off->SetCorTransparente(2,true,croma2);
+    //off->SalvarImagemPNG("interno.png",2);
+
+    //circulo com a barra na cor desejada
+    off->DesenhaCirculoFinal(larg/2-2,croma1,corBarra,angBase,porcentagemConcluida*(deltaAng)+angBase,0);
+    off->SetCorTransparente(0,true,croma1);
+    //off->SalvarImagemPNG("barra.png",0);
+
+    //criculo com o fundo na cor de fundo
+    off->DesenhaCirculoFinal(larg/2-2,croma1,corFundo,angBase,angBase+deltaAng,1);
+    off->SetCorTransparente(1,true,croma1);
+    //off->SalvarImagemPNG("fundo.png",1);
+
+    //mistura o circulo interno com a barra
+    off->MergeSurface(2,0,SDL_BLENDMODE_NONE);
+    //off->SalvarImagemPNG("circ20.png",0);
+
+    //mistura o circulo interno com o fundo
+    off->MergeSurface(2,1,SDL_BLENDMODE_NONE);
+    //off->SalvarImagemPNG("circ21.png",1);
+
+    //sobre a barra em cima do fundo
+    off->MergeSurface(0,1,SDL_BLENDMODE_NONE);
+    //off->SalvarImagemPNG("circ01.png",1);
+
+    if (textGauge) SDL_DestroyTexture(textGauge);
+    textGauge = SDL_CreateTextureFromSurface(renderer,off->GetSurface(1));
+    //bitmap = off->GetSurface(1);
+    //CriaTextura(1);
 }
 
 int Desenha(){
-    //if (text) printf("%d, %d, %d, %d\n",dest.x,dest.y,dest.w,dest.h);
-    if (crescimentoHorario)
-        angulo = angBase;
-    else angulo = floor(angBase+porcentagemConcluida*deltaAng);
-    SDL_RenderCopyEx(renderer,textFundo,NULL,&dest,-angulo,&pivoRelativo,flip);
     SDL_RenderCopyEx(renderer,text,NULL,&dest,-angulo,&pivoRelativo,flip);
+    SDL_RenderCopyEx(renderer,textGauge,NULL,&dest,-angulo,&pivoRelativo,flip);
 
     DesenhaLabel();
+    EscreveHint();
 }
 
 };

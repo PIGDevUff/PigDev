@@ -42,46 +42,9 @@ protected:
         }
         return resp;
     }
-/* //Versao Antiga//
-    std::vector<std::string> SeparaPalavras(std::string texto,std::string delim){
-        std::vector<std::string> resp;
-        int indice;
-
-        std::string strAtual = "";
-        for (int i=0;i<texto.size();i++){
-            //strAtual += texto[i];
-
-            indice = delim.find(texto[i]);
-            if (indice != std::string::npos){//achou delimitadores
-                resp.push_back(strAtual);
-                //strAtual.Print();
-
-                if (texto[i]!='\n'){
-                    strAtual = texto[i];
-                    resp.push_back(strAtual);
-                }
-                strAtual = "";
-            }else strAtual += texto[i];
-        }
-        if (strAtual!=""){
-            resp.push_back(strAtual);
-        }
-        return resp;
-    }
-    */
-    //funcao que desenha o outline na fonte que está sendo produzida(o render precisa estar direcionado para a textura em questão)
-    void FazOutline(Uint16 letra, int nivelOutline,PIG_Cor corOutline){
-        TTF_SetFontOutline(font,nivelOutline);
-        SDL_Surface *out = TTF_RenderGlyph_Blended(font,letra,corOutline);
-        SDL_Texture *text = SDL_CreateTextureFromSurface(render,out);
-        SDL_RenderCopy(render,text, NULL, NULL);
-        SDL_DestroyTexture(text);
-        SDL_FreeSurface(out);
-        TTF_SetFontOutline(font,0);
-    }
 
     //cria o conjunto de glifos das letras com as características fornecidas
-    void CriaLetras(PIG_Estilo estilo, int nivelOutline, PIG_Cor corOutline, SDL_Texture *textFundo,  PIG_Cor corFonte=BRANCO){
+    void CriaLetrasSurface(PIG_Estilo estilo, int nivelOutline, PIG_Cor corOutline, SDL_Surface *fundo,  PIG_Cor corFonte=BRANCO){
         TTF_SetFontStyle(font,estilo);
 
         glyphsT[estilo] = (SDL_Texture**) malloc(sizeof(SDL_Texture*)*(ULTIMO_CAR-PRIMEIRO_CAR));
@@ -90,35 +53,24 @@ protected:
 
         for (Uint16 letra=PRIMEIRO_CAR;letra<ULTIMO_CAR;letra++){
             SDL_Surface *surf = TTF_RenderGlyph_Blended(font,letra,corFonte);//superficie gerada com a forna da letra simples
-            SDL_Texture *textLetra = SDL_CreateTextureFromSurface(render,surf);//textura com a forma da letra da letra simples
+
+            if (fundo){
+                SDL_BlitScaled(fundo,NULL,surf,NULL);
+            }
 
             larguraLetra[estilo][letra-PRIMEIRO_CAR] = surf->w;//largura da letra com o estilo específico
             alturaExtra[estilo][letra-PRIMEIRO_CAR] = surf->h-tamFonte;//qtd de pixels a mais na altura, para letras maiúsculas acentudadas como Á, Ó, É...
 
-            //cria uma textura renderizavel para aplicar as camadas (forma da letra, depois imagem de fundo)                                                        larguraLetra[estilo][letra-PRIMEIRO_CAR],tamFonte+alturaLetra[estilo][letra-PRIMEIRO_CAR]);
-            glyphsT[estilo][letra-PRIMEIRO_CAR] = SDL_CreateTexture(render,SDL_PIXELFORMAT_RGBA8888,SDL_TEXTUREACCESS_TARGET,surf->w,surf->h);
-
-            SDL_SetRenderTarget(render, glyphsT[estilo][letra-PRIMEIRO_CAR]);//textura de destino
-
-            //SDL_SetTextureAlphaMod(textLetra,255);
-            SDL_SetTextureBlendMode(glyphsT[estilo][letra-PRIMEIRO_CAR],SDL_BLENDMODE_BLEND);
-            SDL_RenderCopy(render,textLetra,NULL,NULL); //renderiza a letra na tetxura de destino
-
-            if (textFundo){
-                SDL_SetTextureBlendMode(textFundo,SDL_BLENDMODE_MOD);
-                //SDL_SetTextureBlendMode(glyphsT[estilo][letra-PRIMEIRO_CAR],SDL_BLENDMODE_BLEND);
-                SDL_RenderCopy(render,textFundo,NULL,NULL); //renderiza a textura de fundo por cima
+            if (nivelOutline>0){//faz o outline da letra, se houver
+                TTF_SetFontOutline(font,nivelOutline);
+                SDL_Surface *out = TTF_RenderGlyph_Blended(font,letra,corOutline);
+                SDL_BlitSurface(out,NULL,surf,NULL);
+                SDL_FreeSurface(out);
+                TTF_SetFontOutline(font,0);
             }
 
-            if (nivelOutline>0)//faz o outline da letra, se houver
-                FazOutline(letra,nivelOutline,corOutline);
+            glyphsT[estilo][letra-PRIMEIRO_CAR] = SDL_CreateTextureFromSurface(render,surf);
 
-            //SDL_SetRenderDrawColor(render,255,0,0,255);
-            //SDL_Rect rect = {0,0,surf->w,surf->h};
-
-            //SDL_RenderDrawRect(render,&rect);
-
-            SDL_DestroyTexture(textLetra);
             SDL_FreeSurface(surf);
         }
 
@@ -155,20 +107,15 @@ public:
         IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo);
 
         SDL_Surface *fundo = IMG_Load(nomeFundo);//carrega a imagem de fundo
-        SDL_Texture *textFundo = SDL_CreateTextureFromSurface(render,fundo);
+        SDL_SetSurfaceBlendMode(fundo,SDL_BLENDMODE_MOD);
+        CriaLetrasSurface(estilo, outline, corOutline, fundo);
         SDL_FreeSurface(fundo);
-
-        CriaLetras(estilo, outline, corOutline, textFundo);
-
-        SDL_SetRenderTarget(render, NULL);
-
-        SDL_DestroyTexture(textFundo);
     }
 
     CMapaCaracteres(char *nomeFonte,int tamanhoFonte,int estilo, PIG_Cor corFonte,int outline,PIG_Cor corOutline, int idJanela){
         IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo);
 
-        CriaLetras(estilo, outline, corOutline, NULL, corFonte);
+        CriaLetrasSurface(estilo, outline, corOutline, NULL, corFonte);
 
         SDL_SetRenderTarget(render, NULL);
     }
@@ -267,46 +214,6 @@ public:
         palavras.clear();
         return resp;
     }
-
-    /*std::vector<std::string> ExtraiLinhas(std::string texto, int largMax, std::string delim=PigDelimitadores){
-        std::vector<std::string> resp;
-        if (texto=="") return resp;
-
-        std::vector<std::string> palavras = SeparaPalavras(texto,delim);
-
-        std::string linhaAtual = palavras[0];   //linha atual (que está sendo montada) contém pelo menos a primeira palavra
-        int tamanhoAtual = GetLarguraPixelsString(linhaAtual);
-
-        for (int i=1;i<palavras.size();i++){
-            std::string palavra = palavras[i];   //pega a próxima palavra
-            int largPalavra = GetLarguraPixelsString(palavra);
-
-            if (tamanhoAtual + largPalavra > largMax){//a palavra estouraria a largura máxima se fosse agregada                if (ttttt==0){
-                resp.push_back(linhaAtual); //coloca a linha que está montada no vetor de linhas
-                linhaAtual = palavra; //a palavra que estouraria o limite começa a próxima linha
-                tamanhoAtual = largPalavra;
-            }else{//não estourou o limite
-                linhaAtual += palavra;
-                tamanhoAtual += largPalavra;
-            }
-
-            if (palavra.size()>0&&palavra[palavra.size()-1]=='\n'){//se existe uma quebra de linha forçada
-                resp.push_back(linhaAtual);
-
-                //i++;
-                if (++i<palavras.size()){
-                    linhaAtual = palavras[i]; //começa uma nova linha com a p´roxima palavra
-                }else linhaAtual = "";
-            }
-        }
-
-        if (linhaAtual != ""){
-            resp.push_back(linhaAtual); //pega a linha que sobrou do processamento (última linha que não foi quebrada)
-        }
-
-        palavras.clear();
-        return resp;
-    }*/
 
     virtual int GetLarguraPixelsString(std::string texto){
         int resp=0;

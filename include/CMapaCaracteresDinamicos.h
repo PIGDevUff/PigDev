@@ -138,7 +138,7 @@ public:
         IniciaBase(nomeFonte,tamanhoFonte,idJanela, -1);
 
         for (int estilo=0;estilo<PIG_TOTALESTILOS;estilo++)
-            CriaLetras(estilo, 0, BRANCO, NULL, BRANCO);
+            CriaLetrasSurface(estilo, 0, BRANCO, NULL, BRANCO);
 
         SDL_SetRenderTarget(render, NULL);
     }

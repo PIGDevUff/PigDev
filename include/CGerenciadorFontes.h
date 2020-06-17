@@ -21,6 +21,7 @@ public:
         TTF_Init();
 
         fontes[0] = new CMapaCaracteres(PIG_FONTE_PADRAO_NOME,PIG_FONTE_PADRAO_TAM,ESTILO_NORMAL,PIG_FONTE_PADRAO_COR,0,BRANCO,0);
+        //fontes[0] = new CMapaCaracteres(PIG_FONTE_PADRAO_NOME,PIG_FONTE_PADRAO_TAM,ESTILO_NORMAL,"desenho.bmp",0,BRANCO,0);
         //fontes[0] = new CMapaCaracteresDinamicos("..//fontes//arial.ttf",36,0);
         totalFontes = 1;
 
