@@ -8,8 +8,9 @@ private:
 
 public:
 
-    static Objeto GetObjeto(int id_objeto){
-        return objetos[id_objeto];
+    inline static Objeto GetObjeto(int idObjeto){
+        if (idObjeto<0||idObjeto>=totalObjetos||objetos[idObjeto]==NULL) throw CPigErroIndice(idObjeto,"objetos");
+        return objetos[idObjeto];
     }
 
     static void Inicia(){
@@ -41,6 +42,7 @@ public:
     }
 
     static void DestroiObjeto(int idObjeto){
+        if (objetos[idObjeto]==NULL) throw CPigErroIndice(idObjeto,"objetos");
         numObjetos->DevolveUsado(idObjeto);
         delete objetos[idObjeto];
         totalObjetos--;
@@ -48,109 +50,109 @@ public:
     }
 
     inline static void SetValorIntObjeto(int idObjeto, int chave, int valor){
-        objetos[idObjeto]->SetValoresInt(chave,valor);
+        GetObjeto(idObjeto)->SetValoresInt(chave,valor);
     }
 
     inline static void SetValorIntObjeto(int idObjeto, std::string chave, int valor){
-        objetos[idObjeto]->SetValoresInt(chave,valor);
+        GetObjeto(idObjeto)->SetValoresInt(chave,valor);
     }
 
     inline static void SetValorFloatObjeto(int idObjeto, int chave, float valor){
-        objetos[idObjeto]->SetValoresFloat(chave,valor);
+        GetObjeto(idObjeto)->SetValoresFloat(chave,valor);
     }
 
     inline static void SetValorFloatObjeto(int idObjeto, std::string chave, float valor){
-        objetos[idObjeto]->SetValoresFloat(chave,valor);
+        GetObjeto(idObjeto)->SetValoresFloat(chave,valor);
     }
 
     inline static void SetValorStringObjeto(int idObjeto, int chave, std::string valor){
-        objetos[idObjeto]->SetValoresString(chave,valor);
+        GetObjeto(idObjeto)->SetValoresString(chave,valor);
     }
 
     inline static void SetValorStringObjeto(int idObjeto, std::string chave, std::string valor){
-        objetos[idObjeto]->SetValoresString(chave,valor);
+        GetObjeto(idObjeto)->SetValoresString(chave,valor);
     }
 
     inline static bool GetValorIntObjeto(int idObjeto, int indice, int *valor){
-        return objetos[idObjeto]->GetValoresInt(indice,*valor);
+        return GetObjeto(idObjeto)->GetValoresInt(indice,*valor);
     }
 
     inline static bool GetValorFloatObjeto(int idObjeto, int indice, float *valor){
-        return objetos[idObjeto]->GetValoresFloat(indice,*valor);
+        return GetObjeto(idObjeto)->GetValoresFloat(indice,*valor);
     }
 
     inline static bool GetValorStringObjeto(int idObjeto, int indice, char *valor){
         std::string str;
-        bool resp = objetos[idObjeto]->GetValoresString(indice,str);
+        bool resp = GetObjeto(idObjeto)->GetValoresString(indice,str);
         strcpy(valor,str.c_str());
         return resp;
     }
 
     inline static bool GetValorIntObjeto(int idObjeto, std::string indice, int *valor){
-        return objetos[idObjeto]->GetValoresInt(indice,*valor);
+        return GetObjeto(idObjeto)->GetValoresInt(indice,*valor);
     }
 
     inline static bool GetValorFloatObjeto(int idObjeto, std::string indice, float *valor){
-        return objetos[idObjeto]->GetValoresFloat(indice,*valor);
+        return GetObjeto(idObjeto)->GetValoresFloat(indice,*valor);
     }
 
     inline static bool GetValorStringObjeto(int idObjeto, std::string indice, char *valor){
         std::string str;
-        bool resp = objetos[idObjeto]->GetValoresString(indice,str);
+        bool resp = GetObjeto(idObjeto)->GetValoresString(indice,str);
         strcpy(valor,str.c_str());
         return resp;
     }
 
     inline static void GetPosicaoXY(int idObjeto, int *x, int *y){
-        objetos[idObjeto]->GetXY(*x,*y);
+        GetObjeto(idObjeto)->GetXY(*x,*y);
     }
 
     inline static void Move(int idObjeto, int x, int y){
-        objetos[idObjeto]->Move(x,y);
+        GetObjeto(idObjeto)->Move(x,y);
     }
 
     inline static void Desloca(int idObjeto, int dx, int dy){
-        objetos[idObjeto]->Desloca(dx,dy);
+        GetObjeto(idObjeto)->Desloca(dx,dy);
     }
 
     inline static void SetAngulo(int idObjeto, float angulo){
-        objetos[idObjeto]->SetAngulo(angulo);
+        GetObjeto(idObjeto)->SetAngulo(angulo);
     }
 
     inline static float GetAngulo(int idObjeto){
-        return objetos[idObjeto]->GetAngulo();
+        return GetObjeto(idObjeto)->GetAngulo();
     }
 
     inline static void SetPivo(int idObjeto, int x, int y){
-        objetos[idObjeto]->SetPivo(x,y);
+        GetObjeto(idObjeto)->SetPivo(x,y);
     }
 
     inline static void SetPivo(int idObjeto, float relX, float relY){
-        objetos[idObjeto]->SetPivo(relX,relY);
+        GetObjeto(idObjeto)->SetPivo(relX,relY);
     }
 
     inline static void GetPivo(int idObjeto, int *x,int *y){
-        objetos[idObjeto]->GetPivo(*x,*y);
+        GetObjeto(idObjeto)->GetPivo(*x,*y);
     }
 
     inline static void SetFlip(int idObjeto, PIG_Flip valor){
-        objetos[idObjeto]->SetFlip(valor);
+        GetObjeto(idObjeto)->SetFlip(valor);
     }
 
     inline static PIG_Flip GetFlip(int idObjeto){
-        return objetos[idObjeto]->GetFlip();
+        return GetObjeto(idObjeto)->GetFlip();
     }
 
     inline static void SetDimensoes(int idObjeto, int altura, int largura){
-        objetos[idObjeto]->SetDimensoes(altura,largura);
+        GetObjeto(idObjeto)->SetDimensoes(altura,largura);
     }
 
     inline static void GetDimensoes(int idObjeto, int *altura, int *largura){
-        objetos[idObjeto]->GetDimensoes(*altura,*largura);
+        GetObjeto(idObjeto)->GetDimensoes(*altura,*largura);
     }
 
     inline static void GetDimensoesOriginais(int idObjeto, int *altura, int *largura){
-        objetos[idObjeto]->GetDimensoesOriginais(*altura,*largura);
+        GetObjeto(idObjeto)->GetDimensoesOriginais(*altura,*largura);
     }
 
     inline static void CriaFrame(int idObjeto, int xBitmap, int yBitmap,int altura,int largura){
@@ -159,34 +161,34 @@ public:
         r.y = yBitmap;
         r.h = altura;
         r.w = largura;
-        objetos[idObjeto]->DefineFrame(r);
+        GetObjeto(idObjeto)->DefineFrame(r);
     }
 
     inline static void SetColoracao(int idObjeto, PIG_Cor cor){
-        objetos[idObjeto]->SetColoracao(cor);
+        GetObjeto(idObjeto)->SetColoracao(cor);
     }
 
     inline static void SetOpacidade(int idObjeto, int valor){
-        objetos[idObjeto]->SetOpacidade(valor);
+        GetObjeto(idObjeto)->SetOpacidade(valor);
     }
 
     inline static int GetOpacidade(int idObjeto){
-        return objetos[idObjeto]->GetOpacidade();
+        return GetObjeto(idObjeto)->GetOpacidade();
     }
 
     inline static void Desenha(int idObjeto,OffscreenRenderer offRender=NULL){
-        objetos[idObjeto]->Desenha(offRender);
+        GetObjeto(idObjeto)->Desenha(offRender);
     }
 
-    inline static int TestaColisaoPoligono(int id_objeto1, int id_objeto2) {
-        return objetos[id_objeto1]->ColisaoPoligono(objetos[id_objeto2]) || objetos[id_objeto2]->ColisaoPoligono(objetos[id_objeto1]);
+    inline static int TestaColisaoPoligono(int idObjeto1, int idObjeto2) {
+        return GetObjeto(idObjeto1)->ColisaoPoligono(GetObjeto(idObjeto2)) || GetObjeto(idObjeto2)->ColisaoPoligono(GetObjeto(idObjeto1));
     }
 
-    inline static int TestaColisao(int id_objeto1, int id_objeto2) {
-        return objetos[id_objeto1]->Colisao(objetos[id_objeto2]) && objetos[id_objeto2]->Colisao(objetos[id_objeto1]);
+    inline static int TestaColisao(int idObjeto1, int idObjeto2) {
+        return GetObjeto(idObjeto1)->Colisao(GetObjeto(idObjeto2)) && GetObjeto(idObjeto2)->Colisao(GetObjeto(idObjeto1));
     }
 
-    inline static void DefineAreaColisao(int id_objeto, int *x, int *y, int quantidadePontos) {
+    inline static void DefineAreaColisao(int idObjeto, int *x, int *y, int quantidadePontos) {
         std::vector<SDL_Point> vertices;
 
         for (int i = 0; i < quantidadePontos; i++) {
@@ -194,15 +196,15 @@ public:
             vertices.push_back(aux);
         }
 
-        objetos[id_objeto]->SetVertices(vertices);
+        GetObjeto(idObjeto)->SetVertices(vertices);
     }
 
     inline static PIG_Cor **GetPixels(int idObjeto){
-        return objetos[idObjeto]->GetPixels();
+        return GetObjeto(idObjeto)->GetPixels();
     }
 
     inline static void AtualizaPixels(int idObjeto,int retiraFundo=1){
-        objetos[idObjeto]->AtualizaPixels(retiraFundo);
+        GetObjeto(idObjeto)->AtualizaPixels(retiraFundo);
     }
 };
 

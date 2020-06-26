@@ -148,16 +148,18 @@ protected:
 
 public:
 
-    CObjeto(std::string nomeArquivo, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0) : CVisual(nomeArquivo, retiraFundo, corFundo, janela){
-        //printf("visual chamado %d\n",retiraFundo);
+    CObjeto(std::string nomeArquivo, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0)
+    : CVisual(nomeArquivo, retiraFundo, corFundo, janela){
         ExtraiPixels();
     }
 
-    CObjeto(OffscreenRenderer offRender, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0) : CVisual(offRender, retiraFundo, corFundo, janela){
+    CObjeto(OffscreenRenderer offRender, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0)
+    : CVisual(offRender, retiraFundo, corFundo, janela){
         ExtraiPixels();
     }
 
-    CObjeto(CObjeto *objBase, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0) : CVisual(objBase, retiraFundo, corFundo, janela){
+    CObjeto(CObjeto *objBase, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0)
+    : CVisual(objBase, retiraFundo, corFundo, janela){
         ExtraiPixels();
         SetDimensoes(objBase->alt, objBase->larg);
     }
@@ -294,8 +296,7 @@ public:
         return 0;
     }
 
-    void Atualiza()
-    {
+    void Atualiza(){
         if(bbAlterado) {
             AtualizaBB();
             AtualizaVertices();

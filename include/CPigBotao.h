@@ -1,3 +1,5 @@
+#include <fstream>
+
 typedef int (*AcaoBotao)(int,void*);
 
 class CPigBotao: public CPigComponente{
@@ -73,12 +75,44 @@ private:
         SetPosicaoPadraoLabel(PIG_COMPONENTE_CENTRO_CENTRO);
     }
 
+    CPigBotao LeArquivoParametros(std::string nomeArqParam){
+
+        std::ifstream arquivo;
+        int idComponente,px,py,altura,largura,retiraFundo = 0,janela = 0;
+
+        std::string nomeArq = "",variavel,valor,palavra;
+
+        arquivo.open(nomeArqParam);
+        //if(!arquivo.is_open()) printf("falha ler arquivo\n");
+        //formato "x valor"
+        while(!arquivo.eof()){
+           arquivo >> palavra;
+            if(palavra == "idComponente") arquivo >> idComponente;
+            if(palavra == "px") arquivo >> px;
+            if(palavra == "py") arquivo >> py;
+            if(palavra == "altura") arquivo >> altura;
+            if(palavra == "largura") arquivo >> largura;
+            if(palavra == "nomeArq") arquivo >> nomeArq;
+            if(palavra == "retiraFundo") arquivo >> retiraFundo;
+            if(palavra == "janela") arquivo >> janela;
+        }
+        arquivo.close();
+
+       // std::cout<<idComponente<<" "<<px<<" "<<py<<" "<<altura<<" "<<largura<<" "<<nomeArq<<" "<<retiraFundo<<" "<<janela<<std::endl;
+
+        return CPigBotao(idComponente,px,py,altura,largura,nomeArq,retiraFundo,janela);
+
+    }
+
 public:
 
-    CPigBotao(int idComponente,int px, int py, int alt,int larg,char *nomeArq, int retiraFundo=1,int janela=0):
+    CPigBotao(int idComponente,int px, int py, int alt,int larg,std::string nomeArq, int retiraFundo=1,int janela=0) try:
         CPigComponente(idComponente,px,py,alt,larg,nomeArq,retiraFundo,janela){
-        IniciaBase();
-    }
+            IniciaBase();
+        }catch (std::logic_error& erro){}
+
+    CPigBotao(std::string nomeArqParam) try :CPigBotao(LeArquivoParametros(nomeArqParam)){
+        }catch (std::logic_error& erro){}
 
     ~CPigBotao(){
         if (timer) delete timer;
@@ -140,7 +174,6 @@ public:
 
         return 1;
     }
-
 
 };
 

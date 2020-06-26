@@ -10,11 +10,13 @@ Versão 0.7.2 da Biblioteca PIG.h
 #include <time.h>
 #include <vector>
 #include <map>
+#include <iostream>
 #include "SDL.h"
 #include "SDL_ttf.h"
 #include "SDL_image.h"
 #include "SDL_net.h"
 #include "Tipos_PIG.h"
+#include "CPigErros.h"
 #include "CPoolNumeros.h"
 #include "SDL_mixer.h"
 #include "CGerenciadorJanelas.h"
