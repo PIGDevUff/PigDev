@@ -1,4 +1,3 @@
-#define TROCA2BYTES(valor) ((valor/256)+((valor%256)*256))
 
 #include "CSocketTCP.h"
 #include "CClienteTCP.h"

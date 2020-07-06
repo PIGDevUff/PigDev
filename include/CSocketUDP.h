@@ -23,7 +23,7 @@ void CriaEventoMensagem(PIG_TipoMensagemRede tipoMensagem, UDPpacket *pacoteRece
     infoRede->idSecundario = -1;
     memcpy(infoRede->mensagem,pacoteRecebido->data,pacoteRecebido->len);
     strcpy(infoRede->host,SDLNet_ResolveIP(&(pacoteRecebido->address)));
-    infoRede->porta = TROCA2BYTES(pacoteRecebido->address.port);
+    infoRede->porta = PIGTroca2Bytes(pacoteRecebido->address.port);
     SDL_Event event;
     event.type = SDL_USEREVENT;
     event.user.code = EVENTO_REDE;

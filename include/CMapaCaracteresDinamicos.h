@@ -4,20 +4,6 @@ class CMapaCaracteresDinamicos:public CMapaCaracteres{
 
 private:
 
-    //cria uma cor a partir de uma string com um valor hexadecimal de 8 algarismos RRGGBBAA. Ex: 0xFF0000FF (vermelho)
-    static PIG_Cor CriaCor(char *stringHexa){
-        unsigned long total = strtoul(stringHexa,0,16);//transforma a string em um inteiro (decimal)
-        PIG_Cor cor;
-        cor.a = total %256;
-        total /= 256;
-        cor.b = total %256;
-        total /= 256;
-        cor.g = total %256;
-        total /= 256;
-        cor.r = total %256;
-        return cor;
-    }
-
     //processa uma string para transformá-la em StringFormatada
     CPigStringFormatada Processa(std::string textoOrig){
         CPigStringFormatada resp;
@@ -87,7 +73,7 @@ private:
                 stringCor[10]='\0';
 
                 i+=9;//avança os outros 9 caracteres
-                cor = CriaCor(stringCor);//converte para cor
+                cor = PIGCriaCor(stringCor);//converte para cor
                 pilhaCor.push_back(cor);
                 estado = 0;
                 break;

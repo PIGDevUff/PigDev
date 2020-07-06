@@ -63,7 +63,7 @@ private:
     int TrataMouseBotaoEsquerdo(SDL_Point p,int inicioLinha = 0)override{
         int posInicial = GetPosInicialDeUmaLinha(GetLinhaComMouseEmCima());
         int linha = GetLinhaComMouseEmCima();
-        printf("pos %d linha %d\n",posInicial,linha);
+        //printf("pos %d linha %d\n",posInicial,linha);
         TrataMouseBotaoEsquerdoESobeDesceCursor(p,posInicial,linha);
     }
 
@@ -226,20 +226,58 @@ private:
 
 public:
 
-    CPigAreaDeTexto(int idComponente,int px, int py, int alt,int larg,std::string nomeArq,int maxCars = 200,int retiraFundo=1,int janela=0):
-        CPigCaixaTexto(idComponente,px,py,alt,larg,nomeArq,maxCars,false,retiraFundo,janela){ // A altura é um vetor, mas eu preciso dela, entao eu acabei colocando como o tamanho da fonte, qualquer coisa só mudar aqui
-        espacoEntreLinhas = 0;
-        yBaseOriginal = y+alt-margemVertCima-altLetra;
-        xBaseOriginal = x+margemHorEsq;
-        yBase = yBaseOriginal;
-        xBase = xBaseOriginal;
-        xCursor = xBase;
-        yCursor = yBase;
-        largMax = larg;
-        linhasPauta = false;
-        corLinhasTexto = PRETO;
-        marcarMargem = false;
-        AjustaAlinhamento();
+    CPigAreaDeTexto(int idComponente,int px, int py, int altura,int largura,std::string nomeArq,int maxCars = 200,int retiraFundo=1,int janela=0):
+        CPigCaixaTexto(idComponente,px,py,altura,largura,nomeArq,maxCars,false,retiraFundo,janela){ // A altura é um vetor, mas eu preciso dela, entao eu acabei colocando como o tamanho da fonte, qualquer coisa só mudar aqui
+            espacoEntreLinhas = 0;
+            yBaseOriginal = y+altura-margemVertCima-altLetra;
+            xBaseOriginal = x+margemHorEsq;
+            yBase = yBaseOriginal;
+            xBase = xBaseOriginal;
+            xCursor = xBase;
+            yCursor = yBase;
+            largMax = largura;
+            linhasPauta = false;
+            corLinhasTexto = PRETO;
+            marcarMargem = false;
+            AjustaAlinhamento();
+        }
+
+    CPigAreaDeTexto(std::string nomeArqParam):CPigAreaDeTexto(LeArquivoParametros(nomeArqParam)){}
+
+    ~CPigAreaDeTexto(){
+        linhas.clear();
+    }
+
+    static CPigAreaDeTexto LeArquivoParametros(std::string nomeArqParam){
+
+        std::ifstream arquivo;
+        int idComponente,px,py,altura,largura,maxCars = 200,retiraFundo=1,janela=0;
+        std::string nomeArq = "",variavel;
+
+        arquivo.open(nomeArqParam);
+
+        if(!arquivo.is_open()) throw CPigErroArquivo(nomeArqParam);
+        //formato "x valor"
+        while(!arquivo.eof()){
+           arquivo >> variavel;
+            if(variavel == "idComponente") arquivo >> idComponente;
+            if(variavel == "px") arquivo >> px;
+            if(variavel == "py") arquivo >> py;
+            if(variavel == "altura") arquivo >> altura;
+            if(variavel == "largura") arquivo >> largura;
+            if(variavel == "nomeArq") arquivo >> nomeArq;
+            if(variavel == "retiraFundo") arquivo >> retiraFundo;
+            if(variavel == "maxCars") arquivo >> maxCars;
+            if(variavel == "janela") arquivo >> janela;
+        }
+
+        arquivo.close();
+
+        if(nomeArq == "") throw CPigErroParametro("nomeArq",nomeArqParam);
+
+       // std::cout<<idComponente<<" "<<px<<" "<<py<<" "<<altura<<" "<<largura<<" "<<nomeArq<<" "<<retiraFundo<<" "<<janela<<std::endl;
+        return CPigAreaDeTexto(idComponente,px,py,altura,largura,nomeArq,maxCars,retiraFundo,janela);
+
     }
 
     //define as margens da áre de texto

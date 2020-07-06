@@ -37,8 +37,8 @@ private:
 
 public:
 
-    CPigCampoTextoESenha(int idComponente,int px, int py, int alt,int larg,char *nomeArq,int maxCars = 200, bool apenasNumeros=false, int retiraFundo=1,int janela=0,bool campoSenha = false):
-        CPigCaixaTexto(idComponente,px,py,alt,larg,nomeArq,maxCars,apenasNumeros,retiraFundo,janela){
+    CPigCampoTextoESenha(int idComponente,int px, int py, int altura,int largura,std::string nomeArq,int maxCars = 200, bool apenasNumeros=false, int retiraFundo=1,int janela=0,bool campoSenha = false):
+        CPigCaixaTexto(idComponente,px,py,altura,largura,nomeArq,maxCars,apenasNumeros,retiraFundo,janela){
             yBaseOriginal = y+margemVertBaixo;
             xBaseOriginal = x+margemHorEsq;
             yBase = yBaseOriginal;
@@ -51,6 +51,44 @@ public:
             }else{
                 GetTextoVisivelPtr = &GetTexto;
             }
+    }
+
+    CPigCampoTextoESenha(std::string nomeArqParam):CPigCampoTextoESenha(LeArquivoParametros(nomeArqParam)){}
+
+    ~CPigCampoTextoESenha(){}
+
+    static CPigCampoTextoESenha LeArquivoParametros(std::string nomeArqParam){
+
+        std::ifstream arquivo;
+        int idComponente,px,py,altura,largura,maxCars = 200,retiraFundo=1,janela=0;
+        bool apenasNumeros = false,campoSenha = false;
+
+        std::string nomeArq = "",variavel;
+
+        arquivo.open(nomeArqParam);
+
+        if(!arquivo.is_open()) throw CPigErroArquivo(nomeArqParam);
+        //formato "x valor"
+        while(!arquivo.eof()){
+           arquivo >> variavel;
+            if(variavel == "idComponente") arquivo >> idComponente;
+            if(variavel == "px") arquivo >> px;
+            if(variavel == "py") arquivo >> py;
+            if(variavel == "altura") arquivo >> altura;
+            if(variavel == "largura") arquivo >> largura;
+            if(variavel == "nomeArq") arquivo >> nomeArq;
+            if(variavel == "retiraFundo") arquivo >> retiraFundo;
+            if(variavel == "janela") arquivo >> janela;
+            if(variavel == "maxCars") arquivo >> maxCars;
+            if(variavel == "apenasNumeros") arquivo >> apenasNumeros;
+            if(variavel == "campoSenha") arquivo >> campoSenha;
+        }
+        arquivo.close();
+
+        if(nomeArq == "") throw CPigErroParametro("nomeArq",nomeArqParam);
+       // std::cout<<idComponente<<" "<<px<<" "<<py<<" "<<altura<<" "<<largura<<" "<<nomeArq<<" "<<retiraFundo<<" "<<janela<<std::endl;
+        return CPigCampoTextoESenha(idComponente,px,py,altura,largura,nomeArq,maxCars,apenasNumeros,retiraFundo,janela,campoSenha);
+
     }
 
     //define as margens do componente

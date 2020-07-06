@@ -8,7 +8,7 @@ private:
     int altItem;
     int itemMarcado;
     std::vector <CPigItemLista*> itens;
-    bool ajAutomatico,retanguloMarcado;
+    bool retanguloMarcado;
     PIG_PosicaoComponente posItens;
 
     int OnMouseOn(){return 0;}
@@ -51,20 +51,46 @@ private:
 
 public:
 
-    CPigLista(int idComponente,int px, int py,int larg,int alturaItens,char *nomeArq,int retiraFundo=1,int janela=0):
-        CPigComponente(idComponente,px,py,0,larg,nomeArq,retiraFundo,janela){
+    CPigLista(int idComponente,int px, int py,int altura,int largura,int alturaItens,std::string nomeArq,int retiraFundo=1,int janela=0):
+        CPigComponente(idComponente,px,py,altura,largura,nomeArq,retiraFundo,janela){
             IniciaBase(alturaItens);
-            ajAutomatico = true;
     }
 
-    CPigLista(int idComponente,int px, int py,int alt,int larg,int alturaItens,char *nomeArq,int retiraFundo=1,int janela=0):
-        CPigComponente(idComponente,px,py,alt,larg,nomeArq,retiraFundo,janela){
-            IniciaBase(alturaItens);
-            ajAutomatico = false;
-    }
+    CPigLista(std::string nomeArqParam):CPigLista(LeArquivoParametros(nomeArqParam)){}
 
     ~CPigLista(){
         for (CPigItemLista* x: itens) delete x;
+    }
+
+    static CPigLista LeArquivoParametros(std::string nomeArqParam){
+
+        std::ifstream arquivo;
+        int idComponente,px,py,altura = 0,largura,alturaItens,retiraFundo = 0,janela = 0;
+
+        std::string nomeArq = "",variavel;
+
+        arquivo.open(nomeArqParam);
+        if(!arquivo.is_open()) throw CPigErroArquivo(nomeArqParam);
+        //formato "x valor"
+        while(!arquivo.eof()){
+           arquivo >> variavel;
+            if(variavel == "idComponente") arquivo >> idComponente;
+            if(variavel == "px") arquivo >> px;
+            if(variavel == "py") arquivo >> py;
+            if(variavel == "altura") arquivo >> altura;
+            if(variavel == "largura") arquivo >> largura;
+            if(variavel == "alturaItens") arquivo >> alturaItens;
+            if(variavel == "nomeArq") arquivo >> nomeArq;
+            if(variavel == "retiraFundo") arquivo >> retiraFundo;
+            if(variavel == "janela") arquivo >> janela;
+        }
+        arquivo.close();
+       // std::cout<<idComponente<<" "<<px<<" "<<py<<" "<<altura<<" "<<largura<<" "<<nomeArq<<" "<<retiraFundo<<" "<<janela<<std::endl;
+
+        if(nomeArq == "") throw CPigErroParametro("nomeArq",nomeArqParam);
+
+        return CPigLista(idComponente,px,py,altura,largura,alturaItens,nomeArq,retiraFundo,janela);
+
     }
 
     int Desenha() override{
@@ -85,25 +111,30 @@ public:
     }
 
     int TrataEvento(PIG_Evento evento){
+        SDL_Point p;
+        CMouse::PegaXY(p.x,p.y);
+        MouseSobre(p.x,p.y);
 
-        for(int i=0;i<itens.size();i++){
-            if(itens[i]->TrataEvento(evento)){
-                itemMarcado = i;
-                return 1;
+        if(agoraOn){
+            for(int i=0;i<itens.size();i++){
+                if(itens[i]->TrataEvento(evento)){
+                        itemMarcado = i;
+                        return 1;
+                }
             }
         }
 
         return 0;
     }
 
-    int CriaItem(char *texto,char *imagem = NULL,int largImg = 0,int retiraFundoImg = 1){
+    int CriaItem(std::string texto,std::string imagem = "",int largImg = 0,int retiraFundoImg = 1){
 
         int posX = x;
         int posY = (y + alt) - (altItem*(qntItens+1));
 
         CPigItemLista *item;
 
-        if(imagem !=NULL && imagem!=""){
+        if(imagem!=""){
             item = new CPigItemLista(qntItens,posX,posY,altItem,largImg,larg,x,imagem,retiraFundoImg,idJanela);
         }else{
             item = new CPigItemLista(qntItens,posX,posY,altItem,largImg,larg,x,idJanela);
@@ -115,11 +146,6 @@ public:
 
         itens.push_back(item);
         qntItens++;
-
-        if(ajAutomatico){
-            SetDimensoes(altItem * (qntItens),larg);
-            Move(x,y);
-        }
 
     }
 

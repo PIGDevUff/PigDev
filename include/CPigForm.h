@@ -1,3 +1,6 @@
+#ifndef _PIGFORM_
+#define _PIGFORM_
+
 #include "CPigComponente.h"
 #include "CPigBotao.h"
 #include "CPigCaixaTexto.h"
@@ -10,6 +13,7 @@
 #include "CPigItemLista.h"
 #include "CPigLista.h"
 #include "CPigDropDown.h"
+#include "CPigScrollBar.h"
 
 class CPigForm{
 
@@ -44,3 +48,4 @@ int Desenha(){
 
 
 typedef CPigForm *PigForm;
+#endif // _PIGFORM_

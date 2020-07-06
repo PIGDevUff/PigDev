@@ -73,8 +73,6 @@ public:
         return fontes[numFonte]->GetFonteAscent();
     }
 
-/*****************Novas Funçoes******************/
-
     inline static void EscreverString(std::string str,int x,int y,int numFonte,PIG_PosTexto pos = CPIG_TEXTO_ESQUERDA,float angulo=0){
         fontes[numFonte]->Escreve(str,x,y,pos,angulo);
     }
@@ -103,7 +101,6 @@ public:
     inline static PIG_Metricas_Fonte GetMetricas(Uint16 letra, int numFonte,PIG_Estilo estilo=ESTILO_NORMAL){
         return fontes[numFonte]->GetMetricasLetra(letra,estilo);
     }
-
 
     inline static int GetLarguraLetra(char letra,int numFonte, PIG_Estilo estilo=ESTILO_NORMAL ){
         return fontes[numFonte]->GetLarguraLetra(letra,estilo);

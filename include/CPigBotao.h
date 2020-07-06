@@ -1,5 +1,6 @@
-#include <fstream>
-
+//tipo de função a ser usada no acionamento do botao
+//o parâmetro int devolverá à função o identificador do botão
+//o parâmetro void* devolverá à função um parâetro personalizado passado ao método DefineAcao();
 typedef int (*AcaoBotao)(int,void*);
 
 class CPigBotao: public CPigComponente{
@@ -11,43 +12,48 @@ private:
     AcaoBotao acao;
     void *param;
     Timer timer;
+    bool botaoRepeticao;
+    double tempoRepeticao;
 
-    int TrataMouse(int acao){
+    int TrataMouse(PIG_Evento evento){
         SDL_Point p;
         CMouse::PegaXY(p.x,p.y);
         MouseSobre(p.x,p.y);
 
-        if(agoraOn)
-            if (acao==MOUSE_PRESSIONADO) return OnMouseClick();
+        if(agoraOn){
+            if (evento.mouse.acao==MOUSE_PRESSIONADO)
+                return OnMouseClick();
+        }
 
         return 0;
     }
 
     int TrataTeclado(PIG_Evento evento){
-        if (evento.teclado.acao==TECLA_PRESSIONADA)
-            if (evento.teclado.tecla==tecla) return OnMouseClick();
+        if (evento.teclado.acao==TECLA_PRESSIONADA&&evento.teclado.tecla==tecla)
+            if (timer->GetTempoDecorrido()>tempoRepeticao)
+                return OnMouseClick();
 
         return 0;
     }
 
     void TrataTimer(){
-        if (timer->GetTempoDecorrido()<0.2){
-            if(estado!=COMPONENTE_DESABILITADO)
-                DefineEstado(COMPONENTE_ACIONADO);
-        }else{
-            delete timer;
-            timer = NULL;
+        //if (timer->GetTempoDecorrido()<tempoRepeticao){
+            //if(estado!=COMPONENTE_DESABILITADO)
+            //    DefineEstado(COMPONENTE_ACIONADO);
+        if (timer->GetTempoDecorrido()>=tempoRepeticao){
             if (estado==COMPONENTE_ACIONADO){
-                if (agoraOn) DefineEstado(COMPONENTE_MOUSEOVER);
-                else DefineEstado(COMPONENTE_NORMAL);
+                if (agoraOn){
+                    if (botaoRepeticao&&CMouse::GetEstadoBotaoEsquerdo()==MOUSE_PRESSIONADO){
+                        OnMouseClick();
+                    }else DefineEstado(COMPONENTE_MOUSEOVER);
+                }else DefineEstado(COMPONENTE_NORMAL);
             }
         }
     }
 
     int OnMouseClick(){
         DefineEstado(COMPONENTE_ACIONADO);
-        if (timer) delete timer;
-        timer = new CTimer(false);
+        timer->Reinicia(false);
         if (acao) acao(id,param);//rever se NULL é necessário
         if (audioComponente>=0) CGerenciadorAudios::Play(audioComponente);
         return 1;
@@ -63,16 +69,6 @@ private:
         if (estado==COMPONENTE_DESABILITADO) return 0;
         DefineEstado(COMPONENTE_NORMAL);
         return 1;
-    }
-
-    void IniciaBase(){
-        tecla = -1;//sem tecla de atalho
-        timer = NULL;//sem timer para "soltar" o botão
-        acao = NULL;//não tem ação registrada
-        param = NULL;//não tem parâmetro associado à ação
-        largFrame = largOriginal/4;
-        DefineEstado(COMPONENTE_NORMAL);
-        SetPosicaoPadraoLabel(PIG_COMPONENTE_CENTRO_CENTRO);
     }
 
     CPigBotao LeArquivoParametros(std::string nomeArqParam){
@@ -101,21 +97,28 @@ private:
        // std::cout<<idComponente<<" "<<px<<" "<<py<<" "<<altura<<" "<<largura<<" "<<nomeArq<<" "<<retiraFundo<<" "<<janela<<std::endl;
 
         return CPigBotao(idComponente,px,py,altura,largura,nomeArq,retiraFundo,janela);
-
     }
 
 public:
 
-    CPigBotao(int idComponente,int px, int py, int alt,int larg,std::string nomeArq, int retiraFundo=1,int janela=0) try:
+    CPigBotao(int idComponente,int px, int py, int alt,int larg,std::string nomeArq, int retiraFundo=1,int janela=0):
         CPigComponente(idComponente,px,py,alt,larg,nomeArq,retiraFundo,janela){
-            IniciaBase();
-        }catch (std::logic_error& erro){}
+            tecla = -1;//sem tecla de atalho
+            acao = NULL;//não tem ação registrada
+            param = NULL;//não tem parâmetro associado à ação
+            largFrame = largOriginal/4;
+            DefineEstado(COMPONENTE_NORMAL);
+            tempoRepeticao = 0.2;
+            botaoRepeticao = false;
+            SetPosicaoPadraoLabel(PIG_COMPONENTE_CENTRO_CENTRO);
+            timer = new CTimer(false);
+        }
 
-    CPigBotao(std::string nomeArqParam) try :CPigBotao(LeArquivoParametros(nomeArqParam)){
-        }catch (std::logic_error& erro){}
+    CPigBotao(std::string nomeArqParam):CPigBotao(LeArquivoParametros(nomeArqParam)){
+    }
 
     ~CPigBotao(){
-        if (timer) delete timer;
+        delete timer;
     }
 
     void DefineAcao(AcaoBotao funcao,void *parametro){
@@ -129,6 +132,14 @@ public:
 
     void DefineCursor(PIG_EstadoComponente estado, int indiceMouse){
         //mouse[estado]=indiceMouse;
+    }
+
+    void DefineTempoRepeticao(double segundos){
+        tempoRepeticao = segundos;
+    }
+
+    void DefineBotaoRepeticao(bool repeticao){
+        botaoRepeticao = repeticao;
     }
 
     void DefineEstado(PIG_EstadoComponente estadoComponente){
@@ -151,13 +162,9 @@ public:
     }
 
     int TrataEvento(PIG_Evento evento){
-
         if (estado == COMPONENTE_DESABILITADO || estado == COMPONENTE_INVISIVEL) return -1;
-
-        if (evento.tipoEvento == EVENTO_MOUSE) return TrataMouse(evento.mouse.acao);
-
+        if (evento.tipoEvento == EVENTO_MOUSE) return TrataMouse(evento);
         if (evento.tipoEvento == EVENTO_TECLADO) return TrataTeclado(evento);
-
         return 0;
     }
 
@@ -165,7 +172,7 @@ public:
 
         if (estado==COMPONENTE_INVISIVEL) return 0;
 
-        if (timer) TrataTimer();
+        TrataTimer();
 
         SDL_RenderCopyEx(renderer, text, &frame,&dest,-angulo,&pivoRelativo,flip);
 

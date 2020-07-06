@@ -19,13 +19,13 @@ void IniciaBase(int alturaItem, int larguraItem, int espacoVertical, std::string
 
 public:
 
-CPigBox(int idComponente, int posX, int posY, int largura, std::string nomeArqFundo, std::string nomeArqItem, int alturaItem, int larguraItem, int espacoVertical, int retiraFundo=1):
-    CPigComponente(idComponente,posX,posY,0,largura,nomeArqFundo,retiraFundo){
+CPigBox(int idComponente, int posX, int posY, int largura, std::string nomeArqFundo, std::string nomeArqItem, int alturaItem, int larguraItem, int espacoVertical, int retiraFundo=1,int janela = 0):
+    CPigComponente(idComponente,posX,posY,0,largura,nomeArqFundo,retiraFundo,janela){
     IniciaBase(alturaItem, larguraItem, espacoVertical, nomeArqItem);
 }
 
-CPigBox(int idComponente, int posX, int posY, int largura, std::string nomeArqItem,int alturaItem, int larguraItem, int espacoVertical):
-    CPigComponente(idComponente,posX,posY,0,largura){
+CPigBox(int idComponente, int posX, int posY, int largura, std::string nomeArqItem,int alturaItem, int larguraItem, int espacoVertical,int janela = 0):
+    CPigComponente(idComponente,posX,posY,0,largura,janela){
     IniciaBase(alturaItem, larguraItem, espacoVertical, nomeArqItem);
 }
 

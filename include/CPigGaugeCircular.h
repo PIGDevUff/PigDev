@@ -92,10 +92,7 @@ void SetDeltaAngulo(double novoDelta){
 }
 
 void IncrementaValor(int delta){
-    valor+=delta;
-    //printf("novo valor %d\n",valor);
-    if (valor>valorMax) valor=valorMax;
-    if (valor<valorMin) valor=valorMin;
+    valor = PIGLimitaValor(valor+delta, valorMin,valorMax);
     porcentagemConcluida = 1.*(valor-valorMin)/(valorMax-valorMin);
     AtualizaTextura();
 }
@@ -163,11 +160,11 @@ void AtualizaTextura(){
     //escolha das cores
     int i=0;
     croma1=opcoes[i];
-    while (CORESIGUAIS(croma1,corBarra)||CORESIGUAIS(croma1,corFundo)){//não pode ser a cor da barra nem do fundo
+    while (PIGCoresIguais(croma1,corBarra)||PIGCoresIguais(croma1,corFundo)){//não pode ser a cor da barra nem do fundo
         croma1=opcoes[++i];
     }
     croma2=opcoes[i];
-    while (CORESIGUAIS(croma2,corBarra)||CORESIGUAIS(croma2,corFundo)||CORESIGUAIS(croma2,croma1)){//não pode ser a cor da barra, nem do fundo, nem a cor croma1
+    while (PIGCoresIguais(croma2,corBarra)||PIGCoresIguais(croma2,corFundo)||PIGCoresIguais(croma2,croma1)){//não pode ser a cor da barra, nem do fundo, nem a cor croma1
         croma2=opcoes[++i];
     }
 

@@ -2,20 +2,13 @@
 Versão 0.7.2 da Biblioteca PIG.h
 ********************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <string>
-#include <string.h>
-#include <time.h>
-#include <vector>
-#include <map>
-#include <iostream>
+
 #include "SDL.h"
 #include "SDL_ttf.h"
 #include "SDL_image.h"
 #include "SDL_net.h"
 #include "Tipos_PIG.h"
+#include "PigFuncoesBasicas.h"
 #include "CPigErros.h"
 #include "CPoolNumeros.h"
 #include "SDL_mixer.h"
@@ -68,8 +61,7 @@ void CriaJogo(char *nomeJanela,int cursorProprio=0,int altura=ALT_TELA,int largu
     if (jogo==NULL){
         jogo = new CJogo(nomeJanela,cursorProprio,altura,largura);
         CAssetLoader::Inicia();
-        if (cursorProprio)
-            CMouse::Inicia();
+        CMouse::Inicia(cursorProprio);
         CGerenciadorFontes::Inicia();
         CGerenciadorTimers::Inicia();
         CGerenciadorAudios::Inicia();
@@ -154,8 +146,7 @@ Parâmetros:
 idJanela (entrada, passagem por valor não-obrigatório): indica qual janela deve preparar a renderização. O valor (-1) indica que todas as janelas devem ser exibidas.
 ********************************/
 void EncerraDesenho(int idJanela=-1){
-    if (jogo->cursorPadrao!=0)
-        CMouse::Desenha();
+    CMouse::Desenha();
     jogo->EncerraDesenho(idJanela);
 }
 

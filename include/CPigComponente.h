@@ -30,13 +30,6 @@ void IniciaBase(int idComponente, int px, int py){
     agoraOn = antesOn = 0;
 }
 
-//verifica se uma string possui apenas digitos de 0 a 9
-bool SomenteNumeros(std::string frase){
-    for (int i=0;i<frase.size();i++)
-        if (frase[i]<'0'||frase[i]>'9')
-            return false;
-    return true;
-}
 
 //escreve o hint do componente na tela
 void EscreveHint(){

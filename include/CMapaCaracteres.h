@@ -19,30 +19,6 @@ protected:
     std::string nome;
     int tamFonte;
 
-    std::vector<std::string> SeparaPalavras(std::string texto,std::string delim){
-        std::vector<std::string> resp;
-        std::string strAtual = "";
-
-        for (int i=0;i<texto.size();i++){
-
-            if (delim.find(texto[i]) != std::string::npos){//achou delimitadores
-                resp.push_back(strAtual);
-
-                strAtual = texto[i];
-                if (texto[i]!='\n'){
-                    resp.push_back(strAtual);
-                    strAtual = "";
-                }
-
-            }else strAtual += texto[i];
-        }
-
-        if (strAtual!=""){
-            resp.push_back(strAtual);
-        }
-        return resp;
-    }
-
     //cria o conjunto de glifos das letras com as características fornecidas
     void CriaLetrasSurface(PIG_Estilo estilo, int nivelOutline, PIG_Cor corOutline, SDL_Surface *fundo,  PIG_Cor corFonte=BRANCO){
         TTF_SetFontStyle(font,estilo);
@@ -184,7 +160,7 @@ public:
         std::vector<std::string> resp;
         if (texto=="") return resp;
 
-        std::vector<std::string> palavras = SeparaPalavras(texto,delim);
+        std::vector<std::string> palavras = PIGSeparaPalavras(texto,delim);
         std::string linhaAtual = "";   //linha atual (que está sendo montada) contém pelo menos a primeira palavra
         int tamanhoAtual = 0;
 

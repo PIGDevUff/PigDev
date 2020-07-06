@@ -35,7 +35,7 @@ Principais definições utilizadas pela PIG
 #define FF_QUIT_EVENT           2222
 #define FF_ALLOC_EVENT          1111
 
-#define MAX_CURSORES            20
+#define MAX_CURSORES            30
 #define MAX_FONTES              100
 #define PRIMEIRO_CAR            26
 #define ULTIMO_CAR              256
@@ -98,15 +98,8 @@ O tipo PIG_Cor é um struct formado por 4 campos: r,g,b,a correspondendo aos valo
 #define LARANJA         ((PIG_Cor){255,128,0,255})
 #define CIANO           ((PIG_Cor){0,255,255,255})
 #define CINZA           ((PIG_Cor){128,128,128,255})
-#define CORESIGUAIS(x,y)(((PIG_Cor)x).r==((PIG_Cor)y).r && ((PIG_Cor)x).g==((PIG_Cor)y).g && ((PIG_Cor)x).b==((PIG_Cor)y).b)
+//#define CORESIGUAIS(x,y)(((PIG_Cor)x).r==((PIG_Cor)y).r && ((PIG_Cor)x).g==((PIG_Cor)y).g && ((PIG_Cor)x).b==((PIG_Cor)y).b)
 
-PIG_Cor MultiplicaCor(PIG_Cor cor, float valor){
-    PIG_Cor resp = cor;
-    resp.r *= valor;
-    resp.g *= valor;
-    resp.b *= valor;
-    return resp;
-}
 
 /********************************
 O PIG_TipoEvento é uma enumeração que contém os seguintes possíveis valores:

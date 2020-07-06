@@ -8,20 +8,7 @@ private:
     Timer timerFPS;
     int estado;
     int rodando;
-    char *diretorioAtual;
-
-void GetDiretorioAtual(){
-    diretorioAtual = SDL_GetBasePath();
-    if (!diretorioAtual)
-        diretorioAtual = SDL_strdup("./");
-    /*char *base_path = SDL_GetBasePath();
-    if (base_path) {
-        diretorioAtual = base_path;
-    } else {
-        diretorioAtual = SDL_strdup("./");
-    }*/
-    CHDIR(diretorioAtual);
-}
+    std::string diretorioAtual;
 
 public:
 
@@ -37,7 +24,7 @@ public:
         offRenderer = NULL;
         cursorPadrao = cursor;
 
-        GetDiretorioAtual();
+        diretorioAtual = PIGGetDiretorioAtual();
         //printf("path: %s\n",diretorioAtual);//exibir a pasta original da PIG
 
 
@@ -55,7 +42,6 @@ public:
     }
 
     ~CJogo(){
-        free(diretorioAtual);
 
         SDLNet_Quit();
 
@@ -98,15 +84,17 @@ public:
                 }
                 break;
             case SDL_MOUSEBUTTONDOWN:
+            case SDL_MOUSEBUTTONUP:
                 ultimoEvento.tipoEvento = EVENTO_MOUSE;
-                ultimoEvento.mouse.acao = MOUSE_PRESSIONADO;
+                ultimoEvento.mouse.acao = event.type; //MOUSE_PRESSIONADO(SDL_MOUSEBUTTODOWN) ou MOUSELIBERADO(SDL_MOUSEBUTTONUP);
                 ultimoEvento.mouse.botao= event.button.button;
                 ultimoEvento.mouse.numeroJanela = event.window.windowID-JANELA_INICIAL;
                 ultimoEvento.mouse.cliques = event.button.clicks;
                 ultimoEvento.mouse.posX = event.button.x;
                 ultimoEvento.mouse.posY = CGerenciadorJanelas::GetAltura(ultimoEvento.mouse.numeroJanela) - event.button.y-1;
+                CMouse::ProcessaEvento(ultimoEvento);
                 break;
-            case SDL_MOUSEBUTTONUP:
+           /*case SDL_MOUSEBUTTONUP:
                 ultimoEvento.tipoEvento = EVENTO_MOUSE;
                 ultimoEvento.mouse.acao = MOUSE_LIBERADO;
                 ultimoEvento.mouse.botao= event.button.button;
@@ -114,7 +102,9 @@ public:
                 ultimoEvento.mouse.cliques = event.button.clicks;
                 ultimoEvento.mouse.posX = event.button.x;
                 ultimoEvento.mouse.posY = CGerenciadorJanelas::GetAltura(ultimoEvento.mouse.numeroJanela) - event.button.y-1;
+                CMouse::ProcessaEvento(ultimoEvento);
                 break;
+            */
             case SDL_MOUSEMOTION:
                 ultimoEvento.tipoEvento = EVENTO_MOUSE;
                 ultimoEvento.mouse.acao = MOUSE_MOVIDO;
@@ -123,7 +113,8 @@ public:
                 ultimoEvento.mouse.posY = CGerenciadorJanelas::GetAltura(ultimoEvento.mouse.numeroJanela) - event.motion.y-1;
                 ultimoEvento.mouse.relX = event.motion.xrel;
                 ultimoEvento.mouse.relY = -event.motion.yrel;
-                CMouse::Move(ultimoEvento.mouse.posX, ultimoEvento.mouse.posY);
+                CMouse::ProcessaEvento(ultimoEvento);
+                //CMouse::Move(ultimoEvento.mouse.posX, ultimoEvento.mouse.posY);
                 break;
             case SDL_MOUSEWHEEL:
                 ultimoEvento.tipoEvento = EVENTO_MOUSE;
@@ -131,19 +122,22 @@ public:
                 ultimoEvento.mouse.numeroJanela = event.window.windowID-JANELA_INICIAL;
                 ultimoEvento.mouse.relX = event.wheel.x;
                 ultimoEvento.mouse.relY = event.wheel.y;
+                CMouse::ProcessaEvento(ultimoEvento);
                 break;
             case SDL_KEYDOWN:
+            case SDL_KEYUP:
                 ultimoEvento.tipoEvento = EVENTO_TECLADO;
-                ultimoEvento.teclado.acao = TECLA_PRESSIONADA;
+                ultimoEvento.teclado.acao = event.type; //TECLA_PRESSIONADA(SDL_KEYDOWN) ou TECLA_LIBERADA(SDL_KEYUP);
                 ultimoEvento.teclado.tecla = event.key.keysym.scancode;
                 ultimoEvento.teclado.repeticao = event.key.repeat;
                 break;
-            case SDL_KEYUP:
+            /*case SDL_KEYUP:
                 ultimoEvento.tipoEvento = EVENTO_TECLADO;
                 ultimoEvento.teclado.acao = TECLA_LIBERADA;
                 ultimoEvento.teclado.tecla = event.key.keysym.scancode;
                 ultimoEvento.teclado.repeticao = event.key.repeat;
                 break;
+            */
             case SDL_TEXTEDITING:
                 ultimoEvento.tipoEvento = EVENTO_TECLADO;
                 ultimoEvento.teclado.acao = TECLA_EDICAO;
@@ -167,22 +161,21 @@ public:
                 ultimoEvento.janela.dado2 = event.window.data2;
                 break;
             case SDL_CONTROLLERBUTTONDOWN:
-            //case SDL_JOYAXISMOTION:
+            case SDL_CONTROLLERBUTTONUP:
                 ultimoEvento.tipoEvento = EVENTO_CONTROLADOR;
-                ultimoEvento.controlador.acao = CONTROLADOR_BOTAO_PRESSIONADO;
+                ultimoEvento.controlador.acao = event.type; //CONTROLADOR_BOTAO_PRESSIONADO(SDL_CONTROLLERBUTTONDOWN) ou CONTROLADOR_BOTAO_LIBERADO(SDL_CONTROLLERBUTTONUP);
                 ultimoEvento.controlador.botao = event.cbutton.button;
                 ultimoEvento.controlador.idControlador = event.cdevice.which;
                 SDL_PollEvent(&event);
                 break;
-            case SDL_CONTROLLERBUTTONUP:
-            //case SDL_JOYAXISMOTION:
+            /*case SDL_CONTROLLERBUTTONUP:
                 ultimoEvento.tipoEvento = EVENTO_CONTROLADOR;
                 ultimoEvento.controlador.acao = CONTROLADOR_BOTAO_LIBERADO;
                 ultimoEvento.controlador.botao = event.cbutton.button;
                 ultimoEvento.controlador.idControlador = event.cdevice.which;
                 SDL_PollEvent(&event);
                 break;
-
+            */
             case SDL_CONTROLLERAXISMOTION:
             //case SDL_JOYAXISMOTION:
                 ultimoEvento.tipoEvento = EVENTO_CONTROLADOR;
@@ -300,7 +293,6 @@ public:
         estado = valor;
     }
 
-
     inline float GetFPS(){
         return lastFPS/PIG_INTERVALO_FPS;
     }
@@ -358,7 +350,7 @@ public:
 
         OffscreenRenderer off = new COffscreenRenderer(alt,larg); //ajustado extamente com a altura e largura
 
-        if (CORESIGUAIS(cor,PRETO)){
+        if (PIGCoresIguais(cor,PRETO)){
             off->PintarFundo(BRANCO);
         }else off->PintarFundo(PRETO);
 
@@ -368,7 +360,7 @@ public:
         off->PintarArea(cx-minX,cy-minY,cor,NULL);
 
         SDL_Surface *surf = off->GetSurface();
-        if (CORESIGUAIS(cor,PRETO)){
+        if (PIGCoresIguais(cor,PRETO)){
             SDL_SetColorKey( surf, SDL_TRUE, SDL_MapRGBA(surf->format, 255, 255, 255, 255) );
         }else SDL_SetColorKey( surf, SDL_TRUE, SDL_MapRGBA(surf->format, 0, 0, 0, 255) );
 

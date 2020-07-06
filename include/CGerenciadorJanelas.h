@@ -61,7 +61,7 @@ static void IniciaDesenho(int idJanela=-1){
         GetJanela(idJanela)->IniciaDesenho();
     }else{
         for (int i=0;i<qtdJanelas;i++){
-            GetJanela(idJanela)->IniciaDesenho();
+            GetJanela(i)->IniciaDesenho();
         }
     }
 }
@@ -71,7 +71,7 @@ static void EncerraDesenho(int idJanela=-1){
         GetJanela(idJanela)->EncerraDesenho();
     }else{
         for (int i=0;i<qtdJanelas;i++){
-            GetJanela(idJanela)->EncerraDesenho();
+            GetJanela(i)->EncerraDesenho();
         }
     }
 }

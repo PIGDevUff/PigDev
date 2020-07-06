@@ -3,7 +3,6 @@ class CPigDropDown: public CPigComponente{
 
 private:
 
-    char *texto;
     CPigLista *lista;
     PIG_PosicaoComponente posLista;
     bool marcado;
@@ -27,6 +26,7 @@ private:
         if(lista->TrataEvento(evento)){
             CPigItemLista *item = new CPigItemLista(*lista->GetItemMarcado());
             item->Move(x,y);
+            if(itemSelecionado!=NULL) delete itemSelecionado;
             itemSelecionado = item;
             marcado = false;
         }
@@ -46,8 +46,11 @@ private:
         CMouse::PegaXY(p.x,p.y);
         MouseSobre(p.x,p.y);
 
-        if(agoraOn)
-            if (acao==MOUSE_PRESSIONADO) return this->OnMouseClick();
+        if (acao==MOUSE_PRESSIONADO){
+            if(agoraOn)
+                return OnMouseClick();
+            else marcado = false;
+        }
 
         return 0;
     }
@@ -56,8 +59,8 @@ private:
 
 public:
 
-    CPigDropDown(int idComponente,int px, int py, int alt,int larg,char *nomeArq,char *fundoLista,int retiraFundoLista,int retiraFundo=1,int janela=0):
-        CPigComponente(idComponente,px,py,alt,larg,nomeArq,retiraFundo,janela){
+    CPigDropDown(int idComponente,int px, int py, int altura,int largura,int alturaLista,std::string nomeArq,std::string fundoLista,int retiraFundoLista,int retiraFundo=1,int janela=0):
+        CPigComponente(idComponente,px,py,altura,largura,nomeArq,retiraFundo,janela){
 
             posLista = PIG_COMPONENTE_BAIXO_CENTRO;
             marcado = false;
@@ -66,10 +69,12 @@ public:
             xLista = 0;
             yLista = 0;
             itemSelecionado = NULL;
-            lista = new CPigLista(id + 1,x,y,larg,alt,fundoLista,retiraFundoLista,idJanela);
+            lista = new CPigLista(id + 1,x,y,alturaLista,largura,altura,fundoLista,retiraFundoLista,idJanela);
             lista->SetRetanguloMarcacao(false);
 
     }
+
+    CPigDropDown(std::string nomeArqParam):CPigDropDown(LeArquivoParametros(nomeArqParam)){}
 
     ~CPigDropDown(){
         if(lista) delete lista;
@@ -77,18 +82,51 @@ public:
         if(timer) delete timer;
     }
 
+    static CPigDropDown LeArquivoParametros(std::string nomeArqParam){
+
+        std::ifstream arquivo;
+        int idComponente,px,py,altura,largura,alturaLista,retiraFundoLista = 0,retiraFundo = 0,janela = 0;
+
+        std::string nomeArq = "",fundoLista = "",variavel;
+
+        arquivo.open(nomeArqParam);
+        if(!arquivo.is_open()) throw CPigErroArquivo(nomeArqParam);
+        //formato "x valor"
+        while(!arquivo.eof()){
+           arquivo >> variavel;
+            if(variavel == "idComponente") arquivo >> idComponente;
+            if(variavel == "px") arquivo >> px;
+            if(variavel == "py") arquivo >> py;
+            if(variavel == "altura") arquivo >> altura;
+            if(variavel == "largura") arquivo >> largura;
+            if(variavel == "nomeArq") arquivo >> nomeArq;
+            if(variavel == "fundoLista") arquivo >> fundoLista;
+            if(variavel == "alturaLista") arquivo >> alturaLista;
+            if(variavel == "retiraFundoLista") arquivo >> retiraFundoLista;
+            if(variavel == "retiraFundo") arquivo >> retiraFundo;
+            if(variavel == "janela") arquivo >> janela;
+        }
+        arquivo.close();
+       // std::cout<<idComponente<<" "<<px<<" "<<py<<" "<<altura<<" "<<largura<<" "<<nomeArq<<" "<<retiraFundo<<" "<<janela<<std::endl;
+
+        if(nomeArq == "") throw CPigErroParametro("nomeArq",nomeArqParam);
+        if(fundoLista == "") throw CPigErroParametro("fundoLista",nomeArqParam);
+
+        return CPigDropDown(idComponente,px,py,altura,largura,alturaLista,nomeArq,fundoLista,retiraFundoLista,retiraFundo,janela);
+
+    }
+
     int TrataEvento(PIG_Evento evento)override{
 
         if(marcado) TrataLista(evento);
 
-        if (evento.tipoEvento == EVENTO_MOUSE) return TrataMouse(evento.mouse.acao);
+        if(evento.tipoEvento == EVENTO_MOUSE) return TrataMouse(evento.mouse.acao);
 
         return 0;
     }
 
-    void CriaItem(char *texto,char *imagemSecundaria = NULL,int largImg = 0,int retiraFundoImg = 1){
+    void CriaItem(std::string texto,std::string imagemSecundaria = "",int largImg = 0,int retiraFundoImg = 1){
         lista->CriaItem(texto,imagemSecundaria,largImg,retiraFundoImg);
-        MoveLista(posLista);
     }
 
     void SetItemSelecionado(int indice){
@@ -97,28 +135,47 @@ public:
 
     void MoveLista(PIG_PosicaoComponente pos){
 
-        int altura,largura;
-        lista->GetDimensoes(altura,largura);
+        int alturaLista,larguraLista;
+        lista->GetDimensoes(alturaLista,larguraLista);
+        posLista = pos;
 
         switch(pos){
 
         case PIG_COMPONENTE_BAIXO_DIR:
-            lista->Move(x+larg,y+alt-altura);break;
+            lista->Move(x + larg,y - alturaLista);break;
 
         case PIG_COMPONENTE_BAIXO_CENTRO:
-            lista->Move(x,y-altura);break;
-
-        case PIG_COMPONENTE_CIMA_CENTRO:
-            lista->Move(x,y+alt);break;
-
-        case PIG_COMPONENTE_CIMA_DIR:
-            lista->Move(x+larg,y);break;
+            lista->Move(x + (larg-larguraLista)/2,y - alturaLista);break;
 
         case PIG_COMPONENTE_BAIXO_ESQ:
-            lista->Move(x-largura,y+alt-altura);break;
+            lista->Move(x - larguraLista,y - alturaLista);break;
+
+        case PIG_COMPONENTE_CIMA_CENTRO:
+            lista->Move(x + (larg-larguraLista)/2,y+alt);break;
+
+        case PIG_COMPONENTE_CIMA_DIR:
+            lista->Move(x + larg,y + alt);break;
 
         case PIG_COMPONENTE_CIMA_ESQ:
-            lista->Move(x-largura,y);break;
+            lista->Move(x - larguraLista,y + alt);break;
+
+        case PIG_COMPONENTE_DIR_CIMA:
+            lista->Move(x + larg,y);break;
+
+        case PIG_COMPONENTE_DIR_BAIXO:
+            lista->Move(x + larg,y + alt - alturaLista);break;
+
+        case PIG_COMPONENTE_DIR_CENTRO:
+            lista->Move(x + larg,y + (alt - alturaLista)/2);break;
+
+        case PIG_COMPONENTE_ESQ_CIMA:
+            lista->Move(x - larguraLista,y);break;
+
+        case PIG_COMPONENTE_ESQ_BAIXO:
+            lista->Move(x - larguraLista,y + alt - alturaLista);break;
+
+        case PIG_COMPONENTE_ESQ_CENTRO:
+            lista->Move(x - larguraLista,y + (alt - alturaLista)/2);break;
 
         case PIG_COMPONENTE_PERSONALIZADA:
             lista->Move(xLista,yLista);break;
@@ -130,10 +187,7 @@ public:
     void SetPosPersonalizadaLista(int posX,int posY){
         xLista = posX;
         yLista = posY;
-    }
-
-    void SetPosLista(PIG_PosicaoComponente pos){
-        posLista = pos;
+        posLista = PIG_COMPONENTE_PERSONALIZADA;
         MoveLista(posLista);
     }
 

@@ -161,7 +161,7 @@ protected:
     //adiciona um texto (caracter ou string) na posição indicada pelo cursor (se possível)
     int AdicionaTexto(std::string frase){
         if (texto.size()+frase.size()>maxCaracteres) return 0;//ultrapassa o limite máximo de carcteres
-        if (somenteNumeros&&!SomenteNumeros(frase)) return 0;//não é número
+        if (somenteNumeros&&!PIGSomenteNumeros(frase)) return 0;//não é número
 
         texto.insert(posCursor,frase);
 
