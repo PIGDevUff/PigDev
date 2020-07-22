@@ -12,6 +12,8 @@
 #include <iostream>
 #include <dirent.h>
 #include <fstream>
+#include <sstream>
+#include <iomanip>
 
 //separa uma string em palavras, usando os delimitadores indicados
 std::vector<std::string> PIGSeparaPalavras(std::string texto,std::string delim){

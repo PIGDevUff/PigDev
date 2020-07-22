@@ -13,42 +13,105 @@ class CPigScrollBar : public CPigComponente{
     Pig_Orientacao orientacao;
     int xOriginal,yOriginal;
     CPigBotao *botao1,*botao2,*handle;
-    int largBotoes,largHandle,largUtil;
+    int altBotoes,largHandle,largUtil;
     int deltaBotao,deltaRodinha,deltaTeclado;
     int comprimento,largura;
+    bool orientacaoCrescimento,setasAtivadas;
+    int largReal,altReal;
     void *param;
     AcaoScroll acao;
 
     static int AcaoSetas(int idBotao, void* pontObjeto){
         CPigScrollBar *scroll = (CPigScrollBar*) pontObjeto;
-        if (idBotao==scroll->id+1)
-            scroll->AvancaHandle(scroll->vAtual-scroll->deltaBotao);
-        else if (idBotao==scroll->id+2)
-            scroll->AvancaHandle(scroll->vAtual+scroll->deltaBotao);
-    }
-
-    void TrataClickTrilha(int px,int py){
-        if(orientacao == HORIZONTAL) porcentagemConcluida = ( (px - largHandle/2) - x)/(x + largUtil  - x);
-        else porcentagemConcluida = ( (py - largHandle/2) - y)/(y + largUtil  - y);
-
-        AvancaHandle(porcentagemConcluida*(vMax - vMin) + vMin);
-    }
-
-    void TrataBotoes(PIG_Evento evento){
-        if(botao1 && botao2){
-            botao1->TrataEvento(evento);
-            botao2->TrataEvento(evento);
+        if (idBotao==scroll->id+1){
+            scroll->AvancaHandle(scroll->vAtual,-scroll->deltaBotao);
+        }else if (idBotao==scroll->id+2){
+            scroll->AvancaHandle(scroll->vAtual,scroll->deltaBotao);
         }
     }
 
-    void TrataRodinha(PIG_Evento evento){
-        if(evento.mouse.acao == MOUSE_RODINHA){
-            if(evento.mouse.relY == 1){
-                AvancaHandle(vAtual + deltaRodinha);
-            }else{
-                AvancaHandle(vAtual - deltaRodinha);
+/***************Novos Métodos**************/
+
+
+/***************Métodos Modificados**************/
+
+    void AjustaOrientacao(){
+        if(orientacao == HORIZONTAL){
+            CVisual::SetDimensoes(largura,comprimento - (2*altBotoes));
+            largReal = comprimento;
+            altReal = largura;
+            CVisual::Move(xOriginal+altBotoes,yOriginal);
+            if(botao1 && botao2){
+                botao1->Move(xOriginal,yOriginal);
+                botao2->Move(xOriginal + comprimento - altBotoes,yOriginal);
             }
+            handle->Move(xOriginal+altBotoes +porcentagemConcluida*largUtil,yOriginal);
+            handle->SetDimensoes(largura,largHandle);
+            SetValorMinMax(vMin,vMax);
+        }else{
+            CVisual::SetDimensoes(comprimento - (2*altBotoes),largura);
+            largReal = largura;
+            altReal = comprimento;
+            CVisual::Move(xOriginal,yOriginal+altBotoes);
+            if(botao1 && botao2){
+                botao1->Move(xOriginal,yOriginal);
+                botao2->Move(xOriginal,yOriginal + comprimento - altBotoes);
+            }
+            handle->Move(xOriginal,yOriginal + altBotoes+porcentagemConcluida*largUtil);
+            handle->SetDimensoes(largHandle,largura);
+            SetValorMinMax(vMin,vMax);
         }
+        AvancaHandle(vAtual);
+    }
+
+    void AjustaHandle(){
+        if(orientacao == HORIZONTAL){
+            if(orientacaoCrescimento)handle->Move(xOriginal+altBotoes +porcentagemConcluida*largUtil,yOriginal);
+            else handle->Move(x + larg - largHandle - porcentagemConcluida*largUtil,yOriginal);
+        }else{
+            if(orientacaoCrescimento)handle->Move(xOriginal,yOriginal + altBotoes + porcentagemConcluida*largUtil);
+            else handle->Move(xOriginal,yOriginal + altBotoes + alt - largHandle - porcentagemConcluida*largUtil);
+        }
+    }
+
+    //Recebe um valor e move o handle de forma proporcional
+    int AvancaHandle(int novoValor,int delta = 0){
+        if(!orientacaoCrescimento) delta = -delta;
+        vAtual = PIGLimitaValor(novoValor + delta,vMin,vMax);
+        porcentagemConcluida = (1.0 * (vAtual - vMin))/(vMax - vMin);
+        AjustaHandle();
+        if (acao) acao(id,porcentagemConcluida,param);
+    }
+
+/*******************************************/
+    void TrataClickTrilha(int px,int py){
+        if(orientacao == HORIZONTAL){
+            if(orientacaoCrescimento)porcentagemConcluida = (1.0 * ((px - largHandle/2) - x))/(largUtil);
+            else porcentagemConcluida = (1.0 * (x + larg - (px + largHandle/2)))/(largUtil);
+        }else{
+            if(orientacaoCrescimento) porcentagemConcluida = (1.0 * ((py - largHandle/2) - y))/(largUtil);
+            else porcentagemConcluida = (1.0 * (y + alt - (py + largHandle/2)))/(largUtil);
+        }
+
+        AvancaHandle(porcentagemConcluida*(vMax - vMin) + vMin,0);
+    }
+
+    int TrataBotoes(PIG_Evento evento){
+        if(botao1 && botao2){
+            if(botao1->TrataEvento(evento) || botao2->TrataEvento(evento)) return 1;
+        }
+        return 0;
+    }
+
+    int TrataRodinha(PIG_Evento evento){
+        if(evento.mouse.relY == 1){
+            AvancaHandle(vAtual,deltaRodinha);
+            return 1;
+        }else{
+            AvancaHandle(vAtual,-deltaRodinha);
+            return 1;
+        }
+        return 0;
     }
 
     int TrataMouse(PIG_Evento evento){
@@ -56,25 +119,23 @@ class CPigScrollBar : public CPigComponente{
         CMouse::PegaXY(p.x,p.y);
         MouseSobre(p.x,p.y);
 
+        if(orientacao == VERTICAL)
+            if(evento.mouse.acao == MOUSE_RODINHA) return TrataRodinha(evento);
+
         if (agoraOn){
-            botao1->TrataEvento(evento);
-            botao2->TrataEvento(evento);
-
-            if(orientacao == VERTICAL) TrataRodinha(evento);
-
-            if(agoraOn){
-                if(evento.mouse.acao == MOUSE_PRESSIONADO){
-                    if(evento.mouse.botao == MOUSE_ESQUERDO){
-                        if(evento.mouse.cliques == 1){
-                            TrataClickTrilha(p.x,p.y);
-                            handle->DefineEstado(COMPONENTE_ACIONADO);
-                        }
+            if(evento.mouse.acao == MOUSE_PRESSIONADO){
+                if(evento.mouse.botao == MOUSE_ESQUERDO){
+                    if(evento.mouse.cliques == 1){
+                        TrataClickTrilha(p.x,p.y);
+                        handle->DefineEstado(COMPONENTE_ACIONADO);
                     }
                 }
-                if(handle->GetEstado() == COMPONENTE_ACIONADO) TrataClickTrilha(p.x,p.y);
             }
+            if(handle->GetEstado() == COMPONENTE_ACIONADO) TrataClickTrilha(p.x,p.y);
 
             if(evento.mouse.acao == MOUSE_LIBERADO) handle->DefineEstado(COMPONENTE_NORMAL);
+
+            return 1;
         }
         return 0;
     }
@@ -82,58 +143,23 @@ class CPigScrollBar : public CPigComponente{
     int TrataTeclado(PIG_Evento evento){
         if(evento.teclado.acao == TECLA_PRESSIONADA){
             if(orientacao == HORIZONTAL){
-                if(evento.teclado.tecla== TECLA_DIREITA) AvancaHandle(vAtual + deltaTeclado);
-                if(evento.teclado.tecla == TECLA_ESQUERDA) AvancaHandle(vAtual - deltaTeclado);
+                if(evento.teclado.tecla== TECLA_DIREITA) AvancaHandle(vAtual,deltaTeclado);
+                if(evento.teclado.tecla == TECLA_ESQUERDA) AvancaHandle(vAtual,-deltaTeclado);
             }else{
-                if(evento.teclado.tecla== TECLA_CIMA) AvancaHandle(vAtual + deltaTeclado);
-                if(evento.teclado.tecla == TECLA_BAIXO) AvancaHandle(vAtual - deltaTeclado);
+                if(evento.teclado.tecla== TECLA_CIMA) AvancaHandle(vAtual,deltaTeclado);
+                if(evento.teclado.tecla == TECLA_BAIXO) AvancaHandle(vAtual,-deltaTeclado);
             }
+            return 1;
         }
-        return EVENTO_TECLADO;
+        return 0;
     }
 
-    void AjustaHandle(){
-        if(orientacao == HORIZONTAL){
-            handle->Move(xOriginal+largBotoes +porcentagemConcluida*largUtil,yOriginal);
-        }else{
-            handle->Move(xOriginal,yOriginal + largBotoes+porcentagemConcluida*largUtil);
-        }
-    }
-
-    void AjustaOrientacao(){
-        if(orientacao == HORIZONTAL){
-            SetDimensoes(largura,comprimento - (2*largBotoes));
-            Move(xOriginal+largBotoes,yOriginal);
-            if(botao1 && botao2){
-                botao1->Move(xOriginal,yOriginal);
-                botao2->Move(xOriginal + comprimento - largBotoes,yOriginal);
-            }
-            handle->Move(xOriginal+largBotoes +porcentagemConcluida*largUtil,yOriginal);
-        }else{
-            SetDimensoes(comprimento - (2*largBotoes),largura);
-            Move(xOriginal,yOriginal+largBotoes);
-            if(botao1 && botao2){
-                botao1->Move(xOriginal,yOriginal);
-                botao2->Move(xOriginal,yOriginal + comprimento - largBotoes);
-            }
-            handle->Move(xOriginal,yOriginal + largBotoes+porcentagemConcluida*largUtil);
-        }
-    }
-
-    //Recebe um valor e move o handle de forma proporcional
-    int AvancaHandle(int novoValor){
-        vAtual = PIGLimitaValor(novoValor,vMin,vMax);
-        porcentagemConcluida = (1.0 * (vAtual - vMin))/(vMax - vMin);
-        AjustaHandle();
-        if (acao) acao(id,porcentagemConcluida,param);
-    }
-
-    void DesabilitaComponentes(){
+    void DefineEstadoComponentes(PIG_EstadoComponente estado){
         if(botao1 && botao2){
-            botao1->DefineEstado(COMPONENTE_DESABILITADO);
-            botao2->DefineEstado(COMPONENTE_DESABILITADO);
+            botao1->DefineEstado(estado);
+            botao2->DefineEstado(estado);
         }
-        handle->DefineEstado(COMPONENTE_DESABILITADO);
+        handle->DefineEstado(estado);
     }
 
     int OnMouseOn(){return 0;}
@@ -150,18 +176,23 @@ public:
             orientacao = HORIZONTAL;
             xOriginal = x;
             yOriginal = y;
-            comprimento = comprimentoTotal;
-            largura = larguraTotal;
-            largBotoes = 0;
+            largReal = comprimento = comprimentoTotal;
+            altReal = largura = larguraTotal;
+            altBotoes = 0;
             deltaBotao = 1;
             deltaTeclado = deltaRodinha = 10;
             largHandle = larguraHandle;
-            handle = new CPigBotao(0,x + largBotoes,y,largura,largHandle,imgHandle,retiraFundoHandle,idJanela);
-            largUtil = comprimento - (2*largBotoes) - largHandle;
+            handle = new CPigBotao(0,x + altBotoes,y,largura,largHandle,imgHandle,retiraFundoHandle,idJanela);
+            handle->DefineBotaoRepeticao(true);
+            handle->DefineTempoRepeticao(0.01);
+            largUtil = comprimento - (2*altBotoes) - largHandle;
             DefineEstado(COMPONENTE_NORMAL);
             acao = NULL;
             param = NULL;
+            orientacaoCrescimento = true;
+            setasAtivadas = true;
             AjustaOrientacao();
+            AjustaHandle();
     }
 
     CPigScrollBar(std::string nomeArqParam):CPigScrollBar(LeArquivoParametros(nomeArqParam)){}
@@ -206,19 +237,19 @@ public:
         return CPigScrollBar(idComponente,px,py,larguraTotal,comprimentoTotal,larguraHandle,imgHandle,imgTrilha,retiraFundoHandle,retiraFundoTrilha,janela);
     }
 
-    void SetBotoes(int larguraBotoes,std::string imgBotao1,std::string imgBotao2,int retiraFundoB1 = 1,int retiraFundoB2 = 1){
+    void SetBotoes(int alturaBotoes,std::string imgBotao1,std::string imgBotao2,int retiraFundoB1 = 1,int retiraFundoB2 = 1){
         if (botao1==NULL){
-            botao1 = new CPigBotao(id + 1,xOriginal,yOriginal,largura,larguraBotoes,imgBotao1,retiraFundoB1,idJanela);
-            botao2 = new CPigBotao(id + 2,xOriginal,yOriginal,largura,larguraBotoes,imgBotao2,retiraFundoB2,idJanela);
+            botao1 = new CPigBotao(id + 1,xOriginal,yOriginal,alturaBotoes,largura,imgBotao1,retiraFundoB1,idJanela);
+            botao2 = new CPigBotao(id + 2,xOriginal,yOriginal,alturaBotoes,largura,imgBotao2,retiraFundoB2,idJanela);
             botao1->DefineAcao(AcaoSetas,this);
             botao2->DefineAcao(AcaoSetas,this);
             botao1->DefineBotaoRepeticao(true);
             botao2->DefineBotaoRepeticao(true);
             botao1->DefineTempoRepeticao(0.01);
             botao2->DefineTempoRepeticao(0.01);
-            largBotoes = larguraBotoes;
-            largUtil = comprimento - (2*largBotoes) - largHandle;
-            if(estado == COMPONENTE_DESABILITADO) DesabilitaComponentes();
+            altBotoes = alturaBotoes;
+            largUtil = comprimento - (2*altBotoes) - largHandle;
+            DefineEstado(estado);
             AjustaOrientacao();
         }
     }
@@ -231,33 +262,65 @@ public:
     int TrataEvento(PIG_Evento evento){
 
         if(estado == COMPONENTE_DESABILITADO || estado == COMPONENTE_INVISIVEL) return -1;
-
         handle->TrataEvento(evento);
-        TrataBotoes(evento);
+        if(TrataBotoes(evento))return 1;
 
-        if(evento.tipoEvento == EVENTO_NULO) return EVENTO_NULO;
-        if(evento.tipoEvento == EVENTO_TECLADO) return TrataTeclado(evento);
+        if(evento.tipoEvento == EVENTO_NULO) return 0;
+        if(evento.tipoEvento == EVENTO_TECLADO && setasAtivadas) return TrataTeclado(evento);
         if(evento.tipoEvento == EVENTO_MOUSE) return TrataMouse(evento);
 
-        return EVENTO_GERAL;
-    }
-
-    void SetDeltaBotao(int delta){
-        deltaBotao = delta;
-    }
-
-    void SetDeltaRodinha(int delta){
-        deltaRodinha = delta;
-    }
-
-    void SetDeltaTeclado(int delta){
-        deltaTeclado = delta;
+        return 0;
     }
 
     void DefineEstado(PIG_EstadoComponente estadoComponente){
         estado = estadoComponente;
-        if(estado == COMPONENTE_DESABILITADO) DesabilitaComponentes();
+        DefineEstadoComponentes(estado);
     }
+
+/***************Novos Métodos**************/
+
+    void GetDimensoes(int &altura,int &largura)override{
+        altura = altReal;
+        largura = largReal;
+    }
+
+    void GetDimensoesTrilha(int &altura,int &largura){
+        CVisual::GetDimensoes(altura,largura);
+    }
+
+    void SetSetasAtivadas(bool estado){
+        setasAtivadas = estado;
+    }
+
+    void MudaOrientacaoCrescimento(){
+        orientacaoCrescimento = !orientacaoCrescimento;
+        AvancaHandle(vAtual);
+    }
+
+    void SetDimensoes(int largura,int comprimento){
+        this->largura = largura;
+        this->comprimento = comprimento;
+        largUtil = comprimento - (2*altBotoes) - largHandle;
+        AjustaOrientacao();
+    }
+
+    void Move(int px,int py){
+        xOriginal = px;
+        yOriginal = py;
+        AjustaOrientacao();
+
+    }
+
+
+/***************Métodos Modificados**************/
+
+    void SetDeltas(int dBotao = 1,int dRodinha = 10,int dTeclado = 10){
+        deltaBotao = dBotao;
+        deltaRodinha = dRodinha;
+        deltaTeclado = dTeclado;
+    }
+
+/*******************************************/
 
     int Desenha(){
         if(estado == COMPONENTE_INVISIVEL) return -1;
@@ -281,6 +344,10 @@ public:
         vMax = maximo;
         vAtual = PIGLimitaValor(vAtual, vMin,vMax);
         AvancaHandle(vAtual);
+    }
+
+    void SetValorAtual(int valor){
+        AvancaHandle(valor);
     }
 
 };

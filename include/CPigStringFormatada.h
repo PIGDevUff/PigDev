@@ -1,3 +1,6 @@
+#ifndef _CPIGSTRINGFORMATADA_
+#define _CPIGSTRINGFORMATADA_
+
 class CPigStringFormatada{
 
     char *ExtraiString(){
@@ -134,3 +137,5 @@ public:
         return *this;
     }
 };
+
+#endif //_CPIGSTRINGFORMATADA_

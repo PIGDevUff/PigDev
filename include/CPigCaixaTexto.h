@@ -11,6 +11,8 @@ private:
     PIG_Cor corCursor;
     Timer timer;
 
+
+protected:
     //desenha o cursor
     void DesenhaCursor(){
         if (estado==COMPONENTE_EDITANDO){
@@ -31,15 +33,14 @@ private:
                 return TrataMouseBotaoEsquerdo(p);
             else if (evento.mouse.botao == MOUSE_DIREITO)
                 return TrataMouseBotaoDireito(evento,p);
-        }else if (evento.mouse.acao == MOUSE_RODINHA)
-            return TrataMouseRodinha(evento);
+        }
     }
 
     //verifica se o evento ocorre dentro da área do componente
     int TrataEventoMouse(PIG_Evento evento){
         SDL_Point p;
         CMouse::PegaXY(p.x,p.y);
-        SDL_Rect r = {x+margemHorEsq,y,larg-(margemHorEsq + margemHorDir),alt};
+        SDL_Rect r = {x + margemHorEsq,y + margemVertBaixo,larg - (margemHorDir + margemHorEsq),alt - (margemVertBaixo + margemVertCima)};
 
         if (SDL_PointInRect(&p,&r)){
             return EventosMouse(evento,p);
@@ -86,9 +87,6 @@ private:
         return 0;
     }
 
-
-protected:
-
     std::string texto;
     int fonteTexto;
     int posCursor;
@@ -96,8 +94,6 @@ protected:
     int xBaseOriginal,yBaseOriginal;
     int margemHorEsq,margemHorDir,margemVertCima,margemVertBaixo;
     int altLetra;
-
-    virtual void DesenhaElementosEspecificos() =0;//pure virtual, porque cada classe derivada vai desenhar coisas diferentes
 
     virtual void AjustaAlinhamento() =0;//pure virtual, porque cada classe derivada vai fazer ajustes diferentes
 
@@ -111,12 +107,12 @@ protected:
 
     //posiciona o cursor no eixo X (necessário, pois pode haver texto "escondido" à esquerda)
     void AjustaBaseTextoEixoX(int largParcial){
-        while(xCursor>x+larg-margemHorDir){
-            xBase-=5;
+        while(xCursor>x+larg - margemHorDir){
+            xBase-=1;
             xCursor = xBase + largParcial;
         }
-        while(xCursor < x+margemHorEsq){
-            xBase+=5;
+        while(xCursor <= x + margemHorEsq){
+            xBase+=1;
             xCursor = xBase + largParcial;
         }
     }
@@ -185,8 +181,6 @@ protected:
 
     virtual int TrataMouseBotaoDireito(PIG_Evento evento,SDL_Point p) =0; //cada classe vai poder definir o que fazer com o botão direito
 
-    virtual int TrataMouseRodinha(PIG_Evento evento) =0; //cada classe vai poder definir o que fazer com a rodinha
-
     //o botao esquerdo faz com que a edição do trexto comece ou que o cursor seja reposicionado
     virtual int TrataMouseBotaoEsquerdo(SDL_Point p,int inicioLinha = 0){
         int delta = p.x-xBase;
@@ -224,8 +218,8 @@ protected:
 
 public:
 
-    CPigCaixaTexto(int idComponente,int px, int py, int alt,int larg,std::string nomeArq,int maxCars = 200,bool apenasNumeros=false,int retiraFundo=1,int janela=0):
-        CPigComponente(idComponente,px,py,alt,larg,nomeArq,retiraFundo,janela){
+    CPigCaixaTexto(int idComponente,int px, int py, int altura,int largura,std::string nomeArq,int maxCars = 200,bool apenasNumeros=false,int retiraFundo=1,int janela=0):
+        CPigComponente(idComponente,px,py,altura,largura,nomeArq,retiraFundo,janela){
         margemHorEsq = margemHorDir = margemVertCima = margemVertBaixo = 0;
         posLabel = PIG_COMPONENTE_ESQ_BAIXO;//posição padrão do label
         //altLetra = CGerenciadorFontes::GetTamanhoBaseFonte(fonteTexto)+CGerenciadorFontes::GetFonteDescent(fonteTexto);
@@ -243,26 +237,6 @@ public:
         if (timer) delete timer;
     }
 
-    //desenha o componente completo
-    int Desenha() override{
-        //imagem de fundo
-        SDL_RenderCopyEx(renderer, text, &frame,&dest,-angulo,&pivoRelativo,flip);
-
-        SDL_Rect r={x+margemHorEsq+1,altJanela-y-alt+margemVertCima,larg-(margemHorEsq+margemHorDir),alt-(margemVertBaixo+margemVertCima)};
-        SDL_RenderSetClipRect(renderer,&r);
-
-        DesenhaElementosEspecificos();//cada classe derivada pode desenhar elementos específicos
-        DesenhaCursor();//desenha o cursor (se estiver em edição)
-
-        //desbloqueia o desenho fora da area do componente
-        SDL_RenderSetClipRect(renderer,NULL);
-
-        DesenhaLabel();
-        return 1;
-    }
-
-    virtual void SetMargens(int horEsq,int horDir, int vertBaixo,int vertCima) =0;//cada classe derivada vai definir as margens de forma diferente
-
     //define o texto a ser mostrado no componente
     virtual int SetTexto(std::string frase){
         texto = frase;
@@ -273,7 +247,7 @@ public:
     virtual void SetFonteTexto(int fonte){
         fonteTexto = fonte;
         altLetra = CGerenciadorFontes::GetTamanhoBaseFonte(fonteTexto)+CGerenciadorFontes::GetFonteDescent(fonteTexto);
-        yBaseOriginal = y+alt-margemVertCima-altLetra;
+        yBaseOriginal = y+alt-altLetra;
         //AjustaAlinhamento();
     }
 
@@ -283,7 +257,7 @@ public:
     }
 
     //trata eventos relativos ao componente
-    int TrataEvento(PIG_Evento evento) override{
+    int TrataEvento(PIG_Evento evento){
         if (evento.tipoEvento==EVENTO_MOUSE){
             return TrataEventoMouse(evento);
         }else if (evento.tipoEvento==EVENTO_TECLADO){

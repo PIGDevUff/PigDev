@@ -1,5 +1,7 @@
-#include "CAudio.h"
+#ifndef _CGERENCIADORAUDIOS_
+#define _CGERENCIADORAUDIOS_
 
+#include "CAudio.h"
 class CGerenciadorAudios{
 
 private:
@@ -15,7 +17,7 @@ inline static void TrataParadaAudio(int canal){
     SDL_Event eventoAudio;
     eventoAudio.type = SDL_USEREVENT;
     eventoAudio.user.code = EVENTO_AUDIO;
-    eventoAudio.user.data1 = (int*)malloc(sizeof(int)*1);
+    eventoAudio.user.data1 = (int*)malloc(sizeof(int));
     *((int*)eventoAudio.user.data1) = audioIds[canal];
     SDL_PushEvent(&eventoAudio);
     audioIds[canal] = -1;
@@ -62,6 +64,11 @@ static void Encerra(){
     if (background)
         Mix_FreeMusic(background);
     Mix_CloseAudio();
+}
+
+inline static Audio GetAudio(int idAudio){
+    if (idAudio<0||idAudio>=MAX_AUDIOS||audios[idAudio]==NULL) throw CPigErroIndice(idAudio,"audios");
+    return audios[idAudio];
 }
 
 static void CarregaBackground(std::string nomeArquivo){
@@ -119,6 +126,7 @@ static int CriaAudio(std::string nomeArquivo,int nLoops,int tempoExecucao=-1){
 }
 
 static void DestroiAudio(int idAudio){
+    if (idAudio<0||idAudio>=totalAudios||audios[idAudio]==NULL) throw CPigErroIndice(idAudio,"audios");
     numAudios->DevolveUsado(idAudio);
     delete audios[idAudio];
     totalAudios--;
@@ -126,11 +134,11 @@ static void DestroiAudio(int idAudio){
 }
 
 inline static void SetVolume(int idAudio,int volume){
-    audios[idAudio]->SetVolume(volume);
+    GetAudio(idAudio)->SetVolume(volume);
 }
 
 inline static int GetVolume(int idAudio){
-    return audios[idAudio]->GetVolume();
+    return GetAudio(idAudio)->GetVolume();
 }
 
 inline static void SetVolumeTudo(int volume){
@@ -141,43 +149,32 @@ inline static void SetVolumeTudo(int volume){
 }
 
 inline static void Play(int idAudio){
-    Audio audio = audios[idAudio];
-    int canal = Mix_PlayChannelTimed(-1,audio->GetChunk(),audio->GetLoops(),audio->GetTempoPlay());
-    Mix_Volume(canal,audio->GetVolume());
-    audioIds[canal] = idAudio;
-    audio->SetPlay();
+    Audio audio = GetAudio(idAudio);
+    audio->Play();
+    audioIds[audio->GetCanal()] = idAudio;
 }
 
 inline static void Pause(int idAudio){
-    audios[idAudio]->SetPause();
-    for (int i=0;i<QTD_CANAIS_PADRAO;i++)
-        if (audioIds[i]==idAudio)
-            Mix_Pause(i);
+    GetAudio(idAudio)->Pause();
 }
 
 inline static void Resume(int idAudio){
-    audios[idAudio]->SetPlay();
-    for (int i=0;i<QTD_CANAIS_PADRAO;i++)
-        if (audioIds[i]==idAudio)
-            Mix_Resume(i);
+    GetAudio(idAudio)->Resume();
 }
 
 inline static void Stop(int idAudio){
-    audios[idAudio]->SetStop();
-    for (int i=0;i<QTD_CANAIS_PADRAO;i++)
-        if (audioIds[i]==idAudio)
-            Mix_HaltChannel(i);
+    GetAudio(idAudio)->Stop();
 }
 
 inline static PIG_StatusAudio GetStatus(int idAudio){
-    return audios[idAudio]->GetStatus();
+    return GetAudio(idAudio)->GetStatus();
 }
 
 inline static void StopTudo(){
     Mix_HaltChannel(-1);
     for (int i=0;i<MAX_AUDIOS;i++){
         if (audios[i]){
-            audios[i]->SetStop();
+            audios[i]->Stop();
         }
     }
 }
@@ -186,7 +183,7 @@ inline static void PauseTudo(){
     Mix_Pause(-1);
     for (int i=0;i<MAX_AUDIOS;i++){
         if (audios[i])
-            audios[i]->SetPause();
+            audios[i]->Pause();
     }
 }
 
@@ -194,7 +191,7 @@ inline static void ResumeTudo(){
     Mix_Resume(-1);
     for (int i=0;i<MAX_AUDIOS;i++){
         if (audios[i])
-            audios[i]->SetPlay();
+            audios[i]->Resume();
     }
 }
 
@@ -207,3 +204,4 @@ int CGerenciadorAudios::audioIds[QTD_CANAIS_PADRAO];
 Mix_Music *CGerenciadorAudios::background;
 int CGerenciadorAudios::volumeBackground;
 PIG_StatusAudio CGerenciadorAudios::statusBackground;
+#endif // _CGERENCIADORAUDIOS_

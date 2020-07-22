@@ -1,4 +1,4 @@
-#include <iostream>
+
 
 class CPigAreaDeTexto: public CPigCaixaTexto{
 
@@ -7,25 +7,112 @@ private:
     int largMax;
     int espacoEntreLinhas;
     bool linhasPauta;
-    bool marcarMargem;
+    CPigScrollBar *scrollVertical,*scrollHorizontal;
+    bool scrollVerticalAtivado,scrollHorizontalAtivado;
+    int xOriginal,yOriginal;
+    int largReal,altReal;
+
     std::vector<std::string> linhas;
 
     PIG_Cor corLinhasTexto;
 
-    //recupera o texto todo da área
+    //Recupera todo o texto da área
     inline std::string GetTextoVisivel(){
         return GetTexto();
     }
 
-    //ajusta o alinhamento do texto dentro da área
+/***************Novos Métodos**************/
+
+    void TrataScrollBarVertical(PIG_Evento evento){
+        scrollVertical->TrataEvento(evento);
+
+        int valorAtual = scrollVertical->GetValorAtual();
+        if(valorAtual!=yBase){
+            yBase = valorAtual;
+            scrollVertical->SetValorMinMax(yBaseOriginal,yBaseOriginal + ((espacoEntreLinhas + altLetra)*(linhas.size()-1)));
+            scrollVertical->SetValorAtual(yBase);
+            yCursor = yBase - ( (espacoEntreLinhas + altLetra) * GetLinhaDeUmaPos(posCursor));
+        }
+    }
+
+    void TrataScrollBarHorizontal(PIG_Evento evento){
+        scrollHorizontal->TrataEvento(evento);
+
+        int valorAtual = scrollHorizontal->GetValorAtual();
+        if(xBase != valorAtual){
+            xBase = valorAtual;
+            std::string aux;
+            int posInicial = GetPosInicialDeUmaLinha(GetLinhaDeUmaPos(posCursor));
+            scrollHorizontal->SetValorMinMax(xBaseOriginal - GetLarguraLinhaMaior() + (larg - (margemHorDir+margemHorEsq)),xBaseOriginal);
+            scrollHorizontal->SetValorAtual(xBase);
+            aux.assign(GetTextoVisivel(),posInicial,posCursor - posInicial);
+            xCursor = xBase + CGerenciadorFontes::GetLarguraPixels(aux,fonteTexto);
+        }
+    }
+
+    //Verifica se é necessário acionar a ScrollBarVertical quando o texto é modificado
+    void AcionaScrollBarVertical(){
+        int temp;
+        scrollVerticalAtivado = ((espacoEntreLinhas + altLetra)*(linhas.size())) > (alt - (margemVertBaixo+margemVertCima));
+        if(!scrollVerticalAtivado)scrollVertical->DefineEstado(COMPONENTE_INVISIVEL);
+        else scrollVertical->DefineEstado(COMPONENTE_NORMAL);
+    }
+
+    //Verifica se é necessário acionar a ScrollBarHorizontal quando o texto é modificado
+    void AcionaScrollBarHorizontal(){
+        int temp;
+        scrollHorizontalAtivado = GetLarguraLinhaMaior() > (larg - (margemHorDir+margemHorEsq));
+        if(!scrollHorizontalAtivado)scrollHorizontal->DefineEstado(COMPONENTE_INVISIVEL);
+        else scrollHorizontal->DefineEstado(COMPONENTE_NORMAL);
+    }
+
+    int GetLarguraLinhaMaior(){
+        int tamMaior = 0;
+        int temp = 0;
+        for(std::string linha : linhas){
+            temp = CGerenciadorFontes::GetLarguraPixels(linha,fonteTexto);
+            tamMaior = (temp > tamMaior) ? (temp):(tamMaior);
+        }
+        return tamMaior;
+    }
+
+
+/***************Métodos Modificados**************/
+
+    //Desenha um contorno baseado nas dimensoes reais da área(somando a área em si e a scroll bar)
+    void DesenhaMarcacaoMargem(){
+        CGerenciadorJanelas::DesenhaLinhaSimples(x+margemHorEsq,y+margemVertBaixo,x+ margemHorEsq,y+alt-margemVertCima,BRANCO);
+        CGerenciadorJanelas::DesenhaLinhaSimples(x+larg-margemHorDir,y+margemVertBaixo,x+larg-margemHorDir,y+alt-margemVertCima,BRANCO);
+
+        CGerenciadorJanelas::DesenhaLinhaSimples(x+margemHorEsq,y+alt-margemVertCima,x+larg-margemHorDir,y+alt-margemVertCima,BRANCO);
+        CGerenciadorJanelas::DesenhaLinhaSimples(x+margemHorEsq,y+margemVertBaixo,x+larg-margemHorDir,y+margemVertBaixo,BRANCO);
+    }
+
+    //Volta a base e o cursor para o início
+    void ResetaValoresBase(){
+        yCursor = yBase = yBaseOriginal = y+alt-altLetra-margemVertCima;
+        xCursor = xBase = xBaseOriginal = x + margemHorEsq;
+        AjustaAlinhamento();
+    }
+
+    //Serve no caso em que o y do cursor fica fora da área visível
+    void AjustaBaseTextoEixoY(){
+        while(yCursor < y + margemVertBaixo){
+            yBase+=1;
+            yCursor+=1;
+        }
+        while(yCursor > y + alt - altLetra - margemVertCima){
+            yBase-=1;
+            yCursor-=1;
+        }
+    }
+
+    //Ajusta o alinhamento do texto quando ocorre alguma modificação
     void AjustaAlinhamento() override{
         std::string textoBase = GetTextoVisivel();
         std::string aux;
 
         linhas = CGerenciadorFontes::ExtraiLinhasString(textoBase,largMax,fonteTexto);
-
-        xBase = xBaseOriginal;
-        yBase = yBaseOriginal;
 
         int linhaPos = GetLinhaDeUmaPos(posCursor);
         int posInicial = GetPosInicialDeUmaLinha(linhaPos);
@@ -35,29 +122,18 @@ private:
         yCursor = yBase - ( (espacoEntreLinhas + altLetra)*GetLinhaDeUmaPos(posCursor));
         xCursor = xBase + CGerenciadorFontes::GetLarguraPixels(aux,fonteTexto);
 
+        if(scrollVertical) AcionaScrollBarVertical();
+        if(scrollHorizontal) AcionaScrollBarHorizontal();
+
         AjustaBaseTextoEixoX(CGerenciadorFontes::GetLarguraPixels(aux,fonteTexto));
-
         AjustaBaseTextoEixoY();
+
+        if(scrollHorizontalAtivado) scrollHorizontal->SetValorAtual(xBase);
+        if(scrollVerticalAtivado) scrollVertical->SetValorAtual(yBase);
+
     }
 
-    //desenha o texto e as linhas (se for o caso)
-    void DesenhaElementosEspecificos()override{
-        CGerenciadorFontes::EscreverLonga(texto,xBase,yBase,largMax,(espacoEntreLinhas + altLetra),fonteTexto,CPIG_TEXTO_ESQUERDA);
-        if(linhasPauta) DesenhaLinhasHorizontais();
-        if(marcarMargem) DesenhaMarcacaoMargem();
-    }
-
-    //
-    void AjustaBaseTextoEixoY(){
-        while(yCursor < y + margemVertBaixo){
-            yBase+=5;
-            yCursor = yBase - ( (espacoEntreLinhas + altLetra) * GetLinhaDeUmaPos(posCursor));
-        }
-        while(yCursor > y + alt - margemVertCima){
-            yBase-=5;
-            yCursor = yBase - ( (espacoEntreLinhas + altLetra) * GetLinhaDeUmaPos(posCursor));
-        }
-    }
+/*******************************************/
 
     //trata o evento do botao esquerdo
     int TrataMouseBotaoEsquerdo(SDL_Point p,int inicioLinha = 0)override{
@@ -86,26 +162,6 @@ private:
         return 1;
     }
 
-    //trata o evento da rodinha
-    int TrataMouseRodinha(PIG_Evento evento){
-        if(evento.mouse.acao == MOUSE_RODINHA){
-            if(evento.mouse.relY >0){
-                if(yBaseOriginal < yBase){
-                    yBase-=10;
-                    yCursor-=10;
-                }
-            }
-
-            if(evento.mouse.relY <0){
-                if( yBase < yBaseOriginal + ( (espacoEntreLinhas + altLetra)*(linhas.size()-1))){
-                    yBase+=10;
-                    yCursor+=10;
-                }
-            }
-
-            return 2;
-        }
-    }
 
     int TrataMouseBotaoDireito(PIG_Evento evento,SDL_Point p){return 1;}//não usa o botão direito
 
@@ -158,22 +214,13 @@ private:
     }
 
     //
-    void DesenhaMarcacaoMargem(){
-        CGerenciadorJanelas::DesenhaLinhaSimples(x+margemHorEsq,y+margemVertBaixo,x+ margemHorEsq,y+alt-margemVertCima,BRANCO);
-        CGerenciadorJanelas::DesenhaLinhaSimples(x+larg-margemHorDir-1,y+margemVertBaixo,x+larg-margemHorDir-1,y+alt-margemVertCima,BRANCO);
-
-        CGerenciadorJanelas::DesenhaLinhaSimples(x+margemHorEsq,y+alt-margemVertCima-1,x+larg-margemHorDir,y+alt-margemVertCima-1,BRANCO);
-        CGerenciadorJanelas::DesenhaLinhaSimples(x+margemHorEsq,y+margemVertBaixo,x+larg-margemHorDir,y+margemVertBaixo,BRANCO);
-    }
-
-    //
     void DesenhaLinhasHorizontais(){
         int yLinha = yBase;
-        int xLinha = x+margemHorEsq;
+        int xLinha = x;
         int i=0;
 
-        while(yLinha >= y + margemVertBaixo){
-            CGerenciadorJanelas::DesenhaLinhaSimples(xLinha,yLinha,xLinha+larg-margemHorDir,yLinha,corLinhasTexto);
+        while(yLinha >= y){
+            CGerenciadorJanelas::DesenhaLinhaSimples(xLinha,yLinha,xLinha+larg,yLinha,corLinhasTexto);
             i++;
             yLinha = yBase - ((espacoEntreLinhas + altLetra) *i);
         }
@@ -229,16 +276,17 @@ public:
     CPigAreaDeTexto(int idComponente,int px, int py, int altura,int largura,std::string nomeArq,int maxCars = 200,int retiraFundo=1,int janela=0):
         CPigCaixaTexto(idComponente,px,py,altura,largura,nomeArq,maxCars,false,retiraFundo,janela){ // A altura é um vetor, mas eu preciso dela, entao eu acabei colocando como o tamanho da fonte, qualquer coisa só mudar aqui
             espacoEntreLinhas = 0;
-            yBaseOriginal = y+altura-margemVertCima-altLetra;
-            xBaseOriginal = x+margemHorEsq;
-            yBase = yBaseOriginal;
-            xBase = xBaseOriginal;
-            xCursor = xBase;
-            yCursor = yBase;
+            yCursor = yBase = yBaseOriginal = y+altura-altLetra - margemVertCima;
+            xCursor = xBase = xBaseOriginal = x + margemHorEsq;
             largMax = largura;
             linhasPauta = false;
             corLinhasTexto = PRETO;
-            marcarMargem = false;
+            scrollHorizontalAtivado = scrollVerticalAtivado = false;
+            scrollHorizontal = scrollVertical = NULL;
+            largReal = larg;
+            altReal = alt;
+            xOriginal = x;
+            yOriginal = y;
             AjustaAlinhamento();
         }
 
@@ -280,20 +328,106 @@ public:
 
     }
 
-    //define as margens da áre de texto
-    void SetMargens(int horEsq,int horDir, int vertBaixo,int vertCima){
-        margemVertCima = vertCima;
-        margemVertBaixo = vertBaixo;
-        margemHorDir = horDir;
-        margemHorEsq = horEsq;
-        yBaseOriginal = y+alt-margemVertCima-altLetra;
-        xBaseOriginal = x+margemHorEsq;
-        AjustaAlinhamento();
+/***************Novos Métodos**************/
+
+    void SetScrollBarVertical(int larguraTotal,int comprimentoTotal,int larguraHandle,std::string imgHandle,std::string imgTrilha,int retiraFundoHandle=1,int retiraFundoTrilha=1){
+        scrollVertical = new CPigScrollBar(id + 1,x + larg,y,larguraTotal,comprimentoTotal,larguraHandle,imgHandle,imgTrilha,retiraFundoHandle,retiraFundoTrilha,idJanela);
+        scrollVertical->SetOrientacao(VERTICAL);
+        int posYUltLinha = yBase - ((espacoEntreLinhas + altLetra)*linhas.size());
+        scrollVertical->SetValorMinMax(yBase,posYUltLinha);
+        scrollVertical->MudaOrientacaoCrescimento();
+        scrollVertical->SetSetasAtivadas(false);
+        scrollVerticalAtivado = false;
+        scrollVertical->DefineEstado(COMPONENTE_INVISIVEL);
+        SetPosPadraoScrollVertical(PIG_COMPONENTE_DIR_CENTRO);
     }
 
-    void SetMarcarMargem(bool marcarMargens){
-         marcarMargem = marcarMargens;
+    int SetBotoesScrollBarVertical(int larguraBotoes,std::string imgBotao1,std::string imgBotao2,int retiraFundoB1 = 1,int retiraFundoB2 = 1){
+        if(!scrollVertical) return -1;
+        scrollVertical->SetBotoes(larguraBotoes,imgBotao1,imgBotao2,retiraFundoB1,retiraFundoB2);
+        return 1;
     }
+
+    void SetScrollBarHorizontal(int larguraTotal,int comprimentoTotal,int larguraHandle,std::string imgHandle,std::string imgTrilha,int retiraFundoHandle=1,int retiraFundoTrilha=1){
+        scrollHorizontal = new CPigScrollBar(id + 1,x,y - larguraTotal,larguraTotal,comprimentoTotal,larguraHandle,imgHandle,imgTrilha,retiraFundoHandle,retiraFundoTrilha,idJanela);
+        int maiorTamLinha = GetLarguraLinhaMaior();
+        scrollHorizontal->SetValorMinMax(xBaseOriginal,xBaseOriginal + maiorTamLinha);
+        scrollHorizontal->MudaOrientacaoCrescimento();
+        scrollHorizontal->SetSetasAtivadas(false);
+        scrollHorizontalAtivado = false;
+        scrollHorizontal->DefineEstado(COMPONENTE_INVISIVEL);
+        SetPosPadraoScrollHorizontal(PIG_COMPONENTE_BAIXO_CENTRO);
+    }
+
+    int SetBotoesScrollBarHorizontal(int larguraBotoes,std::string imgBotao1,std::string imgBotao2,int retiraFundoB1 = 1,int retiraFundoB2 = 1){
+        if(!scrollHorizontal) return -1;
+        scrollHorizontal->SetBotoes(larguraBotoes,imgBotao1,imgBotao2,retiraFundoB1,retiraFundoB2);
+        return 1;
+    }
+
+    void SetPosPadraoScrollHorizontal(PIG_PosicaoComponente pos){
+        scrollHorizontal->SetPosPadraoExternaComponente(pos,this);
+    }
+
+    void SetPosPadraoScrollVertical(PIG_PosicaoComponente pos){
+        scrollVertical->SetPosPadraoExternaComponente(pos,this);
+    }
+
+    void Move(int px,int py){
+        CVisual::Move(px,py);
+        xOriginal = px;
+        yOriginal = py;
+        if(scrollHorizontal) scrollHorizontal->SetPosPadraoExternaComponente(scrollHorizontal->GetPosComponente(),this);
+        if(scrollVertical) scrollVertical->SetPosPadraoExternaComponente(scrollVertical->GetPosComponente(),this);
+        ResetaValoresBase();
+    }
+
+    void MoveScrollBarHorizontal(int px,int py){
+        if(scrollHorizontal) scrollHorizontal->Move(px,py);
+    }
+
+    void MoveScrollBarVertical(int px,int py){
+        if(scrollVertical) scrollVertical->Move(px,py);
+    }
+
+    void SetDimensoes(int altura,int largura){
+        CVisual::SetDimensoes(altura,largura);
+        largReal = largura;
+        altReal = altura;
+        ResetaValoresBase();
+    }
+
+/***************Métodos Modificados**************/
+
+    int Desenha() override{
+        //imagem de fundo
+        SDL_RenderCopyEx(renderer, text, &frame,&dest,-angulo,&pivoRelativo,flip);
+
+        DesenhaMarcacaoMargem();
+
+        if(scrollVertical) scrollVertical->Desenha();
+        if(scrollHorizontal) scrollHorizontal->Desenha();
+
+        SDL_Rect r={x+margemHorEsq,altJanela-y-alt+margemVertCima,larg-(margemHorEsq+margemHorDir),alt-(margemVertBaixo+margemVertCima)};
+        SDL_RenderSetClipRect(renderer,&r);
+
+        DesenhaCursor();//desenha o cursor (se estiver em edição)
+        CGerenciadorFontes::EscreverLonga(texto,xBase,yBase,largMax,(espacoEntreLinhas + altLetra),fonteTexto,CPIG_TEXTO_ESQUERDA);
+        if(linhasPauta) DesenhaLinhasHorizontais();
+
+        //desbloqueia o desenho fora da area do componente
+        SDL_RenderSetClipRect(renderer,NULL);
+
+        DesenhaLabel();
+        return 1;
+    }
+
+    void SetFonteTexto(int fonte) override{
+        CPigCaixaTexto::SetFonteTexto(fonte);
+        ResetaValoresBase();
+    }
+
+/*******************************************/
 
     //define a cor da linhas horizontais
     void SetLinhasAbaixoTexto(bool visivel,PIG_Cor cor = PRETO){
@@ -307,6 +441,12 @@ public:
         AjustaAlinhamento();
     }
 
+    int TrataEvento(PIG_Evento evento)override{
+        CPigCaixaTexto::TrataEvento(evento);
+        if(scrollVerticalAtivado) TrataScrollBarVertical(evento);
+        if(scrollHorizontalAtivado) TrataScrollBarHorizontal(evento);
+    }
+
     //define o espaçamento entre as linhas
     void SetEspacoEntreAsLinhas(int espaco){
         espacoEntreLinhas = espaco;
@@ -317,8 +457,12 @@ public:
         AjustaAlinhamento();
     }
 
-    void SetFonteTexto(int fonte) override{
-        CPigCaixaTexto::SetFonteTexto(fonte);
+    void SetMargens(int horEsq,int horDir, int vertBaixo,int vertCima){
+        margemVertCima = vertCima;
+        margemVertBaixo = vertBaixo;
+        margemHorDir = horDir;
+        margemHorEsq = horEsq;
+        ResetaValoresBase();
         AjustaAlinhamento();
     }
 
@@ -330,3 +474,4 @@ public:
 };
 
 typedef CPigAreaDeTexto *PigAreaDeTexto;
+

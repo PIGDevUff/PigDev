@@ -1,3 +1,6 @@
+#ifndef _CMAPACARACTERESDINAMICOS_
+#define _CMAPACARACTERESDINAMICOS_
+
 #include "CPigStringFormatada.h"
 
 class CMapaCaracteresDinamicos:public CMapaCaracteres{
@@ -217,3 +220,5 @@ public:
 };
 
 typedef CMapaCaracteres* MapaCaracteres;
+
+#endif //_CMAPACARACTERESDINAMICOS_

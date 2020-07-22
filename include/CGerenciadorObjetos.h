@@ -1,3 +1,6 @@
+#ifndef _CGERENCIADOROBJETOS_
+#define _CGERENCIADOROBJETOS_
+
 #include "CObjeto.h"
 class CGerenciadorObjetos{
 
@@ -9,7 +12,7 @@ private:
 public:
 
     inline static Objeto GetObjeto(int idObjeto){
-        if (idObjeto<0||idObjeto>=totalObjetos||objetos[idObjeto]==NULL) throw CPigErroIndice(idObjeto,"objetos");
+        if (idObjeto<0||idObjeto>=MAX_OBJETOS||objetos[idObjeto]==NULL) throw CPigErroIndice(idObjeto,"objetos");
         return objetos[idObjeto];
     }
 
@@ -42,7 +45,7 @@ public:
     }
 
     static void DestroiObjeto(int idObjeto){
-        if (objetos[idObjeto]==NULL) throw CPigErroIndice(idObjeto,"objetos");
+        if (idObjeto<0||idObjeto>=MAX_OBJETOS||objetos[idObjeto]==NULL) throw CPigErroIndice(idObjeto,"objetos");
         numObjetos->DevolveUsado(idObjeto);
         delete objetos[idObjeto];
         totalObjetos--;
@@ -212,3 +215,4 @@ public:
 PoolNumeros CGerenciadorObjetos::numObjetos;
 int CGerenciadorObjetos::totalObjetos;
 Objeto CGerenciadorObjetos::objetos[MAX_OBJETOS];
+#endif // _CGERENCIADOROBJETOS_

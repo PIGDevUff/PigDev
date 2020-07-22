@@ -219,7 +219,7 @@ public:
         pivoRelativo.y = alt;//necessário porque o poivô relativo é usado com eixo Y invertido (para baixo)
     }
 
-    void GetDimensoes(int &altura, int &largura){
+    virtual void GetDimensoes(int &altura, int &largura){
         altura = alt;
         largura = larg;
     }

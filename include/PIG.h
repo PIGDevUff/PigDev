@@ -2,7 +2,6 @@
 Versão 0.7.2 da Biblioteca PIG.h
 ********************************/
 
-
 #include "SDL.h"
 #include "SDL_ttf.h"
 #include "SDL_image.h"
@@ -1142,6 +1141,27 @@ int GetFonteLineSkip(int numFonte=0){
     return CGerenciadorFontes::GetLineSkip(numFonte);
 }
 
+/********************************
+A função SubstituiCaractere() substitui a imagem original de um caractere por um frame de um imagem personalizada de um arquivo de imagem. O frame é definido
+pelos parâmetros x, y, altura e largura, de acordo com o sistema de coordenadas dos arquivos de imagem digital (eixo Y crescendo para baixo). O frame especificado
+será desenhado na tela toda vez que o caractere original for passado dentro de uma string. O frame terá a mesma altura padrão da fote original, mas pdoerá ter uma largura
+personalizada por meio do parâmetro largNova.
+Parâmetros:
+caractere (entrada, passagem por valor): caractere (ou número inteiro) que será substituído e não será mais desenhado posteriormente.
+nomeArquivo (entrada, passagem por referência): nome do arquivo contendo o frame desejado.
+largNova: (entrada, passagem por valor): largura nova a ser utilizada para desenhar o frame na tela. Não é obrigatoriamente o mesmo valor do parâmetro "larg".
+x (entrada, passagem por valor): coordenada X do arquivo de imagem, onde começa o frame desejado.
+y (entrada, passagem por valor): coordenada Y do arquivo de imagem, onde começa o frame desejado (sistema de coordenada com eixo Y crescendo para baixo).
+altura (entrada, passagem por valor): altura do frame desejado.
+largura (entrada, passagem por valor): largura do frame desejado.
+numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+retorno:
+inteiro que representa o espaçamento vertical ideal para que duas frases não se sobreponham verticalmente.
+********************************/
+void SubstituiCaractere(char caractere, char *nomeArquivo, int largNova, int x, int y, int altura,int largura,int numFonte=0){
+    CGerenciadorFontes::SubstituiCaracter(caractere,nomeArquivo,largNova,x,y,altura,largura,numFonte);
+}
+
 
 /********************************
 Seção de objetos
@@ -1564,7 +1584,7 @@ Inteiro indicando se houve colisão (valor diferente de zero) ou não (valor igual
 
 int TestaColisaoObjetos(int idObjeto1,int idObjeto2){
     if (CGerenciadorObjetos::TestaColisao(idObjeto1, idObjeto2))
-        return CGerenciadorObjetos::TestaColisaoPoligono(idObjeto1, idObjeto2);
+        return true;//CGerenciadorObjetos::TestaColisaoPoligono(idObjeto1, idObjeto1);
     return false;
 }
 

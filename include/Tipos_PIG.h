@@ -37,9 +37,9 @@ Principais definições utilizadas pela PIG
 
 #define MAX_CURSORES            30
 #define MAX_FONTES              100
-#define PRIMEIRO_CAR            26
+#define PRIMEIRO_CAR            11
 #define ULTIMO_CAR              256
-#define NOME_ARQ_TEMP           "fontess.bmp"
+//#define NOME_ARQ_TEMP           "fontess.bmp"
 
 //#define MAX_SLOTS_AL_IMAGEM     4000
 //#define MAX_SLOTS_AL_AUDIO      1000

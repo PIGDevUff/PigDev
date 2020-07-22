@@ -3,6 +3,7 @@
 
 #include "CPigComponente.h"
 #include "CPigBotao.h"
+#include "CPigScrollBar.h"
 #include "CPigCaixaTexto.h"
 #include "CPigCampoTextoESenha.h"
 #include "CPigAreaDeTexto.h"
@@ -13,7 +14,8 @@
 #include "CPigItemLista.h"
 #include "CPigLista.h"
 #include "CPigDropDown.h"
-#include "CPigScrollBar.h"
+#include "CPigGauge.h"
+#include "CPigGaugeCircular.h"
 
 class CPigForm{
 

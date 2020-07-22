@@ -309,7 +309,7 @@ public:
         outro->Atualiza();
 
         if(ColisaoBB(outro) && outro->ColisaoBB(this)) {
-            return ColisaoPoligono(outro) || outro->ColisaoPoligono(this);
+            return true;//ColisaoPoligono(outro) || outro->ColisaoPoligono(this);
         }
         return false;
     }

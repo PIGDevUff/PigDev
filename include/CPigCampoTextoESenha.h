@@ -17,17 +17,10 @@ private:
         return (this->*GetTextoVisivelPtr)();
     }
 
-    //desenha apenas o texto
-    void DesenhaElementosEspecificos(){
-        CGerenciadorFontes::EscreverString(GetTextoVisivel(),xBase,yBase,fonteTexto,CPIG_TEXTO_ESQUERDA);
-    }
-
     //ajusta o alinhamento do cursor
     void AjustaAlinhamento(){
         std::string textoBase = GetTextoVisivel();
         std::string aux;
-
-        xBase = xBaseOriginal;
 
         aux.assign(textoBase,0,posCursor);
         xCursor = xBase + CGerenciadorFontes::GetLarguraPixels(aux,fonteTexto);
@@ -89,6 +82,24 @@ public:
        // std::cout<<idComponente<<" "<<px<<" "<<py<<" "<<altura<<" "<<largura<<" "<<nomeArq<<" "<<retiraFundo<<" "<<janela<<std::endl;
         return CPigCampoTextoESenha(idComponente,px,py,altura,largura,nomeArq,maxCars,apenasNumeros,retiraFundo,janela,campoSenha);
 
+    }
+
+    //desenha o componente completo
+    int Desenha() override{
+        //imagem de fundo
+        SDL_RenderCopyEx(renderer, text, &frame,&dest,-angulo,&pivoRelativo,flip);
+
+        SDL_Rect r={x+margemHorEsq+1,altJanela-y-alt+margemVertCima,larg-(margemHorEsq+margemHorDir),alt-(margemVertBaixo+margemVertCima)};
+        SDL_RenderSetClipRect(renderer,&r);
+
+        CGerenciadorFontes::EscreverString(GetTextoVisivel(),xBase,yBase,fonteTexto,CPIG_TEXTO_ESQUERDA);
+        DesenhaCursor();//desenha o cursor (se estiver em edição)
+
+        //desbloqueia o desenho fora da area do componente
+        SDL_RenderSetClipRect(renderer,NULL);
+
+        DesenhaLabel();
+        return 1;
     }
 
     //define as margens do componente

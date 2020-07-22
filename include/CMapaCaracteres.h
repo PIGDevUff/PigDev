@@ -1,3 +1,6 @@
+#ifndef _CMAPACARACTERES_
+#define _CMAPACARACTERES_
+
 typedef enum {CPIG_TEXTO_ESQUERDA,CPIG_TEXTO_DIREITA,CPIG_TEXTO_CENTRO} PIG_PosTexto;
 
 class CMapaCaracteres{
@@ -111,6 +114,39 @@ public:
         free(glyphsT);
         free(larguraLetra);
         free(alturaExtra);
+    }
+
+    void SubstituiGlyph(std::string nomeArq,uint16_t glyph, int largNova, int x, int y, int alt, int larg){
+        glyph = glyph%256;
+        if (glyph<PRIMEIRO_CAR||glyph>=ULTIMO_CAR) throw CPigErroIndice(glyph,"caracter");//se o indice do glyph antigo não existe
+
+        int h;
+        SDL_Surface *surfExtra;
+
+        #ifdef SHARE_BITMAP
+        surfExtra = CAssetLoader::LoadImage(nomeArq);
+        #else
+        surfExtra = IMG_Load(nomeArq.c_str()); //tenta ler o arquivo de imagem indicado
+        #endif // SHARE_BITMAP
+
+        if (surfExtra==NULL) throw CPigErroArquivo(nomeArq); //se não for possível lança um erro
+
+        SDL_Rect r = {x,y,larg,alt};//pega somente a área do novo glyph
+
+        for (int estilo=0;estilo<PIG_TOTALESTILOS;estilo++){
+            if (estiloFixo>=0&&estilo!=estiloFixo) continue;
+
+            SDL_QueryTexture(glyphsT[estilo][glyph-PRIMEIRO_CAR],NULL,NULL,NULL,&h); //pega a altura do caracter que será substituído
+            SDL_Surface *surfAux = SDL_CreateRGBSurfaceWithFormat(0,largNova,h,32,SDL_PIXELFORMAT_RGBA32);//cria uma superfície com o tamanho adequado
+
+            SDL_BlitScaled(surfExtra,&r,surfAux,NULL);//copia somente a área desejada para uma superfície auxiliar
+            SDL_DestroyTexture(glyphsT[estilo][glyph-PRIMEIRO_CAR]);//libera a memória do glyph antigo
+            larguraLetra[estilo][glyph-PRIMEIRO_CAR] = largNova;//atualiza a largura do glyph novo (valor do parâmetro)
+
+
+            glyphsT[estilo][glyph-PRIMEIRO_CAR] = SDL_CreateTextureFromSurface(render,surfAux); //cria o gylph novo
+            SDL_FreeSurface(surfAux);
+        }
     }
 
     int GetFonteDescent(){
@@ -260,3 +296,5 @@ public:
 
 typedef CMapaCaracteres* MapaCaracteres;
 std::string CMapaCaracteres::PigDelimitadores = " \n";
+
+#endif // _CMAPACARACTERES_

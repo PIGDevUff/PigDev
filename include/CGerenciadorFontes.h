@@ -1,7 +1,8 @@
+#ifndef _CGERENCIADORFONTES_
+#define _CGERENCIADORFONTES_
+
 #include "CMapaCaracteres.h"
 #include "CMapaCaracteresDinamicos.h"
-#include <sstream>
-#include <iomanip>
 
 class CGerenciadorFontes{
 
@@ -22,7 +23,7 @@ public:
 
         fontes[0] = new CMapaCaracteres(PIG_FONTE_PADRAO_NOME,PIG_FONTE_PADRAO_TAM,ESTILO_NORMAL,PIG_FONTE_PADRAO_COR,0,BRANCO,0);
         //fontes[0] = new CMapaCaracteres(PIG_FONTE_PADRAO_NOME,PIG_FONTE_PADRAO_TAM,ESTILO_NORMAL,"desenho.bmp",0,BRANCO,0);
-        //fontes[0] = new CMapaCaracteresDinamicos("..//fontes//arial.ttf",36,0);
+        //fontes[0] = new CMapaCaracteresDinamicos("..//fontes//arial.ttf",PIG_FONTE_PADRAO_TAM,0);
         totalFontes = 1;
 
         for (int i=1;i<MAX_FONTES;i++)
@@ -126,8 +127,14 @@ public:
         fontes[idFonte] = NULL;
     }
 
+    static void SubstituiCaracter(uint16_t caracter,string nomeArquivo,int largNova,int x,int y,int altura,int largura,int numFonte){
+        fontes[numFonte]->SubstituiGlyph(nomeArquivo,caracter,largNova,x,y,altura,largura);
+    }
+
 };
 
 PoolNumeros CGerenciadorFontes::numFontes;
 int CGerenciadorFontes::totalFontes;
 MapaCaracteres CGerenciadorFontes::fontes[MAX_FONTES];
+
+#endif // _CGERENCIADORFONTES_
