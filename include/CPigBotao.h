@@ -15,31 +15,7 @@ private:
     bool botaoRepeticao;
     double tempoRepeticao;
 
-    int TrataMouse(PIG_Evento evento){
-        SDL_Point p;
-        CMouse::PegaXY(p.x,p.y);
-        MouseSobre(p.x,p.y);
-
-        if(agoraOn){
-            if (evento.mouse.acao==MOUSE_PRESSIONADO)
-                return OnMouseClick();
-        }
-
-        return 0;
-    }
-
-    int TrataTeclado(PIG_Evento evento){
-        if (evento.teclado.acao==TECLA_PRESSIONADA&&evento.teclado.tecla==tecla)
-            if (timer->GetTempoDecorrido()>tempoRepeticao)
-                return OnMouseClick();
-
-        return 0;
-    }
-
     void TrataTimer(){
-        //if (timer->GetTempoDecorrido()<tempoRepeticao){
-            //if(estado!=COMPONENTE_DESABILITADO)
-            //    DefineEstado(COMPONENTE_ACIONADO);
         if (timer->GetTempoDecorrido()>=tempoRepeticao){
             if (estado==COMPONENTE_ACIONADO){
                 if (agoraOn){
@@ -56,7 +32,7 @@ private:
         timer->Reinicia(false);
         if (acao) acao(id,param);//rever se NULL é necessário
         if (audioComponente>=0) CGerenciadorAudios::Play(audioComponente);
-        return 1;
+        return SELECIONADO_TRATADO;
     }
 
     int OnMouseOn(){
@@ -76,13 +52,13 @@ private:
         std::ifstream arquivo;
         int idComponente,px,py,altura,largura,retiraFundo = 0,janela = 0;
 
-        std::string nomeArq = "",variavel,valor,palavra;
+        std::string nomeArq = "",palavra;
 
         arquivo.open(nomeArqParam);
         //if(!arquivo.is_open()) printf("falha ler arquivo\n");
         //formato "x valor"
         while(!arquivo.eof()){
-           arquivo >> palavra;
+            arquivo >> palavra;
             if(palavra == "idComponente") arquivo >> idComponente;
             if(palavra == "px") arquivo >> px;
             if(palavra == "py") arquivo >> py;
@@ -103,7 +79,7 @@ public:
 
     CPigBotao(int idComponente,int px, int py, int alt,int larg,std::string nomeArq, int retiraFundo=1,int janela=0):
         CPigComponente(idComponente,px,py,alt,larg,nomeArq,retiraFundo,janela){
-            tecla = -1;//sem tecla de atalho
+            tecla = TECLA_ENTER;//sem tecla de atalho
             acao = NULL;//não tem ação registrada
             param = NULL;//não tem parâmetro associado à ação
             largFrame = largOriginal/4;
@@ -114,8 +90,7 @@ public:
             timer = new CTimer(false);
         }
 
-    CPigBotao(std::string nomeArqParam):CPigBotao(LeArquivoParametros(nomeArqParam)){
-    }
+    CPigBotao(std::string nomeArqParam):CPigBotao(LeArquivoParametros(nomeArqParam)){}
 
     ~CPigBotao(){
         delete timer;
@@ -125,6 +100,28 @@ public:
         acao = funcao;
         param = parametro;
     }
+
+    int TrataEventoMouse(PIG_Evento evento)override{
+        SDL_Point p;
+        CMouse::PegaXY(p.x,p.y);
+        MouseSobre(p.x,p.y);
+
+        if (agoraOn && evento.mouse.acao==MOUSE_PRESSIONADO){
+            if (habilitado==false) return SELECIONADO_DESABILITADO;
+            if (visivel==false) return SELECIONADO_INVISIVEL;
+            if(evento.mouse.botao == MOUSE_ESQUERDO) return OnMouseClick();
+        }
+
+        return NAO_SELECIONADO;
+    }
+
+    int TrataEventoTeclado(PIG_Evento evento)override{
+        if (evento.teclado.acao==TECLA_PRESSIONADA && evento.teclado.tecla==tecla)
+            if (timer->GetTempoDecorrido()>tempoRepeticao) return OnMouseClick();
+
+        return 0;
+    }
+
 
     void DefineAtalho(int teclaAtalho){
         tecla = teclaAtalho;
@@ -160,17 +157,23 @@ public:
         }
         DefineFrame(r);
     }
-
+//NAO_SELECIONADO,SELECIONADO_INVISIVEL,SELECIONADO_DESABILITADO,SELECIONADO_TRATADO
     int TrataEvento(PIG_Evento evento){
-        if (estado == COMPONENTE_DESABILITADO || estado == COMPONENTE_INVISIVEL) return -1;
-        if (evento.tipoEvento == EVENTO_MOUSE) return TrataMouse(evento);
-        if (evento.tipoEvento == EVENTO_TECLADO) return TrataTeclado(evento);
-        return 0;
+        SDL_Point p;
+        CMouse::PegaXY(p.x,p.y);
+        MouseSobre(p.x,p.y);
+
+        if(evento.tipoEvento == EVENTO_MOUSE && agoraOn){
+            return TrataEventoMouse(evento);
+        }
+        if (evento.tipoEvento == EVENTO_TECLADO) return TrataEventoTeclado(evento);
+
+        return NAO_SELECIONADO;
     }
 
     int Desenha(){
 
-        if (estado==COMPONENTE_INVISIVEL) return 0;
+        if (visivel==false) return 0;
 
         TrataTimer();
 

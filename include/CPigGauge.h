@@ -108,6 +108,10 @@ public:
         frameBarra = fBarra;
     }
 
+    virtual int VerificaSeComponenteEstaSelecionado(PIG_Evento evento){
+        return 2;
+    }
+
     void SetDistanciaXYBarra(int dx,int dy){
         xBarra = dx;
         yBarra = dy;

@@ -18,7 +18,7 @@ private:
         if (timer) delete timer;
         timer = new CTimer(false);
         if (audioComponente>=0) CGerenciadorAudios::Play(audioComponente);
-        return 1;
+        return SELECIONADO_TRATADO;
     }
 
     int MouseSobre(int mx, int my){
@@ -34,17 +34,6 @@ private:
             OnMouseOff();
             return -1;
         }
-        return 0;
-    }
-
-    int TrataMouse(int acao){
-        SDL_Point p;
-        CMouse::PegaXY(p.x,p.y);
-        MouseSobre(p.x,p.y);
-
-        if(agoraOn)
-            if (acao==MOUSE_PRESSIONADO) return OnMouseClick();
-
         return 0;
     }
 
@@ -79,13 +68,6 @@ public:
             IniciaBase(larguraLista,posXLista);
     }
 
-    int TrataEvento(PIG_Evento evento){
-
-        if (evento.tipoEvento == EVENTO_MOUSE) return TrataMouse(evento.mouse.acao);
-
-        return 0;
-    }
-
     int Desenha(){
 
         SDL_RenderCopyEx(renderer, text, &frame,&dest,-angulo,&pivoRelativo,flip);
@@ -103,6 +85,17 @@ public:
         if(posItem == PIG_COMPONENTE_DIR_CENTRO) AlinhaDireita(nx,ny);
         if(posItem == PIG_COMPONENTE_ESQ_CENTRO) AlinhaEsquerda(nx,ny);
         xBase = nx;
+    }
+
+    int TrataEventoMouse(PIG_Evento evento)override{
+        SDL_Point p;
+        CMouse::PegaXY(p.x,p.y);
+        MouseSobre(p.x,p.y);
+
+        if(agoraOn)
+            if (evento.mouse.acao==MOUSE_PRESSIONADO) return OnMouseClick();
+
+        return NAO_SELECIONADO;
     }
 
 };

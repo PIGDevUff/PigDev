@@ -25,8 +25,9 @@ Versão 0.7.2 da Biblioteca PIG.h
 #include "CGerenciadorAnimacoes.h"
 #include "CGerenciadorParticulas.h"
 #include "CGerenciadorControles.h"
-#include "CPigForm.h"
+#include "CGerenciadorForms.h"
 #include "CJogo.h"
+#include "PigFuncoesForm.h"
 
 /********************************
 / Variáveis Globais
@@ -70,6 +71,7 @@ void CriaJogo(char *nomeJanela,int cursorProprio=0,int altura=ALT_TELA,int largu
         CGerenciadorControles::Inicia();
         CGerenciadorSockets::Inicia();
         CGerenciadorVideos::Inicia();
+        CGerenciadorForms::Inicia();
     }
 }
 
@@ -192,6 +194,7 @@ void FinalizaJogo(){
     CGerenciadorTimers::Encerra();
     CGerenciadorVideos::Encerra();
     CGerenciadorSockets::Encerra();
+    CGerenciadorForms::Encerra();
     if (jogo->cursorPadrao==0)
         CMouse::Encerra();
     CAssetLoader::Encerra();

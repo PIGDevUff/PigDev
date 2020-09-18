@@ -69,6 +69,35 @@ CPigGaugeCircular(int idComponente,int px, int py,int altura,int largura,int rai
     crescimentoHorario=true;
 }
 
+CPigGaugeCircular(std::string nomeArqParam):CPigGaugeCircular(LeArquivoParametros(nomeArqParam)){}
+
+CPigGaugeCircular LeArquivoParametros(std::string nomeArqParam){
+
+    std::ifstream arquivo;
+    int idComponente,px,py,altura,largura,raioInterior,retiraFundo = 0,janela = 0;
+
+    std::string nomeArq = "",palavra;
+
+    arquivo.open(nomeArqParam);
+        //if(!arquivo.is_open()) printf("falha ler arquivo\n");
+        //formato "x valor"
+    while(!arquivo.eof()){
+        arquivo >> palavra;
+        if(palavra == "idComponente") arquivo >> idComponente;
+        if(palavra == "px") arquivo >> px;
+        if(palavra == "py") arquivo >> py;
+        if(palavra == "altura") arquivo >> altura;
+        if(palavra == "raioInterior") arquivo >> raioInterior;
+        if(palavra == "largura") arquivo >> largura;
+        if(palavra == "nomeArq") arquivo >> nomeArq;
+        if(palavra == "retiraFundo") arquivo >> retiraFundo;
+        if(palavra == "janela") arquivo >> janela;
+    }
+    arquivo.close();
+
+    return CPigGaugeCircular(idComponente,px,py,altura,largura,raioInterior,nomeArq,retiraFundo,janela);
+    }
+
 ~CPigGaugeCircular(){
     delete off;
 }

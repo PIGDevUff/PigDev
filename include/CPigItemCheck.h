@@ -6,19 +6,6 @@ private:
     int largFrame;
     bool marcado;
 
-    int TrataMouse(int acao){
-        SDL_Point p;
-        CMouse::PegaXY(p.x,p.y);
-        MouseSobre(p.x,p.y);
-
-        if (acao==MOUSE_PRESSIONADO){
-            if (agoraOn){
-                return OnMouseClick();
-            }
-        }
-        return 0;
-    }
-
     int OnMouseOn(){
         if (estado==COMPONENTE_DESABILITADO) return 0;
         DefineEstado(COMPONENTE_MOUSEOVER);
@@ -37,13 +24,13 @@ private:
         marcado = !marcado;
         if (audioComponente>=0) CGerenciadorAudios::Play(audioComponente);
         DefineEstado(COMPONENTE_MOUSEOVER);
-        return 1;
+        return SELECIONADO_TRATADO;
     }
 
 public:
 
     CPigItemCheck(int idComponente,int px, int py, int alt,int larg,std::string nomeArq,std::string labelItem,int retiraFundo=1,int janela=0):
-        CPigComponente(idComponente,px,py,alt,larg,nomeArq,janela){
+        CPigComponente(idComponente,px,py,alt,larg,nomeArq,retiraFundo,janela){
         timer = NULL;
         largFrame = largOriginal/6;
         marcado = false;
@@ -100,18 +87,6 @@ public:
         DefineFrame(r);
     }
 
-    int TrataEvento(PIG_Evento evento){
-        if (estado==COMPONENTE_DESABILITADO||estado==COMPONENTE_INVISIVEL)
-            return -1;
-        if (evento.tipoEvento==EVENTO_MOUSE){
-            return TrataMouse(evento.mouse.acao);
-        }else if (evento.tipoEvento==EVENTO_TECLADO){
-            return 0;//TrataTeclado(evento);
-        }
-
-        return 0;
-    }
-
     int Desenha(){
         SDL_RenderCopyEx(renderer,text,&frame,&dest,-angulo,NULL,flip);
         DesenhaLabel();
@@ -139,6 +114,21 @@ public:
     //define a posição do label (posição arbiraria, relativa à posição do componente)
     int SetPosicaoPersonalizadaLabel(int rx, int ry) override{
         return 0;
+    }
+
+    int TrataEventoMouse(PIG_Evento evento)override{
+        SDL_Point p;
+        CMouse::PegaXY(p.x,p.y);
+        MouseSobre(p.x,p.y);
+
+        if(agoraOn){
+            if (evento.mouse.acao==MOUSE_PRESSIONADO && evento.mouse.botao == MOUSE_ESQUERDO){
+                if (habilitado==false) return SELECIONADO_DESABILITADO;
+                if (visivel==false) return SELECIONADO_INVISIVEL;
+                return OnMouseClick();
+            }
+        }
+        return NAO_SELECIONADO;
     }
 
 };

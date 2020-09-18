@@ -11,11 +11,29 @@ private:
     PIG_Cor corCursor;
     Timer timer;
 
-
 protected:
+
+    int MouseSobre(int mx, int my){
+        if (visivel==false) return 0;
+
+        SDL_Point p={mx,my};
+        SDL_Rect r = {x + margemHorEsq,y + margemVertBaixo,larg - (margemHorDir + margemHorEsq),alt - (margemVertBaixo + margemVertCima)};
+
+        antesOn = agoraOn;
+        agoraOn = SDL_PointInRect(&p,&r);
+        if (agoraOn&&!antesOn){
+            OnMouseOn();
+            return 1;
+        }else if(!agoraOn&&antesOn){
+            OnMouseOff();
+            return -1;
+        }
+        return 0;
+    }
+
     //desenha o cursor
     void DesenhaCursor(){
-        if (estado==COMPONENTE_EDITANDO){
+        if (temFoco){
             if (cursorExibido){
                 CGerenciadorJanelas::DesenhaLinhaSimples(xCursor,yCursor,xCursor,yCursor+altLetra,corCursor,idJanela);
             }
@@ -31,21 +49,8 @@ protected:
         if (evento.mouse.acao == MOUSE_PRESSIONADO){
             if (evento.mouse.botao == MOUSE_ESQUERDO)
                 return TrataMouseBotaoEsquerdo(p);
-            else if (evento.mouse.botao == MOUSE_DIREITO)
-                return TrataMouseBotaoDireito(evento,p);
         }
-    }
-
-    //verifica se o evento ocorre dentro da área do componente
-    int TrataEventoMouse(PIG_Evento evento){
-        SDL_Point p;
-        CMouse::PegaXY(p.x,p.y);
-        SDL_Rect r = {x + margemHorEsq,y + margemVertBaixo,larg - (margemHorDir + margemHorEsq),alt - (margemVertBaixo + margemVertCima)};
-
-        if (SDL_PointInRect(&p,&r)){
-            return EventosMouse(evento,p);
-        }
-        return 0;
+        return NAO_SELECIONADO;
     }
 
     //trata teclas de movimentação do cursor
@@ -71,7 +76,10 @@ protected:
 
     //trata os diversos tipos de eventos de teclado que podem ocorrer
     int TrataEventoTeclado(PIG_Evento evento){
+        if(!temFoco) return 0;
+
         if (evento.teclado.acao==TECLA_EDICAO) return 1;
+
         if (evento.teclado.acao==TECLA_INPUT){//caracteres normais
             if (AdicionaTexto( ConverteString(evento.teclado.texto).c_str() ) ){
                 if (audioComponente>=0) CGerenciadorAudios::Play(audioComponente);
@@ -179,8 +187,6 @@ protected:
         return resp;
     }
 
-    virtual int TrataMouseBotaoDireito(PIG_Evento evento,SDL_Point p) =0; //cada classe vai poder definir o que fazer com o botão direito
-
     //o botao esquerdo faz com que a edição do trexto comece ou que o cursor seja reposicionado
     virtual int TrataMouseBotaoEsquerdo(SDL_Point p,int inicioLinha = 0){
         int delta = p.x-xBase;
@@ -200,7 +206,7 @@ protected:
                 if (textoBase[posCursor]=='\n')
                     posCursor--;
                 AjustaAlinhamento();
-                return 1;
+                return SELECIONADO_TRATADO;
             }
 
             largUltimaLetra = largParcial;
@@ -209,10 +215,8 @@ protected:
         posCursor = texto.size();
 
         AjustaAlinhamento();
-        if (estado==COMPONENTE_NORMAL)
-            DefineEstado(COMPONENTE_EDITANDO);
 
-        return 1;
+        return SELECIONADO_TRATADO;
     }
 
 
@@ -225,7 +229,7 @@ public:
         //altLetra = CGerenciadorFontes::GetTamanhoBaseFonte(fonteTexto)+CGerenciadorFontes::GetFonteDescent(fonteTexto);
         posCursor = 0;//cursor no início do texto
         cursorExibido = true;
-        timer = NULL;//o timer só será criado quando estiver editando
+        timer = new CTimer(false);//o timer só será criado quando estiver editando
         SetFonteTexto(0);
         estado = COMPONENTE_NORMAL;
         maxCaracteres = maxCars;
@@ -234,7 +238,7 @@ public:
     }
 
     ~CPigCaixaTexto(){
-        if (timer) delete timer;
+        delete timer;
     }
 
     //define o texto a ser mostrado no componente
@@ -255,16 +259,6 @@ public:
     std::string GetTexto(){
         return texto;
     }
-
-    //trata eventos relativos ao componente
-    int TrataEvento(PIG_Evento evento){
-        if (evento.tipoEvento==EVENTO_MOUSE){
-            return TrataEventoMouse(evento);
-        }else if (evento.tipoEvento==EVENTO_TECLADO){
-            return TrataEventoTeclado(evento);
-        }
-    }
-
     //define a cor do cursor
     void SetCorCursor(PIG_Cor cor){
         corCursor = cor;
@@ -273,13 +267,12 @@ public:
     //define o estado do componente
     void DefineEstado(PIG_EstadoComponente estadoComponente){
         estado = estadoComponente;
-        if (estado==COMPONENTE_EDITANDO){
-            timer = new CTimer(false);
-            SDL_StartTextInput();
-        }else if (estado==COMPONENTE_NORMAL){
-            SDL_StopTextInput();
-            if (timer) delete timer;
-        }
+    }
+
+    void SetFoco(bool valor) override{
+        temFoco = valor;
+        if (temFoco) SDL_StartTextInput();
+        else SDL_StopTextInput();
     }
 
     //reposiciona o componente
@@ -287,6 +280,8 @@ public:
         CPigComponente::Move(nx,ny);
         AjustaAlinhamento();
     }
+
+    virtual void SetMargens(int horEsq,int horDir, int vertBaixo,int vertCima) = 0;
 
 };
 

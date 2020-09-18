@@ -28,6 +28,26 @@ private:
         AjustaBaseTextoEixoX(CGerenciadorFontes::GetLarguraPixels(aux,fonteTexto));
     }
 
+    int TrataEventoMouse(PIG_Evento evento){
+        SDL_Point p;
+        CMouse::PegaXY(p.x,p.y);
+        MouseSobre(p.x,p.y);
+
+        if(agoraOn){
+            if (habilitado==false) return SELECIONADO_DESABILITADO;
+            if (visivel==false) return SELECIONADO_INVISIVEL;
+            return EventosMouse(evento,p);
+        }
+
+        return NAO_SELECIONADO;
+    }
+
+    int SobeCursor(){return 1;} //não usa o SobeCursor
+
+    int DesceCursor(){return 1;}//não usa o DesceCursor
+
+    int PulaLinha(){return 1;}//não usa o PulaLinha
+
 public:
 
     CPigCampoTextoESenha(int idComponente,int px, int py, int altura,int largura,std::string nomeArq,int maxCars = 200, bool apenasNumeros=false, int retiraFundo=1,int janela=0,bool campoSenha = false):
@@ -99,9 +119,9 @@ public:
         SDL_RenderSetClipRect(renderer,NULL);
 
         DesenhaLabel();
+        EscreveHint();
         return 1;
     }
-
     //define as margens do componente
     void SetMargens(int horEsq,int horDir, int vertBaixo,int vertCima){
         margemVertCima = vertCima;
@@ -117,15 +137,6 @@ public:
         AjustaAlinhamento();
     }
 
-    int TrataMouseBotaoDireito(PIG_Evento evento,SDL_Point p){return 1;}//não usa o botão direito
-
-    int TrataMouseRodinha(PIG_Evento evento){return 1;}//não usa arodinha
-
-    int SobeCursor(){return 1;} //não usa o SobeCursor
-
-    int DesceCursor(){return 1;}//não usa o DesceCursor
-
-    int PulaLinha(){return 1;}//não usa o PulaLinha
 };
 
 typedef CPigCampoTextoESenha *PigCampoTextoESenha;

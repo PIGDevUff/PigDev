@@ -141,6 +141,7 @@ class CPigScrollBar : public CPigComponente{
     }
 
     int TrataTeclado(PIG_Evento evento){
+        if (!temFoco) return 0;
         if(evento.teclado.acao == TECLA_PRESSIONADA){
             if(orientacao == HORIZONTAL){
                 if(evento.teclado.tecla== TECLA_DIREITA) AvancaHandle(vAtual,deltaTeclado);
@@ -261,7 +262,7 @@ public:
 
     int TrataEvento(PIG_Evento evento){
 
-        if(estado == COMPONENTE_DESABILITADO || estado == COMPONENTE_INVISIVEL) return -1;
+        if(visivel==false||habilitado==false) return -1;
         handle->TrataEvento(evento);
         if(TrataBotoes(evento))return 1;
 
@@ -323,7 +324,7 @@ public:
 /*******************************************/
 
     int Desenha(){
-        if(estado == COMPONENTE_INVISIVEL) return -1;
+        if(visivel==false) return -1;
 
         SDL_RenderCopyEx(renderer, text, &frame,&dest,-angulo,&pivoRelativo,flip);
 

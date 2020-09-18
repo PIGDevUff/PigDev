@@ -23,10 +23,10 @@ private:
     }
 
     void TrataLista(PIG_Evento evento){
-        if(lista->TrataEvento(evento)){
+        if(lista->TrataEventoMouse(evento) == SELECIONADO_TRATADO){
             CPigItemLista *item = new CPigItemLista(*lista->GetItemMarcado());
             item->Move(x,y);
-            if(itemSelecionado!=NULL) delete itemSelecionado;
+            if(!itemSelecionado) delete itemSelecionado;
             itemSelecionado = item;
             marcado = false;
         }
@@ -38,21 +38,25 @@ private:
         marcado = !(marcado == true);
         if (audioComponente>=0) CGerenciadorAudios::Play(audioComponente);
         DefineEstado(COMPONENTE_MOUSEOVER);
-        return 1;
+        return SELECIONADO_TRATADO;
     }
 
-    int TrataMouse(int acao){
+    int TrataEventoMouse(PIG_Evento evento){
         SDL_Point p;
         CMouse::PegaXY(p.x,p.y);
         MouseSobre(p.x,p.y);
 
-        if (acao==MOUSE_PRESSIONADO){
-            if(agoraOn)
+        if(marcado) TrataLista(evento);
+
+        if (evento.mouse.acao==MOUSE_PRESSIONADO){
+            if(agoraOn && evento.mouse.botao == MOUSE_ESQUERDO){
+                if (habilitado==false) return SELECIONADO_DESABILITADO;
+                if (visivel==false) return SELECIONADO_INVISIVEL;
                 return OnMouseClick();
-            else marcado = false;
+            }else marcado = false;
         }
 
-        return 0;
+        return NAO_SELECIONADO;
     }
 
     void DefineEstado(PIG_EstadoComponente estadoComponente){}
@@ -61,8 +65,6 @@ public:
 
     CPigDropDown(int idComponente,int px, int py, int altura,int largura,int alturaLista,std::string nomeArq,std::string fundoLista,int retiraFundoLista,int retiraFundo=1,int janela=0):
         CPigComponente(idComponente,px,py,altura,largura,nomeArq,retiraFundo,janela){
-
-            posLista = PIG_COMPONENTE_BAIXO_CENTRO;
             marcado = false;
             timer = NULL;
             posLabel = PIG_COMPONENTE_CIMA_CENTRO;
@@ -71,7 +73,7 @@ public:
             itemSelecionado = NULL;
             lista = new CPigLista(id + 1,x,y,alturaLista,largura,altura,fundoLista,retiraFundoLista,idJanela);
             lista->SetRetanguloMarcacao(false);
-
+            MoveLista(PIG_COMPONENTE_BAIXO_CENTRO);
     }
 
     CPigDropDown(std::string nomeArqParam):CPigDropDown(LeArquivoParametros(nomeArqParam)){}
@@ -116,17 +118,9 @@ public:
 
     }
 
-    int TrataEvento(PIG_Evento evento)override{
-
-        if(marcado) TrataLista(evento);
-
-        if(evento.tipoEvento == EVENTO_MOUSE) return TrataMouse(evento.mouse.acao);
-
-        return 0;
-    }
-
-    void CriaItem(std::string texto,std::string imagemSecundaria = "",int largImg = 0,int retiraFundoImg = 1){
+    int CriaItem(std::string texto,std::string imagemSecundaria = "",int largImg = 0,int retiraFundoImg = 1){
         lista->CriaItem(texto,imagemSecundaria,largImg,retiraFundoImg);
+        return 1;
     }
 
     void SetItemSelecionado(int indice){
@@ -209,8 +203,9 @@ public:
         if(itemSelecionado !=NULL) itemSelecionado->Desenha();
 
         if(marcado)lista->Desenha();
-        DesenhaLabel();
 
+        DesenhaLabel();
+        EscreveHint();
     }
 
     void SetPosItensLista(PIG_PosicaoComponente pos){

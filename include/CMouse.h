@@ -57,6 +57,7 @@ public:
         }else if (evento.mouse.acao==MOUSE_MOVIDO){
             Move(evento.mouse.posX,evento.mouse.posY,evento.mouse.numeroJanela);
         }
+        return 1;
     }
 
     static void MudaCursor(int indice){

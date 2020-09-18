@@ -1,11 +1,13 @@
-typedef enum {COMPONENTE_NORMAL,COMPONENTE_MOUSEOVER,COMPONENTE_ACIONADO,COMPONENTE_DESABILITADO,COMPONENTE_EDITANDO,COMPONENTE_INVISIVEL} PIG_EstadoComponente;
+typedef enum{COMPONENTE_NORMAL,COMPONENTE_MOUSEOVER,COMPONENTE_ACIONADO,COMPONENTE_DESABILITADO} PIG_EstadoComponente;
 typedef enum{PIG_COMPONENTE_CIMA_CENTRO,PIG_COMPONENTE_CIMA_ESQ,PIG_COMPONENTE_CIMA_DIR,PIG_COMPONENTE_BAIXO_CENTRO,PIG_COMPONENTE_BAIXO_DIR,PIG_COMPONENTE_BAIXO_ESQ,PIG_COMPONENTE_DIR_CIMA,PIG_COMPONENTE_DIR_BAIXO,PIG_COMPONENTE_DIR_CENTRO,PIG_COMPONENTE_ESQ_BAIXO,PIG_COMPONENTE_ESQ_CENTRO,PIG_COMPONENTE_ESQ_CIMA,PIG_COMPONENTE_CENTRO_CENTRO,PIG_COMPONENTE_PERSONALIZADA}PIG_PosicaoComponente;
 typedef enum{NORTE,SUL,LESTE,OESTE,NORDESTE,NOROESTE,SUDESTE,SUDOESTE,CENTRO}PIG_Ancora;
+typedef enum{NAO_SELECIONADO,SELECIONADO_INVISIVEL,SELECIONADO_DESABILITADO,SELECIONADO_TRATADO}Pig_EstadosEventos;
 
 class CPigComponente: public CVisual{
 
 protected:
 
+    bool temFoco,visivel,habilitado,mouseOver,acionado;
     PIG_EstadoComponente estado;
     std::string hint,label;
     int fonteHint,fonteLabel;
@@ -30,6 +32,9 @@ protected:
         x = px;
         y = py;
         agoraOn = antesOn = 0;
+        temFoco = false;
+        visivel = true;
+        habilitado = true;
     }
 
     //escreve o hint do componente na tela
@@ -43,7 +48,7 @@ protected:
 
     //detecta se o mouse está sobre o componente ou não
     int MouseSobre(int mx, int my){
-        if (estado==COMPONENTE_INVISIVEL)
+        if (visivel==false||habilitado==false)
             return 0;
 
         SDL_Point p={mx,my};
@@ -138,8 +143,8 @@ public:
     //desenha o componente, cada subclasse precisa implementar como fazer isso
     virtual int Desenha()=0;
 
-    //trata um evento direcionado ao componente, cada subclasse precisa implementar como fazer isso
-    virtual int TrataEvento(PIG_Evento evento)=0;
+    virtual int TrataEventoMouse(PIG_Evento evento){return NAO_SELECIONADO;}
+    virtual int TrataEventoTeclado(PIG_Evento evento){return NAO_SELECIONADO;}
 
     //define a mensagem de hint do componente
     void SetHint(std::string novoHint){
@@ -186,6 +191,42 @@ public:
         return 1;
     }
 
+    /*virtual void GanhaFoco(){
+        temFoco = true;
+    }
+
+    virtual void PerdeFoco(){
+        temFoco = false;
+    }
+
+    virtual void SetVisivel(){
+        visivel = true;
+    }
+
+    virtual void SetInvisivel(){
+        visivel = false;
+    }
+
+    virtual void SetHabilitado(){
+        habilitado = true;
+    }
+
+    virtual void SetHabilitado(){
+        habilitado = true;
+    }*/
+
+    virtual void SetFoco(bool valor){
+        temFoco = valor;
+    }
+
+    virtual void SetVisivel(bool valor){
+        visivel = valor;
+    }
+
+    virtual void SetHabilitado(bool valor){
+        habilitado = valor;
+    }
+
     //define o estado do componente, cada subclasse precisa definir como implementar isso
     virtual void DefineEstado(PIG_EstadoComponente estadoComponente)=0;
 
@@ -193,8 +234,6 @@ public:
     PIG_EstadoComponente GetEstado(){
         return estado;
     }
-
-    /***************Novos Métodos**************/
 
     PIG_PosicaoComponente GetPosComponente(){
         return posComponente;
@@ -253,7 +292,7 @@ public:
 
     }
 
-    void SetPosPadraoComponente(PIG_Ancora ancora){
+    void SetPosPadraoComponenteNaTela(PIG_Ancora ancora){
         int largTela,altTela;
         int altura,largura;
         largTela = CGerenciadorJanelas::GetLargura(idJanela);
@@ -293,9 +332,6 @@ public:
 
     }
 
-    /*******************************************/
-
 };
-
 
 typedef CPigComponente *PigComponente;

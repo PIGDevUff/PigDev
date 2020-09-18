@@ -16,7 +16,6 @@ private:
     void DefineEstado(PIG_EstadoComponente estadoComponente){}
 
     void IniciaBase(int alturaItens){
-
         itemMarcado = -1;
         qntItens = 0;
         SetPosicaoPadraoLabel(PIG_COMPONENTE_ESQ_CENTRO);
@@ -24,7 +23,6 @@ private:
         fonteItens = 0;
         posItens = PIG_COMPONENTE_ESQ_CENTRO;
         retanguloMarcado = true;
-
     }
 
     void DesenhaRetanguloMarcacao(){
@@ -107,24 +105,43 @@ public:
         SDL_RenderSetClipRect(renderer,NULL);
 
         DesenhaLabel();
+        EscreveHint();
         return 1;
     }
 
-    int TrataEvento(PIG_Evento evento){
+    int TrataEventoTeclado(PIG_Evento evento)override{
+
+        if(!temFoco) return 0;
+
+        if(evento.teclado.acao == TECLA_PRESSIONADA){
+            if(evento.teclado.tecla == TECLA_CIMA && evento.teclado.repeticao == 0){
+                itemMarcado--;
+                if(itemMarcado<0) itemMarcado = itens.size()-1;
+            }
+
+            if(evento.teclado.tecla == TECLA_BAIXO && evento.teclado.repeticao == 0)
+                itemMarcado = (itemMarcado + 1) % itens.size();
+        }
+        return 1;
+    }
+
+    int TrataEventoMouse(PIG_Evento evento)override{
         SDL_Point p;
         CMouse::PegaXY(p.x,p.y);
         MouseSobre(p.x,p.y);
 
         if(agoraOn){
+            if (habilitado==false) return SELECIONADO_DESABILITADO;
+            if (visivel==false) return SELECIONADO_INVISIVEL;
+
             for(int i=0;i<itens.size();i++){
-                if(itens[i]->TrataEvento(evento)){
-                        itemMarcado = i;
-                        return 1;
+                if(itens[i]->TrataEventoMouse(evento) == SELECIONADO_TRATADO){
+                    itemMarcado = i;
+                    return SELECIONADO_TRATADO;
                 }
             }
         }
-
-        return 0;
+        return NAO_SELECIONADO;
     }
 
     int CriaItem(std::string texto,std::string imagem = "",int largImg = 0,int retiraFundoImg = 1){
@@ -146,6 +163,8 @@ public:
 
         itens.push_back(item);
         qntItens++;
+
+        return 1;
 
     }
 

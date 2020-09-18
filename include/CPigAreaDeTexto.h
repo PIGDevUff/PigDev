@@ -21,8 +21,6 @@ private:
         return GetTexto();
     }
 
-/***************Novos Métodos**************/
-
     void TrataScrollBarVertical(PIG_Evento evento){
         scrollVertical->TrataEvento(evento);
 
@@ -54,16 +52,18 @@ private:
     void AcionaScrollBarVertical(){
         int temp;
         scrollVerticalAtivado = ((espacoEntreLinhas + altLetra)*(linhas.size())) > (alt - (margemVertBaixo+margemVertCima));
-        if(!scrollVerticalAtivado)scrollVertical->DefineEstado(COMPONENTE_INVISIVEL);
-        else scrollVertical->DefineEstado(COMPONENTE_NORMAL);
+        scrollVertical->SetVisivel(scrollVerticalAtivado);
+        //if(!scrollVerticalAtivado) scrollVertical->DefineEstado(COMPONENTE_INVISIVEL);
+        //else scrollVertical->DefineEstado(COMPONENTE_NORMAL);
     }
 
     //Verifica se é necessário acionar a ScrollBarHorizontal quando o texto é modificado
     void AcionaScrollBarHorizontal(){
         int temp;
         scrollHorizontalAtivado = GetLarguraLinhaMaior() > (larg - (margemHorDir+margemHorEsq));
-        if(!scrollHorizontalAtivado)scrollHorizontal->DefineEstado(COMPONENTE_INVISIVEL);
-        else scrollHorizontal->DefineEstado(COMPONENTE_NORMAL);
+        scrollHorizontal->SetVisivel(scrollHorizontalAtivado);
+        //if(!scrollHorizontalAtivado) scrollHorizontal->DefineEstado(COMPONENTE_INVISIVEL);
+        //else scrollHorizontal->DefineEstado(COMPONENTE_NORMAL);
     }
 
     int GetLarguraLinhaMaior(){
@@ -76,16 +76,13 @@ private:
         return tamMaior;
     }
 
-
-/***************Métodos Modificados**************/
-
     //Desenha um contorno baseado nas dimensoes reais da área(somando a área em si e a scroll bar)
     void DesenhaMarcacaoMargem(){
-        CGerenciadorJanelas::DesenhaLinhaSimples(x+margemHorEsq,y+margemVertBaixo,x+ margemHorEsq,y+alt-margemVertCima,BRANCO);
-        CGerenciadorJanelas::DesenhaLinhaSimples(x+larg-margemHorDir,y+margemVertBaixo,x+larg-margemHorDir,y+alt-margemVertCima,BRANCO);
+        CGerenciadorJanelas::DesenhaLinhaSimples(x+margemHorEsq,y+margemVertBaixo,x+ margemHorEsq,y+alt-margemVertCima,BRANCO,idJanela);
+        CGerenciadorJanelas::DesenhaLinhaSimples(x+larg-margemHorDir,y+margemVertBaixo,x+larg-margemHorDir,y+alt-margemVertCima,BRANCO,idJanela);
 
-        CGerenciadorJanelas::DesenhaLinhaSimples(x+margemHorEsq,y+alt-margemVertCima,x+larg-margemHorDir,y+alt-margemVertCima,BRANCO);
-        CGerenciadorJanelas::DesenhaLinhaSimples(x+margemHorEsq,y+margemVertBaixo,x+larg-margemHorDir,y+margemVertBaixo,BRANCO);
+        CGerenciadorJanelas::DesenhaLinhaSimples(x+margemHorEsq,y+alt-margemVertCima,x+larg-margemHorDir,y+alt-margemVertCima,BRANCO,idJanela);
+        CGerenciadorJanelas::DesenhaLinhaSimples(x+margemHorEsq,y+margemVertBaixo,x+larg-margemHorDir,y+margemVertBaixo,BRANCO,idJanela);
     }
 
     //Volta a base e o cursor para o início
@@ -133,14 +130,12 @@ private:
 
     }
 
-/*******************************************/
-
     //trata o evento do botao esquerdo
     int TrataMouseBotaoEsquerdo(SDL_Point p,int inicioLinha = 0)override{
         int posInicial = GetPosInicialDeUmaLinha(GetLinhaComMouseEmCima());
         int linha = GetLinhaComMouseEmCima();
         //printf("pos %d linha %d\n",posInicial,linha);
-        TrataMouseBotaoEsquerdoESobeDesceCursor(p,posInicial,linha);
+        return TrataMouseBotaoEsquerdoESobeDesceCursor(p,posInicial,linha);
     }
 
     //Trata evento botao esquerdo e sobe e desce o cursor pelas setas
@@ -156,14 +151,9 @@ private:
         }
 
         AjustaAlinhamento();
-        if (estado==COMPONENTE_NORMAL)
-            DefineEstado(COMPONENTE_EDITANDO);
 
-        return 1;
+        return SELECIONADO_TRATADO;
     }
-
-
-    int TrataMouseBotaoDireito(PIG_Evento evento,SDL_Point p){return 1;}//não usa o botão direito
 
     //
     int GetLinhaComMouseEmCima(){
@@ -238,7 +228,6 @@ private:
         if(linhaCursor > 0) return TrataMouseBotaoEsquerdoESobeDesceCursor(p,GetPosInicialDeUmaLinha(linhaCursor-1),linhaCursor-1);
 
         return 0;
-
     }
 
     //move o cursor uma linha para baixo
@@ -252,7 +241,6 @@ private:
         if(linhaCursor < linhas.size()-1 ) return TrataMouseBotaoEsquerdoESobeDesceCursor(p,GetPosInicialDeUmaLinha(linhaCursor+1),linhaCursor+1);
 
         return 0;
-
     }
 
     //PulaLinha com Enter
@@ -328,8 +316,6 @@ public:
 
     }
 
-/***************Novos Métodos**************/
-
     void SetScrollBarVertical(int larguraTotal,int comprimentoTotal,int larguraHandle,std::string imgHandle,std::string imgTrilha,int retiraFundoHandle=1,int retiraFundoTrilha=1){
         scrollVertical = new CPigScrollBar(id + 1,x + larg,y,larguraTotal,comprimentoTotal,larguraHandle,imgHandle,imgTrilha,retiraFundoHandle,retiraFundoTrilha,idJanela);
         scrollVertical->SetOrientacao(VERTICAL);
@@ -338,7 +324,8 @@ public:
         scrollVertical->MudaOrientacaoCrescimento();
         scrollVertical->SetSetasAtivadas(false);
         scrollVerticalAtivado = false;
-        scrollVertical->DefineEstado(COMPONENTE_INVISIVEL);
+        scrollVertical->SetVisivel(false);
+        //scrollVertical->DefineEstado(COMPONENTE_INVISIVEL);
         SetPosPadraoScrollVertical(PIG_COMPONENTE_DIR_CENTRO);
     }
 
@@ -355,7 +342,8 @@ public:
         scrollHorizontal->MudaOrientacaoCrescimento();
         scrollHorizontal->SetSetasAtivadas(false);
         scrollHorizontalAtivado = false;
-        scrollHorizontal->DefineEstado(COMPONENTE_INVISIVEL);
+        scrollHorizontal->SetVisivel(false);
+        //scrollHorizontal->DefineEstado(COMPONENTE_INVISIVEL);
         SetPosPadraoScrollHorizontal(PIG_COMPONENTE_BAIXO_CENTRO);
     }
 
@@ -397,8 +385,6 @@ public:
         ResetaValoresBase();
     }
 
-/***************Métodos Modificados**************/
-
     int Desenha() override{
         //imagem de fundo
         SDL_RenderCopyEx(renderer, text, &frame,&dest,-angulo,&pivoRelativo,flip);
@@ -419,6 +405,8 @@ public:
         SDL_RenderSetClipRect(renderer,NULL);
 
         DesenhaLabel();
+        EscreveHint();
+
         return 1;
     }
 
@@ -426,8 +414,6 @@ public:
         CPigCaixaTexto::SetFonteTexto(fonte);
         ResetaValoresBase();
     }
-
-/*******************************************/
 
     //define a cor da linhas horizontais
     void SetLinhasAbaixoTexto(bool visivel,PIG_Cor cor = PRETO){
@@ -441,10 +427,19 @@ public:
         AjustaAlinhamento();
     }
 
-    int TrataEvento(PIG_Evento evento)override{
-        CPigCaixaTexto::TrataEvento(evento);
-        if(scrollVerticalAtivado) TrataScrollBarVertical(evento);
-        if(scrollHorizontalAtivado) TrataScrollBarHorizontal(evento);
+    int TrataEventoMouse(PIG_Evento evento){
+        SDL_Point p;
+        CMouse::PegaXY(p.x,p.y);
+        MouseSobre(p.x,p.y);
+
+        if(agoraOn){
+            if(habilitado==false) return SELECIONADO_DESABILITADO;
+            if(visivel==false) return SELECIONADO_INVISIVEL;
+            if(scrollVerticalAtivado) TrataScrollBarVertical(evento);
+            if(scrollHorizontalAtivado) TrataScrollBarHorizontal(evento);
+            return EventosMouse(evento,p);
+        }
+        return NAO_SELECIONADO;
     }
 
     //define o espaçamento entre as linhas
