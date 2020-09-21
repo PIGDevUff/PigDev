@@ -1,16 +1,51 @@
-class CPigCheckBox: public CPigBox{
+class CPigCheckBox: public CPigListaItemComponente{
+
+protected:
+    int altImagem,largImagem;
+    std::string arqImagem;
+
+    void SetFoco(bool valor){
+        temFoco = valor;
+    }
+
+    void SetAcionado(bool valor){
+    }
+
+    void SetMouseOver(bool valor){
+        mouseOver = valor;
+    }
+
+    static void AjustaFrame(PigItemComponente item){
+        int itemAlt,itemLarg;
+        item->GetDimensoesOriginais(itemAlt,itemLarg);
+        int largFrame = itemLarg/6;
+        SDL_Rect r={0,0,largFrame,itemAlt};
+        if (item->GetHabilitado()==false){
+            if (item->GetAcionado()) r.x = 3*largFrame;
+            else r.x = 2*largFrame;
+        }else if (item->GetMouseOver()){
+            if (item->GetAcionado()) r.x = 5*largFrame;
+            else r.x = 4*largFrame;
+        }else{
+            if (item->GetAcionado()) r.x = largFrame;
+            else r.x = 0;
+        }
+        item->DefineFrame(r);
+    }
 
 public:
 
-    CPigCheckBox(int idComponente, int posX, int posY, int larguraImgFundo,std::string imgFundo,std::string imgItem, int alturaItem, int larguraItem, int espacoVertical, int retiraFundo=1,int janela = 0):
-        CPigBox(idComponente,posX,posY,larguraImgFundo,imgFundo,imgItem,alturaItem,larguraItem,espacoVertical,retiraFundo,janela){}
+    CPigCheckBox(int idComponente, int posX, int posY, int larguraTotal,int alturaLinha,int alturaMaxima,std::string imgItem, int alturaItem, int larguraItem,std::string imgFundo, int retiraFundo=1,int janela = 0):
+        CPigListaItemComponente(idComponente,posX,posY,larguraTotal,alturaLinha,alturaMaxima,imgFundo,retiraFundo,janela){
+            arqImagem = imgItem;
+        }
 
     CPigCheckBox(std::string nomeArqParam):CPigCheckBox(LeArquivoParametros(nomeArqParam)){}
 
     static CPigCheckBox LeArquivoParametros(std::string nomeArqParam){
 
         std::ifstream arquivo;
-        int idComponente,px,py,alturaItem,larguraItem,larguraImgFundo,espacoVertical,retiraFundo=1,janela=0;
+        int idComponente,px,py,alturaItem,larguraItem,larguraTotal,alturaLinha,alturaMaxima,retiraFundo=1,janela=0;
         std::string imgFundo = "",imgItem = "",variavel;
 
         arquivo.open(nomeArqParam);
@@ -22,12 +57,13 @@ public:
             if(variavel == "idComponente") arquivo >> idComponente;
             if(variavel == "px") arquivo >> px;
             if(variavel == "py") arquivo >> py;
-            if(variavel == "larguraImgFundo") arquivo >> larguraImgFundo;
+            if(variavel == "larguraTotal") arquivo >> larguraTotal;
             if(variavel == "alturaItem") arquivo >> alturaItem;
             if(variavel == "larguraItem") arquivo >> larguraItem;
             if(variavel == "imgFundo") arquivo >> imgFundo;
             if(variavel == "imgItem") arquivo >> imgItem;
-            if(variavel == "espacoVertical") arquivo >> espacoVertical;
+            if(variavel == "alturaLinha") arquivo >> alturaLinha;
+            if(variavel == "alturaMaxima") arquivo >> alturaMaxima;
             if(variavel == "retiraFundo") arquivo >> retiraFundo;
             if(variavel == "janela") arquivo >> janela;
         }
@@ -38,45 +74,66 @@ public:
 
         if(imgItem == "") throw CPigErroParametro("imgItem",imgItem);
 
-        return CPigCheckBox(idComponente,px,py,larguraImgFundo,imgFundo,imgItem,alturaItem,larguraItem,espacoVertical);
+        return CPigCheckBox(idComponente,px,py,larguraTotal,alturaLinha,alturaMaxima,imgItem,alturaItem,larguraItem,imgFundo);
 
     }
 
     void CriaItem(std::string itemLabel, bool itemMarcado = false, bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
-        alt =( espacoLinha*itens.size() ) + ( altItem*(itens.size()+1) );
-        CPigItemCheck *item = new CPigItemCheck(itens.size(),x,y+(espacoLinha + altItem)*(itens.size()),altItem,largItem,nomeImgItem,itemLabel,retiraFundo,idJanela);
-        itens.push_back(item);
-        SetDimensoes(alt,larg);
-        item->SetHint(hintMsg);
-        if (audio==-1)
-            audio = audioComponente;//audio padrao do componente
-        item->SetAudio(audio);
-        item->SetMarcado(itemMarcado);
-        item->SetHabilitado(itemHabilitado);
+        int yItem = y+alt-(altBaseLista)*(itens.size()+1);
+        CPigListaItemComponente::CriaItem(yItem,itemLabel,arqImagem,itemMarcado,itemHabilitado,audio,hintMsg,retiraFundo);
+        itens[itens.size()-1]->DefineFuncaoAjusteFrame(AjustaFrame);
     }
 
-    int TrataEventoMouse(PIG_Evento evento)override{
-        for (CPigItemCheck* i: itens)
-            if(i->TrataEventoMouse(evento) == SELECIONADO_TRATADO) return SELECIONADO_TRATADO;
+    int Desenha(){
+        if (visivel==false) return 0;
 
-        return NAO_SELECIONADO;
+        if (text){//se tiver imagem de fundo
+            SDL_RenderCopyEx(renderer,text,NULL,&dest,-angulo,NULL,flip);
+        }
+        DesenhaLabel();
+
+        for (PigItemComponente i: itens)
+            i->Desenha();
+
+        return 1;
     }
 
-    void SetMarcadoTodos(bool marcado){
-        for (CPigItemCheck* i: itens)
-            i->SetMarcado(marcado);
+    int TrataEventoMouse(PIG_Evento evento){
+        int resp = 0;
+        bool mouseOverAntes = mouseOver;
+        if (ChecaMouseOver(CMouse::PegaXY())>0){
+            for (int i=0;i<itens.size();i++){
+                if (itens[i]->TrataEventoMouse(evento) == SELECIONADO_TRATADO)
+                    resp = 1;
+            }
+        }else if (mouseOverAntes){               //mouse estava antes, mas saiu
+            for (int i=0;i<itens.size();i++){
+                itens[i]->SetMouseOver(false);
+            }
+        }
+        return resp?SELECIONADO_TRATADO:NAO_SELECIONADO;
     }
 
-    int SetMarcadoItem(int indice, bool marcado){
+    int TrataEventoTeclado(PIG_Evento evento){
+        return 0;
+    }
+
+    void SetAcionadoTodos(bool marcado){
+        for (PigItemComponente i: itens){
+            i->SetAcionado(marcado);
+        }
+    }
+
+    int SetAcionadoItem(int indice, bool marcado){
         if (indice<0||indice>=itens.size()) return -1;
-        itens[indice]->SetMarcado(marcado);
+        itens[indice]->SetAcionado(marcado);
         return 1;
     }
 
     std::vector <int> GetItensMarcados(){
         std::vector <int> resp;
         for(int i=0;i<itens.size();i++)
-            if(itens[i]->GetMarcado())resp.push_back(i);
+            if(itens[i]->GetAcionado())resp.push_back(i);
 
         return resp;
 
@@ -84,3 +141,4 @@ public:
 
 };
 
+typedef CPigCheckBox *PigCheckBox;

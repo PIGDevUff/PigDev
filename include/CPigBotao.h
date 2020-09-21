@@ -6,8 +6,10 @@ typedef int (*AcaoBotao)(int,void*);
 class CPigBotao: public CPigComponente{
 
 private:
-
     int tecla;
+
+protected:
+
     int largFrame;
     AcaoBotao acao;
     void *param;
@@ -15,27 +17,76 @@ private:
     bool botaoRepeticao;
     double tempoRepeticao;
 
+    void SetHabilitado(bool valor){
+        habilitado = valor;
+        AjustaFrame();
+    }
+
+    void SetFoco(bool valor){
+        temFoco = valor;
+    }
+
+    void SetAcionado(bool valor){
+        acionado = valor;
+        AjustaFrame();
+    }
+
+    void SetMouseOver(bool valor){
+        mouseOver = valor;
+        AjustaFrame();
+    }
+
+    void AjustaFrame(){
+        if (visivel==false) return;
+        SDL_Rect r={0,0,largFrame,altOriginal};
+        if (habilitado==false){
+            r.x = 3*largFrame;
+        }else{
+            if (acionado){
+                r.x = 2*largFrame;
+            }else if (mouseOver){
+                r.x = largFrame;
+            }
+        }
+        DefineFrame(r);
+    }
+
     void TrataTimer(){
         if (timer->GetTempoDecorrido()>=tempoRepeticao){
-            if (estado==COMPONENTE_ACIONADO){
-                if (agoraOn){
-                    if (botaoRepeticao&&CMouse::GetEstadoBotaoEsquerdo()==MOUSE_PRESSIONADO){
-                        OnMouseClick();
-                    }else DefineEstado(COMPONENTE_MOUSEOVER);
-                }else DefineEstado(COMPONENTE_NORMAL);
+            if (botaoRepeticao&&mouseOver&&CMouse::GetEstadoBotaoEsquerdo()==MOUSE_PRESSIONADO){
+                OnMouseClick();
+            }else{
+                SetAcionado(false);
             }
         }
     }
 
     int OnMouseClick(){
-        DefineEstado(COMPONENTE_ACIONADO);
+        //DefineEstado(COMPONENTE_ACIONADO);
+        SetAcionado(true);
+        printf("acionado\n");
         timer->Reinicia(false);
         if (acao) acao(id,param);//rever se NULL é necessário
         if (audioComponente>=0) CGerenciadorAudios::Play(audioComponente);
         return SELECIONADO_TRATADO;
     }
 
-    int OnMouseOn(){
+    //ajusta o frame de acordo com o estado atual do Botão
+    //deve ser chamado sempre que houver alteração em acionado, mouseOver ou habilitado
+    /*void AjustaFrame(){
+        SDL_Rect r={0,0,largFrame,altOriginal};
+        estado = estadoComponente;
+        if (habilitado==false)
+            r.x += 3*largFrame;
+        else if (acionado){
+            r.x += 2*largFrame;
+        }else if (mouseOver){
+            r.x += largFrame;
+        }
+        DefineFrame(r);
+    }*/
+
+    /*int OnMouseOn(){
         if (estado==COMPONENTE_DESABILITADO) return 0;
         DefineEstado(COMPONENTE_MOUSEOVER);
         return 1;
@@ -45,7 +96,7 @@ private:
         if (estado==COMPONENTE_DESABILITADO) return 0;
         DefineEstado(COMPONENTE_NORMAL);
         return 1;
-    }
+    }*/
 
     CPigBotao LeArquivoParametros(std::string nomeArqParam){
 
@@ -83,7 +134,7 @@ public:
             acao = NULL;//não tem ação registrada
             param = NULL;//não tem parâmetro associado à ação
             largFrame = largOriginal/4;
-            DefineEstado(COMPONENTE_NORMAL);
+            SetHabilitado(true);//para forçar o frame correto
             tempoRepeticao = 0.2;
             botaoRepeticao = false;
             SetPosicaoPadraoLabel(PIG_COMPONENTE_CENTRO_CENTRO);
@@ -101,12 +152,10 @@ public:
         param = parametro;
     }
 
-    int TrataEventoMouse(PIG_Evento evento)override{
-        SDL_Point p;
-        CMouse::PegaXY(p.x,p.y);
-        MouseSobre(p.x,p.y);
+    int TrataEventoMouse(PIG_Evento evento){
+        ChecaMouseOver(CMouse::PegaXY());
 
-        if (agoraOn && evento.mouse.acao==MOUSE_PRESSIONADO){
+        if (mouseOver && evento.mouse.acao==MOUSE_PRESSIONADO){
             if (habilitado==false) return SELECIONADO_DESABILITADO;
             if (visivel==false) return SELECIONADO_INVISIVEL;
             if(evento.mouse.botao == MOUSE_ESQUERDO) return OnMouseClick();
@@ -115,7 +164,7 @@ public:
         return NAO_SELECIONADO;
     }
 
-    int TrataEventoTeclado(PIG_Evento evento)override{
+    int TrataEventoTeclado(PIG_Evento evento){
         if (evento.teclado.acao==TECLA_PRESSIONADA && evento.teclado.tecla==tecla)
             if (timer->GetTempoDecorrido()>tempoRepeticao) return OnMouseClick();
 
@@ -139,7 +188,7 @@ public:
         botaoRepeticao = repeticao;
     }
 
-    void DefineEstado(PIG_EstadoComponente estadoComponente){
+    /*void DefineEstado(PIG_EstadoComponente estadoComponente){
         SDL_Rect r={0,0,largFrame,altOriginal};
         estado = estadoComponente;
         switch(estado){
@@ -156,16 +205,11 @@ public:
             break;
         }
         DefineFrame(r);
-    }
+    }*/
 //NAO_SELECIONADO,SELECIONADO_INVISIVEL,SELECIONADO_DESABILITADO,SELECIONADO_TRATADO
-    int TrataEvento(PIG_Evento evento){
-        SDL_Point p;
-        CMouse::PegaXY(p.x,p.y);
-        MouseSobre(p.x,p.y);
 
-        if(evento.tipoEvento == EVENTO_MOUSE && agoraOn){
-            return TrataEventoMouse(evento);
-        }
+    int TrataEvento(PIG_Evento evento){
+        if(evento.tipoEvento == EVENTO_MOUSE)    return TrataEventoMouse(evento);
         if (evento.tipoEvento == EVENTO_TECLADO) return TrataEventoTeclado(evento);
 
         return NAO_SELECIONADO;

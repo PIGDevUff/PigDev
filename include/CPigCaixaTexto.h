@@ -13,13 +13,13 @@ private:
 
 protected:
 
-    int MouseSobre(int mx, int my){
-        if (visivel==false) return 0;
+    int ChecaMouseOver(SDL_Point pMouse) override{
+        if (visivel==false) return -1;
 
-        SDL_Point p={mx,my};
         SDL_Rect r = {x + margemHorEsq,y + margemVertBaixo,larg - (margemHorDir + margemHorEsq),alt - (margemVertBaixo + margemVertCima)};
 
-        antesOn = agoraOn;
+        SetMouseOver(SDL_PointInRect(&pMouse,&r));
+        /*antesOn = agoraOn;
         agoraOn = SDL_PointInRect(&p,&r);
         if (agoraOn&&!antesOn){
             OnMouseOn();
@@ -27,8 +27,8 @@ protected:
         }else if(!agoraOn&&antesOn){
             OnMouseOff();
             return -1;
-        }
-        return 0;
+        }*/
+        return mouseOver;
     }
 
     //desenha o cursor
@@ -231,7 +231,7 @@ public:
         cursorExibido = true;
         timer = new CTimer(false);//o timer só será criado quando estiver editando
         SetFonteTexto(0);
-        estado = COMPONENTE_NORMAL;
+        //estado = COMPONENTE_NORMAL;
         maxCaracteres = maxCars;
         somenteNumeros = apenasNumeros;
         corCursor = PRETO;
@@ -265,9 +265,9 @@ public:
     }
 
     //define o estado do componente
-    void DefineEstado(PIG_EstadoComponente estadoComponente){
+    /*void DefineEstado(PIG_EstadoComponente estadoComponente){
         estado = estadoComponente;
-    }
+    }*/
 
     void SetFoco(bool valor) override{
         temFoco = valor;

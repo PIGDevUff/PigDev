@@ -12,7 +12,7 @@ class CPigScrollBar : public CPigComponente{
     double porcentagemConcluida;
     Pig_Orientacao orientacao;
     int xOriginal,yOriginal;
-    CPigBotao *botao1,*botao2,*handle;
+    PigBotao botao1,botao2,handle;
     int altBotoes,largHandle,largUtil;
     int deltaBotao,deltaRodinha,deltaTeclado;
     int comprimento,largura;
@@ -32,6 +32,22 @@ class CPigScrollBar : public CPigComponente{
 
 /***************Novos Métodos**************/
 
+
+    void SetHabilitado(bool valor){
+        habilitado = valor;
+    }
+
+    void SetFoco(bool valor){
+        temFoco = valor;
+    }
+
+    void SetAcionado(bool valor){
+        acionado = valor;
+    }
+
+    void SetMouseOver(bool valor){
+        mouseOver = valor;
+    }
 
 /***************Métodos Modificados**************/
 
@@ -114,33 +130,32 @@ class CPigScrollBar : public CPigComponente{
         return 0;
     }
 
-    int TrataMouse(PIG_Evento evento){
-        SDL_Point p;
-        CMouse::PegaXY(p.x,p.y);
-        MouseSobre(p.x,p.y);
+    int TrataEventoMouse(PIG_Evento evento){
+        SDL_Point p = CMouse::PegaXY();
+        ChecaMouseOver(p);
 
         if(orientacao == VERTICAL)
             if(evento.mouse.acao == MOUSE_RODINHA) return TrataRodinha(evento);
 
-        if (agoraOn){
+        if (mouseOver){
             if(evento.mouse.acao == MOUSE_PRESSIONADO){
                 if(evento.mouse.botao == MOUSE_ESQUERDO){
                     if(evento.mouse.cliques == 1){
                         TrataClickTrilha(p.x,p.y);
-                        handle->DefineEstado(COMPONENTE_ACIONADO);
+                        //handle->SetAcionado(true);
                     }
                 }
             }
-            if(handle->GetEstado() == COMPONENTE_ACIONADO) TrataClickTrilha(p.x,p.y);
+            //if(handle->GetEstado() == COMPONENTE_ACIONADO) TrataClickTrilha(p.x,p.y);
 
-            if(evento.mouse.acao == MOUSE_LIBERADO) handle->DefineEstado(COMPONENTE_NORMAL);
+            //if(evento.mouse.acao == MOUSE_LIBERADO) handle->DefineEstado(COMPONENTE_NORMAL);
 
             return 1;
         }
         return 0;
     }
 
-    int TrataTeclado(PIG_Evento evento){
+    int TrataEventoTeclado(PIG_Evento evento){
         if (!temFoco) return 0;
         if(evento.teclado.acao == TECLA_PRESSIONADA){
             if(orientacao == HORIZONTAL){
@@ -155,16 +170,16 @@ class CPigScrollBar : public CPigComponente{
         return 0;
     }
 
-    void DefineEstadoComponentes(PIG_EstadoComponente estado){
+    /*void DefineEstadoComponentes(PIG_EstadoComponente estado){
         if(botao1 && botao2){
             botao1->DefineEstado(estado);
             botao2->DefineEstado(estado);
         }
         handle->DefineEstado(estado);
-    }
+    }*/
 
-    int OnMouseOn(){return 0;}
-    int OnMouseOff(){return 0;}
+    //int OnMouseOn(){return 0;}
+    //int OnMouseOff(){return 0;}
 
 public:
 
@@ -187,7 +202,7 @@ public:
             handle->DefineBotaoRepeticao(true);
             handle->DefineTempoRepeticao(0.01);
             largUtil = comprimento - (2*altBotoes) - largHandle;
-            DefineEstado(COMPONENTE_NORMAL);
+            //DefineEstado(COMPONENTE_NORMAL);
             acao = NULL;
             param = NULL;
             orientacaoCrescimento = true;
@@ -250,7 +265,7 @@ public:
             botao2->DefineTempoRepeticao(0.01);
             altBotoes = alturaBotoes;
             largUtil = comprimento - (2*altBotoes) - largHandle;
-            DefineEstado(estado);
+            //DefineEstado(estado);
             AjustaOrientacao();
         }
     }
@@ -267,16 +282,16 @@ public:
         if(TrataBotoes(evento))return 1;
 
         if(evento.tipoEvento == EVENTO_NULO) return 0;
-        if(evento.tipoEvento == EVENTO_TECLADO && setasAtivadas) return TrataTeclado(evento);
-        if(evento.tipoEvento == EVENTO_MOUSE) return TrataMouse(evento);
+        if(evento.tipoEvento == EVENTO_TECLADO && setasAtivadas) return TrataEventoTeclado(evento);
+        if(evento.tipoEvento == EVENTO_MOUSE) return TrataEventoMouse(evento);
 
         return 0;
     }
 
-    void DefineEstado(PIG_EstadoComponente estadoComponente){
+    /*void DefineEstado(PIG_EstadoComponente estadoComponente){
         estado = estadoComponente;
         DefineEstadoComponentes(estado);
-    }
+    }*/
 
 /***************Novos Métodos**************/
 

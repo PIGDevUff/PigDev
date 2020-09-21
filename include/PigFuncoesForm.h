@@ -1,6 +1,6 @@
 /*******FORM*********/
 
-int Pig_Form_CriaForm(int xForm, int yForm, int altForm, int largForm,int janela = 0){
+int Pig_CriaForm(int xForm, int yForm, int altForm, int largForm,int janela = 0){
     return CGerenciadorForms::CriaForm(xForm,yForm,altForm,largForm,janela);
 }
 
@@ -14,7 +14,7 @@ int Pig_Form_Desenha(int idForm){
 
 /*******COMPONENTES*********/
 
-int Pig_Componentes_CriaComponentePorArquivo(int idForm,tipos_Componentes componente,char* nomeArquivo){
+int Pig_CriaComponentePorArquivo(int idForm,tipos_Componentes componente,char* nomeArquivo){
     return CGerenciadorForms::CriaComponentePorArquivo(idForm,componente,nomeArquivo);
 }
 
@@ -69,7 +69,7 @@ void Pig_Componentes_SetPosPadraoComponenteNaTela(int idComponente,PIG_Ancora po
 
 /*******BOTAO*********/
 
-int Pig_Botao_CriaBotao(int idForm,int x,int y,int alt,int larg,char* nomeArq,int retiraFundo = 1){
+int Pig_CriaBotao(int idForm,int x,int y,int alt,int larg,char* nomeArq,int retiraFundo = 1){
     return CGerenciadorForms::CriaBotao(idForm,x,y,alt,larg,nomeArq,retiraFundo);
 }
 
@@ -91,7 +91,7 @@ void Pig_Botao_DefineBotaoRepeticao(int idComponente,bool repeticao){
 
 /*******AREADETEXTO*********/
 
-int Pig_AreaDeTexto_CriaAreaDeTexto(int idForm,int x, int y, int altura,int largura,char* nomeArq,int maxCars = 200,int retiraFundo=1){
+int Pig_CriaAreaDeTexto(int idForm,int x, int y, int altura,int largura,char* nomeArq,int maxCars = 200,int retiraFundo=1){
     return CGerenciadorForms::CriaAreaDeTexto(idForm,x,y,altura,largura,nomeArq,maxCars,retiraFundo);
 }
 
@@ -161,7 +161,7 @@ std::vector<std::string> Pig_AreaDeTexto_GetLinhasTexto(int idComponente){
 
 /**********CAMPOTEXTO**************/
 
-int Pig_CampoTexto_CriaCampoTexto(int idForm,int x, int y, int altura,int largura,char* nomeArq,int maxCars = 200, bool apenasNumeros=false, int retiraFundo=1){
+int Pig_CriaCampoTexto(int idForm,int x, int y, int altura,int largura,char* nomeArq,int maxCars = 200, bool apenasNumeros=false, int retiraFundo=1){
     return CGerenciadorForms::CriaCampoTextoESenha(idForm,x,y,altura,largura,nomeArq,maxCars,apenasNumeros,retiraFundo,false);
 }
 
@@ -183,7 +183,7 @@ void Pig_CampoTexto_SetCorCursor(int idComponente,PIG_Cor cor){
 
 /**********CAMPOSENHA**************/
 
-int Pig_CampoSenha_CriaCampoSenha(int idForm,int x, int y, int altura,int largura,char* nomeArq,int maxCars = 200, bool apenasNumeros=false, int retiraFundo=1){
+int Pig_CriaCampoSenha(int idForm,int x, int y, int altura,int largura,char* nomeArq,int maxCars = 200, bool apenasNumeros=false, int retiraFundo=1){
     return CGerenciadorForms::CriaCampoTextoESenha(idForm,x,y,altura,largura,nomeArq,maxCars,apenasNumeros,retiraFundo,true);
 }
 
@@ -205,27 +205,27 @@ void Pig_CampoSenha_SetCorCursor(int idComponente,PIG_Cor cor){
 
 /**********LISTA**************/
 
-int Pig_Lista_CriaLista(int idForm,int x, int y,int altura,int largura,int alturaItens,char* nomeArq,int retiraFundo=1){
-    return CGerenciadorForms::CriaLista(idForm,x,y,altura,largura,alturaItens,nomeArq,retiraFundo);
+int Pig_CriaListBox(int idForm,int x, int y,int larguraTotal,int alturaLinha,int alturaMaxima,int alturaItem,int largItem,char* nomeArq,int retiraFundo=1){
+    return CGerenciadorForms::CriaListBox(idForm,x,y,larguraTotal,alturaLinha,alturaMaxima,alturaItem,largItem,nomeArq,retiraFundo);
 }
 
-int Pig_Lista_CriaItem(int idComponente,char* texto,char* imagem = "",int largImg = 0,int retiraFundoImg = 1){
-    ((CPigLista*)CGerenciadorForms::GetComponente(idComponente))->CriaItem(texto,imagem,largImg,retiraFundoImg);
+int Pig_ListBox_CriaItem(int idComponente,char* texto,char* imagem = "",char* hintMsg="",bool itemHabilitado = true, int audio=-1,int retiraFundoImg = 1){
+    ((CPigListBox*)CGerenciadorForms::GetComponente(idComponente))->CriaItem(texto,imagem,false,itemHabilitado,audio,hintMsg,retiraFundoImg);
 }
 
 /**********DROPDOWN**************/
 
-int Pig_DropDown_CriaDropDown(int idForm,int x, int y, int altura,int largura,int alturaLista,char* nomeArq,char* fundoLista,int retiraFundoLista,int retiraFundo=1){
-    return CGerenciadorForms::CriaDropDown(idForm,x,y,altura,largura,alturaLista,nomeArq,fundoLista,retiraFundoLista,retiraFundo);
+int Pig_CriaDropDown(int idForm,int x, int y, int larguraTotal,int alturaLinha,int alturaMaxima,int alturaItem,int larguraItem,char* nomeArq,int retiraFundo=1){
+    return CGerenciadorForms::CriaDropDown(idForm,x,y,larguraTotal,alturaLinha,alturaMaxima,alturaItem,larguraItem,nomeArq,retiraFundo);
 }
 
-int Pig_DropDown_CriaItem(int idComponente,char* texto,char* imagem = "",int largImg = 0,int retiraFundoImg = 1){
-    return ((CPigDropDown*)CGerenciadorForms::GetComponente(idComponente))->CriaItem(texto,imagem,largImg,retiraFundoImg);
+int Pig_DropDown_CriaItem(int idComponente,char* texto,char* imagem = "",char* hintMsg="",bool itemHabilitado = true, int audio=-1,int retiraFundoImg = 1){
+    ((CPigDropDown*)CGerenciadorForms::GetComponente(idComponente))->CriaItem(texto,imagem,itemHabilitado,audio,hintMsg,retiraFundoImg);
 }
 
 /**********GAUGE**************/
 
-int Pig_Gauge_CriaGauge(int idForm,int x, int y,int altura,int largura,char* imgGauge,int retiraFundo=1){
+int Pig_CriaGauge(int idForm,int x, int y,int altura,int largura,char* imgGauge,int retiraFundo=1){
     return CGerenciadorForms::CriaGauge(idForm,x,y,altura,largura,imgGauge,retiraFundo);
 }
 
@@ -251,30 +251,30 @@ void Pig_Gauge_ZeraValor(int idComponente){
 
 /**********GAUGECIRCULAR**************/
 
-int Pig_GaugeCircular_CriaGaugeCircular(int idForm,int x, int y,int altura,int largura,int raioInterior,char* imgGauge,int retiraFundo=1){
+int Pig_CriaGaugeCircular(int idForm,int x, int y,int altura,int largura,int raioInterior,char* imgGauge,int retiraFundo=1){
     return CGerenciadorForms::CriaGaugeCircular(idForm,x,y,altura,largura,raioInterior,imgGauge,retiraFundo);
 }
 
 /**********RADIOBOX**************/
 
-int Pig_RadioBox_CriaRadioBox(int idForm,int x, int y,int larguraImgFundo,char* imagemFundo,char* imagemItem, int alturaItem, int larguraItem, int espacoVertical,int retiraFundo=1){
-    return CGerenciadorForms::CriaRadioBox(idForm,x,y,larguraImgFundo,imagemFundo,imagemItem,alturaItem,larguraItem,espacoVertical,retiraFundo);
+int Pig_CriaRadioBox(int idForm,int x, int y,int larguraTotal,int alturaLinha, int alturaMaxima,char* imagemItem, int alturaItem, int larguraItem,char* imagemFundo, int retiraFundo=1){
+    return CGerenciadorForms::CriaRadioBox(idForm,x,y,larguraTotal,alturaLinha,alturaMaxima,imagemItem,alturaItem,larguraItem,imagemFundo,retiraFundo);
 }
 
-void Pig_RadioBox_CriaItem(int idComponente,char* itemLabel, bool itemHabilitado = true, int audio=-1,char* hintMsg="", int retiraFundo=1){
+void Pig_RadioBox_CriaItem(int idComponente,char* itemLabel, char* hintMsg="", bool itemHabilitado = true, int audio=-1, int retiraFundo=1){
     ((CPigRadioBox*)CGerenciadorForms::GetComponente(idComponente))->CriaItem(itemLabel,itemHabilitado,audio,hintMsg,retiraFundo);
 }
 
-int Pig_RadioBox_GetItemMarcado(int idComponente){
-    return ((CPigRadioBox*)CGerenciadorForms::GetComponente(idComponente))->GetMarcado();
+int Pig_RadioBox_GetItemDestaque(int idComponente){
+    return ((CPigRadioBox*)CGerenciadorForms::GetComponente(idComponente))->GetItemDestaque();
 }
 
 int Pig_RadioBox_SetItemMarcado(int idComponente,int item, bool marcado){
-    return ((CPigRadioBox*)CGerenciadorForms::GetComponente(idComponente))->SetMarcado(item,marcado);
+    return ((CPigRadioBox*)CGerenciadorForms::GetComponente(idComponente))->SetAcionadoItem(item,marcado);
 }
 
 int Pig_RadioBox_GetEstadoMarcadoItem(int idComponente,int item){
-    return ((CPigRadioBox*)CGerenciadorForms::GetComponente(idComponente))->GetMarcadoItem(item);
+    return ((CPigRadioBox*)CGerenciadorForms::GetComponente(idComponente))->GetAcionadoItem(item);
 }
 
 int Pig_RadioBox_SetAudioItem(int idComponente,int item,int audio){
@@ -295,20 +295,20 @@ void Pig_RadioBox_SetEstadoHabilitadoItens(int idComponente,bool habilitado){
 
 /**********CHECKBOX**************/
 
-int Pig_CheckBox_CriaCheckBox(int idForm,int x, int y,int larguraImgFundo,char* imagemFundo,char* imagemItem, int alturaItem, int larguraItem, int espacoVertical,int retiraFundo=1){
-    return CGerenciadorForms::CriaCheckBox(idForm,x,y,larguraImgFundo,imagemFundo,imagemItem,alturaItem,larguraItem,espacoVertical,retiraFundo);
+int Pig_CriaCheckBox(int idForm,int x, int y,int larguraTotal,int alturaLinha, int alturaMaxima,char* imagemItem, int alturaItem, int larguraItem,char* imagemFundo, int retiraFundo=1, int idJanela=0){
+    return CGerenciadorForms::CriaCheckBox(idForm,x,y,larguraTotal,alturaLinha,alturaMaxima,imagemItem,alturaItem,larguraItem,imagemFundo,retiraFundo);
 }
 
-void Pig_CheckBox_CriaItem(int idComponente,char* itemLabel,bool itemMarcado = false, bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
+void Pig_CheckBox_CriaItem(int idComponente,char* itemLabel,char* hintMsg="",bool itemMarcado = false, bool itemHabilitado = true, int audio=-1,  int retiraFundo=1){
     ((CPigCheckBox*)CGerenciadorForms::GetComponente(idComponente))->CriaItem(itemLabel,itemMarcado,itemHabilitado,audio,hintMsg,retiraFundo);
 }
 
 void Pig_CheckBox_SetMarcadoTodos(int idComponente,bool marcado){
-    ((CPigCheckBox*)CGerenciadorForms::GetComponente(idComponente))->SetMarcadoTodos(marcado);
+    ((CPigCheckBox*)CGerenciadorForms::GetComponente(idComponente))->SetAcionadoTodos(marcado);
 }
 
 int Pig_CheckBox_SetMarcadoItem(int idComponente,int indice,bool marcado){
-    return ((CPigCheckBox*)CGerenciadorForms::GetComponente(idComponente))->SetMarcadoItem(indice,marcado);
+    return ((CPigCheckBox*)CGerenciadorForms::GetComponente(idComponente))->SetAcionadoItem(indice,marcado);
 }
 
 std::vector <int> Pig_CheckBox_GetItensMarcados(int idComponente){
@@ -316,7 +316,7 @@ std::vector <int> Pig_CheckBox_GetItensMarcados(int idComponente){
 }
 
 int Pig_CheckBox_GetMarcadoItem(int idComponente,int item){
-    return ((CPigCheckBox*)CGerenciadorForms::GetComponente(idComponente))->GetMarcadoItem(item);
+    return ((CPigCheckBox*)CGerenciadorForms::GetComponente(idComponente))->GetAcionadoItem(item);
 }
 
 int Pig_CheckBox_SetAudioItem(int idComponente,int item,int audio){

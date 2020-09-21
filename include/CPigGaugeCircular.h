@@ -1,14 +1,21 @@
-PIG_Cor MixCor(PIG_Cor iniCor, PIG_Cor fimCor, double porc){
-    PIG_Cor resp;
-    resp.r = fimCor.r*porc + (iniCor.r)*(1-porc);
-    resp.g = fimCor.g*porc + (iniCor.g)*(1-porc);
-    resp.b = fimCor.b*porc + (iniCor.b)*(1-porc);
-    resp.a = fimCor.a*porc + (iniCor.a)*(1-porc);
-    return resp;
-}
-
-
 class CPigGaugeCircular:public CPigComponente{
+
+protected:
+    void SetFoco(bool valor){
+        temFoco = valor;
+    }
+
+    void SetAcionado(bool valor){
+        acionado = valor;
+    }
+
+    void SetMouseOver(bool valor){
+        mouseOver = valor;
+    }
+
+    void SetHabilitado(bool valor){
+        habilitado = valor;
+    }
 
 private:
 
@@ -96,7 +103,7 @@ CPigGaugeCircular LeArquivoParametros(std::string nomeArqParam){
     arquivo.close();
 
     return CPigGaugeCircular(idComponente,px,py,altura,largura,raioInterior,nomeArq,retiraFundo,janela);
-    }
+}
 
 ~CPigGaugeCircular(){
     delete off;
@@ -237,6 +244,14 @@ int Desenha(){
     DesenhaLabel();
     EscreveHint();
 }
+
+    int TrataEventoMouse(PIG_Evento evento){
+        return 0;
+    }
+
+    int TrataEventoTeclado(PIG_Evento evento){
+        return 0;
+    }
 
 };
 

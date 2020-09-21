@@ -1,97 +1,76 @@
-
-class CPigDropDown: public CPigComponente{
+class CPigDropDown: public CPigListaItemComponente{
 
 private:
 
-    CPigLista *lista;
-    PIG_PosicaoComponente posLista;
-    bool marcado;
-    int xLista,yLista;
-    Timer timer;
-    CPigItemLista *itemSelecionado;
+    int altImagem,largImagem;
+    bool recolhida;
 
-    int OnMouseOn(){
-        if (estado==COMPONENTE_DESABILITADO) return 0;
-        DefineEstado(COMPONENTE_MOUSEOVER);
-        return 1;
-    }
-
-    int OnMouseOff(){
-        if (estado==COMPONENTE_DESABILITADO) return 0;
-        DefineEstado(COMPONENTE_NORMAL);
-        return 1;
-    }
-
-    void TrataLista(PIG_Evento evento){
-        if(lista->TrataEventoMouse(evento) == SELECIONADO_TRATADO){
-            CPigItemLista *item = new CPigItemLista(*lista->GetItemMarcado());
-            item->Move(x,y);
-            if(!itemSelecionado) delete itemSelecionado;
-            itemSelecionado = item;
-            marcado = false;
+    void SetFoco(bool valor)override{
+        temFoco = valor;
+        if (!temFoco){
+            SetRecolhida(true);
         }
     }
 
-    int OnMouseClick(){
-        if (timer) delete timer;
-        timer = new CTimer(false);
-        marcado = !(marcado == true);
-        if (audioComponente>=0) CGerenciadorAudios::Play(audioComponente);
-        DefineEstado(COMPONENTE_MOUSEOVER);
-        return SELECIONADO_TRATADO;
+    void SetAcionado(bool valor){
     }
 
-    int TrataEventoMouse(PIG_Evento evento){
-        SDL_Point p;
-        CMouse::PegaXY(p.x,p.y);
-        MouseSobre(p.x,p.y);
+    void SetMouseOver(bool valor){
+        mouseOver = valor;
+    }
 
-        if(marcado) TrataLista(evento);
+    void SetRecolhida(bool valor){
+        recolhida = valor;
+    }
 
-        if (evento.mouse.acao==MOUSE_PRESSIONADO){
-            if(agoraOn && evento.mouse.botao == MOUSE_ESQUERDO){
-                if (habilitado==false) return SELECIONADO_DESABILITADO;
-                if (visivel==false) return SELECIONADO_INVISIVEL;
-                return OnMouseClick();
-            }else marcado = false;
+    int ChecaMouseOver(SDL_Point pMouse)override{
+        SDL_Rect r={x,0,larg,0};
+        if (recolhida){
+            r.y = y;
+            r.h = altBaseLista;
+        }else{
+            r.y = y-(itens.size())*altBaseLista;
+            r.h = (itens.size()+1)*altBaseLista;
         }
+        SetMouseOver(SDL_PointInRect(&pMouse,&r));
 
-        return NAO_SELECIONADO;
+        return mouseOver;
     }
 
-    void DefineEstado(PIG_EstadoComponente estadoComponente){}
+    void DesenhaItemDestaque(){
+        SDL_Rect rectAux = dest;
+        rectAux.h = altBaseLista;
+        if (text){//se tiver imagem de fundo
+            SDL_RenderCopyEx(renderer,text,NULL,&rectAux,-angulo,NULL,flip);
+        }
+        if (itemDestaque>=0){                       //desenha o item no cabeçalho do dropdown
+            int xItem,yItem;
+            itens[itemDestaque]->GetXY(xItem,yItem);
+            itens[itemDestaque]->Move(xItem,y);
+            itens[itemDestaque]->Desenha();
+            itens[itemDestaque]->Move(xItem,yItem);
+        }
+    }
 
 public:
 
-    CPigDropDown(int idComponente,int px, int py, int altura,int largura,int alturaLista,std::string nomeArq,std::string fundoLista,int retiraFundoLista,int retiraFundo=1,int janela=0):
-        CPigComponente(idComponente,px,py,altura,largura,nomeArq,retiraFundo,janela){
-            marcado = false;
-            timer = NULL;
-            posLabel = PIG_COMPONENTE_CIMA_CENTRO;
-            xLista = 0;
-            yLista = 0;
-            itemSelecionado = NULL;
-            lista = new CPigLista(id + 1,x,y,alturaLista,largura,altura,fundoLista,retiraFundoLista,idJanela);
-            lista->SetRetanguloMarcacao(false);
-            MoveLista(PIG_COMPONENTE_BAIXO_CENTRO);
+    CPigDropDown(int idComponente,int px, int py,int larguraTotal, int alturaLinha, int alturaMaxima,int alturaItem=0, int larguraItem=0,std::string nomeArqFundo="",int retiraFundo=1,int janela=0):
+        CPigListaItemComponente(idComponente,px,py,larguraTotal,alturaLinha,alturaLinha,nomeArqFundo,retiraFundo,janela){
+            altImagem = alturaItem;
+            largImagem = larguraItem;
+            SetRecolhida(true);
     }
 
     CPigDropDown(std::string nomeArqParam):CPigDropDown(LeArquivoParametros(nomeArqParam)){}
 
-    ~CPigDropDown(){
-        if(lista) delete lista;
-        if(itemSelecionado) delete itemSelecionado;
-        if(timer) delete timer;
-    }
-
     static CPigDropDown LeArquivoParametros(std::string nomeArqParam){
 
         std::ifstream arquivo;
-        int idComponente,px,py,altura,largura,alturaLista,retiraFundoLista = 0,retiraFundo = 0,janela = 0;
-
-        std::string nomeArq = "",fundoLista = "",variavel;
+        int idComponente,px,py,alturaItem,larguraItem,larguraTotal,alturaLinha,alturaMaxima,retiraFundo=1,janela=0;
+        std::string imgFundo = "",variavel;
 
         arquivo.open(nomeArqParam);
+
         if(!arquivo.is_open()) throw CPigErroArquivo(nomeArqParam);
         //formato "x valor"
         while(!arquivo.eof()){
@@ -99,118 +78,78 @@ public:
             if(variavel == "idComponente") arquivo >> idComponente;
             if(variavel == "px") arquivo >> px;
             if(variavel == "py") arquivo >> py;
-            if(variavel == "altura") arquivo >> altura;
-            if(variavel == "largura") arquivo >> largura;
-            if(variavel == "nomeArq") arquivo >> nomeArq;
-            if(variavel == "fundoLista") arquivo >> fundoLista;
-            if(variavel == "alturaLista") arquivo >> alturaLista;
-            if(variavel == "retiraFundoLista") arquivo >> retiraFundoLista;
+            if(variavel == "larguraTotal") arquivo >> larguraTotal;
+            if(variavel == "alturaItem") arquivo >> alturaItem;
+            if(variavel == "larguraItem") arquivo >> larguraItem;
+            if(variavel == "imgFundo") arquivo >> imgFundo;
+            if(variavel == "alturaLinha") arquivo >> alturaLinha;
+            if(variavel == "alturaMaxima") arquivo >> alturaMaxima;
             if(variavel == "retiraFundo") arquivo >> retiraFundo;
             if(variavel == "janela") arquivo >> janela;
         }
+
         arquivo.close();
+
        // std::cout<<idComponente<<" "<<px<<" "<<py<<" "<<altura<<" "<<largura<<" "<<nomeArq<<" "<<retiraFundo<<" "<<janela<<std::endl;
 
-        if(nomeArq == "") throw CPigErroParametro("nomeArq",nomeArqParam);
-        if(fundoLista == "") throw CPigErroParametro("fundoLista",nomeArqParam);
+        //if(imgItem == "") throw CPigErroParametro("imgItem",imgItem);
 
-        return CPigDropDown(idComponente,px,py,altura,largura,alturaLista,nomeArq,fundoLista,retiraFundoLista,retiraFundo,janela);
-
-    }
-
-    int CriaItem(std::string texto,std::string imagemSecundaria = "",int largImg = 0,int retiraFundoImg = 1){
-        lista->CriaItem(texto,imagemSecundaria,largImg,retiraFundoImg);
-        return 1;
-    }
-
-    void SetItemSelecionado(int indice){
-        itemSelecionado = lista->GetItem(indice);
-    }
-
-    void MoveLista(PIG_PosicaoComponente pos){
-
-        int alturaLista,larguraLista;
-        lista->GetDimensoes(alturaLista,larguraLista);
-        posLista = pos;
-
-        switch(pos){
-
-        case PIG_COMPONENTE_BAIXO_DIR:
-            lista->Move(x + larg,y - alturaLista);break;
-
-        case PIG_COMPONENTE_BAIXO_CENTRO:
-            lista->Move(x + (larg-larguraLista)/2,y - alturaLista);break;
-
-        case PIG_COMPONENTE_BAIXO_ESQ:
-            lista->Move(x - larguraLista,y - alturaLista);break;
-
-        case PIG_COMPONENTE_CIMA_CENTRO:
-            lista->Move(x + (larg-larguraLista)/2,y+alt);break;
-
-        case PIG_COMPONENTE_CIMA_DIR:
-            lista->Move(x + larg,y + alt);break;
-
-        case PIG_COMPONENTE_CIMA_ESQ:
-            lista->Move(x - larguraLista,y + alt);break;
-
-        case PIG_COMPONENTE_DIR_CIMA:
-            lista->Move(x + larg,y);break;
-
-        case PIG_COMPONENTE_DIR_BAIXO:
-            lista->Move(x + larg,y + alt - alturaLista);break;
-
-        case PIG_COMPONENTE_DIR_CENTRO:
-            lista->Move(x + larg,y + (alt - alturaLista)/2);break;
-
-        case PIG_COMPONENTE_ESQ_CIMA:
-            lista->Move(x - larguraLista,y);break;
-
-        case PIG_COMPONENTE_ESQ_BAIXO:
-            lista->Move(x - larguraLista,y + alt - alturaLista);break;
-
-        case PIG_COMPONENTE_ESQ_CENTRO:
-            lista->Move(x - larguraLista,y + (alt - alturaLista)/2);break;
-
-        case PIG_COMPONENTE_PERSONALIZADA:
-            lista->Move(xLista,yLista);break;
-
-        }
+        return CPigDropDown(idComponente,px,py,larguraTotal,alturaLinha,alturaMaxima,alturaItem,larguraItem,imgFundo,retiraFundo,janela);
 
     }
 
-    void SetPosPersonalizadaLista(int posX,int posY){
-        xLista = posX;
-        yLista = posY;
-        posLista = PIG_COMPONENTE_PERSONALIZADA;
-        MoveLista(posLista);
-    }
-
-    void SetFonteItens(int fonte){
-        lista->SetFonteItensLista(fonte);
-    }
-
-    CPigItemLista *GetItemMarcadoLista(){
-        return lista->GetItemMarcado();
-    }
-
-    int GetPosItemMarcadoLista(){
-        return lista->GetPosItemMarcado();
+    void CriaItem(std::string itemLabel, std::string arqImagem, bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
+        int yItem=y-(itens.size()+1)*altBaseLista;
+        CPigListaItemComponente::CriaItem(yItem,itemLabel,arqImagem,false,itemHabilitado,audioComponente,hintMsg,retiraFundo);
     }
 
     int Desenha(){
-
-        SDL_RenderCopyEx(renderer,text,NULL,&dest,-angulo,NULL,flip);
-        if(itemSelecionado !=NULL) itemSelecionado->Desenha();
-
-        if(marcado)lista->Desenha();
+        if (visivel==false) return 0;
 
         DesenhaLabel();
-        EscreveHint();
+
+        if (!recolhida){
+                SDL_Rect r = dest;
+                r.h = (itens.size()+1)*altBaseLista;
+                r.y = dest.y;
+                SDL_RenderCopyEx(renderer,text,NULL,&r,-angulo,NULL,flip);
+            for (PigItemComponente i: itens)
+                i->Desenha();
+        }else{
+            DesenhaItemDestaque();
+        }
+
+        return 1;
     }
 
-    void SetPosItensLista(PIG_PosicaoComponente pos){
-        lista->SetPosItensLista(pos);
+    int TrataEventoMouse(PIG_Evento evento){
+        int resp = -1;
+        bool mouseOverAntes = mouseOver;
+        if (ChecaMouseOver(CMouse::PegaXY())>0){
+            if (!recolhida){        //se o dropdown está exibindo os itens, é preciso tratá-los individualmente
+                for (int i=0;i<itens.size();i++){
+                    if(itens[i]->TrataEventoMouse(evento) == SELECIONADO_TRATADO){
+                        if (itens[i]->GetAcionado())
+                            resp = i;
+                    }
+                }
+                SetAcionadoItem(resp,resp!=-1);
+            }
+            if (evento.mouse.acao==MOUSE_PRESSIONADO&&evento.mouse.botao==MOUSE_ESQUERDO){
+                SetRecolhida(!recolhida);
+                return SELECIONADO_TRATADO;
+            }
+        }else if (mouseOverAntes){               //mouse estava antes, mas saiu
+            for (int i=0;i<itens.size();i++){
+                itens[i]->SetMouseOver(false);
+            }
+        }
+
+        return resp>=0?SELECIONADO_TRATADO:NAO_SELECIONADO;
     }
 
+    int TrataEventoTeclado(PIG_Evento evento){
+        return 0;
+    }
 };
 

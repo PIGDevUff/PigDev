@@ -1,28 +1,50 @@
-class CPigRadioBox: public CPigBox{
+class CPigRadioBox: public CPigListaItemComponente{
 
-private:
+protected:
+    int altImagem,largImagem;
+    std::string arqImagem;
 
-    int itemMarcado;
+    void SetFoco(bool valor){
+        temFoco = valor;
+    }
 
-    void RetiraExcessoMarcados(){
-        for (int i=0;i<itens.size();i++)
-            if (i!=itemMarcado)
-                itens[i]->SetMarcado(false);
+    void SetAcionado(bool valor){
+    }
+
+    void SetMouseOver(bool valor){
+        mouseOver = valor;
+    }
+
+    static void AjustaFrame(PigItemComponente item){
+        int itemAlt,itemLarg;
+        item->GetDimensoesOriginais(itemAlt,itemLarg);
+        int largFrame = itemLarg/6;
+        SDL_Rect r={0,0,largFrame,itemAlt};
+        if (item->GetHabilitado()==false){
+            if (item->GetAcionado()) r.x = 3*largFrame;
+            else r.x = 2*largFrame;
+        }else if (item->GetMouseOver()){
+            if (item->GetAcionado()) r.x = 5*largFrame;
+            else r.x = 4*largFrame;
+        }else{
+            if (item->GetAcionado()) r.x = largFrame;
+            else r.x = 0;
+        }
+        item->DefineFrame(r);
     }
 
 public:
 
-    CPigRadioBox(int idComponente, int posX, int posY, int larguraImgFundo,std::string imgFundo,std::string imgItem, int alturaItem, int larguraItem, int espacoVertical, int retiraFundo=1,int janela = 0):
-        CPigBox(idComponente,posX,posY,larguraImgFundo,imgFundo,imgItem,alturaItem,larguraItem,espacoVertical,retiraFundo,janela){
-        itemMarcado = -1;
-    }
+    CPigRadioBox(int idComponente, int posX, int posY, int larguraTotal,int alturaLinha, int alturaMaxima,std::string imgItem, int alturaItem, int larguraItem,std::string imgFundo, int retiraFundo=1,int janela = 0):
+        CPigListaItemComponente(idComponente,posX,posY,larguraTotal,alturaLinha,alturaMaxima,imgFundo,retiraFundo,janela){
+            arqImagem = imgItem;
+        }
 
     CPigRadioBox(std::string nomeArqParam):CPigRadioBox(LeArquivoParametros(nomeArqParam)){}
 
     static CPigRadioBox LeArquivoParametros(std::string nomeArqParam){
-
         std::ifstream arquivo;
-        int idComponente,px,py,alturaItem,larguraItem,larguraImgFundo,espacoVertical,retiraFundo=1,janela=0;
+        int idComponente,px,py,alturaItem,larguraItem,larguraTotal,alturaLinha,alturaMaxima,retiraFundo=1,janela=0;
         std::string imgFundo = "",imgItem = "",variavel;
 
         arquivo.open(nomeArqParam);
@@ -34,12 +56,13 @@ public:
             if(variavel == "idComponente") arquivo >> idComponente;
             if(variavel == "px") arquivo >> px;
             if(variavel == "py") arquivo >> py;
-            if(variavel == "larguraImgFundo") arquivo >> larguraImgFundo;
+            if(variavel == "larguraTotal") arquivo >> larguraTotal;
             if(variavel == "alturaItem") arquivo >> alturaItem;
             if(variavel == "larguraItem") arquivo >> larguraItem;
-            if(variavel == "imagemFundo") arquivo >> imgFundo;
-            if(variavel == "imagemItem") arquivo >> imgItem;
-            if(variavel == "espacoVertical") arquivo >> espacoVertical;
+            if(variavel == "imgFundo") arquivo >> imgFundo;
+            if(variavel == "imgItem") arquivo >> imgItem;
+            if(variavel == "alturaLinha") arquivo >> alturaLinha;
+            if(variavel == "alturaMaxima") arquivo >> alturaMaxima;
             if(variavel == "retiraFundo") arquivo >> retiraFundo;
             if(variavel == "janela") arquivo >> janela;
         }
@@ -47,52 +70,57 @@ public:
         arquivo.close();
 
        // std::cout<<idComponente<<" "<<px<<" "<<py<<" "<<altura<<" "<<largura<<" "<<nomeArq<<" "<<retiraFundo<<" "<<janela<<std::endl;
-        if(imgItem == "") throw CPigErroParametro("imagemItem",imgItem);
-        if(imgFundo == "") throw CPigErroParametro("imagemFundo",imgFundo);
 
-        return CPigRadioBox(idComponente,px,py,larguraImgFundo,imgFundo,imgItem,alturaItem,larguraItem,espacoVertical,retiraFundo);
+        if(imgItem == "") throw CPigErroParametro("imgItem",imgItem);
 
+        return CPigRadioBox(idComponente,px,py,larguraTotal,alturaLinha,alturaMaxima,imgItem,alturaItem,larguraItem,imgFundo,retiraFundo,janela);
     }
 
     void CriaItem(std::string itemLabel, bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
-        alt =( espacoLinha*itens.size() ) + ( altItem*(itens.size()+1) );
-        CPigItemCheck *item = new CPigItemCheck(itens.size(),x,y+(espacoLinha + altItem)*(itens.size()),altItem,largItem,nomeImgItem,itemLabel,retiraFundo,idJanela);
-        itens.push_back(item);
-        SetDimensoes(alt,larg);
-        item->SetHint(hintMsg);
-        if (audio==-1)
-            audio = audioComponente;//audio padrao do radiobox
-        item->SetAudio(audio);
-        item->SetMarcado(false);
-        item->SetHabilitado(itemHabilitado);
+        int yItem = y+alt-(altBaseLista)*(itens.size()+1);
+        CPigListaItemComponente::CriaItem(yItem,itemLabel,arqImagem,false,itemHabilitado,audioComponente,hintMsg,retiraFundo);
+        itens[itens.size()-1]->DefineFuncaoAjusteFrame(AjustaFrame);
     }
 
-    int TrataEventoMouse(PIG_Evento evento)override{
-        int retorno = NAO_SELECIONADO;
-        for (int i=0;i<itens.size();i++){
-            if (itens[i]->TrataEventoMouse(evento)==SELECIONADO_TRATADO){
-                itemMarcado = i;
-                RetiraExcessoMarcados();
-                return SELECIONADO_TRATADO;
-            }
+    int Desenha(){
+        if (visivel==false) return 0;
+
+        if (text){//se tiver imagem de fundo
+            SDL_RenderCopyEx(renderer,text,NULL,&dest,-angulo,NULL,flip);
         }
-        return NAO_SELECIONADO;
-    }
+        DesenhaLabel();
 
-    int GetMarcado(){
-        return itemMarcado;
-    }
+        for (PigItemComponente i: itens)
+            i->Desenha();
 
-    int SetMarcado(int indice, bool marcado){
-        if (indice<0||indice>=itens.size()) return 0;
-        if (marcado){
-            itemMarcado = indice;
-            for (CPigItemCheck* i: itens) i->SetMarcado(false);
-        }
-        itens[indice]->SetMarcado(marcado);
         return 1;
     }
 
+    int TrataEventoMouse(PIG_Evento evento){
+        int resp = -1;
+        bool mouseOverAntes = mouseOver;
+        if (ChecaMouseOver(CMouse::PegaXY())>0){
+            for (int i=0;i<itens.size();i++){
+                if(itens[i]->TrataEventoMouse(evento) == SELECIONADO_TRATADO){
+                    if (itens[i]->GetAcionado())
+                        resp = i;
+                }
+            }
+            SetAcionadoItem(resp,resp!=-1);
+        }else if (mouseOverAntes){               //mouse estava antes, mas saiu
+            for (int i=0;i<itens.size();i++){
+                itens[i]->SetMouseOver(false);
+            }
+        }
+
+        return resp>=0?SELECIONADO_TRATADO:NAO_SELECIONADO;
+    }
+
+    int TrataEventoTeclado(PIG_Evento evento){
+        return 0;
+    }
+
+
 };
 
-
+typedef CPigRadioBox *PigRadioBox;

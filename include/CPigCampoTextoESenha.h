@@ -29,11 +29,10 @@ private:
     }
 
     int TrataEventoMouse(PIG_Evento evento){
-        SDL_Point p;
-        CMouse::PegaXY(p.x,p.y);
-        MouseSobre(p.x,p.y);
+        SDL_Point p = CMouse::PegaXY();
+        ChecaMouseOver(p);
 
-        if(agoraOn){
+        if(mouseOver){
             if (habilitado==false) return SELECIONADO_DESABILITADO;
             if (visivel==false) return SELECIONADO_INVISIVEL;
             return EventosMouse(evento,p);
@@ -47,6 +46,25 @@ private:
     int DesceCursor(){return 1;}//não usa o DesceCursor
 
     int PulaLinha(){return 1;}//não usa o PulaLinha
+
+
+    void SetHabilitado(bool valor){
+        habilitado = valor;
+    }
+
+    void SetAcionado(bool valor){
+        acionado = valor;
+    }
+
+    void SetMouseOver(bool valor){
+        mouseOver = valor;
+    }
+
+    void SetFoco(bool valor) override{
+        temFoco = valor;
+        if (temFoco) SDL_StartTextInput();
+        else SDL_StopTextInput();
+    }
 
 public:
 

@@ -9,7 +9,7 @@ private:
     static int cursorAtual;
     static PIGCursor cursores[MAX_CURSORES];
     static bool cursorProprio;
-    static int mx,my;
+    static SDL_Point p;
     static int estadoBotaoDireito,estadoBotaoEsquerdo,estadoBotaoCentral;
 
 public:
@@ -42,8 +42,12 @@ public:
     }
 
     static void PegaXY(int &x, int &y){
-        x = mx;
-        y = my;
+        x = p.x;
+        y = p.y;
+    }
+
+    static SDL_Point PegaXY(){
+        return p;
     }
 
     static int ProcessaEvento(PIG_Evento evento){
@@ -70,8 +74,8 @@ public:
     }
 
     static void Move(int x,int y, int idJanela=0){
-        mx = x;
-        my = y;
+        p.x = x;
+        p.y = y;
         if (cursorAtual==-1) return;
         cursores[cursorAtual]->Move(x,y-32);
     }
@@ -88,8 +92,7 @@ public:
 int CMouse::cursorAtual;
 bool CMouse::cursorProprio;
 PIGCursor CMouse::cursores[MAX_CURSORES];
-int CMouse::mx;
-int CMouse::my;
+SDL_Point CMouse::p;
 int CMouse::estadoBotaoDireito;
 int CMouse::estadoBotaoEsquerdo;
 int CMouse::estadoBotaoCentral;

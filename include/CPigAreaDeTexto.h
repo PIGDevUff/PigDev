@@ -259,6 +259,24 @@ private:
 
     };
 
+    void SetHabilitado(bool valor){
+        habilitado = valor;
+    }
+
+    void SetAcionado(bool valor){
+        acionado = valor;
+    }
+
+    void SetMouseOver(bool valor){
+        mouseOver = valor;
+    }
+
+    void SetFoco(bool valor) override{
+        temFoco = valor;
+        if (temFoco) SDL_StartTextInput();
+        else SDL_StopTextInput();
+    }
+
 public:
 
     CPigAreaDeTexto(int idComponente,int px, int py, int altura,int largura,std::string nomeArq,int maxCars = 200,int retiraFundo=1,int janela=0):
@@ -428,11 +446,10 @@ public:
     }
 
     int TrataEventoMouse(PIG_Evento evento){
-        SDL_Point p;
-        CMouse::PegaXY(p.x,p.y);
-        MouseSobre(p.x,p.y);
+        SDL_Point p = CMouse::PegaXY();
+        ChecaMouseOver(p);
 
-        if(agoraOn){
+        if(mouseOver){
             if(habilitado==false) return SELECIONADO_DESABILITADO;
             if(visivel==false) return SELECIONADO_INVISIVEL;
             if(scrollVerticalAtivado) TrataScrollBarVertical(evento);

@@ -36,6 +36,22 @@ private:
         return resp;
     }
 
+    void SetFoco(bool valor){
+        temFoco = valor;
+    }
+
+    void SetAcionado(bool valor){
+        acionado = valor;
+    }
+
+    void SetMouseOver(bool valor){
+        mouseOver = valor;
+    }
+
+    void SetHabilitado(bool valor){
+        habilitado = valor;
+    }
+
 public:
 
     CPigGauge(int idComponente,int px, int py,int altura,int largura,std::string imgGauge,int retiraFundo=1,int janela=0):
@@ -179,6 +195,14 @@ public:
     void ZeraValor(){
         valorAtual = valorMin;
         AvancaBarra(0);
+    }
+
+    int TrataEventoMouse(PIG_Evento evento){
+        return 0;
+    }
+
+    int TrataEventoTeclado(PIG_Evento evento){
+        return 0;
     }
 
 };

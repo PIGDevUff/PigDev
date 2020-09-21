@@ -8,38 +8,34 @@ class CPigComponente: public CVisual{
 protected:
 
     bool temFoco,visivel,habilitado,mouseOver,acionado;
-    PIG_EstadoComponente estado;
     std::string hint,label;
     int fonteHint,fonteLabel;
     int audioComponente;
-    int antesOn,agoraOn;
     int id;
     int labelX,labelY;
     int altLetraLabel;
     PIG_PosicaoComponente posLabel,posComponente;
 
-    virtual int OnMouseOn()=0;
-    virtual int OnMouseOff()=0;
-
+    //inicializa o componente com valores padrão
     void IniciaBase(int idComponente, int px, int py){
         id = idComponente;
         hint = label = "";
         SetFonteHint(0);
         SetFonteLabel(0);
         audioComponente = -1;
-        estado = COMPONENTE_NORMAL;
         posLabel = PIG_COMPONENTE_CENTRO_CENTRO;
         x = px;
         y = py;
-        agoraOn = antesOn = 0;
         temFoco = false;
+        acionado = false;
+        mouseOver = false;
         visivel = true;
         habilitado = true;
     }
 
     //escreve o hint do componente na tela
     void EscreveHint(){
-        if (agoraOn&&hint!=""){
+        if (mouseOver&&hint!=""){
             int mx,my;
             CMouse::PegaXY(mx,my);
             CGerenciadorFontes::EscreverString(hint,mx+16,my+5,fonteHint);
@@ -47,23 +43,25 @@ protected:
     }
 
     //detecta se o mouse está sobre o componente ou não
-    int MouseSobre(int mx, int my){
+    virtual int ChecaMouseOver(SDL_Point pMouse){
         if (visivel==false||habilitado==false)
-            return 0;
+            return -1;
 
-        SDL_Point p={mx,my};
         SDL_Rect r={x,y,larg,alt};
 
-        antesOn = agoraOn;
-        agoraOn = SDL_PointInRect(&p,&r);
+        SetMouseOver(SDL_PointInRect(&pMouse,&r));
+        /*antesOn = mouseOver;
+        mouseOver = SDL_PointInRect(&p,&r);
         if (agoraOn&&!antesOn){
-            OnMouseOn();
+            //OnMouseOn();
+            SetMouseOver(true);
             return 1;
         }else if(!agoraOn&&antesOn){
-            OnMouseOff();
+            //OnMouseOff();
+            SetMouseOver(false);
             return -1;
-        }
-        return 0;
+        }*/
+        return mouseOver;
     }
 
     //desenha o label
@@ -143,8 +141,8 @@ public:
     //desenha o componente, cada subclasse precisa implementar como fazer isso
     virtual int Desenha()=0;
 
-    virtual int TrataEventoMouse(PIG_Evento evento){return NAO_SELECIONADO;}
-    virtual int TrataEventoTeclado(PIG_Evento evento){return NAO_SELECIONADO;}
+    virtual int TrataEventoMouse(PIG_Evento evento)=0;
+    virtual int TrataEventoTeclado(PIG_Evento evento)=0;
 
     //define a mensagem de hint do componente
     void SetHint(std::string novoHint){
@@ -191,49 +189,38 @@ public:
         return 1;
     }
 
-    /*virtual void GanhaFoco(){
-        temFoco = true;
-    }
-
-    virtual void PerdeFoco(){
-        temFoco = false;
-    }
-
-    virtual void SetVisivel(){
-        visivel = true;
-    }
-
-    virtual void SetInvisivel(){
-        visivel = false;
-    }
-
-    virtual void SetHabilitado(){
-        habilitado = true;
-    }
-
-    virtual void SetHabilitado(){
-        habilitado = true;
-    }*/
-
-    virtual void SetFoco(bool valor){
-        temFoco = valor;
-    }
-
     virtual void SetVisivel(bool valor){
         visivel = valor;
     }
 
-    virtual void SetHabilitado(bool valor){
-        habilitado = valor;
+    virtual void SetFoco(bool valor)=0;
+
+    virtual void SetHabilitado(bool valor)=0;
+
+    virtual void SetMouseOver(bool valor)=0;
+
+    virtual void SetAcionado(bool valor)=0;
+
+    bool GetFoco(){
+        return temFoco;
     }
 
-    //define o estado do componente, cada subclasse precisa definir como implementar isso
-    virtual void DefineEstado(PIG_EstadoComponente estadoComponente)=0;
-
-    //recupera o estado do componente
-    PIG_EstadoComponente GetEstado(){
-        return estado;
+    bool GetVisivel(){
+        return visivel;
     }
+
+    bool GetHabilitado(){
+        return habilitado;
+    }
+
+    bool GetAcionado(){
+        return acionado;
+    }
+
+    bool GetMouseOver(){
+        return mouseOver;
+    }
+
 
     PIG_PosicaoComponente GetPosComponente(){
         return posComponente;

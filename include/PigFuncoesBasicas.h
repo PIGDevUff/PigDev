@@ -81,6 +81,15 @@ uint16_t PIGTroca2Bytes(uint16_t valor){
     return (valor/256)+((valor%256)*256);
 }
 
+//mistura duas cores com uma proporção entre elas
+PIG_Cor MixCor(PIG_Cor iniCor, PIG_Cor fimCor, double porc){
+    PIG_Cor resp;
+    resp.r = fimCor.r*porc + (iniCor.r)*(1-porc);
+    resp.g = fimCor.g*porc + (iniCor.g)*(1-porc);
+    resp.b = fimCor.b*porc + (iniCor.b)*(1-porc);
+    resp.a = fimCor.a*porc + (iniCor.a)*(1-porc);
+    return resp;
+}
 
 //retorna o diretorio onde está o executável
 std::string PIGGetDiretorioAtual(){

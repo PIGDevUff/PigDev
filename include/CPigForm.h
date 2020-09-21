@@ -7,12 +7,11 @@
 #include "CPigCaixaTexto.h"
 #include "CPigCampoTextoESenha.h"
 #include "CPigAreaDeTexto.h"
-#include "CPigItemCheck.h"
-#include "CPigBox.h"
+#include "CPigItemComponente.h"
+#include "CPigListaItemComponente.h"
 #include "CPigRadioBox.h"
 #include "CPigCheckBox.h"
-#include "CPigItemLista.h"
-#include "CPigLista.h"
+#include "CPigListBox.h"
 #include "CPigDropDown.h"
 #include "CPigGauge.h"
 #include "CPigGaugeCircular.h"
@@ -30,7 +29,6 @@ private:
     int x,y,alt,larg;
     int totalComponentes;
     int componenteComFoco;
-    //PoolNumeros numComponentes;
     PigComponente componentes[MAX_COMPONENTES];
 
     inline int GetIdComponente(int componente){
@@ -40,8 +38,9 @@ private:
     int TrataMouseComponentes(PIG_Evento evento){
         for(int i=0;i<totalComponentes;i++){
             if(componentes[i]->TrataEventoMouse(evento) == SELECIONADO_TRATADO){
-                if (componenteComFoco!=-1 && componenteComFoco!=i)  //se já tem um outro componente com foco, ele vai perder o foco
+                if (componenteComFoco!=-1 && componenteComFoco!=i){  //se já tem um outro componente com foco, ele vai perder o foco
                     componentes[componenteComFoco]->SetFoco(false);
+                }
                 componenteComFoco = i;                              //anota que terá o foco
                 componentes[componenteComFoco]->SetFoco(true);        //faz o componente em questão ganhar foco
                 return 1;
@@ -121,15 +120,15 @@ public:
         return idComponente;
     }
 
-    int CriaLista(int px, int py,int altura,int largura,int alturaItens,std::string nomeArq,int retiraFundo=1){
+    int CriaListBox(int px, int py,int larguraTotal, int alturaLinha, int alturaMaxima,int altItem, int largItem,std::string nomeArq,int retiraFundo=1){
         int idComponente = GetIdComponente(totalComponentes);
-        componentes[totalComponentes++] = new CPigLista(idComponente,px,py,altura,largura,alturaItens,nomeArq,retiraFundo,idJanela);
+        componentes[totalComponentes++] = new CPigListBox(idComponente,px,py,larguraTotal,alturaLinha,alturaMaxima,altItem,largItem,nomeArq,retiraFundo,idJanela);
         return idComponente;
     }
 
-    int CriaDropDown(int px, int py, int altura,int largura,int alturaLista,std::string nomeArq,std::string fundoLista,int retiraFundoLista,int retiraFundo=1){
+    int CriaDropDown(int px, int py, int larguraTotal,int alturaLinha, int alturaMaxima, int altItem, int largItem, std::string nomeArq,int retiraFundo=1){
         int idComponente = GetIdComponente(totalComponentes);
-        componentes[totalComponentes++] = new CPigDropDown(idComponente,px,py,altura,largura,alturaLista,nomeArq,fundoLista,retiraFundoLista,retiraFundo,idJanela);
+        componentes[totalComponentes++] = new CPigDropDown(idComponente,px,py,larguraTotal,alturaLinha,alturaMaxima,altItem,largItem,nomeArq,retiraFundo,idJanela);
         return idComponente;
     }
 
@@ -139,15 +138,15 @@ public:
         return idComponente;
     }
 
-    int CriaRadioBox(int px, int py, int larguraImgFundo,std::string imagemFundo,std::string imagemItem, int alturaItem, int larguraItem, int espacoVertical, int retiraFundo=1){
+    int CriaRadioBox(int px, int py, int larguraTotal,int alturaLinha, int alturaMaxima,std::string imagemItem, int alturaItem,int larguraItem, std::string imagemFundo, int retiraFundo=1){
         int idComponente = GetIdComponente(totalComponentes);
-        componentes[totalComponentes++] = new CPigRadioBox(idComponente,px,py,larguraImgFundo,imagemFundo,imagemItem,alturaItem,larguraItem,espacoVertical,retiraFundo,idJanela);
+        componentes[totalComponentes++] = new CPigRadioBox(idComponente,px,py,larguraTotal,alturaLinha,alturaMaxima,imagemItem,alturaItem,larguraItem,imagemFundo,retiraFundo,idJanela);
         return idComponente;
     }
 
-    int CriaCheckBox(int px, int py, int larguraImgFundo,std::string imagemFundo,std::string imagemItem, int alturaItem, int larguraItem, int espacoVertical, int retiraFundo=1){
+    int CriaCheckBox(int px, int py, int larguraTotal,int alturaLinha, int alturaMaxima, std::string imagemItem, int alturaItem, int larguraItem, std::string imagemFundo, int retiraFundo=1){
         int idComponente = GetIdComponente(totalComponentes);
-        componentes[totalComponentes++] = new CPigCheckBox(idComponente,px,py,larguraImgFundo,imagemFundo,imagemItem,alturaItem,larguraItem,espacoVertical,retiraFundo,idJanela);
+        componentes[totalComponentes++] = new CPigCheckBox(idComponente,px,py,larguraTotal,alturaLinha,alturaMaxima,imagemItem,alturaItem,larguraItem,imagemFundo,retiraFundo,idJanela);
         return idComponente;
     }
 
@@ -163,10 +162,10 @@ public:
             case BOTAO: componentes[totalComponentes++] = new CPigBotao(nomeArquivo);break;
             case AREADETEXTO: componentes[totalComponentes++] = new CPigAreaDeTexto(nomeArquivo);break;
             case CAMPOTEXTOSENHA: componentes[totalComponentes++] = new CPigCampoTextoESenha(nomeArquivo);break;
-            case RADIOBOX: componentes[totalComponentes++] = new CPigRadioBox(nomeArquivo);break;
+            //case RADIOBOX: componentes[totalComponentes++] = new CPigRadioBox(nomeArquivo);break;
             case CHECKBOX: componentes[totalComponentes++] = new CPigCheckBox(nomeArquivo);break;
-            case LISTA: componentes[totalComponentes++] = new CPigLista(nomeArquivo);break;
-            case DROPDOWN: componentes[totalComponentes++] = new CPigDropDown(nomeArquivo);break;
+            //case LISTA: componentes[totalComponentes++] = new CPigLista(nomeArquivo);break;
+            //case DROPDOWN: componentes[totalComponentes++] = new CPigDropDown(nomeArquivo);break;
             case GAUGE: componentes[totalComponentes++] = new CPigGauge(nomeArquivo);break;
             case SCROLLBAR: componentes[totalComponentes++] = new CPigScrollBar(nomeArquivo);break;
             case GAUGECIRCULAR: componentes[totalComponentes++] = new CPigGaugeCircular(nomeArquivo);break;

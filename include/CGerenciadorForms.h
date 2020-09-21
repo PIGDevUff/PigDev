@@ -63,24 +63,24 @@ public:
         return GetForm(idForm)->CriaCampoTextoESenha(x,y,altura,largura,nomeArq,maxCars,apenasNumeros,retiraFundo,campoSenha);
     }
 
-    static int CriaLista(int idForm,int x, int y,int altura,int largura,int alturaItens,std::string nomeArq,int retiraFundo=1){
-        return GetForm(idForm)->CriaLista(x,y,altura,largura,alturaItens,nomeArq,retiraFundo);
+    static int CriaListBox(int idForm,int x, int y,int larguraTotal,int alturaLinha, int alturaMaxima,int alturaItem,int larguraItem,std::string nomeArq,int retiraFundo=1){
+        return GetForm(idForm)->CriaListBox(x,y,larguraTotal,alturaLinha,alturaMaxima,alturaItem,larguraItem,nomeArq,retiraFundo);
     }
 
-    static int CriaDropDown(int idForm,int x, int y, int altura,int largura,int alturaLista,std::string nomeArq,std::string fundoLista,int retiraFundoLista,int retiraFundo=1){
-        return GetForm(idForm)->CriaDropDown(x,y,altura,largura,alturaLista,nomeArq,fundoLista,retiraFundoLista,retiraFundo);
+    static int CriaDropDown(int idForm,int x, int y, int larguraTotal, int alturaLinha,int alturaMaxima,int alturaItem,int larguraItem,std::string nomeArq,int retiraFundo=1){
+        return GetForm(idForm)->CriaDropDown(x,y,larguraTotal,alturaLinha,alturaMaxima,alturaItem,larguraItem,nomeArq,retiraFundo);
     }
 
     static int CriaGauge(int idForm,int x, int y,int altura,int largura,std::string imgGauge,int retiraFundo=1){
         return GetForm(idForm)->CriaGauge(x,y,altura,largura,imgGauge,retiraFundo);
     }
 
-    static int CriaRadioBox(int idForm,int x, int y,int larguraImgFundo,std::string imagemFundo,std::string imagemItem, int alturaItem, int larguraItem, int espacoVertical,int retiraFundo=1){
-        return GetForm(idForm)->CriaRadioBox(x,y,larguraImgFundo,imagemFundo,imagemItem,alturaItem,larguraItem,espacoVertical,retiraFundo);
+    static int CriaRadioBox(int idForm,int x, int y,int larguraTotal,int alturaLinha, int alturaMaxima,std::string imagemItem, int alturaItem, int larguraItem,std::string imagemFundo, int retiraFundo=1){
+        return GetForm(idForm)->CriaRadioBox(x,y,larguraTotal,alturaLinha,alturaMaxima,imagemItem,alturaItem,larguraItem,imagemFundo,retiraFundo);
     }
 
-    static int CriaCheckBox(int idForm,int x, int y,int larguraImgFundo,std::string imagemFundo,std::string imagemItem, int alturaItem, int larguraItem, int espacoVertical,int retiraFundo=1){
-        return GetForm(idForm)->CriaCheckBox(x,y,larguraImgFundo,imagemFundo,imagemItem,alturaItem,larguraItem,espacoVertical,retiraFundo);
+    static int CriaCheckBox(int idForm,int x, int y,int larguraTotal,int alturaLinha, int alturaMaxima, std::string imagemItem, int alturaItem, int larguraItem,std::string imagemFundo,int retiraFundo=1){
+        return GetForm(idForm)->CriaCheckBox(x,y,larguraTotal,alturaLinha,alturaMaxima,imagemItem,alturaItem,larguraItem,imagemFundo,retiraFundo);
     }
 
     static int CriaGaugeCircular(int idForm,int x,int y,int altura,int largura,int raioInterior,std::string nomeArq,int retiraFundo = 1){
