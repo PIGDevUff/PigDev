@@ -53,10 +53,10 @@ class CPigScrollBar : public CPigComponente{
 
     void AjustaOrientacao(){
         if(orientacao == HORIZONTAL){
-            CVisual::SetDimensoes(largura,comprimento - (2*altBotoes));
+            CPigVisual::SetDimensoes(largura,comprimento - (2*altBotoes));
             largReal = comprimento;
             altReal = largura;
-            CVisual::Move(xOriginal+altBotoes,yOriginal);
+            CPigVisual::Move(xOriginal+altBotoes,yOriginal);
             if(botao1 && botao2){
                 botao1->Move(xOriginal,yOriginal);
                 botao2->Move(xOriginal + comprimento - altBotoes,yOriginal);
@@ -65,10 +65,10 @@ class CPigScrollBar : public CPigComponente{
             handle->SetDimensoes(largura,largHandle);
             SetValorMinMax(vMin,vMax);
         }else{
-            CVisual::SetDimensoes(comprimento - (2*altBotoes),largura);
+            CPigVisual::SetDimensoes(comprimento - (2*altBotoes),largura);
             largReal = largura;
             altReal = comprimento;
-            CVisual::Move(xOriginal,yOriginal+altBotoes);
+            CPigVisual::Move(xOriginal,yOriginal+altBotoes);
             if(botao1 && botao2){
                 botao1->Move(xOriginal,yOriginal);
                 botao2->Move(xOriginal,yOriginal + comprimento - altBotoes);
@@ -120,10 +120,10 @@ class CPigScrollBar : public CPigComponente{
     }
 
     int TrataRodinha(PIG_Evento evento){
-        if(evento.mouse.relY == 1){
+        if(evento.mouse.relY > 0){
             AvancaHandle(vAtual,deltaRodinha);
             return 1;
-        }else{
+        }else if (evento.mouse.relY < 0){
             AvancaHandle(vAtual,-deltaRodinha);
             return 1;
         }
@@ -134,25 +134,17 @@ class CPigScrollBar : public CPigComponente{
         SDL_Point p = CMouse::PegaXY();
         ChecaMouseOver(p);
 
-        if(orientacao == VERTICAL)
+        if(orientacao == VERTICAL && temFoco)
             if(evento.mouse.acao == MOUSE_RODINHA) return TrataRodinha(evento);
 
         if (mouseOver){
-            if(evento.mouse.acao == MOUSE_PRESSIONADO){
-                if(evento.mouse.botao == MOUSE_ESQUERDO){
-                    if(evento.mouse.cliques == 1){
-                        TrataClickTrilha(p.x,p.y);
-                        //handle->SetAcionado(true);
-                    }
-                }
+            if(evento.mouse.acao == MOUSE_PRESSIONADO && evento.mouse.botao == MOUSE_ESQUERDO && evento.mouse.cliques == 1){
+                TrataClickTrilha(p.x,p.y);
+                return SELECIONADO_TRATADO;
             }
-            //if(handle->GetEstado() == COMPONENTE_ACIONADO) TrataClickTrilha(p.x,p.y);
-
-            //if(evento.mouse.acao == MOUSE_LIBERADO) handle->DefineEstado(COMPONENTE_NORMAL);
-
-            return 1;
+            return SELECIONADO_MOUSEOVER;
         }
-        return 0;
+        return NAO_SELECIONADO;
     }
 
     int TrataEventoTeclado(PIG_Evento evento){
@@ -169,17 +161,6 @@ class CPigScrollBar : public CPigComponente{
         }
         return 0;
     }
-
-    /*void DefineEstadoComponentes(PIG_EstadoComponente estado){
-        if(botao1 && botao2){
-            botao1->DefineEstado(estado);
-            botao2->DefineEstado(estado);
-        }
-        handle->DefineEstado(estado);
-    }*/
-
-    //int OnMouseOn(){return 0;}
-    //int OnMouseOff(){return 0;}
 
 public:
 
@@ -202,7 +183,6 @@ public:
             handle->DefineBotaoRepeticao(true);
             handle->DefineTempoRepeticao(0.01);
             largUtil = comprimento - (2*altBotoes) - largHandle;
-            //DefineEstado(COMPONENTE_NORMAL);
             acao = NULL;
             param = NULL;
             orientacaoCrescimento = true;
@@ -265,7 +245,6 @@ public:
             botao2->DefineTempoRepeticao(0.01);
             altBotoes = alturaBotoes;
             largUtil = comprimento - (2*altBotoes) - largHandle;
-            //DefineEstado(estado);
             AjustaOrientacao();
         }
     }
@@ -288,11 +267,6 @@ public:
         return 0;
     }
 
-    /*void DefineEstado(PIG_EstadoComponente estadoComponente){
-        estado = estadoComponente;
-        DefineEstadoComponentes(estado);
-    }*/
-
 /***************Novos Métodos**************/
 
     void GetDimensoes(int &altura,int &largura)override{
@@ -301,7 +275,7 @@ public:
     }
 
     void GetDimensoesTrilha(int &altura,int &largura){
-        CVisual::GetDimensoes(altura,largura);
+        CPigVisual::GetDimensoes(altura,largura);
     }
 
     void SetSetasAtivadas(bool estado){
@@ -347,6 +321,7 @@ public:
             botao1->Desenha();
             botao2->Desenha();
         }
+        printf("foi\n");
         handle->Desenha();
         return 0;
     }

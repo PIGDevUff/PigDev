@@ -1,4 +1,7 @@
-class CVisual{
+#ifndef _CPigVisual_
+#define _CPigVisual_
+
+class CPigVisual{
 
 protected:
 
@@ -55,12 +58,12 @@ protected:
         IniciaOrientacao();
     }
 
-    CVisual(int altura,int largura,std::string nomeArq,int janela=0){
+    CPigVisual(int altura,int largura,std::string nomeArq,int janela=0){
         nomeArquivo = nomeArq;
         IniciaBase(altura,largura,janela);
     }
 
-    CVisual(std::string nomeArq,int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
+    CPigVisual(std::string nomeArq,int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
         nomeArquivo = nomeArq;
 
         CarregaImagem(nomeArq);
@@ -70,7 +73,7 @@ protected:
         CriaTextura(retiraFundo,corFundo);
     }
 
-    CVisual(OffscreenRenderer offRender, int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
+    CPigVisual(OffscreenRenderer offRender, int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
         nomeArquivo = "";
 
         SDL_Surface *surface = offRender->GetSurface();
@@ -81,7 +84,7 @@ protected:
         CriaTextura(retiraFundo,corFundo);
     }
 
-    CVisual(CVisual *visualBase,int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
+    CPigVisual(CPigVisual *visualBase,int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
         nomeArquivo = visualBase->nomeArquivo;
 
         #ifdef SHARE_BITMAP
@@ -94,7 +97,15 @@ protected:
         CriaTextura(retiraFundo,corFundo);
     }
 
-    ~CVisual(){
+    CPigVisual(int janela){
+        idJanela = janela;
+        nomeArquivo = "";
+        text = NULL;
+        renderer = NULL;
+        bitmap = NULL;
+    }
+
+    ~CPigVisual(){
         if (text) SDL_DestroyTexture(text);
 
         if (nomeArquivo == ""){
@@ -210,7 +221,7 @@ public:
         dest.y = altJanela-alt-y;
     }
 
-    void SetDimensoes(int altura,int largura){
+    virtual void SetDimensoes(int altura,int largura){
         dest.h = alt = altura;
         dest.w = larg = largura;
         dest.x = x;
@@ -241,5 +252,5 @@ public:
     std::string GetNomeArquivo(){
         return nomeArquivo;
     }
-
 };
+#endif // _CPigVisual_

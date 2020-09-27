@@ -1,9 +1,11 @@
+#ifndef _CPigCaixaTexto_
+#define _CPigCaixaTexto_
+
+#include "CPigComponente.h"
+
 class CPigCaixaTexto: public CPigComponente{
 
 private:
-
-    int OnMouseOn(){}
-    int OnMouseOff(){}
 
     bool cursorExibido;
     int maxCaracteres;
@@ -19,15 +21,6 @@ protected:
         SDL_Rect r = {x + margemHorEsq,y + margemVertBaixo,larg - (margemHorDir + margemHorEsq),alt - (margemVertBaixo + margemVertCima)};
 
         SetMouseOver(SDL_PointInRect(&pMouse,&r));
-        /*antesOn = agoraOn;
-        agoraOn = SDL_PointInRect(&p,&r);
-        if (agoraOn&&!antesOn){
-            OnMouseOn();
-            return 1;
-        }else if(!agoraOn&&antesOn){
-            OnMouseOff();
-            return -1;
-        }*/
         return mouseOver;
     }
 
@@ -42,15 +35,6 @@ protected:
                 timer->Reinicia(false);
             }
         }
-    }
-
-    //trata os eventos de mouse possíveis
-    int EventosMouse(PIG_Evento evento,SDL_Point p){
-        if (evento.mouse.acao == MOUSE_PRESSIONADO){
-            if (evento.mouse.botao == MOUSE_ESQUERDO)
-                return TrataMouseBotaoEsquerdo(p);
-        }
-        return NAO_SELECIONADO;
     }
 
     //trata teclas de movimentação do cursor
@@ -286,3 +270,4 @@ public:
 };
 
 typedef CPigCaixaTexto *PigCaixaTexto;
+#endif // _CPigCaixaTexto_

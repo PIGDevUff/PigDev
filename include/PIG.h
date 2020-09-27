@@ -17,6 +17,7 @@ Versão 0.7.2 da Biblioteca PIG.h
 #include "COffscreenRenderer.h"
 #include "CGerenciadorFontes.h"
 #include "CVisual.h"
+#include "CPigLabel.h"
 #include "CMouse.h"
 #include "CGerenciadorObjetos.h"
 #include "CGerenciadorTimers.h"
@@ -853,6 +854,22 @@ int CriaFonteNormal(char *nome,int tamanho,PIG_Cor corLetra,int contorno,PIG_Cor
 }
 
 /********************************
+A função CriaFonteNormal() é responsável por disponibilizar uma nova fonte com preenchimento sólido.
+Parâmetros:
+nome (entrada, passagem por referência): nome do arquivo que contém a fonte (normalmente com extensão ttf).
+tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura média (em pixels) dos caracteres da fonte.
+corLetra (entrada, passagem por valor): representa a cor de preenchimento da fonte. Caso a cor não seja informada, será utilizada a cor padrão (BRANCO).
+estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combinação binária de: ESTILO_NEGRITO, para negrito; ESTILO_SUBLINHADO, para sublinhado; ESTILO_ITALICO, para itálico;
+ESTILO_CORTADO, para uma linha horizontal à meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado ESTILO_NORMAL.
+idJanela (entrada, passagem por valor não-obrigatório): indica qual janela vai receber a fonte. Uma fonte só pode ser usada na janela na qual foi criada.
+retono:
+inteiro que representa a ideintificação única da fonte. Futuras referência a esta fonte devem idenitificá-las pelo número.
+********************************/
+int CriaFonteNormal(char *nome,int tamanho,PIG_Cor corLetra=PIG_FONTE_PADRAO_COR,PIG_Estilo estilo=ESTILO_NORMAL,int idJanela=0){
+    return CGerenciadorFontes::CriaFonteNormal(nome,tamanho,estilo,corLetra,idJanela);
+}
+
+/********************************
 A função CriaFonteDinamica() é responsável por disponibilizar uma nova fonte dinâmica com preenchimento sólido. As fontes dinâmicas são capazes
 de escrever strings com diferentes formatações (negrito, itálico, sublinhado, cortado) e cores nas letras. A string a ser utilizada pela fonte
 pode conter ou não os marcadores de formtação. Caso não contenham, será utilizada uma letra branca, sem formatação.
@@ -886,6 +903,22 @@ int CriaFonteFundo(char *nome,int tamanho,char *arquivoFundo,int contorno,PIG_Co
 }
 
 /********************************
+A função CriaFonteFundo() é responsável por disponibilizar uma nova fonte com preenchimento de um bitmap específico.
+Parâmetros:
+nome (entrada, passagem por referência): nome do arquivo que contém a fonte (normalmente com extensão ttf).
+tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura média (em pixels) dos caracteres da fonte.
+arquivoFundo (entrada, passagem por referência): indica o nome do arquivo de imagem que servirá de fundo para a fonte.
+estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combinação binária de: ESTILO_NEGRITO, para negrito; ESTILO_SUBLINHADO, para sublinhado; ESTILO_ITALICO, para itálico;
+ESTILO_CORTADO, para uma linha horizontal à meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado ESTILO_NORMAL.
+idJanela (entrada, passagem por valor não-obrigatório): indica qual janela vai receber a fonte. Uma fonte só pode ser usada na janela na qual foi criada.
+retono:
+inteiro que representa a ideintificação única da fonte. Futuras referência a esta fonte devem idenitificá-las pelo número.
+********************************/
+int CriaFonteFundo(char *nome,int tamanho,char *arquivoFundo,PIG_Estilo estilo=ESTILO_NORMAL,int idJanela=0){
+    return CGerenciadorFontes::CriaFonteFundo(nome,tamanho,estilo,arquivoFundo,idJanela);
+}
+
+/********************************
 A função CalculaLarguraPixels() é responsável por realizar a soma das larguras de cada letra da string informada.
 Parâmetros:
 str (entrada, passagem por referência): string a ser escrita na tela.
@@ -903,11 +936,12 @@ Parâmetros:
 str (entrada, passagem por referência): string a ser escrita na tela.
 posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever a string.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever a string.
+cor (entrada, passagem por valor): cor a ser aplicada à fonte no momento da escrita. Essa cor é misturada à cor original da fonte, se essa tiver sido informada na criação da fonte.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação da string.
 ********************************/
-void EscreverDireita(char *str,int posicaoX,int posicaoY,int numFonte=0,float angulo=0){
-    CGerenciadorFontes::EscreverString(str,posicaoX,posicaoY,numFonte,CPIG_TEXTO_DIREITA,angulo);
+void EscreverDireita(char *str,int posicaoX,int posicaoY,PIG_Cor cor=BRANCO,int numFonte=0,float angulo=0){
+    CGerenciadorFontes::EscreverString(str,posicaoX,posicaoY,numFonte,cor,CPIG_TEXTO_DIREITA,angulo);
 }
 
 /********************************
@@ -916,11 +950,12 @@ Parâmetros:
 str (entrada, passagem por referência): string a ser escrita na tela.
 posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever a string.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever a string.
+cor (entrada, passagem por valor): cor a ser aplicada à fonte no momento da escrita. Essa cor é misturada à cor original da fonte, se essa tiver sido informada na criação da fonte.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação da string.
 ********************************/
-void EscreverEsquerda(char *str,int posicaoX,int posicaoY,int numFonte=0,float angulo=0){
-    CGerenciadorFontes::EscreverString(str,posicaoX,posicaoY,numFonte,CPIG_TEXTO_ESQUERDA,angulo);
+void EscreverEsquerda(char *str,int posicaoX,int posicaoY,PIG_Cor cor=BRANCO,int numFonte=0,float angulo=0){
+    CGerenciadorFontes::EscreverString(str,posicaoX,posicaoY,numFonte,cor,CPIG_TEXTO_ESQUERDA,angulo);
 }
 
 /********************************
@@ -929,11 +964,12 @@ Parâmetros:
 str (entrada, passagem por referência): string a ser escrita na tela.
 posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever a string.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever a string.
+cor (entrada, passagem por valor): cor a ser aplicada à fonte no momento da escrita. Essa cor é misturada à cor original da fonte, se essa tiver sido informada na criação da fonte.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação da string.
 ********************************/
-void EscreverCentralizada(char *str,int posicaoX,int posicaoY,int numFonte=0,float angulo=0){
-    CGerenciadorFontes::EscreverString(str,posicaoX,posicaoY,numFonte,CPIG_TEXTO_CENTRO,angulo);
+void EscreverCentralizada(char *str,int posicaoX,int posicaoY,PIG_Cor cor=BRANCO,int numFonte=0,float angulo=0){
+    CGerenciadorFontes::EscreverString(str,posicaoX,posicaoY,numFonte,cor,CPIG_TEXTO_CENTRO,angulo);
 }
 
 /********************************
@@ -946,11 +982,12 @@ posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever a string.
 largMax (entrada, passagem por valor): largura máxima em pixels que pode ser utilizada para escrever as palavras em cada linha do texto. ao atingir esse limite, as palavras seguintes são escritas na linha abaixo.
 espacoEntreLinhas (entrada, passagem por valor): distância em pixels entre o valor Y de uma linha e o valor Y da linha abaixo.
+cor (entrada, passagem por valor): cor a ser aplicada à fonte no momento da escrita. Essa cor é misturada à cor original da fonte, se essa tiver sido informada na criação da fonte.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação das strings.
 ********************************/
-void EscreverLongaEsquerda(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,int numFonte=0,float angulo=0){
-    CGerenciadorFontes::EscreverLonga(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,numFonte,CPIG_TEXTO_ESQUERDA,angulo);
+void EscreverLongaEsquerda(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,PIG_Cor cor=BRANCO,int numFonte=0,float angulo=0){
+    CGerenciadorFontes::EscreverLonga(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,numFonte,cor,CPIG_TEXTO_ESQUERDA,angulo);
 }
 
 /********************************
@@ -963,11 +1000,12 @@ posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever a string.
 largMax (entrada, passagem por valor): largura máxima em pixels que pode ser utilizada para escrever as palavras em cada linha do texto. ao atingir esse limite, as palavras seguintes são escritas na linha abaixo.
 espacoEntreLinhas (entrada, passagem por valor): distância em pixels entre o valor Y de uma linha e o valor Y da linha abaixo.
+cor (entrada, passagem por valor): cor a ser aplicada à fonte no momento da escrita. Essa cor é misturada à cor original da fonte, se essa tiver sido informada na criação da fonte.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação das strings.
 ********************************/
-void EscreverLongaDireita(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,int numFonte=0,float angulo=0){
-    CGerenciadorFontes::EscreverLonga(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,numFonte,CPIG_TEXTO_DIREITA,angulo);
+void EscreverLongaDireita(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,PIG_Cor cor=BRANCO,int numFonte=0,float angulo=0){
+    CGerenciadorFontes::EscreverLonga(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,numFonte,cor,CPIG_TEXTO_DIREITA,angulo);
 }
 
 /********************************
@@ -980,11 +1018,12 @@ posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever a string.
 largMax (entrada, passagem por valor): largura máxima em pixels que pode ser utilizada para escrever as palavras em cada linha do texto. ao atingir esse limite, as palavras seguintes são escritas na linha abaixo.
 espacoEntreLinhas (entrada, passagem por valor): distância em pixels entre o valor Y de uma linha e o valor Y da linha abaixo.
+cor (entrada, passagem por valor): cor a ser aplicada à fonte no momento da escrita. Essa cor é misturada à cor original da fonte, se essa tiver sido informada na criação da fonte.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação das strings.
 ********************************/
-void EscreverLongaCentralizada(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,int numFonte=0,float angulo=0){
-    CGerenciadorFontes::EscreverLonga(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,numFonte,CPIG_TEXTO_CENTRO,angulo);
+void EscreverLongaCentralizada(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,PIG_Cor cor=BRANCO,int numFonte=0,float angulo=0){
+    CGerenciadorFontes::EscreverLonga(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,numFonte,cor,CPIG_TEXTO_CENTRO,angulo);
 }
 
 /********************************
@@ -993,11 +1032,12 @@ Parâmetros:
 valor (entrada, passagem por referência): número inteiro a ser escrito na tela.
 posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever o número.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever o número.
+cor (entrada, passagem por valor): cor a ser aplicada à fonte no momento da escrita. Essa cor é misturada à cor original da fonte, se essa tiver sido informada na criação da fonte.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número inteiro.
 ********************************/
-void EscreveInteiroEsquerda(int valor, int x, int y, int numFonte=0,float angulo=0){
-    CGerenciadorFontes::EscreverInteiro(valor,x,y,numFonte,CPIG_TEXTO_ESQUERDA,angulo);
+void EscreveInteiroEsquerda(int valor, int x, int y,PIG_Cor cor=BRANCO, int numFonte=0,float angulo=0){
+    CGerenciadorFontes::EscreverInteiro(valor,x,y,numFonte,cor,CPIG_TEXTO_ESQUERDA,angulo);
 }
 
 /********************************
@@ -1006,11 +1046,12 @@ Parâmetros:
 valor (entrada, passagem por referência): número inteiro a ser escrito na tela.
 posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever o número.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever o número.
+cor (entrada, passagem por valor): cor a ser aplicada à fonte no momento da escrita. Essa cor é misturada à cor original da fonte, se essa tiver sido informada na criação da fonte.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número inteiro.
 ********************************/
-void EscreveInteiroDireita(int valor, int x, int y, int numFonte=0,float angulo=0){
-    CGerenciadorFontes::EscreverInteiro(valor,x,y,numFonte,CPIG_TEXTO_DIREITA,angulo);
+void EscreveInteiroDireita(int valor, int x, int y,PIG_Cor cor=BRANCO, int numFonte=0,float angulo=0){
+    CGerenciadorFontes::EscreverInteiro(valor,x,y,numFonte,cor,CPIG_TEXTO_DIREITA,angulo);
 }
 
 /********************************
@@ -1019,11 +1060,12 @@ Parâmetros:
 valor (entrada, passagem por referência): número inteiro a ser escrito na tela.
 posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever o número.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever o número.
+cor (entrada, passagem por valor): cor a ser aplicada à fonte no momento da escrita. Essa cor é misturada à cor original da fonte, se essa tiver sido informada na criação da fonte.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número inteiro.
 ********************************/
-void EscreveInteiroCentralizado(int valor, int x, int y, int numFonte=0,float angulo=0){
-    CGerenciadorFontes::EscreverInteiro(valor,x,y,numFonte,CPIG_TEXTO_CENTRO,angulo);
+void EscreveInteiroCentralizado(int valor, int x, int y,PIG_Cor cor=BRANCO, int numFonte=0,float angulo=0){
+    CGerenciadorFontes::EscreverInteiro(valor,x,y,numFonte,cor,CPIG_TEXTO_CENTRO,angulo);
 }
 
 /********************************
@@ -1033,11 +1075,12 @@ valor (entrada, passagem por referência): número inteiro a ser escrito na tela.
 casas (entrada, passagem por referência): número de casas decimais a ser usado na escrita.
 posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever o número.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever o número.
+cor (entrada, passagem por valor): cor a ser aplicada à fonte no momento da escrita. Essa cor é misturada à cor original da fonte, se essa tiver sido informada na criação da fonte.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número real.
 ********************************/
-void EscreveDoubleEsquerda(double valor, int casas, int x, int y, int numFonte=0,float angulo=0){
-    CGerenciadorFontes::EscreverReal(valor,x,y,numFonte,casas,CPIG_TEXTO_ESQUERDA,angulo);
+void EscreveDoubleEsquerda(double valor, int casas, int x, int y,PIG_Cor cor=BRANCO, int numFonte=0,float angulo=0){
+    CGerenciadorFontes::EscreverReal(valor,x,y,numFonte,casas,cor,CPIG_TEXTO_ESQUERDA,angulo);
 }
 
 /********************************
@@ -1047,11 +1090,12 @@ valor (entrada, passagem por referência): número inteiro a ser escrito na tela.
 casas (entrada, passagem por referência): número de casas decimais a ser usado na escrita.
 posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever o número.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever o número.
+cor (entrada, passagem por valor): cor a ser aplicada à fonte no momento da escrita. Essa cor é misturada à cor original da fonte, se essa tiver sido informada na criação da fonte.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número real.
 ********************************/
-void EscreveDoubleDireita(double valor, int casas, int x, int y, int numFonte=0,float angulo=0){
-    CGerenciadorFontes::EscreverReal(valor,x,y,numFonte,casas,CPIG_TEXTO_DIREITA,angulo);
+void EscreveDoubleDireita(double valor, int casas, int x, int y,PIG_Cor cor=BRANCO, int numFonte=0,float angulo=0){
+    CGerenciadorFontes::EscreverReal(valor,x,y,numFonte,casas,cor,CPIG_TEXTO_DIREITA,angulo);
 }
 
 /********************************
@@ -1061,11 +1105,12 @@ valor (entrada, passagem por referência): número inteiro a ser escrito na tela.
 casas (entrada, passagem por referência): número de casas decimais a ser usado na escrita.
 posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja começar a escrever o número.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja começar a escrever o número.
+cor (entrada, passagem por valor): cor a ser aplicada à fonte no momento da escrita. Essa cor é misturada à cor original da fonte, se essa tiver sido informada na criação da fonte.
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário não deseje uma fonte especial, será utilizada a fonte padrão (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número real.
 ********************************/
-void EscreveDoubleCentralizado(double valor, int casas, int x, int y, int numFonte=0,float angulo=0){
-    CGerenciadorFontes::EscreverReal(valor,x,y,numFonte,casas,CPIG_TEXTO_CENTRO,angulo);
+void EscreveDoubleCentralizado(double valor, int casas, int x, int y,PIG_Cor cor=BRANCO, int numFonte=0,float angulo=0){
+    CGerenciadorFontes::EscreverReal(valor,x,y,numFonte,casas,cor,CPIG_TEXTO_CENTRO,angulo);
 }
 
 /********************************

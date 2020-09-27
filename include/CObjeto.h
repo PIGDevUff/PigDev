@@ -1,6 +1,6 @@
 #include <algorithm>
 #include <cmath>
-class CObjeto : public CVisual {
+class CObjeto : public CPigVisual {
 
 protected:
     std::map<int, int> valoresIntInt;
@@ -149,17 +149,17 @@ protected:
 public:
 
     CObjeto(std::string nomeArquivo, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0)
-    : CVisual(nomeArquivo, retiraFundo, corFundo, janela){
+    : CPigVisual(nomeArquivo, retiraFundo, corFundo, janela){
         ExtraiPixels();
     }
 
     CObjeto(OffscreenRenderer offRender, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0)
-    : CVisual(offRender, retiraFundo, corFundo, janela){
+    : CPigVisual(offRender, retiraFundo, corFundo, janela){
         ExtraiPixels();
     }
 
     CObjeto(CObjeto *objBase, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0)
-    : CVisual(objBase, retiraFundo, corFundo, janela){
+    : CPigVisual(objBase, retiraFundo, corFundo, janela){
         ExtraiPixels();
         SetDimensoes(objBase->alt, objBase->larg);
     }

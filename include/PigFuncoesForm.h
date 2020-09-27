@@ -209,8 +209,8 @@ int Pig_CriaListBox(int idForm,int x, int y,int larguraTotal,int alturaLinha,int
     return CGerenciadorForms::CriaListBox(idForm,x,y,larguraTotal,alturaLinha,alturaMaxima,alturaItem,largItem,nomeArq,retiraFundo);
 }
 
-int Pig_ListBox_CriaItem(int idComponente,char* texto,char* imagem = "",char* hintMsg="",bool itemHabilitado = true, int audio=-1,int retiraFundoImg = 1){
-    ((CPigListBox*)CGerenciadorForms::GetComponente(idComponente))->CriaItem(texto,imagem,false,itemHabilitado,audio,hintMsg,retiraFundoImg);
+int Pig_ListBox_CriaItem(int idComponente,char* texto,char* imagemIcone = "",char *imagemFundo="",char* hintMsg="",bool itemHabilitado = true, int audio=-1,int retiraFundoImg = 1){
+    ((CPigListBox*)CGerenciadorForms::GetComponente(idComponente))->CriaItem(texto,imagemIcone,imagemFundo,false,itemHabilitado,audio,hintMsg,retiraFundoImg);
 }
 
 /**********DROPDOWN**************/
@@ -219,8 +219,8 @@ int Pig_CriaDropDown(int idForm,int x, int y, int larguraTotal,int alturaLinha,i
     return CGerenciadorForms::CriaDropDown(idForm,x,y,larguraTotal,alturaLinha,alturaMaxima,alturaItem,larguraItem,nomeArq,retiraFundo);
 }
 
-int Pig_DropDown_CriaItem(int idComponente,char* texto,char* imagem = "",char* hintMsg="",bool itemHabilitado = true, int audio=-1,int retiraFundoImg = 1){
-    ((CPigDropDown*)CGerenciadorForms::GetComponente(idComponente))->CriaItem(texto,imagem,itemHabilitado,audio,hintMsg,retiraFundoImg);
+int Pig_DropDown_CriaItem(int idComponente,char* texto,char* imagemIcone = "",char *imagemFundo="", char* hintMsg="",bool itemHabilitado = true, int audio=-1,int retiraFundoImg = 1){
+    ((CPigDropDown*)CGerenciadorForms::GetComponente(idComponente))->CriaItem(texto,imagemIcone,imagemFundo,itemHabilitado,audio,hintMsg,retiraFundoImg);
 }
 
 /**********GAUGE**************/
@@ -261,8 +261,8 @@ int Pig_CriaRadioBox(int idForm,int x, int y,int larguraTotal,int alturaLinha, i
     return CGerenciadorForms::CriaRadioBox(idForm,x,y,larguraTotal,alturaLinha,alturaMaxima,imagemItem,alturaItem,larguraItem,imagemFundo,retiraFundo);
 }
 
-void Pig_RadioBox_CriaItem(int idComponente,char* itemLabel, char* hintMsg="", bool itemHabilitado = true, int audio=-1, int retiraFundo=1){
-    ((CPigRadioBox*)CGerenciadorForms::GetComponente(idComponente))->CriaItem(itemLabel,itemHabilitado,audio,hintMsg,retiraFundo);
+void Pig_RadioBox_CriaItem(int idComponente,char* itemLabel, char *imagemFundo="", char* hintMsg="", bool itemHabilitado = true, int audio=-1, int retiraFundo=1){
+    ((CPigRadioBox*)CGerenciadorForms::GetComponente(idComponente))->CriaItem(itemLabel,imagemFundo,itemHabilitado,audio,hintMsg,retiraFundo);
 }
 
 int Pig_RadioBox_GetItemDestaque(int idComponente){
@@ -299,8 +299,8 @@ int Pig_CriaCheckBox(int idForm,int x, int y,int larguraTotal,int alturaLinha, i
     return CGerenciadorForms::CriaCheckBox(idForm,x,y,larguraTotal,alturaLinha,alturaMaxima,imagemItem,alturaItem,larguraItem,imagemFundo,retiraFundo);
 }
 
-void Pig_CheckBox_CriaItem(int idComponente,char* itemLabel,char* hintMsg="",bool itemMarcado = false, bool itemHabilitado = true, int audio=-1,  int retiraFundo=1){
-    ((CPigCheckBox*)CGerenciadorForms::GetComponente(idComponente))->CriaItem(itemLabel,itemMarcado,itemHabilitado,audio,hintMsg,retiraFundo);
+void Pig_CheckBox_CriaItem(int idComponente,char* itemLabel,char *imagemFundo="",char* hintMsg="",bool itemMarcado = false, bool itemHabilitado = true, int audio=-1,  int retiraFundo=1){
+    ((CPigCheckBox*)CGerenciadorForms::GetComponente(idComponente))->CriaItem(itemLabel,imagemFundo,itemMarcado,itemHabilitado,audio,hintMsg,retiraFundo);
 }
 
 void Pig_CheckBox_SetMarcadoTodos(int idComponente,bool marcado){

@@ -48,6 +48,7 @@ protected:
                 TTF_SetFontOutline(font,0);
             }
 
+            //SDL_SetColorKey(surf,1,SDL_MapRGBA(surf->format,0,0,0,255));
             glyphsT[estilo][letra-PRIMEIRO_CAR] = SDL_CreateTextureFromSurface(render,surf);
 
             SDL_FreeSurface(surf);
@@ -78,9 +79,17 @@ protected:
         }
     }
 
-    CMapaCaracteres(){}
 
 public:
+
+    CMapaCaracteres(char *nomeFonte,int tamanhoFonte,int estilo, char *nomeFundo, int idJanela){
+        IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo);
+
+        SDL_Surface *fundo = IMG_Load(nomeFundo);//carrega a imagem de fundo
+        SDL_SetSurfaceBlendMode(fundo,SDL_BLENDMODE_MOD);
+        CriaLetrasSurface(estilo, 0,BRANCO, fundo);
+        SDL_FreeSurface(fundo);
+    }
 
     CMapaCaracteres(char *nomeFonte,int tamanhoFonte,int estilo, char *nomeFundo,int outline,PIG_Cor corOutline, int idJanela){
         IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo);
@@ -88,13 +97,20 @@ public:
         SDL_Surface *fundo = IMG_Load(nomeFundo);//carrega a imagem de fundo
         SDL_SetSurfaceBlendMode(fundo,SDL_BLENDMODE_MOD);
         CriaLetrasSurface(estilo, outline, corOutline, fundo);
-        SDL_FreeSurface(fundo);
     }
 
     CMapaCaracteres(char *nomeFonte,int tamanhoFonte,int estilo, PIG_Cor corFonte,int outline,PIG_Cor corOutline, int idJanela){
         IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo);
 
-        CriaLetrasSurface(estilo, outline, corOutline, NULL, corFonte);
+        CriaLetrasSurface(estilo, outline, corOutline, NULL);//, corFonte);
+
+        SDL_SetRenderTarget(render, NULL);
+    }
+
+    CMapaCaracteres(char *nomeFonte,int tamanhoFonte,int estilo, PIG_Cor corFonte, int idJanela){
+        IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo);
+
+        CriaLetrasSurface(estilo, 0, BRANCO, NULL);//, corFonte);
 
         SDL_SetRenderTarget(render, NULL);
     }
@@ -150,7 +166,7 @@ public:
     }
 
     int GetFonteDescent(){
-        return -fontDescent;//o valor armazenada fica negativo; a resposta é dada com valor positivo
+        return -fontDescent;//o valor armazenado fica negativo; a resposta é dada com valor positivo
     }
 
     int GetFonteAscent(){
@@ -241,7 +257,7 @@ public:
         return resp;
     }
 
-    virtual void Escreve(std::string texto,int x,int y,PIG_PosTexto pos=CPIG_TEXTO_ESQUERDA,float ang=0){
+    virtual void Escreve(std::string texto,int x,int y,PIG_Cor corFonte=BRANCO,PIG_PosTexto pos=CPIG_TEXTO_ESQUERDA,float ang=0,int alvoTextura=0){
         if (texto=="") return;
         int larguraPixels = GetLarguraPixelsString(texto);
         int delta=0;
@@ -267,9 +283,17 @@ public:
             if (aux-PRIMEIRO_CAR<0) continue;
             //printf("aux: %d  %d",aux,aux-PRIMEIRO_CAR);
 
+            SDL_SetTextureColorMod(glyphsT[estiloFixo][aux-PRIMEIRO_CAR],corFonte.r,corFonte.g,corFonte.b);
+
+            if (alvoTextura)    //caso esteja sendo escrito em textura (label), é preciso ajustar o modo
+                SDL_SetTextureBlendMode(glyphsT[estiloFixo][aux-PRIMEIRO_CAR], SDL_BLENDMODE_NONE);
+            else SDL_SetTextureBlendMode(glyphsT[estiloFixo][aux-PRIMEIRO_CAR], SDL_BLENDMODE_BLEND);
+
             rectDestino.w = larguraLetra[estiloFixo][aux-PRIMEIRO_CAR];
             rectDestino.h = tamFonte+alturaExtra[estiloFixo][aux-PRIMEIRO_CAR];
             rectDestino.y = altJanela-y-rectDestino.h;
+
+            //printf("%d %d %d %d\n",rectDestino.x,rectDestino.y,rectDestino.h,rectDestino.w);
 
             SDL_RenderCopyEx(render,glyphsT[estiloFixo][aux-PRIMEIRO_CAR],NULL,&rectDestino,-ang,&ponto,FLIP_NENHUM);
 
@@ -279,15 +303,37 @@ public:
 
     }
 
-    virtual void EscreveLonga(std::string texto,int x,int y,int largMax,int espacoEntreLinhas,PIG_PosTexto pos=CPIG_TEXTO_ESQUERDA,float angulo=0){
+    virtual void EscreveLonga(std::string texto,int x,int y,int largMax,int espacoEntreLinhas,PIG_Cor corFonte=BRANCO,PIG_PosTexto pos=CPIG_TEXTO_ESQUERDA,float angulo=0){
         if (texto=="") return;
         std::vector<std::string> linhas = ExtraiLinhas(texto,largMax);
         int yTotal=y;
         for (int k=0;k<linhas.size();k++){
-            Escreve(linhas[k],x,yTotal,pos,angulo);
+            Escreve(linhas[k],x,yTotal,corFonte,pos,angulo);
             yTotal -= espacoEntreLinhas;
         }
     }
+
+    virtual void Escreve(std::string texto,SDL_Texture *textura,PIG_Cor cor){
+        SDL_SetRenderTarget(render,textura);
+        SDL_SetRenderDrawColor(render,0,0,0,0);
+        int altJanela = CGerenciadorJanelas::GetJanela(janela)->GetAltura();
+        //SDL_SetRenderDrawBlendMode(render, SDL_BLENDMODE_BLEND);
+        /*switch(op1){
+        case 0: SDL_SetTextureBlendMode(textura, SDL_BLENDMODE_ADD);break;
+        case 1: SDL_SetTextureBlendMode(textura, SDL_BLENDMODE_NONE);break;
+        case 2: SDL_SetTextureBlendMode(textura, SDL_BLENDMODE_MOD);break;
+        case 3: SDL_SetTextureBlendMode(textura, SDL_BLENDMODE_BLEND);break;
+        case 4: SDL_SetTextureBlendMode(textura, SDL_BLENDMODE_ADD);break;
+        }*/
+        SDL_SetTextureBlendMode(textura, SDL_BLENDMODE_BLEND);
+        SDL_SetTextureColorMod(textura,cor.r,cor.g,cor.b);
+        //SDL_SetTextureAlphaMod(textura, 255);
+        Escreve(texto,0,altJanela-tamFonte+fontDescent,cor,CPIG_TEXTO_ESQUERDA,0,1);
+        //SDL_SetTextureBlendMode(textura, SDL_BLENDMODE_ADD);
+        //SDL_SetTextureAlphaMod(textura, 255);
+        SDL_SetRenderTarget(render, NULL);
+    }
+
 
     SDL_Surface *GetGlyph(Uint16 *emoji, PIG_Cor cor=BRANCO){
         return TTF_RenderUNICODE_Blended(font,emoji,cor);

@@ -1,3 +1,8 @@
+#ifndef _CPigCampoTextESenha_
+#define _CPigCampoTextESenha_
+
+#include "CPigCaixaTexto.h"
+
 class CPigCampoTextoESenha: public CPigCaixaTexto{
 
 private:
@@ -35,7 +40,8 @@ private:
         if(mouseOver){
             if (habilitado==false) return SELECIONADO_DESABILITADO;
             if (visivel==false) return SELECIONADO_INVISIVEL;
-            return EventosMouse(evento,p);
+            if (evento.mouse.acao == MOUSE_PRESSIONADO && evento.mouse.botao == MOUSE_ESQUERDO) return TrataMouseBotaoEsquerdo(p);
+            return SELECIONADO_MOUSEOVER;
         }
 
         return NAO_SELECIONADO;
@@ -130,7 +136,7 @@ public:
         SDL_Rect r={x+margemHorEsq+1,altJanela-y-alt+margemVertCima,larg-(margemHorEsq+margemHorDir),alt-(margemVertBaixo+margemVertCima)};
         SDL_RenderSetClipRect(renderer,&r);
 
-        CGerenciadorFontes::EscreverString(GetTextoVisivel(),xBase,yBase,fonteTexto,CPIG_TEXTO_ESQUERDA);
+        CGerenciadorFontes::EscreverString(GetTextoVisivel(),xBase,yBase,fonteTexto,BRANCO,CPIG_TEXTO_ESQUERDA);
         DesenhaCursor();//desenha o cursor (se estiver em edição)
 
         //desbloqueia o desenho fora da area do componente
@@ -158,3 +164,4 @@ public:
 };
 
 typedef CPigCampoTextoESenha *PigCampoTextoESenha;
+#endif // _CPigCampoTextESenha_

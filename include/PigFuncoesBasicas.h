@@ -102,14 +102,12 @@ std::string PIGGetDiretorioAtual(){
     }else return "./";
 }
 
-
 //retorna "valor" limitado entre [vMin, vMax]
 int PIGLimitaValor(int valor, int minimo,int maximo){
     if (valor<minimo) return minimo; //valor não pode ficar menor que o mínimo informado
     else if (valor>maximo) return maximo;//valor não pode ficar maior que o máximo informado
     else return valor;
 }
-
 
 //cria uma lista de strings contendo o nome do arquivos de um diretório
 std::vector<std::string> PIGListaArquivosDiretorio(std::string path) {

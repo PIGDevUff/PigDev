@@ -10,10 +10,10 @@ private:
     int xBarra,yBarra,altBarra,largBarra;
     PIG_GaugeCrescimentoBarra orientacaoCrescimento;
 
-    void DefineEstado(PIG_EstadoComponente estadoComponente){}
-    int OnMouseOn(){return 0;}
-    int OnMouseOff(){return 0;}
-    int TrataEvento(PIG_Evento evento){return 0;}
+    //void DefineEstado(PIG_EstadoComponente estadoComponente){}
+    //int OnMouseOn(){return 0;}
+    //int OnMouseOff(){return 0;}
+    //int TrataEvento(PIG_Evento evento){return 0;}
 
     SDL_Rect GeraClip(SDL_Rect barra){
         SDL_Rect resp = barra;

@@ -1,29 +1,33 @@
-typedef enum{COMPONENTE_NORMAL,COMPONENTE_MOUSEOVER,COMPONENTE_ACIONADO,COMPONENTE_DESABILITADO} PIG_EstadoComponente;
-typedef enum{PIG_COMPONENTE_CIMA_CENTRO,PIG_COMPONENTE_CIMA_ESQ,PIG_COMPONENTE_CIMA_DIR,PIG_COMPONENTE_BAIXO_CENTRO,PIG_COMPONENTE_BAIXO_DIR,PIG_COMPONENTE_BAIXO_ESQ,PIG_COMPONENTE_DIR_CIMA,PIG_COMPONENTE_DIR_BAIXO,PIG_COMPONENTE_DIR_CENTRO,PIG_COMPONENTE_ESQ_BAIXO,PIG_COMPONENTE_ESQ_CENTRO,PIG_COMPONENTE_ESQ_CIMA,PIG_COMPONENTE_CENTRO_CENTRO,PIG_COMPONENTE_PERSONALIZADA}PIG_PosicaoComponente;
-typedef enum{NORTE,SUL,LESTE,OESTE,NORDESTE,NOROESTE,SUDESTE,SUDOESTE,CENTRO}PIG_Ancora;
-typedef enum{NAO_SELECIONADO,SELECIONADO_INVISIVEL,SELECIONADO_DESABILITADO,SELECIONADO_TRATADO}Pig_EstadosEventos;
+#ifndef _CPigComponente_
+#define _CPigComponente_
 
-class CPigComponente: public CVisual{
+#include "CVisual.h"
+
+//typedef enum{COMPONENTE_NORMAL,COMPONENTE_MOUSEOVER,COMPONENTE_ACIONADO,COMPONENTE_DESABILITADO} PIG_EstadoComponente;
+typedef enum{PIG_COMPONENTE_CIMA_CENTRO,PIG_COMPONENTE_CIMA_ESQ,PIG_COMPONENTE_CIMA_DIR,PIG_COMPONENTE_BAIXO_CENTRO,PIG_COMPONENTE_BAIXO_DIR,PIG_COMPONENTE_BAIXO_ESQ,
+             PIG_COMPONENTE_DIR_CIMA,PIG_COMPONENTE_DIR_BAIXO,PIG_COMPONENTE_DIR_CENTRO,PIG_COMPONENTE_ESQ_BAIXO,PIG_COMPONENTE_ESQ_CENTRO,PIG_COMPONENTE_ESQ_CIMA,
+             PIG_COMPONENTE_CENTRO_CENTRO,PIG_COMPONENTE_PERSONALIZADA} PIG_PosicaoComponente;
+typedef enum{ANCORA_NORTE,ANCORA_SUL,ANCORA_LESTE,ANCORA_OESTE,ANCORA_NORDESTE,ANCORA_NOROESTE,ANCORA_SUDESTE,ANCORA_SUDOESTE,ANCORA_CENTRO}PIG_Ancora;
+typedef enum{NAO_SELECIONADO,SELECIONADO_MOUSEOVER,SELECIONADO_INVISIVEL,SELECIONADO_DESABILITADO,SELECIONADO_TRATADO}PIG_EstadosEventos;
+
+class CPigComponente: public CPigVisual{
 
 protected:
 
     bool temFoco,visivel,habilitado,mouseOver,acionado;
-    std::string hint,label;
-    int fonteHint,fonteLabel;
     int audioComponente;
     int id;
-    int labelX,labelY;
-    int altLetraLabel;
     PIG_PosicaoComponente posLabel,posComponente;
+    PigLabel lab,hint;
 
     //inicializa o componente com valores padrão
     void IniciaBase(int idComponente, int px, int py){
         id = idComponente;
-        hint = label = "";
-        SetFonteHint(0);
-        SetFonteLabel(0);
-        audioComponente = -1;
         posLabel = PIG_COMPONENTE_CENTRO_CENTRO;
+        lab = new CPigLabel("",0,BRANCO,idJanela);
+        hint = new CPigLabel("",0,BRANCO,idJanela);
+        PosicionaLabel();
+        audioComponente = -1;
         x = px;
         y = py;
         temFoco = false;
@@ -35,10 +39,11 @@ protected:
 
     //escreve o hint do componente na tela
     void EscreveHint(){
-        if (mouseOver&&hint!=""){
+        if (mouseOver&&hint->GetTexto()!=""){
             int mx,my;
             CMouse::PegaXY(mx,my);
-            CGerenciadorFontes::EscreverString(hint,mx+16,my+5,fonteHint);
+            hint->Move(mx+16,my+5);
+            hint->Desenha();
         }
     }
 
@@ -48,89 +53,78 @@ protected:
             return -1;
 
         SDL_Rect r={x,y,larg,alt};
-
         SetMouseOver(SDL_PointInRect(&pMouse,&r));
-        /*antesOn = mouseOver;
-        mouseOver = SDL_PointInRect(&p,&r);
-        if (agoraOn&&!antesOn){
-            //OnMouseOn();
-            SetMouseOver(true);
-            return 1;
-        }else if(!agoraOn&&antesOn){
-            //OnMouseOff();
-            SetMouseOver(false);
-            return -1;
-        }*/
         return mouseOver;
     }
 
-    //desenha o label
-    void DesenhaLabel(){
-        //printf("vai <%s> %d\n",label.c_str(),fonteLabel);
-        if (label!="") {
-            switch(posLabel){
+    void PosicionaLabel(){
+        int altLabel,largLabel;
+        lab->GetDimensoes(altLabel,largLabel);// = lab->GetAltura(),largLabel=lab->GetLargura();
+        switch(posLabel){
             case PIG_COMPONENTE_CIMA_CENTRO:
-                CGerenciadorFontes::EscreverString(label,x+larg/2,y+alt+5,fonteLabel,CPIG_TEXTO_CENTRO);
+                lab->Move(x+larg/2-largLabel/2,y+alt+5);
                 break;
             case PIG_COMPONENTE_CIMA_DIR:
-                CGerenciadorFontes::EscreverString(label,x+larg,y+alt+5,fonteLabel,CPIG_TEXTO_DIREITA);
+                lab->Move(x+larg,y+alt+5);//,fonteLabel,CPIG_TEXTO_DIREITA);
                 break;
             case PIG_COMPONENTE_CIMA_ESQ:
-                CGerenciadorFontes::EscreverString(label,x,y+alt+5,fonteLabel,CPIG_TEXTO_ESQUERDA);
+                lab->Move(x-largLabel,y+alt+5);//,fonteLabel,CPIG_TEXTO_ESQUERDA);
                 break;
             case PIG_COMPONENTE_BAIXO_CENTRO:
-                CGerenciadorFontes::EscreverString(label,x+larg/2,y-altLetraLabel,fonteLabel,CPIG_TEXTO_CENTRO);
+                lab->Move(x+larg/2-largLabel/2,y-altLabel);//,fonteLabel,CPIG_TEXTO_CENTRO);
                 break;
             case PIG_COMPONENTE_BAIXO_DIR:
-                CGerenciadorFontes::EscreverString(label,x+larg,y-altLetraLabel,fonteLabel,CPIG_TEXTO_DIREITA);
+                lab->Move(x+larg,y-altLabel);//,fonteLabel,CPIG_TEXTO_DIREITA);
                 break;
             case PIG_COMPONENTE_BAIXO_ESQ:
-                CGerenciadorFontes::EscreverString(label,x,y-altLetraLabel,fonteLabel,CPIG_TEXTO_ESQUERDA);
+                lab->Move(x-largLabel,y-altLabel);//,fonteLabel,CPIG_TEXTO_ESQUERDA);
                 break;
             case PIG_COMPONENTE_ESQ_BAIXO:
-                CGerenciadorFontes::EscreverString(label,x-5,y,fonteLabel,CPIG_TEXTO_DIREITA);
+                lab->Move(x-5-largLabel,y);//,fonteLabel);//,CPIG_TEXTO_DIREITA);
                 break;
             case PIG_COMPONENTE_ESQ_CENTRO:
-                CGerenciadorFontes::EscreverString(label,x-5,y+(alt-altLetraLabel)/2,fonteLabel,CPIG_TEXTO_DIREITA);
+                lab->Move(x-5-largLabel,y+(alt-altLabel)/2);//,fonteLabel,CPIG_TEXTO_DIREITA);
                 break;
             case PIG_COMPONENTE_ESQ_CIMA:
-                CGerenciadorFontes::EscreverString(label,x-5,y + (alt-altLetraLabel),fonteLabel,CPIG_TEXTO_ESQUERDA);
+                lab->Move(x-5-largLabel,y + (alt-altLabel));//,fonteLabel,CPIG_TEXTO_ESQUERDA);
                 break;
             case PIG_COMPONENTE_DIR_BAIXO:
-                CGerenciadorFontes::EscreverString(label,x+larg+5,y,fonteLabel,CPIG_TEXTO_ESQUERDA);
+                lab->Move(x+larg+5,y);//,fonteLabel,CPIG_TEXTO_ESQUERDA);
                 break;
             case PIG_COMPONENTE_DIR_CENTRO:
-                CGerenciadorFontes::EscreverString(label,x+larg+5,y + (alt-altLetraLabel)/2,fonteLabel,CPIG_TEXTO_ESQUERDA);
+                lab->Move(x+larg+5,y + (alt-altLabel)/2);//,fonteLabel,CPIG_TEXTO_ESQUERDA);
                 break;
             case PIG_COMPONENTE_DIR_CIMA:
-                CGerenciadorFontes::EscreverString(label,x+larg+5,y + (alt-altLetraLabel),fonteLabel,CPIG_TEXTO_ESQUERDA);
+                lab->Move(x+larg+5,y + (alt-altLabel));//,fonteLabel,CPIG_TEXTO_ESQUERDA);
                 break;
             case PIG_COMPONENTE_CENTRO_CENTRO:
-                CGerenciadorFontes::EscreverString(label,x+larg/2,y+(alt-altLetraLabel)/2,fonteLabel,CPIG_TEXTO_CENTRO);
+                lab->Move(x+larg/2-largLabel/2,y+(alt-altLabel)/2);//,fonteLabel,CPIG_TEXTO_CENTRO);
                 break;
             case PIG_COMPONENTE_PERSONALIZADA:
-                CGerenciadorFontes::EscreverString(label,labelX,labelY,fonteLabel,CPIG_TEXTO_ESQUERDA);
+                //lab->Move(x+labelX,y+labelY);//,fonteLabel,CPIG_TEXTO_ESQUERDA);
                 break;
             }
-        }
+    }
+
+    //desenha o label
+    inline void DesenhaLabel(){
+        lab->Desenha();
     }
 
 public:
 
-    //construtor temporário (apenas para compilação funcionar neste momento) - remover depois
-
-    CPigComponente(int idComponente,int px,int py, int altura, int largura, int janela=0):CVisual(altura, largura, "",janela){
+    CPigComponente(int idComponente,int px,int py, int altura, int largura, int janela=0):CPigVisual(altura, largura, "",janela){
         IniciaBase(idComponente,px,py);
     }
 
-    CPigComponente(int idComponente,int px,int py, int altura, int largura, std::string nomeArq,int retiraFundo=1,int janela=0):CVisual(nomeArq,retiraFundo,NULL,janela){
+    CPigComponente(int idComponente,int px,int py, int altura, int largura, std::string nomeArq,int retiraFundo=1,int janela=0):CPigVisual(nomeArq,retiraFundo,NULL,janela){
         IniciaBase(idComponente,px,py);
-        CVisual::SetDimensoes(altura,largura);
+        CPigVisual::SetDimensoes(altura,largura);
     }
 
     ~CPigComponente(){
-        hint.clear();
-        label.clear();
+        if (lab) delete lab;
+        if (hint) delete hint;
     }
 
     //recupera o id do componente
@@ -146,12 +140,21 @@ public:
 
     //define a mensagem de hint do componente
     void SetHint(std::string novoHint){
-        hint = novoHint;
+        hint->SetTexto(novoHint);
     }
 
     //define o label do componente
-    void SetLabel(std::string novoLabel){
-        label = novoLabel;
+    virtual void SetLabel(std::string novoLabel){
+        lab->SetTexto(novoLabel);
+        PosicionaLabel();
+    }
+
+    virtual void SetCorLabel(PIG_Cor corLabel){
+        lab->SetColoracao(corLabel);
+    }
+
+    virtual PIG_Cor GetCorLabel(){
+        return lab->GetCor();
     }
 
     //define o audio padrão do componentePIG_COMPONENTE_CENTRO_CENTRO
@@ -161,31 +164,40 @@ public:
 
     //define a fonte do hint
     virtual void SetFonteHint(int fonte){
-        fonteHint = fonte;
+        hint->SetFonte(fonte);
+    }
+
+    std::string GetHint(){
+        return hint->GetTexto();
+    }
+
+    int GetFonteHint(){
+        return hint->GetFonte();
     }
 
     //define a fonte do label
     virtual void SetFonteLabel(int fonte){
-        fonteLabel = fonte;
-        altLetraLabel = CGerenciadorFontes::GetTamanhoBaseFonte(fonteLabel)+CGerenciadorFontes::GetFonteDescent(fonteLabel);
+        lab->SetFonte(fonte);
+        PosicionaLabel();
     }
 
     //recupera o label
     std::string GetLabel(){
-        return label;
+        return lab->GetTexto();
     }
 
     //define a posição do label (dentre posições pré-estabelecidas)
     virtual int SetPosicaoPadraoLabel(PIG_PosicaoComponente pos){
         posLabel = pos;
+        PosicionaLabel();
         return 1;
     }
 
     //define a posição do label (posição arbiraria, relativa à posição do componente)
     virtual int SetPosicaoPersonalizadaLabel(int rx, int ry){
-        labelX = rx;
-        labelY = ry;
+        lab->Move(x+rx,y+ry);
         posLabel = PIG_COMPONENTE_PERSONALIZADA;//evitar que o usuário esqueça de chamar também a SetPosicaoPadraoLabel
+        PosicionaLabel();
         return 1;
     }
 
@@ -220,7 +232,6 @@ public:
     bool GetMouseOver(){
         return mouseOver;
     }
-
 
     PIG_PosicaoComponente GetPosComponente(){
         return posComponente;
@@ -288,37 +299,45 @@ public:
         this->GetDimensoes(altura,largura);
 
         switch(ancora){
-        case SUL:
+        case ANCORA_SUL:
             Move((largTela - largura)/2,0);
             break;
-        case SUDOESTE:
+        case ANCORA_SUDOESTE:
             Move(0,0);
             break;
-        case SUDESTE:
+        case ANCORA_SUDESTE:
             Move(largTela - largura,0);
             break;
-        case NORTE:
+        case ANCORA_NORTE:
             Move((largTela - largura)/2,altTela - altura);
             break;
-        case NOROESTE:
+        case ANCORA_NOROESTE:
             Move(0,altTela - altura);
             break;
-        case NORDESTE:
+        case ANCORA_NORDESTE:
             Move(largTela - largura,altTela - altura);
             break;
-        case CENTRO:
+        case ANCORA_CENTRO:
             Move((largTela - largura)/2,(altTela - altura)/2);
             break;
-        case OESTE:
+        case ANCORA_OESTE:
             Move(0,(altTela - altura)/2);
             break;
-        case LESTE:
+        case ANCORA_LESTE:
             Move(largTela - largura,(altTela - altura)/2);
             break;
         }
 
     }
 
+    void Move(int nx, int ny)override{
+        int dx = nx-x;
+        int dy = ny-y;
+        CPigVisual::Desloca(dx,dy);
+        lab->Desloca(dx,dy);
+    }
+
 };
 
 typedef CPigComponente *PigComponente;
+#endif // _CPigComponente_

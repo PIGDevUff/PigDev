@@ -1,3 +1,8 @@
+#ifndef _CPigDropDown_
+#define _CPigDropDown_
+
+#include "CPigListaItemComponente.h"
+
 class CPigDropDown: public CPigListaItemComponente{
 
 private:
@@ -46,9 +51,9 @@ private:
         if (itemDestaque>=0){                       //desenha o item no cabeçalho do dropdown
             int xItem,yItem;
             itens[itemDestaque]->GetXY(xItem,yItem);
-            itens[itemDestaque]->Move(xItem,y);
-            itens[itemDestaque]->Desenha();
-            itens[itemDestaque]->Move(xItem,yItem);
+            itens[itemDestaque]->Move(xItem,y);     //move o item para o ponto do cabeçalho
+            itens[itemDestaque]->Desenha();         //desenha o item no cabeçalho
+            itens[itemDestaque]->Move(xItem,yItem); //devolve o item para a posição normal (onde também deverá ser desenhado)
         }
     }
 
@@ -98,9 +103,9 @@ public:
 
     }
 
-    void CriaItem(std::string itemLabel, std::string arqImagem, bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
+    void CriaItem(std::string itemLabel, std::string arqImagemIcone="",std::string arqImagemFundoItem="", bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
         int yItem=y-(itens.size()+1)*altBaseLista;
-        CPigListaItemComponente::CriaItem(yItem,itemLabel,arqImagem,false,itemHabilitado,audioComponente,hintMsg,retiraFundo);
+        CPigListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,false,itemHabilitado,audioComponente,hintMsg,retiraFundo);
     }
 
     int Desenha(){
@@ -109,10 +114,10 @@ public:
         DesenhaLabel();
 
         if (!recolhida){
-                SDL_Rect r = dest;
-                r.h = (itens.size()+1)*altBaseLista;
-                r.y = dest.y;
-                SDL_RenderCopyEx(renderer,text,NULL,&r,-angulo,NULL,flip);
+            SDL_Rect r = dest;
+            r.h = (itens.size()+1)*altBaseLista;
+            r.y = dest.y;
+            SDL_RenderCopyEx(renderer,text,NULL,&r,-angulo,NULL,flip);
             for (PigItemComponente i: itens)
                 i->Desenha();
         }else{
@@ -125,7 +130,7 @@ public:
     int TrataEventoMouse(PIG_Evento evento){
         int resp = -1;
         bool mouseOverAntes = mouseOver;
-        if (ChecaMouseOver(CMouse::PegaXY())>0){
+        if (ChecaMouseOver(CMouse::PegaXY())){
             if (!recolhida){        //se o dropdown está exibindo os itens, é preciso tratá-los individualmente
                 for (int i=0;i<itens.size();i++){
                     if(itens[i]->TrataEventoMouse(evento) == SELECIONADO_TRATADO){
@@ -134,6 +139,8 @@ public:
                     }
                 }
                 SetAcionadoItem(resp,resp!=-1);
+                if (resp>=0) return SELECIONADO_TRATADO;
+                else return SELECIONADO_MOUSEOVER;
             }
             if (evento.mouse.acao==MOUSE_PRESSIONADO&&evento.mouse.botao==MOUSE_ESQUERDO){
                 SetRecolhida(!recolhida);
@@ -145,11 +152,11 @@ public:
             }
         }
 
-        return resp>=0?SELECIONADO_TRATADO:NAO_SELECIONADO;
+        return NAO_SELECIONADO;
     }
 
     int TrataEventoTeclado(PIG_Evento evento){
         return 0;
     }
 };
-
+#endif // _CPigDropDown_

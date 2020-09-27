@@ -1,13 +1,13 @@
 #ifndef _CMouse_
 #define _CMouse_
 
-#include "CPIGCursor.h"
+#include "CPIGIcone.h"
 class CMouse{
 
 private:
 
     static int cursorAtual;
-    static PIGCursor cursores[MAX_CURSORES];
+    static PIGIcone cursores[MAX_CURSORES];
     static bool cursorProprio;
     static SDL_Point p;
     static int estadoBotaoDireito,estadoBotaoEsquerdo,estadoBotaoCentral;
@@ -82,7 +82,7 @@ public:
 
     static void CarregaCursor(int indice,std::string nomeArquivo,int idJanela=0){
         if (cursores[indice]) delete cursores[indice];
-        cursores[indice] = new CPIGCursor(nomeArquivo,1,idJanela);
+        cursores[indice] = new CPIGIcone(nomeArquivo,1,idJanela);
         cursores[indice]->SetDimensoes(32,32);
         if (cursorAtual==-1) cursorAtual=indice;
     }
@@ -91,7 +91,7 @@ public:
 
 int CMouse::cursorAtual;
 bool CMouse::cursorProprio;
-PIGCursor CMouse::cursores[MAX_CURSORES];
+PIGIcone CMouse::cursores[MAX_CURSORES];
 SDL_Point CMouse::p;
 int CMouse::estadoBotaoDireito;
 int CMouse::estadoBotaoEsquerdo;

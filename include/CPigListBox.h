@@ -1,3 +1,8 @@
+#ifndef _CPigListBox_
+#define _CPigListBox_
+
+#include "CPigListaItemComponente.h"
+
 class CPigListBox: public CPigListaItemComponente{
 
 protected:
@@ -98,9 +103,12 @@ public:
         bool mouseOverAntes = mouseOver;
         if (ChecaMouseOver(CMouse::PegaXY())>0){
             for (int i=0;i<itens.size();i++){
-                if(itens[i]->TrataEventoMouse(evento) == SELECIONADO_TRATADO){
+                int aux = itens[i]->TrataEventoMouse(evento);
+                if(aux == SELECIONADO_TRATADO){
                     if (itens[i]->GetAcionado())
                         resp = i;
+                    SetHint(itens[i]->GetHint());
+                    SetFonteHint(itens[i]->GetFonteHint());
                 }
             }
             SetAcionado(resp,resp!=-1);
@@ -113,14 +121,13 @@ public:
         return resp>=0?SELECIONADO_TRATADO:NAO_SELECIONADO;
     }
 
-    void CriaItem(std::string itemLabel, std::string arqImagem, bool itemMarcado = false, bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
+    void CriaItem(std::string itemLabel, std::string arqImagemIcone="", std::string arqImagemFundoItem="",bool itemMarcado = false, bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
         int yItem = y+alt-(altBaseLista)*(itens.size()+1);
-        CPigListaItemComponente::CriaItem(yItem,itemLabel,arqImagem,itemMarcado,itemHabilitado,audio,hintMsg,retiraFundo);
+        CPigListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,itemMarcado,itemHabilitado,audio,hintMsg,retiraFundo);
     }
 
     void Move(int nx,int ny){
-
-        CVisual::Move(nx,ny);
+        CPigVisual::Move(nx,ny);
         int posY;
 
         for(int i=0;i<itens.size();i++){
@@ -158,3 +165,4 @@ public:
 
 };
 typedef CPigListBox* PigListBox;
+#endif // _CPigListBox_

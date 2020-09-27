@@ -82,7 +82,7 @@ typedef struct _VideoState{
 
 #include "CFilaPacotes.h"
 
-class CVideo:public CVisual{
+class CVideo:public CPigVisual{
 
 int audioDeviceId;
 double volume;
@@ -872,7 +872,8 @@ void DestroiVideoState(){
 
 public:
 
-CVideo(std::string nomeArq,int idJanela=0):CVisual(CGerenciadorJanelas::GetJanela(idJanela)->GetAltura(),CGerenciadorJanelas::GetJanela(idJanela)->GetLargura(),nomeArq,idJanela){
+CVideo(std::string nomeArq,int idJanela=0):
+    CPigVisual(CGerenciadorJanelas::GetJanela(idJanela)->GetAltura(),CGerenciadorJanelas::GetJanela(idJanela)->GetLargura(),nomeArq,idJanela){
     volume = 0.5;
     janelaAtual = CGerenciadorJanelas::GetJanela(idJanela);
 
@@ -1103,12 +1104,12 @@ void GetPivo(int &px,int &py){
 */
 
 void Move(int nx,int ny){
-    CVisual::Move(nx,ny);
+    CPigVisual::Move(nx,ny);
     janelaToda = false;
 }
 
-void SetDimensoes(int altura,int largura){
-    CVisual::SetDimensoes(altura,largura);
+void SetDimensoes(int altura,int largura)override{
+    CPigVisual::SetDimensoes(altura,largura);
     janelaToda = false;
 }
 

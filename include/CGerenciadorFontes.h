@@ -10,7 +10,6 @@ private:
     static int totalFontes;
     static PoolNumeros numFontes;
     static MapaCaracteres fontes[MAX_FONTES];
-    CGerenciadorFontes(){}
 
 public:
 
@@ -21,7 +20,8 @@ public:
     static void Inicia(){
         TTF_Init();
 
-        fontes[0] = new CMapaCaracteres(PIG_FONTE_PADRAO_NOME,PIG_FONTE_PADRAO_TAM,ESTILO_NORMAL,PIG_FONTE_PADRAO_COR,0,BRANCO,0);
+        fontes[0] = new CMapaCaracteres(PIG_FONTE_PADRAO_NOME,PIG_FONTE_PADRAO_TAM,ESTILO_NORMAL,PIG_FONTE_PADRAO_COR,0);
+        //fontes[0] = new CMapaCaracteres(PIG_FONTE_PADRAO_NOME,PIG_FONTE_PADRAO_TAM,ESTILO_NORMAL,PIG_FONTE_PADRAO_COR,0,VERDE,0);
         //fontes[0] = new CMapaCaracteres(PIG_FONTE_PADRAO_NOME,PIG_FONTE_PADRAO_TAM,ESTILO_NORMAL,"desenho.bmp",0,BRANCO,0);
         //fontes[0] = new CMapaCaracteresDinamicos("..//fontes//arial.ttf",PIG_FONTE_PADRAO_TAM,0);
         totalFontes = 1;
@@ -48,9 +48,23 @@ public:
         return resp;
     }
 
+    static int CriaFonteFundo(char *nome,int tamanho,int estilo,char *arquivoFundo,int idJanela=0){
+        int resp = numFontes->RetiraLivre();
+        fontes[resp] = new CMapaCaracteres(nome,tamanho,estilo,arquivoFundo,idJanela);
+        totalFontes++;
+        return resp;
+    }
+
     static int CriaFonteNormal(char *nome,int tamanho,int estilo,PIG_Cor corLetra,int contorno,PIG_Cor corContorno,int idJanela=0){
         int resp = numFontes->RetiraLivre();
         fontes[resp] = new CMapaCaracteres(nome,tamanho,estilo,corLetra,contorno,corContorno,idJanela);
+        totalFontes++;
+        return resp;
+    }
+
+    static int CriaFonteNormal(char *nome,int tamanho,int estilo,PIG_Cor corLetra=BRANCO,int idJanela=0){
+        int resp = numFontes->RetiraLivre();
+        fontes[resp] = new CMapaCaracteres(nome,tamanho,estilo,corLetra,idJanela);
         totalFontes++;
         return resp;
     }
@@ -74,25 +88,25 @@ public:
         return fontes[numFonte]->GetFonteAscent();
     }
 
-    inline static void EscreverString(std::string str,int x,int y,int numFonte,PIG_PosTexto pos = CPIG_TEXTO_ESQUERDA,float angulo=0){
-        fontes[numFonte]->Escreve(str,x,y,pos,angulo);
+    inline static void EscreverString(std::string str,int x,int y,int numFonte,PIG_Cor corFonte=BRANCO,PIG_PosTexto pos = CPIG_TEXTO_ESQUERDA,float angulo=0){
+        fontes[numFonte]->Escreve(str,x,y,corFonte,pos,angulo);
     }
 
-    inline static void EscreverInteiro(int valor,int x,int y,int numFonte,PIG_PosTexto pos = CPIG_TEXTO_ESQUERDA,float angulo=0){
+    inline static void EscreverInteiro(int valor,int x,int y,int numFonte,PIG_Cor corFonte=BRANCO,PIG_PosTexto pos = CPIG_TEXTO_ESQUERDA,float angulo=0){
         std::stringstream str;
         str<<valor;
-        fontes[numFonte]->Escreve(str.str(),x,y,pos,angulo);
+        fontes[numFonte]->Escreve(str.str(),x,y,corFonte,pos,angulo);
     }
 
-    inline static void EscreverReal(double valor,int x,int y,int numFonte,int casas=2,PIG_PosTexto pos = CPIG_TEXTO_ESQUERDA,float angulo=0){
+    inline static void EscreverReal(double valor,int x,int y,int numFonte,int casas=2,PIG_Cor corFonte=BRANCO,PIG_PosTexto pos = CPIG_TEXTO_ESQUERDA,float angulo=0){
         std::stringstream str;
         str.setf(std::ios_base::fixed, std::ios_base::floatfield);
         str<<std::setprecision(casas)<<valor;
-        fontes[numFonte]->Escreve(str.str(),x,y,pos,angulo);
+        fontes[numFonte]->Escreve(str.str(),x,y,corFonte,pos,angulo);
     }
 
-    inline static void EscreverLonga(std::string str,int x,int y,int largMax,int espacoEntreLinhas,int numFonte,PIG_PosTexto pos = CPIG_TEXTO_ESQUERDA,float angulo=0){
-        fontes[numFonte]->EscreveLonga(str,x,y,largMax,espacoEntreLinhas,pos,angulo);
+    inline static void EscreverLonga(std::string str,int x,int y,int largMax,int espacoEntreLinhas,int numFonte,PIG_Cor corFonte=BRANCO,PIG_PosTexto pos = CPIG_TEXTO_ESQUERDA,float angulo=0){
+        fontes[numFonte]->EscreveLonga(str,x,y,largMax,espacoEntreLinhas,corFonte,pos,angulo);
     }
 
     inline static std::vector<std::string> ExtraiLinhasString(std::string texto,int largMax,int numFonte){

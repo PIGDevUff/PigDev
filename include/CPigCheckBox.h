@@ -1,8 +1,11 @@
+#ifndef _CPigCheckBox_
+#define _CPigCheckBox_
+
+#include "CPigListaItemComponente.h"
 class CPigCheckBox: public CPigListaItemComponente{
 
 protected:
-    int altImagem,largImagem;
-    std::string arqImagem;
+    std::string arqIcone;
 
     void SetFoco(bool valor){
         temFoco = valor;
@@ -17,7 +20,8 @@ protected:
 
     static void AjustaFrame(PigItemComponente item){
         int itemAlt,itemLarg;
-        item->GetDimensoesOriginais(itemAlt,itemLarg);
+        PIGIcone icone = item->GetIcone();
+        icone->GetDimensoesOriginais(itemAlt,itemLarg);
         int largFrame = itemLarg/6;
         SDL_Rect r={0,0,largFrame,itemAlt};
         if (item->GetHabilitado()==false){
@@ -30,14 +34,14 @@ protected:
             if (item->GetAcionado()) r.x = largFrame;
             else r.x = 0;
         }
-        item->DefineFrame(r);
+        icone->DefineFrame(r);
     }
 
 public:
 
-    CPigCheckBox(int idComponente, int posX, int posY, int larguraTotal,int alturaLinha,int alturaMaxima,std::string imgItem, int alturaItem, int larguraItem,std::string imgFundo, int retiraFundo=1,int janela = 0):
+    CPigCheckBox(int idComponente, int posX, int posY, int larguraTotal,int alturaLinha,int alturaMaxima,std::string imgIcone, int alturaIcone, int larguraIcone,std::string imgFundo, int retiraFundo=1,int janela = 0):
         CPigListaItemComponente(idComponente,posX,posY,larguraTotal,alturaLinha,alturaMaxima,imgFundo,retiraFundo,janela){
-            arqImagem = imgItem;
+            arqIcone = imgIcone;
         }
 
     CPigCheckBox(std::string nomeArqParam):CPigCheckBox(LeArquivoParametros(nomeArqParam)){}
@@ -78,9 +82,9 @@ public:
 
     }
 
-    void CriaItem(std::string itemLabel, bool itemMarcado = false, bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
+    void CriaItem(std::string itemLabel, std::string arqImagemFundoItem="", bool itemMarcado = false, bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
         int yItem = y+alt-(altBaseLista)*(itens.size()+1);
-        CPigListaItemComponente::CriaItem(yItem,itemLabel,arqImagem,itemMarcado,itemHabilitado,audio,hintMsg,retiraFundo);
+        CPigListaItemComponente::CriaItem(yItem,itemLabel,arqIcone,arqImagemFundoItem,itemMarcado,itemHabilitado,audio,hintMsg,retiraFundo);
         itens[itens.size()-1]->DefineFuncaoAjusteFrame(AjustaFrame);
     }
 
@@ -106,12 +110,14 @@ public:
                 if (itens[i]->TrataEventoMouse(evento) == SELECIONADO_TRATADO)
                     resp = 1;
             }
+            if (resp) return SELECIONADO_TRATADO;
+            else return SELECIONADO_MOUSEOVER;
         }else if (mouseOverAntes){               //mouse estava antes, mas saiu
             for (int i=0;i<itens.size();i++){
                 itens[i]->SetMouseOver(false);
             }
         }
-        return resp?SELECIONADO_TRATADO:NAO_SELECIONADO;
+        return NAO_SELECIONADO;
     }
 
     int TrataEventoTeclado(PIG_Evento evento){
@@ -142,3 +148,4 @@ public:
 };
 
 typedef CPigCheckBox *PigCheckBox;
+#endif // _CPigCheckBox_

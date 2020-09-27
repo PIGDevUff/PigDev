@@ -1,14 +1,11 @@
-#ifndef _PIGFORM_
-#define _PIGFORM_
+#ifndef _CPigForm_
+#define _CPigForm_
 
 #include "CPigComponente.h"
 #include "CPigBotao.h"
 #include "CPigScrollBar.h"
-#include "CPigCaixaTexto.h"
 #include "CPigCampoTextoESenha.h"
 #include "CPigAreaDeTexto.h"
-#include "CPigItemComponente.h"
-#include "CPigListaItemComponente.h"
 #include "CPigRadioBox.h"
 #include "CPigCheckBox.h"
 #include "CPigListBox.h"
@@ -19,7 +16,7 @@
 #define MAX_COMPONENTES 500
 #define MAX_FORMS 100
 
-typedef enum{BOTAO,AREADETEXTO,CAMPOTEXTOSENHA,RADIOBOX,CHECKBOX,LISTA,DROPDOWN,GAUGE,GAUGECIRCULAR,SCROLLBAR}tipos_Componentes;
+typedef enum{PIG_BOTAO,PIG_AREADETEXTO,PIG_CAMPOTEXTOSENHA,PIG_RADIOBOX,PIG_CHECKBOX,PIG_LISTBOX,PIG_DROPDOWN,PIG_GAUGE,PIG_GAUGECIRCULAR,PIG_SCROLLBAR}tipos_Componentes;
 
 class CPigForm{
 
@@ -28,7 +25,7 @@ private:
     int idJanela,id;
     int x,y,alt,larg;
     int totalComponentes;
-    int componenteComFoco;
+    int componenteComFoco,componenteMouseOver;
     PigComponente componentes[MAX_COMPONENTES];
 
     inline int GetIdComponente(int componente){
@@ -36,14 +33,19 @@ private:
     }
 
     int TrataMouseComponentes(PIG_Evento evento){
+        componenteMouseOver = -1;
         for(int i=0;i<totalComponentes;i++){
-            if(componentes[i]->TrataEventoMouse(evento) == SELECIONADO_TRATADO){
+            int aux = componentes[i]->TrataEventoMouse(evento);
+            if(aux == SELECIONADO_TRATADO){
                 if (componenteComFoco!=-1 && componenteComFoco!=i){  //se já tem um outro componente com foco, ele vai perder o foco
                     componentes[componenteComFoco]->SetFoco(false);
                 }
-                componenteComFoco = i;                              //anota que terá o foco
+                componenteComFoco = i;                                //anota que terá o foco
+                componenteMouseOver = i;                              //anota que tem MouseOver
                 componentes[componenteComFoco]->SetFoco(true);        //faz o componente em questão ganhar foco
                 return 1;
+            }else if (aux == SELECIONADO_MOUSEOVER){
+                componenteMouseOver = i;
             }
         }
         if (evento.mouse.acao==MOUSE_PRESSIONADO&&evento.mouse.botao==MOUSE_ESQUERDO&&componenteComFoco!=-1){  //se já tem um componente com foco, ele vai perder o foco
@@ -74,7 +76,7 @@ public:
         idJanela = janela;
         totalComponentes = 0;
         id = idForm;
-        componenteComFoco = -1;
+        componenteComFoco = componenteMouseOver = -1;
         for(int i=0;i<MAX_COMPONENTES;i++)
             componentes[i] = NULL;
     }
@@ -85,8 +87,12 @@ public:
     }
 
     int Desenha(){
-        for(int i=0;i<totalComponentes;i++)
-            componentes[i]->Desenha();
+        for(int i=0;i<totalComponentes;i++){
+            if (i!=componenteMouseOver)
+                componentes[i]->Desenha();
+        }
+        if (componenteMouseOver!=-1)
+            componentes[componenteMouseOver]->Desenha();
     }
 
     int TrataEvento(PIG_Evento evento){
@@ -159,20 +165,20 @@ public:
     int CriaComponentePorArquivo(tipos_Componentes componente,std::string nomeArquivo){
         int idComponente = GetIdComponente(totalComponentes);
         switch(componente){
-            case BOTAO: componentes[totalComponentes++] = new CPigBotao(nomeArquivo);break;
-            case AREADETEXTO: componentes[totalComponentes++] = new CPigAreaDeTexto(nomeArquivo);break;
-            case CAMPOTEXTOSENHA: componentes[totalComponentes++] = new CPigCampoTextoESenha(nomeArquivo);break;
-            //case RADIOBOX: componentes[totalComponentes++] = new CPigRadioBox(nomeArquivo);break;
-            case CHECKBOX: componentes[totalComponentes++] = new CPigCheckBox(nomeArquivo);break;
-            //case LISTA: componentes[totalComponentes++] = new CPigLista(nomeArquivo);break;
-            //case DROPDOWN: componentes[totalComponentes++] = new CPigDropDown(nomeArquivo);break;
-            case GAUGE: componentes[totalComponentes++] = new CPigGauge(nomeArquivo);break;
-            case SCROLLBAR: componentes[totalComponentes++] = new CPigScrollBar(nomeArquivo);break;
-            case GAUGECIRCULAR: componentes[totalComponentes++] = new CPigGaugeCircular(nomeArquivo);break;
+            case PIG_BOTAO: componentes[totalComponentes++] = new CPigBotao(nomeArquivo);break;
+            case PIG_AREADETEXTO: componentes[totalComponentes++] = new CPigAreaDeTexto(nomeArquivo);break;
+            case PIG_CAMPOTEXTOSENHA: componentes[totalComponentes++] = new CPigCampoTextoESenha(nomeArquivo);break;
+            case PIG_RADIOBOX: componentes[totalComponentes++] = new CPigRadioBox(nomeArquivo);break;
+            case PIG_CHECKBOX: componentes[totalComponentes++] = new CPigCheckBox(nomeArquivo);break;
+            case PIG_LISTBOX: componentes[totalComponentes++] = new CPigListBox(nomeArquivo);break;
+            case PIG_DROPDOWN: componentes[totalComponentes++] = new CPigDropDown(nomeArquivo);break;
+            case PIG_GAUGE: componentes[totalComponentes++] = new CPigGauge(nomeArquivo);break;
+            case PIG_SCROLLBAR: componentes[totalComponentes++] = new CPigScrollBar(nomeArquivo);break;
+            case PIG_GAUGECIRCULAR: componentes[totalComponentes++] = new CPigGaugeCircular(nomeArquivo);break;
         }
         return idComponente;
     }
 
 };
 
-#endif // _PIGFORM_
+#endif // _CPigForm_

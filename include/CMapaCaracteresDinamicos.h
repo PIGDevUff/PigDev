@@ -123,17 +123,17 @@ private:
 public:
 
     //construtor com o nome do arquivo da fonte, o tamanha e a janela
-    CMapaCaracteresDinamicos(char *nomeFonte, int tamanhoFonte, int idJanela):CMapaCaracteres(){
-        IniciaBase(nomeFonte,tamanhoFonte,idJanela, -1);
+    CMapaCaracteresDinamicos(char *nomeFonte, int tamanhoFonte, int idJanela):CMapaCaracteres(nomeFonte,tamanhoFonte,ESTILO_NORMAL,BRANCO,idJanela){
+        //IniciaBase(nomeFonte,tamanhoFonte,idJanela, -1);
 
-        for (int estilo=0;estilo<PIG_TOTALESTILOS;estilo++)
+        for (int estilo=1;estilo<PIG_TOTALESTILOS;estilo++)
             CriaLetrasSurface(estilo, 0, BRANCO, NULL, BRANCO);
 
         SDL_SetRenderTarget(render, NULL);
     }
 
     //escreve uma string já formatada, alinhada com o ponto x,y e o parâmetro pos
-    void Escreve(CPigStringFormatada formatada,int x,int y,PIG_PosTexto pos=CPIG_TEXTO_ESQUERDA,float ang=0){
+    void Escreve(CPigStringFormatada formatada,int x,int y,PIG_PosTexto pos=CPIG_TEXTO_ESQUERDA,float ang=0,int alvoTextura=0){
         int delta = 0;
         switch(pos){
         case CPIG_TEXTO_ESQUERDA:
@@ -161,6 +161,10 @@ public:
             corAtual = formatada.GetCor(i);
             estiloAtual = formatada.GetEstilo(i);
 
+            if (alvoTextura)
+                SDL_SetTextureBlendMode(glyphsT[estiloAtual][aux-PRIMEIRO_CAR], SDL_BLENDMODE_NONE);
+            else SDL_SetTextureBlendMode(glyphsT[estiloAtual][aux-PRIMEIRO_CAR], SDL_BLENDMODE_BLEND);
+
             SDL_SetTextureColorMod(glyphsT[estiloAtual][aux-PRIMEIRO_CAR],corAtual.r,corAtual.g,corAtual.b);
 
             rectDestino.w = larguraLetra[estiloAtual][aux-PRIMEIRO_CAR];
@@ -175,14 +179,27 @@ public:
     }
 
     //escreve ums string normal, alinha com o ponto x,y e o parâmetro pos
-    void Escreve(std::string texto,int x,int y,PIG_PosTexto pos=CPIG_TEXTO_ESQUERDA,float ang=0)override{
+    void Escreve(std::string texto,int x,int y,PIG_Cor cor=BRANCO,PIG_PosTexto pos=CPIG_TEXTO_ESQUERDA,float ang=0,int alvoTextura=0)override{
         if (texto=="") return;
         CPigStringFormatada formatada = Processa(texto);
-        Escreve(formatada,x,y,pos,ang);
+        Escreve(formatada,x,y,pos,ang,alvoTextura);
+    }
+
+    void Escreve(std::string texto,SDL_Texture *textura,PIG_Cor cor){
+        SDL_SetRenderTarget(render,textura);
+        SDL_SetRenderDrawColor(render,0,0,0,0);
+        int altJanela = CGerenciadorJanelas::GetJanela(janela)->GetAltura();
+
+        SDL_SetTextureBlendMode(textura, SDL_BLENDMODE_BLEND);
+        SDL_SetTextureColorMod(textura,cor.r,cor.g,cor.b);
+
+        Escreve(texto,0,altJanela-tamFonte+fontDescent,cor,CPIG_TEXTO_ESQUERDA,0,1);
+
+        SDL_SetRenderTarget(render, NULL);
     }
 
     //escreve uma string longa (múltiplas linhas), incluindo formatação interna, alinhada de acordo com o ponto x,y e o parâmetro pos
-    void EscreveLonga(std::string texto,int x,int y,int largMax,int espacoEntreLinhas,PIG_PosTexto pos=CPIG_TEXTO_ESQUERDA,float angulo=0) override{
+    void EscreveLonga(std::string texto,int x,int y,int largMax,int espacoEntreLinhas,PIG_Cor corFonte=BRANCO,PIG_PosTexto pos=CPIG_TEXTO_ESQUERDA,float angulo=0) override{
         if (texto=="") return;
         CPigStringFormatada formatada = Processa(texto);
         //formatada.Print();

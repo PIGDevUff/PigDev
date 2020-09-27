@@ -1,4 +1,7 @@
+#ifndef _CPigAreaDeTexto_
+#define _CPigAreaDeTexto_
 
+#include "CPigCaixaTexto.h"
 
 class CPigAreaDeTexto: public CPigCaixaTexto{
 
@@ -50,7 +53,7 @@ private:
 
     //Verifica se é necessário acionar a ScrollBarVertical quando o texto é modificado
     void AcionaScrollBarVertical(){
-        int temp;
+        //int temp;
         scrollVerticalAtivado = ((espacoEntreLinhas + altLetra)*(linhas.size())) > (alt - (margemVertBaixo+margemVertCima));
         scrollVertical->SetVisivel(scrollVerticalAtivado);
         //if(!scrollVerticalAtivado) scrollVertical->DefineEstado(COMPONENTE_INVISIVEL);
@@ -59,7 +62,7 @@ private:
 
     //Verifica se é necessário acionar a ScrollBarHorizontal quando o texto é modificado
     void AcionaScrollBarHorizontal(){
-        int temp;
+        //int temp;
         scrollHorizontalAtivado = GetLarguraLinhaMaior() > (larg - (margemHorDir+margemHorEsq));
         scrollHorizontal->SetVisivel(scrollHorizontalAtivado);
         //if(!scrollHorizontalAtivado) scrollHorizontal->DefineEstado(COMPONENTE_INVISIVEL);
@@ -343,7 +346,6 @@ public:
         scrollVertical->SetSetasAtivadas(false);
         scrollVerticalAtivado = false;
         scrollVertical->SetVisivel(false);
-        //scrollVertical->DefineEstado(COMPONENTE_INVISIVEL);
         SetPosPadraoScrollVertical(PIG_COMPONENTE_DIR_CENTRO);
     }
 
@@ -380,7 +382,7 @@ public:
     }
 
     void Move(int px,int py){
-        CVisual::Move(px,py);
+        CPigVisual::Move(px,py);
         xOriginal = px;
         yOriginal = py;
         if(scrollHorizontal) scrollHorizontal->SetPosPadraoExternaComponente(scrollHorizontal->GetPosComponente(),this);
@@ -397,7 +399,7 @@ public:
     }
 
     void SetDimensoes(int altura,int largura){
-        CVisual::SetDimensoes(altura,largura);
+        CPigVisual::SetDimensoes(altura,largura);
         largReal = largura;
         altReal = altura;
         ResetaValoresBase();
@@ -416,7 +418,7 @@ public:
         SDL_RenderSetClipRect(renderer,&r);
 
         DesenhaCursor();//desenha o cursor (se estiver em edição)
-        CGerenciadorFontes::EscreverLonga(texto,xBase,yBase,largMax,(espacoEntreLinhas + altLetra),fonteTexto,CPIG_TEXTO_ESQUERDA);
+        CGerenciadorFontes::EscreverLonga(texto,xBase,yBase,largMax,(espacoEntreLinhas + altLetra),fonteTexto,BRANCO,CPIG_TEXTO_ESQUERDA);
         if(linhasPauta) DesenhaLinhasHorizontais();
 
         //desbloqueia o desenho fora da area do componente
@@ -454,7 +456,8 @@ public:
             if(visivel==false) return SELECIONADO_INVISIVEL;
             if(scrollVerticalAtivado) TrataScrollBarVertical(evento);
             if(scrollHorizontalAtivado) TrataScrollBarHorizontal(evento);
-            return EventosMouse(evento,p);
+            if (evento.mouse.acao == MOUSE_PRESSIONADO && evento.mouse.botao == MOUSE_ESQUERDO) return TrataMouseBotaoEsquerdo(p);
+            return SELECIONADO_MOUSEOVER;
         }
         return NAO_SELECIONADO;
     }
@@ -487,3 +490,4 @@ public:
 
 typedef CPigAreaDeTexto *PigAreaDeTexto;
 
+#endif // _CPigAreaDeTexto_
