@@ -7,8 +7,8 @@ Versão 0.7.2 da Biblioteca PIG.h
 #include "SDL_image.h"
 #include "SDL_net.h"
 #include "Tipos_PIG.h"
-#include "PigFuncoesBasicas.h"
-#include "CPigErros.h"
+#include "PIGFuncoesBasicas.h"
+#include "CPIGErros.h"
 #include "CPoolNumeros.h"
 #include "SDL_mixer.h"
 #include "CGerenciadorJanelas.h"
@@ -17,7 +17,7 @@ Versão 0.7.2 da Biblioteca PIG.h
 #include "COffscreenRenderer.h"
 #include "CGerenciadorFontes.h"
 #include "CVisual.h"
-#include "CPigLabel.h"
+#include "CPIGLabel.h"
 #include "CMouse.h"
 #include "CGerenciadorObjetos.h"
 #include "CGerenciadorTimers.h"
@@ -28,7 +28,7 @@ Versão 0.7.2 da Biblioteca PIG.h
 #include "CGerenciadorControles.h"
 #include "CGerenciadorForms.h"
 #include "CJogo.h"
-#include "PigFuncoesForm.h"
+//#include "PIGFuncoesForm.h"
 
 /********************************
 / Variáveis Globais
@@ -3461,3 +3461,352 @@ Retorna o nível de opacidade do vídeo na faixa 0-255.
 int GetOpacidadeVideo(int idVideo){
     return CGerenciadorVideos::GetOpacidade(idVideo);
 }
+
+
+
+
+/*******FORM*********/
+
+int PIG_CriaForm(int xForm, int yForm, int altForm, int largForm,int janela = 0){
+    return CGerenciadorForms::CriaForm(xForm,yForm,altForm,largForm,janela);
+}
+
+int PIG_Form_TrataEvento(int idForm,PIG_Evento evento){
+    return CGerenciadorForms::TrataEvento(idForm,evento);
+}
+
+int PIG_Form_Desenha(int idForm){
+    return CGerenciadorForms::Desenha(idForm);
+}
+
+/*******COMPONENTES*********/
+
+int PIG_CriaComponentePorArquivo(int idForm,tipos_Componentes componente,char* nomeArquivo){
+    return CGerenciadorForms::CriaComponentePorArquivo(idForm,componente,nomeArquivo);
+}
+
+void PIG_Componentes_SetLabel(int idComponente,char* novoLabel){
+    CGerenciadorForms::GetComponente(idComponente)->SetLabel(novoLabel);
+}
+
+void PIG_Componentes_SetFonteLabel(int idComponente,int fonte){
+    CGerenciadorForms::GetComponente(idComponente)->SetFonteLabel(fonte);
+}
+
+void PIG_Componentes_SetCorLabel(int idComponente,PIG_Cor cor){
+    CGerenciadorForms::GetComponente(idComponente)->SetCorLabel(cor);
+}
+
+void PIG_Componentes_SetFonteHint(int idComponente,int fonte){
+    CGerenciadorForms::GetComponente(idComponente)->SetFonteHint(fonte);
+}
+
+void PIG_Componentes_SetCorHint(int idComponente,PIG_Cor cor){
+    CGerenciadorForms::GetComponente(idComponente)->SetCorHint(cor);
+}
+
+void PIG_Componentes_SetAudio(int idComponente,int idAudio){
+    CGerenciadorForms::GetComponente(idComponente)->SetAudio(idAudio);
+}
+
+void PIG_Componentes_GetLabel(int idComponente,char *label){
+    strcpy(label,(char*)(CGerenciadorForms::GetComponente(idComponente)->GetLabel()).c_str());
+}
+
+void PIG_Componentes_SetHint(int idComponente,char *hint){
+    CGerenciadorForms::GetComponente(idComponente)->SetHint(hint);
+}
+
+void PIG_Componentes_Move(int idComponente,int x,int y){
+    CGerenciadorForms::GetComponente(idComponente)->Move(x,y);
+}
+
+void PIG_Componentes_SetDimensoes(int idComponente,int altura,int largura){
+    CGerenciadorForms::GetComponente(idComponente)->SetDimensoes(altura,largura);
+}
+
+void PIG_Componentes_SetPosicaoPadraoLabel(int idComponente,PIG_PosicaoComponente pos){
+    CGerenciadorForms::GetComponente(idComponente)->SetPosicaoPadraoLabel(pos);
+}
+
+void PIG_Componentes_SetPosicaoPersonalizadaLabel(int idComponente,int x,int y){
+    CGerenciadorForms::GetComponente(idComponente)->SetPosicaoPersonalizadaLabel(x,y);
+}
+
+void PIG_Componentes_SetPosPadraoExternaComponente(int idComponente,PIG_PosicaoComponente pos,CPigComponente *componenteAssociado){
+    CGerenciadorForms::GetComponente(idComponente)->SetPosPadraoExternaComponente(pos,componenteAssociado);
+}
+
+void PIG_Componentes_SetPosPadraoComponenteNaTela(int idComponente,PIG_Ancora pos){
+    CGerenciadorForms::GetComponente(idComponente)->SetPosPadraoComponenteNaTela(pos);
+}
+
+/*******BOTAO*********/
+
+int PIG_CriaBotao(int idForm,int x,int y,int alt,int larg,char* nomeArq,int retiraFundo = 1){
+    return CGerenciadorForms::CriaBotao(idForm,x,y,alt,larg,nomeArq,retiraFundo);
+}
+
+void PIG_Botao_DefineAcao(int idComponente,AcaoBotao funcao,void *parametro){
+    ((CPigBotao*)CGerenciadorForms::GetComponente(idComponente))->DefineAcao(funcao,parametro);
+}
+
+void PIG_Botao_DefineAtalho(int idComponente,int teclaAtalho){
+    ((CPigBotao*)CGerenciadorForms::GetComponente(idComponente))->DefineAtalho(teclaAtalho);
+}
+
+void PIG_Botao_DefineTempoRepeticao(int idComponente,double segundos){
+    ((CPigBotao*)CGerenciadorForms::GetComponente(idComponente))->DefineTempoRepeticao(segundos);
+}
+
+void PIG_Botao_DefineBotaoRepeticao(int idComponente,bool repeticao){
+    ((CPigBotao*)CGerenciadorForms::GetComponente(idComponente))->DefineBotaoRepeticao(repeticao);
+}
+
+/*******AREADETEXTO*********/
+
+int PIG_CriaAreaDeTexto(int idForm,int x, int y, int altura,int largura,char* nomeArq,int maxCars = 200,int retiraFundo=1){
+    return CGerenciadorForms::CriaAreaDeTexto(idForm,x,y,altura,largura,nomeArq,maxCars,retiraFundo);
+}
+
+void PIG_AreaDeTexto_SetScrollBarVertical(int idComponente,int larguraTotal,int comprimentoTotal,int larguraHandle,char* imgHandle,char* imgTrilha,int retiraFundoHandle=1,int retiraFundoTrilha=1){
+    ((PigAreaDeTexto)CGerenciadorForms::GetComponente(idComponente))->SetScrollBarVertical(larguraTotal,comprimentoTotal,larguraHandle,imgHandle,imgTrilha,retiraFundoHandle,retiraFundoTrilha);
+}
+
+void PIG_AreaDeTexto_SetScrollBarHorizontal(int idComponente,int larguraTotal,int comprimentoTotal,int larguraHandle,char* imgHandle,char* imgTrilha,int retiraFundoHandle=1,int retiraFundoTrilha=1){
+    ((PigAreaDeTexto)CGerenciadorForms::GetComponente(idComponente))->SetScrollBarHorizontal(larguraTotal,comprimentoTotal,larguraHandle,imgHandle,imgTrilha,retiraFundoHandle,retiraFundoTrilha);
+}
+
+void PIG_AreaDeTexto_SetBotoesScrollBarVertical(int idComponente,int larguraBotoes,char* imgBotao1,char* imgBotao2,int retiraFundoB1 = 1,int retiraFundoB2 = 1){
+    ((PigAreaDeTexto)CGerenciadorForms::GetComponente(idComponente))->SetBotoesScrollBarVertical(larguraBotoes,imgBotao1,imgBotao2,retiraFundoB1,retiraFundoB2);
+}
+
+void PIG_AreaDeTexto_SetBotoesScrollBarHorizontal(int idComponente,int larguraBotoes,char* imgBotao1,char* imgBotao2,int retiraFundoB1 = 1,int retiraFundoB2 = 1){
+    ((PigAreaDeTexto)CGerenciadorForms::GetComponente(idComponente))->SetBotoesScrollBarVertical(larguraBotoes,imgBotao1,imgBotao2,retiraFundoB1,retiraFundoB2);
+}
+
+void PIG_AreaDeTexto_SetPosPadraoScrollHorizontal(int idComponente,PIG_PosicaoComponente pos){
+    ((PigAreaDeTexto)CGerenciadorForms::GetComponente(idComponente))->SetPosPadraoScrollHorizontal(pos);
+}
+
+void PIG_AreaDeTexto_SetPosPadraoScrollVertical(int idComponente,PIG_PosicaoComponente pos){
+    ((PigAreaDeTexto)CGerenciadorForms::GetComponente(idComponente))->SetPosPadraoScrollVertical(pos);
+}
+
+void PIG_AreaDeTexto_MoveScrollBarHorizontal(int idComponente,int x,int y){
+    ((PigAreaDeTexto)CGerenciadorForms::GetComponente(idComponente))->MoveScrollBarHorizontal(x,y);
+}
+
+void PIG_AreaDeTexto_MoveScrollBarVertical(int idComponente,int x,int y){
+    ((PigAreaDeTexto)CGerenciadorForms::GetComponente(idComponente))->MoveScrollBarVertical(x,y);
+}
+
+void PIG_AreaDeTexto_SetFonteTexto(int idComponente,int fonte){
+    ((PigAreaDeTexto)CGerenciadorForms::GetComponente(idComponente))->SetFonteTexto(fonte);
+}
+
+void PIG_AreaDeTexto_SetLinhasAbaixoTexto(int idComponente,bool visivel,PIG_Cor cor = PRETO){
+    ((PigAreaDeTexto)CGerenciadorForms::GetComponente(idComponente))->SetLinhasAbaixoTexto(visivel,cor);
+}
+
+void PIG_AreaDeTexto_SetLargMaxTexto(int idComponente,int largMaxTexto){
+    ((PigAreaDeTexto)CGerenciadorForms::GetComponente(idComponente))->SetLargMaxTexto(largMaxTexto);
+}
+
+void PIG_AreaDeTexto_SetEspacoEntreAsLinhas(int idComponente,int espaco){
+    ((PigAreaDeTexto)CGerenciadorForms::GetComponente(idComponente))->SetEspacoEntreAsLinhas(espaco);
+}
+
+void PIG_AreaDeTexto_SetTexto(int idComponente,char* frase){
+    ((PigAreaDeTexto)CGerenciadorForms::GetComponente(idComponente))->SetTexto(frase);
+}
+
+void PIG_AreaDeTexto_SetMargens(int idComponente,int horEsq,int horDir, int vertBaixo,int vertCima){
+    ((PigAreaDeTexto)CGerenciadorForms::GetComponente(idComponente))->SetMargens(horEsq,horDir,vertBaixo,vertCima);
+}
+
+void PIG_AreaDeTexto_SetCorCursor(int idComponente,PIG_Cor cor){
+    ((PigAreaDeTexto)CGerenciadorForms::GetComponente(idComponente))->SetCorCursor(cor);
+}
+
+std::vector<std::string> PIG_AreaDeTexto_GetLinhasTexto(int idComponente){
+    ((PigAreaDeTexto)CGerenciadorForms::GetComponente(idComponente))->GetLinhasTexto();
+}
+
+/**********CAMPOTEXTO**************/
+
+int PIG_CriaCampoTexto(int idForm,int x, int y, int altura,int largura,char* nomeArq,int maxCars = 200, bool apenasNumeros=false, int retiraFundo=1){
+    return CGerenciadorForms::CriaCampoTextoESenha(idForm,x,y,altura,largura,nomeArq,maxCars,apenasNumeros,retiraFundo,false);
+}
+
+void PIG_CampoTexto_SetMargens(int idComponente,int horEsq,int horDir, int vertBaixo,int vertCima){
+    ((PigCampoTextoESenha)CGerenciadorForms::GetComponente(idComponente))->SetMargens(horEsq,horDir,vertBaixo,vertCima);
+}
+
+void PIG_CampoTexto_SetTexto(int idComponente,char* frase){
+    ((PigCampoTextoESenha)CGerenciadorForms::GetComponente(idComponente))->SetTexto(frase);
+}
+
+void PIG_CampoTexto_SetFonteTexto(int idComponente,int fonte){
+    ((PigCampoTextoESenha)CGerenciadorForms::GetComponente(idComponente))->SetFonteTexto(fonte);
+}
+
+void PIG_CampoTexto_SetCorCursor(int idComponente,PIG_Cor cor){
+    ((PigCampoTextoESenha)CGerenciadorForms::GetComponente(idComponente))->SetCorCursor(cor);
+}
+
+/**********CAMPOSENHA**************/
+
+int PIG_CriaCampoSenha(int idForm,int x, int y, int altura,int largura,char* nomeArq,int maxCars = 200, bool apenasNumeros=false, int retiraFundo=1){
+    return CGerenciadorForms::CriaCampoTextoESenha(idForm,x,y,altura,largura,nomeArq,maxCars,apenasNumeros,retiraFundo,true);
+}
+
+void PIG_CampoSenha_SetMargens(int idComponente,int horEsq,int horDir, int vertBaixo,int vertCima){
+    ((PigCampoTextoESenha)CGerenciadorForms::GetComponente(idComponente))->SetMargens(horEsq,horDir,vertBaixo,vertCima);
+}
+
+void PIG_CampoSenha_SetTexto(int idComponente,char* frase){
+    ((PigCampoTextoESenha)CGerenciadorForms::GetComponente(idComponente))->SetTexto(frase);
+}
+
+void PIG_CampoSenha_SetFonteTexto(int idComponente,int fonte){
+    ((PigCampoTextoESenha)CGerenciadorForms::GetComponente(idComponente))->SetFonteTexto(fonte);
+}
+
+void PIG_CampoSenha_SetCorCursor(int idComponente,PIG_Cor cor){
+    ((PigCampoTextoESenha)CGerenciadorForms::GetComponente(idComponente))->SetCorCursor(cor);
+}
+
+/**********LISTA**************/
+
+int PIG_CriaListBox(int idForm,int x, int y,int larguraTotal,int alturaLinha,int alturaMaxima,int alturaItem,int largItem,char* nomeArq,int retiraFundo=1){
+    return CGerenciadorForms::CriaListBox(idForm,x,y,larguraTotal,alturaLinha,alturaMaxima,alturaItem,largItem,nomeArq,retiraFundo);
+}
+
+int PIG_ListBox_CriaItem(int idComponente,char* texto,char* imagemIcone = "",char *imagemFundo="",char* hintMsg="",bool itemHabilitado = true, int audio=-1,int retiraFundoImg = 1){
+    ((PigListBox)CGerenciadorForms::GetComponente(idComponente))->CriaItem(texto,imagemIcone,imagemFundo,false,itemHabilitado,audio,hintMsg,retiraFundoImg);
+}
+
+/**********DROPDOWN**************/
+
+int PIG_CriaDropDown(int idForm,int x, int y, int larguraTotal,int alturaLinha,int alturaMaxima,int alturaItem,int larguraItem,char* nomeArq,int retiraFundo=1){
+    return CGerenciadorForms::CriaDropDown(idForm,x,y,larguraTotal,alturaLinha,alturaMaxima,alturaItem,larguraItem,nomeArq,retiraFundo);
+}
+
+int PIG_DropDown_CriaItem(int idComponente,char* texto,char* imagemIcone = "",char *imagemFundo="", char* hintMsg="",bool itemHabilitado = true, int audio=-1,int retiraFundoImg = 1){
+    ((PigDropDown)CGerenciadorForms::GetComponente(idComponente))->CriaItem(texto,imagemIcone,imagemFundo,itemHabilitado,audio,hintMsg,retiraFundoImg);
+}
+
+/**********GAUGE**************/
+
+int PIG_CriaGauge(int idForm,int x, int y,int altura,int largura,char* imgGauge,int retiraFundo=1){
+    return CGerenciadorForms::CriaGauge(idForm,x,y,altura,largura,imgGauge,retiraFundo);
+}
+
+void PIG_Gauge_SetFrames(int idComponente,SDL_Rect fBase,SDL_Rect fBarra){
+    ((PigGauge)CGerenciadorForms::GetComponente(idComponente))->SetFrames(fBase,fBarra);
+}
+
+void PIG_Gauge_SetDelta(int idComponente,float valor){
+    ((PigGauge)CGerenciadorForms::GetComponente(idComponente))->SetDelta(valor);
+}
+
+void PIG_Gauge_AvancaDelta(int idComponente){
+    ((PigGauge)CGerenciadorForms::GetComponente(idComponente))->AvancaDelta();
+}
+
+float PIG_Gauge_GetPorcentagemConcluida(int idComponente){
+    return ((PigGauge)CGerenciadorForms::GetComponente(idComponente))->GetPorcentagemConcluida();
+}
+
+void PIG_Gauge_ZeraValor(int idComponente){
+    ((PigGauge)CGerenciadorForms::GetComponente(idComponente))->ZeraValor();
+}
+
+/**********GAUGECIRCULAR**************/
+
+int PIG_CriaGaugeCircular(int idForm,int x, int y,int altura,int largura,int raioInterior,char* imgGauge,int retiraFundo=1){
+    return CGerenciadorForms::CriaGaugeCircular(idForm,x,y,altura,largura,raioInterior,imgGauge,retiraFundo);
+}
+
+/**********RADIOBOX**************/
+
+int PIG_CriaRadioBox(int idForm,int x, int y,int larguraTotal,int alturaLinha, int alturaMaxima,char* imagemItem, int alturaItem, int larguraItem,char* imagemFundo, int retiraFundo=1){
+    return CGerenciadorForms::CriaRadioBox(idForm,x,y,larguraTotal,alturaLinha,alturaMaxima,imagemItem,alturaItem,larguraItem,imagemFundo,retiraFundo);
+}
+
+void PIG_RadioBox_CriaItem(int idComponente,char* itemLabel, char *imagemFundo="", char* hintMsg="", bool itemHabilitado = true, int audio=-1, int retiraFundo=1){
+    ((PigRadioBox)CGerenciadorForms::GetComponente(idComponente))->CriaItem(itemLabel,imagemFundo,itemHabilitado,audio,hintMsg,retiraFundo);
+}
+
+int PIG_RadioBox_GetItemDestaque(int idComponente){
+    return ((PigRadioBox)CGerenciadorForms::GetComponente(idComponente))->GetItemDestaque();
+}
+
+int PIG_RadioBox_SetItemMarcado(int idComponente,int item, bool marcado){
+    return ((PigRadioBox)CGerenciadorForms::GetComponente(idComponente))->SetAcionadoItem(item,marcado);
+}
+
+int PIG_RadioBox_GetEstadoMarcadoItem(int idComponente,int item){
+    return ((PigRadioBox)CGerenciadorForms::GetComponente(idComponente))->GetAcionadoItem(item);
+}
+
+int PIG_RadioBox_SetAudioItem(int idComponente,int item,int audio){
+    return ((PigRadioBox)CGerenciadorForms::GetComponente(idComponente))->SetAudioItem(item,audio);
+}
+
+int PIG_RadioBox_GetEstadoHabilitadoItem(int idComponente,int item){
+    return ((PigRadioBox)CGerenciadorForms::GetComponente(idComponente))->GetHabilitadoItem(item);
+}
+
+int PIG_RadioBox_SetEstadoHabilitadoItem(int idComponente,int item,bool habilitado){
+    return ((PigRadioBox)CGerenciadorForms::GetComponente(idComponente))->SetHabilitadoItem(item,habilitado);
+}
+
+void PIG_RadioBox_SetEstadoHabilitadoItens(int idComponente,bool habilitado){
+    return ((PigRadioBox)CGerenciadorForms::GetComponente(idComponente))->SetHabilitado(habilitado);
+}
+
+/**********CHECKBOX**************/
+
+int PIG_CriaCheckBox(int idForm,int x, int y,int larguraTotal,int alturaLinha, int alturaMaxima,char* imagemItem, int alturaItem, int larguraItem,char* imagemFundo, int retiraFundo=1, int idJanela=0){
+    return CGerenciadorForms::CriaCheckBox(idForm,x,y,larguraTotal,alturaLinha,alturaMaxima,imagemItem,alturaItem,larguraItem,imagemFundo,retiraFundo);
+}
+
+void PIG_CheckBox_CriaItem(int idComponente,char* itemLabel,char *imagemFundo="",char* hintMsg="",bool itemMarcado = false, bool itemHabilitado = true, int audio=-1,  int retiraFundo=1){
+    ((PigCheckBox)CGerenciadorForms::GetComponente(idComponente))->CriaItem(itemLabel,imagemFundo,itemMarcado,itemHabilitado,audio,hintMsg,retiraFundo);
+}
+
+void PIG_CheckBox_SetMarcadoTodos(int idComponente,bool marcado){
+    ((PigCheckBox)CGerenciadorForms::GetComponente(idComponente))->SetAcionadoTodos(marcado);
+}
+
+int PIG_CheckBox_SetMarcadoItem(int idComponente,int indice,bool marcado){
+    return ((PigCheckBox)CGerenciadorForms::GetComponente(idComponente))->SetAcionadoItem(indice,marcado);
+}
+
+std::vector <int> PIG_CheckBox_GetItensMarcados(int idComponente){
+    return ((PigCheckBox)CGerenciadorForms::GetComponente(idComponente))->GetItensMarcados();
+}
+
+int PIG_CheckBox_GetMarcadoItem(int idComponente,int item){
+    return ((PigCheckBox)CGerenciadorForms::GetComponente(idComponente))->GetAcionadoItem(item);
+}
+
+int PIG_CheckBox_SetAudioItem(int idComponente,int item,int audio){
+    return ((PigCheckBox)CGerenciadorForms::GetComponente(idComponente))->SetAudioItem(item,audio);
+}
+
+int PIG_CheckBox_GetHabilitadoItem(int idComponente,int item){
+    return ((PigCheckBox)CGerenciadorForms::GetComponente(idComponente))->GetHabilitadoItem(item);
+}
+
+int PIG_CheckBox_SetHabilitadoItem(int idComponente,int item,bool habilitado){
+    return ((PigCheckBox)CGerenciadorForms::GetComponente(idComponente))->SetHabilitadoItem(item,habilitado);
+}
+
+void PIG_CheckBox_SetHabilitado(int idComponente,bool habilitado){
+    return ((PigCheckBox)CGerenciadorForms::GetComponente(idComponente))->SetHabilitado(habilitado);
+}
+
+/********************************/

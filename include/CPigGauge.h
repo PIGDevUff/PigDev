@@ -1,3 +1,6 @@
+#ifndef _CPigGauge_
+#define _CPigGauge_
+
 typedef enum {GAUGE_CIMA_BAIXO,GAUGE_BAIXO_CIMA,GAUGE_ESQ_DIR,GAUGE_DIR_ESQ} PIG_GaugeCrescimentoBarra;
 
 class CPigGauge: public CPigComponente{
@@ -9,11 +12,6 @@ private:
     double valorMax,valorMin,valorAtual;
     int xBarra,yBarra,altBarra,largBarra;
     PIG_GaugeCrescimentoBarra orientacaoCrescimento;
-
-    //void DefineEstado(PIG_EstadoComponente estadoComponente){}
-    //int OnMouseOn(){return 0;}
-    //int OnMouseOff(){return 0;}
-    //int TrataEvento(PIG_Evento evento){return 0;}
 
     SDL_Rect GeraClip(SDL_Rect barra){
         SDL_Rect resp = barra;
@@ -206,3 +204,5 @@ public:
     }
 
 };
+typedef CPigGauge *PigGauge;
+#endif // _CPigGauge_

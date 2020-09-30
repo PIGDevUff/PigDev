@@ -66,7 +66,7 @@ protected:
         timer->Reinicia(false);
         if (acao) acao(id,param);//rever se NULL é necessário
         if (audioComponente>=0) CGerenciadorAudios::Play(audioComponente);
-        return SELECIONADO_TRATADO;
+        return PIG_SELECIONADO_TRATADO;
     }
 
     CPigBotao LeArquivoParametros(std::string nomeArqParam){
@@ -127,13 +127,13 @@ public:
         ChecaMouseOver(CMouse::PegaXY());
 
         if (mouseOver){
-            if (habilitado==false) return SELECIONADO_DESABILITADO;
-            if (visivel==false) return SELECIONADO_INVISIVEL;
+            if (habilitado==false) return PIG_SELECIONADO_DESABILITADO;
+            if (visivel==false) return PIG_SELECIONADO_INVISIVEL;
             if(evento.mouse.acao==MOUSE_PRESSIONADO && evento.mouse.botao == MOUSE_ESQUERDO) return OnMouseClick();
-            return SELECIONADO_MOUSEOVER;
+            return PIG_SELECIONADO_MOUSEOVER;
         }
 
-        return NAO_SELECIONADO;
+        return PIG_NAO_SELECIONADO;
     }
 
     int TrataEventoTeclado(PIG_Evento evento){
@@ -156,10 +156,10 @@ public:
     }
 
     int TrataEvento(PIG_Evento evento){
-        if(evento.tipoEvento == EVENTO_MOUSE)    return TrataEventoMouse(evento);
+        if (evento.tipoEvento == EVENTO_MOUSE)    return TrataEventoMouse(evento);
         if (evento.tipoEvento == EVENTO_TECLADO) return TrataEventoTeclado(evento);
 
-        return NAO_SELECIONADO;
+        return PIG_NAO_SELECIONADO;
     }
 
     int Desenha(){

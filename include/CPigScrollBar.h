@@ -140,11 +140,11 @@ class CPigScrollBar : public CPigComponente{
         if (mouseOver){
             if(evento.mouse.acao == MOUSE_PRESSIONADO && evento.mouse.botao == MOUSE_ESQUERDO && evento.mouse.cliques == 1){
                 TrataClickTrilha(p.x,p.y);
-                return SELECIONADO_TRATADO;
+                return PIG_SELECIONADO_TRATADO;
             }
-            return SELECIONADO_MOUSEOVER;
+            return PIG_SELECIONADO_MOUSEOVER;
         }
-        return NAO_SELECIONADO;
+        return PIG_NAO_SELECIONADO;
     }
 
     int TrataEventoTeclado(PIG_Evento evento){

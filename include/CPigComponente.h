@@ -7,8 +7,8 @@
 typedef enum{PIG_COMPONENTE_CIMA_CENTRO,PIG_COMPONENTE_CIMA_ESQ,PIG_COMPONENTE_CIMA_DIR,PIG_COMPONENTE_BAIXO_CENTRO,PIG_COMPONENTE_BAIXO_DIR,PIG_COMPONENTE_BAIXO_ESQ,
              PIG_COMPONENTE_DIR_CIMA,PIG_COMPONENTE_DIR_BAIXO,PIG_COMPONENTE_DIR_CENTRO,PIG_COMPONENTE_ESQ_BAIXO,PIG_COMPONENTE_ESQ_CENTRO,PIG_COMPONENTE_ESQ_CIMA,
              PIG_COMPONENTE_CENTRO_CENTRO,PIG_COMPONENTE_PERSONALIZADA} PIG_PosicaoComponente;
-typedef enum{ANCORA_NORTE,ANCORA_SUL,ANCORA_LESTE,ANCORA_OESTE,ANCORA_NORDESTE,ANCORA_NOROESTE,ANCORA_SUDESTE,ANCORA_SUDOESTE,ANCORA_CENTRO}PIG_Ancora;
-typedef enum{NAO_SELECIONADO,SELECIONADO_MOUSEOVER,SELECIONADO_INVISIVEL,SELECIONADO_DESABILITADO,SELECIONADO_TRATADO}PIG_EstadosEventos;
+typedef enum{PIG_ANCORA_NORTE,PIG_ANCORA_SUL,PIG_ANCORA_LESTE,PIG_ANCORA_OESTE,PIG_ANCORA_NORDESTE,PIG_ANCORA_NOROESTE,PIG_ANCORA_SUDESTE,PIG_ANCORA_SUDOESTE,PIG_ANCORA_CENTRO}PIG_Ancora;
+typedef enum{PIG_NAO_SELECIONADO,PIG_SELECIONADO_MOUSEOVER,PIG_SELECIONADO_INVISIVEL,PIG_SELECIONADO_DESABILITADO,PIG_SELECIONADO_TRATADO}PIG_EstadosEventos;
 
 class CPigComponente: public CPigVisual{
 
@@ -57,6 +57,7 @@ protected:
         return mouseOver;
     }
 
+    //move o label de acordo com a posição
     void PosicionaLabel(){
         int altLabel,largLabel;
         lab->GetDimensoes(altLabel,largLabel);// = lab->GetAltura(),largLabel=lab->GetLargura();
@@ -149,10 +150,12 @@ public:
         PosicionaLabel();
     }
 
+    //define a cor do label
     virtual void SetCorLabel(PIG_Cor corLabel){
-        lab->SetColoracao(corLabel);
+        lab->SetCor(corLabel);
     }
 
+    //recupera a cor do label
     virtual PIG_Cor GetCorLabel(){
         return lab->GetCor();
     }
@@ -167,10 +170,17 @@ public:
         hint->SetFonte(fonte);
     }
 
+    //define a cor do hint
+    virtual void SetCorHint(PIG_Cor cor){
+        hint->SetCor(cor);
+    }
+
+    //recupera o hint
     std::string GetHint(){
         return hint->GetTexto();
     }
 
+    //recupera a fonte do hint
     int GetFonteHint(){
         return hint->GetFonte();
     }
@@ -299,31 +309,31 @@ public:
         this->GetDimensoes(altura,largura);
 
         switch(ancora){
-        case ANCORA_SUL:
+        case PIG_ANCORA_SUL:
             Move((largTela - largura)/2,0);
             break;
-        case ANCORA_SUDOESTE:
+        case PIG_ANCORA_SUDOESTE:
             Move(0,0);
             break;
-        case ANCORA_SUDESTE:
+        case PIG_ANCORA_SUDESTE:
             Move(largTela - largura,0);
             break;
-        case ANCORA_NORTE:
+        case PIG_ANCORA_NORTE:
             Move((largTela - largura)/2,altTela - altura);
             break;
-        case ANCORA_NOROESTE:
+        case PIG_ANCORA_NOROESTE:
             Move(0,altTela - altura);
             break;
-        case ANCORA_NORDESTE:
+        case PIG_ANCORA_NORDESTE:
             Move(largTela - largura,altTela - altura);
             break;
-        case ANCORA_CENTRO:
+        case PIG_ANCORA_CENTRO:
             Move((largTela - largura)/2,(altTela - altura)/2);
             break;
-        case ANCORA_OESTE:
+        case PIG_ANCORA_OESTE:
             Move(0,(altTela - altura)/2);
             break;
-        case ANCORA_LESTE:
+        case PIG_ANCORA_LESTE:
             Move(largTela - largura,(altTela - altura)/2);
             break;
         }

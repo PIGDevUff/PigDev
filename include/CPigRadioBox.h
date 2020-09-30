@@ -106,22 +106,22 @@ public:
         bool mouseOverAntes = mouseOver;
         if (ChecaMouseOver(CMouse::PegaXY())>0){
             for (int i=0;i<itens.size();i++){
-                if(itens[i]->TrataEventoMouse(evento) == SELECIONADO_TRATADO){
+                if(itens[i]->TrataEventoMouse(evento) == PIG_SELECIONADO_TRATADO){
                     if (itens[i]->GetAcionado())
                         resp = i;
                 }
             }
             SetAcionadoItem(resp,resp!=-1);
             if (resp>0)
-                return SELECIONADO_TRATADO;
-            else return SELECIONADO_MOUSEOVER;
+                return PIG_SELECIONADO_TRATADO;
+            else return PIG_SELECIONADO_MOUSEOVER;
         }else if (mouseOverAntes){               //mouse estava antes, mas saiu
             for (int i=0;i<itens.size();i++){
                 itens[i]->SetMouseOver(false);
             }
         }
 
-        return NAO_SELECIONADO;
+        return PIG_NAO_SELECIONADO;
     }
 
     int TrataEventoTeclado(PIG_Evento evento){

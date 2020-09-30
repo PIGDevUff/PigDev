@@ -2,6 +2,7 @@
 #define _CMouse_
 
 #include "CPIGIcone.h"
+
 class CMouse{
 
 private:

@@ -155,7 +155,7 @@ private:
 
         AjustaAlinhamento();
 
-        return SELECIONADO_TRATADO;
+        return PIG_SELECIONADO_TRATADO;
     }
 
     //
@@ -452,14 +452,14 @@ public:
         ChecaMouseOver(p);
 
         if(mouseOver){
-            if(habilitado==false) return SELECIONADO_DESABILITADO;
-            if(visivel==false) return SELECIONADO_INVISIVEL;
+            if(habilitado==false) return PIG_SELECIONADO_DESABILITADO;
+            if(visivel==false) return PIG_SELECIONADO_INVISIVEL;
             if(scrollVerticalAtivado) TrataScrollBarVertical(evento);
             if(scrollHorizontalAtivado) TrataScrollBarHorizontal(evento);
             if (evento.mouse.acao == MOUSE_PRESSIONADO && evento.mouse.botao == MOUSE_ESQUERDO) return TrataMouseBotaoEsquerdo(p);
-            return SELECIONADO_MOUSEOVER;
+            return PIG_SELECIONADO_MOUSEOVER;
         }
-        return NAO_SELECIONADO;
+        return PIG_NAO_SELECIONADO;
     }
 
     //define o espaçamento entre as linhas

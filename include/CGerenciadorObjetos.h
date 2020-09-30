@@ -183,9 +183,9 @@ public:
         GetObjeto(idObjeto)->Desenha(offRender);
     }
 
-    inline static int TestaColisaoPoligono(int idObjeto1, int idObjeto2) {
-        return GetObjeto(idObjeto1)->ColisaoPoligono(GetObjeto(idObjeto2)) || GetObjeto(idObjeto2)->ColisaoPoligono(GetObjeto(idObjeto1));
-    }
+    //inline static int TestaColisaoPoligono(int idObjeto1, int idObjeto2) {
+    //    return GetObjeto(idObjeto1)->ColisaoPoligono(GetObjeto(idObjeto2)) || GetObjeto(idObjeto2)->ColisaoPoligono(GetObjeto(idObjeto1));
+   // }
 
     inline static int TestaColisao(int idObjeto1, int idObjeto2) {
         return GetObjeto(idObjeto1)->Colisao(GetObjeto(idObjeto2)) && GetObjeto(idObjeto2)->Colisao(GetObjeto(idObjeto1));

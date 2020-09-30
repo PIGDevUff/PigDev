@@ -133,18 +133,18 @@ public:
         if (ChecaMouseOver(CMouse::PegaXY())){
             if (!recolhida){        //se o dropdown está exibindo os itens, é preciso tratá-los individualmente
                 for (int i=0;i<itens.size();i++){
-                    if(itens[i]->TrataEventoMouse(evento) == SELECIONADO_TRATADO){
+                    if(itens[i]->TrataEventoMouse(evento) == PIG_SELECIONADO_TRATADO){
                         if (itens[i]->GetAcionado())
                             resp = i;
                     }
                 }
                 SetAcionadoItem(resp,resp!=-1);
-                if (resp>=0) return SELECIONADO_TRATADO;
-                else return SELECIONADO_MOUSEOVER;
+                if (resp>=0) return PIG_SELECIONADO_TRATADO;
+                else return PIG_SELECIONADO_MOUSEOVER;
             }
             if (evento.mouse.acao==MOUSE_PRESSIONADO&&evento.mouse.botao==MOUSE_ESQUERDO){
                 SetRecolhida(!recolhida);
-                return SELECIONADO_TRATADO;
+                return PIG_SELECIONADO_TRATADO;
             }
         }else if (mouseOverAntes){               //mouse estava antes, mas saiu
             for (int i=0;i<itens.size();i++){
@@ -152,11 +152,12 @@ public:
             }
         }
 
-        return NAO_SELECIONADO;
+        return PIG_NAO_SELECIONADO;
     }
 
     int TrataEventoTeclado(PIG_Evento evento){
         return 0;
     }
 };
+typedef CPigDropDown *PigDropDown;
 #endif // _CPigDropDown_

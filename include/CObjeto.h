@@ -1,5 +1,8 @@
 #include <algorithm>
 #include <cmath>
+
+typedef enum { OOBB, POLIGONO, CIRCULAR } PIG_ModoColisao;
+
 class CObjeto : public CPigVisual {
 
 protected:
@@ -11,6 +14,8 @@ protected:
     std::map<std::string, std::string> valoresStringString;
     SDL_Point bb[4];
     PIG_Cor **pixels;
+    int raio;
+    PIG_ModoColisao modo;
 
     std::vector<SDL_Point> vertices;
     std::vector<SDL_Point> verticesOriginais;
@@ -24,10 +29,9 @@ protected:
         SDL_RenderDrawLine(renderer, bb[3].x, altJanela - bb[3].y, bb[0].x, altJanela - bb[0].y);
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
         SDL_RenderDrawRect(renderer, &dest);//retângulo vermelhor para o AABB (sem ângulo)
-        //printf("%d,%d,%d,%d\n",dest.x,dest.y,dest.w,dest.h);
     }
 
-    void DesenhaAreaDeColisao(PIG_Cor cor) {
+    void DesenhaPoligono(PIG_Cor cor) {
         int i = 0;
 
         if (vertices.empty()) return;
@@ -50,18 +54,38 @@ protected:
         } while (i != 0);
     }
 
+    void DesenhaCircular(PIG_Cor cor) {
+
+        SDL_SetRenderDrawColor(renderer, cor.r, cor.g, cor.b, 255);
+
+        SDL_RenderDrawLine(
+            renderer,
+            x + pivoRelativo.x - raio, altJanela - (y + pivoRelativo.y),
+            x + pivoRelativo.x, altJanela - (y + pivoRelativo.y + raio));
+        SDL_RenderDrawLine(
+            renderer,
+            x + pivoRelativo.x, altJanela - (y + pivoRelativo.y + raio),
+            x + pivoRelativo.x + raio, altJanela - (y + pivoRelativo.y));
+        SDL_RenderDrawLine(
+            renderer,
+            x + pivoRelativo.x + raio, altJanela - (y + pivoRelativo.y),
+            x + pivoRelativo.x, altJanela - (y + pivoRelativo.y - raio));
+        SDL_RenderDrawLine(
+            renderer,
+            x + pivoRelativo.x, altJanela - (y + pivoRelativo.y - raio),
+            x + pivoRelativo.x - raio, altJanela - (y + pivoRelativo.y));
+
+    }
+
     void AtualizaBB() {
         SDL_Point pivoAbs;
 
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
         pivoAbs.x = pivoRelativo.x + x;
         pivoAbs.y = -pivoRelativo.y + y + alt; //inverte o eixo Y, pois o pivoRel considera o eixo Y aumentando para baixo
-        //printf("PivoRel: %d %d\n",pivoRelativo.x,pivoRelativo.y);
-        //printf("PivoRAbs: %d %d\n",pivoAbs.x,pivoAbs.y);
         float angRad = -angulo * M_PI / 180.0;
         float seno = sin(angRad);
         float cosseno = cos(angRad);
-        //printf("Pivo %d %d  %f\n",pivoObj.x,pivoObj.y,angRad);
 
         //matriz de rota��o
         // ( cos(ang) sin(ang))   (Vx)   (Rx)
@@ -71,19 +95,15 @@ protected:
 
         bb[0].x = (x - pivoAbs.x) * cosseno + (y - pivoAbs.y) * seno + pivoAbs.x;
         bb[0].y = (y - pivoAbs.y) * cosseno - (x - pivoAbs.x) * seno + pivoAbs.y;
-        //printf("bb0: %d %d\n",bb[0].x,bb[0].y);
 
         bb[1].x = (x + larg - pivoAbs.x) * cosseno + (y - pivoAbs.y) * seno + pivoAbs.x;
         bb[1].y = (y - pivoAbs.y) * cosseno - (x + larg - pivoAbs.x) * seno + pivoAbs.y;
-        //printf("bb1: %d %d\n",bb[1].x,bb[1].y);
 
         bb[2].x = (x + larg - pivoAbs.x) * cosseno + (y + alt - pivoAbs.y) * seno + pivoAbs.x;
         bb[2].y = (y + alt - pivoAbs.y) * cosseno - (x + larg - pivoAbs.x) * seno + pivoAbs.y;
-        //printf("bb2: %d %d\n",bb[2].x,bb[2].y);
 
         bb[3].x = (x - pivoAbs.x) * cosseno + (y + alt - pivoAbs.y) * seno + pivoAbs.x;
         bb[3].y = (y + alt - pivoAbs.y) * cosseno - (x - pivoAbs.x) * seno + pivoAbs.y;
-        //printf("bb3: %d %d\n",bb[3].x,bb[3].y);
     }
 
     void AtualizaVertices() {
@@ -208,6 +228,14 @@ public:
         bbAlterado = true;
     }
 
+    void SetRaioColisaoCircular(int raio) {
+        this->raio = raio;
+    }
+
+    void SetModoColisao(PIG_ModoColisao modo) {
+        this->modo = modo;
+    }
+
     bool GetValoresInt(int chave, int &valor){
         std::map<int, int>::iterator it;
         it = valoresIntInt.find(chave);
@@ -270,6 +298,19 @@ public:
         return vertices;
     }
 
+    int GetRaio() {
+        return raio;
+    }
+
+    PIG_ModoColisao GetModoColisao() {
+        return modo;
+    }
+
+    void GetPivoRelativo(int *x, int *y) {
+        *x = pivoRelativo.x;
+        *y = pivoRelativo.y;
+    }
+
     void Move(int nx, int ny) override {
         SDL_Point pivo = {x, y};
 
@@ -284,8 +325,19 @@ public:
     int Desenha(OffscreenRenderer offRender = NULL){
         if (offRender == NULL){
             SDL_RenderCopyEx(renderer, text, &frame, &dest, -angulo, &pivoRelativo, flip);
-            //DesenhaBB();
-            //DesenhaAreaDeColisao({0, 0, 255, 255});
+
+            switch(9999) {//modo
+                case OOBB:
+                    DesenhaBB();
+                    break;
+                case POLIGONO:
+                    DesenhaPoligono({0, 0, 255, 255});
+                    break;
+                case CIRCULAR:
+                    DesenhaCircular({0, 0, 255, 255});
+                    break;
+            }
+
         }else{
             SDL_Texture *textAux = SDL_CreateTextureFromSurface(offRender->GetRenderer(), bitmap);
             SDL_Rect rectAux = dest;
@@ -308,79 +360,66 @@ public:
         Atualiza();
         outro->Atualiza();
 
-        if(ColisaoBB(outro) && outro->ColisaoBB(this)) {
-            return true;//ColisaoPoligono(outro) || outro->ColisaoPoligono(this);
-        }
-        return false;
-    }
+        PIG_ModoColisao modoOutro = outro->GetModoColisao();
 
-    int ColisaoBB(CObjeto *outro) {
-
-        // caso em q o angulo é 0
-        // caso em que o vetor que vai de bb[0] para bb[1] é paralelo ao eixo X, ou seja, nao ira existir uma "projecao" no eixo X
-        // os pontos sao trocados para que seja usado o antigo bb[3] para bb[0]
-        if (bb[1].y == bb[0].y) {
-            for (int i = 1; i < 4; i++) {
-                std::swap(bb[i].x, bb[0].x);
-                std::swap(bb[i].y, bb[0].y);
+        if(modo == OOBB) {
+            if(modoOutro == OOBB) {
+                if(ColisaoOOBB(outro) && outro->ColisaoOOBB(this)) {
+                    return ColisaoPoligono(outro->GetVertices()) || outro->ColisaoPoligono({bb[0], bb[1], bb[2], bb[3]});
+                }
+            } else if(modoOutro == POLIGONO) {
+                if(ColisaoOOBB(outro) && outro->ColisaoOOBB(this)) {
+                    return ColisaoPoligono(outro->GetVertices()) || outro->ColisaoPoligono({bb[0], bb[1], bb[2], bb[3]});
+                }
+            } else if(modoOutro == CIRCULAR) {
+                return outro->ColisaoCirculoPoligono({bb[0], bb[1], bb[2], bb[3]});
+            }
+        } else if(modo == POLIGONO) {
+            if(modoOutro == POLIGONO) {
+                if(ColisaoOOBB(outro) && outro->ColisaoOOBB(this)) {
+                    return ColisaoPoligono(outro->GetVertices()) || outro->ColisaoPoligono(this->vertices);
+                }
+            } else if(modoOutro == OOBB) {
+                if(ColisaoOOBB(outro) && outro->ColisaoOOBB(this)) {
+                    std::vector<SDL_Point> verticesOutro = {outro->GetBB(0), outro->GetBB(1), outro->GetBB(2), outro->GetBB(3)};
+                    return ColisaoPoligono(verticesOutro) || outro->ColisaoPoligono(vertices);
+                }
+            } else if(modoOutro == CIRCULAR) {
+                return outro->ColisaoCirculoPoligono(vertices);
+            }
+        } else if(modo == CIRCULAR) {
+            if(modoOutro == CIRCULAR) {
+                return ColisaoCircular(outro);
+            } else if(modoOutro == POLIGONO) {
+                return ColisaoCirculoPoligono(outro->GetVertices());
+            } else if(modoOutro == OOBB) {
+                std::vector<SDL_Point> verticesOutro = {outro->GetBB(0), outro->GetBB(1), outro->GetBB(2), outro->GetBB(3)};
+                return ColisaoCirculoPoligono(verticesOutro);
             }
         }
-
-        // projecao dos vetores no eixo X deste objeto
-        double projecaoAB = projecaoX((double)(bb[1].y - bb[0].y) / (double)(bb[1].x - bb[0].x), bb[0]);
-        double projecaoCD = projecaoX((double)(bb[3].y - bb[2].y) / (double)(bb[3].x - bb[2].x), bb[2]);
-
-        SDL_SetRenderDrawColor(renderer,255,255,255,255);
-        SDL_RenderDrawLine(renderer,(int)projecaoAB,300,(int)projecaoCD,300);
-
-        // projecao dos pontos(com o angulo dos anteriores) no eixo X do outro objeto
-        double projecao[4];
-        for (int i = 0; i < 4; i++)
-            projecao[i] = projecaoX((double)(bb[1].y - bb[0].y) / (double)(bb[1].x - bb[0].x), outro->GetBB(i));
-
-        double menorA = (projecaoAB < projecaoCD) ? projecaoAB : projecaoCD;
-        double maiorA = (projecaoAB > projecaoCD) ? projecaoAB : projecaoCD;
-        double menorB = min(projecao);
-        double maiorB = max(projecao);
-
-        if (!(menorA < maiorB && maiorA > menorB))
-            return false;
-
-        // projecao dos vetores no eixo Y deste objeto
-        projecaoAB = projecaoY((double )(bb[2].y - bb[1].y) / (double )(bb[2].x - bb[1].x), bb[1]);
-        projecaoCD = projecaoY((double )(bb[0].y - bb[3].y) / (double )(bb[0].x - bb[3].x), bb[3]);
-
-        // projecao dos pontos(com o angulo dos anteriores) no eixo Y do outro objeto
-        for (int i = 0; i < 4; i++)
-            projecao[i] = projecaoY((double )(bb[2].y - bb[1].y) / (double )(bb[2].x - bb[1].x), outro->GetBB(i));
-
-        menorA = (projecaoAB < projecaoCD) ? projecaoAB : projecaoCD;
-        maiorA = (projecaoAB > projecaoCD) ? projecaoAB : projecaoCD;
-        menorB = min(projecao);
-        maiorB = max(projecao);
-
-        return (menorA < maiorB && maiorA > menorB);
+        return false;
     }
 
     bool PontoDentro(SDL_Point p) {
         int i = 0;
         int quant_intersecoes = 0;
 
+        std::vector<SDL_Point> verticesAux;
+
+        if(this->modo == OOBB) {
+            verticesAux = {bb[0], bb[1], bb[2], bb[3]};
+        } else {
+            verticesAux = vertices;
+        }
+
         do {
-            if (Intersecao(i, (i + 1) % vertices.size(), p))
+            if (Intersecao(i, (i + 1) % verticesAux.size(), p))
                 quant_intersecoes++;
 
-            i = (i + 1) % vertices.size();
+            i = (i + 1) % verticesAux.size();
         } while (i != 0);
 
         return !(quant_intersecoes % 2 == 0);
-    }
-
-    bool ColisaoPoligono(CObjeto *outro) {
-        for (auto vertice : outro->GetVertices()) {
-            if (PontoDentro(vertice)) return true;
-        }
-        return false;
     }
 
     PIG_Cor **GetPixels() {
@@ -425,6 +464,46 @@ public:
         CriaTextura(retiraFundo);
     }
 
+    bool ColisaoCirculoPoligono(std::vector<SDL_Point> vertices) {
+        for(auto vertice : vertices) {
+            if(distancia({x + pivoRelativo.x, y + pivoRelativo.y}, vertice) <= raio) {
+                return true;
+            }
+        }
+
+        int i = 0;
+
+        do {
+            int f = (i + 1) % vertices.size();
+
+            float mPoligono = ((float)vertices[f].y - vertices[i].y) / ((float)vertices[f].x - vertices[i].x);
+
+            if(mPoligono == 0 && Entre((x + pivoRelativo.x), vertices[i].x, vertices[f].x) && distancia({(x + pivoRelativo.x), vertices[i].y}, {(x + pivoRelativo.x), (y + pivoRelativo.y)}) <= raio) {
+                return true;
+            } else if(std::isinf(mPoligono) && Entre((y + pivoRelativo.y), vertices[i].y, vertices[f].y) && distancia({vertices[i].x, (y + pivoRelativo.y)}, {(x + pivoRelativo.x), (y + pivoRelativo.y)}) <= raio) {
+                return true;
+            } else {
+
+                float mCirculo  = -1 / mPoligono;
+
+                float xProxCentro = ((mPoligono * ((float)vertices[i].x)) - (mCirculo * ((float)x + pivoRelativo.x)) + ((float)y + pivoRelativo.y) - ((float)vertices[i].y))/(mPoligono - mCirculo);
+                float yProxCentro = mPoligono * (xProxCentro - ((float)vertices[i].x)) + ((float)vertices[i].y);
+
+                // SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);//retângulo verde para o OOBB (com ângulo)
+                // SDL_RenderDrawLine(renderer, x + pivoRelativo.x, altJanela - (y + pivoRelativo.y), (int)xProxCentro, altJanela - (int)yProxCentro);
+                // SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+                // SDL_RenderDrawRect(renderer, &dest);//retângulo vermelhor para o AABB (sem ângulo)
+
+                if(distancia({x + pivoRelativo.x, y + pivoRelativo.y}, {(int)xProxCentro, (int)yProxCentro}) <= raio && Entre((int)xProxCentro, vertices[i].x, vertices[f].x)) return true;
+
+                i = (i + 1) % vertices.size();
+            }
+        } while (i != 0);
+
+
+        return false;
+    }
+
 private:
 
     int arredonda(float valor) {
@@ -463,6 +542,12 @@ private:
         return maior;
     }
 
+    int distancia(SDL_Point a, SDL_Point b) {
+        int deltaX = (b.x - a.x);
+        int deltaY = (b.y - a.y);
+        return (int)sqrt((deltaX * deltaX) + (deltaY * deltaY));
+    }
+
     bool Entre(int x, int a, int b) {
         return ((x > a) && (x < b) || (x < a) && (x > b));
     }
@@ -489,6 +574,71 @@ private:
 
         return (x >= p.x) && Entre(p.y, vertices[i].y, vertices[f].y);
     }
+
+    bool ColisaoCircular(CObjeto *outro) {
+        int pivox, pivoy, posx, posy;
+
+        outro->GetPivoRelativo(&pivox, &pivoy);
+        outro->GetXY(posx, posy);
+
+        return distancia({posx + pivox, posy + pivoy}, {x + pivoRelativo.x, y + pivoRelativo.y}) <= (float)(raio + outro->GetRaio());
+    }
+
+    int  ColisaoOOBB(CObjeto *outro) {
+
+        // caso em q o angulo é 0
+        // caso em que o vetor que vai de bb[0] para bb[1] é paralelo ao eixo X, ou seja, nao ira existir uma "projecao" no eixo X
+        // os pontos sao trocados para que seja usado o antigo bb[3] para bb[0]
+        if (bb[1].y == bb[0].y) {
+            for (int i = 1; i < 4; i++) {
+                std::swap(bb[i].x, bb[0].x);
+                std::swap(bb[i].y, bb[0].y);
+            }
+        }
+
+        // projecao dos vetores no eixo X deste objeto
+        double projecaoAB = projecaoX((double)(bb[1].y - bb[0].y) / (double)(bb[1].x - bb[0].x), bb[0]);
+        double projecaoCD = projecaoX((double)(bb[3].y - bb[2].y) / (double)(bb[3].x - bb[2].x), bb[2]);
+
+        //SDL_SetRenderDrawColor(renderer,255,255,255,255);
+        //SDL_RenderDrawLine(renderer,(int)projecaoAB,300,(int)projecaoCD,300);
+
+        // projecao dos pontos(com o angulo dos anteriores) no eixo X do outro objeto
+        double projecao[4];
+        for (int i = 0; i < 4; i++)
+            projecao[i] = projecaoX((double)(bb[1].y - bb[0].y) / (double)(bb[1].x - bb[0].x), outro->GetBB(i));
+
+        double menorA = (projecaoAB < projecaoCD) ? projecaoAB : projecaoCD;
+        double maiorA = (projecaoAB > projecaoCD) ? projecaoAB : projecaoCD;
+        double menorB = min(projecao);
+        double maiorB = max(projecao);
+
+        if (!(menorA < maiorB && maiorA > menorB))
+            return false;
+
+        // projecao dos vetores no eixo Y deste objeto
+        projecaoAB = projecaoY((double )(bb[2].y - bb[1].y) / (double )(bb[2].x - bb[1].x), bb[1]);
+        projecaoCD = projecaoY((double )(bb[0].y - bb[3].y) / (double )(bb[0].x - bb[3].x), bb[3]);
+
+        // projecao dos pontos(com o angulo dos anteriores) no eixo Y do outro objeto
+        for (int i = 0; i < 4; i++)
+            projecao[i] = projecaoY((double )(bb[2].y - bb[1].y) / (double )(bb[2].x - bb[1].x), outro->GetBB(i));
+
+        menorA = (projecaoAB < projecaoCD) ? projecaoAB : projecaoCD;
+        maiorA = (projecaoAB > projecaoCD) ? projecaoAB : projecaoCD;
+        menorB = min(projecao);
+        maiorB = max(projecao);
+
+        return (menorA < maiorB && maiorA > menorB);
+    }
+
+    bool ColisaoPoligono(std::vector<SDL_Point> vertices) {
+        for (auto vertice : vertices) {
+            if (PontoDentro(vertice)) return true;
+        }
+        return false;
+    }
+
 
 };
 

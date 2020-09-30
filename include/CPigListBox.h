@@ -104,7 +104,7 @@ public:
         if (ChecaMouseOver(CMouse::PegaXY())>0){
             for (int i=0;i<itens.size();i++){
                 int aux = itens[i]->TrataEventoMouse(evento);
-                if(aux == SELECIONADO_TRATADO){
+                if(aux == PIG_SELECIONADO_TRATADO){
                     if (itens[i]->GetAcionado())
                         resp = i;
                     SetHint(itens[i]->GetHint());
@@ -118,7 +118,7 @@ public:
             }
         }
 
-        return resp>=0?SELECIONADO_TRATADO:NAO_SELECIONADO;
+        return resp>=0?PIG_SELECIONADO_TRATADO:PIG_NAO_SELECIONADO;
     }
 
     void CriaItem(std::string itemLabel, std::string arqImagemIcone="", std::string arqImagemFundoItem="",bool itemMarcado = false, bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){

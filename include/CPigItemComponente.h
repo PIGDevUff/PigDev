@@ -22,7 +22,7 @@ private:
     int OnMouseClick(){
         SetAcionado(!GetAcionado());
         if (audioComponente>=0) CGerenciadorAudios::Play(audioComponente);
-        return SELECIONADO_TRATADO;
+        return PIG_SELECIONADO_TRATADO;
     }
 
     void IniciaBase(std::string labelItem,std::string arqImagemIcone="",int alturaIcone=0,int larguraIcone=0){
@@ -193,13 +193,13 @@ public:
         ChecaMouseOver(CMouse::PegaXY());
 
         if(mouseOver){
-            if (habilitado==false) return SELECIONADO_DESABILITADO;
-            if (visivel==false) return SELECIONADO_INVISIVEL;
+            if (habilitado==false) return PIG_SELECIONADO_DESABILITADO;
+            if (visivel==false) return PIG_SELECIONADO_INVISIVEL;
             if (evento.mouse.acao==MOUSE_PRESSIONADO && evento.mouse.botao == MOUSE_ESQUERDO) return OnMouseClick();
-            return SELECIONADO_MOUSEOVER;
+            return PIG_SELECIONADO_MOUSEOVER;
         }
 
-        return NAO_SELECIONADO;
+        return PIG_NAO_SELECIONADO;
     }
 
     int TrataEventoTeclado(PIG_Evento evento){

@@ -15,6 +15,7 @@ private:
 
 protected:
 
+    //checa se o ponteiro do mouse está sobre o componente
     int ChecaMouseOver(SDL_Point pMouse) override{
         if (visivel==false) return -1;
 
@@ -190,7 +191,7 @@ protected:
                 if (textoBase[posCursor]=='\n')
                     posCursor--;
                 AjustaAlinhamento();
-                return SELECIONADO_TRATADO;
+                return PIG_SELECIONADO_TRATADO;
             }
 
             largUltimaLetra = largParcial;
@@ -200,7 +201,7 @@ protected:
 
         AjustaAlinhamento();
 
-        return SELECIONADO_TRATADO;
+        return PIG_SELECIONADO_TRATADO;
     }
 
 
@@ -210,12 +211,10 @@ public:
         CPigComponente(idComponente,px,py,altura,largura,nomeArq,retiraFundo,janela){
         margemHorEsq = margemHorDir = margemVertCima = margemVertBaixo = 0;
         posLabel = PIG_COMPONENTE_ESQ_BAIXO;//posição padrão do label
-        //altLetra = CGerenciadorFontes::GetTamanhoBaseFonte(fonteTexto)+CGerenciadorFontes::GetFonteDescent(fonteTexto);
         posCursor = 0;//cursor no início do texto
         cursorExibido = true;
-        timer = new CTimer(false);//o timer só será criado quando estiver editando
+        timer = new CTimer(false);//o timer do curosor que só será exibido quando estiver editando
         SetFonteTexto(0);
-        //estado = COMPONENTE_NORMAL;
         maxCaracteres = maxCars;
         somenteNumeros = apenasNumeros;
         corCursor = PRETO;
@@ -236,7 +235,6 @@ public:
         fonteTexto = fonte;
         altLetra = CGerenciadorFontes::GetTamanhoBaseFonte(fonteTexto)+CGerenciadorFontes::GetFonteDescent(fonteTexto);
         yBaseOriginal = y+alt-altLetra;
-        //AjustaAlinhamento();
     }
 
     //recupera o texto armazenado no componente
@@ -247,11 +245,6 @@ public:
     void SetCorCursor(PIG_Cor cor){
         corCursor = cor;
     }
-
-    //define o estado do componente
-    /*void DefineEstado(PIG_EstadoComponente estadoComponente){
-        estado = estadoComponente;
-    }*/
 
     void SetFoco(bool valor) override{
         temFoco = valor;
