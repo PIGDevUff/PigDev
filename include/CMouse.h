@@ -1,16 +1,16 @@
 #ifndef _CMouse_
 #define _CMouse_
 
-#include "CPIGIcone.h"
+#include "CVisual.h"
 
 class CMouse{
 
 private:
 
     static int cursorAtual;
-    static PIGIcone cursores[MAX_CURSORES];
+    static CPigVisual *cursores[MAX_CURSORES];
     static bool cursorProprio;
-    static SDL_Point p;
+    static SDL_Point p,pWorld;
     static int estadoBotaoDireito,estadoBotaoEsquerdo,estadoBotaoCentral;
 
 public:
@@ -47,11 +47,15 @@ public:
         y = p.y;
     }
 
+    static SDL_Point PegaXYWorld(){
+        return pWorld;
+    }
+
     static SDL_Point PegaXY(){
         return p;
     }
 
-    static int ProcessaEvento(PIG_Evento evento){
+    static int ProcessaEvento(PIG_Evento &evento){
         if (evento.tipoEvento!=EVENTO_MOUSE) return 0;
         if (evento.mouse.acao==MOUSE_PRESSIONADO||evento.mouse.acao==MOUSE_LIBERADO){
             switch(evento.mouse.botao){
@@ -61,7 +65,11 @@ public:
             }
         }else if (evento.mouse.acao==MOUSE_MOVIDO){
             Move(evento.mouse.posX,evento.mouse.posY,evento.mouse.numeroJanela);
+
         }
+        CGerenciadorJanelas::GetJanela(evento.mouse.numeroJanela)->GetCamera()->ConverteCoordenadaScreenWorld(p.x,p.y,&pWorld.x,&pWorld.y);
+        evento.mouse.worldX = pWorld.x;
+        evento.mouse.worldY = pWorld.y;
         return 1;
     }
 
@@ -83,7 +91,7 @@ public:
 
     static void CarregaCursor(int indice,std::string nomeArquivo,int idJanela=0){
         if (cursores[indice]) delete cursores[indice];
-        cursores[indice] = new CPIGIcone(nomeArquivo,1,idJanela);
+        cursores[indice] = new CPigVisual(nomeArquivo,1,NULL,idJanela);
         cursores[indice]->SetDimensoes(32,32);
         if (cursorAtual==-1) cursorAtual=indice;
     }
@@ -92,8 +100,9 @@ public:
 
 int CMouse::cursorAtual;
 bool CMouse::cursorProprio;
-PIGIcone CMouse::cursores[MAX_CURSORES];
+CPigVisual *CMouse::cursores[MAX_CURSORES];
 SDL_Point CMouse::p;
+SDL_Point CMouse::pWorld;
 int CMouse::estadoBotaoDireito;
 int CMouse::estadoBotaoEsquerdo;
 int CMouse::estadoBotaoCentral;

@@ -1,3 +1,9 @@
+#ifndef _CPIGServidorTCP_
+#define _CPIGServidorTCP_
+
+#include "CPoolNumeros.h"
+#include "CSocketTCP.h"
+
 class CServidorTCP:public CSocketTCP{
 
 private:
@@ -187,7 +193,4 @@ static int receive_code(void *data){
 };
 
 typedef CServidorTCP *ServidorTCP;
-
-
-
-
+#endif // _CPIGServidorTCP_

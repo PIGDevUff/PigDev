@@ -14,6 +14,9 @@ void AtualizaTextura(){
     mapa->Escreve(frase,text,cor);
     dest.w = larg;
     dest.h = alt;
+    frame.x = frame.y = 0;
+    frame.h = alt;
+    frame.w = larg;
     altJanela = CGerenciadorJanelas::GetAltura(idJanela);
 }
 
@@ -29,7 +32,8 @@ CPigLabel(std::string texto,int numFonte,PIG_Cor corFonte=BRANCO,int idJanela=0)
 }
 
 void Desenha(){
-    SDL_RenderCopy(renderer,text,NULL,&dest);
+    //SDL_RenderCopy(renderer,text,NULL,&dest);
+    CPigVisual::Desenha();
 }
 
 

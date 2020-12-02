@@ -1,3 +1,6 @@
+#ifndef _COFFSCREENRENDERER_
+#define _COFFSCREENRENDERER_
+
 #include "CPilhaCoordenada.h"
 #define PIG_MAX_CAMADAS_OFFSCREEN 50
 
@@ -93,7 +96,6 @@ public:
         }
         PintarArea(0,0,corFundo,NULL,layer);
     }
-
 
     void DesenhaCirculoFatia(int centroX,int centroY,int raio, PIG_Cor cor, double angInicial, double angFinal,SDL_Point &iniP,SDL_Point &fimP,int layer=0){
         if (angFinal==0) return;
@@ -193,92 +195,6 @@ public:
 
    }
 
-/*
-    SDL_Point DesenhaCirculo2(int centroX,int centroY,int raio, PIG_Cor cor, double angFinal,int layer=0){
-        if (angFinal==0) return {centroX,centroY};
-        int xm = centroX;
-        int ym = centroY;
-        int ra = raio;
-        int x = -raio, y = 0, err = 2-2*raio; // II. Quadrant
-
-        SDL_Point last;
-
-        double dx = centroX + ceil(raio*cos(angFinal*M_PI/180));
-        double dy = centroY - ceil(raio*sin(angFinal*M_PI/180));
-
-        SDL_SetRenderDrawColor(layers[layer].render,cor.r,cor.g,cor.b,cor.a);
-
-        do {
-            SDL_Point p = {centroX-x,centroY-y};
-
-            if (angFinal>=90||(p.x>=dx&&p.y>dy)){
-                SDL_RenderDrawPoint(layers[layer].render,centroX-x, centroY-y); //   I. Quadrant
-                if (angFinal<=90)
-                    last = p;
-                //printf("last1 %d %d\n",p.x,p.y);
-            }
-
-            p = {centroX-y,centroY+x};
-            if (angFinal>=180 || (angFinal>90&&p.x>=dx&&p.y<=dy+1)){
-                SDL_RenderDrawPoint(layers[layer].render,centroX-y, centroY+x); //  II. Quadrant
-                if (angFinal<=180)
-                    last = p;
-                //printf("last2 %d %d\n",p.x,p.y);
-            }
-
-            p = {centroX+x,centroY+y};
-            if (angFinal>=270||(angFinal>180&&p.x<=dx&&p.y<=dy)){
-                SDL_RenderDrawPoint(layers[layer].render,centroX+x, centroY+y); // III. Quadrant
-                if (angFinal<=270)
-                    last = p;
-                //printf("last3 %d %d\n",p.x,p.y);
-            }
-
-            p = {centroX+y,centroY-x};
-            if (angFinal>270&&p.x<=dx&&p.y>=dy){
-                SDL_RenderDrawPoint(layers[layer].render,centroX+y, centroY-x); //  IV. Quadrant
-                if (angFinal<=360)
-                    last = p;
-                //printf("last4 %d %d\n",p.x,p.y);
-            }
-
-            raio = err;
-            if (raio <= y) err += ++y*2+1;           // e_xy+e_y < 0
-            if (raio > x || err > y) err += ++x*2+1; // e_xy+e_x > 0 or no 2nd y-step
-        }while (x < 0);
-
-        return last;
-   }
-
-    void DesenhaCirculo(int raioInterno, int raioExterno, PIG_Cor cor, double angFinal,bool horario,int layer=0){
-        if (angFinal==0) return;
-        int fator=horario?1:-1;
-        int x = larg/2;
-        int y = alt/2;
-        SDL_Point pontosExt[361],pontosInt[361];
-        pontosExt[0].x = x+ceil(raioExterno*cos(0*M_PI/180));
-        pontosExt[0].y = y+fator*ceil(raioExterno*sin(0*M_PI/180));
-        pontosInt[0].x = x+ceil(raioInterno*cos(0*M_PI/180));
-        pontosInt[0].y = y+fator*ceil(raioInterno*sin(0*M_PI/180));
-        //printf("y %d %d\n",y,pontos[0].y);
-        for (int i=1;i<=angFinal;i++){
-            pontosExt[i].x = x+ceil(raioExterno*cos(i*M_PI/180));
-            pontosExt[i].y = y+fator*ceil(raioExterno*sin(i*M_PI/180));
-            pontosInt[i].x = x+ceil(raioInterno*cos(i*M_PI/180));
-            pontosInt[i].y = y+fator*ceil(raioInterno*sin(i*M_PI/180));
-        }
-
-        SDL_SetRenderDrawColor(layers[layer].render,cor.r,cor.g,cor.b,cor.a);
-        SDL_RenderDrawLines(layers[layer].render,(const SDL_Point*)&pontosExt,angFinal+1);
-        SDL_RenderDrawLines(layers[layer].render,(const SDL_Point*)&pontosInt,angFinal+1);
-        if (angFinal<360){
-            SDL_RenderDrawLine(layers[layer].render,pontosInt[0].x,pontosInt[0].y,pontosExt[0].x,pontosExt[0].y);
-            SDL_RenderDrawLine(layers[layer].render,pontosInt[(int)angFinal].x,pontosInt[(int)angFinal].y,pontosExt[(int)angFinal].x,pontosExt[(int)angFinal].y);
-        }
-        //SalvarImagemPNG("antes.png");
-        PintarArea((pontosExt[0].x+pontosInt[0].x)/2-1,(pontosExt[0].y+pontosInt[0].y)/2-2*fator,cor,NULL,layer);
-    }
-*/
     void PintarFundo(SDL_Color cor,int layer=0){
         SDL_SetRenderDrawColor(layers[layer].render,cor.r,cor.g,cor.b,cor.a);
         SDL_RenderClear( layers[layer].render );
@@ -413,3 +329,4 @@ public:
 };
 
 typedef COffscreenRenderer* OffscreenRenderer;
+#endif // _COFFSCREENRENDERER_

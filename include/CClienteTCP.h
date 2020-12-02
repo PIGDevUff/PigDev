@@ -1,3 +1,8 @@
+#ifndef _CPIGClienteTCP_
+#define _CPIGClienteTCP_
+
+#include "CSocketTCP.h"
+
 class CClienteTCP:public CSocketTCP{
 
 private:
@@ -70,7 +75,4 @@ static int thread_code(void *data){
 };
 
 typedef CClienteTCP *ClienteTCP;
-
-
-
-
+#endif // _CPIGClienteTCP_

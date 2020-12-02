@@ -90,8 +90,11 @@ public:
                 ultimoEvento.mouse.botao= event.button.button;
                 ultimoEvento.mouse.numeroJanela = event.window.windowID-JANELA_INICIAL;
                 ultimoEvento.mouse.cliques = event.button.clicks;
-                ultimoEvento.mouse.posX = event.button.x;
-                ultimoEvento.mouse.posY = CGerenciadorJanelas::GetAltura(ultimoEvento.mouse.numeroJanela) - event.button.y-1;
+                //ultimoEvento.mouse.posX = event.button.x;
+                SDL_GetMouseState(&ultimoEvento.mouse.posX,&ultimoEvento.mouse.posY);
+                //ultimoEvento.mouse.posY = CGerenciadorJanelas::GetAltura(ultimoEvento.mouse.numeroJanela) - event.button.y-1;
+                ultimoEvento.mouse.posY = CGerenciadorJanelas::GetAltura(ultimoEvento.mouse.numeroJanela) - ultimoEvento.mouse.posY-1;
+                //CGerenciadorJanelas::GetJanela(ultimoEvento.mouse.numeroJanela)->GetCamera()->ConverteCoordenadaWorldScreen(ultimoEvento.mouse.posX,ultimoEvento.mouse.posY,&ultimoEvento.mouse.worldX,&ultimoEvento.mouse.worldY);
                 CMouse::ProcessaEvento(ultimoEvento);
                 break;
            /*case SDL_MOUSEBUTTONUP:
@@ -109,10 +112,16 @@ public:
                 ultimoEvento.tipoEvento = EVENTO_MOUSE;
                 ultimoEvento.mouse.acao = MOUSE_MOVIDO;
                 ultimoEvento.mouse.numeroJanela = event.window.windowID-JANELA_INICIAL;
-                ultimoEvento.mouse.posX = event.motion.x;
-                ultimoEvento.mouse.posY = CGerenciadorJanelas::GetAltura(ultimoEvento.mouse.numeroJanela) - event.motion.y-1;
+                SDL_GetMouseState(&ultimoEvento.mouse.posX,&ultimoEvento.mouse.posY);
+                //ultimoEvento.mouse.posX = event.motion.x;
+                ultimoEvento.mouse.posY = CGerenciadorJanelas::GetAltura(ultimoEvento.mouse.numeroJanela) - ultimoEvento.mouse.posY-1;
                 ultimoEvento.mouse.relX = event.motion.xrel;
                 ultimoEvento.mouse.relY = -event.motion.yrel;
+                //printf("%d\n",ultimoEvento.mouse.numeroJanela);
+                //CGerenciadorJanelas::GetJanela(ultimoEvento.mouse.numeroJanela)->GetCamera()->ConverteCoordenadaScreenWorld(ultimoEvento.mouse.posX,ultimoEvento.mouse.posY,&ultimoEvento.mouse.worldX,&ultimoEvento.mouse.worldY);
+                //int mx,my;
+                //SDL_GetMouseState(&ultimoEvento.mouse.posX,&ultimoEvento.mouse.posY);
+                //printf("y %d  my %d\n",event.motion.y,my);
                 CMouse::ProcessaEvento(ultimoEvento);
                 //CMouse::Move(ultimoEvento.mouse.posX, ultimoEvento.mouse.posY);
                 break;
@@ -329,53 +338,7 @@ public:
             offRenderer->PintarArea(px,py,cor,ponteiro);
     }
 
-    inline void PintarPoligono(int px[],int py[],int lados,PIG_Cor cor,int idJanela=0){
-        int minX=99999,maxX=-1,minY=99999,maxY=-1;
-        int cx=0,cy=0;
 
-        //calcula o bounding-box do poligono
-        for (int i=0;i<lados;i++){
-            if (px[i]<minX) minX = px[i];
-            if (py[i]<minY) minY = py[i];
-            if (px[i]>maxX) maxX = px[i];
-            if (py[i]>maxY) maxY = py[i];
-            cx += px[i]; //centro do poligono
-            cy += py[i]; //centro do poligono
-        }
-        cx /= lados; //centro do poligono
-        cy /= lados; //centro do poligono
-
-        int alt = maxY-minY+1;  //altura absoluta do poligono
-        int larg = maxX-minX+1; //altura absoluta do poligono
-
-        OffscreenRenderer off = new COffscreenRenderer(alt,larg); //ajustado extamente com a altura e largura
-
-        if (PIGCoresIguais(cor,PRETO)){
-            off->PintarFundo(BRANCO);
-        }else off->PintarFundo(PRETO);
-
-        for (int i=0;i<lados;i++)
-            off->DesenharLinha(px[i]-minX,py[i]-minY,px[(i+1)%lados]-minX,py[(i+1)%lados]-minY,cor);
-
-        off->PintarArea(cx-minX,cy-minY,cor,NULL);
-
-        SDL_Surface *surf = off->GetSurface();
-        if (PIGCoresIguais(cor,PRETO)){
-            SDL_SetColorKey( surf, SDL_TRUE, SDL_MapRGBA(surf->format, 255, 255, 255, 255) );
-        }else SDL_SetColorKey( surf, SDL_TRUE, SDL_MapRGBA(surf->format, 0, 0, 0, 255) );
-
-        SDL_Renderer *renderer = CGerenciadorJanelas::GetJanela(idJanela)->GetRenderer();
-        SDL_Texture *text = SDL_CreateTextureFromSurface(renderer, surf);
-        SDL_Rect r;
-        r.h = alt;
-        r.w = larg;
-        r.x = minX;
-        r.y = CGerenciadorJanelas::GetAltura(idJanela)-minY-alt;
-        //printf("%d,%d %d,%d\n",r.x,r.y,r.h,r.w);
-        SDL_RenderCopy(renderer,text,NULL,&r);
-        SDL_DestroyTexture(text);
-        delete off;
-    }
 
     inline void PintaFundoOffScreen(PIG_Cor cor){
         if (offRenderer)

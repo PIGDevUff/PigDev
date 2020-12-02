@@ -6,19 +6,18 @@ Versão 0.7.2 da Biblioteca PIG.h
 #include "SDL_ttf.h"
 #include "SDL_image.h"
 #include "SDL_net.h"
+#include "SDL_mixer.h"
 #include "Tipos_PIG.h"
 #include "PIGFuncoesBasicas.h"
 #include "CPIGErros.h"
-#include "CPoolNumeros.h"
-#include "SDL_mixer.h"
+
 #include "CGerenciadorJanelas.h"
 #include "CGerenciadorSockets.h"
 #include "CAssetLoader.h"
 #include "COffscreenRenderer.h"
 #include "CGerenciadorFontes.h"
-#include "CVisual.h"
-#include "CPIGLabel.h"
 #include "CMouse.h"
+#include "CGerenciadorSprites.h"
 #include "CGerenciadorObjetos.h"
 #include "CGerenciadorTimers.h"
 #include "CGerenciadorVideos.h"
@@ -28,7 +27,6 @@ Versão 0.7.2 da Biblioteca PIG.h
 #include "CGerenciadorControles.h"
 #include "CGerenciadorForms.h"
 #include "CJogo.h"
-//#include "PIGFuncoesForm.h"
 
 /********************************
 / Variáveis Globais
@@ -63,6 +61,7 @@ void CriaJogo(char *nomeJanela,int cursorProprio=0,int altura=ALT_TELA,int largu
         jogo = new CJogo(nomeJanela,cursorProprio,altura,largura);
         CAssetLoader::Inicia();
         CMouse::Inicia(cursorProprio);
+        CGerenciadorSprites::Inicia();
         CGerenciadorFontes::Inicia();
         CGerenciadorTimers::Inicia();
         CGerenciadorAudios::Inicia();
@@ -196,6 +195,7 @@ void FinalizaJogo(){
     CGerenciadorVideos::Encerra();
     CGerenciadorSockets::Encerra();
     CGerenciadorForms::Encerra();
+    CGerenciadorSprites::Encerra();
     if (jogo->cursorPadrao==0)
         CMouse::Encerra();
     CAssetLoader::Encerra();
@@ -615,7 +615,7 @@ void DesenhaRetanguloVazado(int posicaoX, int posicaoY, int altura, int largura,
 /********************************
 A função DesenhaPoligono() é responsável por desenhar na janela um polígono de preenchimento sólido com o número de lados indicados. Os dois primeiros parâmetros indicam as coordenadas
 de cada um dos vértices do polígono.
-AVISO: essa função utiliza o renderizador offscreen para gerar o polígono e posterior o renderiza na janela em questão; isto pode fazer o FPS da aplicação diminuir consideravelmente.
+AVISO: essa função utiliza o renderizador offscreen para gerar o polígono e posteriormente o renderiza na janela em questão; isto pode fazer o FPS da aplicação diminuir consideravelmente.
 Parâmetros:
 pontosX (entrada, passagem por referência): vetor de inteiros, de tamanho qtd, contendo as coordenadas X de cada vértice do polígono.
 pontosY (entrada, passagem por referência): vetor de inteiros, de tamanho qtd, contendo as coordenadas Y de cada vértice do polígono.
@@ -624,7 +624,7 @@ cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho do
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde o polígono será desenhado.
 ********************************/
 void DesenhaPoligono(int *pontosX,int *pontosY,int qtd, PIG_Cor cor, int idJanela=0){
-    jogo->PintarPoligono(pontosX,pontosY,qtd,cor,idJanela);
+    CGerenciadorJanelas::DesenhaPoligono(pontosX,pontosY,qtd,cor,idJanela);
 }
 
 

@@ -1,5 +1,6 @@
+#ifndef _CPIGGerenciadorSockets_
+#define _CPIGGerenciadorSockets_
 
-#include "CSocketTCP.h"
 #include "CClienteTCP.h"
 #include "CServidorTCP.h"
 #include "CSocketUDP.h"
@@ -247,3 +248,4 @@ ServidorTCP CGerenciadorSockets::servidores[MAX_SOCKETS_SERVIDORES_TCP];
 int CGerenciadorSockets::totalSocketsUDP;
 PoolNumeros CGerenciadorSockets::numSocketsUDP;
 SocketUDP CGerenciadorSockets::socketsUDP[MAX_SOCKETS_UDP];
+#endif // _CPIGGerenciadorSockets_

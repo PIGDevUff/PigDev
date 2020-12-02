@@ -101,7 +101,8 @@ public:
     int TrataEventoMouse(PIG_Evento evento){
         int resp = -1;
         bool mouseOverAntes = mouseOver;
-        if (ChecaMouseOver(CMouse::PegaXY())>0){
+        //PigCamera cam = CGerenciadorJanelas::GetJanela(idJanela)->GetCamera();
+        if (ChecaMouseOver(CMouse::PegaXYWorld())>0){
             for (int i=0;i<itens.size();i++){
                 int aux = itens[i]->TrataEventoMouse(evento);
                 if(aux == PIG_SELECIONADO_TRATADO){

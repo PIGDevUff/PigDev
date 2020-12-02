@@ -1,3 +1,6 @@
+#ifndef _CPIGGerenciadorTimers_
+#define _CPIGGerenciadorTimers_
+
 #include "CTimer.h"
 class CGerenciadorTimers{
 
@@ -73,3 +76,4 @@ public:
 PoolNumeros CGerenciadorTimers::numTimers;
 int CGerenciadorTimers::totalTimers;
 Timer CGerenciadorTimers::timers[MAX_TIMERS];
+#endif // _CPIGGerenciadorTimers_

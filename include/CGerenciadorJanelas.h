@@ -1,3 +1,6 @@
+#ifndef _CPIGGerenciadorJanelas_
+#define _CPIGGerenciadorJanelas_
+
 #include "CJanela.h"
 class CGerenciadorJanelas{
 
@@ -96,6 +99,8 @@ static int GetLargura(int idJanela=0){
     return GetJanela(idJanela)->GetLargura();
 }
 
+
+
 static int SetTamanho(int altura,int largura,int idJanela=0){
     GetJanela(idJanela)->SetTamanho(altura,largura);
 }
@@ -164,6 +169,10 @@ static void DesenhaLinhasSequencia(int *x,int *y,int qtd,PIG_Cor cor,int idJanel
     GetJanela(idJanela)->DesenhaLinhasSequencia(x,y,qtd,cor);
 }
 
+static void DesenhaPoligono(int px[],int py[],int lados,PIG_Cor cor,int idJanela=0){
+    GetJanela(idJanela)->DesenhaPoligono(px,py,lados,cor);
+}
+
 static PIG_Cor GetPixel(int x, int y, int idJanela=0){
     return GetJanela(idJanela)->GetPixel(x,y);
 }
@@ -172,3 +181,4 @@ static PIG_Cor GetPixel(int x, int y, int idJanela=0){
 
 int CGerenciadorJanelas::qtdJanelas;
 Janela CGerenciadorJanelas::janelas[MAX_JANELAS];
+#endif // _CPIGGerenciadorJanelas_

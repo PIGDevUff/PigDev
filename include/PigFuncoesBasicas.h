@@ -109,6 +109,12 @@ int PIGLimitaValor(int valor, int minimo,int maximo){
     else return valor;
 }
 
+int PIGLimitaValor(float valor, float minimo,float maximo){
+    if (valor<minimo) return minimo; //valor não pode ficar menor que o mínimo informado
+    else if (valor>maximo) return maximo;//valor não pode ficar maior que o máximo informado
+    else return valor;
+}
+
 //cria uma lista de strings contendo o nome do arquivos de um diretório
 std::vector<std::string> PIGListaArquivosDiretorio(std::string path) {
    std::vector<std::string> resp;
@@ -123,4 +129,25 @@ std::vector<std::string> PIGListaArquivosDiretorio(std::string path) {
    }
    return resp;
 }
+
+void PIGCalculaBoundingBox(int px[],int py[],int lados,int *altura,int *largura,int *centroX,int *centroY){
+    int minX=99999,maxX=-1,minY=99999,maxY=-1;
+    *centroX=0,*centroY=0;
+
+    //calcula o bounding-box do poligono
+    for (int i=0;i<lados;i++){
+        if (px[i]<minX) minX = px[i];
+        if (py[i]<minY) minY = py[i];
+        if (px[i]>maxX) maxX = px[i];
+        if (py[i]>maxY) maxY = py[i];
+        *centroX += px[i]; //centro do poligono
+        *centroY += py[i]; //centro do poligono
+    }
+    *centroX /= lados; //centro do poligono
+    *centroY /= lados; //centro do poligono
+
+    *altura = maxY-minY+1;  //altura absoluta do poligono
+    *largura = maxX-minX+1; //altura absoluta do poligono
+}
+
 #endif // _PigFuncoesBasicas_

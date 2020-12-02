@@ -9,14 +9,14 @@ O label é posicionado sempre internamente, mas pode estar alinhado à direita (co
 
 #ifndef _CPIGItemComponente_
 #define _CPIGItemComponente_
-#include "CPigIcone.h"
+//#include "CPigIcone.h"
 
 class CPigItemComponente:public CPigComponente{
 
 private:
 
     void (*AjustaFrame)(CPigItemComponente*);       //ponteiro para função que será chamada sempre que algum estado do item mudar
-    PIGIcone icone;
+    PIGVisual icone;
     PIG_PosicaoComponente posIcone,posRelativaLabel;
 
     int OnMouseClick(){
@@ -27,7 +27,7 @@ private:
 
     void IniciaBase(std::string labelItem,std::string arqImagemIcone="",int alturaIcone=0,int larguraIcone=0){
         if (arqImagemIcone!=""){
-            icone = new CPIGIcone(arqImagemIcone,1,idJanela);
+            icone = new CPigVisual(arqImagemIcone,1,NULL,idJanela);
             icone->SetDimensoes(alturaIcone,larguraIcone);
             AlinhaIconeEsquerda();
             posIcone = PIG_COMPONENTE_ESQ_CENTRO;
@@ -98,7 +98,8 @@ public:
     }
 
     int Desenha()override{
-        SDL_RenderCopyEx(renderer,text,&frame,&dest,-angulo,NULL,flip);
+        //SDL_RenderCopyEx(renderer,text,&frame,&dest,-angulo,NULL,flip);
+        CPigVisual::Desenha();
         if (icone)
             icone->Desenha();
         DesenhaLabel();
@@ -190,7 +191,8 @@ public:
     }
 
     int TrataEventoMouse(PIG_Evento evento)override{
-        ChecaMouseOver(CMouse::PegaXY());
+        //PigCamera cam = CGerenciadorJanelas::GetJanela(idJanela)->GetCamera();
+        ChecaMouseOver(CMouse::PegaXYWorld());
 
         if(mouseOver){
             if (habilitado==false) return PIG_SELECIONADO_DESABILITADO;
@@ -213,8 +215,12 @@ public:
         if (icone) icone->Desloca(dx,dy);
     }
 
-    PIGIcone GetIcone(){
+    PIGVisual GetIcone(){
         return icone;
+    }
+
+    void DefineFrameIcone(SDL_Rect r){
+        icone->DefineFrame(r);
     }
 
 };

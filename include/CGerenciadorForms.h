@@ -1,3 +1,6 @@
+#ifndef _CPIGGerenciadorForms_
+#define _CPIGGerenciadorForms_
+
 #include "CPigForm.h"
 
 class CGerenciadorForms{
@@ -97,3 +100,4 @@ int CGerenciadorForms::totalForms;
 PoolNumeros CGerenciadorForms::numForms;
 CPigForm* CGerenciadorForms::forms[MAX_FORMS];
 
+#endif // _CPIGGerenciadorForms_

@@ -1,3 +1,9 @@
+#ifndef _CPIGJanelas_
+#define _CPIGJanelas_
+
+#include "CPigCamera.h"
+#include "COffscreenRenderer.h"
+
 class CJanela{
 
 private:
@@ -11,6 +17,7 @@ int id;
 int fechada,modo;
 float opacidade;
 std::string titulo;
+PigCamera camera;
 
 public:
 
@@ -32,6 +39,7 @@ CJanela(std::string tituloJanela,int idJanela,int altTela,int largTela){
         SDL_SetRenderDrawBlendMode(renderer,SDL_BLENDMODE_BLEND);
         fechada = 0;
         modo = JANELA_NORMAL;
+        camera = new CPigCamera(altTela,largTela);
     }
 
     opacidade = 1.0f;
@@ -41,10 +49,15 @@ CJanela(std::string tituloJanela,int idJanela,int altTela,int largTela){
 ~CJanela(){
     SDL_DestroyRenderer(renderer);
     if (window) SDL_DestroyWindow(window);
+    delete camera;
 }
 
 SDL_Window *GetWindow(){
     return window;
+}
+
+PigCamera GetCamera(){
+    return camera;
 }
 
 SDL_Renderer *GetRenderer(){
@@ -73,6 +86,27 @@ void Exibe(){
 void GanhaFoco(){
     SDL_RaiseWindow(window);
 }
+
+void MoveCamera(int nx, int ny){
+    camera->Move(nx,ny);
+}
+
+void DeslocaCamera(int dx, int dy){
+    camera->Desloca(dx,dy);
+}
+
+void SetZoom(float zoom){
+    camera->SetZoom(zoom);
+    SDL_RenderSetLogicalSize(renderer,zoom*largura,zoom*altura);
+}
+
+/*void ConverteCoordeandaScreenWorld(int screenX, int screenY, int *worldX, int *worldY){
+    camera->ConverteCoordenadaScreenWorld(screenX, screenY, worldX, worldY);
+}
+
+void ConverteCoordeandaWorldScreen(int worldX, int worldY, int *screenX, int *screenY){
+    camera->ConverteCoordenadaWorldScreen( worldX, worldY, screenX, screenY);
+}*/
 
 void DefineFundo(std::string nomeArquivo){
     SDL_Surface* bitmap = IMG_Load(nomeArquivo.c_str());
@@ -116,6 +150,12 @@ void IniciaDesenho(){
 void EncerraDesenho(){
     SDL_RenderPresent(renderer);
 
+}
+
+void SetLogicalSize(int novaaltura, int novalargura){
+    SDL_RenderSetLogicalSize(renderer,novalargura,novaaltura);
+    //printf("nova %d desloca %d\n",novaaltura,altura-novaaltura);
+    camera->Move(camera->GetX(),-altura+novaaltura);
 }
 
 int GetAltura(){
@@ -192,6 +232,8 @@ int SetTamanho(int alt, int larg){
         rect.h = alturaRet;
         rect.w = larguraRet;
 
+        camera->ConverteCoordenadaWorldScreen(rect.x,rect.y,&rect.x,&rect.y);
+
         SDL_SetRenderDrawColor(renderer, cor.r,cor.g,cor.b,cor.a);
         SDL_RenderFillRect(renderer,&rect);
     }
@@ -203,27 +245,90 @@ int SetTamanho(int alt, int larg){
         rect.h = alturaRet;
         rect.w = larguraRet;
 
+        camera->ConverteCoordenadaWorldScreen(rect.x,rect.y,&rect.x,&rect.y);
+
         SDL_SetRenderDrawColor(renderer, cor.r,cor.g,cor.b,cor.a);
         SDL_RenderDrawRect(renderer,&rect);
     }
 
     void DesenhaLinhaSimples(int x1,int y1,int x2,int y2,PIG_Cor cor){
         SDL_SetRenderDrawColor(renderer,cor.r,cor.g,cor.b,255);
-        SDL_RenderDrawLine(renderer,x1,altura-y1-1,x2,altura-y2-1);
+        int camX1,camY1,camX2,camY2;
+        camera->ConverteCoordenadaWorldScreen(x1,altura-y1-1,&camX1,&camY1);
+        camera->ConverteCoordenadaWorldScreen(x2,altura-y2-1,&camX2,&camY2);
+        SDL_RenderDrawLine(renderer,camX1,camY1,camX2,camY2);
+        //SDL_RenderDrawLine(renderer,x1-camera->GetX(),altura-y1-1+camera->GetY(),x2-camera->GetX(),altura-y2-1+camera->GetY());
     }
 
     void DesenhaLinhasDisjuntas(int *x,int *y,int qtd,PIG_Cor cor){
         SDL_SetRenderDrawColor(renderer,cor.r,cor.g,cor.b,255);
+        int camX1,camY1,camX2,camY2;
         for (int k=0;k<qtd*2;k+=2){
-            SDL_RenderDrawLine(renderer,x[k],altura-y[k],x[k+1],altura-y[k+1]);
+            camera->ConverteCoordenadaWorldScreen(x[k],altura-y[k],&camX1,&camY1);
+            camera->ConverteCoordenadaWorldScreen(x[k+1],altura-y[k+1],&camX2,&camY2);
+            SDL_RenderDrawLine(renderer,camX1,camY1,camX2,camY2);
+            //SDL_RenderDrawLine(renderer,x[k]-camera->GetX(),altura-y[k]+camera->GetY(),x[k+1]-camera->GetX(),altura-y[k+1]+camera->GetY());
         }
     }
 
     void DesenhaLinhasSequencia(int *x,int *y,int qtd,PIG_Cor cor){
         SDL_SetRenderDrawColor(renderer,cor.r,cor.g,cor.b,255);
+        int camX1,camY1,camX2,camY2;
         for (int k=0;k<qtd-1;k++){
-            SDL_RenderDrawLine(renderer,x[k],altura-y[k],x[k+1],altura-y[k+1]);
+            camera->ConverteCoordenadaWorldScreen(x[k],altura-y[k],&camX1,&camY1);
+            camera->ConverteCoordenadaWorldScreen(x[k+1],altura-y[k+1],&camX2,&camY2);
+            SDL_RenderDrawLine(renderer,camX1,camY1,camX2,camY2);
+            //SDL_RenderDrawLine(renderer,x[k]-camera->GetX(),altura-y[k]+camera->GetY(),x[k+1]-camera->GetX(),altura-y[k+1]+camera->GetY());
         }
+    }
+
+    void DesenhaPoligono(int px[],int py[],int lados,PIG_Cor cor){
+        int minX=99999,maxX=-1,minY=99999,maxY=-1;
+        int cx=0,cy=0;
+
+        //calcula o bounding-box do poligono
+        for (int i=0;i<lados;i++){
+            if (px[i]<minX) minX = px[i];
+            if (py[i]<minY) minY = py[i];
+            if (px[i]>maxX) maxX = px[i];
+            if (py[i]>maxY) maxY = py[i];
+            cx += px[i]; //centro do poligono
+            cy += py[i]; //centro do poligono
+        }
+        cx /= lados; //centro do poligono
+        cy /= lados; //centro do poligono
+
+        int alt = maxY-minY+1;  //altura absoluta do poligono
+        int larg = maxX-minX+1; //altura absoluta do poligono
+
+        OffscreenRenderer off = new COffscreenRenderer(alt,larg); //ajustado extamente com a altura e largura
+
+        if (PIGCoresIguais(cor,PRETO)){
+            off->PintarFundo(BRANCO);
+        }else off->PintarFundo(PRETO);
+
+        for (int i=0;i<lados;i++)
+            off->DesenharLinha(px[i]-minX,py[i]-minY,px[(i+1)%lados]-minX,py[(i+1)%lados]-minY,cor);
+
+        off->PintarArea(cx-minX,cy-minY,cor,NULL);
+
+        SDL_Surface *surf = off->GetSurface();
+        if (PIGCoresIguais(cor,PRETO)){
+            SDL_SetColorKey( surf, SDL_TRUE, SDL_MapRGBA(surf->format, 255, 255, 255, 255) );
+        }else SDL_SetColorKey( surf, SDL_TRUE, SDL_MapRGBA(surf->format, 0, 0, 0, 255) );
+
+        //SDL_Renderer *renderer = CGerenciadorJanelas::GetJanela(idJanela)->GetRenderer();
+        SDL_Texture *text = SDL_CreateTextureFromSurface(renderer, surf);
+        SDL_Rect r;
+        r.h = alt;
+        r.w = larg;
+        r.x = minX;
+        r.y = altura-minY-alt;
+        camera->ConverteCoordenadaWorldScreen(r.x,r.y,&r.x,&r.y);
+        //printf("%d,%d %d,%d\n",r.x,r.y,r.h,r.w);
+        SDL_RenderCopy(renderer,text,NULL,&r);
+        SDL_DestroyTexture(text);
+        delete off;
     }
 
     PIG_Cor GetPixel(int x,int y) {
@@ -247,5 +352,5 @@ int SetTamanho(int alt, int larg){
 
 };
 
-
 typedef CJanela *Janela;
+#endif // _CPIGJanelas_

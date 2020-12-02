@@ -158,20 +158,26 @@ public:
         double scalaX = (1.*dest.w/frameBase.w);
         double scalaY = (1.*dest.h/frameBase.h);
 
-        SDL_Rect aux;
+        SDL_Rect aux,aux2;
         aux.h = ceil(scalaY*frameBarra.h);
         aux.w = ceil(scalaX*frameBarra.w);
         aux.x = dest.x+xBarra*scalaX;
         aux.y = dest.y+yBarra*scalaY;
 
         //base
-        SDL_RenderCopyEx(renderer, text, &frameBase,&dest,-angulo,&pivoRelativo,flip);
+        CPigVisual::Desenha();
+        //SDL_RenderCopyEx(renderer, text, &frameBase,&dest,-angulo,&pivoRelativo,flip);
 
+        aux2 = dest;
+        dest=aux;
         //definir o valor de r, de acordo com a orientação da barra
         SDL_Rect clip = GeraClip(aux);
         SDL_RenderSetClipRect(renderer,&clip);
 
-        SDL_RenderCopyEx(renderer, text, &frameBarra,&aux,-angulo,&pivoRelativo,flip);
+        //SDL_RenderCopyEx(renderer, text, &frameBarra,&aux,-angulo,&pivoRelativo,flip);
+        CPigVisual::Desenha();
+
+        dest = aux2;
 
         SDL_RenderSetClipRect(renderer,NULL);
 

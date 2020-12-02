@@ -131,7 +131,8 @@ class CPigScrollBar : public CPigComponente{
     }
 
     int TrataEventoMouse(PIG_Evento evento){
-        SDL_Point p = CMouse::PegaXY();
+        SDL_Point p = CMouse::PegaXYWorld();
+        //PigCamera cam = CGerenciadorJanelas::GetJanela(idJanela)->GetCamera();
         ChecaMouseOver(p);
 
         if(orientacao == VERTICAL && temFoco)

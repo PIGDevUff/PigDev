@@ -39,7 +39,6 @@ Principais definições utilizadas pela PIG
 #define MAX_FONTES              100
 #define PRIMEIRO_CAR            11
 #define ULTIMO_CAR              256
-//#define NOME_ARQ_TEMP           "fontess.bmp"
 
 //#define MAX_SLOTS_AL_IMAGEM     4000
 //#define MAX_SLOTS_AL_AUDIO      1000
@@ -127,8 +126,10 @@ typedef enum PIG_TipoEvento{EVENTO_NULO,
 /********************************
 O InfoEventoMouse é um struct contendo informações específicas sobre o evento de mouse:
 acao: código que representa o evento específico (os possíveis valores podem ser vistos abaixo do struct)
-posX: a posição no eixo X do ponteiro do mouse no momento de ocorrência do evento
-posY: a posição no eixo Y do ponteiro do mouse no momento de ocorrência do evento
+posX: a posição no eixo X (nas coordeandas da tela) do ponteiro do mouse no momento de ocorrência do evento
+posY: a posição no eixo Y (nas coordeandas do tela) do ponteiro do mouse no momento de ocorrência do evento
+worldX: a posição no eixo X (nas coordeandas do mundo) do ponteiro do mouse no momento de ocorrência do evento
+worldY: a posição no eixo Y (nas coordeandas do mundo) do ponteiro do mouse no momento de ocorrência do evento
 botao: indica qual dos possíveis três botões foi pressionado ou liberado
 cliques: indica a quantidade de cliques a que se refere o evento (1=clique simples, 2=clique duplo, ...)
 relX: indica o deslocamento no eixo X quando há uma movimentação de mouse; adicionalmente, representa o deslocamento da rodinha no eixo X (não usado)
@@ -137,6 +138,7 @@ relX: indica o deslocamento no eixo Y quando há uma movimentação de mouse; adici
 typedef struct InfoEventoMouse{
     int acao;
     int posX,posY;
+    int worldX,worldY;
     int botao;
     int cliques;
     int relX,relY;

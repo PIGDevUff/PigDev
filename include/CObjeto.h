@@ -324,8 +324,11 @@ public:
 
     int Desenha(OffscreenRenderer offRender = NULL){
         if (offRender == NULL){
-            SDL_RenderCopyEx(renderer, text, &frame, &dest, -angulo, &pivoRelativo, flip);
-
+            //SDL_Rect enquadrado = dest;
+            //enquadrado.x -= CGerenciadorJanelas::GetJanela(idJanela)->GetCamera()->GetX();
+            //enquadrado.y += CGerenciadorJanelas::GetJanela(idJanela)->GetCamera()->GetY();
+            //SDL_RenderCopyEx(renderer, text, &frame, &enquadrado, -angulo, &pivoRelativo, flip);
+            CPigVisual::Desenha();
             switch(9999) {//modo
                 case OOBB:
                     DesenhaBB();

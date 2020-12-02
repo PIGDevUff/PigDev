@@ -21,7 +21,7 @@ protected:
 
     static void AjustaFrame(PigItemComponente item){
         int itemAlt,itemLarg;
-        PIGIcone icone = item->GetIcone();
+        PIGVisual icone = item->GetIcone();
         icone->GetDimensoesOriginais(itemAlt,itemLarg);
         int largFrame = itemLarg/6;
         SDL_Rect r={0,0,largFrame,itemAlt};
@@ -91,7 +91,8 @@ public:
         if (visivel==false) return 0;
 
         if (text){//se tiver imagem de fundo
-            SDL_RenderCopyEx(renderer,text,NULL,&dest,-angulo,NULL,flip);
+            //SDL_RenderCopyEx(renderer,text,NULL,&dest,-angulo,NULL,flip);
+            CPigVisual::Desenha();
         }
         DesenhaLabel();
 
@@ -104,7 +105,8 @@ public:
     int TrataEventoMouse(PIG_Evento evento){
         int resp = -1;
         bool mouseOverAntes = mouseOver;
-        if (ChecaMouseOver(CMouse::PegaXY())>0){
+        //PigCamera cam = CGerenciadorJanelas::GetJanela(idJanela)->GetCamera();
+        if (ChecaMouseOver(CMouse::PegaXYWorld())>0){
             for (int i=0;i<itens.size();i++){
                 if(itens[i]->TrataEventoMouse(evento) == PIG_SELECIONADO_TRATADO){
                     if (itens[i]->GetAcionado())

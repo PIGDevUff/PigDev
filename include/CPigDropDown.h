@@ -130,7 +130,8 @@ public:
     int TrataEventoMouse(PIG_Evento evento){
         int resp = -1;
         bool mouseOverAntes = mouseOver;
-        if (ChecaMouseOver(CMouse::PegaXY())){
+        //PigCamera cam = CGerenciadorJanelas::GetJanela(idJanela)->GetCamera();
+        if (ChecaMouseOver(CMouse::PegaXYWorld())){
             if (!recolhida){        //se o dropdown está exibindo os itens, é preciso tratá-los individualmente
                 for (int i=0;i<itens.size();i++){
                     if(itens[i]->TrataEventoMouse(evento) == PIG_SELECIONADO_TRATADO){

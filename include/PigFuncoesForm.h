@@ -26,8 +26,16 @@ void Pig_Componentes_SetFonteLabel(int idComponente,int fonte){
     CGerenciadorForms::GetComponente(idComponente)->SetFonteLabel(fonte);
 }
 
+void Pig_Componentes_SetCorLabel(int idComponente,PIG_Cor cor){
+    CGerenciadorForms::GetComponente(idComponente)->SetCorLabel(cor);
+}
+
 void Pig_Componentes_SetFonteHint(int idComponente,int fonte){
     CGerenciadorForms::GetComponente(idComponente)->SetFonteHint(fonte);
+}
+
+void Pig_Componentes_SetCorHint(int idComponente,PIG_Cor cor){
+    CGerenciadorForms::GetComponente(idComponente)->SetCorHint(cor);
 }
 
 void Pig_Componentes_SetAudio(int idComponente,int idAudio){
@@ -35,8 +43,7 @@ void Pig_Componentes_SetAudio(int idComponente,int idAudio){
 }
 
 void Pig_Componentes_GetLabel(int idComponente,char *label){
-    if(label) free(label);
-    label = (char*)(CGerenciadorForms::GetComponente(idComponente)->GetLabel()).c_str();
+    strcpy(label,(char*)(CGerenciadorForms::GetComponente(idComponente)->GetLabel()).c_str());
 }
 
 void Pig_Componentes_SetHint(int idComponente,char *hint){

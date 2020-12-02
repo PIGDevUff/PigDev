@@ -1,3 +1,6 @@
+#ifndef _CPIGPoolNumeroes_
+#define _CPIGPoolNumeroes_
+
 class CPoolNumeros{
 
 typedef struct xxx{
@@ -58,7 +61,8 @@ public:
         livres = aux;
     }
 
-    void ImprimeLivres(){
+    //nao usado, apenas para depuracao
+    /*void ImprimeLivres(){
         for (int i=0;i<qtdTotal;i++){
             if (usados[i]==0)
                 printf("%d\n",i);
@@ -70,9 +74,10 @@ public:
             if (usados[i]==1)
                 printf("%d\n",i);
         }
-    }
+    }*/
 
 
 };
 
 typedef CPoolNumeros* PoolNumeros;
+#endif // _CPIGPoolNumeroes_

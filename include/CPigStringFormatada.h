@@ -51,9 +51,10 @@ public:
         estilos.push_back(estilo);
     }
 
-    void Print(){
+
+    /*void Print(){
         EXECUTA_SE_DEBUG(printf("__%s__ (%d)\n",letras.c_str(),LargTotalPixels()));
-    }
+    }*/
 
     int LargTotalPixels(){
         if (letras.size()>0)

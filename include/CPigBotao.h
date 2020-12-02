@@ -124,7 +124,9 @@ public:
     }
 
     int TrataEventoMouse(PIG_Evento evento){
-        ChecaMouseOver(CMouse::PegaXY());
+        //PigCamera cam = CGerenciadorJanelas::GetJanela(idJanela)->GetCamera();
+        //ChecaMouseOver(cam->GetX(),cam->GetY(),CMouse::PegaXYWorld());
+        ChecaMouseOver(CMouse::PegaXYWorld());
 
         if (mouseOver){
             if (habilitado==false) return PIG_SELECIONADO_DESABILITADO;

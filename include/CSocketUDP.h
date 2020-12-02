@@ -1,3 +1,6 @@
+#ifndef _CPIGSocketUDP_
+#define _CPIGSocketUDP_
+
 class CSocketUDP{
 
 private:
@@ -160,3 +163,4 @@ static int thread_code(void *data){
 };
 
 typedef CSocketUDP *SocketUDP;
+#endif // _CPIGSocketUDP_

@@ -58,6 +58,51 @@ protected:
         IniciaOrientacao();
     }
 
+
+
+
+
+
+
+private:
+
+    void IniciaCor(){
+        coloracao = BRANCO;
+        opacidade = 255; //totalmente opaco
+        text = NULL;
+    }
+
+    void IniciaJanela(int janela){
+        idJanela = janela;
+        altJanela = CGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
+        renderer = CGerenciadorJanelas::GetJanela(idJanela)->GetRenderer();
+    }
+
+    void IniciaDimensoes(int altura,int largura){
+        altOriginal = alt = altura;
+        largOriginal = larg = largura;
+    }
+
+    void IniciaOrientacao(){
+        x = y = 0;
+        angulo = 0;
+        pivoRelativo.x = 0;
+        pivoRelativo.y = alt;
+
+        dest.x = x;
+        dest.y = altJanela-y-alt;
+        dest.h = alt;
+        dest.w = larg;
+
+        frame.x = frame.y = 0;
+        frame.h = alt;
+        frame.w = larg;
+
+        flip = SDL_FLIP_NONE;
+    }
+
+public:
+
     CPigVisual(int altura,int largura,std::string nomeArq,int janela=0){
         nomeArquivo = nomeArq;
         IniciaBase(altura,largura,janela);
@@ -100,6 +145,10 @@ protected:
     CPigVisual(int janela){
         idJanela = janela;
         nomeArquivo = "";
+        pivoRelativo = {0,0};
+        frame = {0,0,0,0};
+        angulo = 0;
+        flip = FLIP_NENHUM;
         text = NULL;
         renderer = NULL;
         bitmap = NULL;
@@ -118,45 +167,6 @@ protected:
             #endif
         }
     }
-
-private:
-
-    void IniciaCor(){
-        coloracao = BRANCO;
-        opacidade = 255; //totalmente opaco
-        text = NULL;
-    }
-
-    void IniciaJanela(int janela){
-        idJanela = janela;
-        altJanela = CGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
-        renderer = CGerenciadorJanelas::GetJanela(idJanela)->GetRenderer();
-    }
-
-    void IniciaDimensoes(int altura,int largura){
-        altOriginal = alt = altura;
-        largOriginal = larg = largura;
-    }
-
-    void IniciaOrientacao(){
-        x = y = 0;
-        angulo = 0;
-        pivoRelativo.x = 0;
-        pivoRelativo.y = alt;
-
-        dest.x = x;
-        dest.y = altJanela-y-alt;
-        dest.h = alt;
-        dest.w = larg;
-
-        frame.x = frame.y = 0;
-        frame.h = alt;
-        frame.w = larg;
-
-        flip = SDL_FLIP_NONE;
-    }
-
-public:
 
     int GetIdJanela(){
         return idJanela;
@@ -249,8 +259,17 @@ public:
         return opacidade;
     }
 
+    void Desenha(){
+        SDL_Rect enquadrado = dest;
+        //enquadrado.x -= CGerenciadorJanelas::GetJanela(idJanela)->GetCamera()->GetX();
+        //enquadrado.y += CGerenciadorJanelas::GetJanela(idJanela)->GetCamera()->GetY();
+        CGerenciadorJanelas::GetJanela(idJanela)->GetCamera()->ConverteCoordenadaWorldScreen(enquadrado.x,enquadrado.y,&enquadrado.x,&enquadrado.y);
+        SDL_RenderCopyEx(renderer, text, &frame, &enquadrado, -angulo, &pivoRelativo, flip);
+    }
+
     std::string GetNomeArquivo(){
         return nomeArquivo;
     }
 };
+typedef CPigVisual *PIGVisual;
 #endif // _CPigVisual_

@@ -1,3 +1,6 @@
+#ifndef _CPILHACOORDENADA_
+#define _CPILHACOORDENADA_
+
 class CPilhaCoordenada{
 
 private:
@@ -43,3 +46,4 @@ public:
     }
 
 };
+#endif // _CPILHACOORDENADA_

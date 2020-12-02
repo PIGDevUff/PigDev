@@ -1,3 +1,6 @@
+#ifndef _CPiGSocketTCP_
+#define _CPiGSocketTCP_
+
 class CSocketTCP{
 
 protected:
@@ -191,3 +194,4 @@ int EnviaDados(const void *buffer, int tamanhoBuffer){
 };
 
 typedef CSocketTCP *SocketTCP;
+#endif // _CPiGSocketTCP_
