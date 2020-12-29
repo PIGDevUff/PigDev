@@ -16,10 +16,11 @@ class CPigScrollBar : public CPigComponente{
     int altBotoes,largHandle,largUtil;
     int deltaBotao,deltaRodinha,deltaTeclado;
     int comprimento,largura;
-    bool orientacaoCrescimento,setasAtivadas;
+    bool orientacaoCrescimento;
     int largReal,altReal;
     void *param;
     AcaoScroll acao;
+    SDL_Rect areaDeAcaoScroll;
 
     static int AcaoSetas(int idBotao, void* pontObjeto){
         CPigScrollBar *scroll = (CPigScrollBar*) pontObjeto;
@@ -100,7 +101,7 @@ class CPigScrollBar : public CPigComponente{
     }
 
 /*******************************************/
-    void TrataClickTrilha(int px,int py){
+    int TrataClickTrilha(int px,int py){
         if(orientacao == HORIZONTAL){
             if(orientacaoCrescimento)porcentagemConcluida = (1.0 * ((px - largHandle/2) - x))/(largUtil);
             else porcentagemConcluida = (1.0 * (x + larg - (px + largHandle/2)))/(largUtil);
@@ -110,57 +111,33 @@ class CPigScrollBar : public CPigComponente{
         }
 
         AvancaHandle(porcentagemConcluida*(vMax - vMin) + vMin,0);
+        return PIG_SELECIONADO_TRATADO;
     }
 
     int TrataBotoes(PIG_Evento evento){
         if(botao1 && botao2){
-            if(botao1->TrataEvento(evento) || botao2->TrataEvento(evento)) return 1;
+            if(botao1->TrataEventoMouse(evento) || botao2->TrataEventoMouse(evento)) return PIG_SELECIONADO_TRATADO;
         }
-        return 0;
+        return PIG_NAO_SELECIONADO;
     }
 
     int TrataRodinha(PIG_Evento evento){
         if(evento.mouse.relY > 0){
             AvancaHandle(vAtual,deltaRodinha);
-            return 1;
+            return PIG_SELECIONADO_TRATADO;
         }else if (evento.mouse.relY < 0){
             AvancaHandle(vAtual,-deltaRodinha);
-            return 1;
-        }
-        return 0;
-    }
-
-    int TrataEventoMouse(PIG_Evento evento){
-        SDL_Point p = CMouse::PegaXYWorld();
-        //PigCamera cam = CGerenciadorJanelas::GetJanela(idJanela)->GetCamera();
-        ChecaMouseOver(p);
-
-        if(orientacao == VERTICAL && temFoco)
-            if(evento.mouse.acao == MOUSE_RODINHA) return TrataRodinha(evento);
-
-        if (mouseOver){
-            if(evento.mouse.acao == MOUSE_PRESSIONADO && evento.mouse.botao == MOUSE_ESQUERDO && evento.mouse.cliques == 1){
-                TrataClickTrilha(p.x,p.y);
-                return PIG_SELECIONADO_TRATADO;
-            }
-            return PIG_SELECIONADO_MOUSEOVER;
+            return PIG_SELECIONADO_TRATADO;
         }
         return PIG_NAO_SELECIONADO;
     }
 
-    int TrataEventoTeclado(PIG_Evento evento){
-        if (!temFoco) return 0;
-        if(evento.teclado.acao == TECLA_PRESSIONADA){
-            if(orientacao == HORIZONTAL){
-                if(evento.teclado.tecla== TECLA_DIREITA) AvancaHandle(vAtual,deltaTeclado);
-                if(evento.teclado.tecla == TECLA_ESQUERDA) AvancaHandle(vAtual,-deltaTeclado);
-            }else{
-                if(evento.teclado.tecla== TECLA_CIMA) AvancaHandle(vAtual,deltaTeclado);
-                if(evento.teclado.tecla == TECLA_BAIXO) AvancaHandle(vAtual,-deltaTeclado);
-            }
-            return 1;
-        }
-        return 0;
+    //detecta se o mouse está sobre o componente ou não
+    bool ChecaMouseOverAreaScroll(SDL_Point pMouse){
+        if (visivel==false||habilitado==false)
+            return -1;
+
+        return SDL_PointInRect(&pMouse,&areaDeAcaoScroll);
     }
 
 public:
@@ -187,9 +164,9 @@ public:
             acao = NULL;
             param = NULL;
             orientacaoCrescimento = true;
-            setasAtivadas = true;
             AjustaOrientacao();
             AjustaHandle();
+            areaDeAcaoScroll = {0,0,0,0};
     }
 
     CPigScrollBar(std::string nomeArqParam):CPigScrollBar(LeArquivoParametros(nomeArqParam)){}
@@ -254,19 +231,53 @@ public:
         orientacao = novaOrientacao;
         AjustaOrientacao();
     }
-
+/*
     int TrataEvento(PIG_Evento evento){
+        if(visivel==false||habilitado==false) return PIG_NAO_SELECIONADO;
+        if(evento.tipoEvento == EVENTO_NULO) return PIG_NAO_SELECIONADO;
 
-        if(visivel==false||habilitado==false) return -1;
-        handle->TrataEvento(evento);
-        if(TrataBotoes(evento))return 1;
-
-        if(evento.tipoEvento == EVENTO_NULO) return 0;
+        //if(TrataBotoes(evento) == PIG_SELECIONADO_TRATADO) return PIG_SELECIONADO_TRATADO;
         if(evento.tipoEvento == EVENTO_TECLADO && setasAtivadas) return TrataEventoTeclado(evento);
         if(evento.tipoEvento == EVENTO_MOUSE) return TrataEventoMouse(evento);
 
-        return 0;
+        return PIG_NAO_SELECIONADO;
+    }*/
+
+    int TrataEventoMouse(PIG_Evento evento){
+        SDL_Point p = CMouse::PegaXY();
+        ChecaMouseOver(p);
+
+        if(TrataBotoes(evento) == PIG_SELECIONADO_TRATADO) return PIG_SELECIONADO_TRATADO;
+        handle->TrataEventoMouse(evento);
+
+        if(orientacao == VERTICAL && (ChecaMouseOverAreaScroll(p) || mouseOver)){
+            if(evento.mouse.acao == MOUSE_RODINHA) return TrataRodinha(evento);
+        }
+
+        if (mouseOver){
+            if((evento.mouse.acao == MOUSE_PRESSIONADO && evento.mouse.botao == MOUSE_ESQUERDO) || handle->GetAcionado()){
+                return TrataClickTrilha(p.x,p.y);
+            }
+            return PIG_SELECIONADO_MOUSEOVER;
+        }
+        return PIG_NAO_SELECIONADO;
     }
+
+    int TrataEventoTeclado(PIG_Evento evento){
+        if (!temFoco) return 0;
+        if(evento.teclado.acao == TECLA_PRESSIONADA){
+            if(orientacao == HORIZONTAL){
+                if(evento.teclado.tecla== TECLA_DIREITA) AvancaHandle(vAtual,deltaTeclado);
+                if(evento.teclado.tecla == TECLA_ESQUERDA) AvancaHandle(vAtual,-deltaTeclado);
+            }else{
+                if(evento.teclado.tecla== TECLA_CIMA) AvancaHandle(vAtual,deltaTeclado);
+                if(evento.teclado.tecla == TECLA_BAIXO) AvancaHandle(vAtual,-deltaTeclado);
+            }
+            return PIG_SELECIONADO_TRATADO;
+        }
+        return PIG_NAO_SELECIONADO;
+    }
+
 
 /***************Novos Métodos**************/
 
@@ -277,10 +288,6 @@ public:
 
     void GetDimensoesTrilha(int &altura,int &largura){
         CPigVisual::GetDimensoes(altura,largura);
-    }
-
-    void SetSetasAtivadas(bool estado){
-        setasAtivadas = estado;
     }
 
     void MudaOrientacaoCrescimento(){
@@ -302,6 +309,9 @@ public:
 
     }
 
+    void SetAreaDeAcaoScroll(int x,int y,int altura,int largura){
+        areaDeAcaoScroll = {x,y,largura,altura};
+    }
 
 /***************Métodos Modificados**************/
 
@@ -322,7 +332,6 @@ public:
             botao1->Desenha();
             botao2->Desenha();
         }
-        printf("foi\n");
         handle->Desenha();
         return 0;
     }

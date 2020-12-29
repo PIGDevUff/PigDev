@@ -9,7 +9,8 @@ O label é posicionado sempre internamente, mas pode estar alinhado à direita (co
 
 #ifndef _CPIGItemComponente_
 #define _CPIGItemComponente_
-//#include "CPigIcone.h"
+
+#include "CVisual.h"
 
 class CPigItemComponente:public CPigComponente{
 
@@ -98,8 +99,7 @@ public:
     }
 
     int Desenha()override{
-        //SDL_RenderCopyEx(renderer,text,&frame,&dest,-angulo,NULL,flip);
-        CPigVisual::Desenha();
+        SDL_RenderCopyEx(renderer,text,&frame,&dest,-angulo,NULL,flip);
         if (icone)
             icone->Desenha();
         DesenhaLabel();
@@ -191,7 +191,6 @@ public:
     }
 
     int TrataEventoMouse(PIG_Evento evento)override{
-        //PigCamera cam = CGerenciadorJanelas::GetJanela(idJanela)->GetCamera();
         ChecaMouseOver(CMouse::PegaXYWorld());
 
         if(mouseOver){
@@ -212,15 +211,12 @@ public:
         int dx = nx-x;
         int dy = ny-y;
         CPigComponente::Desloca(dx,dy);
+        SetPosicaoPadraoLabel(posLabel);
         if (icone) icone->Desloca(dx,dy);
     }
 
     PIGVisual GetIcone(){
         return icone;
-    }
-
-    void DefineFrameIcone(SDL_Rect r){
-        icone->DefineFrame(r);
     }
 
 };

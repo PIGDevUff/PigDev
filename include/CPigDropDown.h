@@ -130,20 +130,25 @@ public:
     int TrataEventoMouse(PIG_Evento evento){
         int resp = -1;
         bool mouseOverAntes = mouseOver;
-        //PigCamera cam = CGerenciadorJanelas::GetJanela(idJanela)->GetCamera();
         if (ChecaMouseOver(CMouse::PegaXYWorld())){
             if (!recolhida){        //se o dropdown está exibindo os itens, é preciso tratá-los individualmente
                 for (int i=0;i<itens.size();i++){
                     if(itens[i]->TrataEventoMouse(evento) == PIG_SELECIONADO_TRATADO){
-                        if (itens[i]->GetAcionado())
+                        if (itens[i]->GetAcionado()){
                             resp = i;
+                        }
                     }
                 }
                 SetAcionadoItem(resp,resp!=-1);
+
+                if (evento.mouse.acao == MOUSE_PRESSIONADO && evento.mouse.botao == MOUSE_ESQUERDO){
+                    SetRecolhida(!recolhida);
+                }
+
                 if (resp>=0) return PIG_SELECIONADO_TRATADO;
                 else return PIG_SELECIONADO_MOUSEOVER;
             }
-            if (evento.mouse.acao==MOUSE_PRESSIONADO&&evento.mouse.botao==MOUSE_ESQUERDO){
+            if (evento.mouse.acao == MOUSE_PRESSIONADO && evento.mouse.botao == MOUSE_ESQUERDO){
                 SetRecolhida(!recolhida);
                 return PIG_SELECIONADO_TRATADO;
             }
@@ -159,6 +164,8 @@ public:
     int TrataEventoTeclado(PIG_Evento evento){
         return 0;
     }
+
 };
+
 typedef CPigDropDown *PigDropDown;
 #endif // _CPigDropDown_

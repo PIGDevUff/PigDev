@@ -24,9 +24,7 @@ private:
         return GetTexto();
     }
 
-    void TrataScrollBarVertical(PIG_Evento evento){
-        scrollVertical->TrataEvento(evento);
-
+    void AjustaVisaoScrollVertical(){
         int valorAtual = scrollVertical->GetValorAtual();
         if(valorAtual!=yBase){
             yBase = valorAtual;
@@ -36,9 +34,7 @@ private:
         }
     }
 
-    void TrataScrollBarHorizontal(PIG_Evento evento){
-        scrollHorizontal->TrataEvento(evento);
-
+    void AjustaVisaoScrollHorizontal(){
         int valorAtual = scrollHorizontal->GetValorAtual();
         if(xBase != valorAtual){
             xBase = valorAtual;
@@ -343,16 +339,10 @@ public:
         int posYUltLinha = yBase - ((espacoEntreLinhas + altLetra)*linhas.size());
         scrollVertical->SetValorMinMax(yBase,posYUltLinha);
         scrollVertical->MudaOrientacaoCrescimento();
-        scrollVertical->SetSetasAtivadas(false);
         scrollVerticalAtivado = false;
         scrollVertical->SetVisivel(false);
         SetPosPadraoScrollVertical(PIG_COMPONENTE_DIR_CENTRO);
-    }
-
-    int SetBotoesScrollBarVertical(int larguraBotoes,std::string imgBotao1,std::string imgBotao2,int retiraFundoB1 = 1,int retiraFundoB2 = 1){
-        if(!scrollVertical) return -1;
-        scrollVertical->SetBotoes(larguraBotoes,imgBotao1,imgBotao2,retiraFundoB1,retiraFundoB2);
-        return 1;
+        scrollVertical->SetAreaDeAcaoScroll(x,y,alt,larg);
     }
 
     void SetScrollBarHorizontal(int larguraTotal,int comprimentoTotal,int larguraHandle,std::string imgHandle,std::string imgTrilha,int retiraFundoHandle=1,int retiraFundoTrilha=1){
@@ -360,11 +350,17 @@ public:
         int maiorTamLinha = GetLarguraLinhaMaior();
         scrollHorizontal->SetValorMinMax(xBaseOriginal,xBaseOriginal + maiorTamLinha);
         scrollHorizontal->MudaOrientacaoCrescimento();
-        scrollHorizontal->SetSetasAtivadas(false);
         scrollHorizontalAtivado = false;
         scrollHorizontal->SetVisivel(false);
         //scrollHorizontal->DefineEstado(COMPONENTE_INVISIVEL);
         SetPosPadraoScrollHorizontal(PIG_COMPONENTE_BAIXO_CENTRO);
+        scrollHorizontal->SetAreaDeAcaoScroll(x,y,alt,larg);
+    }
+
+    int SetBotoesScrollBarVertical(int larguraBotoes,std::string imgBotao1,std::string imgBotao2,int retiraFundoB1 = 1,int retiraFundoB2 = 1){
+        if(!scrollVertical) return -1;
+        scrollVertical->SetBotoes(larguraBotoes,imgBotao1,imgBotao2,retiraFundoB1,retiraFundoB2);
+        return 1;
     }
 
     int SetBotoesScrollBarHorizontal(int larguraBotoes,std::string imgBotao1,std::string imgBotao2,int retiraFundoB1 = 1,int retiraFundoB2 = 1){
@@ -385,8 +381,14 @@ public:
         CPigVisual::Move(px,py);
         xOriginal = px;
         yOriginal = py;
-        if(scrollHorizontal) scrollHorizontal->SetPosPadraoExternaComponente(scrollHorizontal->GetPosComponente(),this);
-        if(scrollVertical) scrollVertical->SetPosPadraoExternaComponente(scrollVertical->GetPosComponente(),this);
+        if(scrollHorizontal){
+            scrollHorizontal->SetPosPadraoExternaComponente(scrollHorizontal->GetPosComponente(),this);
+            scrollHorizontal->SetAreaDeAcaoScroll(x,y,larg,alt);
+        }
+        if(scrollVertical){
+            scrollVertical->SetPosPadraoExternaComponente(scrollVertical->GetPosComponente(),this);
+            scrollVertical->SetAreaDeAcaoScroll(x,y,larg,alt);
+        }
         ResetaValoresBase();
     }
 
@@ -403,16 +405,31 @@ public:
         largReal = largura;
         altReal = altura;
         ResetaValoresBase();
+        if(scrollHorizontal){
+            scrollHorizontal->SetPosPadraoExternaComponente(scrollHorizontal->GetPosComponente(),this);
+            scrollHorizontal->SetAreaDeAcaoScroll(x,y,alt,larg);
+        }
+        if(scrollVertical){
+            scrollVertical->SetPosPadraoExternaComponente(scrollVertical->GetPosComponente(),this);
+            scrollVertical->SetAreaDeAcaoScroll(x,y,alt,larg);
+        }
     }
 
     int Desenha() override{
         //imagem de fundo
+
         SDL_RenderCopyEx(renderer, text, &frame,&dest,-angulo,&pivoRelativo,flip);
 
         DesenhaMarcacaoMargem();
 
-        if(scrollVertical) scrollVertical->Desenha();
-        if(scrollHorizontal) scrollHorizontal->Desenha();
+        if(scrollVerticalAtivado){
+            AjustaVisaoScrollVertical();
+            scrollVertical->Desenha();
+        }
+        if(scrollHorizontalAtivado){
+            AjustaVisaoScrollHorizontal();
+            scrollHorizontal->Desenha();
+        }
 
         SDL_Rect r={x+margemHorEsq,altJanela-y-alt+margemVertCima,larg-(margemHorEsq+margemHorDir),alt-(margemVertBaixo+margemVertCima)};
         SDL_RenderSetClipRect(renderer,&r);
@@ -448,18 +465,19 @@ public:
     }
 
     int TrataEventoMouse(PIG_Evento evento){
-        SDL_Point p = CMouse::PegaXYWorld();
-        //PigCamera cam = CGerenciadorJanelas::GetJanela(idJanela)->GetCamera();
+        SDL_Point p = CMouse::PegaXY();
         ChecaMouseOver(p);
 
+        if(scrollVerticalAtivado) scrollVertical->TrataEventoMouse(evento);
+        if(scrollHorizontalAtivado) scrollHorizontal->TrataEventoMouse(evento);
+
         if(mouseOver){
-            if(habilitado==false) return PIG_SELECIONADO_DESABILITADO;
-            if(visivel==false) return PIG_SELECIONADO_INVISIVEL;
-            if(scrollVerticalAtivado) TrataScrollBarVertical(evento);
-            if(scrollHorizontalAtivado) TrataScrollBarHorizontal(evento);
+            if(!habilitado) return PIG_SELECIONADO_DESABILITADO;
+            if(!visivel) return PIG_SELECIONADO_INVISIVEL;
             if (evento.mouse.acao == MOUSE_PRESSIONADO && evento.mouse.botao == MOUSE_ESQUERDO) return TrataMouseBotaoEsquerdo(p);
             return PIG_SELECIONADO_MOUSEOVER;
         }
+
         return PIG_NAO_SELECIONADO;
     }
 
