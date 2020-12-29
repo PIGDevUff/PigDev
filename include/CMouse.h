@@ -67,7 +67,7 @@ public:
             Move(evento.mouse.posX,evento.mouse.posY,evento.mouse.numeroJanela);
 
         }
-        CGerenciadorJanelas::GetJanela(evento.mouse.numeroJanela)->GetCamera()->ConverteCoordenadaScreenWorld(p.x,p.y,&pWorld.x,&pWorld.y);
+        CGerenciadorJanelas::GetJanela(evento.mouse.numeroJanela)->ConverteCoordenadaScreenWorld(p.x,p.y,pWorld.x,pWorld.y);
         evento.mouse.worldX = pWorld.x;
         evento.mouse.worldY = pWorld.y;
         return 1;

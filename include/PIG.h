@@ -335,9 +335,9 @@ altura (entrada, passagem por valor): indica a quantidade de linhas da janela (e
 largura (entrada, passagem por valor): indica a quantidade de colunas da janela (em pixels).
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela a ser alterada.
 ********************************/
-void SetTamanhoJanela(int altura, int largura,int idJanela=0){
-    CGerenciadorJanelas::SetTamanho(altura,largura,idJanela);
-}
+//void SetTamanhoJanela(int altura, int largura,int idJanela=0){
+//    CGerenciadorJanelas::SetTamanho(altura,largura,idJanela);
+//}
 
 /********************************
 A função GetTituloJanela() é responsável por recuperar o título (caption) atual da janela.
@@ -422,7 +422,7 @@ posicaoY (saida, passagem por referência): indica o valor no eixo Y (vertical), 
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela a ser reposicionada.
 ********************************/
 void GetPosicaoJanela(int *posicaoX,int *posicaoY,int idJanela=0){
-    CGerenciadorJanelas::GetPosicao(posicaoX,posicaoY,idJanela);
+    CGerenciadorJanelas::GetPosicao(*posicaoX,*posicaoY,idJanela);
 }
 
 /********************************

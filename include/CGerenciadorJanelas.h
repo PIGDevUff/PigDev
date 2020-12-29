@@ -101,9 +101,9 @@ static int GetLargura(int idJanela=0){
 
 
 
-static int SetTamanho(int altura,int largura,int idJanela=0){
+/*static int SetTamanho(int altura,int largura,int idJanela=0){
     GetJanela(idJanela)->SetTamanho(altura,largura);
-}
+}*/
 
 static std::string GetTitulo(int idJanela=0){
     return GetJanela(idJanela)->GetTitulo();
@@ -133,7 +133,7 @@ static void SetPosicao(int x,int y,int idJanela=0){
     GetJanela(idJanela)->SetPosicao(x,y);
 }
 
-static void GetPosicao(int *x,int *y,int idJanela=0){
+static void GetPosicao(int &x,int &y,int idJanela=0){
     GetJanela(idJanela)->GetPosicao(x,y);
 }
 

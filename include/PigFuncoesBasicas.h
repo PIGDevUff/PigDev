@@ -109,7 +109,7 @@ int PIGLimitaValor(int valor, int minimo,int maximo){
     else return valor;
 }
 
-int PIGLimitaValor(float valor, float minimo,float maximo){
+float PIGLimitaValor(float valor, float minimo,float maximo){
     if (valor<minimo) return minimo; //valor não pode ficar menor que o mínimo informado
     else if (valor>maximo) return maximo;//valor não pode ficar maior que o máximo informado
     else return valor;

@@ -6,7 +6,7 @@ class CPigCamera{
 private:
 
 int x,y,altTela,largTela,altAtual,largAtual;
-float zoomTela,minZoom,maxZoom;
+float zoom,minZoom,maxZoom;
 
 public:
 
@@ -14,9 +14,9 @@ CPigCamera(int alturaTela, int larguraTela){
     x = y = 0;
     altTela  = altAtual = alturaTela;
     largTela = largAtual = larguraTela;
-    zoomTela = 1;
+    zoom = 1.0f;
     minZoom = 0.1f;
-    maxZoom = 100;
+    maxZoom = 100.0f;
     //AjustaTela(alturaTela,larguraTela);
 }
 
@@ -28,11 +28,11 @@ int GetY(){
     return y;
 }
 
-/*void AjustaTela(int novaAltura, int novaLargura){
+void AjustaTela(int novaAltura, int novaLargura){
     altTela = novaAltura;
     largTela = novaLargura;
     SetZoom(zoom);
-}*/
+}
 
 void Move(int nx, int ny){
     x = nx;
@@ -44,22 +44,23 @@ void Desloca(int dx,int dy){
     y += dy;
 }
 
-void SetZoom(float zoom){
-    zoomTela = PIGLimitaValor(zoom,minZoom,maxZoom);
+float SetZoom(float novoZoom){
+    zoom = PIGLimitaValor(novoZoom,minZoom,maxZoom);
     largAtual = zoom*largTela;
     altAtual = zoom*altTela;
+    return zoom;
 }
 
-void ConverteCoordenadaWorldScreen(int xObj, int yObj, int *cx, int *cy){
-    *cx = xObj - x + (largAtual-largTela)/2;
-    *cy = yObj + y + (altAtual-altTela)/2;
+void ConverteCoordenadaWorldScreen(int xObj, int yObj, int &cx, int &cy){
+    cx = xObj - x + (largAtual-largTela)/2;
+    cy = yObj + y + (altAtual-altTela)/2;
 }
 
-void ConverteCoordenadaScreenWorld(int xTela, int yTela, int *cx, int *cy){
+void ConverteCoordenadaScreenWorld(int xTela, int yTela, int &cx, int &cy){
     float propX = ((float) (xTela-largTela/2)/largTela);
     float propY = ((float) (yTela-altTela/2)/altTela);
-    *cx = xTela + x + propX*(largAtual-largTela);
-    *cy = yTela + y + propY*(altAtual-altTela);
+    cx = xTela + x + propX*(largAtual-largTela);
+    cy = yTela + y + propY*(altAtual-altTela);
 }
 
 };

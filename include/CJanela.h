@@ -56,9 +56,9 @@ SDL_Window *GetWindow(){
     return window;
 }
 
-PigCamera GetCamera(){
+/*PigCamera GetCamera(){
     return camera;
-}
+}*/
 
 SDL_Renderer *GetRenderer(){
     return renderer;
@@ -96,17 +96,17 @@ void DeslocaCamera(int dx, int dy){
 }
 
 void SetZoom(float zoom){
-    camera->SetZoom(zoom);
-    SDL_RenderSetLogicalSize(renderer,zoom*largura,zoom*altura);
+    float novoZoom = camera->SetZoom(zoom);
+    SDL_RenderSetLogicalSize(renderer,novoZoom*largura,novoZoom*altura);
 }
 
-/*void ConverteCoordeandaScreenWorld(int screenX, int screenY, int *worldX, int *worldY){
+void ConverteCoordenadaScreenWorld(int screenX, int screenY, int &worldX, int &worldY){
     camera->ConverteCoordenadaScreenWorld(screenX, screenY, worldX, worldY);
 }
 
-void ConverteCoordeandaWorldScreen(int worldX, int worldY, int *screenX, int *screenY){
+void ConverteCoordenadaWorldScreen(int worldX, int worldY, int &screenX, int &screenY){
     camera->ConverteCoordenadaWorldScreen( worldX, worldY, screenX, screenY);
-}*/
+}
 
 void DefineFundo(std::string nomeArquivo){
     SDL_Surface* bitmap = IMG_Load(nomeArquivo.c_str());
@@ -152,11 +152,11 @@ void EncerraDesenho(){
 
 }
 
-void SetLogicalSize(int novaaltura, int novalargura){
+/*void SetLogicalSize(int novaaltura, int novalargura){
     SDL_RenderSetLogicalSize(renderer,novalargura,novaaltura);
     //printf("nova %d desloca %d\n",novaaltura,altura-novaaltura);
     camera->Move(camera->GetX(),-altura+novaaltura);
-}
+}*/
 
 int GetAltura(){
     return altura;
@@ -198,9 +198,9 @@ void SetPosicao(int x,int y){
     SDL_SetWindowPosition(window,x,y);
 }
 
-void GetPosicao(int *x,int *y){
-    *x = px;
-    *y = py;
+void GetPosicao(int &x,int &y){
+    x = px;
+    y = py;
 }
 
 void SetBorda(int valor){
@@ -219,11 +219,14 @@ int GetModo(){
     return modo;
 }
 
-int SetTamanho(int alt, int larg){
+/*int SetTamanho(int alt, int larg){
     altura = alt;
     largura = larg;
     SDL_SetWindowSize(window,larg,alt);
-}
+    //SDL_GetWindowSize(window,&largura,&altura);
+    camera->AjustaTela(altura,largura);
+    SetZoom(1);
+}*/
 
     void DesenhaRetangulo(int x, int y, int alturaRet, int larguraRet, PIG_Cor cor){
         SDL_Rect rect;
@@ -232,7 +235,7 @@ int SetTamanho(int alt, int larg){
         rect.h = alturaRet;
         rect.w = larguraRet;
 
-        camera->ConverteCoordenadaWorldScreen(rect.x,rect.y,&rect.x,&rect.y);
+        camera->ConverteCoordenadaWorldScreen(rect.x,rect.y,rect.x,rect.y);
 
         SDL_SetRenderDrawColor(renderer, cor.r,cor.g,cor.b,cor.a);
         SDL_RenderFillRect(renderer,&rect);
@@ -245,7 +248,7 @@ int SetTamanho(int alt, int larg){
         rect.h = alturaRet;
         rect.w = larguraRet;
 
-        camera->ConverteCoordenadaWorldScreen(rect.x,rect.y,&rect.x,&rect.y);
+        camera->ConverteCoordenadaWorldScreen(rect.x,rect.y,rect.x,rect.y);
 
         SDL_SetRenderDrawColor(renderer, cor.r,cor.g,cor.b,cor.a);
         SDL_RenderDrawRect(renderer,&rect);
@@ -254,8 +257,8 @@ int SetTamanho(int alt, int larg){
     void DesenhaLinhaSimples(int x1,int y1,int x2,int y2,PIG_Cor cor){
         SDL_SetRenderDrawColor(renderer,cor.r,cor.g,cor.b,255);
         int camX1,camY1,camX2,camY2;
-        camera->ConverteCoordenadaWorldScreen(x1,altura-y1-1,&camX1,&camY1);
-        camera->ConverteCoordenadaWorldScreen(x2,altura-y2-1,&camX2,&camY2);
+        camera->ConverteCoordenadaWorldScreen(x1,altura-y1-1,camX1,camY1);
+        camera->ConverteCoordenadaWorldScreen(x2,altura-y2-1,camX2,camY2);
         SDL_RenderDrawLine(renderer,camX1,camY1,camX2,camY2);
         //SDL_RenderDrawLine(renderer,x1-camera->GetX(),altura-y1-1+camera->GetY(),x2-camera->GetX(),altura-y2-1+camera->GetY());
     }
@@ -264,8 +267,8 @@ int SetTamanho(int alt, int larg){
         SDL_SetRenderDrawColor(renderer,cor.r,cor.g,cor.b,255);
         int camX1,camY1,camX2,camY2;
         for (int k=0;k<qtd*2;k+=2){
-            camera->ConverteCoordenadaWorldScreen(x[k],altura-y[k],&camX1,&camY1);
-            camera->ConverteCoordenadaWorldScreen(x[k+1],altura-y[k+1],&camX2,&camY2);
+            camera->ConverteCoordenadaWorldScreen(x[k],altura-y[k],camX1,camY1);
+            camera->ConverteCoordenadaWorldScreen(x[k+1],altura-y[k+1],camX2,camY2);
             SDL_RenderDrawLine(renderer,camX1,camY1,camX2,camY2);
             //SDL_RenderDrawLine(renderer,x[k]-camera->GetX(),altura-y[k]+camera->GetY(),x[k+1]-camera->GetX(),altura-y[k+1]+camera->GetY());
         }
@@ -275,8 +278,8 @@ int SetTamanho(int alt, int larg){
         SDL_SetRenderDrawColor(renderer,cor.r,cor.g,cor.b,255);
         int camX1,camY1,camX2,camY2;
         for (int k=0;k<qtd-1;k++){
-            camera->ConverteCoordenadaWorldScreen(x[k],altura-y[k],&camX1,&camY1);
-            camera->ConverteCoordenadaWorldScreen(x[k+1],altura-y[k+1],&camX2,&camY2);
+            camera->ConverteCoordenadaWorldScreen(x[k],altura-y[k],camX1,camY1);
+            camera->ConverteCoordenadaWorldScreen(x[k+1],altura-y[k+1],camX2,camY2);
             SDL_RenderDrawLine(renderer,camX1,camY1,camX2,camY2);
             //SDL_RenderDrawLine(renderer,x[k]-camera->GetX(),altura-y[k]+camera->GetY(),x[k+1]-camera->GetX(),altura-y[k+1]+camera->GetY());
         }
@@ -324,7 +327,7 @@ int SetTamanho(int alt, int larg){
         r.w = larg;
         r.x = minX;
         r.y = altura-minY-alt;
-        camera->ConverteCoordenadaWorldScreen(r.x,r.y,&r.x,&r.y);
+        camera->ConverteCoordenadaWorldScreen(r.x,r.y,r.x,r.y);
         //printf("%d,%d %d,%d\n",r.x,r.y,r.h,r.w);
         SDL_RenderCopy(renderer,text,NULL,&r);
         SDL_DestroyTexture(text);

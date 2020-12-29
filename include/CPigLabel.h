@@ -17,7 +17,8 @@ void AtualizaTextura(){
     frame.x = frame.y = 0;
     frame.h = alt;
     frame.w = larg;
-    altJanela = CGerenciadorJanelas::GetAltura(idJanela);
+    altJanela = CGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
+    //printf("atual %d\n",*altJanela);
 }
 
 public:
@@ -31,10 +32,13 @@ CPigLabel(std::string texto,int numFonte,PIG_Cor corFonte=BRANCO,int idJanela=0)
     AtualizaTextura();
 }
 
-void Desenha(){
+//void Desenha(){
     //SDL_RenderCopy(renderer,text,NULL,&dest);
-    CPigVisual::Desenha();
-}
+    //AtualizaTextura();
+    //printf("desenha %d\n",*altJanela);
+    //if (text==NULL) printf("erro\n");
+//    CPigVisual::Desenha();
+//}
 
 
 void SetTexto(std::string texto){

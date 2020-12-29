@@ -263,7 +263,7 @@ public:
         SDL_Rect enquadrado = dest;
         //enquadrado.x -= CGerenciadorJanelas::GetJanela(idJanela)->GetCamera()->GetX();
         //enquadrado.y += CGerenciadorJanelas::GetJanela(idJanela)->GetCamera()->GetY();
-        CGerenciadorJanelas::GetJanela(idJanela)->GetCamera()->ConverteCoordenadaWorldScreen(enquadrado.x,enquadrado.y,&enquadrado.x,&enquadrado.y);
+        CGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaWorldScreen(enquadrado.x,enquadrado.y,enquadrado.x,enquadrado.y);
         SDL_RenderCopyEx(renderer, text, &frame, &enquadrado, -angulo, &pivoRelativo, flip);
     }
 
