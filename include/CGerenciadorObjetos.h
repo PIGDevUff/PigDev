@@ -158,13 +158,17 @@ public:
         GetObjeto(idObjeto)->GetDimensoesOriginais(*altura,*largura);
     }
 
-    inline static void CriaFrame(int idObjeto, int xBitmap, int yBitmap,int altura,int largura){
+    inline static void CriaFrame(int idObjeto, int idFrame, int xBitmap, int yBitmap,int altura,int largura){
         SDL_Rect r;
         r.x = xBitmap;
         r.y = yBitmap;
         r.h = altura;
         r.w = largura;
-        GetObjeto(idObjeto)->DefineFrame(r);
+        GetObjeto(idObjeto)->DefineFrame(idFrame,r);
+    }
+
+    inline static int MudaFrame(int idObjeto, int idFrame){
+        return GetObjeto(idObjeto)->MudaFrameAtual(idFrame);
     }
 
     inline static void SetColoracao(int idObjeto, PIG_Cor cor){

@@ -18,7 +18,7 @@ protected:
         mouseOver = valor;
     }
 
-    static void AjustaFrame(PigItemComponente item){
+    /*static void AjustaFrame(PigItemComponente item){
         int itemAlt,itemLarg;
         PIGVisual icone = item->GetIcone();
         icone->GetDimensoesOriginais(itemAlt,itemLarg);
@@ -35,6 +35,22 @@ protected:
             else r.x = 0;
         }
         icone->DefineFrame(r);
+    }*/
+
+    static void AjustaFrame(PigItemComponente item){
+        int resp;
+        if (item->GetHabilitado()==false){
+            if (item->GetAcionado()) resp = 3;
+            else resp = 2;
+        }else if (item->GetMouseOver()){
+            if (item->GetAcionado()) resp = 5;
+            else resp = 4;
+        }else{
+            if (item->GetAcionado()) resp = 1;
+            else resp = 0;
+        }
+        PIGSprite icone = item->GetIcone();
+        icone->MudaFrameAtual(resp);
     }
 
 public:
@@ -85,7 +101,9 @@ public:
     void CriaItem(std::string itemLabel, std::string arqImagemFundoItem="", bool itemMarcado = false, bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
         int yItem = y+alt-(altBaseLista)*(itens.size()+1);
         CPigListaItemComponente::CriaItem(yItem,itemLabel,arqIcone,arqImagemFundoItem,itemMarcado,itemHabilitado,audio,hintMsg,retiraFundo);
-        itens[itens.size()-1]->DefineFuncaoAjusteFrame(AjustaFrame);
+        PIGSprite icone = itens[itens.size()-1]->GetIcone();
+        icone->CriaFramesAutomaticos(1,1,6);
+        icone->MudaFrameAtual(1);
     }
 
     int Desenha(){
@@ -93,7 +111,7 @@ public:
 
         if (text){//se tiver imagem de fundo
             //SDL_RenderCopyEx(renderer,text,NULL,&dest,-angulo,NULL,flip);
-            CPigVisual::Desenha();
+            CPigSprite::Desenha();
         }
         DesenhaLabel();
 

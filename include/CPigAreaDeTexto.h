@@ -378,7 +378,7 @@ public:
     }
 
     void Move(int px,int py){
-        CPigVisual::Move(px,py);
+        CPigSprite::Move(px,py);
         xOriginal = px;
         yOriginal = py;
         if(scrollHorizontal){
@@ -401,7 +401,7 @@ public:
     }
 
     void SetDimensoes(int altura,int largura){
-        CPigVisual::SetDimensoes(altura,largura);
+        CPigSprite::SetDimensoes(altura,largura);
         largReal = largura;
         altReal = altura;
         ResetaValoresBase();
@@ -418,7 +418,7 @@ public:
     int Desenha() override{
         //imagem de fundo
 
-        SDL_RenderCopyEx(renderer, text, &frame,&dest,-angulo,&pivoRelativo,flip);
+        SDL_RenderCopyEx(renderer, text, &frames[frameAtual],&dest,-angulo,&pivoRelativo,flip);
 
         DesenhaMarcacaoMargem();
 

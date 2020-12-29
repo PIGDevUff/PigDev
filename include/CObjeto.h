@@ -3,7 +3,7 @@
 
 typedef enum { OOBB, POLIGONO, CIRCULAR } PIG_ModoColisao;
 
-class CObjeto : public CPigVisual {
+class CObjeto : public CPigSprite {
 
 protected:
     std::map<int, int> valoresIntInt;
@@ -169,17 +169,17 @@ protected:
 public:
 
     CObjeto(std::string nomeArquivo, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0)
-    : CPigVisual(nomeArquivo, retiraFundo, corFundo, janela){
+    : CPigSprite(nomeArquivo, retiraFundo, corFundo, janela){
         ExtraiPixels();
     }
 
     CObjeto(OffscreenRenderer offRender, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0)
-    : CPigVisual(offRender, retiraFundo, corFundo, janela){
+    : CPigSprite(offRender, retiraFundo, corFundo, janela){
         ExtraiPixels();
     }
 
     CObjeto(CObjeto *objBase, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0)
-    : CPigVisual(objBase, retiraFundo, corFundo, janela){
+    : CPigSprite(objBase, retiraFundo, corFundo, janela){
         ExtraiPixels();
         SetDimensoes(objBase->alt, objBase->larg);
     }
@@ -189,10 +189,6 @@ public:
             free(pixels[i]);
         free(pixels);
     }
-
-    /*int GetIdJanela(){
-        return idJanela;
-    }*/
 
     void SetValoresInt(int chave, int valor){
         valoresIntInt[chave] = valor;
@@ -328,7 +324,7 @@ public:
             //enquadrado.x -= CGerenciadorJanelas::GetJanela(idJanela)->GetCamera()->GetX();
             //enquadrado.y += CGerenciadorJanelas::GetJanela(idJanela)->GetCamera()->GetY();
             //SDL_RenderCopyEx(renderer, text, &frame, &enquadrado, -angulo, &pivoRelativo, flip);
-            CPigVisual::Desenha();
+            CPigSprite::Desenha();
             switch(9999) {//modo
                 case OOBB:
                     DesenhaBB();
@@ -345,7 +341,7 @@ public:
             SDL_Texture *textAux = SDL_CreateTextureFromSurface(offRender->GetRenderer(), bitmap);
             SDL_Rect rectAux = dest;
             rectAux.y = offRender->GetAltura() - alt - y;
-            SDL_RenderCopyEx(offRender->GetRenderer(), textAux, &frame, &rectAux, -angulo, &pivoRelativo, flip);
+            SDL_RenderCopyEx(offRender->GetRenderer(), textAux, &frames[frameAtual], &rectAux, -angulo, &pivoRelativo, flip);
             SDL_DestroyTexture(textAux);
         }
         return 0;

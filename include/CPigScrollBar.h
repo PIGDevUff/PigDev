@@ -54,10 +54,10 @@ class CPigScrollBar : public CPigComponente{
 
     void AjustaOrientacao(){
         if(orientacao == HORIZONTAL){
-            CPigVisual::SetDimensoes(largura,comprimento - (2*altBotoes));
+            CPigSprite::SetDimensoes(largura,comprimento - (2*altBotoes));
             largReal = comprimento;
             altReal = largura;
-            CPigVisual::Move(xOriginal+altBotoes,yOriginal);
+            CPigSprite::Move(xOriginal+altBotoes,yOriginal);
             if(botao1 && botao2){
                 botao1->Move(xOriginal,yOriginal);
                 botao2->Move(xOriginal + comprimento - altBotoes,yOriginal);
@@ -66,10 +66,10 @@ class CPigScrollBar : public CPigComponente{
             handle->SetDimensoes(largura,largHandle);
             SetValorMinMax(vMin,vMax);
         }else{
-            CPigVisual::SetDimensoes(comprimento - (2*altBotoes),largura);
+            CPigSprite::SetDimensoes(comprimento - (2*altBotoes),largura);
             largReal = largura;
             altReal = comprimento;
-            CPigVisual::Move(xOriginal,yOriginal+altBotoes);
+            CPigSprite::Move(xOriginal,yOriginal+altBotoes);
             if(botao1 && botao2){
                 botao1->Move(xOriginal,yOriginal);
                 botao2->Move(xOriginal,yOriginal + comprimento - altBotoes);
@@ -287,7 +287,7 @@ public:
     }
 
     void GetDimensoesTrilha(int &altura,int &largura){
-        CPigVisual::GetDimensoes(altura,largura);
+        CPigSprite::GetDimensoes(altura,largura);
     }
 
     void MudaOrientacaoCrescimento(){
@@ -326,7 +326,7 @@ public:
     int Desenha(){
         if(visivel==false) return -1;
 
-        SDL_RenderCopyEx(renderer, text, &frame,&dest,-angulo,&pivoRelativo,flip);
+        SDL_RenderCopyEx(renderer, text, &frames[frameAtual],&dest,-angulo,&pivoRelativo,flip);
 
         if(botao1 && botao2){
             botao1->Desenha();

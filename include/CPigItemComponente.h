@@ -10,14 +10,14 @@ O label é posicionado sempre internamente, mas pode estar alinhado à direita (co
 #ifndef _CPIGItemComponente_
 #define _CPIGItemComponente_
 
-#include "CVisual.h"
+#include "CPigSprite.h"
 
 class CPigItemComponente:public CPigComponente{
 
 private:
 
     void (*AjustaFrame)(CPigItemComponente*);       //ponteiro para função que será chamada sempre que algum estado do item mudar
-    PIGVisual icone;
+    PIGSprite icone;
     PIG_PosicaoComponente posIcone,posRelativaLabel;
 
     int OnMouseClick(){
@@ -28,7 +28,7 @@ private:
 
     void IniciaBase(std::string labelItem,std::string arqImagemIcone="",int alturaIcone=0,int larguraIcone=0){
         if (arqImagemIcone!=""){
-            icone = new CPigVisual(arqImagemIcone,1,NULL,idJanela);
+            icone = new CPigSprite(arqImagemIcone,1,NULL,idJanela);
             icone->SetDimensoes(alturaIcone,larguraIcone);
             AlinhaIconeEsquerda();
             posIcone = PIG_COMPONENTE_ESQ_CENTRO;
@@ -99,7 +99,7 @@ public:
     }
 
     int Desenha()override{
-        SDL_RenderCopyEx(renderer,text,&frame,&dest,-angulo,NULL,flip);
+        SDL_RenderCopyEx(renderer,text,&frames[frameAtual],&dest,-angulo,NULL,flip);
         if (icone)
             icone->Desenha();
         DesenhaLabel();
@@ -196,7 +196,9 @@ public:
         if(mouseOver){
             if (habilitado==false) return PIG_SELECIONADO_DESABILITADO;
             if (visivel==false) return PIG_SELECIONADO_INVISIVEL;
-            if (evento.mouse.acao==MOUSE_PRESSIONADO && evento.mouse.botao == MOUSE_ESQUERDO) return OnMouseClick();
+            if (evento.mouse.acao==MOUSE_PRESSIONADO && evento.mouse.botao == MOUSE_ESQUERDO){
+                return OnMouseClick();
+            }
             return PIG_SELECIONADO_MOUSEOVER;
         }
 
@@ -215,7 +217,7 @@ public:
         if (icone) icone->Desloca(dx,dy);
     }
 
-    PIGVisual GetIcone(){
+    PIGSprite GetIcone(){
         return icone;
     }
 

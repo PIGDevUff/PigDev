@@ -165,7 +165,7 @@ public:
         aux.y = dest.y+yBarra*scalaY;
 
         //base
-        CPigVisual::Desenha();
+        CPigSprite::Desenha();
         //SDL_RenderCopyEx(renderer, text, &frameBase,&dest,-angulo,&pivoRelativo,flip);
 
         aux2 = dest;
@@ -175,7 +175,7 @@ public:
         SDL_RenderSetClipRect(renderer,&clip);
 
         //SDL_RenderCopyEx(renderer, text, &frameBarra,&aux,-angulo,&pivoRelativo,flip);
-        CPigVisual::Desenha();
+        CPigSprite::Desenha();
 
         dest = aux2;
 

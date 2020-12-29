@@ -19,9 +19,9 @@ protected:
         mouseOver = valor;
     }
 
-    static void AjustaFrame(PigItemComponente item){
+    /*static void AjustaFrame(PigItemComponente item){
         int itemAlt,itemLarg;
-        PIGVisual icone = item->GetIcone();
+        PIGSprite icone = item->GetIcone();
         icone->GetDimensoesOriginais(itemAlt,itemLarg);
         int largFrame = itemLarg/6;
         SDL_Rect r={0,0,largFrame,itemAlt};
@@ -36,6 +36,22 @@ protected:
             else r.x = 0;
         }
         icone->DefineFrame(r);
+    }*/
+
+    static void AjustaFrame(PigItemComponente item){
+        int resp;
+        if (item->GetHabilitado()==false){
+            if (item->GetAcionado()) resp = 4;
+            else resp = 3;
+        }else if (item->GetMouseOver()){
+            if (item->GetAcionado()) resp = 6;
+            else resp = 5;
+        }else{
+            if (item->GetAcionado()) resp = 2;
+            else resp = 1;
+        }
+        PIGSprite icone = item->GetIcone();
+        icone->MudaFrameAtual(resp);
     }
 
 public:
@@ -85,6 +101,9 @@ public:
         int yItem = y+alt-(altBaseLista)*(itens.size()+1);
         CPigListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundo,false,itemHabilitado,audioComponente,hintMsg,retiraFundo);
         itens[itens.size()-1]->DefineFuncaoAjusteFrame(AjustaFrame);
+        PIGSprite icone = itens[itens.size()-1]->GetIcone();
+        icone->CriaFramesAutomaticos(1,1,6);
+        icone->MudaFrameAtual(1);
     }
 
     int Desenha(){
@@ -92,7 +111,7 @@ public:
 
         if (text){//se tiver imagem de fundo
             //SDL_RenderCopyEx(renderer,text,NULL,&dest,-angulo,NULL,flip);
-            CPigVisual::Desenha();
+            CPigSprite::Desenha();
         }
         DesenhaLabel();
 
@@ -111,7 +130,9 @@ public:
                 if(itens[i]->TrataEventoMouse(evento) == PIG_SELECIONADO_TRATADO){
                     if (itens[i]->GetAcionado())
                         resp = i;
-                }
+                    printf("%d trat\n",i);
+                }else
+                    printf("%d nao trat\n",i);
             }
             SetAcionadoItem(resp,resp!=-1);
             if (resp>0)

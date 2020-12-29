@@ -11,7 +11,7 @@ typedef enum{PIG_COMPONENTE_CIMA_CENTRO,PIG_COMPONENTE_CIMA_ESQ,PIG_COMPONENTE_C
 typedef enum{PIG_ANCORA_NORTE,PIG_ANCORA_SUL,PIG_ANCORA_LESTE,PIG_ANCORA_OESTE,PIG_ANCORA_NORDESTE,PIG_ANCORA_NOROESTE,PIG_ANCORA_SUDESTE,PIG_ANCORA_SUDOESTE,PIG_ANCORA_CENTRO}PIG_Ancora;
 typedef enum{PIG_NAO_SELECIONADO,PIG_SELECIONADO_MOUSEOVER,PIG_SELECIONADO_INVISIVEL,PIG_SELECIONADO_DESABILITADO,PIG_SELECIONADO_TRATADO}PIG_EstadosEventos;
 
-class CPigComponente: public CPigVisual{
+class CPigComponente: public CPigSprite{
 
 protected:
 
@@ -115,13 +115,13 @@ protected:
 
 public:
 
-    CPigComponente(int idComponente,int px,int py, int altura, int largura, int janela=0):CPigVisual(altura, largura, "",janela){
+    CPigComponente(int idComponente,int px,int py, int altura, int largura, int janela=0):CPigSprite(altura, largura, "",janela){
         IniciaBase(idComponente,px,py);
     }
 
-    CPigComponente(int idComponente,int px,int py, int altura, int largura, std::string nomeArq,int retiraFundo=1,int janela=0):CPigVisual(nomeArq,retiraFundo,NULL,janela){
+    CPigComponente(int idComponente,int px,int py, int altura, int largura, std::string nomeArq,int retiraFundo=1,int janela=0):CPigSprite(nomeArq,retiraFundo,NULL,janela){
         IniciaBase(idComponente,px,py);
-        CPigVisual::SetDimensoes(altura,largura);
+        CPigSprite::SetDimensoes(altura,largura);
     }
 
     ~CPigComponente(){
@@ -344,7 +344,7 @@ public:
     void Move(int nx, int ny)override{
         int dx = nx-x;
         int dy = ny-y;
-        CPigVisual::Desloca(dx,dy);
+        CPigSprite::Desloca(dx,dy);
         lab->Desloca(dx,dy);
     }
 

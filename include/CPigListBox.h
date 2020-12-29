@@ -128,7 +128,7 @@ public:
     }
 
     void Move(int nx,int ny){
-        CPigVisual::Move(nx,ny);
+        CPigSprite::Move(nx,ny);
         int posY;
 
         for(int i=0;i<itens.size();i++){

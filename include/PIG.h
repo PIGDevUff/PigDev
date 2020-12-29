@@ -17,6 +17,7 @@ Versão 0.7.2 da Biblioteca PIG.h
 #include "COffscreenRenderer.h"
 #include "CGerenciadorFontes.h"
 #include "CMouse.h"
+#include "CPigSprite.h"
 #include "CGerenciadorSprites.h"
 #include "CGerenciadorObjetos.h"
 #include "CGerenciadorTimers.h"
@@ -216,23 +217,36 @@ float GetFPS(){
 A função CarregaCursor() é responsável por armazenar um novo cursor para o mouse, dado pelo arquivo de imagem indicado.
 O arquivo deve ser uma imagem com 32 pixels de altura orbigatoriamente.
 Parâmetro:
-indice (entrada, passagem por valor): informa um índice para este novo cursor. Se o índice já estiver sendo utilizado,
-o cursor antigo é removido. O valor deve estar entre 0..MAX_CURSORES-1.
 nomeArquivoCursor (entrada, passagem por referência*): indica o nome do arquivo de imagem que será utilziado como cursor do mouse.
 É utilizado o operador * apenas por se tratar de um parâmetro string. O valor do parâmetro não é alterado dentro da função.
 ********************************/
-void CarregaCursor(int indice,char *nomeArquivoCursor){
-    CMouse::CarregaCursor(indice,nomeArquivoCursor);
+void CarregaCursor(char *nomeArquivoCursor, int idJanela=0){
+    CMouse::CarregaCursor(nomeArquivoCursor,idJanela);
 }
 
 /********************************
-A função MudaCursor() é responsável por alterar o cursor atual do mouse por outro já carregado.
+A função DefineFrameCursor() é responsável por delimitar a área do arquivo de imagem para um cursor específico.
+Idealmente, a altura e largura informadas devem ter tamanho igual a 32 pixels (para não haver perda de qualidade na exibição do cursor).
 Parâmetro:
-indice (entrada, passagem por valor): informa um índice para este novo cursor que já deve ter sido
-carregado anteriormente e deve estar no intervalo 0..MAX_CURSORES-1.
+idFrame (entrada, passagem por valor): número inteiro associado ao cursor (área do arquivo de imagem) em questão.
+xBitmap (entrada, passagem por valor): indica a posição de eixo X onde começa o frame.
+yBitmap (entrada, passagem por valor): indica a posição de eixo Y onde começa o frame. Neste caso, o eixo Y aumenta para baixo.
+altura (entrada, passagem por valor): altura em pixels do frame.
+largura (entrada, passagem por valor): largura em pixels do frame.
 ********************************/
-void MudaCursor(int indice){
-    CMouse::MudaCursor(indice);
+void DefineFrameCursor(int idFrame, int xBitmap, int yBitmap, int altura, int largura){
+    CMouse::DefineFrameCursor(idFrame,xBitmap,yBitmap,altura,largura);
+}
+
+/********************************
+A função MudaCursor() é responsável por alterar o cursor atual do mouse por outro já definido (função DefineFrameCursor).
+Parâmetro:
+idFrame (entrada, passagem por valor): informa o identificador de um cursor (frame) já criado.
+Retorno:
+Se o identifador informado não corresponder a um frame já criado, o valor de retorno é igual a 0. Caso contrário, é igual a 1.
+********************************/
+int MudaCursor(int idFrame){
+    return CMouse::MudaCursor(idFrame);
 }
 
 /********************************
@@ -1560,13 +1574,26 @@ utilizados para representar o objeto na tela. Desta forma, nem toda a imagem ser
 representar o objeto. O sistema de coordenadas deve ser o padrão dos arquivos de imagem, com o eixo Y aumentando para baixo.
 Parâmetros:
 idObjeto (entrada, passagem por valor): identificador do objeto a ser desenhado.
+idFrame (entrada, passagem por valor): identificador do frame a ser criado.
 xBitmap (entrada, passagem por valor): indica a posição de eixo X onde começa o frame.
 yBitmap (entrada, passagem por valor): indica a posição de eixo Y onde começa o frame. Neste caso, o eixo Y aumenta para baixo.
 altura (entrada, passagem por valor): altura em pixels do frame.
 largura (entrada, passagem por valor): largura em pixels do frame.
 ********************************/
-void DefineFrameObjeto(int idObjeto, int xBitmap, int yBitmap, int altura, int largura){
-    CGerenciadorObjetos::CriaFrame(idObjeto,xBitmap,yBitmap,altura,largura);
+void DefineFrameObjeto(int idObjeto, int idFrame, int xBitmap, int yBitmap, int altura, int largura){
+    CGerenciadorObjetos::CriaFrame(idObjeto,idFrame, xBitmap,yBitmap,altura,largura);
+}
+
+/********************************
+A função MudaFrameObjeto() é responsável por modificar o frame (já definido pela função DefineFrameObjeto) de um objeto
+Parâmetros:
+idObjeto (entrada, passagem por valor): identificador do objeto.
+idFrame (entrada, passagem por valor): identificador do frame já criado.
+Retorno:
+Se o identifador do frame informado não corresponder a um frame já criado, o valor de retorno é igual a 0. Caso contrário, é igual a 1.
+********************************/
+int MudaFrameObjeto(int idObjeto, int idFrame){
+    return CGerenciadorObjetos::MudaFrame(idObjeto,idFrame);
 }
 
 /********************************

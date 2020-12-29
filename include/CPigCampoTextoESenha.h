@@ -132,7 +132,7 @@ public:
     //desenha o componente completo
     int Desenha() override{
         //imagem de fundo
-        SDL_RenderCopyEx(renderer, text, &frame,&dest,-angulo,&pivoRelativo,flip);
+        SDL_RenderCopyEx(renderer, text, &frames[frameAtual],&dest,-angulo,&pivoRelativo,flip);
 
         SDL_Rect r={x+margemHorEsq+1,altJanela-y-alt+margemVertCima,larg-(margemHorEsq+margemHorDir),alt-(margemVertBaixo+margemVertCima)};
         SDL_RenderSetClipRect(renderer,&r);

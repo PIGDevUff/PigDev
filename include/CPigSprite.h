@@ -1,14 +1,17 @@
-#ifndef _CPigVisual_
-#define _CPigVisual_
+#ifndef _CPIGSPRITE_
+#define _CPIGSPRITE_
+#include <unordered_map>
 
-class CPigVisual2{
+class CPigSprite{
 
 protected:
 
     int alt,larg,altOriginal,largOriginal;
     int idJanela,altJanela;
     float angulo;
-    SDL_Rect dest,frame;
+    SDL_Rect dest;
+    int frameAtual;
+    std::unordered_map<int,SDL_Rect> frames;
     SDL_Texture* text;
     SDL_Point pivoRelativo;
     SDL_Renderer* renderer;
@@ -52,6 +55,8 @@ protected:
     }
 
     void IniciaBase(int altura,int largura,int janela){
+        frameAtual = 0;
+        frames[0] = {0,0,0,0};
         IniciaCor();
         IniciaJanela(janela);
         IniciaDimensoes(altura,largura);
@@ -88,21 +93,21 @@ private:
         dest.h = alt;
         dest.w = larg;
 
-        frame.x = frame.y = 0;
-        frame.h = alt;
-        frame.w = larg;
+        frames[0].x = frames[0].y = 0;
+        frames[0].h = alt;
+        frames[0].w = larg;
 
         flip = SDL_FLIP_NONE;
     }
 
 public:
 
-    CPigVisual2(int altura,int largura,std::string nomeArq,int janela=0){
+    CPigSprite(int altura,int largura,std::string nomeArq,int janela=0){
         nomeArquivo = nomeArq;
         IniciaBase(altura,largura,janela);
     }
 
-    CPigVisual2(std::string nomeArq,int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
+    CPigSprite(std::string nomeArq,int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
         nomeArquivo = nomeArq;
 
         CarregaImagem(nomeArq);
@@ -112,7 +117,7 @@ public:
         CriaTextura(retiraFundo,corFundo);
     }
 
-    CPigVisual2(OffscreenRenderer offRender, int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
+    CPigSprite(OffscreenRenderer offRender, int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
         nomeArquivo = "";
 
         SDL_Surface *surface = offRender->GetSurface();
@@ -123,32 +128,34 @@ public:
         CriaTextura(retiraFundo,corFundo);
     }
 
-    CPigVisual2(CPigVisual2 *visualBase,int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
-        nomeArquivo = visualBase->nomeArquivo;
+    CPigSprite(CPigSprite *spriteBase,int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
+        nomeArquivo = spriteBase->nomeArquivo;
 
         #ifdef SHARE_BITMAP
-        bitmap = CAssetLoader::LoadImage(visualBase->nomeArquivo);
+        bitmap = CAssetLoader::LoadImage(spriteBase->nomeArquivo);
         #else
-        bitmap = IMG_Load(visualBase->nomeImagem);
+        bitmap = IMG_Load(spriteBase->nomeImagem);
         #endif
 
         IniciaBase(bitmap->h,bitmap->w,janela);
         CriaTextura(retiraFundo,corFundo);
     }
 
-    CPigVisual2(int janela){
+    CPigSprite(int janela){
         idJanela = janela;
         nomeArquivo = "";
         pivoRelativo = {0,0};
-        frame = {0,0,0,0};
+        //frame = {0,0,0,0};
         angulo = 0;
         flip = FLIP_NENHUM;
         text = NULL;
         renderer = NULL;
         bitmap = NULL;
+        frameAtual = 0;
+        frames[0] = {0,0,0,0};
     }
 
-    ~CPigVisual2(){
+    ~CPigSprite(){
         if (text) SDL_DestroyTexture(text);
 
         if (nomeArquivo == ""){
@@ -166,8 +173,8 @@ public:
         return idJanela;
     }
 
-    void DefineFrame(SDL_Rect r){
-        frame = r;
+    void DefineFrame(int idFrame,SDL_Rect r){
+        frames[idFrame] = r;
     }
 
     void GetXY(int &x,int &y){
@@ -253,17 +260,35 @@ public:
         return opacidade;
     }
 
+    int MudaFrameAtual(int novoFrame){
+        if (frames.find(novoFrame) == frames.end())
+            return 0;
+        frameAtual = novoFrame;
+        return 1;
+    }
+
+    void CriaFramesAutomaticos(int idFrameInicial,int qtdLinhas, int qtdColunas){
+        if (qtdLinhas<=0||qtdColunas<=0) return;
+        int largFrame = largOriginal/qtdColunas;
+        int altFrame = altOriginal/qtdLinhas;
+        for (int i=0;i<qtdLinhas;i++){
+            for (int j=0;j<qtdColunas;j++){
+                DefineFrame(idFrameInicial++,{j*largFrame,i*altFrame,(i+1)*altFrame,(j+1)*largFrame});
+            }
+        }
+    }
+
     void Desenha(){
         SDL_Rect enquadrado = dest;
         //enquadrado.x -= CGerenciadorJanelas::GetJanela(idJanela)->GetCamera()->GetX();
         //enquadrado.y += CGerenciadorJanelas::GetJanela(idJanela)->GetCamera()->GetY();
         CGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaWorldScreen(enquadrado.x,enquadrado.y,enquadrado.x,enquadrado.y);
-        SDL_RenderCopyEx(renderer, text, &frame, &enquadrado, -angulo, &pivoRelativo, flip);
+        SDL_RenderCopyEx(renderer, text, &frames[frameAtual], &enquadrado, -angulo, &pivoRelativo, flip);
     }
 
     std::string GetNomeArquivo(){
         return nomeArquivo;
     }
 };
-typedef CPigVisual2 *PIGVisual2;
-#endif // _CPigVisual_
+typedef CPigSprite *PIGSprite;
+#endif // _CPIGSPRITE_

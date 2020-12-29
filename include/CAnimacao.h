@@ -7,7 +7,7 @@ private:
 int souCopia;                   //indica se esta animação é cópia (foi criada a partir) de outra animação
 int qtdTotalFrames;             //indica o total de frames existentes nesta animação
 ModoAnimacao modos[MAX_MODOS];  //modos da animaçãoi
-SDL_Rect *frames[MAX_FRAMES];   //frames da animação
+//SDL_Rect *frames[MAX_FRAMES];   //frames da animação
 Timer tempoFrame;               //timer da animação (se estiver sendo utilizado um timer específico)
 int idTimer;                    //timer da animação (se estiver sendo utilizado o gerenciador de timers)
 int offx,offy;                  //offset (x,y) a ser utilizado junto com a posição (x,y) para desenhar oa animação
@@ -17,8 +17,8 @@ int frameAtual;                 //número que indica o frame atual
 
 //muda o frame a ser exibido do modo atual
 void AtualizaFrameAtual(ModoAnimacao modo){
-    frameAtual = modo->GetFrameAtual();
-    CObjeto::DefineFrame(*(frames[frameAtual]));
+    //frameAtual = modo->GetFrameAtual();
+    //CObjeto::DefineFrame(*(frames[frameAtual]));
 
     int audio = modo->GetAudioAtual();
     if (audio>=0){
@@ -38,8 +38,8 @@ CAnimacao(std::string nomeArq,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NULL,i
     offx = offy = 0;
     modoAtual = 0;
 
-    for (int i=0;i<MAX_FRAMES;i++)
-        frames[i] = NULL;
+    //for (int i=0;i<MAX_FRAMES;i++)
+    //    frames[i] = NULL;
 
     qtdTotalFrames = 0;
     for (int i=0;i<MAX_MODOS;i++){
@@ -87,9 +87,9 @@ CAnimacao(Objeto base,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NULL,int retir
     offx = offy = 0;
     modoAtual = 0;
 
-    for (int i=0;i<MAX_FRAMES;i++){
-        frames[i] = NULL;
-    }
+    //for (int i=0;i<MAX_FRAMES;i++){
+    //    frames[i] = NULL;
+    //}
 
     for (int i=0;i<MAX_MODOS;i++){
         modos[i] = NULL;
@@ -106,9 +106,9 @@ CAnimacao(Objeto base,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NULL,int retir
             if (modos[i])
                 delete modos[i];
         }
-        for (int i=0;i<MAX_FRAMES;i++)
-            if (frames[i])
-                free(frames[i]);
+        //for (int i=0;i<MAX_FRAMES;i++)
+        //    if (frames[i])
+        //        free(frames[i]);
     }
 
     if (tempoFrame)
@@ -118,14 +118,14 @@ CAnimacao(Objeto base,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NULL,int retir
 }
 
 //define o retangulo da imagem que corresponde ao frame
-void CriaFrame(int codFrame,int x,int y,int altura,int largura){
+/*void CriaFrame(int codFrame,int x,int y,int altura,int largura){
     if (frames[codFrame]) free(frames[codFrame]);
     frames[codFrame] = (SDL_Rect*)malloc(sizeof(SDL_Rect));
     frames[codFrame]->x = x;
     frames[codFrame]->y = y;
     frames[codFrame]->h = altura;
     frames[codFrame]->w = largura;
-}
+}*/
 
 //cria um modo vazio, sem frames associados
 void CriaModo(int idModo, int loop){

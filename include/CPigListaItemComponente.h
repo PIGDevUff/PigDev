@@ -164,7 +164,7 @@ public:
     void Move(int nx,int ny){
         int dx = nx-x;
         int dy = ny-y;
-        CPigVisual::Desloca(dx,dy);
+        CPigSprite::Desloca(dx,dy);
         for(int i=0;i<itens.size();i++)
             itens[i]->Desloca(dx, dy);
     }

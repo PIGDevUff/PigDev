@@ -64,7 +64,7 @@ public:
     }
 
     inline static void CriaFrame(int idAnimacao,int codFrame,int x,int y,int altura,int largura){
-        animacoes[idAnimacao]->CriaFrame(codFrame,x,y,altura,largura);
+        animacoes[idAnimacao]->DefineFrame(codFrame,{x,y,altura,largura});
     }
 
     inline static void CriaModo(int idAnimacao,int idModo, int loop){

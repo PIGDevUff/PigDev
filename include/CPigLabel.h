@@ -1,4 +1,4 @@
-class CPigLabel:public CPigVisual{
+class CPigLabel:public CPigSprite{
 
 private:
 std::string frase;
@@ -14,16 +14,16 @@ void AtualizaTextura(){
     mapa->Escreve(frase,text,cor);
     dest.w = larg;
     dest.h = alt;
-    frame.x = frame.y = 0;
-    frame.h = alt;
-    frame.w = larg;
+    frames[0].x = frames[0].y = 0;
+    frames[0].h = alt;
+    frames[0].w = larg;
     altJanela = CGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
     //printf("atual %d\n",*altJanela);
 }
 
 public:
 
-CPigLabel(std::string texto,int numFonte,PIG_Cor corFonte=BRANCO,int idJanela=0):CPigVisual(idJanela){
+CPigLabel(std::string texto,int numFonte,PIG_Cor corFonte=BRANCO,int idJanela=0):CPigSprite(idJanela){
     renderer = CGerenciadorJanelas::GetJanela(idJanela)->GetRenderer();
     fonte = numFonte;
     text = NULL;

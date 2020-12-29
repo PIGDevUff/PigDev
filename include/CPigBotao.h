@@ -10,7 +10,6 @@ private:
 
 protected:
 
-    int largFrame;
     AcaoBotao acao;
     void *param;
     Timer timer;
@@ -38,7 +37,17 @@ protected:
 
     void AjustaFrame(){
         if (visivel==false) return;
-        SDL_Rect r={0,0,largFrame,altOriginal};
+        frameAtual = 1;
+        if (habilitado==false){
+            frameAtual = 4;
+        }else{
+            if (acionado){
+                frameAtual = 3;
+            }else if (mouseOver){
+                frameAtual = 2;
+            }
+        }
+        /*SDL_Rect r={0,0,largFrame,altOriginal};
         if (habilitado==false){
             r.x = 3*largFrame;
         }else{
@@ -49,6 +58,7 @@ protected:
             }
         }
         DefineFrame(r);
+        */
     }
 
     void TrataTimer(){
@@ -104,7 +114,8 @@ public:
             tecla = TECLA_ENTER;//sem tecla de atalho
             acao = NULL;//não tem ação registrada
             param = NULL;//não tem parâmetro associado à ação
-            largFrame = largOriginal/4;
+            CriaFramesAutomaticos(1,1,4);
+            MudaFrameAtual(1);
             SetHabilitado(true);//para forçar o frame correto
             tempoRepeticao = 0.2;
             botaoRepeticao = false;
@@ -170,7 +181,7 @@ public:
 
         TrataTimer();
 
-        SDL_RenderCopyEx(renderer, text, &frame,&dest,-angulo,&pivoRelativo,flip);
+        SDL_RenderCopyEx(renderer, text, &frames[frameAtual],&dest,-angulo,&pivoRelativo,flip);
 
         DesenhaLabel();
 

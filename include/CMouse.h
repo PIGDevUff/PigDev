@@ -1,14 +1,14 @@
 #ifndef _CMouse_
 #define _CMouse_
 
-#include "CVisual.h"
+#include "CPigSprite.h"
 
 class CMouse{
 
 private:
 
-    static int cursorAtual;
-    static CPigVisual *cursores[MAX_CURSORES];
+    //static int cursorAtual;
+    static PIGSprite cursores;
     static bool cursorProprio;
     static SDL_Point p,pWorld;
     static int estadoBotaoDireito,estadoBotaoEsquerdo,estadoBotaoCentral;
@@ -16,18 +16,14 @@ private:
 public:
 
     static void Inicia(bool cursorCustomizado){
-        cursorAtual = -1;
+        //cursorAtual = -1;
         cursorProprio = cursorCustomizado;
         SDL_ShowCursor(cursorProprio==false);
-        for (int i=0;i<MAX_CURSORES;i++)
-            cursores[i] = NULL;
+        cursores = NULL;
     }
 
     static void Encerra(){
-        for (int i=0;i<MAX_CURSORES;i++){
-            if (cursores[i])
-                delete cursores[i];
-        }
+        if (cursores) delete cursores;
     }
 
     static int GetEstadoBotaoDireito(){
@@ -73,34 +69,43 @@ public:
         return 1;
     }
 
-    static void MudaCursor(int indice){
-        cursorAtual = indice;
+    static int MudaCursor(int indice){
+        if (cursores)
+            return cursores->MudaFrameAtual(indice);
+        return 0;
     }
 
     static void Desenha(int idJanela=0){
-        if (cursorAtual==-1) return;
-        cursores[cursorAtual]->Desenha();
+        if (cursores) cursores->Desenha();
     }
 
     static void Move(int x,int y, int idJanela=0){
         p.x = x;
         p.y = y;
-        if (cursorAtual==-1) return;
-        cursores[cursorAtual]->Move(x,y-32);
+        if (cursores) cursores->Move(x,y-32);
+        //if (cursorAtual==-1) return;
+        //cursores[cursorAtual]->Move(x,y-32);
     }
 
-    static void CarregaCursor(int indice,std::string nomeArquivo,int idJanela=0){
-        if (cursores[indice]) delete cursores[indice];
-        cursores[indice] = new CPigVisual(nomeArquivo,1,NULL,idJanela);
-        cursores[indice]->SetDimensoes(32,32);
-        if (cursorAtual==-1) cursorAtual=indice;
+    static void CarregaCursor(std::string nomeArquivo,int idJanela=0){
+        if (cursores) delete cursores;
+        cursores = new CPigSprite(nomeArquivo,idJanela);
+        cursores->SetDimensoes(32,32);
+        //if (cursores[indice]) delete cursores[indice];
+        //cursores[indice] = new CPigVisual(nomeArquivo,1,NULL,idJanela);
+        //cursores[indice]->SetDimensoes(32,32);
+        //if (cursorAtual==-1) cursorAtual=indice;
+    }
+
+    static void DefineFrameCursor(int idFrame,int x, int y, int alt, int larg){
+        if (cursores) cursores->DefineFrame(idFrame,{x,y,larg,alt});
     }
 
 };
 
-int CMouse::cursorAtual;
+//int CMouse::cursorAtual;
 bool CMouse::cursorProprio;
-CPigVisual *CMouse::cursores[MAX_CURSORES];
+PIGSprite CMouse::cursores;
 SDL_Point CMouse::p;
 SDL_Point CMouse::pWorld;
 int CMouse::estadoBotaoDireito;
