@@ -244,7 +244,7 @@ public:
     }*/
 
     int TrataEventoMouse(PIG_Evento evento){
-        SDL_Point p = CMouse::PegaXY();
+        SDL_Point p = CMouse::PegaXYWorld();
         ChecaMouseOver(p);
 
         if(TrataBotoes(evento) == PIG_SELECIONADO_TRATADO) return PIG_SELECIONADO_TRATADO;

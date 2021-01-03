@@ -1,10 +1,8 @@
 #ifndef _CPigComponente_
 #define _CPigComponente_
 
-#include "CVisual.h"
 #include "CPIGLabel.h"
 
-//typedef enum{COMPONENTE_NORMAL,COMPONENTE_MOUSEOVER,COMPONENTE_ACIONADO,COMPONENTE_DESABILITADO} PIG_EstadoComponente;
 typedef enum{PIG_COMPONENTE_CIMA_CENTRO,PIG_COMPONENTE_CIMA_ESQ,PIG_COMPONENTE_CIMA_DIR,PIG_COMPONENTE_BAIXO_CENTRO,PIG_COMPONENTE_BAIXO_DIR,PIG_COMPONENTE_BAIXO_ESQ,
              PIG_COMPONENTE_DIR_CIMA,PIG_COMPONENTE_DIR_BAIXO,PIG_COMPONENTE_DIR_CENTRO,PIG_COMPONENTE_ESQ_BAIXO,PIG_COMPONENTE_ESQ_CENTRO,PIG_COMPONENTE_ESQ_CIMA,
              PIG_COMPONENTE_CENTRO_CENTRO,PIG_COMPONENTE_PERSONALIZADA} PIG_PosicaoComponente;
@@ -41,9 +39,8 @@ protected:
     //escreve o hint do componente na tela
     void EscreveHint(){
         if (mouseOver&&hint->GetTexto()!=""){
-            int mx,my;
-            CMouse::PegaXY(mx,my);
-            hint->Move(mx+16,my+5);
+            SDL_Point p = CMouse::PegaXYWorld();
+            hint->Move(p.x+16,p.y+5);
             hint->Desenha();
         }
     }

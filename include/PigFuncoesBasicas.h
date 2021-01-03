@@ -14,6 +14,8 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
+#include <algorithm>
+#include <cmath>
 
 //separa uma string em palavras, usando os delimitadores indicados
 std::vector<std::string> PIGSeparaPalavras(std::string texto,std::string delim){
@@ -148,6 +150,51 @@ void PIGCalculaBoundingBox(int px[],int py[],int lados,int *altura,int *largura,
 
     *altura = maxY-minY+1;  //altura absoluta do poligono
     *largura = maxX-minX+1; //altura absoluta do poligono
+}
+
+inline int PIGArredondaProximo(float valor) {
+    int resultado = (int)valor;
+    if (valor - resultado >= 0.5)
+        return valor + 1;
+    return valor;
+}
+
+inline double PIGProjecaoY(double coefAngular, SDL_Point p) {
+    if (std::isinf(coefAngular))
+        return (double)p.y;
+    return coefAngular * (-p.x) + p.y;
+}
+
+inline double PIGProjecaoX(double coefAngular, SDL_Point p) {
+    if (std::isinf(coefAngular))
+        return (double)p.x;
+    return (-p.y + (coefAngular * p.x)) / coefAngular;
+}
+
+inline double PIGMinVetor(double  vetor[], int tamVetor) {
+    double  menor = vetor[0];
+    for (int i = 1; i < tamVetor; i++)
+        if (vetor[i] < menor)
+            menor = vetor[i];
+    return menor;
+}
+
+inline double PIGMaxVetor(double  vetor[], int tamVetor) {
+    double  maior = vetor[0];
+    for (int i = 1; i < tamVetor; i++)
+        if (vetor[i] > maior)
+            maior = vetor[i];
+    return maior;
+}
+
+inline int PIGDistancia(SDL_Point a, SDL_Point b) {
+    int deltaX = (b.x - a.x);
+    int deltaY = (b.y - a.y);
+    return (int)sqrt((deltaX * deltaX) + (deltaY * deltaY));
+}
+
+inline bool PIGValorEntre(int x, int a, int b) {
+    return ((x > a) && (x < b) || (x < a) && (x > b));
 }
 
 #endif // _PigFuncoesBasicas_

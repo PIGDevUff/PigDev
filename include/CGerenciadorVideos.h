@@ -129,7 +129,9 @@ static void SetPivo(int idVideo, float px,float py){
 }
 
 static void GetPivo(int idVideo, int &px,int &py){
-    videos[idVideo]->GetPivo(px,py);
+    SDL_Point p = videos[idVideo]->GetPivo();
+    px = p.x;
+    py = p.y;
 }
 
 static void Move(int idVideo, int nx,int ny){

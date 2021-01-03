@@ -1502,7 +1502,7 @@ posicaoX (saída, passagem por referência): Valor da coordenada X do pivô em rela
 posicaoY (saída, passagem por referência): Valor da coordenada Y do pivô em relação ao ponto (0,0) do objeto.
 ********************************/
 void GetPivoObjeto(int idObjeto,int *posicaoX,int *posicaoY){
-    CGerenciadorObjetos::GetPivo(idObjeto,posicaoX,posicaoY);
+    CGerenciadorObjetos::GetPivo(idObjeto,*posicaoX,*posicaoY);
 }
 
 /********************************
@@ -2268,7 +2268,7 @@ posicaoX (saída, passagem por referência): Valor da coordenada X do pivô em rela
 posicaoY (saída, passagem por referência): Valor da coordenada Y do pivô em relação ao ponto (0,0) da animação.
 ********************************/
 void GetPivoAnimacao(int idAnimacao,int *posicaoX,int *posicaoY){
-    CGerenciadorAnimacoes::GetPivo(idAnimacao,posicaoX,posicaoY);
+    CGerenciadorAnimacoes::GetPivo(idAnimacao,*posicaoX,*posicaoY);
 }
 
 /********************************

@@ -156,9 +156,8 @@ private:
 
     //
     int GetLinhaComMouseEmCima(){
-        SDL_Point p;
-        CMouse::PegaXY(p.x,p.y);
         int yLinha=0;
+        SDL_Point p = CMouse::PegaXYWorld();
 
         for(int i=0;i<linhas.size();i++){
 
@@ -465,7 +464,7 @@ public:
     }
 
     int TrataEventoMouse(PIG_Evento evento){
-        SDL_Point p = CMouse::PegaXY();
+        SDL_Point p = CMouse::PegaXYWorld();
         ChecaMouseOver(p);
 
         if(scrollVerticalAtivado) scrollVertical->TrataEventoMouse(evento);

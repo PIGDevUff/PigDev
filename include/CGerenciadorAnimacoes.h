@@ -99,8 +99,10 @@ public:
         animacoes[idAnimacao]->SetPivo(x,y);
     }
 
-    inline static void GetPivo(int idAnimacao,int *x,int *y){
-        animacoes[idAnimacao]->GetPivo(*x,*y);
+    inline static void GetPivo(int idAnimacao,int &x,int &y){
+        SDL_Point p = animacoes[idAnimacao]->GetPivo();
+        x = p.x;
+        y = p.y;
     }
 
     inline static void SetFlip(int idAnimacao, PIG_Flip valor){

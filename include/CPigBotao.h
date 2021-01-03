@@ -47,18 +47,6 @@ protected:
                 frameAtual = 2;
             }
         }
-        /*SDL_Rect r={0,0,largFrame,altOriginal};
-        if (habilitado==false){
-            r.x = 3*largFrame;
-        }else{
-            if (acionado){
-                r.x = 2*largFrame;
-            }else if (mouseOver){
-                r.x = largFrame;
-            }
-        }
-        DefineFrame(r);
-        */
     }
 
     void TrataTimer(){
@@ -114,7 +102,7 @@ public:
             tecla = TECLA_ENTER;//sem tecla de atalho
             acao = NULL;//não tem ação registrada
             param = NULL;//não tem parâmetro associado à ação
-            CriaFramesAutomaticos(1,1,4);
+            CriaFramesAutomaticosPorLinha(1,1,4);
             MudaFrameAtual(1);
             SetHabilitado(true);//para forçar o frame correto
             tempoRepeticao = 0.2;
@@ -135,8 +123,6 @@ public:
     }
 
     int TrataEventoMouse(PIG_Evento evento){
-        //PigCamera cam = CGerenciadorJanelas::GetJanela(idJanela)->GetCamera();
-        //ChecaMouseOver(cam->GetX(),cam->GetY(),CMouse::PegaXYWorld());
         ChecaMouseOver(CMouse::PegaXYWorld());
 
         if (mouseOver){

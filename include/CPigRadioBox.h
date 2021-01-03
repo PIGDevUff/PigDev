@@ -19,25 +19,6 @@ protected:
         mouseOver = valor;
     }
 
-    /*static void AjustaFrame(PigItemComponente item){
-        int itemAlt,itemLarg;
-        PIGSprite icone = item->GetIcone();
-        icone->GetDimensoesOriginais(itemAlt,itemLarg);
-        int largFrame = itemLarg/6;
-        SDL_Rect r={0,0,largFrame,itemAlt};
-        if (item->GetHabilitado()==false){
-            if (item->GetAcionado()) r.x = 3*largFrame;
-            else r.x = 2*largFrame;
-        }else if (item->GetMouseOver()){
-            if (item->GetAcionado()) r.x = 5*largFrame;
-            else r.x = 4*largFrame;
-        }else{
-            if (item->GetAcionado()) r.x = largFrame;
-            else r.x = 0;
-        }
-        icone->DefineFrame(r);
-    }*/
-
     static void AjustaFrame(PigItemComponente item){
         int resp;
         if (item->GetHabilitado()==false){
@@ -50,8 +31,7 @@ protected:
             if (item->GetAcionado()) resp = 2;
             else resp = 1;
         }
-        PIGSprite icone = item->GetIcone();
-        icone->MudaFrameAtual(resp);
+        item->GetIcone()->MudaFrameAtual(resp);
     }
 
 public:
@@ -102,7 +82,7 @@ public:
         CPigListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundo,false,itemHabilitado,audioComponente,hintMsg,retiraFundo);
         itens[itens.size()-1]->DefineFuncaoAjusteFrame(AjustaFrame);
         PIGSprite icone = itens[itens.size()-1]->GetIcone();
-        icone->CriaFramesAutomaticos(1,1,6);
+        icone->CriaFramesAutomaticosPorLinha(1,1,6);
         icone->MudaFrameAtual(1);
     }
 
@@ -110,7 +90,6 @@ public:
         if (visivel==false) return 0;
 
         if (text){//se tiver imagem de fundo
-            //SDL_RenderCopyEx(renderer,text,NULL,&dest,-angulo,NULL,flip);
             CPigSprite::Desenha();
         }
         DesenhaLabel();
@@ -124,15 +103,13 @@ public:
     int TrataEventoMouse(PIG_Evento evento){
         int resp = -1;
         bool mouseOverAntes = mouseOver;
-        //PigCamera cam = CGerenciadorJanelas::GetJanela(idJanela)->GetCamera();
+
         if (ChecaMouseOver(CMouse::PegaXYWorld())>0){
             for (int i=0;i<itens.size();i++){
                 if(itens[i]->TrataEventoMouse(evento) == PIG_SELECIONADO_TRATADO){
                     if (itens[i]->GetAcionado())
                         resp = i;
-                    printf("%d trat\n",i);
-                }else
-                    printf("%d nao trat\n",i);
+                }
             }
             SetAcionadoItem(resp,resp!=-1);
             if (resp>0)

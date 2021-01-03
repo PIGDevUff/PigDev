@@ -38,7 +38,7 @@ public:
         return estadoBotaoEsquerdo;
     }
 
-    static void PegaXY(int &x, int &y){
+    static void PegaXYTela(int &x, int &y){
         x = p.x;
         y = p.y;
     }
@@ -47,7 +47,7 @@ public:
         return pWorld;
     }
 
-    static SDL_Point PegaXY(){
+    static SDL_Point PegaXYTela(){
         return p;
     }
 

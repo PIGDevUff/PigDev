@@ -134,8 +134,10 @@ public:
         GetObjeto(idObjeto)->SetPivo(relX,relY);
     }
 
-    inline static void GetPivo(int idObjeto, int *x,int *y){
-        GetObjeto(idObjeto)->GetPivo(*x,*y);
+    inline static void GetPivo(int idObjeto, int &x,int &y){
+        SDL_Point p = GetObjeto(idObjeto)->GetPivo();
+        x = p.x;
+        y = p.y;
     }
 
     inline static void SetFlip(int idObjeto, PIG_Flip valor){

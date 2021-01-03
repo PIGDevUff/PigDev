@@ -1,7 +1,4 @@
-#include <algorithm>
-#include <cmath>
-
-typedef enum { OOBB, POLIGONO, CIRCULAR } PIG_ModoColisao;
+typedef enum { PIG_OOBB, PIG_POLIGONO, PIG_CIRCULAR } PIG_ModoColisao;
 
 class CObjeto : public CPigSprite {
 
@@ -13,7 +10,6 @@ protected:
     std::map<int, std::string> valoresIntString;
     std::map<std::string, std::string> valoresStringString;
     SDL_Point bb[4];
-    PIG_Cor **pixels;
     int raio;
     PIG_ModoColisao modo;
 
@@ -124,70 +120,26 @@ protected:
         }
     }
 
-    void ExtraiPixels() {
-        Uint8 *pix8;
-        Uint32 *pix32;
-
-        pixels = (PIG_Cor **)malloc(sizeof(PIG_Cor *) * bitmap->h);
-        for (int i = 0; i < bitmap->h; i++) {
-            pixels[i] = (PIG_Cor *)calloc(sizeof(PIG_Cor), bitmap->w);
-        }
-
-        if (bitmap->format->BytesPerPixel == 3) {
-            for (int h = 0; h < bitmap->h; h++) {
-                pix8 = (Uint8 *)bitmap->pixels + (h * bitmap->pitch);
-                for (int w = 0; w < bitmap->w; w++) {
-                    if (bitmap->format->format == SDL_PIXELFORMAT_RGB24) {
-                        pixels[h][w].r = *pix8;
-                        pix8++;
-                        pixels[h][w].g = *pix8;
-                        pix8++;
-                        pixels[h][w].b = *pix8;
-                        pix8++;
-                    } else {
-                        pixels[h][w].b = *pix8;
-                        pix8++;
-                        pixels[h][w].g = *pix8;
-                        pix8++;
-                        pixels[h][w].r = *pix8;
-                        pix8++;
-                    }
-                    pixels[h][w].a = 255;
-                }
-            }
-        } else if (bitmap->format->BytesPerPixel == 4) {
-            pix32 = (Uint32 *)bitmap->pixels;
-            for (int h = 0; h < bitmap->h; h++) {
-                for (int w = 0; w < bitmap->w; w++) {
-                    SDL_GetRGBA((Uint32)*pix32, bitmap->format, &(pixels[h][w].r), &(pixels[h][w].g), &(pixels[h][w].b), &(pixels[h][w].a));
-                    pix32++;
-                }
-            }
-        }
-    }
 
 public:
 
     CObjeto(std::string nomeArquivo, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0)
     : CPigSprite(nomeArquivo, retiraFundo, corFundo, janela){
-        ExtraiPixels();
+        //ExtraiPixels();
     }
 
     CObjeto(OffscreenRenderer offRender, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0)
     : CPigSprite(offRender, retiraFundo, corFundo, janela){
-        ExtraiPixels();
+        //ExtraiPixels();
     }
 
     CObjeto(CObjeto *objBase, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0)
     : CPigSprite(objBase, retiraFundo, corFundo, janela){
-        ExtraiPixels();
+        //ExtraiPixels();
         SetDimensoes(objBase->alt, objBase->larg);
     }
 
     ~CObjeto(){
-        for (int i = 0; i < bitmap->h; i++)
-            free(pixels[i]);
-        free(pixels);
     }
 
     void SetValoresInt(int chave, int valor){
@@ -302,11 +254,6 @@ public:
         return modo;
     }
 
-    void GetPivoRelativo(int *x, int *y) {
-        *x = pivoRelativo.x;
-        *y = pivoRelativo.y;
-    }
-
     void Move(int nx, int ny) override {
         SDL_Point pivo = {x, y};
 
@@ -318,7 +265,7 @@ public:
         bbAlterado = true;
     }
 
-    int Desenha(OffscreenRenderer offRender = NULL){
+    int Desenha(OffscreenRenderer offRender = NULL) override{
         if (offRender == NULL){
             //SDL_Rect enquadrado = dest;
             //enquadrado.x -= CGerenciadorJanelas::GetJanela(idJanela)->GetCamera()->GetX();
@@ -326,13 +273,13 @@ public:
             //SDL_RenderCopyEx(renderer, text, &frame, &enquadrado, -angulo, &pivoRelativo, flip);
             CPigSprite::Desenha();
             switch(9999) {//modo
-                case OOBB:
+                case PIG_OOBB:
                     DesenhaBB();
                     break;
-                case POLIGONO:
+                case PIG_POLIGONO:
                     DesenhaPoligono({0, 0, 255, 255});
                     break;
-                case CIRCULAR:
+                case PIG_CIRCULAR:
                     DesenhaCircular({0, 0, 255, 255});
                     break;
             }
@@ -361,37 +308,37 @@ public:
 
         PIG_ModoColisao modoOutro = outro->GetModoColisao();
 
-        if(modo == OOBB) {
-            if(modoOutro == OOBB) {
+        if(modo == PIG_OOBB) {
+            if(modoOutro == PIG_OOBB) {
                 if(ColisaoOOBB(outro) && outro->ColisaoOOBB(this)) {
                     return ColisaoPoligono(outro->GetVertices()) || outro->ColisaoPoligono({bb[0], bb[1], bb[2], bb[3]});
                 }
-            } else if(modoOutro == POLIGONO) {
+            } else if(modoOutro == PIG_POLIGONO) {
                 if(ColisaoOOBB(outro) && outro->ColisaoOOBB(this)) {
                     return ColisaoPoligono(outro->GetVertices()) || outro->ColisaoPoligono({bb[0], bb[1], bb[2], bb[3]});
                 }
-            } else if(modoOutro == CIRCULAR) {
+            } else if(modoOutro == PIG_CIRCULAR) {
                 return outro->ColisaoCirculoPoligono({bb[0], bb[1], bb[2], bb[3]});
             }
-        } else if(modo == POLIGONO) {
-            if(modoOutro == POLIGONO) {
+        } else if(modo == PIG_POLIGONO) {
+            if(modoOutro == PIG_POLIGONO) {
                 if(ColisaoOOBB(outro) && outro->ColisaoOOBB(this)) {
                     return ColisaoPoligono(outro->GetVertices()) || outro->ColisaoPoligono(this->vertices);
                 }
-            } else if(modoOutro == OOBB) {
+            } else if(modoOutro == PIG_OOBB) {
                 if(ColisaoOOBB(outro) && outro->ColisaoOOBB(this)) {
                     std::vector<SDL_Point> verticesOutro = {outro->GetBB(0), outro->GetBB(1), outro->GetBB(2), outro->GetBB(3)};
                     return ColisaoPoligono(verticesOutro) || outro->ColisaoPoligono(vertices);
                 }
-            } else if(modoOutro == CIRCULAR) {
+            } else if(modoOutro == PIG_CIRCULAR) {
                 return outro->ColisaoCirculoPoligono(vertices);
             }
-        } else if(modo == CIRCULAR) {
-            if(modoOutro == CIRCULAR) {
+        } else if(modo == PIG_CIRCULAR) {
+            if(modoOutro == PIG_CIRCULAR) {
                 return ColisaoCircular(outro);
-            } else if(modoOutro == POLIGONO) {
+            } else if(modoOutro == PIG_POLIGONO) {
                 return ColisaoCirculoPoligono(outro->GetVertices());
-            } else if(modoOutro == OOBB) {
+            } else if(modoOutro == PIG_OOBB) {
                 std::vector<SDL_Point> verticesOutro = {outro->GetBB(0), outro->GetBB(1), outro->GetBB(2), outro->GetBB(3)};
                 return ColisaoCirculoPoligono(verticesOutro);
             }
@@ -405,7 +352,7 @@ public:
 
         std::vector<SDL_Point> verticesAux;
 
-        if(this->modo == OOBB) {
+        if(this->modo == PIG_OOBB) {
             verticesAux = {bb[0], bb[1], bb[2], bb[3]};
         } else {
             verticesAux = vertices;
@@ -421,51 +368,9 @@ public:
         return !(quant_intersecoes % 2 == 0);
     }
 
-    PIG_Cor **GetPixels() {
-        return pixels;
-    }
-
-    void AtualizaPixels(int retiraFundo = 1, int opacidadeObj = 255) {
-        Uint8 *pix8;
-        Uint32 *pix32;
-        if (bitmap->format->BytesPerPixel == 3) {
-            for (int h = 0; h < bitmap->h; h++) {
-                pix8 = (Uint8 *)bitmap->pixels + (h * bitmap->pitch);
-                for (int w = 0; w < bitmap->w; w++) {
-                    if (bitmap->format->format == SDL_PIXELFORMAT_RGB24) {
-                        *pix8 = pixels[h][w].r;
-                        pix8++;
-                        *pix8 = pixels[h][w].g;
-                        pix8++;
-                        *pix8 = pixels[h][w].b;
-                        pix8++;
-                    } else {
-                        *pix8 = pixels[h][w].b;
-                        pix8++;
-                        *pix8 = pixels[h][w].g;
-                        pix8++;
-                        *pix8 = pixels[h][w].r;
-                        pix8++;
-                    }
-                }
-            }
-        } else if (bitmap->format->BytesPerPixel == 4) {
-            pix32 = (Uint32 *)bitmap->pixels;
-            for (int h = 0; h < bitmap->h; h++) {
-                for (int w = 0; w < bitmap->w; w++) {
-                    SDL_GetRGBA((Uint32)*pix32, bitmap->format, &(pixels[h][w].r), &(pixels[h][w].g), &(pixels[h][w].b), &(pixels[h][w].a));
-                    pix32++;
-                }
-            }
-        }
-
-        SetOpacidade(opacidadeObj);
-        CriaTextura(retiraFundo);
-    }
-
     bool ColisaoCirculoPoligono(std::vector<SDL_Point> vertices) {
         for(auto vertice : vertices) {
-            if(distancia({x + pivoRelativo.x, y + pivoRelativo.y}, vertice) <= raio) {
+            if(PIGDistancia({x + pivoRelativo.x, y + pivoRelativo.y}, vertice) <= raio) {
                 return true;
             }
         }
@@ -477,9 +382,9 @@ public:
 
             float mPoligono = ((float)vertices[f].y - vertices[i].y) / ((float)vertices[f].x - vertices[i].x);
 
-            if(mPoligono == 0 && Entre((x + pivoRelativo.x), vertices[i].x, vertices[f].x) && distancia({(x + pivoRelativo.x), vertices[i].y}, {(x + pivoRelativo.x), (y + pivoRelativo.y)}) <= raio) {
+            if(mPoligono == 0 && PIGValorEntre((x + pivoRelativo.x), vertices[i].x, vertices[f].x) && PIGDistancia({(x + pivoRelativo.x), vertices[i].y}, {(x + pivoRelativo.x), (y + pivoRelativo.y)}) <= raio) {
                 return true;
-            } else if(std::isinf(mPoligono) && Entre((y + pivoRelativo.y), vertices[i].y, vertices[f].y) && distancia({vertices[i].x, (y + pivoRelativo.y)}, {(x + pivoRelativo.x), (y + pivoRelativo.y)}) <= raio) {
+            } else if(std::isinf(mPoligono) && PIGValorEntre((y + pivoRelativo.y), vertices[i].y, vertices[f].y) && PIGDistancia({vertices[i].x, (y + pivoRelativo.y)}, {(x + pivoRelativo.x), (y + pivoRelativo.y)}) <= raio) {
                 return true;
             } else {
 
@@ -493,63 +398,16 @@ public:
                 // SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
                 // SDL_RenderDrawRect(renderer, &dest);//retângulo vermelhor para o AABB (sem ângulo)
 
-                if(distancia({x + pivoRelativo.x, y + pivoRelativo.y}, {(int)xProxCentro, (int)yProxCentro}) <= raio && Entre((int)xProxCentro, vertices[i].x, vertices[f].x)) return true;
+                if(PIGDistancia({x + pivoRelativo.x, y + pivoRelativo.y}, {(int)xProxCentro, (int)yProxCentro}) <= raio && PIGValorEntre((int)xProxCentro, vertices[i].x, vertices[f].x)) return true;
 
                 i = (i + 1) % vertices.size();
             }
         } while (i != 0);
 
-
         return false;
     }
 
 private:
-
-    int arredonda(float valor) {
-        int resultado = (int)valor;
-        if (valor - resultado >= 0.5)
-            return valor + 1;
-        return valor;
-    }
-
-    double projecaoY(double coefAngular, SDL_Point p) {
-        if (std::isinf(coefAngular))
-            return (double)p.y;
-        return coefAngular * (-p.x) + p.y;
-    }
-
-    double projecaoX(double coefAngular, SDL_Point p) {
-        if (std::isinf(coefAngular))
-            return (double)p.x;
-
-        return (-p.y + (coefAngular * p.x)) / coefAngular;
-    }
-
-    double  min(double  vetor[4]) {
-        double  menor = vetor[0];
-        for (int i = 1; i < 4; i++)
-            if (vetor[i] < menor)
-                menor = vetor[i];
-        return menor;
-    }
-
-    double  max(double  vetor[4]) {
-        double  maior = vetor[0];
-        for (int i = 1; i < 4; i++)
-            if (vetor[i] > maior)
-                maior = vetor[i];
-        return maior;
-    }
-
-    int distancia(SDL_Point a, SDL_Point b) {
-        int deltaX = (b.x - a.x);
-        int deltaY = (b.y - a.y);
-        return (int)sqrt((deltaX * deltaX) + (deltaY * deltaY));
-    }
-
-    bool Entre(int x, int a, int b) {
-        return ((x > a) && (x < b) || (x < a) && (x > b));
-    }
 
     bool Intersecao(int i, int f, SDL_Point p) {
         float m = ((float)vertices[f].y - vertices[i].y) /
@@ -558,11 +416,11 @@ private:
 
         if (m == 0)
             return p.y == vertices[i].y &&
-                   Entre(p.x, vertices[i].x, vertices[f].x);
+                   PIGValorEntre(p.x, vertices[i].x, vertices[f].x);
 
         if (p.y == vertices[i].y && p.x <= vertices[i].x) {
             int anterior = i == 0 ? vertices.size() - 1 : i - 1;
-            return Entre(p.y, vertices[anterior].y, vertices[f].y);
+            return PIGValorEntre(p.y, vertices[anterior].y, vertices[f].y);
         }
 
         if (std::isinf(m))
@@ -571,19 +429,19 @@ private:
             x = (((float)p.y - vertices[i].y) / (float)m) +
                 ((float)vertices[i].x);
 
-        return (x >= p.x) && Entre(p.y, vertices[i].y, vertices[f].y);
+        return (x >= p.x) && PIGValorEntre(p.y, vertices[i].y, vertices[f].y);
     }
 
     bool ColisaoCircular(CObjeto *outro) {
         int pivox, pivoy, posx, posy;
 
-        outro->GetPivoRelativo(&pivox, &pivoy);
+        outro->GetPivoRelativo(pivox, pivoy);
         outro->GetXY(posx, posy);
 
-        return distancia({posx + pivox, posy + pivoy}, {x + pivoRelativo.x, y + pivoRelativo.y}) <= (float)(raio + outro->GetRaio());
+        return PIGDistancia({posx + pivox, posy + pivoy}, {x + pivoRelativo.x, y + pivoRelativo.y}) <= (float)(raio + outro->GetRaio());
     }
 
-    int  ColisaoOOBB(CObjeto *outro) {
+    int ColisaoOOBB(CObjeto *outro) {
 
         // caso em q o angulo é 0
         // caso em que o vetor que vai de bb[0] para bb[1] é paralelo ao eixo X, ou seja, nao ira existir uma "projecao" no eixo X
@@ -596,8 +454,8 @@ private:
         }
 
         // projecao dos vetores no eixo X deste objeto
-        double projecaoAB = projecaoX((double)(bb[1].y - bb[0].y) / (double)(bb[1].x - bb[0].x), bb[0]);
-        double projecaoCD = projecaoX((double)(bb[3].y - bb[2].y) / (double)(bb[3].x - bb[2].x), bb[2]);
+        double projecaoAB = PIGProjecaoX((double)(bb[1].y - bb[0].y) / (double)(bb[1].x - bb[0].x), bb[0]);
+        double projecaoCD = PIGProjecaoX((double)(bb[3].y - bb[2].y) / (double)(bb[3].x - bb[2].x), bb[2]);
 
         //SDL_SetRenderDrawColor(renderer,255,255,255,255);
         //SDL_RenderDrawLine(renderer,(int)projecaoAB,300,(int)projecaoCD,300);
@@ -605,28 +463,28 @@ private:
         // projecao dos pontos(com o angulo dos anteriores) no eixo X do outro objeto
         double projecao[4];
         for (int i = 0; i < 4; i++)
-            projecao[i] = projecaoX((double)(bb[1].y - bb[0].y) / (double)(bb[1].x - bb[0].x), outro->GetBB(i));
+            projecao[i] = PIGProjecaoX((double)(bb[1].y - bb[0].y) / (double)(bb[1].x - bb[0].x), outro->GetBB(i));
 
         double menorA = (projecaoAB < projecaoCD) ? projecaoAB : projecaoCD;
         double maiorA = (projecaoAB > projecaoCD) ? projecaoAB : projecaoCD;
-        double menorB = min(projecao);
-        double maiorB = max(projecao);
+        double menorB = PIGMinVetor(projecao,4);
+        double maiorB = PIGMaxVetor(projecao,4);
 
         if (!(menorA < maiorB && maiorA > menorB))
             return false;
 
         // projecao dos vetores no eixo Y deste objeto
-        projecaoAB = projecaoY((double )(bb[2].y - bb[1].y) / (double )(bb[2].x - bb[1].x), bb[1]);
-        projecaoCD = projecaoY((double )(bb[0].y - bb[3].y) / (double )(bb[0].x - bb[3].x), bb[3]);
+        projecaoAB = PIGProjecaoY((double )(bb[2].y - bb[1].y) / (double )(bb[2].x - bb[1].x), bb[1]);
+        projecaoCD = PIGProjecaoY((double )(bb[0].y - bb[3].y) / (double )(bb[0].x - bb[3].x), bb[3]);
 
         // projecao dos pontos(com o angulo dos anteriores) no eixo Y do outro objeto
         for (int i = 0; i < 4; i++)
-            projecao[i] = projecaoY((double )(bb[2].y - bb[1].y) / (double )(bb[2].x - bb[1].x), outro->GetBB(i));
+            projecao[i] = PIGProjecaoY((double )(bb[2].y - bb[1].y) / (double )(bb[2].x - bb[1].x), outro->GetBB(i));
 
         menorA = (projecaoAB < projecaoCD) ? projecaoAB : projecaoCD;
         maiorA = (projecaoAB > projecaoCD) ? projecaoAB : projecaoCD;
-        menorB = min(projecao);
-        maiorB = max(projecao);
+        menorB = PIGMinVetor(projecao,4);
+        maiorB = PIGMaxVetor(projecao,4);
 
         return (menorA < maiorB && maiorA > menorB);
     }
