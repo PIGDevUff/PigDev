@@ -1,16 +1,16 @@
-#ifndef _CPigListaItemComponente_
-#define _CPigListaItemComponente_
+#ifndef _CPIGLISTAITEMCOMPONENTE_
+#define _CPIGLISTAITEMCOMPONENTE_
 
-#include "CPigItemComponente.h"
+#include "CPIGItemComponente.h"
 
-class CPigListaItemComponente: public CPigComponente{
+class CPIGListaItemComponente: public CPIGComponente{
 
 protected:
 
     int fonteItens;
     int altBaseLista,altMaxima;                     //espaço vertical entre os itens
     PIG_PosicaoComponente posIcones,posLabels;
-    std::vector <PigItemComponente> itens;
+    std::vector <PIGItemComponente> itens;
     int itemDestaque;
     int altIcone,largIcone;                           //altura e largura das imagens dos itens
 
@@ -25,18 +25,18 @@ protected:
     }
 
     void CriaItem(int yItem,std::string itemLabel, std::string arqImagemIcone="",std::string arqImagemFundo="",bool itemMarcado = false, bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
-        PigItemComponente item;
+        PIGItemComponente item;
         if (arqImagemFundo==""){
             if (arqImagemIcone==""){
-                item = new CPigItemComponente(itens.size(),x,yItem,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
+                item = new CPIGItemComponente(itens.size(),x,yItem,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
             }else{
-                item = new CPigItemComponente(itens.size(),x,yItem,altIcone,largIcone,arqImagemIcone,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
+                item = new CPIGItemComponente(itens.size(),x,yItem,altIcone,largIcone,arqImagemIcone,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
             }
         }else{
             if (arqImagemIcone==""){
-                item = new CPigItemComponente(itens.size(),x,yItem,arqImagemFundo,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
+                item = new CPIGItemComponente(itens.size(),x,yItem,arqImagemFundo,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
             }else{
-                item = new CPigItemComponente(itens.size(),x,yItem,altIcone,largIcone,arqImagemIcone,arqImagemFundo,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
+                item = new CPIGItemComponente(itens.size(),x,yItem,altIcone,largIcone,arqImagemIcone,arqImagemFundo,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
             }
         }
         item->SetHint(hintMsg);
@@ -50,13 +50,13 @@ protected:
 
 public:
 
-    CPigListaItemComponente(int idComponente, int posX, int posY, int larguraTotal, int alturaLinha, int alturaTotal,std::string nomeArqFundoLista, int retiraFundo=1,int janela = 0):
-        CPigComponente(idComponente,posX,posY,alturaTotal,larguraTotal,nomeArqFundoLista,retiraFundo,janela){
+    CPIGListaItemComponente(int idComponente, int posX, int posY, int larguraTotal, int alturaLinha, int alturaTotal,std::string nomeArqFundoLista, int retiraFundo=1,int janela = 0):
+        CPIGComponente(idComponente,posX,posY,alturaTotal,larguraTotal,nomeArqFundoLista,retiraFundo,janela){
         IniciaBase(larguraTotal,alturaLinha,alturaTotal);
     }
 
-    ~CPigListaItemComponente(){
-        for (PigItemComponente i: itens)
+    ~CPIGListaItemComponente(){
+        for (PIGItemComponente i: itens)
             delete i;
         itens.clear();
     }
@@ -71,7 +71,7 @@ public:
 
     void AlinhaLabelDireita(){
         if (posLabels!=PIG_COMPONENTE_DIR_CENTRO){//se os labels estão à direita do botões, inverte
-            for (PigItemComponente i: itens)
+            for (PIGItemComponente i: itens)
                 i->AlinhaLabelDireita();
             posLabels = PIG_COMPONENTE_DIR_CENTRO;
         }
@@ -79,7 +79,7 @@ public:
 
     void AlinhaLabelEsquerda(){
         if (posLabels!=PIG_COMPONENTE_ESQ_CENTRO){//se os labels estão à direita do botões, inverte
-            for (PigItemComponente i: itens)
+            for (PIGItemComponente i: itens)
                 i->AlinhaLabelEsquerda();
             posLabels = PIG_COMPONENTE_ESQ_CENTRO;
         }
@@ -87,7 +87,7 @@ public:
 
     void AlinhaLabelCentro(){
         if (posLabels!=PIG_COMPONENTE_CENTRO_CENTRO){//se os labels estão à direita do botões, inverte
-            for (PigItemComponente i: itens)
+            for (PIGItemComponente i: itens)
                 i->AlinhaLabelCentro();
             posLabels = PIG_COMPONENTE_CENTRO_CENTRO;
         }
@@ -95,7 +95,7 @@ public:
 
     void AlinhaIconeDireita(){
         if (posIcones==PIG_COMPONENTE_ESQ_CENTRO){//se os labels estão à direita do botões, inverte
-            for (PigItemComponente i: itens)
+            for (PIGItemComponente i: itens)
                 i->AlinhaIconeDireita();
             posIcones = PIG_COMPONENTE_DIR_CENTRO;
         }
@@ -103,7 +103,7 @@ public:
 
     void AlinhaIconeEsquerda(){
         if (posIcones!=PIG_COMPONENTE_DIR_CENTRO){//se os labels estão à direita do botões, inverte
-            for (PigItemComponente i: itens)
+            for (PIGItemComponente i: itens)
                 i->AlinhaIconeEsquerda();
             posIcones = PIG_COMPONENTE_ESQ_CENTRO;
         }
@@ -111,7 +111,7 @@ public:
 
     void SetFonteItensLista(int fonte){
         fonteItens = fonte;
-        for(PigItemComponente item :itens) item->SetFonteLabel(fonte);
+        for(PIGItemComponente item :itens) item->SetFonteLabel(fonte);
     }
 
     virtual int Desenha()=0;
@@ -140,31 +140,31 @@ public:
 
     void SetHabilitado(bool valor) override{
         habilitado = valor;
-        for(PigItemComponente i: itens)
+        for(PIGItemComponente i: itens)
             i->SetHabilitado(habilitado);
     }
 
     void SetVisivel(bool valor) override{
         visivel = valor;
-        for(PigItemComponente i: itens)
+        for(PIGItemComponente i: itens)
             i->SetVisivel(visivel);
     }
 
     void SetFonteHint(int fonte) override{
-        for (PigItemComponente i: itens)
+        for (PIGItemComponente i: itens)
             i->SetFonteHint(fonte);
     }
 
     void SetAudio(int audio) override{
         audioComponente = audio;
-        for (PigItemComponente i: itens)
+        for (PIGItemComponente i: itens)
             i->SetAudio(audio);
     }
 
     void Move(int nx,int ny){
         int dx = nx-x;
         int dy = ny-y;
-        CPigSprite::Desloca(dx,dy);
+        CPIGSprite::Desloca(dx,dy);
         for(int i=0;i<itens.size();i++)
             itens[i]->Desloca(dx, dy);
     }
@@ -177,12 +177,12 @@ public:
         if (indice<0||indice>=itens.size()) return 0;
         if (marcado){
             itemDestaque = indice;
-            for (PigItemComponente i: itens)
+            for (PIGItemComponente i: itens)
                 i->SetAcionado(false);
         }
         itens[indice]->SetAcionado(marcado);
         return 1;
     }
 };
-typedef CPigListaItemComponente *PigListaComponente;
-#endif //_CPigListaItemComponente_
+typedef CPIGListaItemComponente *PIGListaComponente;
+#endif //_CPIGLISTAITEMCOMPONENTE_

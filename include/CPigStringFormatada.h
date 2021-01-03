@@ -1,7 +1,7 @@
 #ifndef _CPIGSTRINGFORMATADA_
 #define _CPIGSTRINGFORMATADA_
 
-class CPigStringFormatada{
+class CPIGStringFormatada{
 
     char *ExtraiString(){
         char *resp = (char*)malloc(sizeof(letras.size()+1));
@@ -21,7 +21,7 @@ class CPigStringFormatada{
 
 public:
 
-    ~CPigStringFormatada(){
+    ~CPIGStringFormatada(){
         Clear();
     }
 
@@ -66,12 +66,12 @@ public:
         return letras.size();
     }
 
-    std::vector<CPigStringFormatada> SeparaPalavras(std::string delim){
-        std::vector<CPigStringFormatada> resp;
+    std::vector<CPIGStringFormatada> SeparaPalavras(std::string delim){
+        std::vector<CPIGStringFormatada> resp;
         if (letras.size()==0) return resp;
         int indice;
         int largBase=0;
-        CPigStringFormatada strAtual;
+        CPIGStringFormatada strAtual;
         for (int i=0;i<letras.size();i++){
 
             indice = delim.find(letras[i]);
@@ -95,15 +95,15 @@ public:
         return resp;
     }
 
-    std::vector<CPigStringFormatada> ExtraiLinhas(int largMax, std::string delim){
-        std::vector<CPigStringFormatada> resp;
+    std::vector<CPIGStringFormatada> ExtraiLinhas(int largMax, std::string delim){
+        std::vector<CPIGStringFormatada> resp;
         if (letras.size()==0) return resp;
-        std::vector<CPigStringFormatada> palavras = SeparaPalavras(delim);
+        std::vector<CPIGStringFormatada> palavras = SeparaPalavras(delim);
 
-        CPigStringFormatada linhaAtual = palavras[0];   //linha atual (que está sendo montada) contém pelo menos a primeira palavra
+        CPIGStringFormatada linhaAtual = palavras[0];   //linha atual (que está sendo montada) contém pelo menos a primeira palavra
 
         for (int i=1;i<palavras.size();i++){
-            CPigStringFormatada palavra = palavras[i];   //pega a próxima palavra
+            CPIGStringFormatada palavra = palavras[i];   //pega a próxima palavra
 
             if (linhaAtual.LargTotalPixels() + palavra.LargTotalPixels() > largMax){//a palavra estouraria a largura máxima se fosse agregada                if (ttttt==0){
                 resp.push_back(linhaAtual); //coloca a linha que está montada no vetor de linhas
@@ -130,7 +130,7 @@ public:
         return resp;
     }
 
-    CPigStringFormatada operator +=(CPigStringFormatada outra){
+    CPIGStringFormatada operator +=(CPIGStringFormatada outra){
         int largAtual = LargTotalPixels();
         for (int i=0;i<outra.letras.size();i++){
             Adiciona(outra.letras[i],outra.largAcumulada[i]+largAtual,outra.cores[i],outra.estilos[i]);

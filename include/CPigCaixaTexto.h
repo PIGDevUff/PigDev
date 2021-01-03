@@ -1,9 +1,9 @@
-#ifndef _CPigCaixaTexto_
-#define _CPigCaixaTexto_
+#ifndef _CPIGCaixaTexto_
+#define _CPIGCaixaTexto_
 
-#include "CPigComponente.h"
+#include "CPIGComponente.h"
 
-class CPigCaixaTexto: public CPigComponente{
+class CPIGCaixaTexto: public CPIGComponente{
 
 private:
 
@@ -11,7 +11,7 @@ private:
     int maxCaracteres;
     bool somenteNumeros;
     PIG_Cor corCursor;
-    Timer timer;
+    PIGTimer timer;
 
 protected:
 
@@ -29,7 +29,7 @@ protected:
     void DesenhaCursor(){
         if (temFoco){
             if (cursorExibido){
-                CGerenciadorJanelas::DesenhaLinhaSimples(xCursor,yCursor,xCursor,yCursor+altLetra,corCursor,idJanela);
+                CPIGGerenciadorJanelas::DesenhaLinhaSimples(xCursor,yCursor,xCursor,yCursor+altLetra,corCursor,idJanela);
             }
             if (timer&&timer->GetTempoDecorrido()>1){
                 cursorExibido = !cursorExibido;
@@ -67,7 +67,7 @@ protected:
 
         if (evento.teclado.acao==TECLA_INPUT){//caracteres normais
             if (AdicionaTexto( ConverteString(evento.teclado.texto).c_str() ) ){
-                if (audioComponente>=0) CGerenciadorAudios::Play(audioComponente);
+                if (audioComponente>=0) CPIGGerenciadorAudios::Play(audioComponente);
                 return 1;
             }
             return 0;
@@ -133,7 +133,7 @@ protected:
         texto.erase(posCursor-1,1);//retira o caracter imediatamente atrás do cursor e retrocede com ele
         VoltaCursor();
 
-        if (audioComponente>=0) CGerenciadorAudios::Play(audioComponente);
+        if (audioComponente>=0) CPIGGerenciadorAudios::Play(audioComponente);
         return 1;
     }
 
@@ -143,7 +143,7 @@ protected:
 
         texto.erase(posCursor,1);//retira o caracter imediatamente a frente do cursor
 
-        if (audioComponente>=0) CGerenciadorAudios::Play(audioComponente);
+        if (audioComponente>=0) CPIGGerenciadorAudios::Play(audioComponente);
         return 1;
     }
 
@@ -184,7 +184,7 @@ protected:
 
             aux.assign(textoBase,inicioLinha,i - inicioLinha);
 
-            largParcial += CGerenciadorFontes::GetLarguraPixels(aux,fonteTexto);
+            largParcial += CPIGGerenciadorFontes::GetLarguraPixels(aux,fonteTexto);
 
             if (delta<largParcial-largUltimaLetra){
                 posCursor = i-1;
@@ -207,20 +207,20 @@ protected:
 
 public:
 
-    CPigCaixaTexto(int idComponente,int px, int py, int altura,int largura,std::string nomeArq,int maxCars = 200,bool apenasNumeros=false,int retiraFundo=1,int janela=0):
-        CPigComponente(idComponente,px,py,altura,largura,nomeArq,retiraFundo,janela){
+    CPIGCaixaTexto(int idComponente,int px, int py, int altura,int largura,std::string nomeArq,int maxCars = 200,bool apenasNumeros=false,int retiraFundo=1,int janela=0):
+        CPIGComponente(idComponente,px,py,altura,largura,nomeArq,retiraFundo,janela){
         margemHorEsq = margemHorDir = margemVertCima = margemVertBaixo = 0;
         posLabel = PIG_COMPONENTE_ESQ_BAIXO;//posição padrão do label
         posCursor = 0;//cursor no início do texto
         cursorExibido = true;
-        timer = new CTimer(false);//o timer do curosor que só será exibido quando estiver editando
+        timer = new CPIGTimer(false);//o timer do curosor que só será exibido quando estiver editando
         SetFonteTexto(0);
         maxCaracteres = maxCars;
         somenteNumeros = apenasNumeros;
         corCursor = PRETO;
     }
 
-    ~CPigCaixaTexto(){
+    ~CPIGCaixaTexto(){
         delete timer;
     }
 
@@ -233,7 +233,7 @@ public:
 
     virtual void SetFonteTexto(int fonte){
         fonteTexto = fonte;
-        altLetra = CGerenciadorFontes::GetTamanhoBaseFonte(fonteTexto)+CGerenciadorFontes::GetFonteDescent(fonteTexto);
+        altLetra = CPIGGerenciadorFontes::GetTamanhoBaseFonte(fonteTexto)+CPIGGerenciadorFontes::GetFonteDescent(fonteTexto);
         yBaseOriginal = y+alt-altLetra;
     }
 
@@ -254,7 +254,7 @@ public:
 
     //reposiciona o componente
     void Move(int nx, int ny){
-        CPigComponente::Move(nx,ny);
+        CPIGComponente::Move(nx,ny);
         AjustaAlinhamento();
     }
 
@@ -262,5 +262,5 @@ public:
 
 };
 
-typedef CPigCaixaTexto *PigCaixaTexto;
-#endif // _CPigCaixaTexto_
+typedef CPIGCaixaTexto *PIGCaixaTexto;
+#endif // _CPIGCAIXATEXTO_

@@ -1,4 +1,9 @@
-class CPigLabel:public CPigSprite{
+#ifndef _CPIGLABEL_
+#define _CPIGLABEL_
+
+#include "CPIGSprite.h"
+
+class CPIGLabel:public CPIGSprite{
 
 private:
 std::string frase;
@@ -6,25 +11,25 @@ int fonte;
 PIG_Cor cor;
 
 void AtualizaTextura(){
-    MapaCaracteres mapa = CGerenciadorFontes::GetFonte(fonte);
+    PIGMapaCaracteres mapa = CPIGGerenciadorFontes::GetFonte(fonte);
     larg = mapa->GetLarguraPixelsString(frase);
     alt = mapa->GetFonteAscent()+mapa->GetFonteDescent()+5;
     if (text) SDL_DestroyTexture(text);
-    text = SDL_CreateTexture(CGerenciadorJanelas::GetJanela(idJanela)->GetRenderer(),SDL_PIXELFORMAT_RGBA8888,SDL_TEXTUREACCESS_TARGET,larg,alt);
+    text = SDL_CreateTexture(CPIGGerenciadorJanelas::GetJanela(idJanela)->GetRenderer(),SDL_PIXELFORMAT_RGBA8888,SDL_TEXTUREACCESS_TARGET,larg,alt);
     mapa->Escreve(frase,text,cor);
     dest.w = larg;
     dest.h = alt;
     frames[0].x = frames[0].y = 0;
     frames[0].h = alt;
     frames[0].w = larg;
-    altJanela = CGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
+    altJanela = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
     //printf("atual %d\n",*altJanela);
 }
 
 public:
 
-CPigLabel(std::string texto,int numFonte,PIG_Cor corFonte=BRANCO,int idJanela=0):CPigSprite(idJanela){
-    renderer = CGerenciadorJanelas::GetJanela(idJanela)->GetRenderer();
+CPIGLabel(std::string texto,int numFonte,PIG_Cor corFonte=BRANCO,int idJanela=0):CPIGSprite(idJanela){
+    renderer = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetRenderer();
     fonte = numFonte;
     text = NULL;
     cor = corFonte;
@@ -78,4 +83,5 @@ PIG_Cor GetCor(){
 
 };
 
-typedef CPigLabel* PigLabel;
+typedef CPIGLabel* PIGLabel;
+#endif // _CPIGLABEL_

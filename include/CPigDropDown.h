@@ -1,9 +1,9 @@
-#ifndef _CPigDropDown_
-#define _CPigDropDown_
+#ifndef _CPIGDROPDOWN_
+#define _CPIGDROPDOWN_
 
-#include "CPigListaItemComponente.h"
+#include "CPIGListaItemComponente.h"
 
-class CPigDropDown: public CPigListaItemComponente{
+class CPIGDropDown: public CPIGListaItemComponente{
 
 private:
 
@@ -59,16 +59,16 @@ private:
 
 public:
 
-    CPigDropDown(int idComponente,int px, int py,int larguraTotal, int alturaLinha, int alturaMaxima,int alturaItem=0, int larguraItem=0,std::string nomeArqFundo="",int retiraFundo=1,int janela=0):
-        CPigListaItemComponente(idComponente,px,py,larguraTotal,alturaLinha,alturaLinha,nomeArqFundo,retiraFundo,janela){
+    CPIGDropDown(int idComponente,int px, int py,int larguraTotal, int alturaLinha, int alturaMaxima,int alturaItem=0, int larguraItem=0,std::string nomeArqFundo="",int retiraFundo=1,int janela=0):
+        CPIGListaItemComponente(idComponente,px,py,larguraTotal,alturaLinha,alturaLinha,nomeArqFundo,retiraFundo,janela){
             altImagem = alturaItem;
             largImagem = larguraItem;
             SetRecolhida(true);
     }
 
-    CPigDropDown(std::string nomeArqParam):CPigDropDown(LeArquivoParametros(nomeArqParam)){}
+    CPIGDropDown(std::string nomeArqParam):CPIGDropDown(LeArquivoParametros(nomeArqParam)){}
 
-    static CPigDropDown LeArquivoParametros(std::string nomeArqParam){
+    static CPIGDropDown LeArquivoParametros(std::string nomeArqParam){
 
         std::ifstream arquivo;
         int idComponente,px,py,alturaItem,larguraItem,larguraTotal,alturaLinha,alturaMaxima,retiraFundo=1,janela=0;
@@ -76,7 +76,7 @@ public:
 
         arquivo.open(nomeArqParam);
 
-        if(!arquivo.is_open()) throw CPigErroArquivo(nomeArqParam);
+        if(!arquivo.is_open()) throw CPIGErroArquivo(nomeArqParam);
         //formato "x valor"
         while(!arquivo.eof()){
            arquivo >> variavel;
@@ -97,15 +97,15 @@ public:
 
        // std::cout<<idComponente<<" "<<px<<" "<<py<<" "<<altura<<" "<<largura<<" "<<nomeArq<<" "<<retiraFundo<<" "<<janela<<std::endl;
 
-        //if(imgItem == "") throw CPigErroParametro("imgItem",imgItem);
+        //if(imgItem == "") throw CPIGErroParametro("imgItem",imgItem);
 
-        return CPigDropDown(idComponente,px,py,larguraTotal,alturaLinha,alturaMaxima,alturaItem,larguraItem,imgFundo,retiraFundo,janela);
+        return CPIGDropDown(idComponente,px,py,larguraTotal,alturaLinha,alturaMaxima,alturaItem,larguraItem,imgFundo,retiraFundo,janela);
 
     }
 
     void CriaItem(std::string itemLabel, std::string arqImagemIcone="",std::string arqImagemFundoItem="", bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
         int yItem=y-(itens.size()+1)*altBaseLista;
-        CPigListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,false,itemHabilitado,audioComponente,hintMsg,retiraFundo);
+        CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,false,itemHabilitado,audioComponente,hintMsg,retiraFundo);
     }
 
     int Desenha(){
@@ -118,7 +118,7 @@ public:
             r.h = (itens.size()+1)*altBaseLista;
             r.y = dest.y;
             SDL_RenderCopyEx(renderer,text,NULL,&r,-angulo,NULL,flip);
-            for (PigItemComponente i: itens)
+            for (PIGItemComponente i: itens)
                 i->Desenha();
         }else{
             DesenhaItemDestaque();
@@ -130,7 +130,7 @@ public:
     int TrataEventoMouse(PIG_Evento evento){
         int resp = -1;
         bool mouseOverAntes = mouseOver;
-        if (ChecaMouseOver(CMouse::PegaXYWorld())){
+        if (ChecaMouseOver(CPIGMouse::PegaXYWorld())){
             if (!recolhida){        //se o dropdown está exibindo os itens, é preciso tratá-los individualmente
                 for (int i=0;i<itens.size();i++){
                     if(itens[i]->TrataEventoMouse(evento) == PIG_SELECIONADO_TRATADO){
@@ -167,5 +167,5 @@ public:
 
 };
 
-typedef CPigDropDown *PigDropDown;
-#endif // _CPigDropDown_
+typedef CPIGDropDown *PIGDropDown;
+#endif // _CPIGDROPDOWN_

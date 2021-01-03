@@ -1,9 +1,11 @@
-#ifndef _CPigGauge_
-#define _CPigGauge_
+#ifndef _CPIGGauge_
+#define _CPIGGauge_
 
-typedef enum {GAUGE_CIMA_BAIXO,GAUGE_BAIXO_CIMA,GAUGE_ESQ_DIR,GAUGE_DIR_ESQ} PIG_GaugeCrescimentoBarra;
+#include "CPIGComponente.h"
 
-class CPigGauge: public CPigComponente{
+typedef enum {PIG_GAUGE_CIMA_BAIXO,PIG_GAUGE_BAIXO_CIMA,PIG_GAUGE_ESQ_DIR,PIG_GAUGE_DIR_ESQ} PIG_GaugeCrescimentoBarra;
+
+class CPIGGauge: public CPIGComponente{
 
 private:
 
@@ -16,16 +18,16 @@ private:
     SDL_Rect GeraClip(SDL_Rect barra){
         SDL_Rect resp = barra;
         switch(orientacaoCrescimento){
-        case GAUGE_DIR_ESQ:
+        case PIG_GAUGE_DIR_ESQ:
             resp.x += (1-porcentagemConcluida/100.0)*barra.w;
             break;
-        case GAUGE_ESQ_DIR:
+        case PIG_GAUGE_ESQ_DIR:
             resp.w = (porcentagemConcluida/100.0)*barra.w;
             break;
-        case GAUGE_CIMA_BAIXO:
+        case PIG_GAUGE_CIMA_BAIXO:
             resp.h = (porcentagemConcluida/100.0)*barra.h;
             break;
-        case GAUGE_BAIXO_CIMA:
+        case PIG_GAUGE_BAIXO_CIMA:
             resp.y += (1-porcentagemConcluida/100.0)*barra.h;
             break;
         }
@@ -52,20 +54,20 @@ private:
 
 public:
 
-    CPigGauge(int idComponente,int px, int py,int altura,int largura,std::string imgGauge,int retiraFundo=1,int janela=0):
-        CPigComponente(idComponente,px,py,altura,largura,imgGauge,retiraFundo,janela){
+    CPIGGauge(int idComponente,int px, int py,int altura,int largura,std::string imgGauge,int retiraFundo=1,int janela=0):
+        CPIGComponente(idComponente,px,py,altura,largura,imgGauge,retiraFundo,janela){
             valorMin = valorAtual = 0;
             valorMax = 100;
             porcentagemConcluida = 0;
-            orientacaoCrescimento = GAUGE_ESQ_DIR;
+            orientacaoCrescimento = PIG_GAUGE_ESQ_DIR;
             xBarra = 0;
             yBarra = 0;
             delta = 0;
     }
 
-    CPigGauge(std::string nomeArqParam):CPigGauge(LeArquivoParametros(nomeArqParam)){}
+    CPIGGauge(std::string nomeArqParam):CPIGGauge(LeArquivoParametros(nomeArqParam)){}
 
-    static CPigGauge LeArquivoParametros(std::string nomeArqParam){
+    static CPIGGauge LeArquivoParametros(std::string nomeArqParam){
 
         std::ifstream arquivo;
         int idComponente,px,py,altura,largura,retiraFundo=1,janela=0;
@@ -73,7 +75,7 @@ public:
 
         arquivo.open(nomeArqParam);
 
-        if(!arquivo.is_open()) throw CPigErroArquivo(nomeArqParam);
+        if(!arquivo.is_open()) throw CPIGErroArquivo(nomeArqParam);
         //formato "x valor"
         while(!arquivo.eof()){
            arquivo >> variavel;
@@ -89,10 +91,10 @@ public:
 
         arquivo.close();
 
-        if(imgGauge == "") throw CPigErroParametro("imgGauge",nomeArqParam);
+        if(imgGauge == "") throw CPIGErroParametro("imgGauge",nomeArqParam);
 
        // std::cout<<idComponente<<" "<<px<<" "<<py<<" "<<altura<<" "<<largura<<" "<<nomeArq<<" "<<retiraFundo<<" "<<janela<<std::endl;
-        return CPigGauge(idComponente,px,py,altura,largura,imgGauge,retiraFundo,janela);
+        return CPIGGauge(idComponente,px,py,altura,largura,imgGauge,retiraFundo,janela);
 
     }
 
@@ -165,7 +167,7 @@ public:
         aux.y = dest.y+yBarra*scalaY;
 
         //base
-        CPigSprite::Desenha();
+        CPIGSprite::Desenha();
         //SDL_RenderCopyEx(renderer, text, &frameBase,&dest,-angulo,&pivoRelativo,flip);
 
         aux2 = dest;
@@ -175,7 +177,7 @@ public:
         SDL_RenderSetClipRect(renderer,&clip);
 
         //SDL_RenderCopyEx(renderer, text, &frameBarra,&aux,-angulo,&pivoRelativo,flip);
-        CPigSprite::Desenha();
+        CPIGSprite::Desenha();
 
         dest = aux2;
 
@@ -210,5 +212,5 @@ public:
     }
 
 };
-typedef CPigGauge *PigGauge;
-#endif // _CPigGauge_
+typedef CPIGGauge *PIGGauge;
+#endif // _CPIGGAUGE_

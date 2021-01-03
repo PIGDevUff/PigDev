@@ -1,14 +1,14 @@
-#ifndef _CPigCampoTextESenha_
-#define _CPigCampoTextESenha_
+#ifndef _CPIGCAMPOTEXTOESENHA_
+#define _CPIGCAMPOTEXTOESENHA_
 
-#include "CPigCaixaTexto.h"
+#include "CPIGCaixaTexto.h"
 
-class CPigCampoTextoESenha: public CPigCaixaTexto{
+class CPIGCampoTextoESenha: public CPIGCaixaTexto{
 
 private:
 
     char mascara;//símbolo usado quando o campo for de senha
-    std::string (CPigCampoTextoESenha::*GetTextoVisivelPtr)();//ponteiro para a função que vai retornar o texto visivel
+    std::string (CPIGCampoTextoESenha::*GetTextoVisivelPtr)();//ponteiro para a função que vai retornar o texto visivel
 
     //retorna o texto com a quantidade de símbolos (máscara) igual ao tamanho da string com textobase
     std::string GetTextoMask(){
@@ -28,13 +28,13 @@ private:
         std::string aux;
 
         aux.assign(textoBase,0,posCursor);
-        xCursor = xBase + CGerenciadorFontes::GetLarguraPixels(aux,fonteTexto);
+        xCursor = xBase + CPIGGerenciadorFontes::GetLarguraPixels(aux,fonteTexto);
 
-        AjustaBaseTextoEixoX(CGerenciadorFontes::GetLarguraPixels(aux,fonteTexto));
+        AjustaBaseTextoEixoX(CPIGGerenciadorFontes::GetLarguraPixels(aux,fonteTexto));
     }
 
     int TrataEventoMouse(PIG_Evento evento){
-        SDL_Point p = CMouse::PegaXYWorld();
+        SDL_Point p = CPIGMouse::PegaXYWorld();
         //PigCamera cam = CGerenciadorJanelas::GetJanela(idJanela)->GetCamera();
         ChecaMouseOver(p);
 
@@ -75,8 +75,8 @@ private:
 
 public:
 
-    CPigCampoTextoESenha(int idComponente,int px, int py, int altura,int largura,std::string nomeArq,int maxCars = 200, bool apenasNumeros=false, int retiraFundo=1,int janela=0,bool campoSenha = false):
-        CPigCaixaTexto(idComponente,px,py,altura,largura,nomeArq,maxCars,apenasNumeros,retiraFundo,janela){
+    CPIGCampoTextoESenha(int idComponente,int px, int py, int altura,int largura,std::string nomeArq,int maxCars = 200, bool apenasNumeros=false, int retiraFundo=1,int janela=0,bool campoSenha = false):
+        CPIGCaixaTexto(idComponente,px,py,altura,largura,nomeArq,maxCars,apenasNumeros,retiraFundo,janela){
             yBaseOriginal = y+margemVertBaixo;
             xBaseOriginal = x+margemHorEsq;
             yBase = yBaseOriginal;
@@ -91,11 +91,11 @@ public:
             }
     }
 
-    CPigCampoTextoESenha(std::string nomeArqParam):CPigCampoTextoESenha(LeArquivoParametros(nomeArqParam)){}
+    CPIGCampoTextoESenha(std::string nomeArqParam):CPIGCampoTextoESenha(LeArquivoParametros(nomeArqParam)){}
 
-    ~CPigCampoTextoESenha(){}
+    ~CPIGCampoTextoESenha(){}
 
-    static CPigCampoTextoESenha LeArquivoParametros(std::string nomeArqParam){
+    static CPIGCampoTextoESenha LeArquivoParametros(std::string nomeArqParam){
 
         std::ifstream arquivo;
         int idComponente,px,py,altura,largura,maxCars = 200,retiraFundo=1,janela=0;
@@ -105,7 +105,7 @@ public:
 
         arquivo.open(nomeArqParam);
 
-        if(!arquivo.is_open()) throw CPigErroArquivo(nomeArqParam);
+        if(!arquivo.is_open()) throw CPIGErroArquivo(nomeArqParam);
         //formato "x valor"
         while(!arquivo.eof()){
            arquivo >> variavel;
@@ -123,9 +123,9 @@ public:
         }
         arquivo.close();
 
-        if(nomeArq == "") throw CPigErroParametro("nomeArq",nomeArqParam);
+        if(nomeArq == "") throw CPIGErroParametro("nomeArq",nomeArqParam);
        // std::cout<<idComponente<<" "<<px<<" "<<py<<" "<<altura<<" "<<largura<<" "<<nomeArq<<" "<<retiraFundo<<" "<<janela<<std::endl;
-        return CPigCampoTextoESenha(idComponente,px,py,altura,largura,nomeArq,maxCars,apenasNumeros,retiraFundo,janela,campoSenha);
+        return CPIGCampoTextoESenha(idComponente,px,py,altura,largura,nomeArq,maxCars,apenasNumeros,retiraFundo,janela,campoSenha);
 
     }
 
@@ -137,7 +137,7 @@ public:
         SDL_Rect r={x+margemHorEsq+1,altJanela-y-alt+margemVertCima,larg-(margemHorEsq+margemHorDir),alt-(margemVertBaixo+margemVertCima)};
         SDL_RenderSetClipRect(renderer,&r);
 
-        CGerenciadorFontes::EscreverString(GetTextoVisivel(),xBase,yBase,fonteTexto,BRANCO,CPIG_TEXTO_ESQUERDA);
+        CPIGGerenciadorFontes::EscreverString(GetTextoVisivel(),xBase,yBase,fonteTexto,BRANCO,PIG_TEXTO_ESQUERDA);
         DesenhaCursor();//desenha o cursor (se estiver em edição)
 
         //desbloqueia o desenho fora da area do componente
@@ -164,5 +164,5 @@ public:
 
 };
 
-typedef CPigCampoTextoESenha *PigCampoTextoESenha;
-#endif // _CPigCampoTextESenha_
+typedef CPIGCampoTextoESenha *PIGCampoTextoESenha;
+#endif // _CPIGCAMPOTEXTOESENHA_

@@ -1,8 +1,9 @@
 #ifndef _CPIGSPRITE_
 #define _CPIGSPRITE_
+
 #include <unordered_map>
 
-class CPigSprite{
+class CPIGSprite{
 
 protected:
 
@@ -48,11 +49,11 @@ protected:
         nomeArquivo = nomeArq;
 
         #ifdef SHARE_BITMAP
-        bitmap = CAssetLoader::LoadImage(nomeArquivo);
+        bitmap = CPIGAssetLoader::LoadImage(nomeArquivo);
         #else
         bitmap = IMG_Load(nomeArquivo.c_str());
         #endif
-        if (!bitmap) throw CPigErroArquivo(nomeArquivo);
+        if (!bitmap) throw CPIGErroArquivo(nomeArquivo);
     }
 
     void IniciaBase(int altura,int largura,int janela){
@@ -119,8 +120,8 @@ private:
     //Atributos relativos à janela do Sprite
     void IniciaJanela(int janela){
         idJanela = janela;
-        altJanela = CGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
-        renderer = CGerenciadorJanelas::GetJanela(idJanela)->GetRenderer();
+        altJanela = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
+        renderer = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetRenderer();
     }
 
     //Atributos relativos ao tamanho do Sprite
@@ -151,15 +152,14 @@ private:
 public:
 
     //Construtor para arquivos de vídeo ou Componentes
-    CPigSprite(int altura,int largura,std::string nomeArq,int janela=0){
+    CPIGSprite(int altura,int largura,std::string nomeArq,int janela=0){
         nomeArquivo = nomeArq;
         IniciaBase(altura,largura,janela);
-        //ExtraiPixels();
         pixels = NULL;
     }
 
     //Construtor básico para leitura de imagens digitais
-    CPigSprite(std::string nomeArq,int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
+    CPIGSprite(std::string nomeArq,int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
         nomeArquivo = nomeArq;
 
         CarregaImagem(nomeArq);
@@ -171,7 +171,7 @@ public:
     }
 
     //Construtor para imagens provenientes do renderizador offscreen
-    CPigSprite(OffscreenRenderer offRender, int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
+    CPIGSprite(PIGOffscreenRenderer offRender, int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
         nomeArquivo = "";
 
         SDL_Surface *surface = offRender->GetSurface();
@@ -184,11 +184,11 @@ public:
     }
 
     //Construtor para Sprite "copiado" de outro Sprite
-    CPigSprite(CPigSprite *spriteBase,int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
+    CPIGSprite(CPIGSprite *spriteBase,int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
         nomeArquivo = spriteBase->nomeArquivo;
 
         #ifdef SHARE_BITMAP
-        bitmap = CAssetLoader::LoadImage(spriteBase->nomeArquivo);
+        bitmap = CPIGAssetLoader::LoadImage(spriteBase->nomeArquivo);
         #else
         bitmap = IMG_Load(spriteBase->nomeImagem);
         #endif
@@ -199,7 +199,7 @@ public:
     }
 
     //Construtor para sprite "vazio", cuja imagem será gerada posteriormente
-    CPigSprite(int janela){
+    CPIGSprite(int janela){
         idJanela = janela;
         nomeArquivo = "";
         pivoRelativo = {0,0};
@@ -214,7 +214,7 @@ public:
     }
 
     //Destrutor para todos os tipos de Sprites
-    ~CPigSprite(){
+    ~CPIGSprite(){
         if (pixels){
             for (int i = 0; i < bitmap->h; i++)
                 free(pixels[i]);
@@ -227,7 +227,7 @@ public:
             if (bitmap) SDL_FreeSurface(bitmap);
         }else{
             #ifdef SHARE_BITMAP
-            CAssetLoader::FreeImage(nomeArquivo);
+            CPIGAssetLoader::FreeImage(nomeArquivo);
             #else
             if (bitmap) SDL_FreeSurface(bitmap);
             #endif
@@ -371,12 +371,12 @@ public:
         }
     }
 
-    virtual int Desenha(OffscreenRenderer offRender = NULL){
+    virtual int Desenha(PIGOffscreenRenderer offRender = NULL){
         if (offRender == NULL){
             SDL_Rect enquadrado = dest;
             //enquadrado.x -= CGerenciadorJanelas::GetJanela(idJanela)->GetCamera()->GetX();
             //enquadrado.y += CGerenciadorJanelas::GetJanela(idJanela)->GetCamera()->GetY();
-            CGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaWorldScreen(enquadrado.x,enquadrado.y,enquadrado.x,enquadrado.y);
+            CPIGGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaWorldScreen(enquadrado.x,enquadrado.y,enquadrado.x,enquadrado.y);
             SDL_RenderCopyEx(renderer, text, &frames[frameAtual], &enquadrado, -angulo, &pivoRelativo, flip);
         }else{
             SDL_Texture *textAux = SDL_CreateTextureFromSurface(offRender->GetRenderer(), bitmap);
@@ -435,5 +435,5 @@ public:
         return nomeArquivo;
     }
 };
-typedef CPigSprite *PIGSprite;
+typedef CPIGSprite *PIGSprite;
 #endif // _CPIGSPRITE_

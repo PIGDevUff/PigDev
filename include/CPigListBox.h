@@ -1,9 +1,9 @@
-#ifndef _CPigListBox_
-#define _CPigListBox_
+#ifndef _CPIGLISTBOX_
+#define _CPIGLISTBOX_
 
-#include "CPigListaItemComponente.h"
+#include "CPIGListaItemComponente.h"
 
-class CPigListBox: public CPigListaItemComponente{
+class CPIGListBox: public CPIGListaItemComponente{
 
 protected:
     int altImagem,largImagem;
@@ -32,25 +32,25 @@ private:
         if(itemDestaque !=-1){
             int posX,posY;
             itens[itemDestaque]->GetXY(posX,posY);
-            CGerenciadorJanelas::DesenhaRetanguloVazado(x,posY,altBaseLista,larg,AZUL,idJanela);
+            CPIGGerenciadorJanelas::DesenhaRetanguloVazado(x,posY,altBaseLista,larg,AZUL,idJanela);
         }
     }
 
 public:
 
-    CPigListBox(int idComponente,int px, int py,int larguraTotal, int alturaLinha, int alturaMaxima,int alturaItem=0, int larguraItem=0,std::string nomeArqFundo="",int retiraFundo=1,int janela=0):
-        CPigListaItemComponente(idComponente,px,py,larguraTotal,alturaLinha,alturaMaxima,nomeArqFundo,retiraFundo,janela){
+    CPIGListBox(int idComponente,int px, int py,int larguraTotal, int alturaLinha, int alturaMaxima,int alturaItem=0, int larguraItem=0,std::string nomeArqFundo="",int retiraFundo=1,int janela=0):
+        CPIGListaItemComponente(idComponente,px,py,larguraTotal,alturaLinha,alturaMaxima,nomeArqFundo,retiraFundo,janela){
             altImagem = alturaItem;
             largImagem = larguraItem;
     }
 
-    CPigListBox(std::string nomeArqParam):CPigListBox(LeArquivoParametros(nomeArqParam)){}
+    CPIGListBox(std::string nomeArqParam):CPIGListBox(LeArquivoParametros(nomeArqParam)){}
 
-    ~CPigListBox(){
-        for (PigItemComponente x: itens) delete x;
+    ~CPIGListBox(){
+        for (PIGItemComponente x: itens) delete x;
     }
 
-    static CPigListBox LeArquivoParametros(std::string nomeArqParam){
+    static CPIGListBox LeArquivoParametros(std::string nomeArqParam){
 
         std::ifstream arquivo;
         int idComponente,px,py,altura = 0,largura,alturaItens,larguraItens,alturaLinha,alturaMaxima,retiraFundo = 0,janela = 0;
@@ -58,7 +58,7 @@ public:
         std::string nomeArq = "",variavel;
 
         arquivo.open(nomeArqParam);
-        if(!arquivo.is_open()) throw CPigErroArquivo(nomeArqParam);
+        if(!arquivo.is_open()) throw CPIGErroArquivo(nomeArqParam);
         //formato "x valor"
         while(!arquivo.eof()){
            arquivo >> variavel;
@@ -78,9 +78,9 @@ public:
         arquivo.close();
        // std::cout<<idComponente<<" "<<px<<" "<<py<<" "<<altura<<" "<<largura<<" "<<nomeArq<<" "<<retiraFundo<<" "<<janela<<std::endl;
 
-        if(nomeArq == "") throw CPigErroParametro("nomeArq",nomeArqParam);
+        if(nomeArq == "") throw CPIGErroParametro("nomeArq",nomeArqParam);
 
-        return CPigListBox(idComponente,px,py,largura,alturaLinha,alturaMaxima,alturaItens,larguraItens,nomeArq,retiraFundo,janela);
+        return CPIGListBox(idComponente,px,py,largura,alturaLinha,alturaMaxima,alturaItens,larguraItens,nomeArq,retiraFundo,janela);
     }
 
     int TrataEventoTeclado(PIG_Evento evento)override{
@@ -101,8 +101,8 @@ public:
     int TrataEventoMouse(PIG_Evento evento){
         int resp = -1;
         bool mouseOverAntes = mouseOver;
-        //PigCamera cam = CGerenciadorJanelas::GetJanela(idJanela)->GetCamera();
-        if (ChecaMouseOver(CMouse::PegaXYWorld())>0){
+        //PIGCamera cam = CGerenciadorJanelas::GetJanela(idJanela)->GetCamera();
+        if (ChecaMouseOver(CPIGMouse::PegaXYWorld())>0){
             for (int i=0;i<itens.size();i++){
                 int aux = itens[i]->TrataEventoMouse(evento);
                 if(aux == PIG_SELECIONADO_TRATADO){
@@ -124,11 +124,11 @@ public:
 
     void CriaItem(std::string itemLabel, std::string arqImagemIcone="", std::string arqImagemFundoItem="",bool itemMarcado = false, bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
         int yItem = y+alt-(altBaseLista)*(itens.size()+1);
-        CPigListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,itemMarcado,itemHabilitado,audio,hintMsg,retiraFundo);
+        CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,itemMarcado,itemHabilitado,audio,hintMsg,retiraFundo);
     }
 
     void Move(int nx,int ny){
-        CPigSprite::Move(nx,ny);
+        CPIGSprite::Move(nx,ny);
         int posY;
 
         for(int i=0;i<itens.size();i++){
@@ -146,7 +146,7 @@ public:
         }
         DesenhaLabel();
 
-        for (PigItemComponente i: itens)
+        for (PIGItemComponente i: itens)
             i->Desenha();
 
         DesenhaRetanguloMarcacao();
@@ -158,12 +158,12 @@ public:
         if (indice<0||indice>=itens.size()) return 0;
         if (marcado){
             itemDestaque = indice;
-            for (PigItemComponente i: itens) i->SetAcionado(false);
+            for (PIGItemComponente i: itens) i->SetAcionado(false);
         }
         itens[indice]->SetAcionado(marcado);
         return 1;
     }
 
 };
-typedef CPigListBox* PigListBox;
-#endif // _CPigListBox_
+typedef CPIGListBox* PIGListBox;
+#endif // _CPIGLISTBOX_

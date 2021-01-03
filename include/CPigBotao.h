@@ -1,9 +1,14 @@
+#ifndef _CPIGBOTAO_
+#define _CPIGBOTAO_
+
+#include "CPIGComponente.h"
+
 //tipo de função a ser usada no acionamento do botao
 //o parâmetro int devolverá à função o identificador do botão
 //o parâmetro void* devolverá à função um parâetro personalizado passado ao método DefineAcao();
 typedef int (*AcaoBotao)(int,void*);
 
-class CPigBotao: public CPigComponente{
+class CPIGBotao: public CPIGComponente{
 
 private:
     int tecla;
@@ -12,7 +17,7 @@ protected:
 
     AcaoBotao acao;
     void *param;
-    Timer timer;
+    PIGTimer timer;
     bool botaoRepeticao;
     double tempoRepeticao;
 
@@ -51,7 +56,7 @@ protected:
 
     void TrataTimer(){
         if (timer->GetTempoDecorrido()>=tempoRepeticao){
-            if (botaoRepeticao&&mouseOver&&CMouse::GetEstadoBotaoEsquerdo()==MOUSE_PRESSIONADO){
+            if (botaoRepeticao&&mouseOver&&CPIGMouse::GetEstadoBotaoEsquerdo()==MOUSE_PRESSIONADO){
                 OnMouseClick();
             }else{
                 SetAcionado(false);
@@ -63,11 +68,11 @@ protected:
         SetAcionado(true);
         timer->Reinicia(false);
         if (acao) acao(id,param);//rever se NULL é necessário
-        if (audioComponente>=0) CGerenciadorAudios::Play(audioComponente);
+        if (audioComponente>=0) CPIGGerenciadorAudios::Play(audioComponente);
         return PIG_SELECIONADO_TRATADO;
     }
 
-    CPigBotao LeArquivoParametros(std::string nomeArqParam){
+    CPIGBotao LeArquivoParametros(std::string nomeArqParam){
 
         std::ifstream arquivo;
         int idComponente,px,py,altura,largura,retiraFundo = 0,janela = 0;
@@ -92,13 +97,13 @@ protected:
 
        // std::cout<<idComponente<<" "<<px<<" "<<py<<" "<<altura<<" "<<largura<<" "<<nomeArq<<" "<<retiraFundo<<" "<<janela<<std::endl;
 
-        return CPigBotao(idComponente,px,py,altura,largura,nomeArq,retiraFundo,janela);
+        return CPIGBotao(idComponente,px,py,altura,largura,nomeArq,retiraFundo,janela);
     }
 
 public:
 
-    CPigBotao(int idComponente,int px, int py, int alt,int larg,std::string nomeArq, int retiraFundo=1,int janela=0):
-        CPigComponente(idComponente,px,py,alt,larg,nomeArq,retiraFundo,janela){
+    CPIGBotao(int idComponente,int px, int py, int alt,int larg,std::string nomeArq, int retiraFundo=1,int janela=0):
+        CPIGComponente(idComponente,px,py,alt,larg,nomeArq,retiraFundo,janela){
             tecla = TECLA_ENTER;//sem tecla de atalho
             acao = NULL;//não tem ação registrada
             param = NULL;//não tem parâmetro associado à ação
@@ -108,12 +113,12 @@ public:
             tempoRepeticao = 0.2;
             botaoRepeticao = false;
             SetPosicaoPadraoLabel(PIG_COMPONENTE_CENTRO_CENTRO);
-            timer = new CTimer(false);
+            timer = new CPIGTimer(false);
         }
 
-    CPigBotao(std::string nomeArqParam):CPigBotao(LeArquivoParametros(nomeArqParam)){}
+    CPIGBotao(std::string nomeArqParam):CPIGBotao(LeArquivoParametros(nomeArqParam)){}
 
-    ~CPigBotao(){
+    ~CPIGBotao(){
         delete timer;
     }
 
@@ -123,7 +128,7 @@ public:
     }
 
     int TrataEventoMouse(PIG_Evento evento){
-        ChecaMouseOver(CMouse::PegaXYWorld());
+        ChecaMouseOver(CPIGMouse::PegaXYWorld());
 
         if (mouseOver){
             if (habilitado==false) return PIG_SELECIONADO_DESABILITADO;
@@ -178,4 +183,5 @@ public:
 
 };
 
-typedef CPigBotao *PigBotao;
+typedef CPIGBotao *PIGBotao;
+#endif // _CPIGBOTAO_

@@ -1,9 +1,9 @@
-#ifndef _CPigRadioBox_
-#define _CPigRadioBox_
+#ifndef _CPIGRADIOBOX_
+#define _CPIGRADIOBOX_
 
-#include "CPigListaItemComponente.h"
+#include "CPIGListaItemComponente.h"
 
-class CPigRadioBox: public CPigListaItemComponente{
+class CPIGRadioBox: public CPIGListaItemComponente{
 
 protected:
     std::string arqImagemIcone;
@@ -19,7 +19,7 @@ protected:
         mouseOver = valor;
     }
 
-    static void AjustaFrame(PigItemComponente item){
+    static void AjustaFrame(PIGItemComponente item){
         int resp;
         if (item->GetHabilitado()==false){
             if (item->GetAcionado()) resp = 4;
@@ -36,21 +36,21 @@ protected:
 
 public:
 
-    CPigRadioBox(int idComponente, int posX, int posY, int larguraTotal,int alturaLinha, int alturaMaxima,std::string imgIcone, int alturaIcone, int larguraIcone,std::string imgFundo, int retiraFundo=1,int janela = 0):
-        CPigListaItemComponente(idComponente,posX,posY,larguraTotal,alturaLinha,alturaMaxima,imgFundo,retiraFundo,janela){
+    CPIGRadioBox(int idComponente, int posX, int posY, int larguraTotal,int alturaLinha, int alturaMaxima,std::string imgIcone, int alturaIcone, int larguraIcone,std::string imgFundo, int retiraFundo=1,int janela = 0):
+        CPIGListaItemComponente(idComponente,posX,posY,larguraTotal,alturaLinha,alturaMaxima,imgFundo,retiraFundo,janela){
             arqImagemIcone = imgIcone;
         }
 
-    CPigRadioBox(std::string nomeArqParam):CPigRadioBox(LeArquivoParametros(nomeArqParam)){}
+    CPIGRadioBox(std::string nomeArqParam):CPIGRadioBox(LeArquivoParametros(nomeArqParam)){}
 
-    static CPigRadioBox LeArquivoParametros(std::string nomeArqParam){
+    static CPIGRadioBox LeArquivoParametros(std::string nomeArqParam){
         std::ifstream arquivo;
         int idComponente,px,py,alturaItem,larguraItem,larguraTotal,alturaLinha,alturaMaxima,retiraFundo=1,janela=0;
         std::string imgFundo = "",imgItem = "",variavel;
 
         arquivo.open(nomeArqParam);
 
-        if(!arquivo.is_open()) throw CPigErroArquivo(nomeArqParam);
+        if(!arquivo.is_open()) throw CPIGErroArquivo(nomeArqParam);
         //formato "x valor"
         while(!arquivo.eof()){
            arquivo >> variavel;
@@ -72,14 +72,14 @@ public:
 
        // std::cout<<idComponente<<" "<<px<<" "<<py<<" "<<altura<<" "<<largura<<" "<<nomeArq<<" "<<retiraFundo<<" "<<janela<<std::endl;
 
-        if(imgItem == "") throw CPigErroParametro("imgItem",imgItem);
+        if(imgItem == "") throw CPIGErroParametro("imgItem",imgItem);
 
-        return CPigRadioBox(idComponente,px,py,larguraTotal,alturaLinha,alturaMaxima,imgItem,alturaItem,larguraItem,imgFundo,retiraFundo,janela);
+        return CPIGRadioBox(idComponente,px,py,larguraTotal,alturaLinha,alturaMaxima,imgItem,alturaItem,larguraItem,imgFundo,retiraFundo,janela);
     }
 
     void CriaItem(std::string itemLabel, std::string arqImagemFundo="",bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
         int yItem = y+alt-(altBaseLista)*(itens.size()+1);
-        CPigListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundo,false,itemHabilitado,audioComponente,hintMsg,retiraFundo);
+        CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundo,false,itemHabilitado,audioComponente,hintMsg,retiraFundo);
         itens[itens.size()-1]->DefineFuncaoAjusteFrame(AjustaFrame);
         PIGSprite icone = itens[itens.size()-1]->GetIcone();
         icone->CriaFramesAutomaticosPorLinha(1,1,6);
@@ -90,11 +90,11 @@ public:
         if (visivel==false) return 0;
 
         if (text){//se tiver imagem de fundo
-            CPigSprite::Desenha();
+            CPIGSprite::Desenha();
         }
         DesenhaLabel();
 
-        for (PigItemComponente i: itens)
+        for (PIGItemComponente i: itens)
             i->Desenha();
 
         return 1;
@@ -104,7 +104,7 @@ public:
         int resp = -1;
         bool mouseOverAntes = mouseOver;
 
-        if (ChecaMouseOver(CMouse::PegaXYWorld())>0){
+        if (ChecaMouseOver(CPIGMouse::PegaXYWorld())>0){
             for (int i=0;i<itens.size();i++){
                 if(itens[i]->TrataEventoMouse(evento) == PIG_SELECIONADO_TRATADO){
                     if (itens[i]->GetAcionado())
@@ -131,5 +131,5 @@ public:
 
 };
 
-typedef CPigRadioBox *PigRadioBox;
-#endif // _CPigRadioBox_
+typedef CPIGRadioBox *PIGRadioBox;
+#endif // _CPIGRADIOBOX_

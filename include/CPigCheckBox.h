@@ -1,9 +1,9 @@
-#ifndef _CPigCheckBox_
-#define _CPigCheckBox_
+#ifndef _CPIGCHECKBOX_
+#define _CPIGCHECKBOX_
 
-#include "CPigListaItemComponente.h"
+#include "CPIGListaItemComponente.h"
 
-class CPigCheckBox: public CPigListaItemComponente{
+class CPIGCheckBox: public CPIGListaItemComponente{
 
 protected:
     std::string arqIcone;
@@ -19,7 +19,7 @@ protected:
         mouseOver = valor;
     }
 
-    static void AjustaFrame(PigItemComponente item){
+    static void AjustaFrame(PIGItemComponente item){
         int resp;
         if (item->GetHabilitado()==false){
             if (item->GetAcionado()) resp = 3;
@@ -36,14 +36,14 @@ protected:
 
 public:
 
-    CPigCheckBox(int idComponente, int posX, int posY, int larguraTotal,int alturaLinha,int alturaMaxima,std::string imgIcone, int alturaIcone, int larguraIcone,std::string imgFundo, int retiraFundo=1,int janela = 0):
-        CPigListaItemComponente(idComponente,posX,posY,larguraTotal,alturaLinha,alturaMaxima,imgFundo,retiraFundo,janela){
+    CPIGCheckBox(int idComponente, int posX, int posY, int larguraTotal,int alturaLinha,int alturaMaxima,std::string imgIcone, int alturaIcone, int larguraIcone,std::string imgFundo, int retiraFundo=1,int janela = 0):
+        CPIGListaItemComponente(idComponente,posX,posY,larguraTotal,alturaLinha,alturaMaxima,imgFundo,retiraFundo,janela){
             arqIcone = imgIcone;
         }
 
-    CPigCheckBox(std::string nomeArqParam):CPigCheckBox(LeArquivoParametros(nomeArqParam)){}
+    CPIGCheckBox(std::string nomeArqParam):CPIGCheckBox(LeArquivoParametros(nomeArqParam)){}
 
-    static CPigCheckBox LeArquivoParametros(std::string nomeArqParam){
+    static CPIGCheckBox LeArquivoParametros(std::string nomeArqParam){
 
         std::ifstream arquivo;
         int idComponente,px,py,alturaItem,larguraItem,larguraTotal,alturaLinha,alturaMaxima,retiraFundo=1,janela=0;
@@ -51,7 +51,7 @@ public:
 
         arquivo.open(nomeArqParam);
 
-        if(!arquivo.is_open()) throw CPigErroArquivo(nomeArqParam);
+        if(!arquivo.is_open()) throw CPIGErroArquivo(nomeArqParam);
         //formato "x valor"
         while(!arquivo.eof()){
            arquivo >> variavel;
@@ -73,15 +73,15 @@ public:
 
        // std::cout<<idComponente<<" "<<px<<" "<<py<<" "<<altura<<" "<<largura<<" "<<nomeArq<<" "<<retiraFundo<<" "<<janela<<std::endl;
 
-        if(imgItem == "") throw CPigErroParametro("imgItem",imgItem);
+        if(imgItem == "") throw CPIGErroParametro("imgItem",imgItem);
 
-        return CPigCheckBox(idComponente,px,py,larguraTotal,alturaLinha,alturaMaxima,imgItem,alturaItem,larguraItem,imgFundo);
+        return CPIGCheckBox(idComponente,px,py,larguraTotal,alturaLinha,alturaMaxima,imgItem,alturaItem,larguraItem,imgFundo);
 
     }
 
     void CriaItem(std::string itemLabel, std::string arqImagemFundoItem="", bool itemMarcado = false, bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
         int yItem = y+alt-(altBaseLista)*(itens.size()+1);
-        CPigListaItemComponente::CriaItem(yItem,itemLabel,arqIcone,arqImagemFundoItem,itemMarcado,itemHabilitado,audio,hintMsg,retiraFundo);
+        CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqIcone,arqImagemFundoItem,itemMarcado,itemHabilitado,audio,hintMsg,retiraFundo);
         PIGSprite icone = itens[itens.size()-1]->GetIcone();
         icone->CriaFramesAutomaticosPorLinha(1,1,6);
         icone->MudaFrameAtual(1);
@@ -91,11 +91,11 @@ public:
         if (visivel==false) return 0;
 
         if (text){//se tiver imagem de fundo
-            CPigSprite::Desenha();
+            CPIGSprite::Desenha();
         }
         DesenhaLabel();
 
-        for (PigItemComponente i: itens)
+        for (PIGItemComponente i: itens)
             i->Desenha();
 
         return 1;
@@ -105,7 +105,7 @@ public:
         int resp = 0;
         bool mouseOverAntes = mouseOver;
 
-        if (ChecaMouseOver(CMouse::PegaXYWorld())>0){
+        if (ChecaMouseOver(CPIGMouse::PegaXYWorld())>0){
             for (int i=0;i<itens.size();i++){
                 if (itens[i]->TrataEventoMouse(evento) == PIG_SELECIONADO_TRATADO)
                     resp = 1;
@@ -125,7 +125,7 @@ public:
     }
 
     void SetAcionadoTodos(bool marcado){
-        for (PigItemComponente i: itens){
+        for (PIGItemComponente i: itens){
             i->SetAcionado(marcado);
         }
     }
@@ -147,5 +147,5 @@ public:
 
 };
 
-typedef CPigCheckBox *PigCheckBox;
-#endif // _CPigCheckBox_
+typedef CPIGCheckBox *PIGCheckBox;
+#endif // _CPIGCheckBox_

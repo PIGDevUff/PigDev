@@ -7,28 +7,28 @@ O ícone pode ser alterado para representar a marcação ou não do item dentro de u
 O label é posicionado sempre internamente, mas pode estar alinhado à direita (com ou sem a presença do ícone), à esquerda (com ou sem a presença do ícone) ou centralizado (com ou sem a presença do ícone).
 **************************************************/
 
-#ifndef _CPIGItemComponente_
-#define _CPIGItemComponente_
+#ifndef _CPIGITEMCOMPONENTE_
+#define _CPIGITEMCOMPONENTE_
 
-#include "CPigSprite.h"
+#include "CPIGSprite.h"
 
-class CPigItemComponente:public CPigComponente{
+class CPIGItemComponente:public CPIGComponente{
 
 private:
 
-    void (*AjustaFrame)(CPigItemComponente*);       //ponteiro para função que será chamada sempre que algum estado do item mudar
+    void (*AjustaFrame)(CPIGItemComponente*);       //ponteiro para função que será chamada sempre que algum estado do item mudar
     PIGSprite icone;
     PIG_PosicaoComponente posIcone,posRelativaLabel;
 
     int OnMouseClick(){
         SetAcionado(!GetAcionado());
-        if (audioComponente>=0) CGerenciadorAudios::Play(audioComponente);
+        if (audioComponente>=0) CPIGGerenciadorAudios::Play(audioComponente);
         return PIG_SELECIONADO_TRATADO;
     }
 
     void IniciaBase(std::string labelItem,std::string arqImagemIcone="",int alturaIcone=0,int larguraIcone=0){
         if (arqImagemIcone!=""){
-            icone = new CPigSprite(arqImagemIcone,1,NULL,idJanela);
+            icone = new CPIGSprite(arqImagemIcone,1,NULL,idJanela);
             icone->SetDimensoes(alturaIcone,larguraIcone);
             AlinhaIconeEsquerda();
             posIcone = PIG_COMPONENTE_ESQ_CENTRO;
@@ -42,32 +42,31 @@ private:
 public:
 
     //item com icone e com fundo
-    CPigItemComponente(int idComponente,int px, int py, int alturaIcone,int larguraIcone,std::string arqImagemIcone, std::string arqImagemFundo,std::string labelItem,int larguraLista,int alturaItemLista,int retiraFundo=1,int janela=0):
-        CPigComponente(idComponente,px,py,alturaItemLista,larguraLista,arqImagemFundo,retiraFundo,janela){
+    CPIGItemComponente(int idComponente,int px, int py, int alturaIcone,int larguraIcone,std::string arqImagemIcone, std::string arqImagemFundo,std::string labelItem,int larguraLista,int alturaItemLista,int retiraFundo=1,int janela=0):
+        CPIGComponente(idComponente,px,py,alturaItemLista,larguraLista,arqImagemFundo,retiraFundo,janela){
         IniciaBase(labelItem,arqImagemIcone,alturaIcone,larguraIcone);//,larguraLista,alturaItemLista);
     }
 
     //item com icone e sem fundo
-    CPigItemComponente(int idComponente,int px, int py, int alturaIcone,int larguraIcone,std::string arqImagemIcone,std::string labelItem,int larguraLista,int alturaItemLista,int retiraFundo=1,int janela=0):
-        CPigComponente(idComponente,px,py,alturaItemLista,larguraLista,janela){
+    CPIGItemComponente(int idComponente,int px, int py, int alturaIcone,int larguraIcone,std::string arqImagemIcone,std::string labelItem,int larguraLista,int alturaItemLista,int retiraFundo=1,int janela=0):
+        CPIGComponente(idComponente,px,py,alturaItemLista,larguraLista,janela){
         IniciaBase(labelItem,arqImagemIcone,alturaIcone,larguraIcone);//,larguraLista,alturaItemLista);
     }
 
     //item sem icone e com fundo
-    CPigItemComponente(int idComponente,int px, int py, std::string arqImagemFundo,std::string labelItem,int larguraLista,int alturaItemLista,int retiraFundo=1,int janela=0):
-        CPigComponente(idComponente,px,py,alturaItemLista,larguraLista,arqImagemFundo,retiraFundo,janela){
+    CPIGItemComponente(int idComponente,int px, int py, std::string arqImagemFundo,std::string labelItem,int larguraLista,int alturaItemLista,int retiraFundo=1,int janela=0):
+        CPIGComponente(idComponente,px,py,alturaItemLista,larguraLista,arqImagemFundo,retiraFundo,janela){
         IniciaBase(labelItem,"",0,0);//,larguraLista,alturaItemLista);
     }
 
     //item sem icone e sem fundo
-    CPigItemComponente(int idComponente,int px, int py,std::string labelItem,int larguraLista,int alturaItemLista,int retiraFundo=1,int janela=0):
-        CPigComponente(idComponente,px,py,alturaItemLista,larguraLista,janela){
+    CPIGItemComponente(int idComponente,int px, int py,std::string labelItem,int larguraLista,int alturaItemLista,int retiraFundo=1,int janela=0):
+        CPIGComponente(idComponente,px,py,alturaItemLista,larguraLista,janela){
         IniciaBase(labelItem,"",0,0);//,larguraLista,alturaItemLista);
     }
 
-    ~CPigItemComponente(){
-        if (icone)
-            delete icone;
+    ~CPIGItemComponente(){
+        if (icone) delete icone;
     }
 
     bool GetAcionado(){
@@ -93,7 +92,7 @@ public:
         if (AjustaFrame) AjustaFrame(this);
     }
 
-    void DefineFuncaoAjusteFrame(void (*funcao)(CPigItemComponente*)){
+    void DefineFuncaoAjusteFrame(void (*funcao)(CPIGItemComponente*)){
         AjustaFrame = funcao;
         if (AjustaFrame) AjustaFrame(this);
     }
@@ -191,7 +190,7 @@ public:
     }
 
     int TrataEventoMouse(PIG_Evento evento)override{
-        ChecaMouseOver(CMouse::PegaXYWorld());
+        ChecaMouseOver(CPIGMouse::PegaXYWorld());
 
         if(mouseOver){
             if (habilitado==false) return PIG_SELECIONADO_DESABILITADO;
@@ -212,7 +211,7 @@ public:
     void Move(int nx, int ny)override{
         int dx = nx-x;
         int dy = ny-y;
-        CPigComponente::Desloca(dx,dy);
+        CPIGComponente::Desloca(dx,dy);
         SetPosicaoPadraoLabel(posLabel);
         if (icone) icone->Desloca(dx,dy);
     }
@@ -223,5 +222,5 @@ public:
 
 };
 
-typedef CPigItemComponente *PigItemComponente;
-#endif //_CPIGtemComponente_
+typedef CPIGItemComponente *PIGItemComponente;
+#endif //_CPIGITEMCOMPONENTE_

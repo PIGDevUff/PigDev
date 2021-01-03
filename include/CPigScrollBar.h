@@ -1,4 +1,10 @@
-typedef enum{HORIZONTAL,VERTICAL}Pig_Orientacao;
+#ifndef _CPIGSCROLLBAR_
+#define _CPIGSCROLLBAR_
+
+#include "CPIGComponente.h"
+#include "CPIGBotao.h"
+
+typedef enum{HORIZONTAL,VERTICAL}PIG_Orientacao;
 
 //tipo de função a ser usada em alterações na posição do handle da barra
 //o parâmetro int devolverá à função o identificador do botão
@@ -6,13 +12,13 @@ typedef enum{HORIZONTAL,VERTICAL}Pig_Orientacao;
 //o parâmetro void* devolverá à função um parâetro personalizado passado ao método DefineAcao();
 typedef int (*AcaoScroll)(int,double,void*);
 
-class CPigScrollBar : public CPigComponente{
+class CPIGScrollBar : public CPIGComponente{
 
     int vMin,vAtual,vMax;
     double porcentagemConcluida;
-    Pig_Orientacao orientacao;
+    PIG_Orientacao orientacao;
     int xOriginal,yOriginal;
-    PigBotao botao1,botao2,handle;
+    PIGBotao botao1,botao2,handle;
     int altBotoes,largHandle,largUtil;
     int deltaBotao,deltaRodinha,deltaTeclado;
     int comprimento,largura;
@@ -23,7 +29,7 @@ class CPigScrollBar : public CPigComponente{
     SDL_Rect areaDeAcaoScroll;
 
     static int AcaoSetas(int idBotao, void* pontObjeto){
-        CPigScrollBar *scroll = (CPigScrollBar*) pontObjeto;
+        CPIGScrollBar *scroll = (CPIGScrollBar*) pontObjeto;
         if (idBotao==scroll->id+1){
             scroll->AvancaHandle(scroll->vAtual,-scroll->deltaBotao);
         }else if (idBotao==scroll->id+2){
@@ -54,10 +60,10 @@ class CPigScrollBar : public CPigComponente{
 
     void AjustaOrientacao(){
         if(orientacao == HORIZONTAL){
-            CPigSprite::SetDimensoes(largura,comprimento - (2*altBotoes));
+            CPIGSprite::SetDimensoes(largura,comprimento - (2*altBotoes));
             largReal = comprimento;
             altReal = largura;
-            CPigSprite::Move(xOriginal+altBotoes,yOriginal);
+            CPIGSprite::Move(xOriginal+altBotoes,yOriginal);
             if(botao1 && botao2){
                 botao1->Move(xOriginal,yOriginal);
                 botao2->Move(xOriginal + comprimento - altBotoes,yOriginal);
@@ -66,10 +72,10 @@ class CPigScrollBar : public CPigComponente{
             handle->SetDimensoes(largura,largHandle);
             SetValorMinMax(vMin,vMax);
         }else{
-            CPigSprite::SetDimensoes(comprimento - (2*altBotoes),largura);
+            CPIGSprite::SetDimensoes(comprimento - (2*altBotoes),largura);
             largReal = largura;
             altReal = comprimento;
-            CPigSprite::Move(xOriginal,yOriginal+altBotoes);
+            CPIGSprite::Move(xOriginal,yOriginal+altBotoes);
             if(botao1 && botao2){
                 botao1->Move(xOriginal,yOriginal);
                 botao2->Move(xOriginal,yOriginal + comprimento - altBotoes);
@@ -142,8 +148,8 @@ class CPigScrollBar : public CPigComponente{
 
 public:
 
-    CPigScrollBar(int idComponente,int px, int py,int larguraTotal,int comprimentoTotal,int larguraHandle,std::string imgHandle,std::string imgTrilha,int retiraFundoHandle=1,int retiraFundoTrilha=1,int janela=0):
-        CPigComponente(idComponente,px,py,larguraTotal,comprimentoTotal,imgTrilha,retiraFundoTrilha,janela){
+    CPIGScrollBar(int idComponente,int px, int py,int larguraTotal,int comprimentoTotal,int larguraHandle,std::string imgHandle,std::string imgTrilha,int retiraFundoHandle=1,int retiraFundoTrilha=1,int janela=0):
+        CPIGComponente(idComponente,px,py,larguraTotal,comprimentoTotal,imgTrilha,retiraFundoTrilha,janela){
             botao1 = botao2 = NULL;
             vMin = vAtual = 0;
             vMax = 100;
@@ -157,7 +163,7 @@ public:
             deltaBotao = 1;
             deltaTeclado = deltaRodinha = 10;
             largHandle = larguraHandle;
-            handle = new CPigBotao(0,x + altBotoes,y,largura,largHandle,imgHandle,retiraFundoHandle,idJanela);
+            handle = new CPIGBotao(0,x + altBotoes,y,largura,largHandle,imgHandle,retiraFundoHandle,idJanela);
             handle->DefineBotaoRepeticao(true);
             handle->DefineTempoRepeticao(0.01);
             largUtil = comprimento - (2*altBotoes) - largHandle;
@@ -169,15 +175,15 @@ public:
             areaDeAcaoScroll = {0,0,0,0};
     }
 
-    CPigScrollBar(std::string nomeArqParam):CPigScrollBar(LeArquivoParametros(nomeArqParam)){}
+    CPIGScrollBar(std::string nomeArqParam):CPIGScrollBar(LeArquivoParametros(nomeArqParam)){}
 
-    ~CPigScrollBar(){
+    ~CPIGScrollBar(){
         if (botao1) delete botao1;
         if (botao2) delete botao2;
         delete handle;
     }
 
-    static CPigScrollBar LeArquivoParametros(std::string nomeArqParam){
+    static CPIGScrollBar LeArquivoParametros(std::string nomeArqParam){
 
         std::ifstream arquivo;
         int idComponente,px,py,larguraTotal,larguraHandle,comprimentoTotal,retiraFundoHandle=1,retiraFundoTrilha=1,janela=0;
@@ -185,7 +191,7 @@ public:
 
         arquivo.open(nomeArqParam);
 
-        if(!arquivo.is_open()) throw CPigErroArquivo(nomeArqParam);
+        if(!arquivo.is_open()) throw CPIGErroArquivo(nomeArqParam);
         //formato "x valor"
         while(!arquivo.eof()){
            arquivo >> variavel;
@@ -204,17 +210,17 @@ public:
 
         arquivo.close();
 
-        if(imgHandle == "") throw CPigErroParametro("imgHandle",nomeArqParam);
-        if(imgTrilha == "") throw CPigErroParametro("imgTrilha",nomeArqParam);
+        if(imgHandle == "") throw CPIGErroParametro("imgHandle",nomeArqParam);
+        if(imgTrilha == "") throw CPIGErroParametro("imgTrilha",nomeArqParam);
 
        // std::cout<<idComponente<<" "<<px<<" "<<py<<" "<<altura<<" "<<largura<<" "<<nomeArq<<" "<<retiraFundo<<" "<<janela<<std::endl;
-        return CPigScrollBar(idComponente,px,py,larguraTotal,comprimentoTotal,larguraHandle,imgHandle,imgTrilha,retiraFundoHandle,retiraFundoTrilha,janela);
+        return CPIGScrollBar(idComponente,px,py,larguraTotal,comprimentoTotal,larguraHandle,imgHandle,imgTrilha,retiraFundoHandle,retiraFundoTrilha,janela);
     }
 
     void SetBotoes(int alturaBotoes,std::string imgBotao1,std::string imgBotao2,int retiraFundoB1 = 1,int retiraFundoB2 = 1){
         if (botao1==NULL){
-            botao1 = new CPigBotao(id + 1,xOriginal,yOriginal,alturaBotoes,largura,imgBotao1,retiraFundoB1,idJanela);
-            botao2 = new CPigBotao(id + 2,xOriginal,yOriginal,alturaBotoes,largura,imgBotao2,retiraFundoB2,idJanela);
+            botao1 = new CPIGBotao(id + 1,xOriginal,yOriginal,alturaBotoes,largura,imgBotao1,retiraFundoB1,idJanela);
+            botao2 = new CPIGBotao(id + 2,xOriginal,yOriginal,alturaBotoes,largura,imgBotao2,retiraFundoB2,idJanela);
             botao1->DefineAcao(AcaoSetas,this);
             botao2->DefineAcao(AcaoSetas,this);
             botao1->DefineBotaoRepeticao(true);
@@ -227,7 +233,7 @@ public:
         }
     }
 
-    void SetOrientacao(Pig_Orientacao novaOrientacao){
+    void SetOrientacao(PIG_Orientacao novaOrientacao){
         orientacao = novaOrientacao;
         AjustaOrientacao();
     }
@@ -244,7 +250,7 @@ public:
     }*/
 
     int TrataEventoMouse(PIG_Evento evento){
-        SDL_Point p = CMouse::PegaXYWorld();
+        SDL_Point p = CPIGMouse::PegaXYWorld();
         ChecaMouseOver(p);
 
         if(TrataBotoes(evento) == PIG_SELECIONADO_TRATADO) return PIG_SELECIONADO_TRATADO;
@@ -287,7 +293,7 @@ public:
     }
 
     void GetDimensoesTrilha(int &altura,int &largura){
-        CPigSprite::GetDimensoes(altura,largura);
+        CPIGSprite::GetDimensoes(altura,largura);
     }
 
     void MudaOrientacaoCrescimento(){
@@ -352,3 +358,5 @@ public:
     }
 
 };
+typedef CPIGScrollBar *PIGScrollBar;
+#endif // _CPIGSCROLLBAR_

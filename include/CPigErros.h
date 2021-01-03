@@ -1,7 +1,7 @@
 using namespace std;
 
 //classe base de erros na PIG
-class CPigErro{
+class CPIGErro{
 
 protected:
 
@@ -10,7 +10,7 @@ protected:
 
 
 public:
-    CPigErro(){
+    CPIGErro(){
         codErro = 1;
     }
 
@@ -29,14 +29,14 @@ public:
 
 
 //Erro para abertura de arquivo em geral (imagem, audio, video, etc)
-class CPigErroArquivo: public CPigErro{
+class CPIGErroArquivo: public CPIGErro{
 
 protected:
     std::string nomeArquivo;
 
 public:
 
-    CPigErroArquivo(std::string nomeArq):CPigErro(){
+    CPIGErroArquivo(std::string nomeArq):CPIGErro(){
         nomeArquivo = nomeArq;
         mensagem = "Nao foi possivel abrir o arquivo <"+nomeArq+">";
         codErro = 2;
@@ -51,7 +51,7 @@ public:
 
 
 //Erro para falta de parâmetro ou valor incorreto
-class CPigErroParametro: public CPigErro{
+class CPIGErroParametro: public CPIGErro{
 
 protected:
     std::string nomeParam;
@@ -59,7 +59,7 @@ protected:
 
 public:
 
-    CPigErroParametro(std::string parametro,std::string arquivo):CPigErro(){
+    CPIGErroParametro(std::string parametro,std::string arquivo):CPIGErro(){
         nomeParam = parametro;
         nomeArq = arquivo;
         mensagem = "O parametro <"+nomeParam+"> nao foi definido ou possui valor incorreto no arquivo ("+nomeArq+")";
@@ -78,7 +78,7 @@ public:
 };
 
 //Erro para índices de arrays
-class CPigErroIndice: public CPigErro{
+class CPIGErroIndice: public CPIGErro{
 
 protected:
     std::string tipoDado;
@@ -86,11 +86,38 @@ protected:
 
 public:
 
-    CPigErroIndice(int indVetor,std::string tipoDeDado):CPigErro(){
+    CPIGErroIndice(int indVetor,std::string tipoDeDado):CPIGErro(){
         tipoDado = tipoDeDado;
         indice = indVetor;
         mensagem = "O indice <"+std::to_string(indice)+"> nao pode ser utlizado para referenciar um ("+tipoDado+")";
         codErro = 4;
+        PrintErro();
+    }
+
+    std::string GetTipoDado(){
+        return tipoDado;
+    }
+
+    int GetIndice(){
+        return indice;
+    }
+
+};
+
+//Erro para índices de arrays
+class CPIGErroPonteiro: public CPIGErro{
+
+protected:
+    std::string tipoDado;
+    int indice;
+
+public:
+
+    CPIGErroPonteiro(std::string tipoDeDado):CPIGErro(){
+        tipoDado = tipoDeDado;
+        indice = -1;
+        mensagem = "Ponteiro <"+tipoDado+"> com valor NULO ou inconsistente";
+        codErro = 5;
         PrintErro();
     }
 

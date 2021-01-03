@@ -1,4 +1,9 @@
-class CPigGaugeCircular:public CPigComponente{
+#ifndef _CPIGGAUGECIRCULAR_
+#define _CPIGGAUGECIRCULAR_
+
+#include "CPIGComponente.h"
+
+class CPIGGaugeCircular:public CPIGComponente{
 
 protected:
     void SetFoco(bool valor){
@@ -22,7 +27,7 @@ private:
     double angBase,deltaAng;
     int raioInterno;
     PIG_Cor corInicial,corFinal,corFundo;
-    OffscreenRenderer off;
+    PIGOffscreenRenderer off;
     bool crescimentoHorario;
     int valor,valorMin,valorMax;
     double porcentagemConcluida;
@@ -34,8 +39,8 @@ private:
 
 public:
 
-    CPigGaugeCircular(int idComponente,int px, int py,int altura,int largura,int raioInterior,int janela=0):
-        CPigComponente(idComponente,px,py,altura,largura,janela){
+    CPIGGaugeCircular(int idComponente,int px, int py,int altura,int largura,int raioInterior,int janela=0):
+        CPIGComponente(idComponente,px,py,altura,largura,janela){
 
         angBase = 0;
         deltaAng = 360;
@@ -46,7 +51,7 @@ public:
         porcentagemConcluida = 0.0;
         corInicial = corFinal = LARANJA;
         corFundo = PRETO;
-        off = new COffscreenRenderer(altura,largura,3);
+        off = new CPIGOffscreenRenderer(altura,largura,3);
 
         Move(px,py);
         SetPivo(larg/2,alt/2);
@@ -55,8 +60,8 @@ public:
         crescimentoHorario=true;
     }
 
-    CPigGaugeCircular(int idComponente,int px, int py,int altura,int largura,int raioInterior,std::string nomeArq,int retiraFundo=1,int janela=0):
-        CPigComponente(idComponente,px,py,altura,largura,nomeArq,retiraFundo,janela){
+    CPIGGaugeCircular(int idComponente,int px, int py,int altura,int largura,int raioInterior,std::string nomeArq,int retiraFundo=1,int janela=0):
+        CPIGComponente(idComponente,px,py,altura,largura,nomeArq,retiraFundo,janela){
 
         angBase = 0;
         deltaAng = 360;
@@ -67,7 +72,7 @@ public:
         porcentagemConcluida = 0.0;
         corInicial = corFinal = LARANJA;
         corFundo = PRETO;
-        off = new COffscreenRenderer(altura,largura,3);
+        off = new CPIGOffscreenRenderer(altura,largura,3);
 
         Move(px,py);
         SetPivo(larg/2,alt/2);
@@ -76,9 +81,9 @@ public:
         crescimentoHorario=true;
     }
 
-    CPigGaugeCircular(std::string nomeArqParam):CPigGaugeCircular(LeArquivoParametros(nomeArqParam)){}
+    CPIGGaugeCircular(std::string nomeArqParam):CPIGGaugeCircular(LeArquivoParametros(nomeArqParam)){}
 
-    CPigGaugeCircular LeArquivoParametros(std::string nomeArqParam){
+    CPIGGaugeCircular LeArquivoParametros(std::string nomeArqParam){
 
         std::ifstream arquivo;
         int idComponente,px,py,altura,largura,raioInterior,retiraFundo = 0,janela = 0;
@@ -102,10 +107,10 @@ public:
         }
         arquivo.close();
 
-        return CPigGaugeCircular(idComponente,px,py,altura,largura,raioInterior,nomeArq,retiraFundo,janela);
+        return CPIGGaugeCircular(idComponente,px,py,altura,largura,raioInterior,nomeArq,retiraFundo,janela);
     }
 
-    ~CPigGaugeCircular(){
+    ~CPIGGaugeCircular(){
         delete off;
     }
 
@@ -254,4 +259,5 @@ public:
 
 };
 
-typedef CPigGaugeCircular *PigGaugeCircular;
+typedef CPIGGaugeCircular *PIGGaugeCircular;
+#endif // _CPIGGAUGECIRCULAR_

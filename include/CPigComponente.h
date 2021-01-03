@@ -1,5 +1,5 @@
-#ifndef _CPigComponente_
-#define _CPigComponente_
+#ifndef _CPIGCOMPONENTE_
+#define _CPIGCOMPONENTE_
 
 #include "CPIGLabel.h"
 
@@ -9,7 +9,7 @@ typedef enum{PIG_COMPONENTE_CIMA_CENTRO,PIG_COMPONENTE_CIMA_ESQ,PIG_COMPONENTE_C
 typedef enum{PIG_ANCORA_NORTE,PIG_ANCORA_SUL,PIG_ANCORA_LESTE,PIG_ANCORA_OESTE,PIG_ANCORA_NORDESTE,PIG_ANCORA_NOROESTE,PIG_ANCORA_SUDESTE,PIG_ANCORA_SUDOESTE,PIG_ANCORA_CENTRO}PIG_Ancora;
 typedef enum{PIG_NAO_SELECIONADO,PIG_SELECIONADO_MOUSEOVER,PIG_SELECIONADO_INVISIVEL,PIG_SELECIONADO_DESABILITADO,PIG_SELECIONADO_TRATADO}PIG_EstadosEventos;
 
-class CPigComponente: public CPigSprite{
+class CPIGComponente: public CPIGSprite{
 
 protected:
 
@@ -17,14 +17,14 @@ protected:
     int audioComponente;
     int id;
     PIG_PosicaoComponente posLabel,posComponente;
-    PigLabel lab,hint;
+    PIGLabel lab,hint;
 
     //inicializa o componente com valores padrão
     void IniciaBase(int idComponente, int px, int py){
         id = idComponente;
         posLabel = PIG_COMPONENTE_CENTRO_CENTRO;
-        lab = new CPigLabel("",0,BRANCO,idJanela);
-        hint = new CPigLabel("",0,BRANCO,idJanela);
+        lab = new CPIGLabel("",0,BRANCO,idJanela);
+        hint = new CPIGLabel("",0,BRANCO,idJanela);
         PosicionaLabel();
         audioComponente = -1;
         x = px;
@@ -39,7 +39,7 @@ protected:
     //escreve o hint do componente na tela
     void EscreveHint(){
         if (mouseOver&&hint->GetTexto()!=""){
-            SDL_Point p = CMouse::PegaXYWorld();
+            SDL_Point p = CPIGMouse::PegaXYWorld();
             hint->Move(p.x+16,p.y+5);
             hint->Desenha();
         }
@@ -112,16 +112,16 @@ protected:
 
 public:
 
-    CPigComponente(int idComponente,int px,int py, int altura, int largura, int janela=0):CPigSprite(altura, largura, "",janela){
+    CPIGComponente(int idComponente,int px,int py, int altura, int largura, int janela=0):CPIGSprite(altura, largura, "",janela){
         IniciaBase(idComponente,px,py);
     }
 
-    CPigComponente(int idComponente,int px,int py, int altura, int largura, std::string nomeArq,int retiraFundo=1,int janela=0):CPigSprite(nomeArq,retiraFundo,NULL,janela){
+    CPIGComponente(int idComponente,int px,int py, int altura, int largura, std::string nomeArq,int retiraFundo=1,int janela=0):CPIGSprite(nomeArq,retiraFundo,NULL,janela){
         IniciaBase(idComponente,px,py);
-        CPigSprite::SetDimensoes(altura,largura);
+        CPIGSprite::SetDimensoes(altura,largura);
     }
 
-    ~CPigComponente(){
+    ~CPIGComponente(){
         if (lab) delete lab;
         if (hint) delete hint;
     }
@@ -245,7 +245,7 @@ public:
         return posComponente;
     }
 
-    void SetPosPadraoExternaComponente(PIG_PosicaoComponente pos,CPigComponente *componenteAssociado){
+    void SetPosPadraoExternaComponente(PIG_PosicaoComponente pos,CPIGComponente *componenteAssociado){
         int xComponente,yComponente,altComponente,largComponente;
         int largura,altura;
 
@@ -301,8 +301,8 @@ public:
     void SetPosPadraoComponenteNaTela(PIG_Ancora ancora){
         int largTela,altTela;
         int altura,largura;
-        largTela = CGerenciadorJanelas::GetLargura(idJanela);
-        altTela = CGerenciadorJanelas::GetAltura(idJanela);
+        largTela = CPIGGerenciadorJanelas::GetLargura(idJanela);
+        altTela = CPIGGerenciadorJanelas::GetAltura(idJanela);
 
         this->GetDimensoes(altura,largura);
 
@@ -341,11 +341,11 @@ public:
     void Move(int nx, int ny)override{
         int dx = nx-x;
         int dy = ny-y;
-        CPigSprite::Desloca(dx,dy);
+        CPIGSprite::Desloca(dx,dy);
         lab->Desloca(dx,dy);
     }
 
 };
 
-typedef CPigComponente *PigComponente;
-#endif // _CPigComponente_
+typedef CPIGComponente *PIGComponente;
+#endif // _CPIGCOMPONENTE_
