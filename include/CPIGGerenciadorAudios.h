@@ -5,9 +5,13 @@
 class CPIGGerenciadorAudios{
 
 private:
-static int totalAudios;
-static PIGPoolNumeros numAudios;
-static PIGAudio audios[MAX_AUDIOS];
+//static int totalAudios;
+//static PIGPoolNumeros numAudios;
+//static PIGAudio audios[MAX_AUDIOS];
+static std::vector<int> posLivres;
+static std::unordered_map<int,PIGAudio> audios;
+static std::unordered_map<int,PIGAudio>::iterator it;
+
 static int audioIds[QTD_CANAIS_PADRAO];
 static Mix_Music *background;
 static int volumeBackground;
@@ -39,14 +43,17 @@ static void Inicia(){
 
     Mix_AllocateChannels(QTD_CANAIS_PADRAO);
 
-    totalAudios = 0;
+    /*totalAudios = 0;
     for (int i=0;i<MAX_AUDIOS;i++){
         audios[i] = NULL;
-    }
+    }*/
+    for (int i=0;i<MAX_AUDIOS;i++)
+        posLivres.push_back(i);
+
     for (int i=0;i<QTD_CANAIS_PADRAO;i++){
         audioIds[i] = -1;
     }
-    numAudios = new CPIGPoolNumeros(MAX_AUDIOS);
+    //numAudios = new CPIGPoolNumeros(MAX_AUDIOS);
 
     Mix_ChannelFinished(TrataParadaAudio);
     background = NULL;
@@ -57,18 +64,24 @@ static void Inicia(){
 
 static void Encerra(){
     StopTudo();
-    for (int i=0;i<MAX_AUDIOS;i++){
+    /*for (int i=0;i<MAX_AUDIOS;i++){
         if (audios[i]) delete audios[i];
     }
-    delete numAudios;
+    delete numAudios;*/
+    for(it = audios.begin(); it != audios.end(); ++it) {
+        delete it->second;
+    }
     if (background)
         Mix_FreeMusic(background);
     Mix_CloseAudio();
 }
 
 inline static PIGAudio GetAudio(int idAudio){
-    if (idAudio<0||idAudio>=MAX_AUDIOS||audios[idAudio]==NULL) throw CPIGErroIndice(idAudio,"audios");
-    return audios[idAudio];
+    /*if (idAudio<0||idAudio>=MAX_AUDIOS||audios[idAudio]==NULL) throw CPIGErroIndice(idAudio,"audios");
+    return audios[idAudio];*/
+    it = audios.find(idAudio);
+    if (it==audios.end()) throw CPIGErroIndice(idAudio,"audios");
+    return it->second;
 }
 
 static void CarregaBackground(std::string nomeArquivo){
@@ -119,33 +132,43 @@ static int GetVolumeBackground(){
 }
 
 static int CriaAudio(std::string nomeArquivo,int nLoops,int tempoExecucao=-1){
-    int resp = numAudios->RetiraLivre();
+    /*int resp = numAudios->RetiraLivre();
     audios[resp] = new CPIGAudio(nomeArquivo,nLoops,tempoExecucao);
     totalAudios++;
+    return resp;*/
+    int resp = posLivres[0];
+    posLivres.erase(posLivres.begin());
+    audios[resp] = new CPIGAudio(nomeArquivo,nLoops,tempoExecucao);
     return resp;
 }
 
 static void DestroiAudio(int idAudio){
-    if (idAudio<0||idAudio>=totalAudios||audios[idAudio]==NULL) throw CPIGErroIndice(idAudio,"audios");
+    /*if (idAudio<0||idAudio>=totalAudios||audios[idAudio]==NULL) throw CPIGErroIndice(idAudio,"audios");
     numAudios->DevolveUsado(idAudio);
     delete audios[idAudio];
     totalAudios--;
-    audios[idAudio] = NULL;
+    audios[idAudio] = NULL;*/
+    PIGAudio audio = GetAudio(idAudio);
+    delete audio;
+    audios.erase(idAudio);
 }
 
-inline static void SetVolume(int idAudio,int volume){
+/*inline static void SetVolume(int idAudio,int volume){
     GetAudio(idAudio)->SetVolume(volume);
 }
 
 inline static int GetVolume(int idAudio){
     return GetAudio(idAudio)->GetVolume();
-}
+}*/
 
 inline static void SetVolumeTudo(int volume){
     Mix_Volume(-1,volume);
-    for (int i=0;i<MAX_AUDIOS;i++)
+    /*for (int i=0;i<MAX_AUDIOS;i++)
         if (audios[i])
-            audios[i]->SetVolume(volume);
+            audios[i]->SetVolume(volume);*/
+    for(it = audios.begin(); it != audios.end(); ++it) {
+        it->second->SetVolume(volume);
+    }
 }
 
 inline static void Play(int idAudio){
@@ -154,7 +177,7 @@ inline static void Play(int idAudio){
     audioIds[audio->GetCanal()] = idAudio;
 }
 
-inline static void Pause(int idAudio){
+/*inline static void Pause(int idAudio){
     GetAudio(idAudio)->Pause();
 }
 
@@ -168,38 +191,50 @@ inline static void Stop(int idAudio){
 
 inline static PIG_StatusAudio GetStatus(int idAudio){
     return GetAudio(idAudio)->GetStatus();
-}
+}*/
 
 inline static void StopTudo(){
     Mix_HaltChannel(-1);
-    for (int i=0;i<MAX_AUDIOS;i++){
+    /*for (int i=0;i<MAX_AUDIOS;i++){
         if (audios[i]){
             audios[i]->Stop();
         }
+    }*/
+    for(it = audios.begin(); it != audios.end(); ++it) {
+        it->second->Stop();
     }
 }
 
 inline static void PauseTudo(){
     Mix_Pause(-1);
-    for (int i=0;i<MAX_AUDIOS;i++){
+    /*for (int i=0;i<MAX_AUDIOS;i++){
         if (audios[i])
             audios[i]->Pause();
+    }*/
+    for(it = audios.begin(); it != audios.end(); ++it) {
+        it->second->Pause();
     }
 }
 
 inline static void ResumeTudo(){
     Mix_Resume(-1);
-    for (int i=0;i<MAX_AUDIOS;i++){
+    /*for (int i=0;i<MAX_AUDIOS;i++){
         if (audios[i])
             audios[i]->Resume();
+    }*/
+    for(it = audios.begin(); it != audios.end(); ++it) {
+        it->second->Resume();
     }
 }
 
 };
 
-PIGAudio CPIGGerenciadorAudios::audios[MAX_AUDIOS];
-int CPIGGerenciadorAudios::totalAudios;
-PIGPoolNumeros CPIGGerenciadorAudios::numAudios;
+std::vector<int> CPIGGerenciadorAudios::posLivres;
+std::unordered_map<int,PIGAudio> CPIGGerenciadorAudios::audios;
+std::unordered_map<int,PIGAudio>::iterator CPIGGerenciadorAudios::it;
+//PIGAudio CPIGGerenciadorAudios::audios[MAX_AUDIOS];
+//int CPIGGerenciadorAudios::totalAudios;
+//PIGPoolNumeros CPIGGerenciadorAudios::numAudios;
 int CPIGGerenciadorAudios::audioIds[QTD_CANAIS_PADRAO];
 Mix_Music *CPIGGerenciadorAudios::background;
 int CPIGGerenciadorAudios::volumeBackground;

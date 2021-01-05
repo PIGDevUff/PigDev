@@ -43,7 +43,7 @@ private:
             scrollHorizontal->SetValorMinMax(xBaseOriginal - GetLarguraLinhaMaior() + (larg - (margemHorDir+margemHorEsq)),xBaseOriginal);
             scrollHorizontal->SetValorAtual(xBase);
             aux.assign(GetTextoVisivel(),posInicial,posCursor - posInicial);
-            xCursor = xBase + CPIGGerenciadorFontes::GetLarguraPixels(aux,fonteTexto);
+            xCursor = xBase + CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetLarguraPixelsString(aux);
         }
     }
 
@@ -69,7 +69,7 @@ private:
         int tamMaior = 0;
         int temp = 0;
         for(std::string linha : linhas){
-            temp = CPIGGerenciadorFontes::GetLarguraPixels(linha,fonteTexto);
+            temp = CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetLarguraPixelsString(linha);
             tamMaior = (temp > tamMaior) ? (temp):(tamMaior);
         }
         return tamMaior;
@@ -77,11 +77,11 @@ private:
 
     //Desenha um contorno baseado nas dimensoes reais da área(somando a área em si e a scroll bar)
     void DesenhaMarcacaoMargem(){
-        CPIGGerenciadorJanelas::DesenhaLinhaSimples(x+margemHorEsq,y+margemVertBaixo,x+ margemHorEsq,y+alt-margemVertCima,BRANCO,idJanela);
-        CPIGGerenciadorJanelas::DesenhaLinhaSimples(x+larg-margemHorDir,y+margemVertBaixo,x+larg-margemHorDir,y+alt-margemVertCima,BRANCO,idJanela);
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(x+margemHorEsq,y+margemVertBaixo,x+ margemHorEsq,y+alt-margemVertCima,BRANCO);
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(x+larg-margemHorDir,y+margemVertBaixo,x+larg-margemHorDir,y+alt-margemVertCima,BRANCO);
 
-        CPIGGerenciadorJanelas::DesenhaLinhaSimples(x+margemHorEsq,y+alt-margemVertCima,x+larg-margemHorDir,y+alt-margemVertCima,BRANCO,idJanela);
-        CPIGGerenciadorJanelas::DesenhaLinhaSimples(x+margemHorEsq,y+margemVertBaixo,x+larg-margemHorDir,y+margemVertBaixo,BRANCO,idJanela);
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(x+margemHorEsq,y+alt-margemVertCima,x+larg-margemHorDir,y+alt-margemVertCima,BRANCO);
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(x+margemHorEsq,y+margemVertBaixo,x+larg-margemHorDir,y+margemVertBaixo,BRANCO);
     }
 
     //Volta a base e o cursor para o início
@@ -108,7 +108,7 @@ private:
         std::string textoBase = GetTextoVisivel();
         std::string aux;
 
-        linhas = CPIGGerenciadorFontes::ExtraiLinhasString(textoBase,largMax,fonteTexto);
+        linhas = CPIGGerenciadorFontes::GetFonte(fonteTexto)->ExtraiLinhas(textoBase,largMax);
 
         int linhaPos = GetLinhaDeUmaPos(posCursor);
         int posInicial = GetPosInicialDeUmaLinha(linhaPos);
@@ -116,12 +116,12 @@ private:
         aux.assign(textoBase,posInicial,posCursor - posInicial);
 
         yCursor = yBase - ( (espacoEntreLinhas + altLetra)*GetLinhaDeUmaPos(posCursor));
-        xCursor = xBase + CPIGGerenciadorFontes::GetLarguraPixels(aux,fonteTexto);
+        xCursor = xBase + CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetLarguraPixelsString(aux);
 
         if(scrollVertical) AcionaScrollBarVertical();
         if(scrollHorizontal) AcionaScrollBarHorizontal();
 
-        AjustaBaseTextoEixoX(CPIGGerenciadorFontes::GetLarguraPixels(aux,fonteTexto));
+        AjustaBaseTextoEixoX(CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetLarguraPixelsString(aux));
         AjustaBaseTextoEixoY();
 
         if(scrollHorizontalAtivado) scrollHorizontal->SetValorAtual(xBase);
@@ -142,7 +142,7 @@ private:
         int delta = p.x-xBase;
 
         if(linha!=-1){
-            if(delta < CPIGGerenciadorFontes::GetLarguraPixels(linhas[linha],fonteTexto)){
+            if(delta < CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetLarguraPixelsString(linhas[linha])){
                 CPIGCaixaTexto::TrataMouseBotaoEsquerdo(p,inicioLinha);
             }else{
                 posCursor = inicioLinha + linhas[linha].size();
@@ -208,7 +208,7 @@ private:
         int i=0;
 
         while(yLinha >= y){
-            CPIGGerenciadorJanelas::DesenhaLinhaSimples(xLinha,yLinha,xLinha+larg,yLinha,corLinhasTexto);
+            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(xLinha,yLinha,xLinha+larg,yLinha,corLinhasTexto);
             i++;
             yLinha = yBase - ((espacoEntreLinhas + altLetra) *i);
         }
@@ -434,7 +434,7 @@ public:
         SDL_RenderSetClipRect(renderer,&r);
 
         DesenhaCursor();//desenha o cursor (se estiver em edição)
-        CPIGGerenciadorFontes::EscreverLonga(texto,xBase,yBase,largMax,(espacoEntreLinhas + altLetra),fonteTexto,BRANCO,PIG_TEXTO_ESQUERDA);
+        CPIGGerenciadorFontes::GetFonte(fonteTexto)->EscreveLonga(texto,xBase,yBase,largMax,(espacoEntreLinhas + altLetra),BRANCO,PIG_TEXTO_ESQUERDA);
         if(linhasPauta) DesenhaLinhasHorizontais();
 
         //desbloqueia o desenho fora da area do componente
@@ -478,6 +478,10 @@ public:
         }
 
         return PIG_NAO_SELECIONADO;
+    }
+
+    virtual int TrataEventoTeclado(PIG_Evento evento){
+        return CPIGCaixaTexto::TrataEventoTeclado(evento);
     }
 
     //define o espaçamento entre as linhas

@@ -21,11 +21,6 @@ protected:
     bool botaoRepeticao;
     double tempoRepeticao;
 
-    void SetHabilitado(bool valor){
-        habilitado = valor;
-        AjustaFrame();
-    }
-
     void SetFoco(bool valor){
         temFoco = valor;
     }
@@ -108,8 +103,7 @@ public:
             acao = NULL;//não tem ação registrada
             param = NULL;//não tem parâmetro associado à ação
             CriaFramesAutomaticosPorLinha(1,1,4);
-            MudaFrameAtual(1);
-            SetHabilitado(true);//para forçar o frame correto
+            MudaFrameAtual(1); //frame de estado normal do botao
             tempoRepeticao = 0.2;
             botaoRepeticao = false;
             SetPosicaoPadraoLabel(PIG_COMPONENTE_CENTRO_CENTRO);
@@ -159,6 +153,11 @@ public:
         botaoRepeticao = repeticao;
     }
 
+    void SetHabilitado(bool valor){
+        habilitado = valor;
+        AjustaFrame();
+    }
+
     int TrataEvento(PIG_Evento evento){
         if (evento.tipoEvento == EVENTO_MOUSE)    return TrataEventoMouse(evento);
         if (evento.tipoEvento == EVENTO_TECLADO) return TrataEventoTeclado(evento);
@@ -172,7 +171,8 @@ public:
 
         TrataTimer();
 
-        SDL_RenderCopyEx(renderer, text, &frames[frameAtual],&dest,-angulo,&pivoRelativo,flip);
+        //SDL_RenderCopyEx(renderer, text, &frames[frameAtual],&dest,-angulo,&pivoRelativo,flip);
+        CPIGSprite::Desenha();
 
         DesenhaLabel();
 

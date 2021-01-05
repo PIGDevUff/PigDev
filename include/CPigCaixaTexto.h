@@ -29,7 +29,7 @@ protected:
     void DesenhaCursor(){
         if (temFoco){
             if (cursorExibido){
-                CPIGGerenciadorJanelas::DesenhaLinhaSimples(xCursor,yCursor,xCursor,yCursor+altLetra,corCursor,idJanela);
+                CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(xCursor,yCursor,xCursor,yCursor+altLetra,corCursor);
             }
             if (timer&&timer->GetTempoDecorrido()>1){
                 cursorExibido = !cursorExibido;
@@ -184,7 +184,7 @@ protected:
 
             aux.assign(textoBase,inicioLinha,i - inicioLinha);
 
-            largParcial += CPIGGerenciadorFontes::GetLarguraPixels(aux,fonteTexto);
+            largParcial += CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetLarguraPixelsString(aux);
 
             if (delta<largParcial-largUltimaLetra){
                 posCursor = i-1;
@@ -233,7 +233,7 @@ public:
 
     virtual void SetFonteTexto(int fonte){
         fonteTexto = fonte;
-        altLetra = CPIGGerenciadorFontes::GetTamanhoBaseFonte(fonteTexto)+CPIGGerenciadorFontes::GetFonteDescent(fonteTexto);
+        altLetra = CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetTamanhoBaseFonte()+CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetFonteDescent();
         yBaseOriginal = y+alt-altLetra;
     }
 

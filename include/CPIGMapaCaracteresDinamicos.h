@@ -236,6 +236,6 @@ public:
     }
 };
 
-typedef CPIGMapaCaracteres* PIGMapaCaracteres;
+typedef CPIGMapaCaracteresDinamicos* PIGMapaCaracteresDinamicos;
 
 #endif //_CPIGMAPACARACTERESDINAMICOS_

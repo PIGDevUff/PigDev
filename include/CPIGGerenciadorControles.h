@@ -25,31 +25,9 @@ static void Encerra(){
     }
 }
 
-static int BotaoPressionado(int idControle,int botao){
-    return controles[idControle]->BotaoPressionado((SDL_GameControllerButton)botao);
+static PIGControle GetControle(int idControle){
+    return controles[idControle];
 }
-
-static int EixoAcionado(int idControle,int eixo){
-    return controles[idControle]->EixoAcionado((SDL_GameControllerAxis)eixo);
-}
-
-static float EixoAcionadoPercentual(int idControle,int eixo){
-    return controles[idControle]->EixoAcionadoPercentual((SDL_GameControllerAxis)eixo);
-}
-
-static int GetQtdEixos(int idControle){
-    return controles[idControle]->GetQtdEixos();
-}
-
-static int GetQtdBotoes(int idControle){
-    return controles[idControle]->GetQtdBotoes();
-}
-
-static void GetNome(int idControle,char *nomeControle){
-    controles[idControle]->GetNome(nomeControle);
-}
-
-
 
 };
 

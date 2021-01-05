@@ -9,7 +9,23 @@ class CPIGGerenciadorSockets{
 
 private:
 
-static int totalClientes;
+static CPIGRepositorio<PIGClienteTCP> *clientes;
+static CPIGRepositorio<PIGServidorTCP> *servidores;
+static CPIGRepositorio<PIGSocketUDP> *socketsUDP;
+
+/*static std::vector<int> posLivresClientes;
+static std::unordered_map<int,PIGClienteTCP> clientes;
+static std::unordered_map<int,PIGClienteTCP>::iterator itCliente;
+
+static std::vector<int> posLivresServidores;
+static std::unordered_map<int,PIGServidorTCP> servidores;
+static std::unordered_map<int,PIGServidorTCP>::iterator itServidor;
+
+static std::vector<int> posLivresUDP;
+static std::unordered_map<int,PIGSocketUDP> socketsUDP;
+static std::unordered_map<int,PIGSocketUDP>::iterator itUDP;
+
+/*static int totalClientes;
 static PIGPoolNumeros numClientes;
 static PIGClienteTCP clientes[MAX_SOCKETS_CLIENTES_TCP];
 static int totalServidores;
@@ -18,11 +34,11 @@ static PIGServidorTCP servidores[MAX_SOCKETS_SERVIDORES_TCP];
 static int totalSocketsUDP;
 static PIGPoolNumeros numSocketsUDP;
 static PIGSocketUDP socketsUDP[MAX_SOCKETS_UDP];
-
+*/
 public:
 
 static void Inicia(){
-    totalClientes = 0;
+    /*totalClientes = 0;
     for (int i=0;i<MAX_SOCKETS_CLIENTES_TCP;i++)
         clientes[i] = NULL;
     numClientes = new CPIGPoolNumeros(MAX_SOCKETS_CLIENTES_TCP);
@@ -35,11 +51,20 @@ static void Inicia(){
     totalSocketsUDP = 0;
     for (int i=0;i<MAX_SOCKETS_UDP;i++)
         socketsUDP[i] = NULL;
-    numSocketsUDP = new CPIGPoolNumeros(MAX_SOCKETS_UDP);
+    numSocketsUDP = new CPIGPoolNumeros(MAX_SOCKETS_UDP);*/
+    /*for (int i=0;i<MAX_SOCKETS_CLIENTES_TCP;i++)
+        posLivresClientes.push_back(i);
+    for (int i=0;i<MAX_SOCKETS_SERVIDORES_TCP;i++)
+        posLivresServidores.push_back(i);
+    for (int i=0;i<MAX_SOCKETS_UDP;i++)
+        posLivresUDP.push_back(i);*/
+    clientes = new CPIGRepositorio<PIGClienteTCP>(MAX_SOCKETS_CLIENTES_TCP,"clientesTCP");
+    servidores = new CPIGRepositorio<PIGServidorTCP>(MAX_SOCKETS_SERVIDORES_TCP,"servidoresTCP");
+    socketsUDP = new CPIGRepositorio<PIGSocketUDP>(MAX_SOCKETS_UDP,"socketsUDP");
 }
 
 static void Encerra(){
-    for (int i=0;i<MAX_SOCKETS_CLIENTES_TCP;i++){
+    /*for (int i=0;i<MAX_SOCKETS_CLIENTES_TCP;i++){
         if (clientes[i]) delete clientes[i];
     }
     delete numClientes;
@@ -52,52 +77,158 @@ static void Encerra(){
     for (int i=0;i<MAX_SOCKETS_UDP;i++){
         if (socketsUDP[i]) delete socketsUDP[i];
     }
-    delete numSocketsUDP;
+    delete numSocketsUDP;*/
+    /*for(itCliente = clientes.begin(); itCliente != clientes.end(); ++itCliente) {
+        delete itCliente->second;
+    }
+
+    for(itServidor = servidores.begin(); itServidor != servidores.end(); ++itServidor) {
+        delete itServidor->second;
+    }
+
+    for(itUDP = socketsUDP.begin(); itUDP != socketsUDP.end(); ++itUDP) {
+        delete itUDP->second;
+    }*/
+    delete clientes;
+    delete servidores;
+    delete socketsUDP;
 }
 
 static int CriaCliente(std::string hostname, int porta, int maxBytesPacote=MAX_MENSAGEM_REDE_TCP){
-    int resp = numClientes->RetiraLivre();
+    /*int resp = numClientes->RetiraLivre();
     clientes[resp] = new CPIGClienteTCP(resp,hostname,porta,maxBytesPacote);
     totalClientes++;
-    return resp;
+    return resp;*/
+    int resp = clientes->ProxID();
+    PIGClienteTCP cliente = new CPIGClienteTCP(resp,hostname,porta,maxBytesPacote);
+    if (cliente->GetAtivo()){
+        clientes->Insere(cliente);
+        return resp;
+    }else{
+        printf("detectei o erro clienteTCP id %d\n",resp);
+        delete cliente;
+        return -1;
+    }
+    /*int resp = posLivresClientes[0];
+    posLivresClientes.erase(posLivresClientes.begin());
+    clientes[resp] = new CPIGClienteTCP(resp,hostname,porta,maxBytesPacote);
+    if (clientes[resp]->GetAtivo())
+        return resp;
+    else{
+
+        DestroiCliente(resp);
+        return -1;
+    }*/
 }
 
 static int CriaServidor(int maxClientes, int porta, int maxBytesPacote=MAX_MENSAGEM_REDE_TCP){
-    int resp = numServidores->RetiraLivre();
+    /*int resp = numServidores->RetiraLivre();
     servidores[resp] = new CPIGServidorTCP(resp,maxClientes,porta,maxBytesPacote);
     totalServidores++;
-    return resp;
+    return resp;*/
+    /*int resp = posLivresServidores[0];
+    posLivresServidores.erase(posLivresServidores.begin());
+    servidores[resp] = new CPIGServidorTCP(resp,maxClientes,porta,maxBytesPacote);
+    return resp;*/
+
+    int resp = servidores->ProxID();
+    PIGServidorTCP servidor = new CPIGServidorTCP(resp,maxClientes,porta,maxBytesPacote);
+    if (servidor->GetAtivo()){
+        servidores->Insere(servidor);
+        return resp;
+    }else{
+        printf("detectei o erro servidorTCP id %d\n",resp);
+        delete servidor;
+        return -1;
+    }
 }
 
 static int CriaSocketUDP(int porta){
-    int resp = numSocketsUDP->RetiraLivre();
+    /*int resp = numSocketsUDP->RetiraLivre();
     socketsUDP[resp] = new CPIGSocketUDP(resp,porta);
     totalSocketsUDP++;
-    return resp;
+    return resp;*/
+    /*int resp = posLivresUDP[0];
+    posLivresUDP.erase(posLivresUDP.begin());
+    socketsUDP[resp] = new CPIGSocketUDP(resp,porta);
+    return resp;*/
+    int resp = servidores->ProxID();
+    PIGSocketUDP socketUDP = new CPIGSocketUDP(resp,porta);
+    if (socketUDP->GetAtivo()){
+        socketsUDP->Insere(socketUDP);
+        return resp;
+    }else{
+        printf("detectei o erro socketUDP id %d\n",resp);
+        delete socketUDP;
+        return -1;
+    }
 }
 
 static void DestroiCliente(int idSocket){
-    numClientes->DevolveUsado(idSocket);
+    /*numClientes->DevolveUsado(idSocket);
     delete clientes[idSocket];
     totalClientes--;
-    clientes[idSocket] = NULL;
+    clientes[idSocket] = NULL;*/
+    //posLivresClientes.push_b()
+    /*PIGClienteTCP socket = GetCliente(idSocket);
+    delete socket;
+    clientes.erase(idSocket);*/
+    clientes->Remove(idSocket);
 }
 
 static void DestroiServidor(int idSocket){
-    numServidores->DevolveUsado(idSocket);
+    /*numServidores->DevolveUsado(idSocket);
     delete servidores[idSocket];
     totalServidores--;
-    servidores[idSocket] = NULL;
+    servidores[idSocket] = NULL;*/
+    //PIGServidorTCP socket = GetServidor(idSocket);
+    //delete socket;
+    //servidores.erase(idSocket);
+    servidores->Remove(idSocket);
 }
 
 static void DestroiSocketUDP(int idSocket){
-    numSocketsUDP->DevolveUsado(idSocket);
+    /*numSocketsUDP->DevolveUsado(idSocket);
     delete socketsUDP[idSocket];
     totalSocketsUDP--;
-    socketsUDP[idSocket] = NULL;
+    socketsUDP[idSocket] = NULL;*/
+    //PIGSocketUDP socket = GetSocketUDP(idSocket);
+    //delete socket;
+    //socketsUDP.erase(idSocket);
+    socketsUDP->Remove(idSocket);
 }
 
-static bool GetAtivoCliente(int idSocket){
+inline static PIGClienteTCP GetCliente(int idSocket){
+    /*if (idAudio<0||idAudio>=MAX_AUDIOS||audios[idAudio]==NULL) throw CPIGErroIndice(idAudio,"audios");
+    return audios[idAudio];*/
+    /*itCliente = clientes.find(idSocket);
+    if (itCliente==clientes.end()) throw CPIGErroIndice(idSocket,"clientesTCP");
+    return itCliente->second;*/
+    return clientes->GetElemento(idSocket);
+}
+
+inline static PIGServidorTCP GetServidor(int idSocket){
+    /*if (idAudio<0||idAudio>=MAX_AUDIOS||audios[idAudio]==NULL) throw CPIGErroIndice(idAudio,"audios");
+    return audios[idAudio];*/
+    /*itServidor = servidores.find(idSocket);
+    if (itServidor==servidores.end()) throw CPIGErroIndice(idSocket,"servidoresTCP");
+    return itServidor->second;*/
+    return servidores->GetElemento(idSocket);
+}
+
+
+inline static PIGSocketUDP GetSocketUDP(int idSocket){
+    /*if (idAudio<0||idAudio>=MAX_AUDIOS||audios[idAudio]==NULL) throw CPIGErroIndice(idAudio,"audios");
+    return audios[idAudio];*/
+    /*itUDP = socketsUDP.find(idSocket);
+    if (itUDP==socketsUDP.end()) throw CPIGErroIndice(idSocket,"socketUDP");
+    return itUDP->second;*/
+    return socketsUDP->GetElemento(idSocket);
+}
+
+
+
+/*static bool GetAtivoCliente(int idSocket){
     return clientes[idSocket]->GetAtivo();
 }
 
@@ -235,11 +366,23 @@ static int EnviaDadosServidor(int idSocket,int socketSecundario,void *buffer, in
 
 static int EnviaDadosSocketUDP(int idSocket,void *buffer,int tamanhoBuffer, std::string hostRemoto, int porta){
     return socketsUDP[idSocket]->EnviaDados(buffer,tamanhoBuffer,hostRemoto,porta);
-}
+}*/
 
 };
 
-int CPIGGerenciadorSockets::totalClientes;
+/*std::vector<int> CPIGGerenciadorSockets::posLivresClientes;
+std::unordered_map<int,PIGClienteTCP> CPIGGerenciadorSockets::clientes;
+std::unordered_map<int,PIGClienteTCP>::iterator CPIGGerenciadorSockets::itCliente;
+
+std::vector<int> CPIGGerenciadorSockets::posLivresServidores;
+std::unordered_map<int,PIGServidorTCP> CPIGGerenciadorSockets::servidores;
+std::unordered_map<int,PIGServidorTCP>::iterator CPIGGerenciadorSockets::itServidor;
+
+std::vector<int> CPIGGerenciadorSockets::posLivresUDP;
+std::unordered_map<int,PIGSocketUDP> CPIGGerenciadorSockets::socketsUDP;
+std::unordered_map<int,PIGSocketUDP>::iterator CPIGGerenciadorSockets::itUDP;
+*/
+/*int CPIGGerenciadorSockets::totalClientes;
 PIGPoolNumeros CPIGGerenciadorSockets::numClientes;
 PIGClienteTCP CPIGGerenciadorSockets::clientes[MAX_SOCKETS_CLIENTES_TCP];
 int CPIGGerenciadorSockets::totalServidores;
@@ -247,5 +390,8 @@ PIGPoolNumeros CPIGGerenciadorSockets::numServidores;
 PIGServidorTCP CPIGGerenciadorSockets::servidores[MAX_SOCKETS_SERVIDORES_TCP];
 int CPIGGerenciadorSockets::totalSocketsUDP;
 PIGPoolNumeros CPIGGerenciadorSockets::numSocketsUDP;
-PIGSocketUDP CPIGGerenciadorSockets::socketsUDP[MAX_SOCKETS_UDP];
+PIGSocketUDP CPIGGerenciadorSockets::socketsUDP[MAX_SOCKETS_UDP];*/
+CPIGRepositorio<PIGClienteTCP> *CPIGGerenciadorSockets::clientes;
+CPIGRepositorio<PIGServidorTCP> *CPIGGerenciadorSockets::servidores;
+CPIGRepositorio<PIGSocketUDP> *CPIGGerenciadorSockets::socketsUDP;
 #endif // _CPIGGERENCIADORSOCKETS_

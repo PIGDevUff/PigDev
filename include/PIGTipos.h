@@ -61,6 +61,8 @@ Principais definições utilizadas pela PIG
 #define MAX_GERADORPARTICULAS       100
 #define MAX_PARTICULAS              1000
 
+#define MAX_CAMADAS_OFFSCREEN 50
+
 #define MAX_CONTROLES               5
 
 #define MAX_SOCKETS_CLIENTES_TCP    10

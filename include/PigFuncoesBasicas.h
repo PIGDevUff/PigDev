@@ -1,5 +1,5 @@
-#ifndef _PigFuncoesBasicas_
-#define _PigFuncoesBascias_
+#ifndef _PIGFuncoesBasicas_
+#define _PIGFuncoesBascias_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,6 +16,7 @@
 #include <iomanip>
 #include <algorithm>
 #include <cmath>
+#include <unordered_map>
 
 //separa uma string em palavras, usando os delimitadores indicados
 std::vector<std::string> PIGSeparaPalavras(std::string texto,std::string delim){

@@ -301,8 +301,8 @@ public:
     void SetPosPadraoComponenteNaTela(PIG_Ancora ancora){
         int largTela,altTela;
         int altura,largura;
-        largTela = CPIGGerenciadorJanelas::GetLargura(idJanela);
-        altTela = CPIGGerenciadorJanelas::GetAltura(idJanela);
+        largTela = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetLargura();
+        altTela = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
 
         this->GetDimensoes(altura,largura);
 

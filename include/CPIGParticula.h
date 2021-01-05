@@ -85,7 +85,7 @@ public:
         if (timer){
             decorrido = timer->GetTempoDecorrido();
         }else{
-            decorrido = CPIGGerenciadorTimers::GetTempoDecorrido(idTimer);
+            decorrido = CPIGGerenciadorTimers::GetTimer(idTimer)->GetTempoDecorrido();
         }
         float porcTempoVida = decorrido/limTempo;
         if (porcTempoVida>1.0f){

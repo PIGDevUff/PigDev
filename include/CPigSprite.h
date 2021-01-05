@@ -343,8 +343,7 @@ public:
         int idFrame,xBitmap,yBitmap,altFrame,largFrame;
         FILE *arq = fopen(nomeArq.c_str(),"r");
         while (!feof(arq)){
-            fscanf(arq,"%d %d %d %d %d",&idFrame,&xBitmap,&yBitmap,&altFrame,&largFrame);
-            DefineFrame(idFrame,{xBitmap,yBitmap,largFrame,altFrame});
+            DefineFrame(idFrame,{xBitmap,yBitmap,altFrame,largFrame});
         }
         fclose(arq);
     }
@@ -355,7 +354,7 @@ public:
         int altFrame = altOriginal/qtdLinhas;
         for (int i=0;i<qtdLinhas;i++){
             for (int j=0;j<qtdColunas;j++){
-                DefineFrame(idFrameInicial++,{j*largFrame,i*altFrame,(i+1)*altFrame,(j+1)*largFrame});
+                DefineFrame(idFrameInicial++,{j*largFrame,i*altFrame,largFrame,altFrame});
             }
         }
     }
@@ -366,7 +365,7 @@ public:
         int altFrame = altOriginal/qtdLinhas;
         for (int j=0;j<qtdColunas;j++){
             for (int i=0;i<qtdLinhas;i++){
-                DefineFrame(idFrameInicial++,{j*largFrame,i*altFrame,(i+1)*altFrame,(j+1)*largFrame});
+                DefineFrame(idFrameInicial++,{j*largFrame,i*altFrame,largFrame,altFrame});
             }
         }
     }
@@ -374,14 +373,16 @@ public:
     virtual int Desenha(PIGOffscreenRenderer offRender = NULL){
         if (offRender == NULL){
             SDL_Rect enquadrado = dest;
+            SDL_Rect fr = frames[frameAtual];
             //enquadrado.x -= CGerenciadorJanelas::GetJanela(idJanela)->GetCamera()->GetX();
             //enquadrado.y += CGerenciadorJanelas::GetJanela(idJanela)->GetCamera()->GetY();
             CPIGGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaWorldScreen(enquadrado.x,enquadrado.y,enquadrado.x,enquadrado.y);
-            SDL_RenderCopyEx(renderer, text, &frames[frameAtual], &enquadrado, -angulo, &pivoRelativo, flip);
+            SDL_RenderCopyEx(renderer, text, &fr, &enquadrado, -angulo, &pivoRelativo, flip);
         }else{
             SDL_Texture *textAux = SDL_CreateTextureFromSurface(offRender->GetRenderer(), bitmap);
             SDL_Rect rectAux = dest;
             rectAux.y = offRender->GetAltura() - alt - y;
+
             SDL_RenderCopyEx(offRender->GetRenderer(), textAux, &frames[frameAtual], &rectAux, -angulo, &pivoRelativo, flip);
             SDL_DestroyTexture(textAux);
         }

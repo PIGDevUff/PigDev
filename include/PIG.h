@@ -11,6 +11,8 @@ Versão 0.7.2 da Biblioteca PIG.h
 #include "PIGFuncoesBasicas.h"
 #include "CPIGErros.h"
 
+#include "CPIGRepositorio.h"
+
 #include "CPIGGerenciadorJanelas.h"
 #include "CPIGGerenciadorSockets.h"
 #include "CPIGAssetLoader.h"
@@ -281,7 +283,7 @@ Parâmetros:
 idJanela (entrada, passagem por valor): indica o número da janela a ser fechada.
 ********************************/
 void FechaJanela(int idJanela){
-    CPIGGerenciadorJanelas::FechaJanela(idJanela);
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->Fecha();
 }
 
 /********************************
@@ -291,7 +293,7 @@ Parâmetros:
 idJanela (entrada, passagem por valor): indica o número da janela a ser oculta.
 ********************************/
 void EscondeJanela(int idJanela){
-    CPIGGerenciadorJanelas::EscondeJanela(idJanela);
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->Esconde();
 }
 
 /********************************
@@ -301,7 +303,7 @@ Parâmetros:
 idJanela (entrada, passagem por valor): indica o número da janela a ser reexibida sem foco.
 ********************************/
 void ExibeJanela(int idJanela){
-    CPIGGerenciadorJanelas::ExibeJanela(idJanela);
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->Exibe();
 }
 
 /********************************
@@ -310,7 +312,7 @@ Parâmetros:
 idJanela (entrada, passagem por valor): indica o número da janela a ser reexibida com foco.
 ********************************/
 void GanhaFocoJanela(int idJanela){
-    CPIGGerenciadorJanelas::GanhaFocoJanela(idJanela);
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->GanhaFoco();
 }
 
 /********************************
@@ -321,7 +323,7 @@ Retorno:
 inteiro que representa a altura da janela em pixels.
 ********************************/
 int GetAlturaJanela(int idJanela=0){
-    return CPIGGerenciadorJanelas::GetAltura(idJanela);
+    return CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
 }
 
 /********************************
@@ -332,7 +334,7 @@ Retorno:
 inteiro que representa a largura da janela em pixels.
 ********************************/
 int GetLarguraJanela(int idJanela=0){
-    return CPIGGerenciadorJanelas::GetLargura(idJanela);
+    return CPIGGerenciadorJanelas::GetJanela(idJanela)->GetLargura();
 }
 
 /********************************
@@ -353,7 +355,7 @@ tituloJanela (saída, passagem por referência): armazena o título da janela que f
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela a ser consultada.
 ********************************/
 void GetTituloJanela(char *tituloJanela,int idJanela=0){
-    std::string resp = CPIGGerenciadorJanelas::GetTitulo(idJanela);
+    std::string resp = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetTitulo();
     strcpy(tituloJanela,resp.c_str());
 }
 
@@ -365,7 +367,7 @@ novoTitulo (entrada, passagem por referência*): indica o novo título para a jane
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela a ser alterada.
 ********************************/
 void SetTituloJanela(char *novoTitulo,int idJanela=0){
-    CPIGGerenciadorJanelas::SetTitulo(novoTitulo,idJanela);
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->SetTitulo(novoTitulo);
 }
 
 /********************************
@@ -376,7 +378,7 @@ Retorno
 cor contendo os componentes RGBA da cor utilizada para pintar automaticamente o fundo da janela.
 ********************************/
 PIG_Cor GetCorFundoJanela(int idJanela=0){
-    return CPIGGerenciadorJanelas::GetCorFundo(idJanela);
+    return CPIGGerenciadorJanelas::GetJanela(idJanela)->GetCorFundo();
 }
 
 /********************************
@@ -386,7 +388,7 @@ cor (entrada, passagem por valor): indica a cor para o fundo da janela.
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela a ser alterada.
 ********************************/
 void SetCorFundoJanela(PIG_Cor cor,int idJanela=0){
-    CPIGGerenciadorJanelas::SetCorFundo(cor,idJanela);
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->SetCorFundo(cor);
 }
 
 /********************************
@@ -397,7 +399,7 @@ Retorno:
 número real que indica o nível de opacidade da janela, variando entre 1.0 e 0.
 ********************************/
 float GetOpacidadeJanela(int idJanela=0){
-    return CPIGGerenciadorJanelas::GetOpacidade(idJanela);
+    return CPIGGerenciadorJanelas::GetJanela(idJanela)->GetOpacidade();
 }
 
 /********************************
@@ -407,7 +409,7 @@ nivelOpacidade (entrada, passagem por valor): indica o nível de opacidade da jan
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela a ser alterada.
 ********************************/
 void SetOpacidadeJanela(float nivelOpacidade,int idJanela=0){
-    CPIGGerenciadorJanelas::SetOpacidade(nivelOpacidade,idJanela);
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->SetOpacidade(nivelOpacidade);
 }
 
 /********************************
@@ -418,7 +420,7 @@ posicaoY (entrada, passagem por valor): indica o valor no eixo Y (vertical), nor
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela a ser reposicionada.
 ********************************/
 void SetPosicaoJanela(int posicaoX,int posicaoY,int idJanela=0){
-    CPIGGerenciadorJanelas::SetPosicao(posicaoX,posicaoY,idJanela);
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->SetPosicao(posicaoX,posicaoY);
 }
 
 /********************************
@@ -429,7 +431,7 @@ posicaoY (saida, passagem por referência): indica o valor no eixo Y (vertical), 
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela a ser reposicionada.
 ********************************/
 void GetPosicaoJanela(int *posicaoX,int *posicaoY,int idJanela=0){
-    CPIGGerenciadorJanelas::GetPosicao(*posicaoX,*posicaoY,idJanela);
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->GetPosicao(*posicaoX,*posicaoY);
 }
 
 /********************************
@@ -439,7 +441,7 @@ valor (entrada, passagem por valor): indica se a janela possui borda (valor dife
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela a ser reposicionada.
 ********************************/
 void SetBordaJanela(int valor,int idJanela=0){
-    CPIGGerenciadorJanelas::SetBorda(valor,idJanela);
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->SetBorda(valor);
 }
 
 /********************************
@@ -451,7 +453,7 @@ modo (entrada, passagem por valor): indica qual dos três modos (JANELA_NORMAL, J
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela a ser reposicionada.
 ********************************/
 void SetModoJanela(int modo,int idJanela=0){
-    CPIGGerenciadorJanelas::SetModo(modo,idJanela);
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->SetModo(modo);
 }
 
 /********************************
@@ -464,7 +466,7 @@ Retorno:
 inteiro que indica qual dos três modos (JANELA_NORMAL, JANELA_TELACHEIA, JANELA_TELACHEIA_DISPLAY) está sendo usado para exibir a janela.
 ********************************/
 int GetModoJanela(int idJanela=0){
-    return CPIGGerenciadorJanelas::GetModo(idJanela);
+    return CPIGGerenciadorJanelas::GetJanela(idJanela)->GetModo();
 }
 
 
@@ -481,7 +483,7 @@ retono:
 inteiro que representa se o botão está pressionado (valor diferente de zero) ou está livre (valor igual a zero).
 ********************************/
 int BotaoPressionadoControle(int idControle,int botao){
-    return CPIGGerenciadorControles::BotaoPressionado(idControle,botao);
+    return CPIGGerenciadorControles::GetControle(idControle)->BotaoPressionado(botao);
 }
 
 /********************************
@@ -494,7 +496,7 @@ retono:
 inteiro que representa o nível de acionamento do eixo. Pode ser um valor negativo (eixos analógicos) ou valores positivos (eixos analógicos e gatilhos).
 ********************************/
 int EixoAcionadoControle(int idControle,int eixo){
-    return CPIGGerenciadorControles::EixoAcionado(idControle,eixo);
+    return CPIGGerenciadorControles::GetControle(idControle)->EixoAcionado(eixo);
 }
 
 /********************************
@@ -507,7 +509,7 @@ retono:
 número real que representa o nível percentual de acionamento do eixo. Pode ser um valor negativo (eixos analógicos) ou valores positivos (eixos analógicos e gatilhos).
 ********************************/
 float EixoAcionadoPercentualControle(int idControle,int eixo){
-    return CPIGGerenciadorControles::EixoAcionadoPercentual(idControle,eixo);
+    return CPIGGerenciadorControles::GetControle(idControle)->EixoAcionadoPercentual(eixo);
 }
 
 /********************************
@@ -518,7 +520,7 @@ retono:
 inteiro que representa a quantidade de eixos e gatilhos.
 ********************************/
 int GetQtdEixosControle(int idControle){
-    return CPIGGerenciadorControles::GetQtdEixos(idControle);
+    return CPIGGerenciadorControles::GetControle(idControle)->GetQtdEixos();
 }
 
 /********************************
@@ -529,7 +531,7 @@ retono:
 inteiro que representa a quantidade de botões digitais (incluindo os direcionais).
 ********************************/
 int GetQtdBotoesControle(int idControle){
-    return CPIGGerenciadorControles::GetQtdBotoes(idControle);
+    return CPIGGerenciadorControles::GetControle(idControle)->GetQtdBotoes();
 }
 
 /********************************
@@ -539,7 +541,7 @@ idControle (entrada, passagem por valor): indica qual controle está sendo verifi
 nomeControle (saída, passagem por referência): armazena a string contendo o nome que foi recuperada para o controle.
 ********************************/
 void GetNomeControle(int idControle,char *nomeControle){
-    CPIGGerenciadorControles::GetNome(idControle,nomeControle);
+    CPIGGerenciadorControles::GetControle(idControle)->GetNome(nomeControle);
 }
 
 
@@ -558,7 +560,7 @@ cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho da
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde a linha será desenhada.
 ********************************/
 void DesenhaLinhaSimples(int pontoX1,int pontoY1,int pontoX2,int pontoY2, PIG_Cor cor, int idJanela=0){
-    CPIGGerenciadorJanelas::DesenhaLinhaSimples(pontoX1,pontoY1,pontoX2,pontoY2,cor,idJanela);
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(pontoX1,pontoY1,pontoX2,pontoY2,cor);
 }
 
 /********************************
@@ -572,7 +574,7 @@ cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho da
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde as linhas serão desenhadas.
 ********************************/
 void DesenhaLinhasDisjuntas(int *pontosX,int *pontosY,int qtd, PIG_Cor cor, int idJanela=0){
-    CPIGGerenciadorJanelas::DesenhaLinhasDisjuntas(pontosX,pontosY,qtd,cor,idJanela);
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhasDisjuntas(pontosX,pontosY,qtd,cor);
 }
 
 /********************************
@@ -586,7 +588,7 @@ cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho da
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde as linhas serão desenhadas.
 ********************************/
 void DesenhaLinhasSequencia(int *pontosX,int *pontosY,int qtd, PIG_Cor cor, int idJanela=0){
-    CPIGGerenciadorJanelas::DesenhaLinhasSequencia(pontosX,pontosY,qtd,cor,idJanela);
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhasSequencia(pontosX,pontosY,qtd,cor);
 }
 
 /********************************
@@ -601,7 +603,7 @@ cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho do
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde o retângulo será desenhado.
 ********************************/
 void DesenhaRetangulo(int posicaoX, int posicaoY, int altura, int largura, PIG_Cor cor, int idJanela=0){
-    CPIGGerenciadorJanelas::DesenhaRetangulo(posicaoX,posicaoY,altura,largura,cor,idJanela);
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(posicaoX,posicaoY,altura,largura,cor);
 }
 
 /********************************
@@ -616,7 +618,7 @@ cor (entrada, passagem por valor): indica a cor no sistema RGB para a borda do r
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde o retângulo será desenhado.
 ********************************/
 void DesenhaRetanguloVazado(int posicaoX, int posicaoY, int altura, int largura, PIG_Cor cor, int idJanela=0){
-    CPIGGerenciadorJanelas::DesenhaRetanguloVazado(posicaoX,posicaoY,altura,largura,cor,idJanela);
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado(posicaoX,posicaoY,altura,largura,cor);
 }
 
 /********************************
@@ -631,7 +633,7 @@ cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho do
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde o polígono será desenhado.
 ********************************/
 void DesenhaPoligono(int *pontosX,int *pontosY,int qtd, PIG_Cor cor, int idJanela=0){
-    CPIGGerenciadorJanelas::DesenhaPoligono(pontosX,pontosY,qtd,cor,idJanela);
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaPoligono(pontosX,pontosY,qtd,cor);
 }
 
 
@@ -934,7 +936,7 @@ retorno:
 inteiro que representa o total de pixels (no eixo x) necessários para escrever a string.
 ********************************/
 int CalculaLarguraPixels(char *str,int numFonte=0){
-    return CPIGGerenciadorFontes::GetLarguraPixels(str,numFonte);
+    return CPIGGerenciadorFontes::GetFonte(numFonte)->GetLarguraPixelsString(str);
 }
 
 /********************************
@@ -948,7 +950,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação da string.
 ********************************/
 void EscreverDireita(char *str,int posicaoX,int posicaoY,PIG_Cor cor=BRANCO,int numFonte=0,float angulo=0){
-    CPIGGerenciadorFontes::EscreverString(str,posicaoX,posicaoY,numFonte,cor,PIG_TEXTO_DIREITA,angulo);
+    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str,posicaoX,posicaoY,cor,PIG_TEXTO_DIREITA,angulo);
 }
 
 /********************************
@@ -962,7 +964,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação da string.
 ********************************/
 void EscreverEsquerda(char *str,int posicaoX,int posicaoY,PIG_Cor cor=BRANCO,int numFonte=0,float angulo=0){
-    CPIGGerenciadorFontes::EscreverString(str,posicaoX,posicaoY,numFonte,cor,PIG_TEXTO_ESQUERDA,angulo);
+    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str,posicaoX,posicaoY,cor,PIG_TEXTO_ESQUERDA,angulo);
 }
 
 /********************************
@@ -976,7 +978,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação da string.
 ********************************/
 void EscreverCentralizada(char *str,int posicaoX,int posicaoY,PIG_Cor cor=BRANCO,int numFonte=0,float angulo=0){
-    CPIGGerenciadorFontes::EscreverString(str,posicaoX,posicaoY,numFonte,cor,PIG_TEXTO_CENTRO,angulo);
+    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str,posicaoX,posicaoY,cor,PIG_TEXTO_CENTRO,angulo);
 }
 
 /********************************
@@ -994,7 +996,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação das strings.
 ********************************/
 void EscreverLongaEsquerda(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,PIG_Cor cor=BRANCO,int numFonte=0,float angulo=0){
-    CPIGGerenciadorFontes::EscreverLonga(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,numFonte,cor,PIG_TEXTO_ESQUERDA,angulo);
+    CPIGGerenciadorFontes::GetFonte(numFonte)->EscreveLonga(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,cor,PIG_TEXTO_ESQUERDA,angulo);
 }
 
 /********************************
@@ -1012,7 +1014,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação das strings.
 ********************************/
 void EscreverLongaDireita(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,PIG_Cor cor=BRANCO,int numFonte=0,float angulo=0){
-    CPIGGerenciadorFontes::EscreverLonga(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,numFonte,cor,PIG_TEXTO_DIREITA,angulo);
+    CPIGGerenciadorFontes::GetFonte(numFonte)->EscreveLonga(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,cor,PIG_TEXTO_DIREITA,angulo);
 }
 
 /********************************
@@ -1030,7 +1032,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação das strings.
 ********************************/
 void EscreverLongaCentralizada(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,PIG_Cor cor=BRANCO,int numFonte=0,float angulo=0){
-    CPIGGerenciadorFontes::EscreverLonga(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,numFonte,cor,PIG_TEXTO_CENTRO,angulo);
+    CPIGGerenciadorFontes::GetFonte(numFonte)->EscreveLonga(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,cor,PIG_TEXTO_CENTRO,angulo);
 }
 
 /********************************
@@ -1044,7 +1046,9 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número inteiro.
 ********************************/
 void EscreveInteiroEsquerda(int valor, int x, int y,PIG_Cor cor=BRANCO, int numFonte=0,float angulo=0){
-    CPIGGerenciadorFontes::EscreverInteiro(valor,x,y,numFonte,cor,PIG_TEXTO_ESQUERDA,angulo);
+    std::stringstream str;
+    str<<valor;
+    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str.str(),x,y,cor,PIG_TEXTO_ESQUERDA,angulo);
 }
 
 /********************************
@@ -1058,7 +1062,10 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número inteiro.
 ********************************/
 void EscreveInteiroDireita(int valor, int x, int y,PIG_Cor cor=BRANCO, int numFonte=0,float angulo=0){
-    CPIGGerenciadorFontes::EscreverInteiro(valor,x,y,numFonte,cor,PIG_TEXTO_DIREITA,angulo);
+    //CPIGGerenciadorFontes::EscreverInteiro(valor,x,y,numFonte,cor,PIG_TEXTO_DIREITA,angulo);
+    std::stringstream str;
+    str<<valor;
+    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str.str(),x,y,cor,PIG_TEXTO_DIREITA,angulo);
 }
 
 /********************************
@@ -1072,7 +1079,9 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número inteiro.
 ********************************/
 void EscreveInteiroCentralizado(int valor, int x, int y,PIG_Cor cor=BRANCO, int numFonte=0,float angulo=0){
-    CPIGGerenciadorFontes::EscreverInteiro(valor,x,y,numFonte,cor,PIG_TEXTO_CENTRO,angulo);
+    std::stringstream str;
+    str<<valor;
+    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str.str(),x,y,cor,PIG_TEXTO_CENTRO,angulo);
 }
 
 /********************************
@@ -1087,7 +1096,10 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número real.
 ********************************/
 void EscreveDoubleEsquerda(double valor, int casas, int x, int y,PIG_Cor cor=BRANCO, int numFonte=0,float angulo=0){
-    CPIGGerenciadorFontes::EscreverReal(valor,x,y,numFonte,casas,cor,PIG_TEXTO_ESQUERDA,angulo);
+    std::stringstream str;
+    str.setf(std::ios_base::fixed, std::ios_base::floatfield);
+    str<<std::setprecision(casas)<<valor;
+    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str.str(),x,y,cor,PIG_TEXTO_ESQUERDA,angulo);
 }
 
 /********************************
@@ -1102,7 +1114,10 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número real.
 ********************************/
 void EscreveDoubleDireita(double valor, int casas, int x, int y,PIG_Cor cor=BRANCO, int numFonte=0,float angulo=0){
-    CPIGGerenciadorFontes::EscreverReal(valor,x,y,numFonte,casas,cor,PIG_TEXTO_DIREITA,angulo);
+    std::stringstream str;
+    str.setf(std::ios_base::fixed, std::ios_base::floatfield);
+    str<<std::setprecision(casas)<<valor;
+    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str.str(),x,y,cor,PIG_TEXTO_DIREITA,angulo);
 }
 
 /********************************
@@ -1117,7 +1132,10 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número real.
 ********************************/
 void EscreveDoubleCentralizado(double valor, int casas, int x, int y,PIG_Cor cor=BRANCO, int numFonte=0,float angulo=0){
-    CPIGGerenciadorFontes::EscreverReal(valor,x,y,numFonte,casas,cor,PIG_TEXTO_CENTRO,angulo);
+    std::stringstream str;
+    str.setf(std::ios_base::fixed, std::ios_base::floatfield);
+    str<<std::setprecision(casas)<<valor;
+    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str.str(),x,y,cor,PIG_TEXTO_CENTRO,angulo);
 }
 
 /********************************
@@ -1132,7 +1150,7 @@ retorno:
 struct que representa as métricas principais ao escrever a letra.
 ********************************/
 PIG_Metricas_Fonte GetMetricas(char letra, PIG_Estilo estilo=ESTILO_NORMAL,int numFonte=0){
-    return CPIGGerenciadorFontes::GetMetricas(letra,numFonte,estilo);
+    return CPIGGerenciadorFontes::GetFonte(numFonte)->GetMetricasLetra(letra,estilo);
 }
 
 /********************************
@@ -1146,7 +1164,7 @@ retorno:
 inteiro que representa o total de pixels (no eixo x) necessários para escrever a letra.
 ********************************/
 int GetLarguraLetra(char letra,PIG_Estilo estilo=ESTILO_NORMAL,int numFonte = 0){
-    return CPIGGerenciadorFontes::GetLarguraLetra(letra,numFonte,estilo);
+    return CPIGGerenciadorFontes::GetFonte(numFonte)->GetLarguraLetra(letra,estilo);
 }
 
 /********************************
@@ -1157,7 +1175,7 @@ retorno:
 inteiro que representa o tamanho base da fonte, ou seja, a quantidade de pixels no eixo Y para desenhar qualquer caractere da fonte (exceto vogais maiúsuclas acentuadas: Á, É, Í, Ó, Ú.
 ********************************/
 int GetTamanhoBaseFonte(int numFonte = 0){
-    return CPIGGerenciadorFontes::GetTamanhoBaseFonte(numFonte);
+    return CPIGGerenciadorFontes::GetFonte(numFonte)->GetTamanhoBaseFonte();
 }
 
 /********************************
@@ -1169,7 +1187,7 @@ retorno:
 inteiro que representa o total de pixels abaixo da linha horizontal de base da fonte.
 ********************************/
 int GetFonteDescent(int numFonte=0){
-    return CPIGGerenciadorFontes::GetFonteDescent(numFonte);
+    return CPIGGerenciadorFontes::GetFonte(numFonte)->GetFonteDescent();
 }
 
 /********************************
@@ -1181,7 +1199,7 @@ retorno:
 inteiro que representa o total de pixels acima da linha horizontal de base da fonte.
 ********************************/
 int GetFonteAscent(int numFonte=0){
-    return CPIGGerenciadorFontes::GetFonteAscent(numFonte);
+    return CPIGGerenciadorFontes::GetFonte(numFonte)->GetFonteAscent();
 }
 
 /********************************
@@ -1193,7 +1211,7 @@ retorno:
 inteiro que representa o espaçamento vertical ideal para que duas frases não se sobreponham verticalmente.
 ********************************/
 int GetFonteLineSkip(int numFonte=0){
-    return CPIGGerenciadorFontes::GetLineSkip(numFonte);
+    return CPIGGerenciadorFontes::GetFonte(numFonte)->GetLineSkip();
 }
 
 /********************************
@@ -1770,7 +1788,7 @@ posicaoX (entrada, passagem por valor): informa a nova posição X do GDP, em rela
 posicaoY (entrada, passagem por valor): informa a nova posição Y do GDP, em relação ao sistema de coordenadas do jogo.
 ********************************/
 void MoveGeradorParticulas(int idGerador,int posicaoX,int posicaoY){
-    CPIGGerenciadorParticulas::Move(idGerador,posicaoX,posicaoY);
+    CPIGGerenciadorParticulas::GetGerador(idGerador)->Move(posicaoX,posicaoY);
 }
 
 /********************************
@@ -1781,7 +1799,7 @@ deltaX (entrada, passagem por valor): valor a ser somado ou subtraído na compone
 deltaY (entrada, passagem por valor): valor a ser somado ou subtraído na componente Y da posição do GDP.
 ********************************/
 void DeslocaGeradorParticulas(int idGerador,int deltaX,int deltaY){
-    CPIGGerenciadorParticulas::Desloca(idGerador,deltaX,deltaY);
+    CPIGGerenciadorParticulas::GetGerador(idGerador)->Desloca(deltaX,deltaY);
 }
 
 /********************************
@@ -1793,7 +1811,7 @@ valorX (entrada, passagem por valor): informa a componente X da direção a ser de
 valorY (entrada, passagem por valor): informa a componente Y da direção a ser definida para as partículas.
 ********************************/
 void MudaDirecaoParticulas(int idGerador,int valorX,int valorY){
-    CPIGGerenciadorParticulas::MudaDirecaoParticulas(idGerador,valorX,valorY);
+    CPIGGerenciadorParticulas::GetGerador(idGerador)->MudaDirecao(valorX,valorY);
 }
 
 /********************************
@@ -1804,7 +1822,7 @@ idGerador (entrada, passagem por valor): informa o identificador do GDP passado 
 angPerSec (entrada, passagem por valor): informa a velocidade em graus por segundo.
 ********************************/
 void MudaRotacaoParticulas(int idGerador,float grausPerSec){
-    CPIGGerenciadorParticulas::MudaRotacaoParticulas(idGerador,grausPerSec);
+    CPIGGerenciadorParticulas::GetGerador(idGerador)->MudaRotacao(grausPerSec);
 }
 
 /********************************
@@ -1816,7 +1834,7 @@ idGerador (entrada, passagem por valor): informa o identificador do GDP passado 
 cor (entrada,passagem por valor): cor do sistema RGB utilizada para mesclagem com o arquivo de imagem da partícula.
 ********************************/
 void MudaCorParticulas(int idGerador,PIG_Cor cor){
-    CPIGGerenciadorParticulas::MudaCorParticulas(idGerador,cor);
+    CPIGGerenciadorParticulas::GetGerador(idGerador)->MudaCor(cor);
 }
 
 /********************************
@@ -1828,7 +1846,7 @@ escalaInicial (entrada, passagem por valor): informa a escala da partícula ao se
 escalaFinal (entrada, passagem por valor): informa a escala da partícula ao final do seu tempo de vida.
 ********************************/
 void MudaEscalaParticulas(int idGerador,float escalaInicial,float escalaFinal){
-    CPIGGerenciadorParticulas::MudaEscalaParticulas(idGerador,escalaInicial,escalaFinal);
+    CPIGGerenciadorParticulas::GetGerador(idGerador)->MudaEscala(escalaInicial,escalaFinal);
 }
 
 /********************************
@@ -1840,7 +1858,7 @@ posicaoX (entrada, passagem por valor): Valor da coordenada X do pivô em relação
 posicaoY (entrada, passagem por valor): Valor da coordenada Y do pivô em relação ao ponto (0,0) da partícula.
 ********************************/
 void SetPivoParticulas(int idGerador,int posicaoX,int posicaoY){
-    CPIGGerenciadorParticulas::MudaEscalaParticulas(idGerador,posicaoX,posicaoY);
+    CPIGGerenciadorParticulas::GetGerador(idGerador)->MudaEscala(posicaoX,posicaoY);
 }
 
 /********************************
@@ -1858,7 +1876,7 @@ inteiro indicando se a partícula foi criada (valor maior ou igual a zero) ou não
 A partícula não será criada se já houver o número máximo de partículas ativas.
 ********************************/
 int CriaParticula(int idGerador,int fadingOut=0,int minX=-50,int minY=-50,int maxX=LARG_TELA+50,int maxY=ALT_TELA+50,float maxTempo=999999.9){
-    return CPIGGerenciadorParticulas::CriaParticula(idGerador,fadingOut,minX,minY,maxX,maxY,maxTempo);
+    return CPIGGerenciadorParticulas::GetGerador(idGerador)->CriaParticula(fadingOut,minX,minY,maxX,maxY,maxTempo);
 }
 
 /********************************
@@ -1869,7 +1887,7 @@ Parâmetros:
 idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da função CriaGeradorParticulas().
 ********************************/
 void MoveParticulas(int idGerador){
-    CPIGGerenciadorParticulas::MoveParticulas(idGerador);
+    CPIGGerenciadorParticulas::GetGerador(idGerador)->MoveParticulas();
 }
 
 /********************************
@@ -1881,7 +1899,7 @@ Retorno:
 inteiro que indica o número de partículas ativas.
 ********************************/
 int QuantidadeParticulasAtivas(int idGerador){
-    return CPIGGerenciadorParticulas::GetQtdAtivas(idGerador);
+    return CPIGGerenciadorParticulas::GetGerador(idGerador)->GetQtdAtivas();
 }
 
 /********************************
@@ -1890,7 +1908,7 @@ Parâmetros:
 idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da função CriaGeradorParticulas().
 ********************************/
 void DesenhaParticulas(int idGerador){
-    CPIGGerenciadorParticulas::Desenha(idGerador);
+    CPIGGerenciadorParticulas::GetGerador(idGerador)->Desenha();
 }
 
 /********************************
@@ -1902,7 +1920,7 @@ Retorno:
 inteiro que indica se houve colisão de alguma partícula ativa do GDP (valor diferente de zero) ou não (valor igual a 0, zero).
 ********************************/
 int ColisaoParticulasObjeto(int idGerador,int idObjeto){
-    return CPIGGerenciadorParticulas::Colisao(idGerador,CPIGGerenciadorSprites::GetObjeto(idObjeto));
+    return CPIGGerenciadorParticulas::GetGerador(idGerador)->Colisao(CPIGGerenciadorSprites::GetObjeto(idObjeto));
 }
 
 /********************************
@@ -1914,7 +1932,7 @@ Retorno:
 inteiro que indica se houve colisão de alguma partícula ativa do GDP (valor diferente de zero) ou não (valor igual a 0, zero).
 ********************************/
 int ColisaoParticulasAnimacao(int idGerador,int idAnimacao){
-    return CPIGGerenciadorParticulas::Colisao(idGerador,CPIGGerenciadorSprites::GetAnimacao(idAnimacao));
+    return CPIGGerenciadorParticulas::GetGerador(idGerador)->Colisao(CPIGGerenciadorSprites::GetAnimacao(idAnimacao));
 }
 
 /********************************
@@ -1942,7 +1960,7 @@ Retorno:
 número real indicando o tempo (em segundos) desde a criação do timer.
 ********************************/
 float TempoDecorrido(int idTimer){
-    return CPIGGerenciadorTimers::GetTempoDecorrido(idTimer);
+    return CPIGGerenciadorTimers::GetTimer(idTimer)->GetTempoDecorrido();
 }
 
 /********************************
@@ -1952,7 +1970,7 @@ Parâmetros:
 idTimer (entrada, passagem por valor): identificador do timer.
 ********************************/
 void PausaTimer(int idTimer){
-    CPIGGerenciadorTimers::PausaTimer(idTimer);
+    CPIGGerenciadorTimers::GetTimer(idTimer)->Pausa();
 }
 
 /********************************
@@ -1969,7 +1987,7 @@ Parâmetros:
 idTimer (entrada, passagem por valor): identificador do timer.
 ********************************/
 void DespausaTimer(int idTimer){
-    CPIGGerenciadorTimers::DespausaTimer(idTimer);
+    CPIGGerenciadorTimers::GetTimer(idTimer)->Despausa();
 }
 
 /********************************
@@ -1988,7 +2006,7 @@ idTimer (entrada, passagem por valor): identificador do timer.
 congelado (entrada, passagem por valor): valor lógico que indica se o timer deve ser reiniciado sem iniciar de imediato a contagem de tempo ou não.
 ********************************/
 void ReiniciaTimer(int idTimer, int congelado=false){
-    CPIGGerenciadorTimers::ReiniciaTimer(idTimer,congelado);
+    CPIGGerenciadorTimers::GetTimer(idTimer)->Reinicia(congelado);
 }
 
 /********************************
@@ -2565,7 +2583,7 @@ idAudio (entrada, passagem por valor): identificador do áudio.
 volume (entrada, passagem por valor): valor do novo volume a ser utilizado. Os valores devem ser entre 0 (mudo) e 128 (volume máximo).
 ********************************/
 void SetVolume(int idAudio,int volume){
-    CPIGGerenciadorAudios::SetVolume(idAudio,volume);
+    CPIGGerenciadorAudios::GetAudio(idAudio)->SetVolume(volume);
 }
 
 /********************************
@@ -2576,7 +2594,7 @@ Retorno:
 Retorna o valor do volume do audio. Os valores devem ser entre 0 (mudo) e 128 (volume máximo).
 ********************************/
 int GetVolume(int idAudio){
-    return CPIGGerenciadorAudios::GetVolume(idAudio);
+    return CPIGGerenciadorAudios::GetAudio(idAudio)->GetVolume();
 }
 
 /********************************
@@ -2603,7 +2621,7 @@ Parâmetro:
 idAudio (entrada, passagem por valor): indentificador do áudio.
 ********************************/
 void PauseAudio(int idAudio){
-    CPIGGerenciadorAudios::Pause(idAudio);
+    CPIGGerenciadorAudios::GetAudio(idAudio)->Pause();
 }
 
 /********************************
@@ -2612,7 +2630,7 @@ Parâmetro:
 idAudio (entrada, passagem por valor): indentificador do áudio.
 ********************************/
 void ResumeAudio(int idAudio){
-    CPIGGerenciadorAudios::Resume(idAudio);
+    CPIGGerenciadorAudios::GetAudio(idAudio)->Resume();
 }
 
 /********************************
@@ -2621,7 +2639,7 @@ Parâmetro:
 idAudio (entrada, passagem por valor): indentificador do áudio.
 ********************************/
 void StopAudio(int idAudio){
-    CPIGGerenciadorAudios::Stop(idAudio);
+    CPIGGerenciadorAudios::GetAudio(idAudio)->Stop();
 }
 
 /********************************
@@ -2632,7 +2650,7 @@ Retorno:
 Retorna: o valor do status do áudio (AUDIO_TOCANDO, AUDIO_PARADO ou AUDIO_PAUSADO)
 ********************************/
 PIG_StatusAudio GetStatusAudio(int idAudio){
-    return CPIGGerenciadorAudios::GetStatus(idAudio);
+    return CPIGGerenciadorAudios::GetAudio(idAudio)->GetStatus();
 }
 
 /********************************
@@ -2735,7 +2753,7 @@ Retorno:
 Inteiro que determina se o socket cliente ainda está ativo e conectado (valor diferente de zero) ou não (valor zero)
 ********************************/
 int GetAtivoSocketCliente(int idSocket){
-    return CPIGGerenciadorSockets::GetAtivoCliente(idSocket);
+    return CPIGGerenciadorSockets::GetCliente(idSocket)->GetAtivo();
 }
 
 /********************************
@@ -2746,7 +2764,7 @@ Retorno:
 Inteiro que determina se o socket servidor ainda está ativo (valor diferente de zero) ou não (valor zero)
 ********************************/
 int GetAtivoSocketServidor(int idSocket){
-    return CPIGGerenciadorSockets::GetAtivoServidor(idSocket);
+    return CPIGGerenciadorSockets::GetServidor(idSocket)->GetAtivo();
 }
 
 /********************************
@@ -2757,7 +2775,7 @@ Retorno:
 Inteiro que determina se o socket UDP ainda está ativo (valor diferente de zero) ou não (valor zero)
 ********************************/
 int GetAtivoSocketUDP(int idSocket){
-    return CPIGGerenciadorSockets::GetAtivoSocketUDP(idSocket);
+    return CPIGGerenciadorSockets::GetSocketUDP(idSocket)->GetAtivo();
 }
 
 /********************************
@@ -2768,7 +2786,7 @@ Retorno:
 Inteiro longo que indica a quantidade de bytes enviados através do socket.
 ********************************/
 long GetBytesEnviadosSocketCliente(int idSocket){
-    return CPIGGerenciadorSockets::GetBytesEnviadosCliente(idSocket);
+    return CPIGGerenciadorSockets::GetCliente(idSocket)->GetBytesEnviados();
 }
 
 /********************************
@@ -2779,7 +2797,7 @@ Retorno:
 Inteiro longo que indica a quantidade de bytes recebidos através do socket.
 ********************************/
 long GetBytesRecebidosSocketCliente(int idSocket){
-    return CPIGGerenciadorSockets::GetBytesRecebidosCliente(idSocket);
+    return CPIGGerenciadorSockets::GetCliente(idSocket)->GetBytesRecebidos();
 }
 
 /********************************
@@ -2790,7 +2808,7 @@ Retorno:
 Inteiro longo que indica a quantidade de pacotes enviados através do socket.
 ********************************/
 long GetPacotesEnviadosSocketCliente(int idSocket){
-    return CPIGGerenciadorSockets::GetPacotesEnviadosCliente(idSocket);
+    return CPIGGerenciadorSockets::GetCliente(idSocket)->GetPacotesEnviados();
 }
 
 /********************************
@@ -2801,7 +2819,7 @@ Retorno:
 Inteiro longo que indica a quantidade de pacotes recebidos através do socket.
 ********************************/
 long GetPacotesRecebidosSocketCliente(int idSocket){
-    return CPIGGerenciadorSockets::GetPacotesRecebidosCliente(idSocket);
+    return CPIGGerenciadorSockets::GetCliente(idSocket)->GetPacotesRecebidos();
 }
 
 /********************************
@@ -2812,7 +2830,7 @@ Retorno:
 Inteiro longo que indica o tempo do recebimento do último pacote pelo socket.
 ********************************/
 long GetTempoUltimoRecebidoSocketCliente(int idSocket){
-    return CPIGGerenciadorSockets::GetTempoUltimoRecebidoCliente(idSocket);
+    return CPIGGerenciadorSockets::GetCliente(idSocket)->GetTempoUltimoRecebido();
 }
 
 /********************************
@@ -2823,7 +2841,7 @@ Retorno:
 Inteiro longo que indica o tempo do envio do último pacote pelo socket.
 ********************************/
 long GetTempoUltimoEnviadoSocketCliente(int idSocket){
-    return CPIGGerenciadorSockets::GetTempoUltimoEnviadoCliente(idSocket);
+    return CPIGGerenciadorSockets::GetCliente(idSocket)->GetTempoUltimoEnviado();
 }
 
 /********************************
@@ -2834,7 +2852,7 @@ Retorno:
 Inteiro longo que indica a quantidade de bytes enviados através do socket.
 ********************************/
 long GetBytesEnviadosSocketServidor(int idSocket){
-    return CPIGGerenciadorSockets::GetBytesEnviadosServidor(idSocket);
+    return CPIGGerenciadorSockets::GetServidor(idSocket)->GetBytesEnviados();
 }
 
 /********************************
@@ -2845,7 +2863,7 @@ Retorno:
 Inteiro longo que indica a quantidade de bytes recebidos através do socket.
 ********************************/
 long GetBytesRecebidosSocketServidor(int idSocket){
-    return CPIGGerenciadorSockets::GetBytesRecebidosServidor(idSocket);
+    return CPIGGerenciadorSockets::GetServidor(idSocket)->GetBytesRecebidos();
 }
 
 /********************************
@@ -2856,7 +2874,7 @@ Retorno:
 Inteiro longo que indica a quantidade de pacotes enviados através do socket.
 ********************************/
 long GetPacotesEnviadosSocketServidor(int idSocket){
-    return CPIGGerenciadorSockets::GetPacotesEnviadosCliente(idSocket);
+    return CPIGGerenciadorSockets::GetCliente(idSocket)->GetPacotesEnviados();
 }
 
 /********************************
@@ -2867,7 +2885,7 @@ Retorno:
 Inteiro longo que indica a quantidade de pacotes recebidos através do socket.
 ********************************/
 long GetPacotesRecebidosSocketServidor(int idSocket){
-    return CPIGGerenciadorSockets::GetPacotesRecebidosCliente(idSocket);
+    return CPIGGerenciadorSockets::GetCliente(idSocket)->GetPacotesRecebidos();
 }
 
 /********************************
@@ -2878,7 +2896,7 @@ Retorno:
 Inteiro longo que indica o tempo do recebimento do último pacote pelo socket.
 ********************************/
 long GetTempoUltimoRecebidoSocketServidor(int idSocket){
-    return CPIGGerenciadorSockets::GetTempoUltimoRecebidoServidor(idSocket);
+    return CPIGGerenciadorSockets::GetServidor(idSocket)->GetTempoUltimoRecebido();
 }
 
 /********************************
@@ -2889,7 +2907,7 @@ Retorno:
 Inteiro longo que indica o tempo do envio do último pacote pelo socket.
 ********************************/
 long GetTempoUltimoEnviadoSocketServidor(int idSocket){
-    return CPIGGerenciadorSockets::GetTempoUltimoEnviadoServidor(idSocket);
+    return CPIGGerenciadorSockets::GetServidor(idSocket)->GetTempoUltimoEnviado();
 }
 
 /********************************
@@ -2900,7 +2918,7 @@ Retorno:
 Inteiro longo que indica a quantidade de bytes enviados através do socket.
 ********************************/
 long GetBytesEnviadosSocketUDP(int idSocket){
-    return CPIGGerenciadorSockets::GetBytesEnviadosSocketUDP(idSocket);
+    return CPIGGerenciadorSockets::GetSocketUDP(idSocket)->GetBytesEnviados();
 }
 
 /********************************
@@ -2911,7 +2929,7 @@ Retorno:
 Inteiro longo que indica a quantidade de bytes recebidos através do socket.
 ********************************/
 long GetBytesRecebidosSocketUDP(int idSocket){
-    return CPIGGerenciadorSockets::GetBytesRecebidosSocketUDP(idSocket);
+    return CPIGGerenciadorSockets::GetSocketUDP(idSocket)->GetBytesRecebidos();
 }
 
 /********************************
@@ -2922,7 +2940,7 @@ Retorno:
 Inteiro longo que indica a quantidade de pacotes enviados através do socket.
 ********************************/
 long GetPacotesEnviadosSocketUDP(int idSocket){
-    return CPIGGerenciadorSockets::GetPacotesEnviadosSocketUDP(idSocket);
+    return CPIGGerenciadorSockets::GetSocketUDP(idSocket)->GetPacotesEnviados();
 }
 
 /********************************
@@ -2933,7 +2951,7 @@ Retorno:
 Inteiro longo que indica a quantidade de pacotes recebidos através do socket.
 ********************************/
 long GetPacotesRecebidosSocketUDP(int idSocket){
-    return CPIGGerenciadorSockets::GetPacotesRecebidosSocketUDP(idSocket);
+    return CPIGGerenciadorSockets::GetSocketUDP(idSocket)->GetPacotesRecebidos();
 }
 
 /********************************
@@ -2944,7 +2962,7 @@ Retorno:
 Inteiro longo que indica o tempo do recebimento do último pacote pelo socket.
 ********************************/
 long GetTempoUltimoRecebidoSocketUDP(int idSocket){
-    return CPIGGerenciadorSockets::GetTempoUltimoRecebidoSocketUDP(idSocket);
+    return CPIGGerenciadorSockets::GetSocketUDP(idSocket)->GetTempoUltimoRecebido();
 }
 
 /********************************
@@ -2955,7 +2973,7 @@ Retorno:
 Inteiro longo que indica o tempo do envio do último pacote pelo socket.
 ********************************/
 long GetTempoUltimoEnviadoSocketUDP(int idSocket){
-    return CPIGGerenciadorSockets::GetTempoUltimoEnviadoSocketUDP(idSocket);
+    return CPIGGerenciadorSockets::GetSocketUDP(idSocket)->GetTempoUltimoEnviado();
 }
 
 /********************************
@@ -2966,7 +2984,7 @@ Retorno:
 Inteiro que indica o número da porta remota (do servidor) à qual está conectado o socket.
 ********************************/
 int GetPortaRemotaSocketCliente(int idSocket){
-    return CPIGGerenciadorSockets::GetPortaRemotaCliente(idSocket);
+    return CPIGGerenciadorSockets::GetCliente(idSocket)->GetPortaRemota();
 }
 
 /********************************
@@ -2977,7 +2995,7 @@ Retorno:
 Inteiro que indica o número da porta local do socket servidor.
 ********************************/
 int GetPortaLocalSocketServidor(int idSocket){
-    return CPIGGerenciadorSockets::GetPortaLocalServidor(idSocket);
+    return CPIGGerenciadorSockets::GetServidor(idSocket)->GetPortaLocal();
 }
 
 /********************************
@@ -2988,7 +3006,7 @@ Retorno:
 Inteiro que indica o número da porta local do socket UDP.
 ********************************/
 int GetPortaLocalSocketUDP(int idSocket){
-    return CPIGGerenciadorSockets::GetPortaLocalSocketUDP(idSocket);
+    return CPIGGerenciadorSockets::GetSocketUDP(idSocket)->GetPortaLocal();
 }
 
 /********************************
@@ -2998,7 +3016,7 @@ idSocket (entrada, passagem por valor): identificador do socket.
 hostname (saída, passagem por referência): nome do computador (da rede local) ou do endereço IP ao qual está conectado o socket cliente.
 ********************************/
 void GetHostRemotoSocketCliente(int idSocket,char *hostname){
-    std::string resp = CPIGGerenciadorSockets::GetHostRemotoCliente(idSocket);
+    std::string resp = CPIGGerenciadorSockets::GetCliente(idSocket)->GetHostRemoto();
     strcpy(hostname,resp.c_str());
 }
 
@@ -3009,7 +3027,7 @@ idSocket (entrada, passagem por valor): identificador do socket.
 hostname (saída, passagem por referência): nome do computador (na rede local) ou do endereço IP da máquina no qual está aberto o socket cliente.
 ********************************/
 void GetHostLocalSocketCliente(int idSocket,char *hostname){
-    std::string resp = CPIGGerenciadorSockets::GetHostLocalCliente(idSocket);
+    std::string resp = CPIGGerenciadorSockets::GetCliente(idSocket)->GetHostLocal();
     strcpy(hostname,resp.c_str());
 }
 
@@ -3020,7 +3038,7 @@ idSocket (entrada, passagem por valor): identificador do socket.
 hostname (saída, passagem por referência): nome do computador (na rede local) ou do endereço IP da máquina no qual está aberto o socket servidor.
 ********************************/
 void GetHostLocalSocketServidor(int idSocket,char *hostname){
-    std::string resp = CPIGGerenciadorSockets::GetHostLocalServidor(idSocket);
+    std::string resp = CPIGGerenciadorSockets::GetServidor(idSocket)->GetHostLocal();
     strcpy(hostname,resp.c_str());
 }
 
@@ -3031,7 +3049,7 @@ idSocket (entrada, passagem por valor): identificador do socket.
 hostname (saída, passagem por referência): nome do computador (na rede local) ou do endereço IP da máquina no qual está aberto o socket UDP.
 ********************************/
 void GetHostLocalSocketUDP(int idSocket,char *hostname){
-    std::string resp = CPIGGerenciadorSockets::GetHostLocalSocketUDP(idSocket);
+    std::string resp = CPIGGerenciadorSockets::GetSocketUDP(idSocket)->GetHostLocal();
     strcpy(hostname,resp.c_str());
 }
 
@@ -3043,7 +3061,7 @@ Retorno:
 Inteiro que indica o tamanho máximo, em bytes, das mensagens enviadas ou recebidas pelo socket.
 ********************************/
 int GetTamanhoPacoteSocketCliente(int idSocket){
-    return CPIGGerenciadorSockets::GetTamanhoPacoteCliente(idSocket);
+    return CPIGGerenciadorSockets::GetCliente(idSocket)->GetTamanhoPacote();
 }
 
 /********************************
@@ -3054,7 +3072,7 @@ Retorno:
 Inteiro que indica o tamanho máximo, em bytes, das mensagens enviadas ou recebidas pelo socket.
 ********************************/
 int GetTamanhoPacoteSocketServidor(int idSocket){
-    return CPIGGerenciadorSockets::GetTamanhoPacoteServidor(idSocket);
+    return CPIGGerenciadorSockets::GetServidor(idSocket)->GetTamanhoPacote();
 }
 
 /********************************
@@ -3065,7 +3083,7 @@ Retorno:
 Inteiro que indica a quantidade máxima de conexões concomitantes que podem ser estabelecidas pelo socket servidor com outros sockets clientes.
 ********************************/
 int GetMaximoConexoesSocketServidor(int idSocket){
-    return CPIGGerenciadorSockets::GetMaximoConexoesServidor(idSocket);
+    return CPIGGerenciadorSockets::GetServidor(idSocket)->GetMaximoConexoes();
 }
 
 /********************************
@@ -3076,7 +3094,7 @@ Retorno:
 Inteiro que indica a quantidade de conexões atualmente abertas pelo socket servidor com outros sockets clientes.
 ********************************/
 int GetQuantidadeConexoesSocketServidor(int idSocket){
-    return CPIGGerenciadorSockets::GetQuantidadeConexoes(idSocket);
+    return CPIGGerenciadorSockets::GetServidor(idSocket)->GetQuantidadeConexoes();
 }
 
 /********************************
@@ -3090,7 +3108,7 @@ Retorno:
 Inteiro que indica a quantidade de bytes efetivamente transmitida.
 ********************************/
 int EnviaDadosSocketCliente(int idSocket,void *buffer, int tamanhoBuffer){
-    return CPIGGerenciadorSockets::EnviaDadosCliente(idSocket,buffer,tamanhoBuffer);
+    return CPIGGerenciadorSockets::GetCliente(idSocket)->EnviaDados(buffer,tamanhoBuffer);
 }
 
 /********************************
@@ -3104,7 +3122,7 @@ Retorno:
 Inteiro que indica a quantidade de bytes efetivamente transmitida.
 ********************************/
 int EnviaDadosSocketServidor(int idSocket,int socketSecundario,void *buffer, int tamanhoBuffer){
-    return CPIGGerenciadorSockets::EnviaDadosServidor(idSocket,socketSecundario,buffer,tamanhoBuffer);
+    return CPIGGerenciadorSockets::GetServidor(idSocket)->EnviaDados(buffer,tamanhoBuffer,socketSecundario);
 }
 
 /********************************
@@ -3118,7 +3136,7 @@ Retorno:
 Inteiro que indica a quantidade de bytes efetivamente transmitida.
 ********************************/
 int EnviaDadosSocketUDP(int idSocket,void *buffer,int tamanhoBuffer, char *hostRemoto, int porta){
-    return CPIGGerenciadorSockets::EnviaDadosSocketUDP(idSocket,buffer,tamanhoBuffer,hostRemoto,porta);
+    return CPIGGerenciadorSockets::GetSocketUDP(idSocket)->EnviaDados(buffer,tamanhoBuffer,hostRemoto,porta);
 }
 
 /********************************
@@ -3159,7 +3177,7 @@ idVideo (entrada, passagem por valor): identificador do vídeo.
 incremento (entrada, passagem por valor): quantidade de tempo (em segundos) para o avançao ou retrocesso do vídeo.
 ********************************/
 void SetSeekVideo(int idVideo, double incremento){
-    CPIGGerenciadorVideos::SetSeek(idVideo,incremento);
+    CPIGGerenciadorVideos::GetVideo(idVideo)->SetSeek(incremento);
 }
 
 /********************************
@@ -3168,7 +3186,7 @@ Parâmetro:
 idVideo (entrada, passagem por valor): indentificador do vídeo.
 ********************************/
 void PlayVideo(int idVideo){
-    CPIGGerenciadorVideos::Play(idVideo);
+    CPIGGerenciadorVideos::GetVideo(idVideo)->Play();
 }
 
 /********************************
@@ -3177,7 +3195,7 @@ Parâmetro:
 idVideo (entrada, passagem por valor): indentificador do vídeo.
 ********************************/
 void StopVideo(int idVideo){
-    CPIGGerenciadorVideos::Stop(idVideo);
+    CPIGGerenciadorVideos::GetVideo(idVideo)->Stop();
 }
 
 /********************************
@@ -3186,7 +3204,7 @@ Parâmetro:
 idVideo (entrada, passagem por valor): indentificador do vídeo.
 ********************************/
 void PauseVideo(int idVideo){
-    CPIGGerenciadorVideos::Pause(idVideo);
+    CPIGGerenciadorVideos::GetVideo(idVideo)->Pause();
 }
 
 /********************************
@@ -3195,7 +3213,7 @@ Parâmetro:
 idVideo (entrada, passagem por valor): indentificador do vídeo.
 ********************************/
 void ResumeVideo(int idVideo){
-    CPIGGerenciadorVideos::Resume(idVideo);
+    CPIGGerenciadorVideos::GetVideo(idVideo)->Resume();
 }
 
 /********************************
@@ -3205,7 +3223,7 @@ Parâmetro:
 idVideo (entrada, passagem por valor): identificador do vídeo a ser desenhado.
 ********************************/
 int DesenhaVideo(int idVideo){
-    CPIGGerenciadorVideos::Desenha(idVideo);
+    CPIGGerenciadorVideos::GetVideo(idVideo)->Desenha();
 }
 
 /********************************
@@ -3215,7 +3233,7 @@ idVideo (entrada, passagem por valor): indentificador do vídeo.
 valor (entrada, passagem por valor): volume a ser definido. Deve ser positivo ou zero (mudo).
 ********************************/
 void SetVolumeVideo(int idVideo, double valor){
-    CPIGGerenciadorVideos::SetVolume(idVideo,valor);
+    CPIGGerenciadorVideos::GetVideo(idVideo)->SetVolume(valor);
 }
 
 /********************************
@@ -3226,7 +3244,7 @@ Retorno:
 Nível de volume do vídeo (deve ser sempre um valor positivo).
 ********************************/
 double GetVolumeVideo(int idVideo){
-    return CPIGGerenciadorVideos::GetVolume(idVideo);
+    return CPIGGerenciadorVideos::GetVideo(idVideo)->GetVolume();
 }
 
 /********************************
@@ -3236,8 +3254,7 @@ idVideo (entrada, passagem por valor): indentificador do vídeo.
 nome (saída, passagem por referência): nome do arquivo utilizado para criar o video.
 ********************************/
 void GetNomeArquivoVideo(int idVideo, char *nome){
-    std::string resp = CPIGGerenciadorVideos::GetNomeArquivo(idVideo);
-    strcpy(nome,resp.c_str());
+    strcpy(nome,CPIGGerenciadorVideos::GetVideo(idVideo)->GetNomeArquivo().c_str());
 }
 
 /********************************
@@ -3248,7 +3265,7 @@ Retorno:
 Total de tempo (em milissegundos) da parte já exibida do vídeo.
 ********************************/
 double GetTempoAtualVideo(int idVideo){
-    return CPIGGerenciadorVideos::GetTempoAtual(idVideo);
+    return CPIGGerenciadorVideos::GetVideo(idVideo)->GetTempoAtual();
 }
 
 /********************************
@@ -3258,8 +3275,7 @@ idVideo (entrada, passagem por valor): indentificador do vídeo.
 str (saída, passagem por referência): posição do frame atual, definido em hora, minuto, segundo e milissegundo.
 ********************************/
 void GetTempoAtualVideo(int idVideo, char *str){
-    std::string resp = CPIGGerenciadorVideos::GetTempoAtualString(idVideo);
-    strcpy(str,resp.c_str());
+    strcpy(str,CPIGGerenciadorVideos::GetVideo(idVideo)->GetTempoAtualString().c_str());
 }
 
 /********************************
@@ -3270,7 +3286,7 @@ Retorno
 Tempo total do vídeo em milissegundos.
 ********************************/
 double GetTempoTotalVideo(int idVideo){
-    return CPIGGerenciadorVideos::GetTempoTotal(idVideo);
+    return CPIGGerenciadorVideos::GetVideo(idVideo)->GetTempoTotal();
 }
 
 /********************************
@@ -3280,8 +3296,7 @@ idVideo (entrada, passagem por valor): indentificador do vídeo.
 str (saída, passagem por referência): duração do vídeo, definido em hora, minuto, segundo e milissegundo.
 ********************************/
 void GetTempoTotalVideo(int idVideo, char *str){
-    std::string resp = CPIGGerenciadorVideos::GetTempoTotalString(idVideo);
-    strcpy(str,resp.c_str());
+    strcpy(str,CPIGGerenciadorVideos::GetVideo(idVideo)->GetTempoTotalString().c_str());
 }
 
 /********************************
@@ -3292,7 +3307,7 @@ Retorno:
 Duração esperado de cada frame do vídeo (em milissegundo).
 ********************************/
 double GetTempoFrameVideo(int idVideo){
-    return CPIGGerenciadorVideos::GetTempoFrame(idVideo);
+    return CPIGGerenciadorVideos::GetVideo(idVideo)->GetTempoFrame();
 }
 
 /********************************
@@ -3303,7 +3318,7 @@ Retorno:
 Quantidade desejada de frames a cada segundo.
 ********************************/
 double GetFPSVideo(int idVideo){
-    return CPIGGerenciadorVideos::GetFPS(idVideo);
+    return CPIGGerenciadorVideos::GetVideo(idVideo)->GetFPS();
 }
 
 /********************************
@@ -3315,7 +3330,7 @@ idVideo (entrada, passagem por valor): identificador do vídeo.
 angulo (entrada, passagem por valor): valor para indicar a angulação do vídeo em graus.
 ********************************/
 void SetAnguloVideo(int idVideo, float angulo){
-    CPIGGerenciadorVideos::SetAngulo(idVideo,angulo);
+    CPIGGerenciadorVideos::GetVideo(idVideo)->SetAngulo(angulo);
 }
 
 /********************************
@@ -3327,7 +3342,7 @@ Retorno:
 Retorna o valor do ângulo em graus.
 ********************************/
 double GetAnguloVideo(int idVideo){
-    return CPIGGerenciadorVideos::GetAngulo(idVideo);
+    return CPIGGerenciadorVideos::GetVideo(idVideo)->GetAngulo();
 }
 
 /********************************
@@ -3340,7 +3355,7 @@ FLIP_HORIZONTAL (inverte da esquerda para a direita), FLIP_VERTICAL (inverte de 
 ou FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
 ********************************/
 void SetFlipVideo(int idVideo, PIG_Flip valor){
-    CPIGGerenciadorVideos::SetFlip(idVideo,valor);
+    CPIGGerenciadorVideos::GetVideo(idVideo)->SetFlip(valor);
 }
 
 /********************************
@@ -3353,7 +3368,7 @@ FLIP_HORIZONTAL (inverte da esquerda para a direita), FLIP_VERTICAL (inverte de 
 ou FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
 ********************************/
 PIG_Flip GetFlipVideo(int idVideo){
-    return CPIGGerenciadorVideos::GetFlip(idVideo);
+    return CPIGGerenciadorVideos::GetVideo(idVideo)->GetFlip();
 }
 
 /********************************
@@ -3365,7 +3380,7 @@ posicaoX (entrada, passagem por valor): Valor da coordenada X do pivô em relação
 posicaoY (entrada, passagem por valor): Valor da coordenada Y do pivô em relação ao ponto (0,0) do vídeo.
 ********************************/
 void SetPivoVideo(int idVideo, int posicaoX,int posicaoY){
-    CPIGGerenciadorVideos::SetPivo(idVideo,posicaoX,posicaoY);
+    CPIGGerenciadorVideos::GetVideo(idVideo)->SetPivo(posicaoX,posicaoY);
 }
 
 /********************************
@@ -3377,7 +3392,7 @@ relX (entrada, passagem por valor): porcentagem da largura do vídeo onde ficará 
 relY (entrada, passagem por valor): porcentagem da altura do vídeo onde ficará o pivô.
 ********************************/
 void SetPivoVideo(int idVideo, float relX,float relY){
-    CPIGGerenciadorVideos::SetPivo(idVideo,relX,relY);
+    CPIGGerenciadorVideos::GetVideo(idVideo)->SetPivo(relX,relY);
 }
 
 /********************************
@@ -3389,7 +3404,9 @@ posicaoX (saída, passagem por referência): Valor da coordenada X do pivô em rela
 posicaoY (saída, passagem por referência): Valor da coordenada Y do pivô em relação ao ponto (0,0) do vídeo.
 ********************************/
 void GetPivoVideo(int idVideo, int *posicaoX,int *posicaoY){
-    CPIGGerenciadorVideos::GetPivo(idVideo,*posicaoX,*posicaoY);
+    SDL_Point p = CPIGGerenciadorVideos::GetVideo(idVideo)->GetPivo();
+    *posicaoX = p.x;
+    *posicaoY = p.y;
 }
 
 /********************************
@@ -3400,7 +3417,7 @@ posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja reposicionar o vídeo.
 ********************************/
 void MoveVideo(int idVideo,int posicaoX,int posicaoY){
-    CPIGGerenciadorVideos::Move(idVideo,posicaoX,posicaoY);
+    CPIGGerenciadorVideos::GetVideo(idVideo)->Move(posicaoX,posicaoY);
 }
 
 /********************************
@@ -3412,7 +3429,7 @@ altura (entrada, passagem por valor): altura em pixels.
 largura (entrada, passagem por valor): largura em pixels.
 ********************************/
 void SetDimensoesVideo(int idVideo, int altura,int largura){
-    CPIGGerenciadorVideos::SetDimensoes(idVideo,altura,largura);
+    CPIGGerenciadorVideos::GetVideo(idVideo)->SetDimensoes(altura,largura);
 }
 
 /********************************
@@ -3424,7 +3441,7 @@ altura (saída, passagem por referência): altura atual em pixels do vídeo.
 largura (saída, passagem por referência): largura atual em pixels do vídeo.
 ********************************/
 void GetDimensoesVideo(int idVideo, int *altura, int *largura){
-    CPIGGerenciadorVideos::GetDimensoes(idVideo,*altura,*largura);
+    CPIGGerenciadorVideos::GetVideo(idVideo)->GetDimensoes(*altura,*largura);
 }
 
 /********************************
@@ -3436,7 +3453,7 @@ altura (saída, passagem por referência): altura original em pixels do vídeo.
 largura (saída, passagem por referência): largura original em pixels do vídeo.
 ********************************/
 void GetDimensoesOriginaisVideo(int idVideo, int *altura, int *largura){
-    CPIGGerenciadorVideos::GetDimensoesOriginais(idVideo,*altura,*largura);
+    CPIGGerenciadorVideos::GetVideo(idVideo)->GetDimensoesOriginais(*altura,*largura);
 }
 
 /********************************
@@ -3446,7 +3463,7 @@ Parâmetros:
 idVideo (entrada, passagem por valor): identificador do vídeo a ser desenhado.
 ********************************/
 void OcupaJanelaInteiraVideo(int idVideo){
-    CPIGGerenciadorVideos::OcupaJanelaInteira(idVideo);
+    CPIGGerenciadorVideos::GetVideo(idVideo)->OcupaJanelaInteira();
 }
 
 /********************************
@@ -3456,7 +3473,7 @@ Parâmetros:
 idVideo (entrada, passagem por valor): identificador do vídeo a ser desenhado.
 ********************************/
 void UsaResolucaoOriginalVideo(int idVideo){
-    CPIGGerenciadorVideos::UsaResolucaoOriginal(idVideo);
+    CPIGGerenciadorVideos::GetVideo(idVideo)->UsaResolucaoOriginal();
 }
 
 
@@ -3469,7 +3486,7 @@ idVideo (entrada, passagem por valor): identificador do vídeo a ser desenhado.
 cor (entrada,passagem por valor): cor do sistema RGB utilizada para mesclagem com o arquivo de vídeo.
 ********************************/
 void SetColoracaoVideo(int idVideo, PIG_Cor cor){
-    CPIGGerenciadorVideos::SetColoracao(idVideo,cor);
+    CPIGGerenciadorVideos::GetVideo(idVideo)->SetColoracao(cor);
 }
 
 /********************************
@@ -3480,7 +3497,7 @@ idVideo (entrada, passagem por valor): identificador do vídeo.
 valor (entrada,passagem por valor): nível de opacidade do vídeo na faixa 0-255.
 ********************************/
 void SetOpacidadeVideo(int idVideo, int valor){
-    CPIGGerenciadorVideos::SetOpacidade(idVideo,valor);
+    CPIGGerenciadorVideos::GetVideo(idVideo)->SetOpacidade(valor);
 }
 
 /********************************
@@ -3492,10 +3509,8 @@ Retorno:
 Retorna o nível de opacidade do vídeo na faixa 0-255.
 ********************************/
 int GetOpacidadeVideo(int idVideo){
-    return CPIGGerenciadorVideos::GetOpacidade(idVideo);
+    return CPIGGerenciadorVideos::GetVideo(idVideo)->GetOpacidade();
 }
-
-
 
 
 /*******FORM*********/
@@ -3505,341 +3520,341 @@ int PIG_CriaForm(int xForm, int yForm, int altForm, int largForm,int janela = 0)
 }
 
 int PIG_Form_TrataEvento(int idForm,PIG_Evento evento){
-    return CPIGGerenciadorForms::TrataEvento(idForm,evento);
+    return CPIGGerenciadorForms::GetForm(idForm)->TrataEvento(evento);
 }
 
 int PIG_Form_Desenha(int idForm){
-    return CPIGGerenciadorForms::Desenha(idForm);
+    return CPIGGerenciadorForms::GetForm(idForm)->Desenha();
 }
 
 /*******COMPONENTES*********/
 
 int PIG_CriaComponentePorArquivo(int idForm,tipos_Componentes componente,char* nomeArquivo){
-    return CPIGGerenciadorForms::CriaComponentePorArquivo(idForm,componente,nomeArquivo);
+    return CPIGGerenciadorForms::GetForm(idForm)->CriaComponentePorArquivo(componente,nomeArquivo);//CPIGGerenciadorForms::CriaComponentePorArquivo(idForm,componente,nomeArquivo);
 }
 
 void PIG_Componentes_SetLabel(int idComponente,char* novoLabel){
-    CPIGGerenciadorForms::GetComponente(idComponente)->SetLabel(novoLabel);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetLabel(novoLabel);
 }
 
 void PIG_Componentes_SetFonteLabel(int idComponente,int fonte){
-    CPIGGerenciadorForms::GetComponente(idComponente)->SetFonteLabel(fonte);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetFonteLabel(fonte);
 }
 
 void PIG_Componentes_SetCorLabel(int idComponente,PIG_Cor cor){
-    CPIGGerenciadorForms::GetComponente(idComponente)->SetCorLabel(cor);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetCorLabel(cor);
 }
 
 void PIG_Componentes_SetFonteHint(int idComponente,int fonte){
-    CPIGGerenciadorForms::GetComponente(idComponente)->SetFonteHint(fonte);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetFonteHint(fonte);
 }
 
 void PIG_Componentes_SetCorHint(int idComponente,PIG_Cor cor){
-    CPIGGerenciadorForms::GetComponente(idComponente)->SetCorHint(cor);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetCorHint(cor);
 }
 
 void PIG_Componentes_SetAudio(int idComponente,int idAudio){
-    CPIGGerenciadorForms::GetComponente(idComponente)->SetAudio(idAudio);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetAudio(idAudio);
 }
 
 void PIG_Componentes_GetLabel(int idComponente,char *label){
-    strcpy(label,(char*)(CPIGGerenciadorForms::GetComponente(idComponente)->GetLabel()).c_str());
+    strcpy(label,(char*)(CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->GetLabel()).c_str());
 }
 
 void PIG_Componentes_SetHint(int idComponente,char *hint){
-    CPIGGerenciadorForms::GetComponente(idComponente)->SetHint(hint);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetHint(hint);
 }
 
 void PIG_Componentes_Move(int idComponente,int x,int y){
-    CPIGGerenciadorForms::GetComponente(idComponente)->Move(x,y);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->Move(x,y);
 }
 
 void PIG_Componentes_SetDimensoes(int idComponente,int altura,int largura){
-    CPIGGerenciadorForms::GetComponente(idComponente)->SetDimensoes(altura,largura);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetDimensoes(altura,largura);
 }
 
 void PIG_Componentes_SetPosicaoPadraoLabel(int idComponente,PIG_PosicaoComponente pos){
-    CPIGGerenciadorForms::GetComponente(idComponente)->SetPosicaoPadraoLabel(pos);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetPosicaoPadraoLabel(pos);
 }
 
 void PIG_Componentes_SetPosicaoPersonalizadaLabel(int idComponente,int x,int y){
-    CPIGGerenciadorForms::GetComponente(idComponente)->SetPosicaoPersonalizadaLabel(x,y);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetPosicaoPersonalizadaLabel(x,y);
 }
 
 void PIG_Componentes_SetPosPadraoExternaComponente(int idComponente,PIG_PosicaoComponente pos,CPIGComponente *componenteAssociado){
-    CPIGGerenciadorForms::GetComponente(idComponente)->SetPosPadraoExternaComponente(pos,componenteAssociado);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetPosPadraoExternaComponente(pos,componenteAssociado);
 }
 
 void PIG_Componentes_SetPosPadraoComponenteNaTela(int idComponente,PIG_Ancora pos){
-    CPIGGerenciadorForms::GetComponente(idComponente)->SetPosPadraoComponenteNaTela(pos);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetPosPadraoComponenteNaTela(pos);
 }
 
 /*******BOTAO*********/
 
 int PIG_CriaBotao(int idForm,int x,int y,int alt,int larg,char* nomeArq,int retiraFundo = 1){
-    return CPIGGerenciadorForms::CriaBotao(idForm,x,y,alt,larg,nomeArq,retiraFundo);
+    return CPIGGerenciadorForms::GetForm(idForm)->CriaBotao(x,y,alt,larg,nomeArq,retiraFundo);
 }
 
 void PIG_Botao_DefineAcao(int idComponente,AcaoBotao funcao,void *parametro){
-    ((CPIGBotao*)CPIGGerenciadorForms::GetComponente(idComponente))->DefineAcao(funcao,parametro);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGBotao>(idComponente)->DefineAcao(funcao,parametro);
 }
 
 void PIG_Botao_DefineAtalho(int idComponente,int teclaAtalho){
-    ((CPIGBotao*)CPIGGerenciadorForms::GetComponente(idComponente))->DefineAtalho(teclaAtalho);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGBotao>(idComponente)->DefineAtalho(teclaAtalho);
 }
 
 void PIG_Botao_DefineTempoRepeticao(int idComponente,double segundos){
-    ((CPIGBotao*)CPIGGerenciadorForms::GetComponente(idComponente))->DefineTempoRepeticao(segundos);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGBotao>(idComponente)->DefineTempoRepeticao(segundos);
 }
 
 void PIG_Botao_DefineBotaoRepeticao(int idComponente,bool repeticao){
-    ((CPIGBotao*)CPIGGerenciadorForms::GetComponente(idComponente))->DefineBotaoRepeticao(repeticao);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGBotao>(idComponente)->DefineBotaoRepeticao(repeticao);
 }
 
 /*******AREADETEXTO*********/
 
 int PIG_CriaAreaDeTexto(int idForm,int x, int y, int altura,int largura,char* nomeArq,int maxCars = 200,int retiraFundo=1){
-    return CPIGGerenciadorForms::CriaAreaDeTexto(idForm,x,y,altura,largura,nomeArq,maxCars,retiraFundo);
+    return CPIGGerenciadorForms::GetForm(idForm)->CriaAreaDeTexto(x,y,altura,largura,nomeArq,maxCars,retiraFundo);
 }
 
 void PIG_AreaDeTexto_SetScrollBarVertical(int idComponente,int larguraTotal,int comprimentoTotal,int larguraHandle,char* imgHandle,char* imgTrilha,int retiraFundoHandle=1,int retiraFundoTrilha=1){
-    ((PIGAreaDeTexto)CPIGGerenciadorForms::GetComponente(idComponente))->SetScrollBarVertical(larguraTotal,comprimentoTotal,larguraHandle,imgHandle,imgTrilha,retiraFundoHandle,retiraFundoTrilha);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->SetScrollBarVertical(larguraTotal,comprimentoTotal,larguraHandle,imgHandle,imgTrilha,retiraFundoHandle,retiraFundoTrilha);
 }
 
 void PIG_AreaDeTexto_SetScrollBarHorizontal(int idComponente,int larguraTotal,int comprimentoTotal,int larguraHandle,char* imgHandle,char* imgTrilha,int retiraFundoHandle=1,int retiraFundoTrilha=1){
-    ((PIGAreaDeTexto)CPIGGerenciadorForms::GetComponente(idComponente))->SetScrollBarHorizontal(larguraTotal,comprimentoTotal,larguraHandle,imgHandle,imgTrilha,retiraFundoHandle,retiraFundoTrilha);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->SetScrollBarHorizontal(larguraTotal,comprimentoTotal,larguraHandle,imgHandle,imgTrilha,retiraFundoHandle,retiraFundoTrilha);
 }
 
 void PIG_AreaDeTexto_SetBotoesScrollBarVertical(int idComponente,int larguraBotoes,char* imgBotao1,char* imgBotao2,int retiraFundoB1 = 1,int retiraFundoB2 = 1){
-    ((PIGAreaDeTexto)CPIGGerenciadorForms::GetComponente(idComponente))->SetBotoesScrollBarVertical(larguraBotoes,imgBotao1,imgBotao2,retiraFundoB1,retiraFundoB2);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->SetBotoesScrollBarVertical(larguraBotoes,imgBotao1,imgBotao2,retiraFundoB1,retiraFundoB2);
 }
 
 void PIG_AreaDeTexto_SetBotoesScrollBarHorizontal(int idComponente,int larguraBotoes,char* imgBotao1,char* imgBotao2,int retiraFundoB1 = 1,int retiraFundoB2 = 1){
-    ((PIGAreaDeTexto)CPIGGerenciadorForms::GetComponente(idComponente))->SetBotoesScrollBarVertical(larguraBotoes,imgBotao1,imgBotao2,retiraFundoB1,retiraFundoB2);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->SetBotoesScrollBarVertical(larguraBotoes,imgBotao1,imgBotao2,retiraFundoB1,retiraFundoB2);
 }
 
 void PIG_AreaDeTexto_SetPosPadraoScrollHorizontal(int idComponente,PIG_PosicaoComponente pos){
-    ((PIGAreaDeTexto)CPIGGerenciadorForms::GetComponente(idComponente))->SetPosPadraoScrollHorizontal(pos);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->SetPosPadraoScrollHorizontal(pos);
 }
 
 void PIG_AreaDeTexto_SetPosPadraoScrollVertical(int idComponente,PIG_PosicaoComponente pos){
-    ((PIGAreaDeTexto)CPIGGerenciadorForms::GetComponente(idComponente))->SetPosPadraoScrollVertical(pos);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->SetPosPadraoScrollVertical(pos);
 }
 
 void PIG_AreaDeTexto_MoveScrollBarHorizontal(int idComponente,int x,int y){
-    ((PIGAreaDeTexto)CPIGGerenciadorForms::GetComponente(idComponente))->MoveScrollBarHorizontal(x,y);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->MoveScrollBarHorizontal(x,y);
 }
 
 void PIG_AreaDeTexto_MoveScrollBarVertical(int idComponente,int x,int y){
-    ((PIGAreaDeTexto)CPIGGerenciadorForms::GetComponente(idComponente))->MoveScrollBarVertical(x,y);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->MoveScrollBarVertical(x,y);
 }
 
 void PIG_AreaDeTexto_SetFonteTexto(int idComponente,int fonte){
-    ((PIGAreaDeTexto)CPIGGerenciadorForms::GetComponente(idComponente))->SetFonteTexto(fonte);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->SetFonteTexto(fonte);
 }
 
 void PIG_AreaDeTexto_SetLinhasAbaixoTexto(int idComponente,bool visivel,PIG_Cor cor = PRETO){
-    ((PIGAreaDeTexto)CPIGGerenciadorForms::GetComponente(idComponente))->SetLinhasAbaixoTexto(visivel,cor);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->SetLinhasAbaixoTexto(visivel,cor);
 }
 
 void PIG_AreaDeTexto_SetLargMaxTexto(int idComponente,int largMaxTexto){
-    ((PIGAreaDeTexto)CPIGGerenciadorForms::GetComponente(idComponente))->SetLargMaxTexto(largMaxTexto);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->SetLargMaxTexto(largMaxTexto);
 }
 
 void PIG_AreaDeTexto_SetEspacoEntreAsLinhas(int idComponente,int espaco){
-    ((PIGAreaDeTexto)CPIGGerenciadorForms::GetComponente(idComponente))->SetEspacoEntreAsLinhas(espaco);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->SetEspacoEntreAsLinhas(espaco);
 }
 
 void PIG_AreaDeTexto_SetTexto(int idComponente,char* frase){
-    ((PIGAreaDeTexto)CPIGGerenciadorForms::GetComponente(idComponente))->SetTexto(frase);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->SetTexto(frase);
 }
 
 void PIG_AreaDeTexto_SetMargens(int idComponente,int horEsq,int horDir, int vertBaixo,int vertCima){
-    ((PIGAreaDeTexto)CPIGGerenciadorForms::GetComponente(idComponente))->SetMargens(horEsq,horDir,vertBaixo,vertCima);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->SetMargens(horEsq,horDir,vertBaixo,vertCima);
 }
 
 void PIG_AreaDeTexto_SetCorCursor(int idComponente,PIG_Cor cor){
-    ((PIGAreaDeTexto)CPIGGerenciadorForms::GetComponente(idComponente))->SetCorCursor(cor);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->SetCorCursor(cor);
 }
 
 std::vector<std::string> PIG_AreaDeTexto_GetLinhasTexto(int idComponente){
-    ((PIGAreaDeTexto)CPIGGerenciadorForms::GetComponente(idComponente))->GetLinhasTexto();
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->GetLinhasTexto();
 }
 
 /**********CAMPOTEXTO**************/
 
 int PIG_CriaCampoTexto(int idForm,int x, int y, int altura,int largura,char* nomeArq,int maxCars = 200, bool apenasNumeros=false, int retiraFundo=1){
-    return CPIGGerenciadorForms::CriaCampoTextoESenha(idForm,x,y,altura,largura,nomeArq,maxCars,apenasNumeros,retiraFundo,false);
+    return CPIGGerenciadorForms::GetForm(idForm)->CriaCampoTextoESenha(x,y,altura,largura,nomeArq,maxCars,apenasNumeros,retiraFundo,false);
 }
 
 void PIG_CampoTexto_SetMargens(int idComponente,int horEsq,int horDir, int vertBaixo,int vertCima){
-    ((PIGCampoTextoESenha)CPIGGerenciadorForms::GetComponente(idComponente))->SetMargens(horEsq,horDir,vertBaixo,vertCima);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCampoTextoESenha>(idComponente)->SetMargens(horEsq,horDir,vertBaixo,vertCima);
 }
 
 void PIG_CampoTexto_SetTexto(int idComponente,char* frase){
-    ((PIGCampoTextoESenha)CPIGGerenciadorForms::GetComponente(idComponente))->SetTexto(frase);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCampoTextoESenha>(idComponente)->SetTexto(frase);
 }
 
 void PIG_CampoTexto_SetFonteTexto(int idComponente,int fonte){
-    ((PIGCampoTextoESenha)CPIGGerenciadorForms::GetComponente(idComponente))->SetFonteTexto(fonte);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCampoTextoESenha>(idComponente)->SetFonteTexto(fonte);
 }
 
 void PIG_CampoTexto_SetCorCursor(int idComponente,PIG_Cor cor){
-    ((PIGCampoTextoESenha)CPIGGerenciadorForms::GetComponente(idComponente))->SetCorCursor(cor);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCampoTextoESenha>(idComponente)->SetCorCursor(cor);
 }
 
 /**********CAMPOSENHA**************/
 
 int PIG_CriaCampoSenha(int idForm,int x, int y, int altura,int largura,char* nomeArq,int maxCars = 200, bool apenasNumeros=false, int retiraFundo=1){
-    return CPIGGerenciadorForms::CriaCampoTextoESenha(idForm,x,y,altura,largura,nomeArq,maxCars,apenasNumeros,retiraFundo,true);
+    return CPIGGerenciadorForms::GetForm(idForm)->CriaCampoTextoESenha(x,y,altura,largura,nomeArq,maxCars,apenasNumeros,retiraFundo,true);
 }
 
 void PIG_CampoSenha_SetMargens(int idComponente,int horEsq,int horDir, int vertBaixo,int vertCima){
-    ((PIGCampoTextoESenha)CPIGGerenciadorForms::GetComponente(idComponente))->SetMargens(horEsq,horDir,vertBaixo,vertCima);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCampoTextoESenha>(idComponente)->SetMargens(horEsq,horDir,vertBaixo,vertCima);
 }
 
 void PIG_CampoSenha_SetTexto(int idComponente,char* frase){
-    ((PIGCampoTextoESenha)CPIGGerenciadorForms::GetComponente(idComponente))->SetTexto(frase);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCampoTextoESenha>(idComponente)->SetTexto(frase);
 }
 
 void PIG_CampoSenha_SetFonteTexto(int idComponente,int fonte){
-    ((PIGCampoTextoESenha)CPIGGerenciadorForms::GetComponente(idComponente))->SetFonteTexto(fonte);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCampoTextoESenha>(idComponente)->SetFonteTexto(fonte);
 }
 
 void PIG_CampoSenha_SetCorCursor(int idComponente,PIG_Cor cor){
-    ((PIGCampoTextoESenha)CPIGGerenciadorForms::GetComponente(idComponente))->SetCorCursor(cor);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCampoTextoESenha>(idComponente)->SetCorCursor(cor);
 }
 
 /**********LISTA**************/
 
 int PIG_CriaListBox(int idForm,int x, int y,int larguraTotal,int alturaLinha,int alturaMaxima,int alturaItem,int largItem,char* nomeArq,int retiraFundo=1){
-    return CPIGGerenciadorForms::CriaListBox(idForm,x,y,larguraTotal,alturaLinha,alturaMaxima,alturaItem,largItem,nomeArq,retiraFundo);
+    return CPIGGerenciadorForms::GetForm(idForm)->CriaListBox(x,y,larguraTotal,alturaLinha,alturaMaxima,alturaItem,largItem,nomeArq,retiraFundo);
 }
 
 int PIG_ListBox_CriaItem(int idComponente,char* texto,char* imagemIcone = "",char *imagemFundo="",char* hintMsg="",bool itemHabilitado = true, int audio=-1,int retiraFundoImg = 1){
-    ((PIGListBox)CPIGGerenciadorForms::GetComponente(idComponente))->CriaItem(texto,imagemIcone,imagemFundo,false,itemHabilitado,audio,hintMsg,retiraFundoImg);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->CriaItem(texto,imagemIcone,imagemFundo,false,itemHabilitado,audio,hintMsg,retiraFundoImg);
 }
 
 /**********DROPDOWN**************/
 
 int PIG_CriaDropDown(int idForm,int x, int y, int larguraTotal,int alturaLinha,int alturaMaxima,int alturaItem,int larguraItem,char* nomeArq,int retiraFundo=1){
-    return CPIGGerenciadorForms::CriaDropDown(idForm,x,y,larguraTotal,alturaLinha,alturaMaxima,alturaItem,larguraItem,nomeArq,retiraFundo);
+    return CPIGGerenciadorForms::GetForm(idForm)->CriaDropDown(x,y,larguraTotal,alturaLinha,alturaMaxima,alturaItem,larguraItem,nomeArq,retiraFundo);
 }
 
 int PIG_DropDown_CriaItem(int idComponente,char* texto,char* imagemIcone = "",char *imagemFundo="", char* hintMsg="",bool itemHabilitado = true, int audio=-1,int retiraFundoImg = 1){
-    ((PIGDropDown)CPIGGerenciadorForms::GetComponente(idComponente))->CriaItem(texto,imagemIcone,imagemFundo,itemHabilitado,audio,hintMsg,retiraFundoImg);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->CriaItem(texto,imagemIcone,imagemFundo,itemHabilitado,audio,hintMsg,retiraFundoImg);
 }
 
 /**********GAUGE**************/
 
 int PIG_CriaGauge(int idForm,int x, int y,int altura,int largura,char* imgGauge,int retiraFundo=1){
-    return CPIGGerenciadorForms::CriaGauge(idForm,x,y,altura,largura,imgGauge,retiraFundo);
+    return CPIGGerenciadorForms::GetForm(idForm)->CriaGauge(x,y,altura,largura,imgGauge,retiraFundo);
 }
 
 void PIG_Gauge_SetFrames(int idComponente,SDL_Rect fBase,SDL_Rect fBarra){
-    ((PIGGauge)CPIGGerenciadorForms::GetComponente(idComponente))->SetFrames(fBase,fBarra);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGauge>(idComponente)->SetFrames(fBase,fBarra);
 }
 
 void PIG_Gauge_SetDelta(int idComponente,float valor){
-    ((PIGGauge)CPIGGerenciadorForms::GetComponente(idComponente))->SetDelta(valor);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGauge>(idComponente)->SetDelta(valor);
 }
 
 void PIG_Gauge_AvancaDelta(int idComponente){
-    ((PIGGauge)CPIGGerenciadorForms::GetComponente(idComponente))->AvancaDelta();
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGauge>(idComponente)->AvancaDelta();
 }
 
 float PIG_Gauge_GetPorcentagemConcluida(int idComponente){
-    return ((PIGGauge)CPIGGerenciadorForms::GetComponente(idComponente))->GetPorcentagemConcluida();
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGauge>(idComponente)->GetPorcentagemConcluida();
 }
 
 void PIG_Gauge_ZeraValor(int idComponente){
-    ((PIGGauge)CPIGGerenciadorForms::GetComponente(idComponente))->ZeraValor();
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGauge>(idComponente)->ZeraValor();
 }
 
 /**********GAUGECIRCULAR**************/
 
 int PIG_CriaGaugeCircular(int idForm,int x, int y,int altura,int largura,int raioInterior,char* imgGauge,int retiraFundo=1){
-    return CPIGGerenciadorForms::CriaGaugeCircular(idForm,x,y,altura,largura,raioInterior,imgGauge,retiraFundo);
+    return CPIGGerenciadorForms::GetForm(idForm)->CriaGaugeCircular(x,y,altura,largura,raioInterior,imgGauge,retiraFundo);
 }
 
 /**********RADIOBOX**************/
 
 int PIG_CriaRadioBox(int idForm,int x, int y,int larguraTotal,int alturaLinha, int alturaMaxima,char* imagemItem, int alturaItem, int larguraItem,char* imagemFundo, int retiraFundo=1){
-    return CPIGGerenciadorForms::CriaRadioBox(idForm,x,y,larguraTotal,alturaLinha,alturaMaxima,imagemItem,alturaItem,larguraItem,imagemFundo,retiraFundo);
+    return CPIGGerenciadorForms::GetForm(idForm)->CriaRadioBox(x,y,larguraTotal,alturaLinha,alturaMaxima,imagemItem,alturaItem,larguraItem,imagemFundo,retiraFundo);
 }
 
 void PIG_RadioBox_CriaItem(int idComponente,char* itemLabel, char *imagemFundo="", char* hintMsg="", bool itemHabilitado = true, int audio=-1, int retiraFundo=1){
-    ((PIGRadioBox)CPIGGerenciadorForms::GetComponente(idComponente))->CriaItem(itemLabel,imagemFundo,itemHabilitado,audio,hintMsg,retiraFundo);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGRadioBox>(idComponente)->CriaItem(itemLabel,imagemFundo,itemHabilitado,audio,hintMsg,retiraFundo);
 }
 
 int PIG_RadioBox_GetItemDestaque(int idComponente){
-    return ((PIGRadioBox)CPIGGerenciadorForms::GetComponente(idComponente))->GetItemDestaque();
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGRadioBox>(idComponente)->GetItemDestaque();
 }
 
 int PIG_RadioBox_SetItemMarcado(int idComponente,int item, bool marcado){
-    return ((PIGRadioBox)CPIGGerenciadorForms::GetComponente(idComponente))->SetAcionadoItem(item,marcado);
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGRadioBox>(idComponente)->SetAcionadoItem(item,marcado);
 }
 
 int PIG_RadioBox_GetEstadoMarcadoItem(int idComponente,int item){
-    return ((PIGRadioBox)CPIGGerenciadorForms::GetComponente(idComponente))->GetAcionadoItem(item);
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGRadioBox>(idComponente)->GetAcionadoItem(item);
 }
 
 int PIG_RadioBox_SetAudioItem(int idComponente,int item,int audio){
-    return ((PIGRadioBox)CPIGGerenciadorForms::GetComponente(idComponente))->SetAudioItem(item,audio);
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGRadioBox>(idComponente)->SetAudioItem(item,audio);
 }
 
 int PIG_RadioBox_GetEstadoHabilitadoItem(int idComponente,int item){
-    return ((PIGRadioBox)CPIGGerenciadorForms::GetComponente(idComponente))->GetHabilitadoItem(item);
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGRadioBox>(idComponente)->GetHabilitadoItem(item);
 }
 
 int PIG_RadioBox_SetEstadoHabilitadoItem(int idComponente,int item,bool habilitado){
-    return ((PIGRadioBox)CPIGGerenciadorForms::GetComponente(idComponente))->SetHabilitadoItem(item,habilitado);
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGRadioBox>(idComponente)->SetHabilitadoItem(item,habilitado);
 }
 
 void PIG_RadioBox_SetEstadoHabilitadoItens(int idComponente,bool habilitado){
-    return ((PIGRadioBox)CPIGGerenciadorForms::GetComponente(idComponente))->SetHabilitado(habilitado);
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGRadioBox>(idComponente)->SetHabilitado(habilitado);
 }
 
 /**********CHECKBOX**************/
 
 int PIG_CriaCheckBox(int idForm,int x, int y,int larguraTotal,int alturaLinha, int alturaMaxima,char* imagemItem, int alturaItem, int larguraItem,char* imagemFundo, int retiraFundo=1, int idJanela=0){
-    return CPIGGerenciadorForms::CriaCheckBox(idForm,x,y,larguraTotal,alturaLinha,alturaMaxima,imagemItem,alturaItem,larguraItem,imagemFundo,retiraFundo);
+    return CPIGGerenciadorForms::GetForm(idForm)->CriaCheckBox(x,y,larguraTotal,alturaLinha,alturaMaxima,imagemItem,alturaItem,larguraItem,imagemFundo,retiraFundo);
 }
 
 void PIG_CheckBox_CriaItem(int idComponente,char* itemLabel,char *imagemFundo="",char* hintMsg="",bool itemMarcado = false, bool itemHabilitado = true, int audio=-1,  int retiraFundo=1){
-    ((PIGCheckBox)CPIGGerenciadorForms::GetComponente(idComponente))->CriaItem(itemLabel,imagemFundo,itemMarcado,itemHabilitado,audio,hintMsg,retiraFundo);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCheckBox>(idComponente)->CriaItem(itemLabel,imagemFundo,itemMarcado,itemHabilitado,audio,hintMsg,retiraFundo);
 }
 
 void PIG_CheckBox_SetMarcadoTodos(int idComponente,bool marcado){
-    ((PIGCheckBox)CPIGGerenciadorForms::GetComponente(idComponente))->SetAcionadoTodos(marcado);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCheckBox>(idComponente)->SetAcionadoTodos(marcado);
 }
 
 int PIG_CheckBox_SetMarcadoItem(int idComponente,int indice,bool marcado){
-    return ((PIGCheckBox)CPIGGerenciadorForms::GetComponente(idComponente))->SetAcionadoItem(indice,marcado);
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCheckBox>(idComponente)->SetAcionadoItem(indice,marcado);
 }
 
 std::vector <int> PIG_CheckBox_GetItensMarcados(int idComponente){
-    return ((PIGCheckBox)CPIGGerenciadorForms::GetComponente(idComponente))->GetItensMarcados();
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCheckBox>(idComponente)->GetItensMarcados();
 }
 
 int PIG_CheckBox_GetMarcadoItem(int idComponente,int item){
-    return ((PIGCheckBox)CPIGGerenciadorForms::GetComponente(idComponente))->GetAcionadoItem(item);
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCheckBox>(idComponente)->GetAcionadoItem(item);
 }
 
 int PIG_CheckBox_SetAudioItem(int idComponente,int item,int audio){
-    return ((PIGCheckBox)CPIGGerenciadorForms::GetComponente(idComponente))->SetAudioItem(item,audio);
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCheckBox>(idComponente)->SetAudioItem(item,audio);
 }
 
 int PIG_CheckBox_GetHabilitadoItem(int idComponente,int item){
-    return ((PIGCheckBox)CPIGGerenciadorForms::GetComponente(idComponente))->GetHabilitadoItem(item);
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCheckBox>(idComponente)->GetHabilitadoItem(item);
 }
 
 int PIG_CheckBox_SetHabilitadoItem(int idComponente,int item,bool habilitado){
-    return ((PIGCheckBox)CPIGGerenciadorForms::GetComponente(idComponente))->SetHabilitadoItem(item,habilitado);
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCheckBox>(idComponente)->SetHabilitadoItem(item,habilitado);
 }
 
 void PIG_CheckBox_SetHabilitado(int idComponente,bool habilitado){
-    return ((PIGCheckBox)CPIGGerenciadorForms::GetComponente(idComponente))->SetHabilitado(habilitado);
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCheckBox>(idComponente)->SetHabilitado(habilitado);
 }
 
 /********************************/

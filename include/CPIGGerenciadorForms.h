@@ -7,97 +7,77 @@ class CPIGGerenciadorForms{
 
 private:
 
-    static int totalForms;
+    /*static int totalForms;
     static PIGPoolNumeros numForms;
-    static CPIGForm* forms[MAX_FORMS];
-
-    static CPIGForm* GetForm(int id){
-        return forms[id];
-    }
-
-    static CPIGForm* GetFormComponente(int idComponente){
-        return forms[idComponente / MAX_COMPONENTES];
-    }
+    static PIGForm forms[MAX_FORMS];*/
+    static std::vector<int> posLivres;
+    static std::unordered_map<int,PIGForm> forms;
+    static std::unordered_map<int,PIGForm>::iterator it;
 
 public:
 
     static void Inicia(){
-        totalForms = 0;
+        /*totalForms = 0;
         for (int i=0;i<MAX_FORMS;i++)
             forms[i] = NULL;
-        numForms = new CPIGPoolNumeros(MAX_FORMS);
+        numForms = new CPIGPoolNumeros(MAX_FORMS);*/
+        for (int i=0;i<MAX_TIMERS;i++)
+            posLivres.push_back(i);
     }
 
     static void Encerra(){
-        for (int i=0;i<MAX_FORMS;i++)
-            if(forms[i]) delete forms[i];
+        /*for (int i=0;i<MAX_FORMS;i++)
+            if(forms[i]) delete forms[i];*/
+        for(it = forms.begin(); it != forms.end(); ++it) {
+            delete it->second;
+        }
+    }
+
+    static PIGForm GetForm(int idForm){
+        /*if (idForm<0||idForm>=MAX_FORMS||forms[idForm]==NULL) throw CPIGErroIndice(idForm,"forms");
+        return forms[idForm];*/
+        it = forms.find(idForm);
+        if (it==forms.end()) throw CPIGErroIndice(idForm,"forms");
+        return it->second;
+    }
+
+    static PIGForm GetFormComponente(int idComponente){
+        return GetForm(idComponente / MAX_COMPONENTES);
+        /*int idForm = idComponente / MAX_COMPONENTES;
+        if (idForm>=MAX_FORMS||forms[idForm]==NULL) throw CPIGErroIndice(idComponente,"forms");
+        return forms[idForm];*/
     }
 
     static int CriaForm(int x,int y,int altura,int largura,int janela = 0){
-        int posForm = numForms->RetiraLivre();
+        /*int posForm = numForms->RetiraLivre();
         forms[posForm] = new CPIGForm(posForm,x,y,altura,largura,janela);
         totalForms++;
-        return posForm;
+        return posForm;*/
+        int resp = posLivres[0];
+        posLivres.erase(posLivres.begin());
+        forms[resp] = new CPIGForm(resp,x,y,altura,largura,janela);
+        return resp;
     }
 
-    static int Desenha(int idForm){
-        GetForm(idForm)->Desenha();
-    }
-
-    static int TrataEvento(int idForm,PIG_Evento evento){
-        return GetForm(idForm)->TrataEvento(evento);
-    }
-
-    static CPIGComponente* GetComponente(int idComponente){
-        CPIGForm *form = GetFormComponente(idComponente);
-        if(form) return form->GetComponente(idComponente);
-        return NULL;
-    }
-
-    static int CriaBotao(int idForm,int x,int y,int altura,int largura,std::string nomeArq,int retiraFundo = 1){
-        return GetForm(idForm)->CriaBotao(x,y,altura,largura,nomeArq,retiraFundo);
-    }
-
-    static int CriaAreaDeTexto(int idForm,int x, int y, int altura,int largura,std::string nomeArq,int maxCars = 200,int retiraFundo=1){
-        return GetForm(idForm)->CriaAreaDeTexto(x,y,altura,largura,nomeArq,maxCars,retiraFundo);
-    }
-
-    static int CriaCampoTextoESenha(int idForm,int x, int y, int altura,int largura,std::string nomeArq,int maxCars = 200, bool apenasNumeros=false, int retiraFundo=1,bool campoSenha = false){
-        return GetForm(idForm)->CriaCampoTextoESenha(x,y,altura,largura,nomeArq,maxCars,apenasNumeros,retiraFundo,campoSenha);
-    }
-
-    static int CriaListBox(int idForm,int x, int y,int larguraTotal,int alturaLinha, int alturaMaxima,int alturaItem,int larguraItem,std::string nomeArq,int retiraFundo=1){
-        return GetForm(idForm)->CriaListBox(x,y,larguraTotal,alturaLinha,alturaMaxima,alturaItem,larguraItem,nomeArq,retiraFundo);
-    }
-
-    static int CriaDropDown(int idForm,int x, int y, int larguraTotal, int alturaLinha,int alturaMaxima,int alturaItem,int larguraItem,std::string nomeArq,int retiraFundo=1){
-        return GetForm(idForm)->CriaDropDown(x,y,larguraTotal,alturaLinha,alturaMaxima,alturaItem,larguraItem,nomeArq,retiraFundo);
-    }
-
-    static int CriaGauge(int idForm,int x, int y,int altura,int largura,std::string imgGauge,int retiraFundo=1){
-        return GetForm(idForm)->CriaGauge(x,y,altura,largura,imgGauge,retiraFundo);
-    }
-
-    static int CriaRadioBox(int idForm,int x, int y,int larguraTotal,int alturaLinha, int alturaMaxima,std::string imagemItem, int alturaItem, int larguraItem,std::string imagemFundo, int retiraFundo=1){
-        return GetForm(idForm)->CriaRadioBox(x,y,larguraTotal,alturaLinha,alturaMaxima,imagemItem,alturaItem,larguraItem,imagemFundo,retiraFundo);
-    }
-
-    static int CriaCheckBox(int idForm,int x, int y,int larguraTotal,int alturaLinha, int alturaMaxima, std::string imagemItem, int alturaItem, int larguraItem,std::string imagemFundo,int retiraFundo=1){
-        return GetForm(idForm)->CriaCheckBox(x,y,larguraTotal,alturaLinha,alturaMaxima,imagemItem,alturaItem,larguraItem,imagemFundo,retiraFundo);
-    }
-
-    static int CriaGaugeCircular(int idForm,int x,int y,int altura,int largura,int raioInterior,std::string nomeArq,int retiraFundo = 1){
-        return GetForm(idForm)->CriaGaugeCircular(x,y,altura,largura,raioInterior,nomeArq,retiraFundo);
-    }
-
-    static int CriaComponentePorArquivo(int idForm,tipos_Componentes componente,std::string nomeArquivo){
-        return GetForm(idForm)->CriaComponentePorArquivo(componente,nomeArquivo);
+    static void DestroiForm(int idForm){
+        /*PIGForm form = GetForm(idForm);
+        numForms->DevolveUsado(idForm);
+        delete form;
+        totalForms--;
+        forms[idForm] = NULL;*/
+        PIGForm form = GetForm(idForm);
+        delete form;
+        forms.erase(idForm);
     }
 
 };
 
-int CPIGGerenciadorForms::totalForms;
-PIGPoolNumeros CPIGGerenciadorForms::numForms;
-CPIGForm* CPIGGerenciadorForms::forms[MAX_FORMS];
+std::vector<int> CPIGGerenciadorForms::posLivres;
+std::unordered_map<int,PIGForm> CPIGGerenciadorForms::forms;
+std::unordered_map<int,PIGForm>::iterator CPIGGerenciadorForms::it;
+
+//int CPIGGerenciadorForms::totalForms;
+//PIGPoolNumeros CPIGGerenciadorForms::numForms;
+//CPIGForm* CPIGGerenciadorForms::forms[MAX_FORMS];
 
 #endif // _CPIGGERENCIADORFORM_

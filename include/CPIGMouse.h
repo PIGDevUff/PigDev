@@ -14,7 +14,7 @@ private:
 public:
 
     static void Inicia(bool cursorCustomizado){
-        SDL_ShowCursor(cursorCustomizado);
+        SDL_ShowCursor(!cursorCustomizado);
         cursores = NULL;
     }
 

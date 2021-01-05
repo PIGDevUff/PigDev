@@ -30,7 +30,7 @@ void AtualizaFrameAtual(PIGModoAnimacao modo){
 
     if (tempoFrame)
         tempoFrame->Reinicia(false);
-    else CPIGGerenciadorTimers::ReiniciaTimer(idTimer);
+    else CPIGGerenciadorTimers::GetTimer(idTimer)->Reinicia(false);
 }
 
 public:
@@ -166,7 +166,7 @@ int Desenha(){
 
         if (tempoFrame)
             tempoDecorrido = tempoFrame->GetTempoDecorrido();
-        else tempoDecorrido = CPIGGerenciadorTimers::GetTempoDecorrido(idTimer);
+        else tempoDecorrido = CPIGGerenciadorTimers::GetTimer(idTimer)->GetTempoDecorrido();
 
         if (modos[modoAtual]->TestaTempo(tempoDecorrido)){
             AtualizaFrameAtual(modos[modoAtual]);
@@ -191,14 +191,14 @@ int Desenha(){
 void Pausa(){
     if (tempoFrame)
         tempoFrame->Pausa();
-    else CPIGGerenciadorTimers::PausaTimer(idTimer);
+    else CPIGGerenciadorTimers::GetTimer(idTimer)->Pausa();
 }
 
 //despausa a animação
 void Despausa(){
     if (tempoFrame)
         tempoFrame->Despausa();
-    else CPIGGerenciadorTimers::DespausaTimer(idTimer);
+    else CPIGGerenciadorTimers::GetTimer(idTimer)->Despausa();
 }
 
 //define o tempo de um frame já criado

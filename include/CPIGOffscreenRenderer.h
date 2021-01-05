@@ -2,7 +2,6 @@
 #define _COFFSCREENRENDERER_
 
 #include "CPIGPilhaCoordenada.h"
-#define PIG_MAX_CAMADAS_OFFSCREEN 50
 
 typedef struct{
     SDL_Surface *surf;
@@ -13,7 +12,7 @@ class CPIGOffscreenRenderer{
 
 private:
 
-Layer layers[PIG_MAX_CAMADAS_OFFSCREEN];
+Layer layers[MAX_CAMADAS_OFFSCREEN];
 int qtdLayers,maxLayers;
 
 int alt,larg,depth;

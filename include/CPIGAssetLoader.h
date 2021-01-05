@@ -1,6 +1,8 @@
 #ifndef _CPIGASSETLOADER_
 #define _CPIGASSETLOADER_
 
+#include <unordered_map>
+
 class CPIGHashNodeImagem{
 
 public:
@@ -38,8 +40,8 @@ private:
 
     static int totalBitmaps;
     static int totalAudios;
-    static std::map<std::string,PIGHashNodeImagem> mapImagens;
-    static std::map<std::string,PIGHashNodeAudio> mapAudios;
+    static std::unordered_map<std::string,PIGHashNodeImagem> mapImagens;
+    static std::unordered_map<std::string,PIGHashNodeAudio> mapAudios;
 
 public:
 
@@ -49,16 +51,16 @@ public:
     }
 
     static void Encerra(){
-        for(std::map<std::string,PIGHashNodeImagem>::iterator it = mapImagens.begin(); it != mapImagens.end(); ++it) {
+        for(std::unordered_map<std::string,PIGHashNodeImagem>::iterator it = mapImagens.begin(); it != mapImagens.end(); ++it) {
             delete it->second;
         }
-        for(std::map<std::string,PIGHashNodeAudio>::iterator it = mapAudios.begin(); it != mapAudios.end(); ++it) {
+        for(std::unordered_map<std::string,PIGHashNodeAudio>::iterator it = mapAudios.begin(); it != mapAudios.end(); ++it) {
             delete it->second;
         }
     }
 
     static SDL_Surface *LoadImage(std::string nomeArq){
-        std::map<std::string, PIGHashNodeImagem>::iterator it = mapImagens.find(nomeArq);
+        std::unordered_map<std::string, PIGHashNodeImagem>::iterator it = mapImagens.find(nomeArq);
         if (it == mapImagens.end()){//não achou
             PIGHashNodeImagem imagem = new CPIGHashNodeImagem(nomeArq);
             mapImagens[nomeArq]=imagem;
@@ -72,7 +74,7 @@ public:
     }
 
     static void FreeImage(std::string nomeArq){
-        std::map<std::string, PIGHashNodeImagem>::iterator it = mapImagens.find(nomeArq);
+        std::unordered_map<std::string, PIGHashNodeImagem>::iterator it = mapImagens.find(nomeArq);
         if (it == mapImagens.end()){//não achou
             printf("Nao existe asset carregado: %s\n",nomeArq.c_str());
         }else{
@@ -85,7 +87,7 @@ public:
     }
 
     static Mix_Chunk *LoadAudio(std::string nomeArq){
-        std::map<std::string, PIGHashNodeAudio>::iterator it = mapAudios.find(nomeArq);
+        std::unordered_map<std::string, PIGHashNodeAudio>::iterator it = mapAudios.find(nomeArq);
         if (it == mapAudios.end()){//não achou
             PIGHashNodeAudio audio = new CPIGHashNodeAudio(nomeArq);
             mapAudios[nomeArq] = audio;
@@ -98,7 +100,7 @@ public:
     }
 
     static void FreeAudio(std::string nomeArq){
-        std::map<std::string, PIGHashNodeAudio>::iterator it = mapAudios.find(nomeArq);
+        std::unordered_map<std::string, PIGHashNodeAudio>::iterator it = mapAudios.find(nomeArq);
         if (it == mapAudios.end()){//não achou
             printf("Nao existe asset carregado: %s\n",nomeArq.c_str());
         }else{
@@ -113,7 +115,7 @@ public:
 };
 
 int CPIGAssetLoader::totalBitmaps;
-std::map<std::string,PIGHashNodeImagem> CPIGAssetLoader::mapImagens;
+std::unordered_map<std::string,PIGHashNodeImagem> CPIGAssetLoader::mapImagens;
 int CPIGAssetLoader::totalAudios;
-std::map<std::string,PIGHashNodeAudio> CPIGAssetLoader::mapAudios;
+std::unordered_map<std::string,PIGHashNodeAudio> CPIGAssetLoader::mapAudios;
 #endif // _CPIGASSETLOADER_

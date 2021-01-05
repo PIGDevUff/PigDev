@@ -103,8 +103,16 @@ public:
         return 0;
     }
 
-    CPIGComponente* GetComponente(int idComponente){
+    PIGComponente GetComponente(int idComponente){
+        if (componentes[idComponente % MAX_COMPONENTES]==NULL) throw CPIGErroIndice(idComponente,"componentes");
         return componentes[idComponente % MAX_COMPONENTES];
+    }
+
+    template <class T>
+    T GetComponente(int idComponente){
+        T comp = (T) componentes[idComponente % MAX_COMPONENTES];
+        if (comp==NULL) throw CPIGErroIndice(idComponente,"componentes");
+        return comp;
     }
 
     int CriaBotao(int px, int py, int altura,int largura,std::string nomeArq,int retiraFundo = 1){
@@ -179,5 +187,5 @@ public:
     }
 
 };
-
+typedef CPIGForm *PIGForm;
 #endif // _CPIGFORM_

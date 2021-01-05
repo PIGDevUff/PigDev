@@ -28,9 +28,9 @@ private:
         std::string aux;
 
         aux.assign(textoBase,0,posCursor);
-        xCursor = xBase + CPIGGerenciadorFontes::GetLarguraPixels(aux,fonteTexto);
+        xCursor = xBase + CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetLarguraPixelsString(aux);
 
-        AjustaBaseTextoEixoX(CPIGGerenciadorFontes::GetLarguraPixels(aux,fonteTexto));
+        AjustaBaseTextoEixoX(CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetLarguraPixelsString(aux));
     }
 
     int TrataEventoMouse(PIG_Evento evento){
@@ -137,7 +137,7 @@ public:
         SDL_Rect r={x+margemHorEsq+1,altJanela-y-alt+margemVertCima,larg-(margemHorEsq+margemHorDir),alt-(margemVertBaixo+margemVertCima)};
         SDL_RenderSetClipRect(renderer,&r);
 
-        CPIGGerenciadorFontes::EscreverString(GetTextoVisivel(),xBase,yBase,fonteTexto,BRANCO,PIG_TEXTO_ESQUERDA);
+        CPIGGerenciadorFontes::GetFonte(fonteTexto)->Escreve(GetTextoVisivel(),xBase,yBase,BRANCO,PIG_TEXTO_ESQUERDA);
         DesenhaCursor();//desenha o cursor (se estiver em edição)
 
         //desbloqueia o desenho fora da area do componente

@@ -32,7 +32,7 @@ private:
         if(itemDestaque !=-1){
             int posX,posY;
             itens[itemDestaque]->GetXY(posX,posY);
-            CPIGGerenciadorJanelas::DesenhaRetanguloVazado(x,posY,altBaseLista,larg,AZUL,idJanela);
+            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado(x,posY,altBaseLista,larg,AZUL);
         }
     }
 
