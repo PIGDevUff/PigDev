@@ -101,7 +101,7 @@ nomeArquivoImagem (entrada, passagem por referência*): indica o caminho relativo
 idJanela (entrada, passagem por valor não-obrigatorio): indica de qual janela é a imagem.
 ********************************/
 void DefineFundo(char *nomeArquivoImagem,int idJanela=0){
-    CPIGGerenciadorJanelas::DefineFundo(nomeArquivoImagem,idJanela);
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->DefineFundo(nomeArquivoImagem);
 }
 
 /********************************
@@ -157,7 +157,7 @@ nomeArquivoBMP (entrada, passagem por referência*): indica o nome do arquivo Bit
 idJanela (entrada, passagem por valor não-obrigatório): indica qual janela deve ter a imagem salva.
 ********************************/
 void SalvaTela(char *nomeArquivoBMP,int idJanela=0){
-    CPIGGerenciadorJanelas::SaveScreenshotBMP(nomeArquivoBMP,idJanela);
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->SaveScreenshot(nomeArquivoBMP,true);
 }
 
 /********************************
@@ -1232,7 +1232,7 @@ retorno:
 inteiro que representa o espaçamento vertical ideal para que duas frases não se sobreponham verticalmente.
 ********************************/
 void SubstituiCaractere(char caractere, char *nomeArquivo, int largNova, int x, int y, int altura,int largura,int numFonte=0){
-    CPIGGerenciadorFontes::SubstituiCaracter(caractere,nomeArquivo,largNova,x,y,altura,largura,numFonte);
+    CPIGGerenciadorFontes::GetFonte(numFonte)->SubstituiGlyph(nomeArquivo,caractere,largNova,x,y,altura,largura);
 }
 
 

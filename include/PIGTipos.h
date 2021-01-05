@@ -51,6 +51,8 @@ Principais definições utilizadas pela PIG
 #define VOLUME_PADRAO               64
 
 #define MAX_SPRITES                 5000
+#define MAX_OBJETOS                 2000
+#define MAX_ANIMACOES               1000
 
 #define MAX_FRAMES                  2000
 #define MAX_FRAMES_MODO             100

@@ -11,16 +11,19 @@ private:
     static PIGPoolNumeros numFontes;
     static PIGMapaCaracteres fontes[MAX_FONTES];*/
 
-    static std::vector<int> posLivres;
-    static std::unordered_map<int,PIGMapaCaracteres> fontes;
-    static std::unordered_map<int,PIGMapaCaracteres>::iterator it;
+    //static std::vector<int> posLivres;
+    //static std::unordered_map<int,PIGMapaCaracteres> fontes;
+    //static std::unordered_map<int,PIGMapaCaracteres>::iterator it;
+
+    static CPIGRepositorio<PIGMapaCaracteres> *fontes;
 
 public:
 
     static PIGMapaCaracteres GetFonte(int idFonte){
-        it = fontes.find(idFonte);
+        /*it = fontes.find(idFonte);
         if (it==fontes.end()) throw CPIGErroIndice(idFonte,"fontes");
-        return it->second;
+        return it->second;*/
+        return fontes->GetElemento(idFonte);
     }
 
     /*static PIGMapaCaracteresDinamicos GetFonteDinamica(int idFonte){
@@ -32,7 +35,7 @@ public:
     static void Inicia(){
         TTF_Init();
 
-        fontes[0] = new CPIGMapaCaracteres(PIG_FONTE_PADRAO_NOME,PIG_FONTE_PADRAO_TAM,ESTILO_NORMAL,PIG_FONTE_PADRAO_COR,0);
+        //fontes[0] = new CPIGMapaCaracteres(PIG_FONTE_PADRAO_NOME,PIG_FONTE_PADRAO_TAM,ESTILO_NORMAL,PIG_FONTE_PADRAO_COR,0);
         //fontes[0] = new CMapaCaracteres(PIG_FONTE_PADRAO_NOME,PIG_FONTE_PADRAO_TAM,ESTILO_NORMAL,PIG_FONTE_PADRAO_COR,0,VERDE,0);
         //fontes[0] = new CMapaCaracteres(PIG_FONTE_PADRAO_NOME,PIG_FONTE_PADRAO_TAM,ESTILO_NORMAL,"desenho.bmp",0,BRANCO,0);
         //fontes[0] = new CMapaCaracteresDinamicos("..//fontes//arial.ttf",PIG_FONTE_PADRAO_TAM,0);
@@ -42,8 +45,10 @@ public:
             fontes[i] = NULL;
 
         numFontes = new CPIGPoolNumeros(MAX_FONTES);*/
-        for (int i=1;i<MAX_FONTES;i++)
-            posLivres.push_back(i);
+        //for (int i=1;i<MAX_FONTES;i++)
+        //    posLivres.push_back(i);
+        fontes = new CPIGRepositorio<PIGMapaCaracteres>(MAX_FONTES,"fontes");
+        fontes->Insere(new CPIGMapaCaracteres(PIG_FONTE_PADRAO_NOME,PIG_FONTE_PADRAO_TAM,ESTILO_NORMAL,PIG_FONTE_PADRAO_COR,0));
     }
 
     static void Encerra(){
@@ -51,9 +56,10 @@ public:
             if (fontes[i]) delete fontes[i];
         }
         delete numFontes;*/
-        for(it = fontes.begin(); it != fontes.end(); ++it) {
+        /*for(it = fontes.begin(); it != fontes.end(); ++it) {
             delete it->second;
-        }
+        }*/
+        delete fontes;
 
         TTF_Quit();
     }
@@ -64,10 +70,11 @@ public:
         totalFontes++;
         return resp;*/
 
-        int resp = posLivres[0];
+        /*int resp = posLivres[0];
         posLivres.erase(posLivres.begin());
         fontes[resp] = new CPIGMapaCaracteres(nome,tamanho,estilo,arquivoFundo,contorno,corContorno,idJanela);
-        return resp;
+        return resp;*/
+        fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,arquivoFundo,contorno,corContorno,idJanela));
     }
 
     static int CriaFonteFundo(char *nome,int tamanho,int estilo,char *arquivoFundo,int idJanela=0){
@@ -75,10 +82,11 @@ public:
         fontes[resp] = new CPIGMapaCaracteres(nome,tamanho,estilo,arquivoFundo,idJanela);
         totalFontes++;
         return resp;*/
-        int resp = posLivres[0];
+        /*int resp = posLivres[0];
         posLivres.erase(posLivres.begin());
         fontes[resp] = new CPIGMapaCaracteres(nome,tamanho,estilo,arquivoFundo,idJanela);
-        return resp;
+        return resp;*/
+        fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,arquivoFundo,idJanela));
     }
 
     static int CriaFonteNormal(char *nome,int tamanho,int estilo,PIG_Cor corLetra,int contorno,PIG_Cor corContorno,int idJanela=0){
@@ -86,10 +94,11 @@ public:
         fontes[resp] = new CPIGMapaCaracteres(nome,tamanho,estilo,corLetra,contorno,corContorno,idJanela);
         totalFontes++;
         return resp;*/
-        int resp = posLivres[0];
+        /*int resp = posLivres[0];
         posLivres.erase(posLivres.begin());
         fontes[resp] = new CPIGMapaCaracteres(nome,tamanho,estilo,corLetra,contorno,corContorno,idJanela);
-        return resp;
+        return resp;*/
+        fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,corLetra,contorno,corContorno,idJanela));
     }
 
     static int CriaFonteNormal(char *nome,int tamanho,int estilo,PIG_Cor corLetra=BRANCO,int idJanela=0){
@@ -97,10 +106,11 @@ public:
         fontes[resp] = new CPIGMapaCaracteres(nome,tamanho,estilo,corLetra,idJanela);
         totalFontes++;
         return resp;*/
-        int resp = posLivres[0];
+        /*int resp = posLivres[0];
         posLivres.erase(posLivres.begin());
         fontes[resp] = new CPIGMapaCaracteres(nome,tamanho,estilo,corLetra,idJanela);
-        return resp;
+        return resp;*/
+        fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,corLetra,idJanela));
     }
 
     static int CriaFonteDinamica(char *nome,int tamanho,int idJanela=0){
@@ -108,10 +118,11 @@ public:
         fontes[resp] = new CPIGMapaCaracteresDinamicos(nome,tamanho,idJanela);
         totalFontes++;
         return resp;*/
-        int resp = posLivres[0];
+        /*int resp = posLivres[0];
         posLivres.erase(posLivres.begin());
         fontes[resp] = new CPIGMapaCaracteresDinamicos(nome,tamanho,idJanela);
-        return resp;
+        return resp;*/
+        fontes->Insere(new CPIGMapaCaracteresDinamicos(nome,tamanho,idJanela));
     }
 
     /*inline static int GetLarguraPixels(std::string texto,int numFonte=0){
@@ -177,21 +188,24 @@ public:
         delete fontes[idFonte];
         totalFontes--;
         fontes[idFonte] = NULL;*/
-        PIGMapaCaracteres mapa = GetFonte(idFonte);
+        /*PIGMapaCaracteres mapa = GetFonte(idFonte);
         delete mapa;
-        fontes.erase(idFonte);
+        fontes.erase(idFonte);*/
+        fontes->Remove(idFonte);
     }
 
-    static void SubstituiCaracter(uint16_t caracter,string nomeArquivo,int largNova,int x,int y,int altura,int largura,int numFonte){
+    /*static void SubstituiCaracter(uint16_t caracter,string nomeArquivo,int largNova,int x,int y,int altura,int largura,int numFonte){
         fontes[numFonte]->SubstituiGlyph(nomeArquivo,caracter,largNova,x,y,altura,largura);
-    }
+    }*/
 
 };
 
-std::vector<int> CPIGGerenciadorFontes::posLivres;
+CPIGRepositorio<PIGMapaCaracteres> *CPIGGerenciadorFontes::fontes;
+
+/*std::vector<int> CPIGGerenciadorFontes::posLivres;
 std::unordered_map<int,PIGMapaCaracteres> CPIGGerenciadorFontes::fontes;
 std::unordered_map<int,PIGMapaCaracteres>::iterator CPIGGerenciadorFontes::it;
-
+*/
 /*PIGPoolNumeros CPIGGerenciadorFontes::numFontes;
 int CPIGGerenciadorFontes::totalFontes;
 PIGMapaCaracteres CPIGGerenciadorFontes::fontes[MAX_FONTES];*/

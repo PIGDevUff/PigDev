@@ -4,7 +4,7 @@
 template <class T>
 class CPIGRepositorio{
 
-private:
+protected:
 std::string tipoElementos;
 std::vector<int> posLivres;
 std::unordered_map<int,T> elementos;
@@ -45,6 +45,18 @@ public:
 
     int ProxID(){
         return posLivres.back();
+    }
+
+    T GetPrimeiroElemento(){
+        it = elementos.begin();
+        if (it == elementos.end()) return NULL;
+        return it->second;
+    }
+
+    T GetProximoElemento(){
+        ++it;
+        if (it == elementos.end()) return NULL;
+        return it->second;
     }
 
 };

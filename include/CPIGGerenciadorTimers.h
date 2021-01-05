@@ -10,10 +10,11 @@ private:
     static PIGPoolNumeros numTimers;
     static PIGTimer timers[MAX_TIMERS];*/
 
-    static std::vector<int> posLivres;
+    /*static std::vector<int> posLivres;
     static std::unordered_map<int,PIGTimer> timers;
     static std::unordered_map<int,PIGTimer>::iterator it;
-
+*/
+    static CPIGRepositorio<PIGTimer> *timers;
 public:
 
     static void Inicia(){
@@ -21,8 +22,9 @@ public:
         for (int i=0;i<MAX_TIMERS;i++)
             timers[i] = NULL;
         numTimers = new CPIGPoolNumeros(MAX_TIMERS);*/
-        for (int i=0;i<MAX_TIMERS;i++)
-            posLivres.push_back(i);
+        //for (int i=0;i<MAX_TIMERS;i++)
+        //    posLivres.push_back(i);
+        timers = new CPIGRepositorio<PIGTimer>(MAX_TIMERS,"timers");
     }
 
     static void Encerra(){
@@ -30,15 +32,17 @@ public:
             if (timers[i]) delete timers[i];
         }
         delete numTimers;*/
-        for(it = timers.begin(); it != timers.end(); ++it) {
-            delete it->second;
-        }
+        //for(it = timers.begin(); it != timers.end(); ++it) {
+        //    delete it->second;
+        //}
+        delete timers;
     }
 
     static PIGTimer GetTimer(int idTimer){
-        it = timers.find(idTimer);
-        if (it==timers.end()) throw CPIGErroIndice(idTimer,"timers");
-        return it->second;
+        //it = timers.find(idTimer);
+        //if (it==timers.end()) throw CPIGErroIndice(idTimer,"timers");
+        //return it->second;
+        return timers->GetElemento(idTimer);
     }
 
     static int CriaTimer(bool congelado=false){
@@ -46,10 +50,11 @@ public:
         timers[resp] = new CPIGTimer(congelado);
         totalTimers++;
         return resp;*/
-        int resp = posLivres[0];
+        /*int resp = posLivres[0];
         posLivres.erase(posLivres.begin());
         timers[resp] = new CPIGTimer(congelado);
-        return resp;
+        return resp;*/
+        timers->Insere(new CPIGTimer(congelado));
     }
 
     static void DestroiTimer(int idTimer){
@@ -57,9 +62,10 @@ public:
         totalTimers--;
         delete timers[id_timer];
         timers[id_timer] = NULL;*/
-        PIGTimer timer = GetTimer(idTimer);
-        delete timer;
-        timers.erase(idTimer);
+        //PIGTimer timer = GetTimer(idTimer);
+        //delete timer;
+        //timers.erase(idTimer);
+        timers->Remove(idTimer);
     }
 
     static void PausaTodos(){
@@ -67,9 +73,14 @@ public:
             if (timers[i])
                 timers[i]->Pausa();
         }*/
-        for(it = timers.begin(); it != timers.end(); ++it) {
-            it->second->Pausa();
+        PIGTimer t = timers->GetPrimeiroElemento();
+        while (t != NULL){
+            t->Pausa();
+            t = timers->GetProximoElemento();
         }
+        /*for(it = timers.begin(); it != timers.end(); ++it) {
+            it->second->Pausa();
+        }*/
     }
 
     static void DespausaTodos(){
@@ -78,8 +89,13 @@ public:
                 timers[i]->Despausa();
             }
         }*/
-        for(it = timers.begin(); it != timers.end(); ++it) {
+        /*for(it = timers.begin(); it != timers.end(); ++it) {
             it->second->Despausa();
+        }*/
+        PIGTimer t = timers->GetPrimeiroElemento();
+        while (t != NULL){
+            t->Despausa();
+            t = timers->GetProximoElemento();
         }
     }
 
@@ -100,9 +116,10 @@ public:
     }*/
 
 };
-std::vector<int> CPIGGerenciadorTimers::posLivres;
+CPIGRepositorio<PIGTimer> *CPIGGerenciadorTimers::timers;
+/*std::vector<int> CPIGGerenciadorTimers::posLivres;
 std::unordered_map<int,PIGTimer> CPIGGerenciadorTimers::timers;
-std::unordered_map<int,PIGTimer>::iterator CPIGGerenciadorTimers::it;
+std::unordered_map<int,PIGTimer>::iterator CPIGGerenciadorTimers::it;*/
 //PIGPoolNumeros CPIGGerenciadorTimers::numTimers;
 //int CPIGGerenciadorTimers::totalTimers;
 //PIGTimer CPIGGerenciadorTimers::timers[MAX_TIMERS];

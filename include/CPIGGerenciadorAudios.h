@@ -8,9 +8,11 @@ private:
 //static int totalAudios;
 //static PIGPoolNumeros numAudios;
 //static PIGAudio audios[MAX_AUDIOS];
-static std::vector<int> posLivres;
+/*static std::vector<int> posLivres;
 static std::unordered_map<int,PIGAudio> audios;
 static std::unordered_map<int,PIGAudio>::iterator it;
+*/
+static CPIGRepositorio<PIGAudio> *audios;
 
 static int audioIds[QTD_CANAIS_PADRAO];
 static Mix_Music *background;
@@ -47,9 +49,10 @@ static void Inicia(){
     for (int i=0;i<MAX_AUDIOS;i++){
         audios[i] = NULL;
     }*/
-    for (int i=0;i<MAX_AUDIOS;i++)
+    /*for (int i=0;i<MAX_AUDIOS;i++)
         posLivres.push_back(i);
-
+*/
+    audios = new CPIGRepositorio<PIGAudio>(MAX_AUDIOS,"audios");
     for (int i=0;i<QTD_CANAIS_PADRAO;i++){
         audioIds[i] = -1;
     }
@@ -68,9 +71,10 @@ static void Encerra(){
         if (audios[i]) delete audios[i];
     }
     delete numAudios;*/
-    for(it = audios.begin(); it != audios.end(); ++it) {
+    /*for(it = audios.begin(); it != audios.end(); ++it) {
         delete it->second;
-    }
+    }*/
+    delete audios;
     if (background)
         Mix_FreeMusic(background);
     Mix_CloseAudio();
@@ -79,9 +83,10 @@ static void Encerra(){
 inline static PIGAudio GetAudio(int idAudio){
     /*if (idAudio<0||idAudio>=MAX_AUDIOS||audios[idAudio]==NULL) throw CPIGErroIndice(idAudio,"audios");
     return audios[idAudio];*/
-    it = audios.find(idAudio);
+    /*it = audios.find(idAudio);
     if (it==audios.end()) throw CPIGErroIndice(idAudio,"audios");
-    return it->second;
+    return it->second;*/
+    return audios->GetElemento(idAudio);
 }
 
 static void CarregaBackground(std::string nomeArquivo){
@@ -136,10 +141,11 @@ static int CriaAudio(std::string nomeArquivo,int nLoops,int tempoExecucao=-1){
     audios[resp] = new CPIGAudio(nomeArquivo,nLoops,tempoExecucao);
     totalAudios++;
     return resp;*/
-    int resp = posLivres[0];
+    /*int resp = posLivres[0];
     posLivres.erase(posLivres.begin());
     audios[resp] = new CPIGAudio(nomeArquivo,nLoops,tempoExecucao);
-    return resp;
+    return resp;*/
+    audios->Insere(new CPIGAudio(nomeArquivo,nLoops,tempoExecucao));
 }
 
 static void DestroiAudio(int idAudio){
@@ -148,9 +154,10 @@ static void DestroiAudio(int idAudio){
     delete audios[idAudio];
     totalAudios--;
     audios[idAudio] = NULL;*/
-    PIGAudio audio = GetAudio(idAudio);
+    /*PIGAudio audio = GetAudio(idAudio);
     delete audio;
-    audios.erase(idAudio);
+    audios.erase(idAudio);*/
+    audios->Remove(idAudio);
 }
 
 /*inline static void SetVolume(int idAudio,int volume){
@@ -166,9 +173,9 @@ inline static void SetVolumeTudo(int volume){
     /*for (int i=0;i<MAX_AUDIOS;i++)
         if (audios[i])
             audios[i]->SetVolume(volume);*/
-    for(it = audios.begin(); it != audios.end(); ++it) {
+    /*for(it = audios.begin(); it != audios.end(); ++it) {
         it->second->SetVolume(volume);
-    }
+    }*/
 }
 
 inline static void Play(int idAudio){
@@ -200,9 +207,15 @@ inline static void StopTudo(){
             audios[i]->Stop();
         }
     }*/
-    for(it = audios.begin(); it != audios.end(); ++it) {
-        it->second->Stop();
+    PIGAudio audio = audios->GetPrimeiroElemento();
+    while (audio){
+        audio->Stop();
+        audio = audios->GetProximoElemento();
+
     }
+    /*for(it = audios.begin(); it != audios.end(); ++it) {
+        it->second->Stop();
+    }*/
 }
 
 inline static void PauseTudo(){
@@ -211,8 +224,14 @@ inline static void PauseTudo(){
         if (audios[i])
             audios[i]->Pause();
     }*/
-    for(it = audios.begin(); it != audios.end(); ++it) {
+    /*for(it = audios.begin(); it != audios.end(); ++it) {
         it->second->Pause();
+    }*/
+    PIGAudio audio = audios->GetPrimeiroElemento();
+    while (audio){
+        audio->Pause();
+        audio = audios->GetProximoElemento();
+
     }
 }
 
@@ -222,16 +241,21 @@ inline static void ResumeTudo(){
         if (audios[i])
             audios[i]->Resume();
     }*/
-    for(it = audios.begin(); it != audios.end(); ++it) {
+    /*for(it = audios.begin(); it != audios.end(); ++it) {
         it->second->Resume();
+    }*/
+    PIGAudio audio = audios->GetPrimeiroElemento();
+    while (audio){
+        audio->Resume();
+        audio = audios->GetProximoElemento();
     }
 }
 
 };
-
-std::vector<int> CPIGGerenciadorAudios::posLivres;
+CPIGRepositorio<PIGAudio> *CPIGGerenciadorAudios::audios;
+/*std::vector<int> CPIGGerenciadorAudios::posLivres;
 std::unordered_map<int,PIGAudio> CPIGGerenciadorAudios::audios;
-std::unordered_map<int,PIGAudio>::iterator CPIGGerenciadorAudios::it;
+std::unordered_map<int,PIGAudio>::iterator CPIGGerenciadorAudios::it;*/
 //PIGAudio CPIGGerenciadorAudios::audios[MAX_AUDIOS];
 //int CPIGGerenciadorAudios::totalAudios;
 //PIGPoolNumeros CPIGGerenciadorAudios::numAudios;
