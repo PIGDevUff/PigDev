@@ -177,6 +177,7 @@ protected:
         int delta = p.x-xBase;
         int largParcial = 0;
         int largUltimaLetra = 0;
+
         std::string textoBase = GetTextoVisivel();
 
         for (int i=inicioLinha;i<=textoBase.size();i++){

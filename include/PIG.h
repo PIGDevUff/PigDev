@@ -13,16 +13,16 @@ Versão 0.7.2 da Biblioteca PIG.h
 
 #include "CPIGRepositorio.h"
 
-#include "CPIGGerenciadorJanelas.h"
-#include "CPIGGerenciadorSockets.h"
 #include "CPIGAssetLoader.h"
 #include "CPIGOffscreenRenderer.h"
-#include "CPIGGerenciadorFontes.h"
-#include "CPIGMouse.h"
 #include "CPIGGerenciadorTimers.h"
-#include "CPIGGerenciadorVideos.h"
 #include "CPIGGerenciadorAudios.h"
+#include "CPIGGerenciadorJanelas.h"
+#include "CPIGGerenciadorSockets.h"
+#include "CPIGGerenciadorFontes.h"
 #include "CPIGGerenciadorSprites.h"
+#include "CPIGMouse.h"
+#include "CPIGGerenciadorVideos.h"
 #include "CPIGGerenciadorParticulas.h"
 #include "CPIGGerenciadorControles.h"
 #include "CPIGGerenciadorForms.h"
@@ -3589,6 +3589,14 @@ void PIG_Componentes_SetPosPadraoComponenteNaTela(int idComponente,PIG_Ancora po
     CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetPosPadraoComponenteNaTela(pos);
 }
 
+void PIG_Componentes_SetHabilitado(int idComponente,int valor){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetHabilitado(valor);
+}
+
+void PIG_Componentes_SetVisivel(int idComponente,int valor){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetVisivel(valor);
+}
+
 /*******BOTAO*********/
 
 int PIG_CriaBotao(int idForm,int x,int y,int alt,int larg,char* nomeArq,int retiraFundo = 1){
@@ -3681,6 +3689,10 @@ std::vector<std::string> PIG_AreaDeTexto_GetLinhasTexto(int idComponente){
     CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->GetLinhasTexto();
 }
 
+string PIG_AreaDeTexto_GetTexto(int idComponente){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->GetTexto();
+}
+
 /**********CAMPOTEXTO**************/
 
 int PIG_CriaCampoTexto(int idForm,int x, int y, int altura,int largura,char* nomeArq,int maxCars = 200, bool apenasNumeros=false, int retiraFundo=1){
@@ -3701,6 +3713,10 @@ void PIG_CampoTexto_SetFonteTexto(int idComponente,int fonte){
 
 void PIG_CampoTexto_SetCorCursor(int idComponente,PIG_Cor cor){
     CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCampoTextoESenha>(idComponente)->SetCorCursor(cor);
+}
+
+string PIG_CampoTexto_GetTexto(int idComponente){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCampoTextoESenha>(idComponente)->GetTexto();
 }
 
 /**********CAMPOSENHA**************/

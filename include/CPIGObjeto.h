@@ -129,16 +129,19 @@ public:
     CPIGObjeto(std::string nomeArquivo, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0)
     : CPIGSprite(nomeArquivo, retiraFundo, corFundo, janela){
         //ExtraiPixels();
+        modo = PIG_OOBB;
     }
 
     CPIGObjeto(PIGOffscreenRenderer offRender, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0)
     : CPIGSprite(offRender, retiraFundo, corFundo, janela){
         //ExtraiPixels();
+        modo = PIG_OOBB;
     }
 
     CPIGObjeto(CPIGObjeto *objBase, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0)
     : CPIGSprite(objBase, retiraFundo, corFundo, janela){
         //ExtraiPixels();
+        modo = PIG_OOBB;
         SetDimensoes(objBase->alt, objBase->larg);
     }
 
@@ -314,7 +317,7 @@ public:
         if(modo == PIG_OOBB) {
             if(modoOutro == PIG_OOBB) {
                 if(ColisaoOOBB(outro) && outro->ColisaoOOBB(this)) {
-                    return ColisaoPoligono(outro->GetVertices()) || outro->ColisaoPoligono({bb[0], bb[1], bb[2], bb[3]});
+                    return true;//ColisaoPoligono(outro->GetVertices()) || outro->ColisaoPoligono({bb[0], bb[1], bb[2], bb[3]});
                 }
             } else if(modoOutro == PIG_POLIGONO) {
                 if(ColisaoOOBB(outro) && outro->ColisaoOOBB(this)) {

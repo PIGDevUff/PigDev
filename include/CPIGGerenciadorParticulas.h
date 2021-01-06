@@ -58,7 +58,7 @@ public:
         posLivres.erase(posLivres.begin());
         geradores[resp] = new CPIGGeradorParticulas(maxParticulas,nomeArquivoBMP,audioCriacao,audioEncerramento,usaGerenciadorTimer,idJanela);
         return resp;*/
-        geradores->Insere(new CPIGGeradorParticulas(maxParticulas,nomeArquivoBMP,audioCriacao,audioEncerramento,usaGerenciadorTimer,idJanela));
+        return geradores->Insere(new CPIGGeradorParticulas(maxParticulas,nomeArquivoBMP,audioCriacao,audioEncerramento,usaGerenciadorTimer,idJanela));
     }
 
     static int CriaGeradorParticulas(int maxParticulas,PIGAnimacao animacaoBase,int audioCriacao, int audioEncerramento, int idJanela=0,int usaGerenciadorTimer=1){
@@ -70,7 +70,7 @@ public:
         posLivres.erase(posLivres.begin());
         geradores[resp] = new CPIGGeradorParticulas(maxParticulas,animacaoBase,audioCriacao,audioEncerramento,usaGerenciadorTimer,idJanela);
         return resp;*/
-        geradores->Insere(new CPIGGeradorParticulas(maxParticulas,animacaoBase,audioCriacao,audioEncerramento,usaGerenciadorTimer,idJanela));
+        return geradores->Insere(new CPIGGeradorParticulas(maxParticulas,animacaoBase,audioCriacao,audioEncerramento,usaGerenciadorTimer,idJanela));
     }
 
     static int CriaGeradorParticulas(int maxParticulas,PIGObjeto objetoBase,int audioCriacao, int audioEncerramento, int idJanela=0,int usaGerenciadorTimer=1){
@@ -82,7 +82,7 @@ public:
         posLivres.erase(posLivres.begin());
         geradores[resp] = new CPIGGeradorParticulas(maxParticulas,objetoBase,audioCriacao,audioEncerramento,usaGerenciadorTimer,idJanela);
         return resp;*/
-        geradores->Insere(new CPIGGeradorParticulas(maxParticulas,objetoBase,audioCriacao,audioEncerramento,usaGerenciadorTimer,idJanela));
+        return geradores->Insere(new CPIGGeradorParticulas(maxParticulas,objetoBase,audioCriacao,audioEncerramento,usaGerenciadorTimer,idJanela));
     }
 
     static void DestroiGeradorParticulas(int idGerador){
@@ -100,12 +100,5 @@ public:
 
 };
 CPIGRepositorio<PIGGeradorParticulas> *CPIGGerenciadorParticulas::geradores;
-/*std::vector<int> CPIGGerenciadorParticulas::posLivres;
-std::unordered_map<int,PIGGeradorParticulas> CPIGGerenciadorParticulas::geradores;
-std::unordered_map<int,PIGGeradorParticulas>::iterator CPIGGerenciadorParticulas::it;*/
-
-//PIGPoolNumeros CPIGGerenciadorParticulas::numGeradores;
-//int CPIGGerenciadorParticulas::totalGeradores;
-//PIGGeradorParticulas CPIGGerenciadorParticulas::geradores[MAX_GERADORPARTICULAS];
 
 #endif // _CPIGGERENCIADORPARTICULAS_

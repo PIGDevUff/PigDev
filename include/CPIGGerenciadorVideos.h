@@ -51,7 +51,7 @@ static int CriaVideo(std::string nomeArquivo,int idJanela=0){
     posLivres.erase(posLivres.begin());
     videos[resp] = new CPIGVideo(nomeArquivo,idJanela);
     return resp;*/
-    videos->Insere(new CPIGVideo(nomeArquivo,idJanela));
+    return videos->Insere(new CPIGVideo(nomeArquivo,idJanela));
 }
 
 static void DestroiVideo(int idVideo){

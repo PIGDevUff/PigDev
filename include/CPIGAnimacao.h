@@ -10,18 +10,16 @@ private:
 int souCopia;                   //indica se esta animação é cópia (foi criada a partir) de outra animação
 int qtdTotalFrames;             //indica o total de frames existentes nesta animação
 PIGModoAnimacao modos[MAX_MODOS];  //modos da animação
-//SDL_Rect *frames[MAX_FRAMES];   //frames da animação
 PIGTimer tempoFrame;               //timer da animação (se estiver sendo utilizado um timer específico)
 int idTimer;                    //timer da animação (se estiver sendo utilizado o gerenciador de timers)
 int offx,offy;                  //offset (x,y) a ser utilizado junto com a posição (x,y) para desenhar oa animação
 int modoAtual;                  //número que indica o modo atual
-int frameAtual;                 //número que indica o frame atual
 
 
 //muda o frame a ser exibido do modo atual
 void AtualizaFrameAtual(PIGModoAnimacao modo){
-    //frameAtual = modo->GetFrameAtual();
-    //CObjeto::DefineFrame(*(frames[frameAtual]));
+    frameAtual = modo->GetFrameAtual();
+    CPIGSprite::MudaFrameAtual(frameAtual);
 
     int audio = modo->GetAudioAtual();
     if (audio>=0){
@@ -40,9 +38,6 @@ CPIGAnimacao(std::string nomeArq,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NUL
     souCopia = 0;
     offx = offy = 0;
     modoAtual = 0;
-
-    //for (int i=0;i<MAX_FRAMES;i++)
-    //    frames[i] = NULL;
 
     qtdTotalFrames = 0;
     for (int i=0;i<MAX_MODOS;i++){

@@ -54,7 +54,7 @@ public:
         posLivres.erase(posLivres.begin());
         timers[resp] = new CPIGTimer(congelado);
         return resp;*/
-        timers->Insere(new CPIGTimer(congelado));
+        return timers->Insere(new CPIGTimer(congelado));
     }
 
     static void DestroiTimer(int idTimer){

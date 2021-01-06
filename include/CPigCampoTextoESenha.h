@@ -33,20 +33,6 @@ private:
         AjustaBaseTextoEixoX(CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetLarguraPixelsString(aux));
     }
 
-    int TrataEventoMouse(PIG_Evento evento){
-        SDL_Point p = CPIGMouse::PegaXYWorld();
-        //PigCamera cam = CGerenciadorJanelas::GetJanela(idJanela)->GetCamera();
-        ChecaMouseOver(p);
-
-        if(mouseOver){
-            if (habilitado==false) return PIG_SELECIONADO_DESABILITADO;
-            if (visivel==false) return PIG_SELECIONADO_INVISIVEL;
-            if (evento.mouse.acao == MOUSE_PRESSIONADO && evento.mouse.botao == MOUSE_ESQUERDO) return TrataMouseBotaoEsquerdo(p);
-            return PIG_SELECIONADO_MOUSEOVER;
-        }
-
-        return PIG_NAO_SELECIONADO;
-    }
 
     int SobeCursor(){return 1;} //não usa o SobeCursor
 
@@ -160,6 +146,25 @@ public:
         xCursor = xBase;
         yCursor = yBase;
         AjustaAlinhamento();
+    }
+
+    int TrataEventoMouse(PIG_Evento evento){
+        SDL_Point p = CPIGMouse::PegaXYWorld();
+        //PigCamera cam = CGerenciadorJanelas::GetJanela(idJanela)->GetCamera();
+        ChecaMouseOver(p);
+
+        if(mouseOver){
+            if (habilitado==false) return PIG_SELECIONADO_DESABILITADO;
+            if (visivel==false) return PIG_SELECIONADO_INVISIVEL;
+            if (evento.mouse.acao == MOUSE_PRESSIONADO && evento.mouse.botao == MOUSE_ESQUERDO) return TrataMouseBotaoEsquerdo(p);
+            return PIG_SELECIONADO_MOUSEOVER;
+        }
+
+        return PIG_NAO_SELECIONADO;
+    }
+
+    int TrataEventoTeclado(PIG_Evento evento){
+        return CPIGCaixaTexto::TrataEventoTeclado(evento);
     }
 
 };

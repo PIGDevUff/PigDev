@@ -145,7 +145,7 @@ static int CriaAudio(std::string nomeArquivo,int nLoops,int tempoExecucao=-1){
     posLivres.erase(posLivres.begin());
     audios[resp] = new CPIGAudio(nomeArquivo,nLoops,tempoExecucao);
     return resp;*/
-    audios->Insere(new CPIGAudio(nomeArquivo,nLoops,tempoExecucao));
+    return audios->Insere(new CPIGAudio(nomeArquivo,nLoops,tempoExecucao));
 }
 
 static void DestroiAudio(int idAudio){

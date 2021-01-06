@@ -10,11 +10,9 @@ private:
     int rodando;
     std::string diretorioAtual;
     PIGOffscreenRenderer offRenderer;
-    int cursorPadrao;
+    //int cursorPadrao;
 
 public:
-
-
 
     CPIGJogo(char *nome,int cursor=0,int altura=ALT_TELA,int largura=LARG_TELA){
         rodando = true;
@@ -23,7 +21,7 @@ public:
         contFPS = lastFPS = 0;
         timerFPS = new CPIGTimer(false);
         offRenderer = NULL;
-        cursorPadrao = cursor;
+        //cursorPadrao = cursor;
 
         diretorioAtual = PIGGetDiretorioAtual();
         //printf("path: %s\n",diretorioAtual);//exibir a pasta original da PIG
@@ -294,79 +292,6 @@ public:
         return offRenderer;
     }
 
-    /*inline int GetXCaneta(){
-        if (offRenderer)
-            return offRenderer->GetXCaneta();
-        return 0;
-    }
-
-    inline int GetYCaneta(){
-        if (offRenderer)
-            return offRenderer->GetYCaneta();
-        return 0;
-    }
-
-    inline void PintaAreaOffScreen(int px,int py,PIG_Cor cor,void *ponteiro){
-        if (offRenderer)
-            offRenderer->PintarArea(px,py,cor,ponteiro);
-    }
-
-    inline void PintaFundoOffScreen(PIG_Cor cor){
-        if (offRenderer)
-            offRenderer->PintarFundo(cor);
-    }
-
-    inline void DesenhaRetanguloOffScreen(int x1,int y1,int altura,int largura,PIG_Cor cor){
-        if (offRenderer)
-            offRenderer->DesenharRetangulo(x1,y1,altura,largura,cor);
-    }
-
-    inline void DesenhaRetanguloVazadoOffScreen(int x1,int y1,int altura,int largura,PIG_Cor cor){
-        if (offRenderer)
-            offRenderer->DesenharRetanguloVazado(x1,y1,altura,largura,cor);
-    }
-
-    inline void DesenhaLinhaOffScreen(int x1,int y1,int x2,int y2,PIG_Cor cor){
-        if (offRenderer)
-            offRenderer->DesenharLinha(x1,y1,x2,y2,cor);
-    }
-
-    inline void MoveCanetaOffscreen(double nx,double ny){
-        if (offRenderer)
-            offRenderer->MoveCanetaPara(nx,ny);
-    }
-
-    inline void AvancaCanetaOffscreen(double distancia){
-        if (offRenderer)
-            offRenderer->AvancaCaneta(distancia);
-    }
-
-    inline void MudaCorCanetaOffscreen(PIG_Cor novaCor){
-        if (offRenderer)
-            offRenderer->MudaCorAtualCaneta(novaCor);
-    }
-
-    inline void GiraCanetaHorarioOffscreen(double angulo){
-        if (offRenderer)
-            offRenderer->GiraCanetaHorario(angulo);
-    }
-
-    inline void GiraCanetaAntiHorarioOffscreen(double angulo){
-        if (offRenderer)
-            offRenderer->GiraCanetaAntiHorario(angulo);
-    }
-
-    inline void GiraCanetaAnguloFixoOffscreen(double angulo){
-        if (offRenderer)
-            offRenderer->GiraAnguloFixo(angulo);
-    }
-
-    inline double GetAngAtual(){
-        if (offRenderer)
-            return offRenderer->GetAngAtual();
-        else return 0.0;
-    }
-    */
 };
 
 typedef CPIGJogo* PIGJogo;
