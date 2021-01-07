@@ -47,6 +47,10 @@ public:
         return sprites->Insere(new CPIGSprite(GetSprite(idSpriteBase),retiraFundo,corFundo,idJanela));
     }
 
+    static int CriaSpriteOffScreen(PIGOffscreenRenderer offRenderer,PIG_Cor *corFundo=NULL,int retiraFundo=1,int idJanela=0){
+        return sprites->Insere(new CPIGSprite(offRenderer,retiraFundo,corFundo,idJanela));
+    }
+
     static int CriaObjeto(std::string nomeArquivoBMP,PIG_Cor *corFundo=NULL,int retiraFundo=1,int idJanela=0){
         return objetos->Insere(new CPIGObjeto(nomeArquivoBMP,corFundo,retiraFundo,idJanela));
     }

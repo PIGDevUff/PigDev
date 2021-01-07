@@ -10,11 +10,8 @@ private:
 SDLNet_SocketSet clienteSet;
 int maxConexoes;
 bool ativo;
-//int qtdConexoes;
-//PIGSocketTCP *clientesTCP;
 int portaLocal;
 SDL_Thread *threadAccept,*threadReceive;
-//PIGPoolNumeros pool;
 
 std::vector<int> posLivres;
 std::unordered_map<int,PIGSocketTCP> clientesTCP;
@@ -68,22 +65,15 @@ PIGSocketTCP GetCliente(int indice){
 }
 
 int AbreConexao(){
-    /*int num = RetiraLivre();
-    clientesTCP[num] = new CPIGSocketTCP(-num,socket,tamPacote,clienteSet);//-num apenas para indicar que se trata de um socket criado pelo servidor
-    CriaEventoMensagem(REDE_CONEXAO,"",1,num);
-    qtdConexoes++;*/
     int resp = posLivres[0];
     posLivres.erase(posLivres.begin());
     clientesTCP[resp] = new CPIGSocketTCP(-resp,socket,tamPacote,clienteSet);//-num apenas para indicar que se trata de um socket criado pelo servidor
+    CriaEventoMensagem(REDE_CONEXAO,"",1,resp);
     return resp;
 }
 
 void FechaConexao(int indice){
     CriaEventoMensagem(REDE_DESCONEXAO,"",1,indice);
-    /*delete clientesTCP[indice];
-    clientesTCP[indice] = NULL;
-    DevolveUsado(indice);
-    qtdConexoes--;*/
     PIGSocketTCP cliente = GetCliente(indice);
     delete cliente;
     clientesTCP.erase(indice);
@@ -100,22 +90,10 @@ CPIGServidorTCP(int idSocket, int maximoConexoes, int porta, int maxBytesPacote)
     ativo = true;
     IPaddress ip;
 
-
-    //qtdConexoes = 0;
-    //pool = new CPIGPoolNumeros(maxConexoes);
-
     portaLocal = porta;
-
-    //SDLNet_ResolveHost(&ip,getenv("COMPUTERNAME"),portaLocal);
-    //Uint8 *part = (Uint8*)&(ip.host);
-    //sprintf(hostLocal,"%d.%d.%d.%d",(int)part[0],(int)part[1],(int)part[2],(int)part[3]);
 
     SDLNet_ResolveHost(&ip,NULL,portaLocal);
 
-    /*clientesTCP = (PIGSocketTCP*) malloc(maxConexoes*sizeof(PIGSocketTCP));
-    for (int i=0;i<maxConexoes;i++)
-        clientesTCP[i] = NULL;
-*/
     maxConexoes = maximoConexoes;
     for (int i=0;i<maxConexoes;i++)
         posLivres.push_back(i);
@@ -134,22 +112,15 @@ CPIGServidorTCP(int idSocket, int maximoConexoes, int porta, int maxBytesPacote)
 }
 
 ~CPIGServidorTCP(){
-    //qtdConexoes=-1;//marca que as threads devem encerrar
     ativo = false;
     SDL_Delay(20);//espera pelo encerramento das threads
 
-    /*for (int i=0;i<maxConexoes;i++){
-        if (clientesTCP[i])
-            delete clientesTCP[i];
-    }*/
-    //delete pool;
     for(it = clientesTCP.begin(); it != clientesTCP.end(); ++it) {
         delete it->second;
     }
 
     if (clienteSet)
         SDLNet_FreeSocketSet(clienteSet);
-
 
 }
 

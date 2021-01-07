@@ -104,7 +104,7 @@ public:
 
 };
 
-//Erro para índices de arrays
+//Erro para ponteiros especificos
 class CPIGErroPonteiro: public CPIGErro{
 
 protected:

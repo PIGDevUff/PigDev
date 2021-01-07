@@ -1,3 +1,7 @@
+#ifndef _CPIGJOGO_
+#define _CPIGJOGO_
+
+
 class CPIGJogo{
 
 private:
@@ -10,7 +14,6 @@ private:
     int rodando;
     std::string diretorioAtual;
     PIGOffscreenRenderer offRenderer;
-    //int cursorPadrao;
 
 public:
 
@@ -21,7 +24,6 @@ public:
         contFPS = lastFPS = 0;
         timerFPS = new CPIGTimer(false);
         offRenderer = NULL;
-        //cursorPadrao = cursor;
 
         diretorioAtual = PIGGetDiretorioAtual();
         //printf("path: %s\n",diretorioAtual);//exibir a pasta original da PIG
@@ -128,6 +130,7 @@ public:
                 ultimoEvento.teclado.tecla = event.key.keysym.scancode;
                 ultimoEvento.teclado.repeticao = event.key.repeat;
                 break;
+
             case SDL_TEXTEDITING:
                 ultimoEvento.tipoEvento = EVENTO_TECLADO;
                 ultimoEvento.teclado.acao = TECLA_EDICAO;
@@ -158,14 +161,6 @@ public:
                 ultimoEvento.controlador.idControlador = event.cdevice.which;
                 SDL_PollEvent(&event);
                 break;
-            /*case SDL_CONTROLLERBUTTONUP:
-                ultimoEvento.tipoEvento = EVENTO_CONTROLADOR;
-                ultimoEvento.controlador.acao = CONTROLADOR_BOTAO_LIBERADO;
-                ultimoEvento.controlador.botao = event.cbutton.button;
-                ultimoEvento.controlador.idControlador = event.cdevice.which;
-                SDL_PollEvent(&event);
-                break;
-            */
             case SDL_CONTROLLERAXISMOTION:
             //case SDL_JOYAXISMOTION:
                 ultimoEvento.tipoEvento = EVENTO_CONTROLADOR;
@@ -295,3 +290,4 @@ public:
 };
 
 typedef CPIGJogo* PIGJogo;
+#endif // _CPIGJOGO_

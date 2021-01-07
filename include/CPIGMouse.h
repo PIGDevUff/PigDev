@@ -1,7 +1,7 @@
 #ifndef _CPIGMouse_
 #define _CPIGMouse_
 
-#include "CPigSprite.h"
+#include "CPIGSprite.h"
 
 class CPIGMouse{
 
@@ -79,21 +79,23 @@ public:
         pTela.x = x;
         pTela.y = y;
         if (cursores) cursores->Move(x,y-32);
-        //if (cursorAtual==-1) return;
-        //cursores[cursorAtual]->Move(x,y-32);
     }
 
     static void CarregaCursor(std::string nomeArquivo,int idJanela=0){
         if (cursores) delete cursores;
         cursores = new CPIGSprite(nomeArquivo,idJanela);
         cursores->SetDimensoes(32,32);
-        //if (cursores[indice]) delete cursores[indice];
-        //cursores[indice] = new CPigVisual(nomeArquivo,1,NULL,idJanela);
-        //cursores[indice]->SetDimensoes(32,32);
-        //if (cursorAtual==-1) cursorAtual=indice;
     }
 
-    static void DefineFrameCursor(int idFrame,int x, int y, int alt, int larg){
+    static void CarregaFramesPorColuna(int frameInicial, int qtdLinhas, int qtdColunas){
+        if (cursores) cursores->CriaFramesAutomaticosPorColuna(frameInicial,qtdLinhas,qtdColunas);
+    }
+
+    static void CarregaFramesPorLinha(int frameInicial, int qtdLinhas, int qtdColunas){
+        if (cursores) cursores->CriaFramesAutomaticosPorLinha(frameInicial,qtdLinhas,qtdColunas);
+    }
+
+    static void CriaFrameCursor(int idFrame,int x, int y, int alt, int larg){
         if (cursores) cursores->DefineFrame(idFrame,{x,y,larg,alt});
     }
 

@@ -1,8 +1,6 @@
 #ifndef _CPIGSPRITE_
 #define _CPIGSPRITE_
 
-#include <unordered_map>
-
 class CPIGSprite{
 
 protected:

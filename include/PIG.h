@@ -65,6 +65,7 @@ void CriaJogo(char *nomeJanela,int cursorProprio=0,int altura=ALT_TELA,int largu
         CPIGGerenciadorFontes::Inicia();
         CPIGGerenciadorTimers::Inicia();
         CPIGGerenciadorAudios::Inicia();
+
         CPIGGerenciadorParticulas::Inicia();
         CPIGGerenciadorControles::Inicia();
         CPIGGerenciadorSockets::Inicia();
@@ -220,7 +221,7 @@ void CarregaCursor(char *nomeArquivoCursor, int idJanela=0){
 }
 
 /********************************
-A função DefineFrameCursor() é responsável por delimitar a área do arquivo de imagem para um cursor específico.
+A função CriaFrameCursor() é responsável por delimitar a área do arquivo de imagem para um cursor específico.
 Idealmente, a altura e largura informadas devem ter tamanho igual a 32 pixels (para não haver perda de qualidade na exibição do cursor).
 Parâmetro:
 idFrame (entrada, passagem por valor): número inteiro associado ao cursor (área do arquivo de imagem) em questão.
@@ -229,8 +230,16 @@ yBitmap (entrada, passagem por valor): indica a posição de eixo Y onde começa o 
 altura (entrada, passagem por valor): altura em pixels do frame.
 largura (entrada, passagem por valor): largura em pixels do frame.
 ********************************/
-void DefineFrameCursor(int idFrame, int xBitmap, int yBitmap, int altura, int largura){
-    CPIGMouse::DefineFrameCursor(idFrame,xBitmap,yBitmap,altura,largura);
+void CriaFrameCursor(int idFrame, int xBitmap, int yBitmap, int altura, int largura){
+    CPIGMouse::CriaFrameCursor(idFrame,xBitmap,yBitmap,altura,largura);
+}
+
+void CarregaFramesPorColunaCursor(int frameInicial, int qtdLinhas, int qtdColunas){
+    CPIGMouse::CarregaFramesPorColuna(frameInicial,qtdLinhas,qtdColunas);
+}
+
+void CarregaFramesPorLinhaCursor(int frameInicial, int qtdLinhas, int qtdColunas){
+    CPIGMouse::CarregaFramesPorLinha(frameInicial,qtdLinhas,qtdColunas);
 }
 
 /********************************
@@ -1236,6 +1245,305 @@ void SubstituiCaractere(char caractere, char *nomeArquivo, int largNova, int x, 
 }
 
 
+
+/********************************
+Seção de sprites
+********************************/
+
+/********************************
+A função CriaSprite() é responsável por criar um sprite. Qualquer sprite que for necessário,
+pode ser criado através dessa função. O sprite ainda não será desenhado, apenas criado dentro do jogo.
+Parâmetros:
+nomeArquivo (entrada, passagem por referência): string que informa o nome do arquivo da imagem do sprite a ser criado.
+retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou não ao ler o arquivo em questão. O valor padrão é 1, indicando que o fundo deve ser retirado.
+opacidade (entrada,passagem por valor): nível de opacidade do sprite na faixa 0-255. O valor padrão é 255, indicando nível máximo de opacidade.
+idJanela (entrada, passagem por valor não-obrigatório): indica qual janela vai receber o sprite.
+Retorno:
+inteiro que representa o identificador único do sprite. Todas as operações subsequentes com este sprite deverão receber este identificador como parâmetro.
+********************************/
+int CriaSprite(char* nomeArquivo,PIG_Cor *corFundo=NULL,int retiraFundo=1, int idJanela=0){
+    return CPIGGerenciadorSprites::CriaSprite(nomeArquivo,retiraFundo,corFundo,idJanela);
+}
+
+/********************************
+A função CriaSpriteOffScreen() é responsável por criar um sprite a partir da imagem que está sendo montanda pelo
+renderizador Offscreen. O renderizador precisa ter sido preparado anteriormente.
+Parâmetros:
+retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou não ao ler o arquivo em questão. O valor padrão é 1, indicando que o fundo deve ser retirado.
+opacidade (entrada,passagem por valor): nível de opacidade do sprite na faixa 0-255. O valor padrão é 255, indicando nível máximo de opacidade.
+Retorno:
+inteiro que representa o identificador único do sprite. Todas as operações subsequentes com este sprite deverão receber este identificador como parâmetro.
+********************************/
+int CriaSpriteOffScreen(PIG_Cor *corFundo=NULL,int retiraFundo=1){
+    return CPIGGerenciadorSprites::CriaSpriteOffScreen(jogo->GetOffScreenRender(),corFundo,retiraFundo);
+}
+
+
+/********************************
+A função DestroiSprite() é responsável por eliminar o sprite em questão do jogo.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite a ser excluído.
+********************************/
+void DestroiSprite(int idSprite){
+    CPIGGerenciadorSprites::DestroiSprite(idSprite);
+}
+
+void CarregaArquivoFramesSprite(int idSprite, char *nomeArq){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->CarregaArquivoFrames(nomeArq);
+}
+
+void CarregaFramesPorLinhaSprite(int idSprite, int idFrameInicial, int qtdLinhas, int qtdColunas){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->CriaFramesAutomaticosPorLinha(idFrameInicial,qtdLinhas,qtdColunas);
+}
+
+void CarregaFramesPorColunaSprite(int idSprite, int idFrameInicial, int qtdLinhas, int qtdColunas){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->CriaFramesAutomaticosPorColuna(idFrameInicial,qtdLinhas,qtdColunas);
+}
+
+/********************************
+A função GetXYSprite() é responsável recuperar o valor da posição (X,Y) do sprite de acordo com o sistema de coordenadas do jogo.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite.
+posicaoX (saída, passagem por referencia): indica a posicao no eixo X do sprite.
+posicaoY (saída, passagem por referencia): indica a posicao no eixo Y do sprite.
+********************************/
+void GetXYSprite(int idSprite,int *posicaoX,int *posicaoY){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->GetXY(*posicaoX,*posicaoY);
+}
+
+/********************************
+A função MoveSprite() é responsável por movimentar um determinado sprite para uma nova posição informada.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite a ser movido.
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja reposicionar o sprite.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja reposicionar o sprite.
+********************************/
+void MoveSprite(int idSprite,int posicaoX,int posicaoY){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->Move(posicaoX,posicaoY);
+}
+
+/********************************
+A função DeslocaSprite() é responsável por deslocar um determinado sprite em relação à sua posição atual.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite a ser movido.
+deltaX (entrada, passagem por valor): valor a ser somado ou subtraído na componente X da posição do sprite.
+deltaY (entrada, passagem por valor): valor a ser somado ou subtraído na componente Y da posição do sprite.
+********************************/
+void DeslocaSprite(int idSprite,int deltaX,int deltaY){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->Desloca(deltaX,deltaY);
+}
+
+/********************************
+A função SetAnguloSprite() é responsável pela angulação de determinado sprite. A angulação é calculada em sentido
+horário a partir do eixo X (0 graus). O sprite será desenhado com a angulação informada no próximo comando
+DesenhaSprite(). A detecção de colisão não funciona com sprites fora da angulação padrão (0 graus).
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite.
+angulo (entrada, passagem por valor): valor para indicar a angulação do sprite em graus.
+********************************/
+void SetAnguloSprite(int idSprite, float angulo){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->SetAngulo(angulo);
+}
+
+/********************************
+A função GetAnguloSprite() é responsável por recuperar o ângulo de rotação de determinado sprite. A angulação é calculada em sentido
+horário a partir do eixo X (0 graus). O sprite será desenhado com a angulação informada no próximo comando
+DesenhaSprite(). A detecção de colisão não funciona com sprites fora da angulação padrão (0 graus).
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite.
+Retorno:
+Retorna o valor do ângulo em graus.
+********************************/
+float GetAnguloSprite(int idSprite){
+    return CPIGGerenciadorSprites::GetSprite(idSprite)->GetAngulo();
+}
+
+/********************************
+A função SetPivoSprite() define um ponto (X,Y) em relação ao ponto (0,0) do sprite, sobre o qual o sprite será
+rotacionado quando a função SetAnguloSprite() for executada.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite.
+posicaoX (entrada, passagem por valor): Valor da coordenada X do pivô em relação ao ponto (0,0) do sprite.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y do pivô em relação ao ponto (0,0) do sprite.
+********************************/
+void SetPivoSprite(int idSprite,int posicaoX,int posicaoY){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->SetPivo(posicaoX,posicaoY);
+}
+
+/********************************
+A função SetPivoSprite() define um ponto relativo (X,Y) em relação ao ponto (0,0) e ao tamanho do sprite, sobre o qual o sprite será
+rotacionado quando a função SetAnguloSprite() for executada.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite.
+relX (entrada, passagem por valor): porcentagem da largura do sprite onde ficará o pivô.
+relY (entrada, passagem por valor): porcentagem da altura do sprite onde ficará o pivô.
+********************************/
+void SetPivoSprite(int idSprite,float relX,float relY){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->SetPivo(relX,relY);
+}
+
+/********************************
+A função GetPivoSprite() define um ponto (X,Y) em relação ao ponto (0,0) do sprite, sobre o qual o sprite será
+rotacionado quando a função SetAnguloSprite() for executada.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite.
+posicaoX (saída, passagem por referência): Valor da coordenada X do pivô em relação ao ponto (0,0) do sprite.
+posicaoY (saída, passagem por referência): Valor da coordenada Y do pivô em relação ao ponto (0,0) do sprite.
+********************************/
+void GetPivoSprite(int idSprite,int *posicaoX,int *posicaoY){
+    SDL_Point p = CPIGGerenciadorSprites::GetSprite(idSprite)->GetPivo();
+    *posicaoX = p.x;
+    *posicaoY = p.y;
+}
+
+/********************************
+A função SetFlipSprite() é responsável por virar o sprite, invertendo-o em alguma direção. O sprite somente será
+desenhado na nova orientação no próximo comando DesenhaSprite().
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite a ser virado.
+valor (entrada, passagem por valor): valor do tipo de Flip. Pode ser FLIP_NENHUM (nenhum tipo de inversão),
+FLIP_HORIZONTAL (inverte da esquerda para a direita), FLIP_VERTICAL (inverte de cima para baixo),
+ou FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
+********************************/
+void SetFlipSprite(int idSprite,PIG_Flip valor){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->SetFlip(valor);
+}
+
+/********************************
+A função GetFlipSprite() é responsável por recuperar o valor da manipulação causada pela função SetFlipSprite().
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite a ser virado.
+Retorno:
+inteiro que indica o tipo de Flip. Pode ser FLIP_NENHUM (nenhum tipo de inversão),
+FLIP_HORIZONTAL (inverte da esquerda para a direita), FLIP_VERTICAL (inverte de cima para baixo),
+ou FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
+********************************/
+PIG_Flip GetFlipSprite(int idSprite){
+    return CPIGGerenciadorSprites::GetSprite(idSprite)->GetFlip();
+}
+
+/********************************
+A função SetDimensoesSprite() é responsável por delimitar a altura e a largura do sprite que será desenhado na tela,
+independentemente do tamanho original do arquivo de imagem.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite.
+altura (entrada, passagem por valor): altura em pixels.
+largura (entrada, passagem por valor): largura em pixels.
+********************************/
+void SetDimensoesSprite(int idSprite, int altura, int largura){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->SetDimensoes(altura,largura);
+}
+
+/********************************
+A função GetDimensoesSprite() é responsável por recuperar a altura e a largura da área a ser usada
+para desenhar o sprite na tela. Em outras palavras, representa o tamanho atual do sprite.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite.
+altura (saída, passagem por referência): altura atual em pixels do sprite.
+largura (saída, passagem por referência): largura atual em pixels do sprite.
+********************************/
+void GetDimensoesSprite(int idSprite, int *altura, int *largura){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->GetDimensoes(*altura,*largura);
+}
+
+/********************************
+A função GetDimensoesOriginaisSprite() é responsável por recuperar a altura e a largura originais da imagem
+que foi usada para criar o sprite. Qualquer utilização da função SetDimensoesSprite() é ignorada para
+o cálculo desta função.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite.
+altura (saída, passagem por referência): altura original em pixels do sprite.
+largura (saída, passagem por referência): largura original em pixels do sprite.
+********************************/
+void GetDimensoesOriginaisSprite(int idSprite, int *altura, int *largura){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->GetDimensoesOriginais(*altura,*largura);
+}
+
+/********************************
+A função CriaFrameSprite() é responsável por delimitar o posicionamento dos pixels do arquivo de imagem que serão
+utilizados para representar o sprite na tela. Desta forma, nem toda a imagem será automaticamente utilizada para
+representar o sprite. O sistema de coordenadas deve ser o padrão dos arquivos de imagem, com o eixo Y aumentando para baixo.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite a ser desenhado.
+idFrame (entrada, passagem por valor): identificador do frame a ser criado.
+xBitmap (entrada, passagem por valor): indica a posição de eixo X onde começa o frame.
+yBitmap (entrada, passagem por valor): indica a posição de eixo Y onde começa o frame. Neste caso, o eixo Y aumenta para baixo.
+altura (entrada, passagem por valor): altura em pixels do frame.
+largura (entrada, passagem por valor): largura em pixels do frame.
+********************************/
+void CriaFrameSprite(int idSprite, int idFrame, int xBitmap, int yBitmap, int altura, int largura){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->DefineFrame(idFrame, {xBitmap,yBitmap,altura,largura});
+}
+
+/********************************
+A função MudaFrameSprite() é responsável por modificar o frame (já definido pela função DefineFrameSprite) de um sprite
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite.
+idFrame (entrada, passagem por valor): identificador do frame já criado.
+Retorno:
+Se o identifador do frame informado não corresponder a um frame já criado, o valor de retorno é igual a 0. Caso contrário, é igual a 1.
+********************************/
+int MudaFrameSprite(int idSprite, int idFrame){
+    return CPIGGerenciadorSprites::GetSprite(idSprite)->MudaFrameAtual(idFrame);
+}
+
+/********************************
+A função SetColoracaoSprite() é responsável por mesclar uma determinada cor com os pixels do arquivo de imagem.
+Após a modificação, todos os desenhos deste sprite serão mostrados já com a mesclagem definida.
+Para voltar ao padrão original de pixels, deve-se chamar a função, passando a cor branca (255,255,255).
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite a ser desenhado.
+cor (entrada,passagem por valor): cor do sistema RGB utilizada para mesclagem com o arquivo de imagem
+********************************/
+void SetColoracaoSprite(int idSprite, PIG_Cor cor){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->SetColoracao(cor);
+}
+
+/********************************
+A função SetOpacidadeSprite() é responsável por modificar o nível de opacidade do sprite.
+O nível de opacidade varia de 0-255, sendo 0 totalmente transparente e 255 totalmente opaco.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite.
+valor (entrada,passagem por valor): nível de opacidade do sprite na faixa 0-255.
+********************************/
+void SetOpacidadeSprite(int idSprite,int valor){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->SetOpacidade(valor);
+}
+
+/********************************
+A função GetOpacidadeSprite() é responsável por recuperar o nível de opacidade de determinado sprite.
+O nível de opacidade varia de 0-255, sendo 0 totalmente transparente e 255 totalmente opaco.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite.
+Retorno:
+Retorna o nível de opacidade do sprite na faixa 0-255.
+********************************/
+int GetOpacidadeSprite(int idSprite){
+    return CPIGGerenciadorSprites::GetSprite(idSprite)->GetOpacidade();
+}
+
+/********************************
+A função DesenhaSprite() é responsável por desenhar um sprite na tela ou no Renderizador Offscreen. O sprite será desenhado de acordo com todas as definições
+de posição e ângulo informado até o momento. Além disso, se o sprite estiver virado (flipping), isso também será levado em consideração.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite a ser desenhado.
+offScreen (entrada, passagem por valor): indica se o sprite deve ser desenhado no Renderizador Offscreen.
+********************************/
+void DesenhaSprite(int idSprite,int offScreen=0){
+    if (offScreen==0)
+        CPIGGerenciadorSprites::GetSprite(idSprite)->Desenha(NULL);
+    else CPIGGerenciadorSprites::GetSprite(idSprite)->Desenha(jogo->GetOffScreenRender());
+}
+
+
+void DesenhaSprite(char *nomeArq,int x, int y, int retiraFundo=1,int idJanela=0){
+    CPIGGerenciadorSprites::DesenhaSprite(nomeArq, x, y, retiraFundo,idJanela);
+}
+
+
+
+
+
 /********************************
 Seção de objetos
 ********************************/
@@ -1275,7 +1583,7 @@ Parâmetros:
 idObjeto (entrada, passagem por valor): identificador do objeto a ser excluído.
 ********************************/
 void DestroiObjeto(int idObjeto){
-    CPIGGerenciadorSprites::DestroiSprite(idObjeto);
+    CPIGGerenciadorSprites::DestroiObjeto(idObjeto);
 }
 
 /********************************
@@ -1588,7 +1896,7 @@ void GetDimensoesOriginaisObjeto(int idObjeto, int *altura, int *largura){
 }
 
 /********************************
-A função DefineFrameObjeto() é responsável por delimitar o posicionamento dos pixels do arquivo de imagem que serão
+A função CiraFrameObjeto() é responsável por delimitar o posicionamento dos pixels do arquivo de imagem que serão
 utilizados para representar o objeto na tela. Desta forma, nem toda a imagem será automaticamente utilizada para
 representar o objeto. O sistema de coordenadas deve ser o padrão dos arquivos de imagem, com o eixo Y aumentando para baixo.
 Parâmetros:
@@ -1599,9 +1907,22 @@ yBitmap (entrada, passagem por valor): indica a posição de eixo Y onde começa o 
 altura (entrada, passagem por valor): altura em pixels do frame.
 largura (entrada, passagem por valor): largura em pixels do frame.
 ********************************/
-void DefineFrameObjeto(int idObjeto, int idFrame, int xBitmap, int yBitmap, int altura, int largura){
+void CriaFrameObjeto(int idObjeto, int idFrame, int xBitmap, int yBitmap, int altura, int largura){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->DefineFrame(idFrame, {xBitmap,yBitmap,altura,largura});
 }
+
+void CarregaArquivoFramesObjeto(int idObjeto, char *nomeArq){
+    CPIGGerenciadorSprites::GetObjeto(idObjeto)->CarregaArquivoFrames(nomeArq);
+}
+
+void CarregaFramesPorLinhaObjeto(int idObjeto, int idFrameInicial, int qtdLinhas, int qtdColunas){
+    CPIGGerenciadorSprites::GetObjeto(idObjeto)->CriaFramesAutomaticosPorLinha(idFrameInicial,qtdLinhas,qtdColunas);
+}
+
+void CarregaFramesPorColunaObjeto(int idObjeto, int idFrameInicial, int qtdLinhas, int qtdColunas){
+    CPIGGerenciadorSprites::GetObjeto(idObjeto)->CriaFramesAutomaticosPorColuna(idFrameInicial,qtdLinhas,qtdColunas);
+}
+
 
 /********************************
 A função MudaFrameObjeto() é responsável por modificar o frame (já definido pela função DefineFrameObjeto) de um objeto
@@ -2083,6 +2404,19 @@ largura (entrada, passagem por valor): largura em pixels do frame.
 void CriaFrameAnimacao(int idAnimacao,int codigoFrame,int xBitmap,int yBitmap,int altura,int largura){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->DefineFrame(codigoFrame,{xBitmap,yBitmap,altura,largura});
 }
+
+void CarregaArquivoFramesAnimacao(int idAnimacao, char *nomeArq){
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->CarregaArquivoFrames(nomeArq);
+}
+
+void CarregaFramesPorLinhaAnimacao(int idAnimacao, int idFrameInicial, int qtdLinhas, int qtdColunas){
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->CriaFramesAutomaticosPorLinha(idFrameInicial,qtdLinhas,qtdColunas);
+}
+
+void CarregaFramesPorColunaAnimacao(int idAnimacao, int idFrameInicial, int qtdLinhas, int qtdColunas){
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->CriaFramesAutomaticosPorColuna(idFrameInicial,qtdLinhas,qtdColunas);
+}
+
 
 /********************************
 A função CriaModoAnimacao() é responsável por criar um modo, ou seja, uma sequência de sprites.

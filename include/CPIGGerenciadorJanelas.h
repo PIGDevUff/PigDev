@@ -62,18 +62,6 @@ static void EncerraDesenho(int idJanela=-1){
     }
 }
 
-/*static void DefineFundo(std::string nomeArquivo,int idJanela=0){
-    GetJanela(idJanela)->DefineFundo(nomeArquivo);
-}
-
-static void SaveScreenshotBMP(std::string nomeArquivo,int idJanela=0) {
-    GetJanela(idJanela)->SaveScreenshot(nomeArquivo,true);//true == bitmap
-}
-
-static void SaveScreenshotPNG(std::string nomeArquivo,int idJanela=0) {
-    GetJanela(idJanela)->SaveScreenshot(nomeArquivo,false);//false == PNG
-}*/
-
 
 };
 

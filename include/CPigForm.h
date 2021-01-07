@@ -123,7 +123,6 @@ public:
 
     int CriaAreaDeTexto(int px, int py, int altura,int largura,std::string nomeArq,int maxCars = 200,int retiraFundo=1){
         int idComponente = GetIdComponente(totalComponentes);
-        printf("a");
         componentes[totalComponentes++] = new CPIGAreaDeTexto(idComponente,px,py,altura,largura,nomeArq,maxCars,retiraFundo,idJanela);
         return idComponente;
     }
