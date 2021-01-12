@@ -13,8 +13,6 @@
 #include "CPIGGauge.h"
 #include "CPIGGaugeCircular.h"
 
-#define MAX_COMPONENTES 500
-#define MAX_FORMS 100
 
 typedef enum{PIG_BOTAO,PIG_AREADETEXTO,PIG_CAMPOTEXTOSENHA,PIG_RADIOBOX,PIG_CHECKBOX,PIG_LISTBOX,PIG_DROPDOWN,PIG_GAUGE,PIG_GAUGECIRCULAR,PIG_SCROLLBAR}tipos_Componentes;
 
@@ -26,10 +24,10 @@ private:
     int x,y,alt,larg;
     int totalComponentes;
     int componenteComFoco,componenteMouseOver;
-    PIGComponente componentes[MAX_COMPONENTES];
+    PIGComponente componentes[PIG_MAX_COMPONENTES];
 
     inline int GetIdComponente(int componente){
-        return (id * MAX_COMPONENTES) + componente;
+        return (id * PIG_MAX_COMPONENTES) + componente;
     }
 
     int TrataMouseComponentes(PIG_Evento evento){
@@ -48,7 +46,7 @@ private:
                 componenteMouseOver = i;
             }
         }
-        if (evento.mouse.acao==MOUSE_PRESSIONADO&&evento.mouse.botao==MOUSE_ESQUERDO&&componenteComFoco!=-1){  //se já tem um componente com foco, ele vai perder o foco
+        if (evento.mouse.acao==PIG_MOUSE_PRESSIONADO&&evento.mouse.botao==PIG_MOUSE_ESQUERDO&&componenteComFoco!=-1){  //se já tem um componente com foco, ele vai perder o foco
             componentes[componenteComFoco]->SetFoco(false);
             componenteComFoco = -1;
         }
@@ -76,7 +74,7 @@ public:
         totalComponentes = 0;
         id = idForm;
         componenteComFoco = componenteMouseOver = -1;
-        for(int i=0;i<MAX_COMPONENTES;i++)
+        for(int i=0;i<PIG_MAX_COMPONENTES;i++)
             componentes[i] = NULL;
     }
 
@@ -96,21 +94,21 @@ public:
 
     int TrataEvento(PIG_Evento evento){
 
-        if(evento.tipoEvento == EVENTO_MOUSE) return TrataMouseComponentes(evento);
+        if(evento.tipoEvento == PIG_EVENTO_MOUSE) return TrataMouseComponentes(evento);
 
-        if(evento.tipoEvento == EVENTO_TECLADO) return TrataTecladoComponentes(evento);
+        if(evento.tipoEvento == PIG_EVENTO_TECLADO) return TrataTecladoComponentes(evento);
 
         return 0;
     }
 
     PIGComponente GetComponente(int idComponente){
-        if (componentes[idComponente % MAX_COMPONENTES]==NULL) throw CPIGErroIndice(idComponente,"componentes");
-        return componentes[idComponente % MAX_COMPONENTES];
+        if (componentes[idComponente % PIG_MAX_COMPONENTES]==NULL) throw CPIGErroIndice(idComponente,"componentes");
+        return componentes[idComponente % PIG_MAX_COMPONENTES];
     }
 
     template <class T>
     T GetComponente(int idComponente){
-        T comp = (T) componentes[idComponente % MAX_COMPONENTES];
+        T comp = (T) componentes[idComponente % PIG_MAX_COMPONENTES];
         if (comp==NULL) throw CPIGErroIndice(idComponente,"componentes");
         return comp;
     }

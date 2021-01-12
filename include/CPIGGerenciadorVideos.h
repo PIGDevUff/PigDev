@@ -16,7 +16,7 @@ static void Inicia(){
     avdevice_register_all();
     avformat_network_init();
 
-    videos = new CPIGRepositorio<PIGVideo>(MAX_VIDEOS,"videos");
+    videos = new CPIGRepositorio<PIGVideo>(PIG_MAX_VIDEOS,"videos");
 }
 
 static void Encerra(){

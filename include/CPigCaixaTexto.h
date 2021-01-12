@@ -19,7 +19,7 @@ protected:
     int ChecaMouseOver(SDL_Point pMouse) override{
         if (visivel==false) return -1;
 
-        SDL_Rect r = {x + margemHorEsq,y + margemVertBaixo,larg - (margemHorDir + margemHorEsq),alt - (margemVertBaixo + margemVertCima)};
+        SDL_Rect r = {pos.x + margemHorEsq,pos.y + margemVertBaixo,larg - (margemHorDir + margemHorEsq),alt - (margemVertBaixo + margemVertCima)};
 
         SetMouseOver(SDL_PointInRect(&pMouse,&r));
         return mouseOver;
@@ -41,19 +41,19 @@ protected:
     //trata teclas de movimentação do cursor
     virtual int TrataTeclasEspeciais(PIG_Evento evento){
         switch (evento.teclado.tecla){
-            case TECLA_BACKSPACE:
+            case PIG_TECLA_BACKSPACE:
                 RetiraTextoBackSpace();return 1;
-            case TECLA_DELETE:
+            case PIG_TECLA_DELETE:
                 RetiraTextoDelete();return 1;
-            case TECLA_DIREITA:
+            case PIG_TECLA_DIREITA:
                 AvancaCursor();return 1;
-            case TECLA_ESQUERDA:
+            case PIG_TECLA_ESQUERDA:
                 VoltaCursor();return 1;
-            case TECLA_CIMA:
+            case PIG_TECLA_CIMA:
                 SobeCursor();return 1;
-            case TECLA_BAIXO:
+            case PIG_TECLA_BAIXO:
                 DesceCursor();return 1;
-            case TECLA_ENTER:
+            case PIG_TECLA_ENTER:
                 PulaLinha();return 1;
         }
         return 0;
@@ -63,9 +63,9 @@ protected:
     int TrataEventoTeclado(PIG_Evento evento){
         if(!temFoco) return 0;
 
-        if (evento.teclado.acao==TECLA_EDICAO) return 1;
+        if (evento.teclado.acao==PIG_TECLA_EDICAO) return 1;
 
-        if (evento.teclado.acao==TECLA_INPUT){//caracteres normais
+        if (evento.teclado.acao==PIG_TECLA_INPUT){//caracteres normais
             if (AdicionaTexto( ConverteString(evento.teclado.texto).c_str() ) ){
                 if (audioComponente>=0) CPIGGerenciadorAudios::Play(audioComponente);
                 return 1;
@@ -73,7 +73,7 @@ protected:
             return 0;
         }
 
-        if (evento.teclado.acao==TECLA_PRESSIONADA){//teclas especiais
+        if (evento.teclado.acao==PIG_TECLA_PRESSIONADA){//teclas especiais
             TrataTeclasEspeciais(evento);
             return 1;
         }
@@ -100,11 +100,11 @@ protected:
 
     //posiciona o cursor no eixo X (necessário, pois pode haver texto "escondido" à esquerda)
     void AjustaBaseTextoEixoX(int largParcial){
-        while(xCursor>x+larg - margemHorDir){
+        while(xCursor > pos.x+larg - margemHorDir){
             xBase-=1;
             xCursor = xBase + largParcial;
         }
-        while(xCursor <= x + margemHorEsq){
+        while(xCursor <= pos.x + margemHorEsq){
             xBase+=1;
             xCursor = xBase + largParcial;
         }
@@ -235,7 +235,7 @@ public:
     virtual void SetFonteTexto(int fonte){
         fonteTexto = fonte;
         altLetra = CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetTamanhoBaseFonte()+CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetFonteDescent();
-        yBaseOriginal = y+alt-altLetra;
+        yBaseOriginal = pos.y+alt-altLetra;
     }
 
     //recupera o texto armazenado no componente

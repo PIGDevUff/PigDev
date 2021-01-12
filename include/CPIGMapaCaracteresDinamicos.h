@@ -11,7 +11,7 @@ private:
     CPIGStringFormatada Processa(std::string textoOrig){
         CPIGStringFormatada resp;
         PIG_Cor cor = BRANCO;
-        PIG_Estilo estilo = ESTILO_NORMAL;
+        PIG_Estilo estilo = PIG_ESTILO_NORMAL;
         int larguraTotal = 0;
         int estado = 0;//estado atual da máquinda de estados
         int i = 0;
@@ -37,7 +37,7 @@ private:
                 }else if (letra==PIG_SIMBOLO_NEGRITO||letra==PIG_SIMBOLO_ITALICO||letra==PIG_SIMBOLO_SUBLINHADO||letra==PIG_SIMBOLO_CORTADO){//alerta de saída de negrito, itálico, underline ou strike
                     estado = 4;
                 }else{
-                    larguraTotal += larguraLetra[estilo][letra-PRIMEIRO_CAR];
+                    larguraTotal += larguraLetra[estilo][letra-PIG_PRIMEIRO_CAR];
                     resp.Adiciona(letra,larguraTotal,cor,estilo);
                 }
                 break;
@@ -45,26 +45,26 @@ private:
                 if (letra == '@'){//realmente é entrada de cor
                     estado = 2;
                 }else if (letra == PIG_SIMBOLO_NEGRITO){//negrito
-                    estilo |= ESTILO_NEGRITO;
+                    estilo |= PIG_ESTILO_NEGRITO;
                     pilhaEstilo.push_back(estilo);
                     estado = 0;
                 }else if (letra == PIG_SIMBOLO_ITALICO){
-                    estilo |= ESTILO_ITALICO;
+                    estilo |= PIG_ESTILO_ITALICO;
                     pilhaEstilo.push_back(estilo);
                     estado = 0;
                 }else if (letra == PIG_SIMBOLO_SUBLINHADO){
-                    estilo |= ESTILO_SUBLINHADO;
+                    estilo |= PIG_ESTILO_SUBLINHADO;
                     pilhaEstilo.push_back(estilo);
                     estado = 0;
                 }else if (letra == PIG_SIMBOLO_CORTADO){
-                    estilo |= ESTILO_CORTADO;
+                    estilo |= PIG_ESTILO_CORTADO;
                     pilhaEstilo.push_back(estilo);
                     estado = 0;
                 }else{//não é entrada de cor nem de formatacao de estilo
-                    larguraTotal += larguraLetra[estilo][letraAnt-PRIMEIRO_CAR];
+                    larguraTotal += larguraLetra[estilo][letraAnt-PIG_PRIMEIRO_CAR];
                     resp.Adiciona(letraAnt,larguraTotal,cor,estilo);//devolve o token anterior
 
-                    larguraTotal += larguraLetra[estilo][letra-PRIMEIRO_CAR];
+                    larguraTotal += larguraLetra[estilo][letra-PIG_PRIMEIRO_CAR];
                     resp.Adiciona(letra,larguraTotal,cor,estilo);
 
                     estado = 0;
@@ -87,10 +87,10 @@ private:
                         cor = pilhaCor[pilhaCor.size()-1];
                     else cor = BRANCO;
                 }else{//não é saída de cor
-                    larguraTotal += larguraLetra[estilo][letraAnt-PRIMEIRO_CAR];
+                    larguraTotal += larguraLetra[estilo][letraAnt-PIG_PRIMEIRO_CAR];
                     resp.Adiciona(letraAnt,larguraTotal,cor,estilo);//devolve o token anterior
 
-                    larguraTotal += larguraLetra[estilo][letra-PRIMEIRO_CAR];
+                    larguraTotal += larguraLetra[estilo][letra-PIG_PRIMEIRO_CAR];
                     resp.Adiciona(letra,larguraTotal,cor,estilo);
                 }
                 estado = 0;
@@ -100,12 +100,12 @@ private:
                     pilhaEstilo.pop_back();
                     if (pilhaEstilo.size()>1)//tira a cor da pilha e pega a de baixo
                         estilo = pilhaEstilo[pilhaEstilo.size()-1];
-                    else estilo = ESTILO_NORMAL;
+                    else estilo = PIG_ESTILO_NORMAL;
                 }else{//não é saída de cor
-                    larguraTotal += larguraLetra[estilo][letraAnt-PRIMEIRO_CAR];
+                    larguraTotal += larguraLetra[estilo][letraAnt-PIG_PRIMEIRO_CAR];
                     resp.Adiciona(letraAnt,larguraTotal,cor,estilo);//devolve o token anterior
 
-                    larguraTotal += larguraLetra[estilo][letra-PRIMEIRO_CAR];
+                    larguraTotal += larguraLetra[estilo][letra-PIG_PRIMEIRO_CAR];
                     resp.Adiciona(letra,larguraTotal,cor,estilo);
                 }
                 estado = 0;
@@ -123,7 +123,7 @@ private:
 public:
 
     //construtor com o nome do arquivo da fonte, o tamanha e a janela
-    CPIGMapaCaracteresDinamicos(char *nomeFonte, int tamanhoFonte, int idJanela):CPIGMapaCaracteres(nomeFonte,tamanhoFonte,ESTILO_NORMAL,BRANCO,idJanela){
+    CPIGMapaCaracteresDinamicos(char *nomeFonte, int tamanhoFonte, int idJanela):CPIGMapaCaracteres(nomeFonte,tamanhoFonte,PIG_ESTILO_NORMAL,BRANCO,idJanela){
         //IniciaBase(nomeFonte,tamanhoFonte,idJanela, -1);
 
         for (int estilo=1;estilo<PIG_TOTALESTILOS;estilo++)
@@ -151,27 +151,27 @@ public:
         int altJanela = CPIGGerenciadorJanelas::GetJanela(janela)->GetAltura();
         //rectDestino.y = CGerenciadorJanelas::GetJanela(janela)->GetAltura()-y-tamFonte;
         PIG_Cor corAtual = BRANCO;
-        PIG_Estilo estiloAtual = ESTILO_NORMAL;
+        PIG_Estilo estiloAtual = PIG_ESTILO_NORMAL;
         SDL_Point ponto = {delta,tamFonte};
 
         for (int i=0;i<formatada.size();i++){
             Uint16 aux = formatada.GetLetra(i);
             aux = aux %256;
-            if (aux-PRIMEIRO_CAR<0) continue;
+            if (aux-PIG_PRIMEIRO_CAR<0) continue;
             corAtual = formatada.GetCor(i);
             estiloAtual = formatada.GetEstilo(i);
 
             if (alvoTextura)
-                SDL_SetTextureBlendMode(glyphsT[estiloAtual][aux-PRIMEIRO_CAR], SDL_BLENDMODE_NONE);
-            else SDL_SetTextureBlendMode(glyphsT[estiloAtual][aux-PRIMEIRO_CAR], SDL_BLENDMODE_BLEND);
+                SDL_SetTextureBlendMode(glyphsT[estiloAtual][aux-PIG_PRIMEIRO_CAR], SDL_BLENDMODE_NONE);
+            else SDL_SetTextureBlendMode(glyphsT[estiloAtual][aux-PIG_PRIMEIRO_CAR], SDL_BLENDMODE_BLEND);
 
-            SDL_SetTextureColorMod(glyphsT[estiloAtual][aux-PRIMEIRO_CAR],corAtual.r,corAtual.g,corAtual.b);
+            SDL_SetTextureColorMod(glyphsT[estiloAtual][aux-PIG_PRIMEIRO_CAR],corAtual.r,corAtual.g,corAtual.b);
 
-            rectDestino.w = larguraLetra[estiloAtual][aux-PRIMEIRO_CAR];
-            rectDestino.h = tamFonte+alturaExtra[estiloAtual][aux-PRIMEIRO_CAR];
+            rectDestino.w = larguraLetra[estiloAtual][aux-PIG_PRIMEIRO_CAR];
+            rectDestino.h = tamFonte+alturaExtra[estiloAtual][aux-PIG_PRIMEIRO_CAR];
             rectDestino.y = altJanela-y-rectDestino.h;
 
-            SDL_RenderCopyEx(render,glyphsT[estiloAtual][aux-PRIMEIRO_CAR],NULL,&rectDestino,-ang,&ponto,FLIP_NENHUM);
+            SDL_RenderCopyEx(render,glyphsT[estiloAtual][aux-PIG_PRIMEIRO_CAR],NULL,&rectDestino,-ang,&ponto,PIG_FLIP_NENHUM);
 
             rectDestino.x += rectDestino.w;
             ponto.x -= rectDestino.w;

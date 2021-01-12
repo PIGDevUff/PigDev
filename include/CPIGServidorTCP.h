@@ -27,7 +27,7 @@ void CriaEventoMensagem(PIG_TipoMensagemRede tipoMensagem, const void *buffer, i
     infoRede->porta = clientesTCP[indiceSlot]->GetPortaRemota();
     SDL_Event event;
     event.type = SDL_USEREVENT;
-    event.user.code = EVENTO_REDE;
+    event.user.code = PIG_EVENTO_REDE;
     event.user.data1 = infoRede;
     SDL_PushEvent(&event);
 }
@@ -68,12 +68,12 @@ int AbreConexao(){
     int resp = posLivres[0];
     posLivres.erase(posLivres.begin());
     clientesTCP[resp] = new CPIGSocketTCP(-resp,socket,tamPacote,clienteSet);//-num apenas para indicar que se trata de um socket criado pelo servidor
-    CriaEventoMensagem(REDE_CONEXAO,"",1,resp);
+    CriaEventoMensagem(PIG_REDE_CONEXAO,"",1,resp);
     return resp;
 }
 
 void FechaConexao(int indice){
-    CriaEventoMensagem(REDE_DESCONEXAO,"",1,indice);
+    CriaEventoMensagem(PIG_REDE_DESCONEXAO,"",1,indice);
     PIGSocketTCP cliente = GetCliente(indice);
     delete cliente;
     clientesTCP.erase(indice);
@@ -165,10 +165,6 @@ static int accept_code(void *data){
                 //clienteTemp->EnviaMensagem("Servidor cheio! Desconectado!!!\n");
                 delete clienteTemp;
             }else{
-                /*int num = servidor->pool->RetiraLivre();
-                servidor->clientesTCP[num] = new CPIGSocketTCP(-num,servidor->socket,servidor->tamPacote,servidor->clienteSet);//-num apenas para indicar que se trata de um socket criado pelo servidor
-                servidor->CriaEventoMensagem(REDE_CONEXAO,"",1,num);
-                servidor->qtdConexoes++;*/
                 servidor->AbreConexao();
             }
         }
@@ -185,23 +181,18 @@ static int receive_code(void *data){
 
     //while (servidor->qtdConexoes>=0){//sinalização de encerramento da thread
     while (servidor->ativo){//sinalização de encerramento da thread
-        int prontos = SDLNet_CheckSockets(servidor->clienteSet,DELAY_CHECK_TCP_SERVIDOR);
+        int prontos = SDLNet_CheckSockets(servidor->clienteSet,PIG_DELAY_CHECK_TCP_SERVIDOR);
         int indice=0;
         while (prontos>0&&indice<servidor->maxConexoes){
-            uint8_t buffer[MAX_MENSAGEM_REDE_TCP];
+            uint8_t buffer[PIG_MAX_MENSAGEM_REDE_TCP];
             if (servidor->clientesTCP[indice]){
                 int bytes = servidor->clientesTCP[indice]->RecebeDados(buffer);
                 //printf("Bytes %d do cliente %d\n",bytes,indice);
                 if (bytes<=0){//nao tem atividade
-                    /*servidor->CriaEventoMensagem(REDE_DESCONEXAO,"",1,indice);
-                    delete servidor->clientesTCP[indice];
-                    servidor->clientesTCP[indice] = NULL;
-                    servidor->pool->DevolveUsado(indice);
-                    servidor->qtdConexoes--;*/
                     servidor->FechaConexao(indice);
                     prontos--;
                 }else if (bytes>0){
-                    servidor->CriaEventoMensagem(REDE_MENSAGEM_TCP,buffer,bytes,indice);
+                    servidor->CriaEventoMensagem(PIG_REDE_MENSAGEM_TCP,buffer,bytes,indice);
                     prontos--;
                 }
             }

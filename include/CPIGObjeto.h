@@ -59,20 +59,20 @@ protected:
 
         SDL_RenderDrawLine(
             renderer,
-            x + pivoRelativo.x - raio, altJanela - (y + pivoRelativo.y),
-            x + pivoRelativo.x, altJanela - (y + pivoRelativo.y + raio));
+            pos.x + pivoRelativo.x - raio, altJanela - (pos.y + pivoRelativo.y),
+            pos.x + pivoRelativo.x, altJanela - (pos.y + pivoRelativo.y + raio));
         SDL_RenderDrawLine(
             renderer,
-            x + pivoRelativo.x, altJanela - (y + pivoRelativo.y + raio),
-            x + pivoRelativo.x + raio, altJanela - (y + pivoRelativo.y));
+            pos.x + pivoRelativo.x, altJanela - (pos.y + pivoRelativo.y + raio),
+            pos.x + pivoRelativo.x + raio, altJanela - (pos.y + pivoRelativo.y));
         SDL_RenderDrawLine(
             renderer,
-            x + pivoRelativo.x + raio, altJanela - (y + pivoRelativo.y),
-            x + pivoRelativo.x, altJanela - (y + pivoRelativo.y - raio));
+            pos.x + pivoRelativo.x + raio, altJanela - (pos.y + pivoRelativo.y),
+            pos.x + pivoRelativo.x, altJanela - (pos.y + pivoRelativo.y - raio));
         SDL_RenderDrawLine(
             renderer,
-            x + pivoRelativo.x, altJanela - (y + pivoRelativo.y - raio),
-            x + pivoRelativo.x - raio, altJanela - (y + pivoRelativo.y));
+            pos.x + pivoRelativo.x, altJanela - (pos.y + pivoRelativo.y - raio),
+            pos.x + pivoRelativo.x - raio, altJanela - (pos.y + pivoRelativo.y));
 
     }
 
@@ -80,8 +80,8 @@ protected:
         SDL_Point pivoAbs;
 
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
-        pivoAbs.x = pivoRelativo.x + x;
-        pivoAbs.y = -pivoRelativo.y + y + alt; //inverte o eixo Y, pois o pivoRel considera o eixo Y aumentando para baixo
+        pivoAbs.x = pivoRelativo.x + pos.x;
+        pivoAbs.y = -pivoRelativo.y + pos.y + alt; //inverte o eixo Y, pois o pivoRel considera o eixo Y aumentando para baixo
         float angRad = -angulo * M_PI / 180.0;
         float seno = sin(angRad);
         float cosseno = cos(angRad);
@@ -92,26 +92,26 @@ protected:
 
         //vetor (Rx,Ry) � a resposta do vetor (Vx,Vy) rotacionado em ang
 
-        bb[0].x = (x - pivoAbs.x) * cosseno + (y - pivoAbs.y) * seno + pivoAbs.x;
-        bb[0].y = (y - pivoAbs.y) * cosseno - (x - pivoAbs.x) * seno + pivoAbs.y;
+        bb[0].x = (pos.x - pivoAbs.x) * cosseno + (pos.y - pivoAbs.y) * seno + pivoAbs.x;
+        bb[0].y = (pos.y - pivoAbs.y) * cosseno - (pos.x - pivoAbs.x) * seno + pivoAbs.y;
 
-        bb[1].x = (x + larg - pivoAbs.x) * cosseno + (y - pivoAbs.y) * seno + pivoAbs.x;
-        bb[1].y = (y - pivoAbs.y) * cosseno - (x + larg - pivoAbs.x) * seno + pivoAbs.y;
+        bb[1].x = (pos.x + larg - pivoAbs.x) * cosseno + (pos.y - pivoAbs.y) * seno + pivoAbs.x;
+        bb[1].y = (pos.y - pivoAbs.y) * cosseno - (pos.x + larg - pivoAbs.x) * seno + pivoAbs.y;
 
-        bb[2].x = (x + larg - pivoAbs.x) * cosseno + (y + alt - pivoAbs.y) * seno + pivoAbs.x;
-        bb[2].y = (y + alt - pivoAbs.y) * cosseno - (x + larg - pivoAbs.x) * seno + pivoAbs.y;
+        bb[2].x = (pos.x + larg - pivoAbs.x) * cosseno + (pos.y + alt - pivoAbs.y) * seno + pivoAbs.x;
+        bb[2].y = (pos.y + alt - pivoAbs.y) * cosseno - (pos.x + larg - pivoAbs.x) * seno + pivoAbs.y;
 
-        bb[3].x = (x - pivoAbs.x) * cosseno + (y + alt - pivoAbs.y) * seno + pivoAbs.x;
-        bb[3].y = (y + alt - pivoAbs.y) * cosseno - (x - pivoAbs.x) * seno + pivoAbs.y;
+        bb[3].x = (pos.x - pivoAbs.x) * cosseno + (pos.y + alt - pivoAbs.y) * seno + pivoAbs.x;
+        bb[3].y = (pos.y + alt - pivoAbs.y) * cosseno - (pos.x - pivoAbs.x) * seno + pivoAbs.y;
     }
 
     void AtualizaVertices() {
         double _angulo = M_PI * angulo / 180.0;
 
-        SDL_Point pivo = {pivoRelativo.x + x, -pivoRelativo.y + y + alt};
+        SDL_Point pivo = {pivoRelativo.x + pos.x, -pivoRelativo.y + pos.y + alt};
 
         for (int i = 0; i < vertices.size(); i++) {
-            vertices[i] = {verticesOriginais[i].x + x, verticesOriginais[i].y + y};
+            vertices[i] = {verticesOriginais[i].x + pos.x, verticesOriginais[i].y + pos.y};
 
             int deltaX = vertices[i].x - pivo.x;
             int deltaY = vertices[i].y - pivo.y;
@@ -261,18 +261,12 @@ public:
     }
 
     void Move(int nx, int ny) override {
-        SDL_Point pivo = {x, y};
-
-        x = nx;
-        y = ny;
-        dest.x = x;
-        dest.y = altJanela - alt - y;
-
+        CPIGSprite::Move(nx,ny);
         bbAlterado = true;
     }
 
-    int Desenha(PIGOffscreenRenderer offRender = NULL) override{
-        if (offRender == NULL){
+    int Desenha() override{
+        //if (offRender == NULL){
             //SDL_Rect enquadrado = dest;
             //enquadrado.x -= CGerenciadorJanelas::GetJanela(idJanela)->GetCamera()->GetX();
             //enquadrado.y += CGerenciadorJanelas::GetJanela(idJanela)->GetCamera()->GetY();
@@ -290,13 +284,13 @@ public:
                     break;
             }
 
-        }else{
+        /*}else{
             SDL_Texture *textAux = SDL_CreateTextureFromSurface(offRender->GetRenderer(), bitmap);
             SDL_Rect rectAux = dest;
             rectAux.y = offRender->GetAltura() - alt - y;
             SDL_RenderCopyEx(offRender->GetRenderer(), textAux, &frames[frameAtual], &rectAux, -angulo, &pivoRelativo, flip);
             SDL_DestroyTexture(textAux);
-        }
+        }*/
         return 0;
     }
 
@@ -376,7 +370,7 @@ public:
 
     bool ColisaoCirculoPoligono(std::vector<SDL_Point> vertices) {
         for(auto vertice : vertices) {
-            if(PIGDistancia({x + pivoRelativo.x, y + pivoRelativo.y}, vertice) <= raio) {
+            if(PIGDistancia({pos.x + pivoRelativo.x, pos.y + pivoRelativo.y}, vertice) <= raio) {
                 return true;
             }
         }
@@ -388,15 +382,15 @@ public:
 
             float mPoligono = ((float)vertices[f].y - vertices[i].y) / ((float)vertices[f].x - vertices[i].x);
 
-            if(mPoligono == 0 && PIGValorEntre((x + pivoRelativo.x), vertices[i].x, vertices[f].x) && PIGDistancia({(x + pivoRelativo.x), vertices[i].y}, {(x + pivoRelativo.x), (y + pivoRelativo.y)}) <= raio) {
+            if(mPoligono == 0 && PIGValorEntre((pos.x + pivoRelativo.x), vertices[i].x, vertices[f].x) && PIGDistancia({(pos.x + pivoRelativo.x), vertices[i].y}, {(pos.x + pivoRelativo.x), (pos.y + pivoRelativo.y)}) <= raio) {
                 return true;
-            } else if(std::isinf(mPoligono) && PIGValorEntre((y + pivoRelativo.y), vertices[i].y, vertices[f].y) && PIGDistancia({vertices[i].x, (y + pivoRelativo.y)}, {(x + pivoRelativo.x), (y + pivoRelativo.y)}) <= raio) {
+            } else if(std::isinf(mPoligono) && PIGValorEntre((pos.y + pivoRelativo.y), vertices[i].y, vertices[f].y) && PIGDistancia({vertices[i].x, (pos.y + pivoRelativo.y)}, {(pos.x + pivoRelativo.x), (pos.y + pivoRelativo.y)}) <= raio) {
                 return true;
             } else {
 
                 float mCirculo  = -1 / mPoligono;
 
-                float xProxCentro = ((mPoligono * ((float)vertices[i].x)) - (mCirculo * ((float)x + pivoRelativo.x)) + ((float)y + pivoRelativo.y) - ((float)vertices[i].y))/(mPoligono - mCirculo);
+                float xProxCentro = ((mPoligono * ((float)vertices[i].x)) - (mCirculo * ((float)pos.x + pivoRelativo.x)) + ((float)pos.y + pivoRelativo.y) - ((float)vertices[i].y))/(mPoligono - mCirculo);
                 float yProxCentro = mPoligono * (xProxCentro - ((float)vertices[i].x)) + ((float)vertices[i].y);
 
                 // SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);//retângulo verde para o OOBB (com ângulo)
@@ -404,7 +398,7 @@ public:
                 // SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
                 // SDL_RenderDrawRect(renderer, &dest);//retângulo vermelhor para o AABB (sem ângulo)
 
-                if(PIGDistancia({x + pivoRelativo.x, y + pivoRelativo.y}, {(int)xProxCentro, (int)yProxCentro}) <= raio && PIGValorEntre((int)xProxCentro, vertices[i].x, vertices[f].x)) return true;
+                if(PIGDistancia({pos.x + pivoRelativo.x, pos.y + pivoRelativo.y}, {(int)xProxCentro, (int)yProxCentro}) <= raio && PIGValorEntre((int)xProxCentro, vertices[i].x, vertices[f].x)) return true;
 
                 i = (i + 1) % vertices.size();
             }
@@ -439,12 +433,12 @@ private:
     }
 
     bool ColisaoCircular(CPIGObjeto *outro) {
-        int pivox, pivoy, posx, posy;
+        //int pivox, pivoy, posx, posy;
 
-        outro->GetPivoRelativo(pivox, pivoy);
-        outro->GetXY(posx, posy);
+        SDL_Point outroPivo = outro->GetPivo();
+        SDL_Point outroPos = outro->GetXY();
 
-        return PIGDistancia({posx + pivox, posy + pivoy}, {x + pivoRelativo.x, y + pivoRelativo.y}) <= (float)(raio + outro->GetRaio());
+        return PIGDistancia({outroPos.x + outroPivo.x, outroPos.y + outroPivo.y}, {pos.x + pivoRelativo.x, pos.y + pivoRelativo.y}) <= (float)(raio + outro->GetRaio());
     }
 
     int ColisaoOOBB(CPIGObjeto *outro) {

@@ -10,7 +10,7 @@ private:
 public:
 
     static void Inicia(){
-        timers = new CPIGRepositorio<PIGTimer>(MAX_TIMERS,"timers");
+        timers = new CPIGRepositorio<PIGTimer>(PIG_MAX_TIMERS,"timers");
     }
 
     static void Encerra(){

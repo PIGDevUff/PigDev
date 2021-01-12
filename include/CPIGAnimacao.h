@@ -8,8 +8,8 @@ class CPIGAnimacao:public CPIGObjeto{
 private:
 
 int souCopia;                   //indica se esta animação é cópia (foi criada a partir) de outra animação
-int qtdTotalFrames;             //indica o total de frames existentes nesta animação
-PIGModoAnimacao modos[MAX_MODOS];  //modos da animação
+//int qtdTotalFrames;             //indica o total de frames existentes nesta animação
+PIGModoAnimacao modos[PIG_MAX_MODOS];  //modos da animação
 PIGTimer tempoFrame;               //timer da animação (se estiver sendo utilizado um timer específico)
 int idTimer;                    //timer da animação (se estiver sendo utilizado o gerenciador de timers)
 int offx,offy;                  //offset (x,y) a ser utilizado junto com a posição (x,y) para desenhar oa animação
@@ -39,10 +39,9 @@ CPIGAnimacao(std::string nomeArq,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NUL
     offx = offy = 0;
     modoAtual = 0;
 
-    qtdTotalFrames = 0;
-    for (int i=0;i<MAX_MODOS;i++){
+    for (int i=0;i<PIG_MAX_MODOS;i++)
         modos[i] = NULL;
-    }
+
 
     if (usaGerenciadorTimer){
         tempoFrame = NULL;
@@ -57,12 +56,12 @@ CPIGAnimacao(std::string nomeArq,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NUL
 CPIGAnimacao(CPIGAnimacao* base,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NULL,int retiraFundo=1,int idJanela=0):CPIGObjeto(base->nomeArquivo,corFundo,retiraFundo,idJanela){
     souCopia= 1;
 
-    qtdTotalFrames = base->qtdTotalFrames;
-    for (int i=0;i<MAX_FRAMES;i++){
+    //qtdTotalFrames = base->qtdTotalFrames;
+    for (int i=0;i<PIG_MAX_FRAMES;i++){
         frames[i] = base->frames[i];
     }
 
-    for (int i=0;i<MAX_MODOS;i++){
+    for (int i=0;i<PIG_MAX_MODOS;i++){
         modos[i] = base->modos[i];
     }
     CPIGObjeto::SetDimensoes(base->alt,base->larg);
@@ -89,7 +88,7 @@ CPIGAnimacao(PIGObjeto base,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NULL,int
     //    frames[i] = NULL;
     //}
 
-    for (int i=0;i<MAX_MODOS;i++){
+    for (int i=0;i<PIG_MAX_MODOS;i++){
         modos[i] = NULL;
     }
 
@@ -100,13 +99,11 @@ CPIGAnimacao(PIGObjeto base,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NULL,int
 //destroi uma animação
 ~CPIGAnimacao(){
     if (!souCopia){
-        for (int i=0;i<MAX_MODOS;i++){
+        for (int i=0;i<PIG_MAX_MODOS;i++){
             if (modos[i])
                 delete modos[i];
         }
-        //for (int i=0;i<MAX_FRAMES;i++)
-        //    if (frames[i])
-        //        free(frames[i]);
+        //free(frames[i]);
     }
 
     if (tempoFrame)
@@ -168,11 +165,11 @@ int Desenha(){
         }else resp = modos[modoAtual]->GetEncerrou();//pode ter encerrado de desenhar todos os estágios do modo
     }
 
-    int px = x+offx;
-    int py = y+offy;
+    int px = pos.x+offx;
+    int py = pos.y+offy;
 
     CPIGObjeto::Move(px,py);
-    CPIGObjeto::Desenha(NULL);
+    CPIGObjeto::Desenha();
 
     px -=offx;
     py -=offy;

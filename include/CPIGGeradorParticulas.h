@@ -6,7 +6,7 @@
 class CPIGGeradorParticulas{
 
 private:
-PIGParticula parts[MAX_PARTICULAS];
+PIGParticula parts[PIG_MAX_PARTICULAS];
 int inix,iniy,dx,dy;            //posicao e direcao atual das particulas
 int pivoAbsX,pivoAbsY;          //pivo das particulas
 float pivoRelX,pivoRelY;
@@ -140,7 +140,7 @@ public:
         modoPivoRelativo = true;
     }
 
-    int CriaParticula(int fadingOut=0,int minX=-50,int minY=-50,int maxX=LARG_TELA+50,int maxY=ALT_TELA+50,float maxTempo=9999999.9){
+    int CriaParticula(int fadingOut=0,int minX=-50,int minY=-50,int maxX=PIG_LARG_TELA+50,int maxY=PIG_ALT_TELA+50,float maxTempo=9999999.9){
         int i=0;
         if (ativas>=maxParticulas) return -1;
         while (parts[i])

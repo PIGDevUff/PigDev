@@ -29,12 +29,12 @@ private:
     }
 
     int ChecaMouseOver(SDL_Point pMouse)override{
-        SDL_Rect r={x,0,larg,0};
+        SDL_Rect r={pos.x,0,larg,0};
         if (recolhida){
-            r.y = y;
+            r.y = pos.y;
             r.h = altBaseLista;
         }else{
-            r.y = y-(itens.size())*altBaseLista;
+            r.y = pos.y-(itens.size())*altBaseLista;
             r.h = (itens.size()+1)*altBaseLista;
         }
         SetMouseOver(SDL_PointInRect(&pMouse,&r));
@@ -43,17 +43,18 @@ private:
     }
 
     void DesenhaItemDestaque(){
-        SDL_Rect rectAux = dest;
-        rectAux.h = altBaseLista;
+        //SDL_Rect rectAux = dest;
+        //rectAux.h = altBaseLista;
         if (text){//se tiver imagem de fundo
-            SDL_RenderCopyEx(renderer,text,NULL,&rectAux,-angulo,NULL,flip);
+            //SDL_RenderCopyEx(renderer,text,NULL,&rectAux,-angulo,NULL,flip);
+            dest.h=altBaseLista;
+            CPIGSprite::Desenha();
         }
         if (itemDestaque>=0){                       //desenha o item no cabeçalho do dropdown
-            int xItem,yItem;
-            itens[itemDestaque]->GetXY(xItem,yItem);
-            itens[itemDestaque]->Move(xItem,y);     //move o item para o ponto do cabeçalho
+            SDL_Point pItem = itens[itemDestaque]->GetXY();
+            itens[itemDestaque]->Move(pItem.x,pos.y);     //move o item para o ponto do cabeçalho
             itens[itemDestaque]->Desenha();         //desenha o item no cabeçalho
-            itens[itemDestaque]->Move(xItem,yItem); //devolve o item para a posição normal (onde também deverá ser desenhado)
+            itens[itemDestaque]->Move(pItem.x,pItem.y); //devolve o item para a posição normal (onde também deverá ser desenhado)
         }
     }
 
@@ -104,7 +105,7 @@ public:
     }
 
     void CriaItem(std::string itemLabel, std::string arqImagemIcone="",std::string arqImagemFundoItem="", bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
-        int yItem=y-(itens.size()+1)*altBaseLista;
+        int yItem=pos.y-(itens.size()+1)*altBaseLista;
         CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,false,itemHabilitado,audioComponente,hintMsg,retiraFundo);
     }
 
@@ -113,15 +114,22 @@ public:
 
         DesenhaLabel();
 
-        if (!recolhida){
-            SDL_Rect r = dest;
-            r.h = (itens.size()+1)*altBaseLista;
-            r.y = dest.y;
-            SDL_RenderCopyEx(renderer,text,NULL,&r,-angulo,NULL,flip);
+        if (recolhida){
+            DesenhaItemDestaque();
+        }else{
+            //SDL_Rect r = dest;
+            //r.h = (itens.size()+1)*altBaseLista;
+            //r.y = dest.y;
+            //SDL_RenderSetClipRect(renderer,&r);
+            dest.h = (itens.size()+1)*altBaseLista;
+            frameAtual=0;
+            CPIGSprite::Desenha();
+
+            //SDL_RenderCopyEx(renderer,text,NULL,&r,-angulo,NULL,flip);
+
             for (PIGItemComponente i: itens)
                 i->Desenha();
-        }else{
-            DesenhaItemDestaque();
+            //SDL_RenderSetClipRect(renderer,NULL);
         }
 
         return 1;
@@ -141,14 +149,14 @@ public:
                 }
                 SetAcionadoItem(resp,resp!=-1);
 
-                if (evento.mouse.acao == MOUSE_PRESSIONADO && evento.mouse.botao == MOUSE_ESQUERDO){
+                if (evento.mouse.acao == PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO){
                     SetRecolhida(!recolhida);
                 }
 
                 if (resp>=0) return PIG_SELECIONADO_TRATADO;
                 else return PIG_SELECIONADO_MOUSEOVER;
             }
-            if (evento.mouse.acao == MOUSE_PRESSIONADO && evento.mouse.botao == MOUSE_ESQUERDO){
+            if (evento.mouse.acao == PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO){
                 SetRecolhida(!recolhida);
                 return PIG_SELECIONADO_TRATADO;
             }

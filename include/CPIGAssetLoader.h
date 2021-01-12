@@ -1,8 +1,6 @@
 #ifndef _CPIGASSETLOADER_
 #define _CPIGASSETLOADER_
 
-#include <unordered_map>
-
 class CPIGHashNodeImagem{
 
 public:

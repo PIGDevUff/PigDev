@@ -26,19 +26,19 @@ protected:
     void CriaLetrasSurface(PIG_Estilo estilo, int nivelOutline, PIG_Cor corOutline, SDL_Surface *fundo,  PIG_Cor corFonte=BRANCO){
         TTF_SetFontStyle(font,estilo);
 
-        glyphsT[estilo] = (SDL_Texture**) malloc(sizeof(SDL_Texture*)*(ULTIMO_CAR-PRIMEIRO_CAR));
-        larguraLetra[estilo] = (int*)malloc(sizeof(int*)*(ULTIMO_CAR-PRIMEIRO_CAR));
-        alturaExtra[estilo] = (int*)malloc(sizeof(int*)*(ULTIMO_CAR-PRIMEIRO_CAR));
+        glyphsT[estilo] = (SDL_Texture**) malloc(sizeof(SDL_Texture*)*(PIG_ULTIMO_CAR-PIG_PRIMEIRO_CAR));
+        larguraLetra[estilo] = (int*)malloc(sizeof(int*)*(PIG_ULTIMO_CAR-PIG_PRIMEIRO_CAR));
+        alturaExtra[estilo] = (int*)malloc(sizeof(int*)*(PIG_ULTIMO_CAR-PIG_PRIMEIRO_CAR));
 
-        for (Uint16 letra=PRIMEIRO_CAR;letra<ULTIMO_CAR;letra++){
+        for (Uint16 letra=PIG_PRIMEIRO_CAR;letra<PIG_ULTIMO_CAR;letra++){
             SDL_Surface *surf = TTF_RenderGlyph_Blended(font,letra,corFonte);//superficie gerada com a forna da letra simples
 
             if (fundo){
                 SDL_BlitScaled(fundo,NULL,surf,NULL);
             }
 
-            larguraLetra[estilo][letra-PRIMEIRO_CAR] = surf->w;//largura da letra com o estilo específico
-            alturaExtra[estilo][letra-PRIMEIRO_CAR] = surf->h-tamFonte;//qtd de pixels a mais na altura, para letras maiúsculas acentudadas como Á, Ó, É...
+            larguraLetra[estilo][letra-PIG_PRIMEIRO_CAR] = surf->w;//largura da letra com o estilo específico
+            alturaExtra[estilo][letra-PIG_PRIMEIRO_CAR] = surf->h-tamFonte;//qtd de pixels a mais na altura, para letras maiúsculas acentudadas como Á, Ó, É...
 
             if (nivelOutline>0){//faz o outline da letra, se houver
                 TTF_SetFontOutline(font,nivelOutline);
@@ -49,7 +49,7 @@ protected:
             }
 
             //SDL_SetColorKey(surf,1,SDL_MapRGBA(surf->format,0,0,0,255));
-            glyphsT[estilo][letra-PRIMEIRO_CAR] = SDL_CreateTextureFromSurface(render,surf);
+            glyphsT[estilo][letra-PIG_PRIMEIRO_CAR] = SDL_CreateTextureFromSurface(render,surf);
 
             SDL_FreeSurface(surf);
         }
@@ -64,7 +64,7 @@ protected:
         estiloFixo = estilo;
 
         render = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetRenderer();
-        font = TTF_OpenFont( nome.c_str(), tamanhoFonte );
+        font = TTF_OpenFont(nome.c_str(), tamanhoFonte);
         fontDescent = TTF_FontDescent(font);
         if (font==NULL)
             printf("Erro: arquivo de fonte (%s) nao localizado\n",nomeFonte);
@@ -121,8 +121,8 @@ public:
             if (glyphsT[i]){
                 free(alturaExtra[i]);
                 free(larguraLetra[i]);
-                for (Uint16 j=PRIMEIRO_CAR;j<ULTIMO_CAR;j++){
-                    SDL_DestroyTexture(glyphsT[i][j-PRIMEIRO_CAR]);
+                for (Uint16 j=PIG_PRIMEIRO_CAR;j<PIG_ULTIMO_CAR;j++){
+                    SDL_DestroyTexture(glyphsT[i][j-PIG_PRIMEIRO_CAR]);
                 }
                 free(glyphsT[i]);
             }
@@ -134,7 +134,7 @@ public:
 
     void SubstituiGlyph(std::string nomeArq,uint16_t glyph, int largNova, int x, int y, int alt, int larg){
         glyph = glyph%256;
-        if (glyph<PRIMEIRO_CAR||glyph>=ULTIMO_CAR) throw CPIGErroIndice(glyph,"caracter");//se o indice do glyph antigo não existe
+        if (glyph<PIG_PRIMEIRO_CAR||glyph>=PIG_ULTIMO_CAR) throw CPIGErroIndice(glyph,"caracter");//se o indice do glyph antigo não existe
 
         int h;
         SDL_Surface *surfExtra;
@@ -152,15 +152,15 @@ public:
         for (int estilo=0;estilo<PIG_TOTALESTILOS;estilo++){
             if (estiloFixo>=0&&estilo!=estiloFixo) continue;
 
-            SDL_QueryTexture(glyphsT[estilo][glyph-PRIMEIRO_CAR],NULL,NULL,NULL,&h); //pega a altura do caracter que será substituído
+            SDL_QueryTexture(glyphsT[estilo][glyph-PIG_PRIMEIRO_CAR],NULL,NULL,NULL,&h); //pega a altura do caracter que será substituído
             SDL_Surface *surfAux = SDL_CreateRGBSurfaceWithFormat(0,largNova,h,32,SDL_PIXELFORMAT_RGBA32);//cria uma superfície com o tamanho adequado
 
             SDL_BlitScaled(surfExtra,&r,surfAux,NULL);//copia somente a área desejada para uma superfície auxiliar
-            SDL_DestroyTexture(glyphsT[estilo][glyph-PRIMEIRO_CAR]);//libera a memória do glyph antigo
-            larguraLetra[estilo][glyph-PRIMEIRO_CAR] = largNova;//atualiza a largura do glyph novo (valor do parâmetro)
+            SDL_DestroyTexture(glyphsT[estilo][glyph-PIG_PRIMEIRO_CAR]);//libera a memória do glyph antigo
+            larguraLetra[estilo][glyph-PIG_PRIMEIRO_CAR] = largNova;//atualiza a largura do glyph novo (valor do parâmetro)
 
 
-            glyphsT[estilo][glyph-PRIMEIRO_CAR] = SDL_CreateTextureFromSurface(render,surfAux); //cria o gylph novo
+            glyphsT[estilo][glyph-PIG_PRIMEIRO_CAR] = SDL_CreateTextureFromSurface(render,surfAux); //cria o gylph novo
             SDL_FreeSurface(surfAux);
         }
     }
@@ -205,7 +205,7 @@ public:
         aux = aux % 256;
         if(estiloFixo>=0)
             estilo = estiloFixo;
-        return larguraLetra[estilo][aux-PRIMEIRO_CAR];
+        return larguraLetra[estilo][aux-PIG_PRIMEIRO_CAR];
     }
 
     std::vector<std::string> ExtraiLinhas(std::string texto, int largMax, std::string delim=PigDelimitadores){
@@ -251,7 +251,7 @@ public:
             aux = texto[i];
             aux = aux % 256;
             if(texto[i] != '\n')
-                resp += larguraLetra[estiloFixo][aux-PRIMEIRO_CAR];
+                resp += larguraLetra[estiloFixo][aux-PIG_PRIMEIRO_CAR];
         }
 
         return resp;
@@ -280,22 +280,25 @@ public:
         for (int i=0;i<texto.size();i++){
             aux = texto[i];
             aux = aux % 256;//UTF16 string, retirando só o byte que interessa
-            if (aux-PRIMEIRO_CAR<0) continue;
+            if (aux-PIG_PRIMEIRO_CAR<0) continue;
             //printf("aux: %d  %d",aux,aux-PRIMEIRO_CAR);
 
-            SDL_SetTextureColorMod(glyphsT[estiloFixo][aux-PRIMEIRO_CAR],corFonte.r,corFonte.g,corFonte.b);
+            SDL_SetTextureColorMod(glyphsT[estiloFixo][aux-PIG_PRIMEIRO_CAR],corFonte.r,corFonte.g,corFonte.b);
 
             if (alvoTextura)    //caso esteja sendo escrito em textura (label), é preciso ajustar o modo
-                SDL_SetTextureBlendMode(glyphsT[estiloFixo][aux-PRIMEIRO_CAR], SDL_BLENDMODE_NONE);
-            else SDL_SetTextureBlendMode(glyphsT[estiloFixo][aux-PRIMEIRO_CAR], SDL_BLENDMODE_BLEND);
+                SDL_SetTextureBlendMode(glyphsT[estiloFixo][aux-PIG_PRIMEIRO_CAR], SDL_BLENDMODE_NONE);
+            else SDL_SetTextureBlendMode(glyphsT[estiloFixo][aux-PIG_PRIMEIRO_CAR], SDL_BLENDMODE_BLEND);
 
-            rectDestino.w = larguraLetra[estiloFixo][aux-PRIMEIRO_CAR];
-            rectDestino.h = tamFonte+alturaExtra[estiloFixo][aux-PRIMEIRO_CAR];
+            rectDestino.w = larguraLetra[estiloFixo][aux-PIG_PRIMEIRO_CAR];
+            rectDestino.h = tamFonte+alturaExtra[estiloFixo][aux-PIG_PRIMEIRO_CAR];
             rectDestino.y = altJanela-y-rectDestino.h;
 
             //printf("%d %d %d %d\n",rectDestino.x,rectDestino.y,rectDestino.h,rectDestino.w);
 
-            SDL_RenderCopyEx(render,glyphsT[estiloFixo][aux-PRIMEIRO_CAR],NULL,&rectDestino,-ang,&ponto,FLIP_NENHUM);
+            SDL_Rect enquadrado = rectDestino;
+            CPIGGerenciadorJanelas::GetJanela(janela)->ConverteCoordenadaWorldScreen(enquadrado.x,enquadrado.y,enquadrado.x,enquadrado.y);
+
+            SDL_RenderCopyEx(render,glyphsT[estiloFixo][aux-PIG_PRIMEIRO_CAR],NULL,&enquadrado,-ang,&ponto,PIG_FLIP_NENHUM);
 
             rectDestino.x += rectDestino.w;
             ponto.x -= rectDestino.w;

@@ -38,7 +38,7 @@ CPIGJanela(std::string tituloJanela,int idJanela,int altTela,int largTela){
         SDL_SetRenderDrawColor( renderer, corFundo.r, corFundo.g, corFundo.b, corFundo.a );
         SDL_SetRenderDrawBlendMode(renderer,SDL_BLENDMODE_BLEND);
         fechada = 0;
-        modo = JANELA_NORMAL;
+        modo = PIG_JANELA_NORMAL;
         camera = new CPigCamera(altTela,largTela);
     }
 
@@ -55,10 +55,6 @@ CPIGJanela(std::string tituloJanela,int idJanela,int altTela,int largTela){
 SDL_Window *GetWindow(){
     return window;
 }
-
-/*PigCamera GetCamera(){
-    return camera;
-}*/
 
 SDL_Renderer *GetRenderer(){
     return renderer;

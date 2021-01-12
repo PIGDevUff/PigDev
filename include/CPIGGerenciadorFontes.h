@@ -24,8 +24,8 @@ public:
         //fontes[0] = new CMapaCaracteres(PIG_FONTE_PADRAO_NOME,PIG_FONTE_PADRAO_TAM,ESTILO_NORMAL,"desenho.bmp",0,BRANCO,0);
         //fontes[0] = new CMapaCaracteresDinamicos("..//fontes//arial.ttf",PIG_FONTE_PADRAO_TAM,0);
 
-        fontes = new CPIGRepositorio<PIGMapaCaracteres>(MAX_FONTES,"fontes");
-        fontes->Insere(new CPIGMapaCaracteres(PIG_FONTE_PADRAO_NOME,PIG_FONTE_PADRAO_TAM,ESTILO_NORMAL,PIG_FONTE_PADRAO_COR,0));
+        fontes = new CPIGRepositorio<PIGMapaCaracteres>(PIG_MAX_FONTES,"fontes");
+        fontes->Insere(new CPIGMapaCaracteres(PIG_FONTE_PADRAO_NOME,PIG_FONTE_PADRAO_TAM,PIG_ESTILO_NORMAL,PIG_FONTE_PADRAO_COR,0));
     }
 
     static void Encerra(){

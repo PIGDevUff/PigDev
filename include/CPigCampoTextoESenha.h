@@ -63,15 +63,15 @@ public:
 
     CPIGCampoTextoESenha(int idComponente,int px, int py, int altura,int largura,std::string nomeArq,int maxCars = 200, bool apenasNumeros=false, int retiraFundo=1,int janela=0,bool campoSenha = false):
         CPIGCaixaTexto(idComponente,px,py,altura,largura,nomeArq,maxCars,apenasNumeros,retiraFundo,janela){
-            yBaseOriginal = y+margemVertBaixo;
-            xBaseOriginal = x+margemHorEsq;
+            yBaseOriginal = pos.y+margemVertBaixo;
+            xBaseOriginal = pos.x+margemHorEsq;
             yBase = yBaseOriginal;
             xBase = xBaseOriginal;
             xCursor = xBase;
             yCursor = yBase;
             mascara = '*';
             if(campoSenha){
-                GetTextoVisivelPtr = &GetTextoMask;
+                GetTextoVisivelPtr = &CPIGCampoTextoESenha::GetTextoMask;
             }else{
                 GetTextoVisivelPtr = &GetTexto;
             }
@@ -118,10 +118,14 @@ public:
     //desenha o componente completo
     int Desenha() override{
         //imagem de fundo
-        SDL_RenderCopyEx(renderer, text, &frames[frameAtual],&dest,-angulo,&pivoRelativo,flip);
+        CPIGSprite::Desenha();
 
-        SDL_Rect r={x+margemHorEsq+1,altJanela-y-alt+margemVertCima,larg-(margemHorEsq+margemHorDir),alt-(margemVertBaixo+margemVertCima)};
+        SDL_Rect r={pos.x+margemHorEsq+1,altJanela-pos.y-alt+margemVertCima,larg-(margemHorEsq+margemHorDir),alt-(margemVertBaixo+margemVertCima)};
+
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaWorldScreen(r.x,r.y,r.x,r.y);
+
         SDL_RenderSetClipRect(renderer,&r);
+
 
         CPIGGerenciadorFontes::GetFonte(fonteTexto)->Escreve(GetTextoVisivel(),xBase,yBase,BRANCO,PIG_TEXTO_ESQUERDA);
         DesenhaCursor();//desenha o cursor (se estiver em edição)
@@ -139,8 +143,8 @@ public:
         margemVertBaixo = vertBaixo;
         margemHorDir = horDir;
         margemHorEsq = horEsq;
-        yBaseOriginal = y+margemVertBaixo;
-        xBaseOriginal = x+margemHorEsq;
+        yBaseOriginal = pos.y+margemVertBaixo;
+        xBaseOriginal = pos.x+margemHorEsq;
         yBase = yBaseOriginal;
         xBase = xBaseOriginal;
         xCursor = xBase;
@@ -156,7 +160,7 @@ public:
         if(mouseOver){
             if (habilitado==false) return PIG_SELECIONADO_DESABILITADO;
             if (visivel==false) return PIG_SELECIONADO_INVISIVEL;
-            if (evento.mouse.acao == MOUSE_PRESSIONADO && evento.mouse.botao == MOUSE_ESQUERDO) return TrataMouseBotaoEsquerdo(p);
+            if (evento.mouse.acao == PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO) return TrataMouseBotaoEsquerdo(p);
             return PIG_SELECIONADO_MOUSEOVER;
         }
 

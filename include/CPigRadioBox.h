@@ -78,7 +78,7 @@ public:
     }
 
     void CriaItem(std::string itemLabel, std::string arqImagemFundo="",bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
-        int yItem = y+alt-(altBaseLista)*(itens.size()+1);
+        int yItem = pos.y+alt-(altBaseLista)*(itens.size()+1);
         CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundo,false,itemHabilitado,audioComponente,hintMsg,retiraFundo);
         itens[itens.size()-1]->DefineFuncaoAjusteFrame(AjustaFrame);
         PIGSprite icone = itens[itens.size()-1]->GetIcone();
@@ -89,9 +89,9 @@ public:
     int Desenha(){
         if (visivel==false) return 0;
 
-        if (text){//se tiver imagem de fundo
+        if (text)//se tiver imagem de fundo
             CPIGSprite::Desenha();
-        }
+
         DesenhaLabel();
 
         for (PIGItemComponente i: itens)
@@ -106,7 +106,7 @@ public:
 
         if (ChecaMouseOver(CPIGMouse::PegaXYWorld())>0){
             for (int i=0;i<itens.size();i++){
-                if(itens[i]->TrataEventoMouse(evento) == PIG_SELECIONADO_TRATADO){
+                if (itens[i]->TrataEventoMouse(evento) == PIG_SELECIONADO_TRATADO){
                     if (itens[i]->GetAcionado())
                         resp = i;
                 }

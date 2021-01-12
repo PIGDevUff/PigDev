@@ -30,9 +30,9 @@ private:
 
     void DesenhaRetanguloMarcacao(){
         if(itemDestaque !=-1){
-            int posX,posY;
-            itens[itemDestaque]->GetXY(posX,posY);
-            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado(x,posY,altBaseLista,larg,AZUL);
+            //int posX,posY;
+            SDL_Point p = itens[itemDestaque]->GetXY();
+            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado(p.x,p.y,altBaseLista,larg,AZUL);
         }
     }
 
@@ -86,13 +86,13 @@ public:
     int TrataEventoTeclado(PIG_Evento evento)override{
         if(!temFoco||!habilitado||!visivel) return 0;
 
-        if(evento.teclado.acao == TECLA_PRESSIONADA){
-            if(evento.teclado.tecla == TECLA_CIMA && evento.teclado.repeticao == 0){
+        if(evento.teclado.acao == PIG_TECLA_PRESSIONADA){
+            if(evento.teclado.tecla == PIG_TECLA_CIMA && evento.teclado.repeticao == 0){
                 itemDestaque--;
                 if(itemDestaque<0) itemDestaque = itens.size()-1;
             }
 
-            if(evento.teclado.tecla == TECLA_BAIXO && evento.teclado.repeticao == 0)
+            if(evento.teclado.tecla == PIG_TECLA_BAIXO && evento.teclado.repeticao == 0)
                 itemDestaque = (itemDestaque + 1) % itens.size();
         }
         return 1;
@@ -101,7 +101,7 @@ public:
     int TrataEventoMouse(PIG_Evento evento){
         int resp = -1;
         bool mouseOverAntes = mouseOver;
-        //PIGCamera cam = CGerenciadorJanelas::GetJanela(idJanela)->GetCamera();
+
         if (ChecaMouseOver(CPIGMouse::PegaXYWorld())>0){
             for (int i=0;i<itens.size();i++){
                 int aux = itens[i]->TrataEventoMouse(evento);
@@ -123,7 +123,7 @@ public:
     }
 
     void CriaItem(std::string itemLabel, std::string arqImagemIcone="", std::string arqImagemFundoItem="",bool itemMarcado = false, bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
-        int yItem = y+alt-(altBaseLista)*(itens.size()+1);
+        int yItem = pos.y+alt-(altBaseLista)*(itens.size()+1);
         CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,itemMarcado,itemHabilitado,audio,hintMsg,retiraFundo);
     }
 
@@ -132,8 +132,8 @@ public:
         int posY;
 
         for(int i=0;i<itens.size();i++){
-            posY = (y + alt) - (altBaseLista*(i+1));
-            itens[i]->Move(x,posY);
+            posY = (pos.y + alt) - (altBaseLista*(i+1));
+            itens[i]->Move(pos.x,posY);
         }
 
     }
@@ -142,7 +142,7 @@ public:
         if (visivel==false) return 0;
 
         if (text){//se tiver imagem de fundo
-            SDL_RenderCopyEx(renderer,text,NULL,&dest,-angulo,NULL,flip);
+            CPIGSprite::Desenha();//SDL_RenderCopyEx(renderer,text,NULL,&dest,-angulo,NULL,flip);
         }
         DesenhaLabel();
 

@@ -12,7 +12,7 @@ class CPIGOffscreenRenderer{
 
 private:
 
-Layer layers[MAX_CAMADAS_OFFSCREEN];
+Layer layers[PIG_MAX_CAMADAS_OFFSCREEN];
 int qtdLayers,maxLayers;
 
 int alt,larg,depth;

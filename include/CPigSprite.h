@@ -5,9 +5,10 @@ class CPIGSprite{
 
 protected:
 
+    SDL_Point pos;
     int alt,larg,altOriginal,largOriginal;
     int idJanela,altJanela;
-    float angulo;
+    double angulo;
     SDL_Rect dest;
     int frameAtual;
     std::unordered_map<int,SDL_Rect> frames;
@@ -19,13 +20,12 @@ protected:
     PIG_Cor coloracao;
     PIG_Cor **pixels;
     int opacidade;
-    int x,y;
     std::string nomeArquivo;
+    //PIGSequenciaTransicoes seqTrans;
 
     void CriaTextura(int retiraFundo, PIG_Cor *corFundo=NULL){
         if (retiraFundo){
             Uint8 red, green, blue, alpha;
-            //printf("vou retirar cor de fundo\n");
             if (corFundo!=NULL){
                 red = corFundo->r;
                 green = corFundo->g;
@@ -46,7 +46,7 @@ protected:
     void CarregaImagem(std::string nomeArq){
         nomeArquivo = nomeArq;
 
-        #ifdef SHARE_BITMAP
+        #ifdef PIG_SHARE_BITMAP
         bitmap = CPIGAssetLoader::LoadImage(nomeArquivo);
         #else
         bitmap = IMG_Load(nomeArquivo.c_str());
@@ -57,6 +57,7 @@ protected:
     void IniciaBase(int altura,int largura,int janela){
         frameAtual = 0;
         frames[0] = {0,0,0,0};
+        //seqTrans = new CPIGSequenciaTransicoes();
         IniciaCor();
         IniciaJanela(janela);
         IniciaDimensoes(altura,largura);
@@ -105,6 +106,20 @@ protected:
         }
     }
 
+    void AplicaTransicao(PIGTransicao t){
+        int ok1,ok2;
+        ok1 = t->GetX(pos.x);
+        ok2 = t->GetY(pos.y);
+        if (ok1||ok2)
+            Move(pos.x,pos.y);
+        ok1 = t->GetAltura(alt);
+        ok2 = t->GetLargura(larg);
+        if (ok1||ok2)
+            SetDimensoes(alt,larg);
+        if (t->GetCor(coloracao)) SetColoracao(coloracao);
+        if (t->GetAngulo(angulo)) SetAngulo(angulo);
+    }
+
 
 private:
 
@@ -130,13 +145,13 @@ private:
 
     //Atributos relativos à rotação do Sprite
     void IniciaOrientacao(){
-        x = y = 0;
+        pos = {0,0};
         angulo = 0;
         pivoRelativo.x = 0;
         pivoRelativo.y = alt;
 
-        dest.x = x;
-        dest.y = altJanela-y-alt;
+        dest.x = pos.x;
+        dest.y = altJanela-pos.y-alt;
         dest.h = alt;
         dest.w = larg;
 
@@ -185,10 +200,10 @@ public:
     CPIGSprite(CPIGSprite *spriteBase,int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
         nomeArquivo = spriteBase->nomeArquivo;
 
-        #ifdef SHARE_BITMAP
+        #ifdef PIG_SHARE_BITMAP
         bitmap = CPIGAssetLoader::LoadImage(spriteBase->nomeArquivo);
         #else
-        bitmap = IMG_Load(spriteBase->nomeImagem);
+        bitmap = IMG_Load(spriteBase->nomeArquivo.c_str());
         #endif
 
         IniciaBase(bitmap->h,bitmap->w,janela);
@@ -202,14 +217,19 @@ public:
         nomeArquivo = "";
         pivoRelativo = {0,0};
         angulo = 0;
-        flip = FLIP_NENHUM;
+        flip = PIG_FLIP_NENHUM;
         text = NULL;
         renderer = NULL;
         bitmap = NULL;
         frameAtual = 0;
-        frames[0] = {0,0,0,0};
+        frames[0] ={0,0,0,0};
         pixels = NULL;
+        //seqTrans = NULL;
     }
+
+    /*void InsereTransicao(PIGTransicao t){
+        if (seqTrans) seqTrans->Insere(t);
+    }*/
 
     //Destrutor para todos os tipos de Sprites
     ~CPIGSprite(){
@@ -218,6 +238,8 @@ public:
                 free(pixels[i]);
             free(pixels);
         }
+
+        //delete seqTrans;
 
         if (text) SDL_DestroyTexture(text);
 
@@ -240,9 +262,8 @@ public:
         frames[idFrame] = r;
     }
 
-    void GetXY(int &x,int &y){
-        x = this->x;
-        y = this->y;
+    SDL_Point GetXY(){
+        return pos;
     }
 
     void SetColoracao(PIG_Cor cor){
@@ -283,30 +304,25 @@ public:
         return pivoRelativo;
     }
 
-    void GetPivoRelativo(int &x, int &y) {
-        x = pivoRelativo.x;
-        y = pivoRelativo.y;
-    }
-
     virtual void Move(int nx,int ny){
-        x = nx;
-        y = ny;
-        dest.x = x;
-        dest.y = altJanela-alt-y;
+        pos.x = nx;
+        pos.y = ny;
+        dest.x = pos.x;
+        dest.y = altJanela-alt-pos.y;
     }
 
     virtual void Desloca(int dx, int dy){
-        x += dx;
-        y += dy;
-        dest.x = x;
-        dest.y = altJanela-alt-y;
+        pos.x += dx;
+        pos.y += dy;
+        dest.x = pos.x;
+        dest.y = altJanela-alt-pos.y;
     }
 
     virtual void SetDimensoes(int altura,int largura){
         dest.h = alt = altura;
         dest.w = larg = largura;
-        dest.x = x;
-        dest.y = altJanela-y-alt;
+        dest.x = pos.x;
+        dest.y = altJanela-alt-pos.y;
 
         pivoRelativo.y = alt;//necessário porque o poivô relativo é usado com eixo Y invertido (para baixo)
     }
@@ -368,23 +384,23 @@ public:
         }
     }
 
-    virtual int Desenha(PIGOffscreenRenderer offRender = NULL){
-        if (offRender == NULL){
-            SDL_Rect enquadrado = dest;
-            SDL_Rect fr = frames[frameAtual];
-            //enquadrado.x -= CGerenciadorJanelas::GetJanela(idJanela)->GetCamera()->GetX();
-            //enquadrado.y += CGerenciadorJanelas::GetJanela(idJanela)->GetCamera()->GetY();
-            CPIGGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaWorldScreen(enquadrado.x,enquadrado.y,enquadrado.x,enquadrado.y);
-            SDL_RenderCopyEx(renderer, text, &fr, &enquadrado, -angulo, &pivoRelativo, flip);
-        }else{
-            SDL_Texture *textAux = SDL_CreateTextureFromSurface(offRender->GetRenderer(), bitmap);
-            SDL_Rect rectAux = dest;
-            rectAux.y = offRender->GetAltura() - alt - y;
-
-            SDL_RenderCopyEx(offRender->GetRenderer(), textAux, &frames[frameAtual], &rectAux, -angulo, &pivoRelativo, flip);
-            SDL_DestroyTexture(textAux);
-        }
+    virtual int Desenha(){
+        /*if (seqTrans){
+            PIGTransicao t = seqTrans->GetTransicaoAtual();
+            if (t) AplicaTransicao(t);
+        }*/
+        SDL_Rect enquadrado = dest;
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaWorldScreen(enquadrado.x,enquadrado.y,enquadrado.x,enquadrado.y);
+        SDL_RenderCopyEx(renderer, text, &frames[frameAtual], &enquadrado, -angulo, &pivoRelativo, flip);
         return 0;
+    }
+
+    void DesenhaOffScreen(PIGOffscreenRenderer offRender){
+        SDL_Texture *textAux = SDL_CreateTextureFromSurface(offRender->GetRenderer(), bitmap);
+        SDL_Rect rectAux = dest;
+        rectAux.y = offRender->GetAltura() - alt - pos.y;
+        SDL_RenderCopyEx(offRender->GetRenderer(), textAux, &frames[frameAtual], &rectAux, -angulo, &pivoRelativo, flip);
+        SDL_DestroyTexture(textAux);
     }
 
     void AtualizaPixels(int retiraFundo = 1, int opacidadeObj = 255) {

@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <cmath>
 #include <unordered_map>
+#include <stdint.h>
 
 //separa uma string em palavras, usando os delimitadores indicados
 std::vector<std::string> PIGSeparaPalavras(std::string texto,std::string delim){
@@ -56,6 +57,18 @@ inline bool PIGCoresIguais(PIG_Cor cor1, PIG_Cor cor2){
     return cor1.r==cor2.r&&cor1.g==cor2.g&&cor1.b==cor2.b&&cor1.a==cor2.a;
 }
 
+bool operator ==(PIG_Cor cor1, PIG_Cor cor2){
+    return cor1.r==cor2.r&&cor1.g==cor2.g&&cor1.b==cor2.b&&cor1.a==cor2.a;
+}
+
+PIG_Cor operator *(PIG_Cor cor, double fator){
+    return {(uint8_t)cor.r*fator,(uint8_t)cor.g*fator,(uint8_t)cor.b*fator};
+}
+
+PIG_Cor operator +(PIG_Cor cor1,PIG_Cor cor2){
+    return {(uint8_t)cor1.r*cor2.r,(uint8_t)cor1.g*cor2.r,(uint8_t)cor1.b*cor2.b};
+}
+
 //cria uma cor a partir de uma string com um valor hexadecimal de 8 algarismos RRGGBBAA. Ex: 0xFF0000FF (vermelho)
 PIG_Cor PIGCriaCor(char *stringHexa){
     unsigned long total = strtoul(stringHexa,0,16);//transforma a string em um inteiro (decimal)
@@ -85,7 +98,7 @@ uint16_t PIGTroca2Bytes(uint16_t valor){
 }
 
 //mistura duas cores com uma proporção entre elas
-PIG_Cor MixCor(PIG_Cor iniCor, PIG_Cor fimCor, double porc){
+PIG_Cor PIGMixCor(PIG_Cor iniCor, PIG_Cor fimCor, double porc){
     PIG_Cor resp;
     resp.r = fimCor.r*porc + (iniCor.r)*(1-porc);
     resp.g = fimCor.g*porc + (iniCor.g)*(1-porc);

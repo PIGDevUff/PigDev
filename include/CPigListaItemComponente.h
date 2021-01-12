@@ -28,15 +28,15 @@ protected:
         PIGItemComponente item;
         if (arqImagemFundo==""){
             if (arqImagemIcone==""){
-                item = new CPIGItemComponente(itens.size(),x,yItem,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
+                item = new CPIGItemComponente(itens.size(),pos.x,yItem,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
             }else{
-                item = new CPIGItemComponente(itens.size(),x,yItem,altIcone,largIcone,arqImagemIcone,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
+                item = new CPIGItemComponente(itens.size(),pos.x,yItem,altIcone,largIcone,arqImagemIcone,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
             }
         }else{
             if (arqImagemIcone==""){
-                item = new CPIGItemComponente(itens.size(),x,yItem,arqImagemFundo,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
+                item = new CPIGItemComponente(itens.size(),pos.x,yItem,arqImagemFundo,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
             }else{
-                item = new CPIGItemComponente(itens.size(),x,yItem,altIcone,largIcone,arqImagemIcone,arqImagemFundo,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
+                item = new CPIGItemComponente(itens.size(),pos.x,yItem,altIcone,largIcone,arqImagemIcone,arqImagemFundo,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
             }
         }
         item->SetHint(hintMsg);
@@ -162,8 +162,8 @@ public:
     }
 
     void Move(int nx,int ny){
-        int dx = nx-x;
-        int dy = ny-y;
+        int dx = nx-pos.x;
+        int dy = ny-pos.y;
         CPIGSprite::Desloca(dx,dy);
         for(int i=0;i<itens.size();i++)
             itens[i]->Desloca(dx, dy);

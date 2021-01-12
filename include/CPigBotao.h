@@ -51,7 +51,7 @@ protected:
 
     void TrataTimer(){
         if (timer->GetTempoDecorrido()>=tempoRepeticao){
-            if (botaoRepeticao&&mouseOver&&CPIGMouse::GetEstadoBotaoEsquerdo()==MOUSE_PRESSIONADO){
+            if (botaoRepeticao&&mouseOver&&CPIGMouse::GetEstadoBotaoEsquerdo()==PIG_MOUSE_PRESSIONADO){
                 OnMouseClick();
             }else{
                 SetAcionado(false);
@@ -99,7 +99,7 @@ public:
 
     CPIGBotao(int idComponente,int px, int py, int alt,int larg,std::string nomeArq, int retiraFundo=1,int janela=0):
         CPIGComponente(idComponente,px,py,alt,larg,nomeArq,retiraFundo,janela){
-            tecla = TECLA_ENTER;//sem tecla de atalho
+            tecla = PIG_TECLA_ENTER;//sem tecla de atalho
             acao = NULL;//não tem ação registrada
             param = NULL;//não tem parâmetro associado à ação
             CriaFramesAutomaticosPorLinha(1,1,4);
@@ -127,7 +127,7 @@ public:
         if (mouseOver){
             if (habilitado==false) return PIG_SELECIONADO_DESABILITADO;
             if (visivel==false) return PIG_SELECIONADO_INVISIVEL;
-            if(evento.mouse.acao==MOUSE_PRESSIONADO && evento.mouse.botao == MOUSE_ESQUERDO) return OnMouseClick();
+            if(evento.mouse.acao==PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO) return OnMouseClick();
             return PIG_SELECIONADO_MOUSEOVER;
         }
 
@@ -135,7 +135,7 @@ public:
     }
 
     int TrataEventoTeclado(PIG_Evento evento){
-        if (evento.teclado.acao==TECLA_PRESSIONADA && evento.teclado.tecla==tecla)
+        if (evento.teclado.acao==PIG_TECLA_PRESSIONADA && evento.teclado.tecla==tecla)
             if (timer->GetTempoDecorrido()>tempoRepeticao) return OnMouseClick();
 
         return 0;
@@ -159,8 +159,8 @@ public:
     }
 
     int TrataEvento(PIG_Evento evento){
-        if (evento.tipoEvento == EVENTO_MOUSE)    return TrataEventoMouse(evento);
-        if (evento.tipoEvento == EVENTO_TECLADO) return TrataEventoTeclado(evento);
+        if (evento.tipoEvento == PIG_EVENTO_MOUSE)    return TrataEventoMouse(evento);
+        if (evento.tipoEvento == PIG_EVENTO_TECLADO) return TrataEventoTeclado(evento);
 
         return PIG_NAO_SELECIONADO;
     }

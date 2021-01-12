@@ -22,14 +22,14 @@ protected:
     static void AjustaFrame(PIGItemComponente item){
         int resp;
         if (item->GetHabilitado()==false){
-            if (item->GetAcionado()) resp = 3;
-            else resp = 2;
+            if (item->GetAcionado()) resp = 4;
+            else resp = 3;
         }else if (item->GetMouseOver()){
-            if (item->GetAcionado()) resp = 5;
-            else resp = 4;
+            if (item->GetAcionado()) resp = 6;
+            else resp = 5;
         }else{
-            if (item->GetAcionado()) resp = 1;
-            else resp = 0;
+            if (item->GetAcionado()) resp = 2;
+            else resp = 1;
         }
         item->GetIcone()->MudaFrameAtual(resp);
     }
@@ -80,8 +80,9 @@ public:
     }
 
     void CriaItem(std::string itemLabel, std::string arqImagemFundoItem="", bool itemMarcado = false, bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
-        int yItem = y+alt-(altBaseLista)*(itens.size()+1);
+        int yItem = pos.y+alt-(altBaseLista)*(itens.size()+1);
         CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqIcone,arqImagemFundoItem,itemMarcado,itemHabilitado,audio,hintMsg,retiraFundo);
+        itens[itens.size()-1]->DefineFuncaoAjusteFrame(AjustaFrame);
         PIGSprite icone = itens[itens.size()-1]->GetIcone();
         icone->CriaFramesAutomaticosPorLinha(1,1,6);
         icone->MudaFrameAtual(1);
@@ -109,6 +110,7 @@ public:
             for (int i=0;i<itens.size();i++){
                 if (itens[i]->TrataEventoMouse(evento) == PIG_SELECIONADO_TRATADO)
                     resp = 1;
+
             }
             if (resp) return PIG_SELECIONADO_TRATADO;
             else return PIG_SELECIONADO_MOUSEOVER;

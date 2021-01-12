@@ -12,7 +12,7 @@ private:
 public:
 
     static void Inicia(){
-        forms = new CPIGRepositorio<PIGForm>(MAX_FORMS,"forms");
+        forms = new CPIGRepositorio<PIGForm>(PIG_MAX_FORMS,"forms");
     }
 
     static void Encerra(){
@@ -24,7 +24,7 @@ public:
     }
 
     static PIGForm GetFormComponente(int idComponente){
-        return GetForm(idComponente / MAX_COMPONENTES);
+        return GetForm(idComponente / PIG_MAX_COMPONENTES);
     }
 
     static int CriaForm(int x,int y,int altura,int largura,int janela = 0){

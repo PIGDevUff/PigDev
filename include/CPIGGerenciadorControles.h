@@ -8,7 +8,7 @@ class CPIGGerenciadorControles{
 private:
 
 static int qtdControles;
-static PIGControle controles[MAX_CONTROLES];
+static PIGControle controles[PIG_MAX_CONTROLES];
 
 public:
 
@@ -32,5 +32,5 @@ static PIGControle GetControle(int idControle){
 };
 
 int CPIGGerenciadorControles::qtdControles;
-PIGControle CPIGGerenciadorControles::controles[MAX_CONTROLES];
+PIGControle CPIGGerenciadorControles::controles[PIG_MAX_CONTROLES];
 #endif // _CPIGGERENCIADORCONTROLE_

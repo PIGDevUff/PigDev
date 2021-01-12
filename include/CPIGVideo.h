@@ -328,7 +328,7 @@ void VideoRefreshTimer(){
 
     if (atraso<0) return;
 
-    if (is->videoCtx&&estado==VIDEO_TOCANDO){
+    if (is->videoCtx&&estado==PIG_VIDEO_TOCANDO){
 
         if (is->pictqSize == 0){
             //ScheduleRefresh(10);
@@ -455,7 +455,7 @@ int DecodeAudioFrame(double *ptsPtr){
     uint8_t * converted = &is->audioConvertedData[0];
     double pts;
 
-    for (;estado!=VIDEO_PARADO;){
+    for (;estado!=PIG_VIDEO_PARADO;){
         while (is->hasAudioFrames) {
             rv = avcodec_receive_frame(is->audioCtx, is->pAudioFrame);
             if (rv){
@@ -509,7 +509,7 @@ int DecodeAudioFrame(double *ptsPtr){
 
         //if (estado==VIDEO_PARADO) break;
 
-        if (estado==VIDEO_PARADO||filaAudio->Get(&is->audioPkt, !decodeEncerrado, quit) < 0){
+        if (estado==PIG_VIDEO_PARADO||filaAudio->Get(&is->audioPkt, !decodeEncerrado, quit) < 0){
             break;
         }
 
@@ -888,7 +888,7 @@ CPIGVideo(std::string nomeArq,int idJanela=0):
     decodeEncerrado = false;
     audioDeviceId = -1;
 
-    estado = VIDEO_PARADO;
+    estado = PIG_VIDEO_PARADO;
 
     filaAudio = new CPIGFilaPacotes();
     filaVideo = new CPIGFilaPacotes();
@@ -933,8 +933,8 @@ void SetSeek(double incremento){
 }
 
 void Play(){
-    if (estado!=VIDEO_PARADO) return;
-    estado = VIDEO_TOCANDO;
+    if (estado!=PIG_VIDEO_PARADO) return;
+    estado = PIG_VIDEO_TOCANDO;
     decodeEncerrado = false;
     quit = 0;
 
@@ -967,8 +967,8 @@ void Play(){
 void Stop(){
     //SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 111);
     //printf("Vou fazer stop\n");
-    if (estado==VIDEO_PARADO) return;//Stop() pode ser chamado isoladamente ou pelo destrutor, mas não deve ser executado 2 vezes
-    estado = VIDEO_PARADO;
+    if (estado==PIG_VIDEO_PARADO) return;//Stop() pode ser chamado isoladamente ou pelo destrutor, mas não deve ser executado 2 vezes
+    estado = PIG_VIDEO_PARADO;
     quit = 1;
 
     SDL_CondSignal(is->pictqCv);
@@ -994,8 +994,8 @@ void Stop(){
 
 void Pause(){
     if (is==NULL) return;
-    if (estado==VIDEO_TOCANDO){
-        estado = VIDEO_PAUSADO;
+    if (estado==PIG_VIDEO_TOCANDO){
+        estado = PIG_VIDEO_PAUSADO;
         pausa = av_gettime();
         while (SDL_GetAudioDeviceStatus(audioDeviceId)==SDL_AUDIO_PLAYING)
             SDL_PauseAudioDevice(audioDeviceId,1);
@@ -1005,8 +1005,8 @@ void Pause(){
 
 void Resume(){
     if (is==NULL) return;
-    if (estado==VIDEO_PAUSADO){
-        estado = VIDEO_TOCANDO;
+    if (estado==PIG_VIDEO_PAUSADO){
+        estado = PIG_VIDEO_TOCANDO;
         is->frameTimer += (av_gettime()-pausa) / 1000000.0;// - is->vidclk.last_updated
         //printf("pausa?\n");
         timerProx->Despausa();
@@ -1016,7 +1016,7 @@ void Resume(){
 }
 
 int Desenha(){
-    if (estado==VIDEO_PARADO) return 1;
+    if (estado==PIG_VIDEO_PARADO) return 1;
     VideoRefreshTimer();
     //printf("1");
     SDL_LockMutex(mutexTex);
@@ -1118,13 +1118,13 @@ void SetDimensoes(int altura,int largura)override{
 
 void OcupaJanelaInteira(){
     angulo = 0;
-    x = y = 0;
+    pos = {0,0};
     dest.x = 0;
-    dest.y = altJanela-y-alt;
-    pivoRelativo.x = pivoRelativo.y = 0;
+    dest.y = altJanela-pos.y-alt;
+    pivoRelativo = {0,0};
     dest.h = alt = janelaAtual->GetAltura();
     dest.w = larg = janelaAtual->GetLargura();
-    flip = FLIP_NENHUM;
+    flip = PIG_FLIP_NENHUM;
     janelaToda = true;
 }
 

@@ -4,7 +4,7 @@
 #include "CPIGComponente.h"
 #include "CPIGBotao.h"
 
-typedef enum{HORIZONTAL,VERTICAL}PIG_Orientacao;
+typedef enum{PIG_HORIZONTAL,PIG_VERTICAL}PIG_Orientacao;
 
 //tipo de função a ser usada em alterações na posição do handle da barra
 //o parâmetro int devolverá à função o identificador do botão
@@ -59,7 +59,7 @@ class CPIGScrollBar : public CPIGComponente{
 /***************Métodos Modificados**************/
 
     void AjustaOrientacao(){
-        if(orientacao == HORIZONTAL){
+        if(orientacao == PIG_HORIZONTAL){
             CPIGSprite::SetDimensoes(largura,comprimento - (2*altBotoes));
             largReal = comprimento;
             altReal = largura;
@@ -88,9 +88,9 @@ class CPIGScrollBar : public CPIGComponente{
     }
 
     void AjustaHandle(){
-        if(orientacao == HORIZONTAL){
+        if(orientacao == PIG_HORIZONTAL){
             if(orientacaoCrescimento)handle->Move(xOriginal+altBotoes +porcentagemConcluida*largUtil,yOriginal);
-            else handle->Move(x + larg - largHandle - porcentagemConcluida*largUtil,yOriginal);
+            else handle->Move(pos.x + larg - largHandle - porcentagemConcluida*largUtil,yOriginal);
         }else{
             if(orientacaoCrescimento)handle->Move(xOriginal,yOriginal + altBotoes + porcentagemConcluida*largUtil);
             else handle->Move(xOriginal,yOriginal + altBotoes + alt - largHandle - porcentagemConcluida*largUtil);
@@ -108,12 +108,12 @@ class CPIGScrollBar : public CPIGComponente{
 
 /*******************************************/
     int TrataClickTrilha(int px,int py){
-        if(orientacao == HORIZONTAL){
-            if(orientacaoCrescimento)porcentagemConcluida = (1.0 * ((px - largHandle/2) - x))/(largUtil);
-            else porcentagemConcluida = (1.0 * (x + larg - (px + largHandle/2)))/(largUtil);
+        if(orientacao == PIG_HORIZONTAL){
+            if(orientacaoCrescimento)porcentagemConcluida = (1.0 * ((px - largHandle/2) - pos.x))/(largUtil);
+            else porcentagemConcluida = (1.0 * (pos.x + larg - (px + largHandle/2)))/(largUtil);
         }else{
-            if(orientacaoCrescimento) porcentagemConcluida = (1.0 * ((py - largHandle/2) - y))/(largUtil);
-            else porcentagemConcluida = (1.0 * (y + alt - (py + largHandle/2)))/(largUtil);
+            if(orientacaoCrescimento) porcentagemConcluida = (1.0 * ((py - largHandle/2) - pos.y))/(largUtil);
+            else porcentagemConcluida = (1.0 * (pos.y + alt - (py + largHandle/2)))/(largUtil);
         }
 
         AvancaHandle(porcentagemConcluida*(vMax - vMin) + vMin,0);
@@ -154,16 +154,16 @@ public:
             vMin = vAtual = 0;
             vMax = 100;
             porcentagemConcluida = 0;
-            orientacao = HORIZONTAL;
-            xOriginal = x;
-            yOriginal = y;
+            orientacao = PIG_HORIZONTAL;
+            xOriginal = pos.x;
+            yOriginal = pos.y;
             largReal = comprimento = comprimentoTotal;
             altReal = largura = larguraTotal;
             altBotoes = 0;
             deltaBotao = 1;
             deltaTeclado = deltaRodinha = 10;
             largHandle = larguraHandle;
-            handle = new CPIGBotao(0,x + altBotoes,y,largura,largHandle,imgHandle,retiraFundoHandle,idJanela);
+            handle = new CPIGBotao(0,pos.x + altBotoes,pos.y,largura,largHandle,imgHandle,retiraFundoHandle,idJanela);
             handle->DefineBotaoRepeticao(true);
             handle->DefineTempoRepeticao(0.01);
             largUtil = comprimento - (2*altBotoes) - largHandle;
@@ -256,12 +256,12 @@ public:
         if(TrataBotoes(evento) == PIG_SELECIONADO_TRATADO) return PIG_SELECIONADO_TRATADO;
         handle->TrataEventoMouse(evento);
 
-        if(orientacao == VERTICAL && (ChecaMouseOverAreaScroll(p) || mouseOver)){
-            if(evento.mouse.acao == MOUSE_RODINHA) return TrataRodinha(evento);
+        if(orientacao == PIG_VERTICAL && (ChecaMouseOverAreaScroll(p) || mouseOver)){
+            if(evento.mouse.acao == PIG_MOUSE_RODINHA) return TrataRodinha(evento);
         }
 
         if (mouseOver){
-            if((evento.mouse.acao == MOUSE_PRESSIONADO && evento.mouse.botao == MOUSE_ESQUERDO) || handle->GetAcionado()){
+            if((evento.mouse.acao == PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO) || handle->GetAcionado()){
                 return TrataClickTrilha(p.x,p.y);
             }
             return PIG_SELECIONADO_MOUSEOVER;
@@ -271,13 +271,13 @@ public:
 
     int TrataEventoTeclado(PIG_Evento evento){
         if (!temFoco) return 0;
-        if(evento.teclado.acao == TECLA_PRESSIONADA){
-            if(orientacao == HORIZONTAL){
-                if(evento.teclado.tecla== TECLA_DIREITA) AvancaHandle(vAtual,deltaTeclado);
-                if(evento.teclado.tecla == TECLA_ESQUERDA) AvancaHandle(vAtual,-deltaTeclado);
+        if(evento.teclado.acao == PIG_TECLA_PRESSIONADA){
+            if(orientacao == PIG_HORIZONTAL){
+                if(evento.teclado.tecla== PIG_TECLA_DIREITA) AvancaHandle(vAtual,deltaTeclado);
+                if(evento.teclado.tecla == PIG_TECLA_ESQUERDA) AvancaHandle(vAtual,-deltaTeclado);
             }else{
-                if(evento.teclado.tecla== TECLA_CIMA) AvancaHandle(vAtual,deltaTeclado);
-                if(evento.teclado.tecla == TECLA_BAIXO) AvancaHandle(vAtual,-deltaTeclado);
+                if(evento.teclado.tecla== PIG_TECLA_CIMA) AvancaHandle(vAtual,deltaTeclado);
+                if(evento.teclado.tecla == PIG_TECLA_BAIXO) AvancaHandle(vAtual,-deltaTeclado);
             }
             return PIG_SELECIONADO_TRATADO;
         }

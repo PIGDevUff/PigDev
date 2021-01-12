@@ -8,7 +8,7 @@ private:
 
 static CPIGRepositorio<PIGAudio> *audios;
 
-static int audioIds[QTD_CANAIS_PADRAO];
+static int audioIds[PIG_QTD_CANAIS_PADRAO];
 static Mix_Music *background;
 static int volumeBackground;
 static PIG_StatusAudio statusBackground;
@@ -16,7 +16,7 @@ static PIG_StatusAudio statusBackground;
 inline static void TrataParadaAudio(int canal){
     SDL_Event eventoAudio;
     eventoAudio.type = SDL_USEREVENT;
-    eventoAudio.user.code = EVENTO_AUDIO;
+    eventoAudio.user.code = PIG_EVENTO_AUDIO;
     eventoAudio.user.data1 = (int*)malloc(sizeof(int));
     *((int*)eventoAudio.user.data1) = audioIds[canal];
     SDL_PushEvent(&eventoAudio);
@@ -26,28 +26,28 @@ inline static void TrataParadaAudio(int canal){
 inline static void TrataParadaBackground(){
     SDL_Event eventoAudio;
     eventoAudio.type = SDL_USEREVENT;
-    eventoAudio.user.code = EVENTO_AUDIO;
+    eventoAudio.user.code = PIG_EVENTO_AUDIO;
     eventoAudio.user.data1 = (int*)malloc(sizeof(int)*1);
-    *((int*)eventoAudio.user.data1) =  ID_BACKGROUND;
+    *((int*)eventoAudio.user.data1) =  PIG_ID_BACKGROUND;
     SDL_PushEvent(&eventoAudio);
 }
 
 public:
 
 static void Inicia(){
-    Mix_OpenAudio(FREQ_AUDIO_PADRAO,MIX_DEFAULT_FORMAT,2,TAMANHO_CHUNK);
+    Mix_OpenAudio(PIG_FREQ_AUDIO_PADRAO,MIX_DEFAULT_FORMAT,2,PIG_TAMANHO_CHUNK);
 
-    Mix_AllocateChannels(QTD_CANAIS_PADRAO);
+    Mix_AllocateChannels(PIG_QTD_CANAIS_PADRAO);
 
-    audios = new CPIGRepositorio<PIGAudio>(MAX_AUDIOS,"audios");
-    for (int i=0;i<QTD_CANAIS_PADRAO;i++){
+    audios = new CPIGRepositorio<PIGAudio>(PIG_MAX_AUDIOS,"audios");
+    for (int i=0;i<PIG_QTD_CANAIS_PADRAO;i++){
         audioIds[i] = -1;
     }
 
     Mix_ChannelFinished(TrataParadaAudio);
     background = NULL;
-    volumeBackground = VOLUME_PADRAO;
-    statusBackground = AUDIO_PARADO;
+    volumeBackground = PIG_VOLUME_PADRAO;
+    statusBackground = PIG_AUDIO_PARADO;
     Mix_HookMusicFinished(TrataParadaBackground);
 }
 
@@ -73,28 +73,28 @@ static void CarregaBackground(std::string nomeArquivo){
 static void PlayBackground(int nVezes){
     if (background){
         Mix_PlayMusic(background, nVezes);
-        statusBackground = AUDIO_TOCANDO;
+        statusBackground = PIG_AUDIO_TOCANDO;
     }
 }
 
 static void StopBackground(){
     if (background){
         Mix_HaltMusic();
-        statusBackground = AUDIO_PARADO;
+        statusBackground = PIG_AUDIO_PARADO;
     }
 }
 
 static void PauseBackground(){
     if (background){
         Mix_PauseMusic();
-        statusBackground = AUDIO_PAUSADO;
+        statusBackground = PIG_AUDIO_PAUSADO;
     }
 }
 
 static void ResumeBackground(){
     if (background){
         Mix_ResumeMusic();
-        statusBackground = AUDIO_TOCANDO;
+        statusBackground = PIG_AUDIO_TOCANDO;
     }
 }
 
@@ -170,7 +170,7 @@ inline static void ResumeTudo(){
 };
 CPIGRepositorio<PIGAudio> *CPIGGerenciadorAudios::audios;
 
-int CPIGGerenciadorAudios::audioIds[QTD_CANAIS_PADRAO];
+int CPIGGerenciadorAudios::audioIds[PIG_QTD_CANAIS_PADRAO];
 Mix_Music *CPIGGerenciadorAudios::background;
 int CPIGGerenciadorAudios::volumeBackground;
 PIG_StatusAudio CPIGGerenciadorAudios::statusBackground;

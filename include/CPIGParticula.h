@@ -105,7 +105,7 @@ public:
         //int y = yini + dy*decorrido;
 
         CPIGAnimacao::Move(inix+dx*decorrido,iniy+dy*decorrido);
-        viva = (x>menorX)&&(x<maiorX)&&(y>menorY)&&(y<maiorY);
+        viva = (pos.x>menorX)&&(pos.x<maiorX)&&(pos.y>menorY)&&(pos.y<maiorY);
     }
 
     void SetDimensoes(int altura, int largura){

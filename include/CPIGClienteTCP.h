@@ -19,7 +19,7 @@ void CriaEventoMensagem(PIG_TipoMensagemRede tipoMensagem, const void *buffer, i
     infoRede->porta = GetPortaRemota();
     SDL_Event event;
     event.type = SDL_USEREVENT;
-    event.user.code = EVENTO_REDE;
+    event.user.code = PIG_EVENTO_REDE;
     event.user.data1 = infoRede;
     SDL_PushEvent(&event);
 }
@@ -54,15 +54,15 @@ static int thread_code(void *data){
         return -1;
     }
     while (cliente->ativo){
-        int pronto = SDLNet_CheckSockets(cliente->socketSet,DELAY_CHECK_TCP_CLIENTE);
+        int pronto = SDLNet_CheckSockets(cliente->socketSet,PIG_DELAY_CHECK_TCP_CLIENTE);
         if (pronto){
             //printf("Chegou mensagem para o cliente\n");
-            uint8_t buffer[MAX_MENSAGEM_REDE_TCP];
+            uint8_t buffer[PIG_MAX_MENSAGEM_REDE_TCP];
             int bytes = cliente->RecebeDados(buffer);
             if (bytes>0){
-                cliente->CriaEventoMensagem(REDE_MENSAGEM_TCP,buffer,bytes);
+                cliente->CriaEventoMensagem(PIG_REDE_MENSAGEM_TCP,buffer,bytes);
             }else{//não tem atividade
-                cliente->CriaEventoMensagem(REDE_DESCONEXAO,"",1);
+                cliente->CriaEventoMensagem(PIG_REDE_DESCONEXAO,"",1);
                 cliente->ativo = false;
                 break;
             }

@@ -6,7 +6,7 @@ class CPIGSocketUDP{
 private:
 
 int portaLocal;
-char hostLocal[TAMANHO_MAXIMO_HOSTNAME];
+char hostLocal[PIG_TAMANHO_MAXIMO_HOSTNAME];
 int id;
 int ativo;
 long tempoPacoteRecebido;
@@ -29,7 +29,7 @@ void CriaEventoMensagem(PIG_TipoMensagemRede tipoMensagem, UDPpacket *pacoteRece
     infoRede->porta = PIGTroca2Bytes(pacoteRecebido->address.port);
     SDL_Event event;
     event.type = SDL_USEREVENT;
-    event.user.code = EVENTO_REDE;
+    event.user.code = PIG_EVENTO_REDE;
     event.user.data1 = infoRede;
     SDL_PushEvent(&event);
     tempoPacoteRecebido = clock();
@@ -64,8 +64,8 @@ CPIGSocketUDP(int idSocket,int porta){
         return;
     }
 
-    pacoteEnvio = SDLNet_AllocPacket(TAMANHO_PACOTE_UDP);
-    pacoteRecebimento = SDLNet_AllocPacket(TAMANHO_PACOTE_UDP);
+    pacoteEnvio = SDLNet_AllocPacket(PIG_TAMANHO_PACOTE_UDP);
+    pacoteRecebimento = SDLNet_AllocPacket(PIG_TAMANHO_PACOTE_UDP);
     ativo = pacoteEnvio!=NULL && pacoteRecebimento!=NULL;
     if (!ativo){
         printf("Erro na criacao de pacotes UDP: %s\n",SDLNet_GetError());
@@ -83,7 +83,7 @@ CPIGSocketUDP(int idSocket,int porta){
 
 bool EnviaDados(const void *buffer, int tamanhoBuffer, std::string host, int porta){
     if (!ativo) return false;
-    if (tamanhoBuffer>TAMANHO_PACOTE_UDP) return false;
+    if (tamanhoBuffer>PIG_TAMANHO_PACOTE_UDP) return false;
 
     IPaddress ipRemoto;
     //printf("Vou dar send para %s na porta %u\n",host,porta);
@@ -154,9 +154,9 @@ static int thread_code(void *data){
     CPIGSocketUDP *socketUDP = (CPIGSocketUDP*) data;
     while (true){
         if (SDLNet_UDP_Recv(socketUDP->socket, socketUDP->pacoteRecebimento)){
-            socketUDP->CriaEventoMensagem(REDE_MENSAGEM_UDP,socketUDP->pacoteRecebimento);
+            socketUDP->CriaEventoMensagem(PIG_REDE_MENSAGEM_UDP,socketUDP->pacoteRecebimento);
         }
-        SDL_Delay(DELAY_CHECK_UDP);
+        SDL_Delay(PIG_DELAY_CHECK_UDP);
     }
 }
 

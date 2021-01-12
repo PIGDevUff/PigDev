@@ -28,9 +28,9 @@ public:
     }
 
     static void Inicia(){
-        sprites = new CPIGRepositorio<PIGSprite>(MAX_SPRITES,"sprites");
-        objetos = new CPIGRepositorio<PIGObjeto>(MAX_OBJETOS,"objetos");
-        animacoes = new CPIGRepositorio<PIGAnimacao>(MAX_ANIMACOES,"animacoes");
+        sprites = new CPIGRepositorio<PIGSprite>(PIG_MAX_SPRITES,"sprites");
+        objetos = new CPIGRepositorio<PIGObjeto>(PIG_MAX_OBJETOS,"objetos");
+        animacoes = new CPIGRepositorio<PIGAnimacao>(PIG_MAX_ANIMACOES,"animacoes");
     }
 
     static void Encerra(){

@@ -48,14 +48,14 @@ public:
     }
 
     static int ProcessaEvento(PIG_Evento &evento){
-        if (evento.tipoEvento!=EVENTO_MOUSE) return 0;
-        if (evento.mouse.acao==MOUSE_PRESSIONADO||evento.mouse.acao==MOUSE_LIBERADO){
+        if (evento.tipoEvento!=PIG_EVENTO_MOUSE) return 0;
+        if (evento.mouse.acao==PIG_MOUSE_PRESSIONADO||evento.mouse.acao==PIG_MOUSE_LIBERADO){
             switch(evento.mouse.botao){
-            case MOUSE_DIREITO: estadoBotaoDireito = evento.mouse.acao;break;
-            case MOUSE_CENTRAL: estadoBotaoCentral = evento.mouse.acao;break;
-            case MOUSE_ESQUERDO: estadoBotaoEsquerdo = evento.mouse.acao;break;
+            case PIG_MOUSE_DIREITO: estadoBotaoDireito = evento.mouse.acao;break;
+            case PIG_MOUSE_CENTRAL: estadoBotaoCentral = evento.mouse.acao;break;
+            case PIG_MOUSE_ESQUERDO: estadoBotaoEsquerdo = evento.mouse.acao;break;
             }
-        }else if (evento.mouse.acao==MOUSE_MOVIDO){
+        }else if (evento.mouse.acao==PIG_MOUSE_MOVIDO){
             Move(evento.mouse.posX,evento.mouse.posY,evento.mouse.numeroJanela);
 
         }

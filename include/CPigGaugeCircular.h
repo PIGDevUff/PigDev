@@ -32,10 +32,6 @@ private:
     int valor,valorMin,valorMax;
     double porcentagemConcluida;
     SDL_Texture *textGauge;
-    //void DefineEstado(PIG_EstadoComponente estadoComponente){}
-    //int OnMouseOn(){return 0;}
-    //int OnMouseOff(){return 0;}
-    //int TrataEvento(PIG_Evento evento){return 0;}
 
 public:
 
@@ -193,7 +189,7 @@ public:
     }
 
     void AtualizaTextura(){
-        PIG_Cor corBarra = MixCor(corInicial,corFinal,porcentagemConcluida);//cor da barra mizada entre a cor inicial e a final
+        PIG_Cor corBarra = PIGMixCor(corInicial,corFinal,porcentagemConcluida);//cor da barra mizada entre a cor inicial e a final
         PIG_Cor opcoes[4] = {VERDE,AZUL,ROXO,LARANJA}; //4 cores quaisquer
         PIG_Cor croma1, croma2; //cores usada como cromakey para transparencias (não podem ser nem a cor da barra, nem a cor do fundo)
 

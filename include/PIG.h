@@ -13,15 +13,18 @@ Versão 0.7.2 da Biblioteca PIG.h
 
 #include "CPIGRepositorio.h"
 
+#include "CPIGGerenciadorTimers.h"
+#include "CPIGTransicao.h"
+
 #include "CPIGAssetLoader.h"
 #include "CPIGOffscreenRenderer.h"
-#include "CPIGGerenciadorTimers.h"
+
 #include "CPIGGerenciadorAudios.h"
 #include "CPIGGerenciadorJanelas.h"
 #include "CPIGGerenciadorSockets.h"
 #include "CPIGGerenciadorFontes.h"
 #include "CPIGGerenciadorSprites.h"
-#include "CPIGMouse.h"
+
 #include "CPIGGerenciadorVideos.h"
 #include "CPIGGerenciadorParticulas.h"
 #include "CPIGGerenciadorControles.h"
@@ -56,7 +59,7 @@ largura (entrada, passagem por valor não-obrigatório): indica a largura em pixel
  *
  *  \sa FinalizaJogo()
  */
-void CriaJogo(char *nomeJanela,int cursorProprio=0,int altura=ALT_TELA,int largura=LARG_TELA){
+void CriaJogo(char *nomeJanela,int cursorProprio=0,int altura=PIG_ALT_TELA,int largura=PIG_LARG_TELA){
     if (jogo==NULL){
         jogo = new CPIGJogo(nomeJanela,cursorProprio,altura,largura);
         CPIGAssetLoader::Inicia();
@@ -281,7 +284,7 @@ Retorno
 inteiro que representa o número de identificação dessa janela. esse número deve ser utilizado sempre que um comando deva ser executado para uma janela específica.
 A janela padrão da aplicação possui sempre o número 0 (zero).
 ********************************/
-int CriaJanela(char *nomeJanela,int altura=ALT_TELA,int largura=LARG_TELA){
+int CriaJanela(char *nomeJanela,int altura=PIG_ALT_TELA,int largura=PIG_LARG_TELA){
     return CPIGGerenciadorJanelas::CriaJanela(nomeJanela,altura,largura);
 }
 
@@ -867,7 +870,7 @@ idJanela (entrada, passagem por valor não-obrigatório): indica qual janela vai r
 retono:
 inteiro que representa a ideintificação única da fonte. Futuras referência a esta fonte devem idenitificá-las pelo número.
 ********************************/
-int CriaFonteNormal(char *nome,int tamanho,PIG_Cor corLetra,int contorno,PIG_Cor corContorno,PIG_Estilo estilo=ESTILO_NORMAL,int idJanela=0){
+int CriaFonteNormal(char *nome,int tamanho,PIG_Cor corLetra,int contorno,PIG_Cor corContorno,PIG_Estilo estilo=PIG_ESTILO_NORMAL,int idJanela=0){
     return CPIGGerenciadorFontes::CriaFonteNormal(nome,tamanho,estilo,corLetra,contorno,corContorno,idJanela);
 }
 
@@ -883,7 +886,7 @@ idJanela (entrada, passagem por valor não-obrigatório): indica qual janela vai r
 retono:
 inteiro que representa a ideintificação única da fonte. Futuras referência a esta fonte devem idenitificá-las pelo número.
 ********************************/
-int CriaFonteNormal(char *nome,int tamanho,PIG_Cor corLetra=PIG_FONTE_PADRAO_COR,PIG_Estilo estilo=ESTILO_NORMAL,int idJanela=0){
+int CriaFonteNormal(char *nome,int tamanho,PIG_Cor corLetra=PIG_FONTE_PADRAO_COR,PIG_Estilo estilo=PIG_ESTILO_NORMAL,int idJanela=0){
     return CPIGGerenciadorFontes::CriaFonteNormal(nome,tamanho,estilo,corLetra,idJanela);
 }
 
@@ -916,7 +919,7 @@ idJanela (entrada, passagem por valor não-obrigatório): indica qual janela vai r
 retono:
 inteiro que representa a ideintificação única da fonte. Futuras referência a esta fonte devem idenitificá-las pelo número.
 ********************************/
-int CriaFonteFundo(char *nome,int tamanho,char *arquivoFundo,int contorno,PIG_Cor corContorno,PIG_Estilo estilo=ESTILO_NORMAL,int idJanela=0){
+int CriaFonteFundo(char *nome,int tamanho,char *arquivoFundo,int contorno,PIG_Cor corContorno,PIG_Estilo estilo=PIG_ESTILO_NORMAL,int idJanela=0){
     return CPIGGerenciadorFontes::CriaFonteFundo(nome,tamanho,estilo,arquivoFundo,contorno,corContorno,idJanela);
 }
 
@@ -932,7 +935,7 @@ idJanela (entrada, passagem por valor não-obrigatório): indica qual janela vai r
 retono:
 inteiro que representa a ideintificação única da fonte. Futuras referência a esta fonte devem idenitificá-las pelo número.
 ********************************/
-int CriaFonteFundo(char *nome,int tamanho,char *arquivoFundo,PIG_Estilo estilo=ESTILO_NORMAL,int idJanela=0){
+int CriaFonteFundo(char *nome,int tamanho,char *arquivoFundo,PIG_Estilo estilo=PIG_ESTILO_NORMAL,int idJanela=0){
     return CPIGGerenciadorFontes::CriaFonteFundo(nome,tamanho,estilo,arquivoFundo,idJanela);
 }
 
@@ -1158,7 +1161,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 retorno:
 struct que representa as métricas principais ao escrever a letra.
 ********************************/
-PIG_Metricas_Fonte GetMetricas(char letra, PIG_Estilo estilo=ESTILO_NORMAL,int numFonte=0){
+PIG_Metricas_Fonte GetMetricas(char letra, PIG_Estilo estilo=PIG_ESTILO_NORMAL,int numFonte=0){
     return CPIGGerenciadorFontes::GetFonte(numFonte)->GetMetricasLetra(letra,estilo);
 }
 
@@ -1172,7 +1175,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 retorno:
 inteiro que representa o total de pixels (no eixo x) necessários para escrever a letra.
 ********************************/
-int GetLarguraLetra(char letra,PIG_Estilo estilo=ESTILO_NORMAL,int numFonte = 0){
+int GetLarguraLetra(char letra,PIG_Estilo estilo=PIG_ESTILO_NORMAL,int numFonte = 0){
     return CPIGGerenciadorFontes::GetFonte(numFonte)->GetLarguraLetra(letra,estilo);
 }
 
@@ -1308,7 +1311,9 @@ posicaoX (saída, passagem por referencia): indica a posicao no eixo X do sprite.
 posicaoY (saída, passagem por referencia): indica a posicao no eixo Y do sprite.
 ********************************/
 void GetXYSprite(int idSprite,int *posicaoX,int *posicaoY){
-    CPIGGerenciadorSprites::GetSprite(idSprite)->GetXY(*posicaoX,*posicaoY);
+    SDL_Point p = CPIGGerenciadorSprites::GetSprite(idSprite)->GetXY();
+    *posicaoX = p.x;
+    *posicaoY = p.y;
 }
 
 /********************************
@@ -1523,16 +1528,24 @@ int GetOpacidadeSprite(int idSprite){
 }
 
 /********************************
-A função DesenhaSprite() é responsável por desenhar um sprite na tela ou no Renderizador Offscreen. O sprite será desenhado de acordo com todas as definições
+A função DesenhaSprite() é responsável por desenhar um sprite na tela. O sprite será desenhado de acordo com todas as definições
 de posição e ângulo informado até o momento. Além disso, se o sprite estiver virado (flipping), isso também será levado em consideração.
 Parâmetros:
 idSprite (entrada, passagem por valor): identificador do sprite a ser desenhado.
 offScreen (entrada, passagem por valor): indica se o sprite deve ser desenhado no Renderizador Offscreen.
 ********************************/
-void DesenhaSprite(int idSprite,int offScreen=0){
-    if (offScreen==0)
-        CPIGGerenciadorSprites::GetSprite(idSprite)->Desenha(NULL);
-    else CPIGGerenciadorSprites::GetSprite(idSprite)->Desenha(jogo->GetOffScreenRender());
+void DesenhaSprite(int idSprite){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->Desenha();
+}
+
+/********************************
+A função DesenhaSpriteOffScreen() é responsável por desenhar um sprite no Renderizador Offscreen. O sprite será desenhado de acordo com todas as definições
+de posição e ângulo informado até o momento. Além disso, se o sprite estiver virado (flipping), isso também será levado em consideração.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite a ser desenhado.
+********************************/
+void DesenhaSpriteOffScreen(int idSprite){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->DesenhaOffScreen(jogo->GetOffScreenRender());
 }
 
 
@@ -1744,7 +1757,9 @@ posicaoX (saída, passagem por referencia): indica a posicao no eixo X do objeto.
 posicaoY (saída, passagem por referencia): indica a posicao no eixo Y do objeto.
 ********************************/
 void GetXYObjeto(int idObjeto,int *posicaoX,int *posicaoY){
-    CPIGGerenciadorSprites::GetObjeto(idObjeto)->GetXY(*posicaoX,*posicaoY);
+    SDL_Point p = CPIGGerenciadorSprites::GetObjeto(idObjeto)->GetXY();
+    *posicaoX = p.x;
+    *posicaoY = p.y;
 }
 
 /********************************
@@ -1972,16 +1987,24 @@ int GetOpacidadeObjeto(int idObjeto){
 }
 
 /********************************
-A função DesenhaObjeto() é responsável por desenhar um objeto na tela ou no Renderizador Offscreen. O objeto será desenhado de acordo com todas as definições
+A função DesenhaObjeto() é responsável por desenhar um objeto na tela. O objeto será desenhado de acordo com todas as definições
+de posição e ângulo informado até o momento. Além disso, se o objeto estiver virado (flipping), isso também será levado em consideração.
+Parâmetros:
+idObjeto (entrada, passagem por valor): identificador do objeto a ser desenhado.
+********************************/
+void DesenhaObjeto(int idObjeto){
+    CPIGGerenciadorSprites::GetObjeto(idObjeto)->Desenha();
+}
+
+/********************************
+A função DesenhaObjetoOffScreen() é responsável por desenhar um objeto no Renderizador Offscreen. O objeto será desenhado de acordo com todas as definições
 de posição e ângulo informado até o momento. Além disso, se o objeto estiver virado (flipping), isso também será levado em consideração.
 Parâmetros:
 idObjeto (entrada, passagem por valor): identificador do objeto a ser desenhado.
 offScreen (entrada, passagem por valor): indica se o objeto deve ser desenhado no Renderizador Offscreen.
 ********************************/
-void DesenhaObjeto(int idObjeto,int offScreen=0){
-    if (offScreen==0)
-        CPIGGerenciadorSprites::GetObjeto(idObjeto)->Desenha(NULL);
-    else CPIGGerenciadorSprites::GetObjeto(idObjeto)->Desenha(jogo->GetOffScreenRender());
+void DesenhaObjetoOffScreen(int idObjeto){
+    CPIGGerenciadorSprites::GetObjeto(idObjeto)->DesenhaOffScreen(jogo->GetOffScreenRender());
 }
 
 /********************************
@@ -2196,7 +2219,7 @@ Retorno:
 inteiro indicando se a partícula foi criada (valor maior ou igual a zero) ou não (valor menor do que zero).
 A partícula não será criada se já houver o número máximo de partículas ativas.
 ********************************/
-int CriaParticula(int idGerador,int fadingOut=0,int minX=-50,int minY=-50,int maxX=LARG_TELA+50,int maxY=ALT_TELA+50,float maxTempo=999999.9){
+int CriaParticula(int idGerador,int fadingOut=0,int minX=-50,int minY=-50,int maxX=PIG_LARG_TELA+50,int maxY=PIG_ALT_TELA+50,float maxTempo=999999.9){
     return CPIGGerenciadorParticulas::GetGerador(idGerador)->CriaParticula(fadingOut,minX,minY,maxX,maxY,maxTempo);
 }
 
@@ -2811,7 +2834,9 @@ posicaoX (saída, passagem por referencia): indica a posicao no eixo X da animaçã
 posicaoY (saída, passagem por referencia): indica a posicao no eixo Y da animação.
 ********************************/
 void GetXYAnimacao(int idAnimacao,int *posicaoX,int *posicaoY){
-    return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetXY(*posicaoX,*posicaoY);
+    SDL_Point p = CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetXY();
+    *posicaoX = p.x;
+    *posicaoY = p.y;
 }
 
 
@@ -3022,7 +3047,7 @@ maxBytesPacote (entrada, passagem por valor): tamanho máximo de bytes enviados e
 Retorno:
 Identificador do socket cliente que foi criado.
 ********************************/
-int CriaSocketCliente(char *hostname, int porta, int maxBytesPacote=MAX_MENSAGEM_REDE_TCP){
+int CriaSocketCliente(char *hostname, int porta, int maxBytesPacote=PIG_MAX_MENSAGEM_REDE_TCP){
     return CPIGGerenciadorSockets::CriaCliente(hostname,porta,maxBytesPacote);
 }
 
@@ -3036,7 +3061,7 @@ maxBytesPacote (entrada, passagem por valor): tamanho máximo de bytes enviados e
 Retorno:
 Identificador do socket servidor que foi criado.
 ********************************/
-int CriaSocketServidor(int maxClientes, int porta, int maxBytesPacote=MAX_MENSAGEM_REDE_TCP){
+int CriaSocketServidor(int maxClientes, int porta, int maxBytesPacote=PIG_MAX_MENSAGEM_REDE_TCP){
     return CPIGGerenciadorSockets::CriaServidor(maxClientes,porta,maxBytesPacote);
 }
 

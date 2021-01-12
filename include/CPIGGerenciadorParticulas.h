@@ -11,7 +11,7 @@ private:
 public:
 
     static void Inicia(SDL_Renderer *renderer=NULL){
-        geradores = new CPIGRepositorio<PIGGeradorParticulas>(MAX_GERADORPARTICULAS,"geradores");
+        geradores = new CPIGRepositorio<PIGGeradorParticulas>(PIG_MAX_GERADORPARTICULAS,"geradores");
     }
 
     static void Encerra(){

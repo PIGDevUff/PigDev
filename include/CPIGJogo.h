@@ -17,7 +17,7 @@ private:
 
 public:
 
-    CPIGJogo(char *nome,int cursor=0,int altura=ALT_TELA,int largura=LARG_TELA){
+    CPIGJogo(char *nome,int cursor=0,int altura=PIG_ALT_TELA,int largura=PIG_LARG_TELA){
         rodando = true;
         teclado = SDL_GetKeyboardState(NULL);
         estado = 0;
@@ -75,21 +75,21 @@ public:
                 break;
             */
             case SDL_USEREVENT:
-                if (event.user.code==EVENTO_AUDIO){
-                    ultimoEvento.tipoEvento = EVENTO_AUDIO;
+                if (event.user.code==PIG_EVENTO_AUDIO){
+                    ultimoEvento.tipoEvento = PIG_EVENTO_AUDIO;
                     ultimoEvento.audio.audioId = *((int*)event.user.data1);
-                }else if (event.user.code==EVENTO_REDE){
-                    ultimoEvento.tipoEvento = EVENTO_REDE;
+                }else if (event.user.code==PIG_EVENTO_REDE){
+                    ultimoEvento.tipoEvento = PIG_EVENTO_REDE;
                     ultimoEvento.rede = *((InfoEventoRede*)event.user.data1);
                     free(event.user.data1);
                 }
                 break;
             case SDL_MOUSEBUTTONDOWN:
             case SDL_MOUSEBUTTONUP:
-                ultimoEvento.tipoEvento = EVENTO_MOUSE;
+                ultimoEvento.tipoEvento = PIG_EVENTO_MOUSE;
                 ultimoEvento.mouse.acao = event.type; //MOUSE_PRESSIONADO(SDL_MOUSEBUTTODOWN) ou MOUSELIBERADO(SDL_MOUSEBUTTONUP);
                 ultimoEvento.mouse.botao= event.button.button;
-                ultimoEvento.mouse.numeroJanela = event.window.windowID-JANELA_INICIAL;
+                ultimoEvento.mouse.numeroJanela = event.window.windowID-PIG_JANELA_INICIAL;
                 ultimoEvento.mouse.cliques = event.button.clicks;
                 //ultimoEvento.mouse.posX = event.button.x;
                 SDL_GetMouseState(&ultimoEvento.mouse.posX,&ultimoEvento.mouse.posY);
@@ -99,9 +99,9 @@ public:
                 CPIGMouse::ProcessaEvento(ultimoEvento);
                 break;
             case SDL_MOUSEMOTION:
-                ultimoEvento.tipoEvento = EVENTO_MOUSE;
-                ultimoEvento.mouse.acao = MOUSE_MOVIDO;
-                ultimoEvento.mouse.numeroJanela = event.window.windowID-JANELA_INICIAL;
+                ultimoEvento.tipoEvento = PIG_EVENTO_MOUSE;
+                ultimoEvento.mouse.acao = PIG_MOUSE_MOVIDO;
+                ultimoEvento.mouse.numeroJanela = event.window.windowID-PIG_JANELA_INICIAL;
                 SDL_GetMouseState(&ultimoEvento.mouse.posX,&ultimoEvento.mouse.posY);
                 //ultimoEvento.mouse.posX = event.motion.x;
                 ultimoEvento.mouse.posY = CPIGGerenciadorJanelas::GetJanela(ultimoEvento.mouse.numeroJanela)->GetAltura() - ultimoEvento.mouse.posY-1;
@@ -116,46 +116,46 @@ public:
                 //CMouse::Move(ultimoEvento.mouse.posX, ultimoEvento.mouse.posY);
                 break;
             case SDL_MOUSEWHEEL:
-                ultimoEvento.tipoEvento = EVENTO_MOUSE;
-                ultimoEvento.mouse.acao = MOUSE_RODINHA;
-                ultimoEvento.mouse.numeroJanela = event.window.windowID-JANELA_INICIAL;
+                ultimoEvento.tipoEvento = PIG_EVENTO_MOUSE;
+                ultimoEvento.mouse.acao = PIG_MOUSE_RODINHA;
+                ultimoEvento.mouse.numeroJanela = event.window.windowID-PIG_JANELA_INICIAL;
                 ultimoEvento.mouse.relX = event.wheel.x;
                 ultimoEvento.mouse.relY = event.wheel.y;
                 CPIGMouse::ProcessaEvento(ultimoEvento);
                 break;
             case SDL_KEYDOWN:
             case SDL_KEYUP:
-                ultimoEvento.tipoEvento = EVENTO_TECLADO;
+                ultimoEvento.tipoEvento = PIG_EVENTO_TECLADO;
                 ultimoEvento.teclado.acao = event.type; //TECLA_PRESSIONADA(SDL_KEYDOWN) ou TECLA_LIBERADA(SDL_KEYUP);
                 ultimoEvento.teclado.tecla = event.key.keysym.scancode;
                 ultimoEvento.teclado.repeticao = event.key.repeat;
                 break;
 
             case SDL_TEXTEDITING:
-                ultimoEvento.tipoEvento = EVENTO_TECLADO;
-                ultimoEvento.teclado.acao = TECLA_EDICAO;
+                ultimoEvento.tipoEvento = PIG_EVENTO_TECLADO;
+                ultimoEvento.teclado.acao = PIG_TECLA_EDICAO;
                 ultimoEvento.teclado.inicio = event.edit.start;
                 ultimoEvento.teclado.tamanhoSelecao = event.edit.length;
                 strcpy(ultimoEvento.teclado.texto,event.edit.text);
                 break;
             case SDL_TEXTINPUT:
-                ultimoEvento.tipoEvento = EVENTO_TECLADO;
-                ultimoEvento.teclado.acao = TECLA_INPUT;
+                ultimoEvento.tipoEvento = PIG_EVENTO_TECLADO;
+                ultimoEvento.teclado.acao = PIG_TECLA_INPUT;
                 strcpy(ultimoEvento.teclado.texto,event.edit.text);
                 break;
             case SDL_WINDOWEVENT:
-                if (event.window.event==JANELA_FECHADA){
-                    CPIGGerenciadorJanelas::GetJanela(event.window.windowID-JANELA_INICIAL)->Fecha();
+                if (event.window.event==PIG_JANELA_FECHADA){
+                    CPIGGerenciadorJanelas::GetJanela(event.window.windowID-PIG_JANELA_INICIAL)->Fecha();
                 }
-                ultimoEvento.tipoEvento = EVENTO_JANELA;
+                ultimoEvento.tipoEvento = PIG_EVENTO_JANELA;
                 ultimoEvento.janela.acao = event.window.event;
-                ultimoEvento.janela.numeroJanela = event.window.windowID-JANELA_INICIAL;
+                ultimoEvento.janela.numeroJanela = event.window.windowID-PIG_JANELA_INICIAL;
                 ultimoEvento.janela.dado1 = event.window.data1;
                 ultimoEvento.janela.dado2 = event.window.data2;
                 break;
             case SDL_CONTROLLERBUTTONDOWN:
             case SDL_CONTROLLERBUTTONUP:
-                ultimoEvento.tipoEvento = EVENTO_CONTROLADOR;
+                ultimoEvento.tipoEvento = PIG_EVENTO_CONTROLADOR;
                 ultimoEvento.controlador.acao = event.type; //CONTROLADOR_BOTAO_PRESSIONADO(SDL_CONTROLLERBUTTONDOWN) ou CONTROLADOR_BOTAO_LIBERADO(SDL_CONTROLLERBUTTONUP);
                 ultimoEvento.controlador.botao = event.cbutton.button;
                 ultimoEvento.controlador.idControlador = event.cdevice.which;
@@ -163,8 +163,8 @@ public:
                 break;
             case SDL_CONTROLLERAXISMOTION:
             //case SDL_JOYAXISMOTION:
-                ultimoEvento.tipoEvento = EVENTO_CONTROLADOR;
-                ultimoEvento.controlador.acao = CONTROLADOR_EIXO_MOVIDO;
+                ultimoEvento.tipoEvento = PIG_EVENTO_CONTROLADOR;
+                ultimoEvento.controlador.acao = PIG_CONTROLADOR_EIXO_MOVIDO;
                 ultimoEvento.controlador.eixo = event.caxis.axis;
                 ultimoEvento.controlador.valor = event.caxis.value;
                 ultimoEvento.controlador.percentualEixo = 1.0f*ultimoEvento.controlador.valor/(1<<15);
@@ -177,7 +177,7 @@ public:
                     }
             */
             }
-        }else ultimoEvento.tipoEvento = EVENTO_NULO;
+        }else ultimoEvento.tipoEvento = PIG_EVENTO_NULO;
         return ultimoEvento;
     }
 

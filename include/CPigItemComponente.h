@@ -151,7 +151,7 @@ public:
             int altIcone,largIcone;
             icone->GetDimensoes(altIcone,largIcone);
             posIcone=PIG_COMPONENTE_DIR_CENTRO;
-            icone->Move(x+larg-largIcone,y);
+            icone->Move(pos.x+larg-largIcone,pos.y);
             if (posRelativaLabel == PIG_COMPONENTE_ESQ_CENTRO){
                 AlinhaLabelEsquerda();
             }else if (posRelativaLabel == PIG_COMPONENTE_CENTRO_CENTRO){
@@ -165,7 +165,7 @@ public:
     void AlinhaIconeEsquerda(){
         if (icone){
             posIcone=PIG_COMPONENTE_ESQ_CENTRO;
-            icone->Move(x,y);
+            icone->Move(pos.x,pos.y);
             if (posRelativaLabel == PIG_COMPONENTE_ESQ_CENTRO){
                 AlinhaLabelEsquerda();
             }else if (posRelativaLabel == PIG_COMPONENTE_CENTRO_CENTRO){
@@ -195,7 +195,7 @@ public:
         if(mouseOver){
             if (habilitado==false) return PIG_SELECIONADO_DESABILITADO;
             if (visivel==false) return PIG_SELECIONADO_INVISIVEL;
-            if (evento.mouse.acao==MOUSE_PRESSIONADO && evento.mouse.botao == MOUSE_ESQUERDO){
+            if (evento.mouse.acao==PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO){
                 return OnMouseClick();
             }
             return PIG_SELECIONADO_MOUSEOVER;
@@ -209,8 +209,8 @@ public:
     }
 
     void Move(int nx, int ny)override{
-        int dx = nx-x;
-        int dy = ny-y;
+        int dx = nx-pos.x;
+        int dy = ny-pos.y;
         CPIGComponente::Desloca(dx,dy);
         SetPosicaoPadraoLabel(posLabel);
         if (icone) icone->Desloca(dx,dy);

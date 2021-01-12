@@ -2,6 +2,7 @@
 #define _CPIGCOMPONENTE_
 
 #include "CPIGLabel.h"
+#include "CPIGMouse.h"
 
 typedef enum{PIG_COMPONENTE_CIMA_CENTRO,PIG_COMPONENTE_CIMA_ESQ,PIG_COMPONENTE_CIMA_DIR,PIG_COMPONENTE_BAIXO_CENTRO,PIG_COMPONENTE_BAIXO_DIR,PIG_COMPONENTE_BAIXO_ESQ,
              PIG_COMPONENTE_DIR_CIMA,PIG_COMPONENTE_DIR_BAIXO,PIG_COMPONENTE_DIR_CENTRO,PIG_COMPONENTE_ESQ_BAIXO,PIG_COMPONENTE_ESQ_CENTRO,PIG_COMPONENTE_ESQ_CIMA,
@@ -27,8 +28,7 @@ protected:
         hint = new CPIGLabel("",0,BRANCO,idJanela);
         PosicionaLabel();
         audioComponente = -1;
-        x = px;
-        y = py;
+        pos = {px,py};
         temFoco = false;
         acionado = false;
         mouseOver = false;
@@ -50,7 +50,7 @@ protected:
         if (visivel==false||habilitado==false)
             return -1;
 
-        SDL_Rect r={x,y,larg,alt};
+        SDL_Rect r={pos.x,pos.y,larg,alt};
         SetMouseOver(SDL_PointInRect(&pMouse,&r));
         return mouseOver;
     }
@@ -61,43 +61,43 @@ protected:
         lab->GetDimensoes(altLabel,largLabel);// = lab->GetAltura(),largLabel=lab->GetLargura();
         switch(posLabel){
             case PIG_COMPONENTE_CIMA_CENTRO:
-                lab->Move(x+larg/2-largLabel/2,y+alt+5);
+                lab->Move(pos.x+larg/2-largLabel/2,pos.y+alt+5);
                 break;
             case PIG_COMPONENTE_CIMA_DIR:
-                lab->Move(x+larg,y+alt+5);//,fonteLabel,CPIG_TEXTO_DIREITA);
+                lab->Move(pos.x+larg,pos.y+alt+5);//,fonteLabel,CPIG_TEXTO_DIREITA);
                 break;
             case PIG_COMPONENTE_CIMA_ESQ:
-                lab->Move(x-largLabel,y+alt+5);//,fonteLabel,CPIG_TEXTO_ESQUERDA);
+                lab->Move(pos.x-largLabel,pos.y+alt+5);//,fonteLabel,CPIG_TEXTO_ESQUERDA);
                 break;
             case PIG_COMPONENTE_BAIXO_CENTRO:
-                lab->Move(x+larg/2-largLabel/2,y-altLabel);//,fonteLabel,CPIG_TEXTO_CENTRO);
+                lab->Move(pos.x+larg/2-largLabel/2,pos.y-altLabel);//,fonteLabel,CPIG_TEXTO_CENTRO);
                 break;
             case PIG_COMPONENTE_BAIXO_DIR:
-                lab->Move(x+larg,y-altLabel);//,fonteLabel,CPIG_TEXTO_DIREITA);
+                lab->Move(pos.x+larg,pos.y-altLabel);//,fonteLabel,CPIG_TEXTO_DIREITA);
                 break;
             case PIG_COMPONENTE_BAIXO_ESQ:
-                lab->Move(x-largLabel,y-altLabel);//,fonteLabel,CPIG_TEXTO_ESQUERDA);
+                lab->Move(pos.x-largLabel,pos.y-altLabel);//,fonteLabel,CPIG_TEXTO_ESQUERDA);
                 break;
             case PIG_COMPONENTE_ESQ_BAIXO:
-                lab->Move(x-5-largLabel,y);//,fonteLabel);//,CPIG_TEXTO_DIREITA);
+                lab->Move(pos.x-5-largLabel,pos.y);//,fonteLabel);//,CPIG_TEXTO_DIREITA);
                 break;
             case PIG_COMPONENTE_ESQ_CENTRO:
-                lab->Move(x-5-largLabel,y+(alt-altLabel)/2);//,fonteLabel,CPIG_TEXTO_DIREITA);
+                lab->Move(pos.x-5-largLabel,pos.y+(alt-altLabel)/2);//,fonteLabel,CPIG_TEXTO_DIREITA);
                 break;
             case PIG_COMPONENTE_ESQ_CIMA:
-                lab->Move(x-5-largLabel,y + (alt-altLabel));//,fonteLabel,CPIG_TEXTO_ESQUERDA);
+                lab->Move(pos.x-5-largLabel,pos.y + (alt-altLabel));//,fonteLabel,CPIG_TEXTO_ESQUERDA);
                 break;
             case PIG_COMPONENTE_DIR_BAIXO:
-                lab->Move(x+larg+5,y);//,fonteLabel,CPIG_TEXTO_ESQUERDA);
+                lab->Move(pos.x+larg+5,pos.y);//,fonteLabel,CPIG_TEXTO_ESQUERDA);
                 break;
             case PIG_COMPONENTE_DIR_CENTRO:
-                lab->Move(x+larg+5,y + (alt-altLabel)/2);//,fonteLabel,CPIG_TEXTO_ESQUERDA);
+                lab->Move(pos.x+larg+5,pos.y + (alt-altLabel)/2);//,fonteLabel,CPIG_TEXTO_ESQUERDA);
                 break;
             case PIG_COMPONENTE_DIR_CIMA:
-                lab->Move(x+larg+5,y + (alt-altLabel));//,fonteLabel,CPIG_TEXTO_ESQUERDA);
+                lab->Move(pos.x+larg+5,pos.y + (alt-altLabel));//,fonteLabel,CPIG_TEXTO_ESQUERDA);
                 break;
             case PIG_COMPONENTE_CENTRO_CENTRO:
-                lab->Move(x+larg/2-largLabel/2,y+(alt-altLabel)/2);//,fonteLabel,CPIG_TEXTO_CENTRO);
+                lab->Move(pos.x+larg/2-largLabel/2,pos.y+(alt-altLabel)/2);//,fonteLabel,CPIG_TEXTO_CENTRO);
                 break;
             case PIG_COMPONENTE_PERSONALIZADA:
                 //lab->Move(x+labelX,y+labelY);//,fonteLabel,CPIG_TEXTO_ESQUERDA);
@@ -203,7 +203,7 @@ public:
 
     //define a posição do label (posição arbiraria, relativa à posição do componente)
     virtual int SetPosicaoPersonalizadaLabel(int rx, int ry){
-        lab->Move(x+rx,y+ry);
+        lab->Move(pos.x+rx,pos.y+ry);
         posLabel = PIG_COMPONENTE_PERSONALIZADA;//evitar que o usuário esqueça de chamar também a SetPosicaoPadraoLabel
         PosicionaLabel();
         return 1;
@@ -246,53 +246,54 @@ public:
     }
 
     void SetPosPadraoExternaComponente(PIG_PosicaoComponente pos,CPIGComponente *componenteAssociado){
-        int xComponente,yComponente,altComponente,largComponente;
-        int largura,altura;
+        int altComponente,largComponente;
+        SDL_Point p = componenteAssociado->GetXY();
+        //int largura,altura;
 
         posComponente = pos;
         componenteAssociado->GetDimensoes(altComponente,largComponente);
-        componenteAssociado->GetXY(xComponente,yComponente);
-        this->GetDimensoes(altura,largura);
+
+        //this->GetDimensoes(altura,largura);
 
         switch(pos){
         case PIG_COMPONENTE_CIMA_CENTRO:
-            Move(xComponente + (largComponente - largura)/2,yComponente+altComponente);
+            Move(p.x + (largComponente - larg)/2,p.y+altComponente);
             break;
         case PIG_COMPONENTE_CIMA_ESQ:
-            Move(xComponente,yComponente+altComponente);
+            Move(p.x,p.y+altComponente);
             break;
         case PIG_COMPONENTE_CIMA_DIR:
-            Move(xComponente + largComponente - largura,yComponente+altComponente);
+            Move(p.x + largComponente - larg,p.y+altComponente);
             break;
         case PIG_COMPONENTE_BAIXO_CENTRO:
-            Move(xComponente + (largComponente - largura)/2,yComponente - altura);
+            Move(p.x + (largComponente - larg)/2,p.y - alt);
             break;
         case PIG_COMPONENTE_BAIXO_ESQ:
-            Move(xComponente,yComponente - altura);
+            Move(p.x,p.y - alt);
             break;
         case PIG_COMPONENTE_BAIXO_DIR:
-            Move(xComponente + largComponente - largura,yComponente - altura);
+            Move(p.x + largComponente - larg,p.y - alt);
             break;
         case PIG_COMPONENTE_DIR_BAIXO:
-            Move(xComponente + largComponente,yComponente);
+            Move(p.x + largComponente,p.y);
             break;
         case PIG_COMPONENTE_DIR_CENTRO:
-            Move(xComponente + largComponente,yComponente + (altComponente - altura)/2);
+            Move(p.x + largComponente,p.y + (altComponente - alt)/2);
             break;
         case PIG_COMPONENTE_DIR_CIMA:
-            Move(xComponente + largComponente,yComponente + altComponente - altura);
+            Move(p.x + largComponente,p.y + altComponente - alt);
             break;
         case PIG_COMPONENTE_ESQ_BAIXO:
-            Move(xComponente - largura,yComponente);
+            Move(p.x - larg,p.y);
             break;
         case PIG_COMPONENTE_ESQ_CIMA:
-            Move(xComponente - largura,yComponente + altComponente - altura);
+            Move(p.x - larg,p.y + altComponente - alt);
             break;
         case PIG_COMPONENTE_ESQ_CENTRO:
-            Move(xComponente - largura,yComponente + (altComponente - altura)/2);
+            Move(p.x - larg,p.y + (altComponente - alt)/2);
             break;
         case PIG_COMPONENTE_CENTRO_CENTRO:
-            Move(xComponente + (largComponente - largura)/2,yComponente + (altComponente - altura)/2);
+            Move(p.x + (largComponente - larg)/2,p.y + (altComponente - alt)/2);
             break;
         }
 
@@ -339,8 +340,8 @@ public:
     }
 
     void Move(int nx, int ny)override{
-        int dx = nx-x;
-        int dy = ny-y;
+        int dx = nx-pos.x;
+        int dy = ny-pos.y;
         CPIGSprite::Desloca(dx,dy);
         lab->Desloca(dx,dy);
     }
