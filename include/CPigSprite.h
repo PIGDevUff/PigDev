@@ -1,6 +1,8 @@
 #ifndef _CPIGSPRITE_
 #define _CPIGSPRITE_
 
+#include "CPIGAutomacao.h"
+
 class CPIGSprite{
 
 protected:
@@ -106,20 +108,6 @@ protected:
         }
     }
 
-    void AplicaTransicao(PIGTransicao t){
-        int ok1,ok2;
-        ok1 = t->GetX(pos.x);
-        ok2 = t->GetY(pos.y);
-        if (ok1||ok2)
-            Move(pos.x,pos.y);
-        ok1 = t->GetAltura(alt);
-        ok2 = t->GetLargura(larg);
-        if (ok1||ok2)
-            SetDimensoes(alt,larg);
-        if (t->GetCor(coloracao)) SetColoracao(coloracao);
-        if (t->GetAngulo(angulo)) SetAngulo(angulo);
-    }
-
 
 private:
 
@@ -209,6 +197,17 @@ public:
         IniciaBase(bitmap->h,bitmap->w,janela);
         CriaTextura(retiraFundo,corFundo);
         ExtraiPixels();
+
+        frameAtual = spriteBase->frameAtual;
+        frames = spriteBase->frames;
+
+        SetColoracao(spriteBase->coloracao);
+        SetOpacidade(spriteBase->opacidade);
+        SetAngulo(spriteBase->angulo);
+        SetFlip(spriteBase->flip);
+        SetDimensoes(spriteBase->alt,spriteBase->larg);
+        SetPivo(spriteBase->pivoRelativo.x,spriteBase->pivoRelativo.y);
+        Move(spriteBase->pos.x,spriteBase->pos.y);
     }
 
     //Construtor para sprite "vazio", cuja imagem será gerada posteriormente
@@ -230,6 +229,20 @@ public:
     /*void InsereTransicao(PIGTransicao t){
         if (seqTrans) seqTrans->Insere(t);
     }*/
+
+    void AplicaTransicao(PIGTransicao t){
+        int ok1,ok2;
+        ok1 = t->GetX(pos.x);
+        ok2 = t->GetY(pos.y);
+        if (ok1||ok2)
+            Move(pos.x,pos.y);
+        ok1 = t->GetAltura(alt);
+        ok2 = t->GetLargura(larg);
+        if (ok1||ok2)
+            SetDimensoes(alt,larg);
+        if (t->GetCor(coloracao)) SetColoracao(coloracao);
+        if (t->GetAngulo(angulo)) SetAngulo(angulo);
+    }
 
     //Destrutor para todos os tipos de Sprites
     ~CPIGSprite(){
@@ -385,10 +398,6 @@ public:
     }
 
     virtual int Desenha(){
-        /*if (seqTrans){
-            PIGTransicao t = seqTrans->GetTransicaoAtual();
-            if (t) AplicaTransicao(t);
-        }*/
         SDL_Rect enquadrado = dest;
         CPIGGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaWorldScreen(enquadrado.x,enquadrado.y,enquadrado.x,enquadrado.y);
         SDL_RenderCopyEx(renderer, text, &frames[frameAtual], &enquadrado, -angulo, &pivoRelativo, flip);

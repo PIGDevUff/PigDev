@@ -7,7 +7,8 @@ class CPIGGeradorParticulas{
 
 private:
 PIGParticula parts[PIG_MAX_PARTICULAS];
-int inix,iniy,dx,dy;            //posicao e direcao atual das particulas
+SDL_Point pos;
+int dx,dy;            //posicao e direcao atual das particulas
 int pivoAbsX,pivoAbsY;          //pivo das particulas
 float pivoRelX,pivoRelY;
 bool modoPivoRelativo;
@@ -88,13 +89,13 @@ public:
     }
 
     void Move(int nx,int ny){
-        inix = nx;
-        iniy = ny;
+        pos.x = nx;
+        pos.y = ny;
     }
 
     void Desloca(int dx,int dy){
-        inix += dx;
-        iniy += dy;
+        pos.x += dx;
+        pos.y += dy;
     }
 
     void MudaDirecao(int novaDx,int novaDy){
@@ -147,11 +148,11 @@ public:
             i++;
         //printf("sou do tipo %d\n",tipoGerador);
         switch (tipoGerador){
-        case 1: parts[i] = new CPIGParticula(inix,iniy,dx,dy,hp,anguloRot,escalaInicial,escalaFinal,fadingOut,objetoBase,usaGerTimer,idJanela);
+        case 1: parts[i] = new CPIGParticula(pos.x,pos.y,dx,dy,hp,anguloRot,escalaInicial,escalaFinal,fadingOut,objetoBase,usaGerTimer,idJanela);
             break;
-        case 2: parts[i] = new CPIGParticula(inix,iniy,dx,dy,hp,anguloRot,escalaInicial,escalaFinal,fadingOut,animacaoBase,usaGerTimer,idJanela);
+        case 2: parts[i] = new CPIGParticula(pos.x,pos.y,dx,dy,hp,anguloRot,escalaInicial,escalaFinal,fadingOut,animacaoBase,usaGerTimer,idJanela);
             break;
-        case 3: parts[i] = new CPIGParticula(inix,iniy,dx,dy,hp,anguloRot,escalaInicial,escalaFinal,fadingOut,nomeArqImagem,usaGerTimer,idJanela);
+        case 3: parts[i] = new CPIGParticula(pos.x,pos.y,dx,dy,hp,anguloRot,escalaInicial,escalaFinal,fadingOut,nomeArqImagem,usaGerTimer,idJanela);
             break;
         }
         //printf("Gerei\n");

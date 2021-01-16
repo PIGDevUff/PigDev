@@ -3,11 +3,6 @@
 
 #include "CPIGComponente.h"
 
-//tipo de função a ser usada no acionamento do botao
-//o parâmetro int devolverá à função o identificador do botão
-//o parâmetro void* devolverá à função um parâetro personalizado passado ao método DefineAcao();
-typedef int (*AcaoBotao)(int,void*);
-
 class CPIGBotao: public CPIGComponente{
 
 private:
@@ -15,7 +10,10 @@ private:
 
 protected:
 
-    AcaoBotao acao;
+    //tipo de função a ser usada no acionamento do botao
+    //o parâmetro int devolverá à função o identificador do botão
+    //o parâmetro void* devolverá à função um parâmetro personalizado passado ao método DefineAcao();
+    PIG_FuncaoSimples acao;
     void *param;
     PIGTimer timer;
     bool botaoRepeticao;
@@ -116,7 +114,7 @@ public:
         delete timer;
     }
 
-    void DefineAcao(AcaoBotao funcao,void *parametro){
+    void DefineAcao(PIG_FuncaoSimples funcao,void *parametro){
         acao = funcao;
         param = parametro;
     }

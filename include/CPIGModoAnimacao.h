@@ -26,6 +26,13 @@ public:
         encerrou = false;
     }
 
+    CPIGModoAnimacao(CPIGModoAnimacao *modoBase){
+        encerrou = modoBase->encerrou;
+        estagios = modoBase->estagios;
+        SetLoop(modoBase->loop);
+        SetIndiceFrameAtual(modoBase->frameAtual);
+    }
+
     //destrutor
     ~CPIGModoAnimacao(){
         estagios.clear();

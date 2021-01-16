@@ -14,7 +14,7 @@ Versão 0.7.2 da Biblioteca PIG.h
 #include "CPIGRepositorio.h"
 
 #include "CPIGGerenciadorTimers.h"
-#include "CPIGTransicao.h"
+//#include "CPIGTransicao.h"
 
 #include "CPIGAssetLoader.h"
 #include "CPIGOffscreenRenderer.h"
@@ -3962,7 +3962,7 @@ int PIG_CriaBotao(int idForm,int x,int y,int alt,int larg,char* nomeArq,int reti
     return CPIGGerenciadorForms::GetForm(idForm)->CriaBotao(x,y,alt,larg,nomeArq,retiraFundo);
 }
 
-void PIG_Botao_DefineAcao(int idComponente,AcaoBotao funcao,void *parametro){
+void PIG_Botao_DefineAcao(int idComponente,PIG_FuncaoSimples funcao,void *parametro){
     CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGBotao>(idComponente)->DefineAcao(funcao,parametro);
 }
 

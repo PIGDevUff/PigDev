@@ -1,7 +1,6 @@
 #ifndef _CPIGJOGO_
 #define _CPIGJOGO_
 
-
 class CPIGJogo{
 
 private:
@@ -81,8 +80,8 @@ public:
                 }else if (event.user.code==PIG_EVENTO_REDE){
                     ultimoEvento.tipoEvento = PIG_EVENTO_REDE;
                     ultimoEvento.rede = *((InfoEventoRede*)event.user.data1);
-                    free(event.user.data1);
                 }
+                free(event.user.data1);
                 break;
             case SDL_MOUSEBUTTONDOWN:
             case SDL_MOUSEBUTTONUP:

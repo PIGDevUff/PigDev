@@ -6,13 +6,13 @@
 typedef struct{
     SDL_Surface *surf;
     SDL_Renderer *render;
-}Layer;
+}PIG_Layer;
 
 class CPIGOffscreenRenderer{
 
 private:
 
-Layer layers[PIG_MAX_CAMADAS_OFFSCREEN];
+PIG_Layer layers[PIG_MAX_CAMADAS_OFFSCREEN];
 int qtdLayers,maxLayers;
 
 int alt,larg,depth;
@@ -52,8 +52,8 @@ public:
         SDL_BlitSurface(layers[layerSuperior].surf,NULL,layers[layerInferior].surf,NULL);
     }
 
-    Layer CriaLayer(){
-        Layer l;
+    PIG_Layer CriaLayer(){
+        PIG_Layer l;
         l.surf = SDL_CreateRGBSurfaceWithFormat(0, larg, alt, depth, SDL_PIXELFORMAT_RGBA32);
         l.render = SDL_CreateSoftwareRenderer(l.surf);
         SDL_RenderClear(l.render);

@@ -79,7 +79,7 @@ protected:
     void AtualizaBB() {
         SDL_Point pivoAbs;
 
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
+        //SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
         pivoAbs.x = pivoRelativo.x + pos.x;
         pivoAbs.y = -pivoRelativo.y + pos.y + alt; //inverte o eixo Y, pois o pivoRel considera o eixo Y aumentando para baixo
         float angRad = -angulo * M_PI / 180.0;
@@ -128,21 +128,31 @@ public:
 
     CPIGObjeto(std::string nomeArquivo, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0)
     : CPIGSprite(nomeArquivo, retiraFundo, corFundo, janela){
-        //ExtraiPixels();
         modo = PIG_OOBB;
     }
 
     CPIGObjeto(PIGOffscreenRenderer offRender, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0)
     : CPIGSprite(offRender, retiraFundo, corFundo, janela){
-        //ExtraiPixels();
         modo = PIG_OOBB;
     }
 
     CPIGObjeto(CPIGObjeto *objBase, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0)
     : CPIGSprite(objBase, retiraFundo, corFundo, janela){
-        //ExtraiPixels();
-        modo = PIG_OOBB;
-        SetDimensoes(objBase->alt, objBase->larg);
+        SetModoColisao(objBase->modo);
+        SetRaioColisaoCircular(objBase->raio);
+        SetVertices(objBase->vertices);
+
+        Move(pos.x,pos.y);
+        SetAngulo(angulo);
+        AtualizaBB();
+
+        valoresIntInt = objBase->valoresIntInt;
+        valoresStringInt = objBase->valoresStringInt;
+        valoresIntFloat = objBase->valoresIntFloat;
+        valoresStringFloat = objBase->valoresStringFloat;
+        valoresIntString = objBase->valoresIntString;
+        valoresStringString = objBase->valoresStringString;
+        //SetDimensoes(objBase->alt, objBase->larg);
     }
 
     ~CPIGObjeto(){
@@ -172,9 +182,9 @@ public:
         valoresStringString[chave] = valor;
     }
 
-    void SetVertices(std::vector<SDL_Point> vertices) {
-        this->vertices = vertices;
-        this->verticesOriginais = vertices;
+    void SetVertices(std::vector<SDL_Point> verts) {
+        vertices = verts;
+        verticesOriginais = verts;
     }
 
     void SetAngulo(float a) override{
@@ -186,8 +196,8 @@ public:
         this->raio = raio;
     }
 
-    void SetModoColisao(PIG_ModoColisao modo) {
-        this->modo = modo;
+    void SetModoColisao(PIG_ModoColisao valor) {
+        modo = valor;
     }
 
     bool GetValorInt(int chave, int &valor){
