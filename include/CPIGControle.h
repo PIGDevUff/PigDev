@@ -9,25 +9,25 @@ int id;
 SDL_GameController *ctrl;
 SDL_Joystick *joy;
 int qtdEixos,qtdBotoes;
-char nome[50];
+string nome;
 
 public:
 
 
 CPIGControle(int idControle){
     if (SDL_IsGameController(idControle)) {
-        printf("Index \'%i\' is a compatible controller, named \'%s\'\n", idControle, SDL_GameControllerNameForIndex(idControle));
+        printf("Controle da posicao \'%i\' compativel\n", idControle);
         ctrl = SDL_GameControllerOpen(idControle);
         joy = SDL_GameControllerGetJoystick(ctrl);
         id = idControle;
         qtdEixos = SDL_JoystickNumAxes(joy);
         qtdBotoes = SDL_JoystickNumButtons(joy);
-        strcpy(nome,SDL_JoystickName(joy));
-        printf("Axes: %d\n",qtdEixos);
+        nome.assign(SDL_JoystickName(joy));
+        printf("Eixos: %d\n",qtdEixos);
         printf("Botoes: %d\n",qtdBotoes);
-        printf("Nome: %s\n",nome);
+        printf("Nome: %s\n",nome.c_str());
     } else {
-        printf("Index \'%i\' is not a compatible controller.\n", idControle);
+        printf("Controle da posicao \'%i\' incompativel\n", idControle);
     }
 }
 
@@ -55,8 +55,8 @@ int GetQtdBotoes(){
     return qtdBotoes;
 }
 
-void GetNome(char *nomeControle){
-    strcpy(nomeControle,nome);
+string GetNome(){
+    return nome;
 }
 
 };

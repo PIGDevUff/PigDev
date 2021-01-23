@@ -10,7 +10,7 @@ private:
 SDL_Thread *thread;
 
 void CriaEventoMensagem(PIG_TipoMensagemRede tipoMensagem, const void *buffer, int tamanhoDados){
-    InfoEventoRede *infoRede = (InfoEventoRede*) malloc(sizeof(InfoEventoRede));
+    PIG_InfoEventoRede *infoRede = (PIG_InfoEventoRede*) malloc(sizeof(PIG_InfoEventoRede));
     infoRede->tipoMensagem = tipoMensagem;
     infoRede->idSocket = id;
     infoRede->idSecundario = -1;

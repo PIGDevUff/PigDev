@@ -5,6 +5,9 @@ Principais definições utilizadas pela PIG
 #define PIG_ALT_TELA                    480
 #define PIG_LARG_TELA                   640
 
+#define PIG_AFASTAMENTO_MINIMO          0.1
+#define PIG_AFASTAMENTO_MAXIMO          100.0
+
 #define PIG_MAX_JANELAS                 4
 #define PIG_JANELA_TELACHEIA            SDL_WINDOW_FULLSCREEN
 #define PIG_JANELA_TELACHEIA_DISPLAY    SDL_WINDOW_FULLSCREEN_DESKTOP
@@ -45,11 +48,9 @@ Principais definições utilizadas pela PIG
 #define PIG_MAX_OBJETOS                 2000
 #define PIG_MAX_ANIMACOES               1000
 
-#define PIG_MAX_FRAMES                  2000
-#define PIG_MAX_FRAMES_MODO             100
 #define PIG_MAX_MODOS                   50
 
-#define PIG_MAX_TIMERS                  5000
+#define PIG_MAX_TIMERS                  50000
 
 #define PIG_MAX_GERADORPARTICULAS       100
 #define PIG_MAX_PARTICULAS              1000
@@ -67,13 +68,13 @@ Principais definições utilizadas pela PIG
 #define PIG_MAX_COMPONENTES             500
 #define PIG_MAX_FORMS                   100
 
-#define PIG_INTERVALO_FPS           1.0
+#define PIG_INTERVALO_FPS               1.0
 
 #define PIG_SHARE_BITMAP
 #define PIG_SHARE_AUDIO
 
 
-#ifdef DEBUG
+#ifdef PIG_DEBUG
 #define PIG_EXECUTA_SE_DEBUG(x) x;
 #else
 #define PIG_EXECUTA_SE_DEBUG(x)
@@ -132,7 +133,7 @@ cliques: indica a quantidade de cliques a que se refere o evento (1=clique simpl
 relX: indica o deslocamento no eixo X quando há uma movimentação de mouse; adicionalmente, representa o deslocamento da rodinha no eixo X (não usado)
 relX: indica o deslocamento no eixo Y quando há uma movimentação de mouse; adicionalmente, representa o deslocamento da rodinha no eixo Y
 ********************************/
-typedef struct InfoEventoMouse{
+typedef struct PIG_InfoEventoMouse{
     int acao;
     int posX,posY;
     int worldX,worldY;
@@ -140,7 +141,7 @@ typedef struct InfoEventoMouse{
     int cliques;
     int relX,relY;
     int numeroJanela;
-}InfoEventoMouse;
+}PIG_InfoEventoMouse;
 #define PIG_MOUSE_PRESSIONADO       SDL_MOUSEBUTTONDOWN
 #define PIG_MOUSE_LIBERADO          SDL_MOUSEBUTTONUP
 #define PIG_MOUSE_MOVIDO            SDL_MOUSEMOTION
@@ -155,11 +156,11 @@ acao: código que representa o evento específico (os possíveis valores podem ser 
 dado1,dado2: indicam em conjunto a informação específica do evento, podendo representar o ponto (X,Y), em relação ao monitor,
 para o qual a janela foi movida ou o novo tamanho da janela após um alteração de dimensões na mesma
 ********************************/
-typedef struct InfoEventoJanela{
+typedef struct PIG_InfoEventoJanela{
     int acao;
     int numeroJanela;
     int dado1,dado2;
-}InfoEventoJanela;
+}PIG_InfoEventoJanela;
 #define PIG_JANELA_EXIBIDA          SDL_WINDOWEVENT_SHOWN
 #define PIG_JANELA_OCULTA           SDL_WINDOWEVENT_HIDDEN
 #define PIG_JANELA_EXPOSTA          SDL_WINDOWEVENT_EXPOSED
@@ -184,13 +185,13 @@ texto: indica o que está sendo inserido
 inicio: indica a posição virtual da parte selecionada do texto a ser editado
 tamanhoSelecao: indica o tamanho (quantidade de caracteres) da seleção do texto a ser editado
 ********************************/
-typedef struct InfoEventoTeclado{
+typedef struct PIG_InfoEventoTeclado{
     int acao;
     int tecla;
     int repeticao;
     char texto[32];
     int inicio,tamanhoSelecao;
-}InfoEventoTeclado;
+}PIG_InfoEventoTeclado;
 #define PIG_TECLA_PRESSIONADA       SDL_KEYDOWN
 #define PIG_TECLA_LIBERADA          SDL_KEYUP
 #define PIG_TECLA_EDICAO            SDL_TEXTEDITING
@@ -200,9 +201,9 @@ typedef struct InfoEventoTeclado{
 O InfoEventoAudio é um struct contendo informações específicas sobre o evento de audio (encerramento de audio):
 audioId: Id do audio que se encerrou (se o valor for igual a ID_BACKGROUND, indica que o audio de background se encerrou)
 ********************************/
-typedef struct InfoEventoAudio{
+typedef struct PIG_InfoEventoAudio{
     int audioId;
-}InfoEventoAudio;
+}PIG_InfoEventoAudio;
 
 /********************************
 O PIG_StatusAudio é uma enumeração que contém os seguintes possíveis valores:
@@ -232,14 +233,14 @@ acao: código que representa o evento específico (os possíveis valores podem ser 
 dado1,dado2: indicam em conjunto a informação específica do evento, podendo representar o ponto (X,Y), em relação ao monitor,
 para o qual a janela foi movida ou o novo tamanho da janela após um alteração de dimensões na mesma
 ********************************/
-typedef struct InfoEventoControlador{
+typedef struct PIG_InfoEventoControlador{
     int acao;
     int eixo;
     int valor;
     int botao;
     float percentualEixo;
     int idControlador;
-}InfoEventoControlador;
+}PIG_InfoEventoControlador;
 #define PIG_CONTROLADOR_EIXO_MOVIDO         SDL_CONTROLLERAXISMOTION
 #define PIG_CONTROLADOR_BOTAO_PRESSIONADO   SDL_CONTROLLERBUTTONDOWN
 #define PIG_CONTROLADOR_BOTAO_LIBERADO      SDL_CONTROLLERBUTTONUP
@@ -262,35 +263,34 @@ typedef enum PIG_TipoMensagemRede{PIG_REDE_CONEXAO,
                             PIG_REDE_DESCONEXAO}
                 PIG_TipoMensagemRede;
 
-typedef struct InfoEventoRede{
+typedef struct PIG_InfoEventoRede{
     uint8_t mensagem[PIG_MAX_MENSAGEM_REDE_TCP];
     int idSocket;
     int idSecundario;
     char host[PIG_TAMANHO_MAXIMO_HOSTNAME];
     int32_t porta;
     PIG_TipoMensagemRede tipoMensagem;
-}InfoEventoRede;
+}PIG_InfoEventoRede;
 
-typedef struct InfoEventoVideo{
+typedef struct PIG_InfoEventoVideo{
     int acao;
-}InfoEventoVideo;
+}PIG_InfoEventoVideo;
 
 typedef struct PIG_Evento{
     PIG_TipoEvento tipoEvento;
-    InfoEventoMouse mouse;
-    InfoEventoJanela janela;
-    InfoEventoAudio audio;
-    InfoEventoTeclado teclado;
-    InfoEventoControlador controlador;
+    PIG_InfoEventoMouse mouse;
+    PIG_InfoEventoJanela janela;
+    PIG_InfoEventoAudio audio;
+    PIG_InfoEventoTeclado teclado;
+    PIG_InfoEventoControlador controlador;
     //InfoEventoVideo video;
-    InfoEventoRede rede;
+    PIG_InfoEventoRede rede;
 } PIG_Evento;
 
-#define PIG_Teclado             const Uint8*
+#define PIG_Teclado                 const Uint8*
 
 //Seção de flips de objetos
-
-#define PIG_Flip                SDL_RendererFlip
+#define PIG_Flip                    SDL_RendererFlip
 #define PIG_FLIP_NENHUM             SDL_FLIP_NONE
 #define PIG_FLIP_HORIZONTAL         SDL_FLIP_HORIZONTAL
 #define PIG_FLIP_VERTICAL           SDL_FLIP_VERTICAL
@@ -298,11 +298,11 @@ typedef struct PIG_Evento{
 
 //Seção de estilos
 
-#define PIG_Estilo              int
-#define PIG_TOTALESTILOS        16
-#define PIG_FONTE_PADRAO_NOME   "..//fontes//arial.ttf"
-#define PIG_FONTE_PADRAO_TAM    36
-#define PIG_FONTE_PADRAO_COR    BRANCO
+#define PIG_Estilo                  int
+#define PIG_TOTALESTILOS            16
+#define PIG_FONTE_PADRAO_NOME       "..//fontes//arial.ttf"
+#define PIG_FONTE_PADRAO_TAM        36
+#define PIG_FONTE_PADRAO_COR        BRANCO
 
 #define PIG_ESTILO_NORMAL           TTF_STYLE_NORMAL
 #define PIG_ESTILO_NEGRITO          TTF_STYLE_BOLD
@@ -310,10 +310,10 @@ typedef struct PIG_Evento{
 #define PIG_ESTILO_SUBLINHADO       TTF_STYLE_UNDERLINE
 #define PIG_ESTILO_CORTADO          TTF_STYLE_STRIKETHROUGH
 
-#define PIG_SIMBOLO_NEGRITO     '*'
-#define PIG_SIMBOLO_ITALICO     '~'
-#define PIG_SIMBOLO_SUBLINHADO  '_'
-#define PIG_SIMBOLO_CORTADO     '#'
+#define PIG_SIMBOLO_NEGRITO         '*'
+#define PIG_SIMBOLO_ITALICO         '~'
+#define PIG_SIMBOLO_SUBLINHADO      '_'
+#define PIG_SIMBOLO_CORTADO         '#'
 
 typedef struct PIG_Metricas_Fonte{
     int ascent;         //quantidade de pixels acima da linha horizontal de base da letra (sempre positivo)

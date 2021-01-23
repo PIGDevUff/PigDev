@@ -20,7 +20,7 @@ UDPpacket *pacoteEnvio, *pacoteRecebimento;
 SDL_Thread *thread;
 
 void CriaEventoMensagem(PIG_TipoMensagemRede tipoMensagem, UDPpacket *pacoteRecebido){
-    InfoEventoRede *infoRede = (InfoEventoRede*) malloc(sizeof(InfoEventoRede));
+    PIG_InfoEventoRede *infoRede = (PIG_InfoEventoRede*) malloc(sizeof(PIG_InfoEventoRede));
     infoRede->tipoMensagem = tipoMensagem;
     infoRede->idSocket = id;
     infoRede->idSecundario = -1;
@@ -73,12 +73,9 @@ CPIGSocketUDP(int idSocket,int porta){
 }
 
 ~CPIGSocketUDP(){
-    if (thread)
-        SDL_DetachThread(thread);
-    if (pacoteEnvio)
-        free(pacoteEnvio);
-    if (pacoteRecebimento)
-        free(pacoteRecebimento);
+    if (thread) SDL_DetachThread(thread);
+    if (pacoteEnvio) free(pacoteEnvio);
+    if (pacoteRecebimento) free(pacoteRecebimento);
 }
 
 bool EnviaDados(const void *buffer, int tamanhoBuffer, std::string host, int porta){
@@ -92,8 +89,9 @@ bool EnviaDados(const void *buffer, int tamanhoBuffer, std::string host, int por
         return false;
     }
 
-    pacoteEnvio->address.host = ipRemoto.host;
-    pacoteEnvio->address.port = ipRemoto.port;
+    //pacoteEnvio->address.host = ipRemoto.host;
+    //pacoteEnvio->address.port = ipRemoto.port;
+    pacoteEnvio->address = ipRemoto;
 
     memcpy(pacoteEnvio->data, buffer,tamanhoBuffer);
     pacoteEnvio->len = tamanhoBuffer;

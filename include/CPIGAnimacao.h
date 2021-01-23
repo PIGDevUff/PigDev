@@ -7,11 +7,10 @@ class CPIGAnimacao:public CPIGObjeto{
 
 private:
 
-//int souCopia;                   //indica se esta animação é cópia (foi criada a partir) de outra animação
 PIGModoAnimacao modos[PIG_MAX_MODOS];  //modos da animação
 PIGTimer tempoFrame;               //timer da animação (se estiver sendo utilizado um timer específico)
 int idTimer;                    //timer da animação (se estiver sendo utilizado o gerenciador de timers)
-int offx,offy;                  //offset (x,y) a ser utilizado junto com a posição (x,y) para desenhar oa animação
+SDL_Point offset;                  //offset (x,y) a ser utilizado junto com a posição (x,y) para desenhar oa animação
 int modoAtual;                  //número que indica o modo atual
 
 
@@ -34,8 +33,7 @@ public:
 
 //cria uma animação a partir de um arquivo de spritesheet
 CPIGAnimacao(std::string nomeArq,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NULL,int retiraFundo=1,int idJanela=0):CPIGObjeto(nomeArq,corFundo,retiraFundo,idJanela){
-    //souCopia = 0;
-    offx = offy = 0;
+    offset= {0,0};
     modoAtual = 0;
 
     for (int i=0;i<PIG_MAX_MODOS;i++)
@@ -59,8 +57,7 @@ CPIGAnimacao(CPIGAnimacao* base,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NULL
             modos[i] = new CPIGModoAnimacao(base->modos[i]);
     }
 
-    offx = base->offx;
-    offy = base->offy;
+    offset = base->offset;
     modoAtual = base->modoAtual;
 
     if (usaGerenciadorTimer){
@@ -74,7 +71,7 @@ CPIGAnimacao(CPIGAnimacao* base,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NULL
 
 //cria uma animação a partir de um objeto
 CPIGAnimacao(PIGObjeto base,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NULL,int retiraFundo=1,int idJanela=0):CPIGObjeto(base,corFundo,retiraFundo,idJanela){
-    offx = offy = 0;
+    offset = {0,0};
     modoAtual = 0;
 
     for (int i=0;i<PIG_MAX_MODOS;i++){
@@ -102,16 +99,6 @@ CPIGAnimacao(PIGObjeto base,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NULL,int
     else if (idTimer!=-1)
         CPIGGerenciadorTimers::DestroiTimer(idTimer);
 }
-
-//define o retangulo da imagem que corresponde ao frame
-/*void CriaFrame(int codFrame,int x,int y,int altura,int largura){
-    if (frames[codFrame]) free(frames[codFrame]);
-    frames[codFrame] = (SDL_Rect*)malloc(sizeof(SDL_Rect));
-    frames[codFrame]->x = x;
-    frames[codFrame]->y = y;
-    frames[codFrame]->h = altura;
-    frames[codFrame]->w = largura;
-}*/
 
 //cria um modo vazio, sem frames associados
 void CriaModo(int idModo, int loop){
@@ -156,14 +143,14 @@ int Desenha()override{
         }else resp = modos[modoAtual]->GetEncerrou();//pode ter encerrado de desenhar todos os estágios do modo
     }
 
-    int px = pos.x+offx;
-    int py = pos.y+offy;
+    int px = pos.x+offset.x;
+    int py = pos.y+offset.y;
 
     CPIGObjeto::Move(px,py);
     CPIGObjeto::Desenha();
 
-    px -=offx;
-    py -=offy;
+    px -= offset.x;
+    py -= offset.y;
 
     CPIGObjeto::Move(px,py);
 

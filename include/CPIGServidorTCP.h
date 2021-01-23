@@ -18,7 +18,7 @@ std::unordered_map<int,PIGSocketTCP> clientesTCP;
 std::unordered_map<int,PIGSocketTCP>::iterator it;
 
 void CriaEventoMensagem(PIG_TipoMensagemRede tipoMensagem, const void *buffer, int tamanhoDados, int indiceSlot){
-    InfoEventoRede *infoRede = (InfoEventoRede*) malloc(sizeof(InfoEventoRede));
+    PIG_InfoEventoRede *infoRede = (PIG_InfoEventoRede*) malloc(sizeof(PIG_InfoEventoRede));
     infoRede->tipoMensagem = tipoMensagem;
     infoRede->idSocket = id;
     infoRede->idSecundario = indiceSlot;

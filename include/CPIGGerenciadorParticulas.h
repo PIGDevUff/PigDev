@@ -2,6 +2,7 @@
 #define _CPIGGERENCIADORPARTICULAS_
 
 #include "CPIGGeradorParticulas.h"
+
 class CPIGGerenciadorParticulas{
 
 private:
@@ -22,16 +23,16 @@ public:
         return geradores->GetElemento(idGerador);
     }
 
-    static int CriaGeradorParticulas(int maxParticulas,std::string nomeArquivoBMP,int audioCriacao, int audioEncerramento, int idJanela=0,int usaGerenciadorTimer=1){
-        return geradores->Insere(new CPIGGeradorParticulas(maxParticulas,nomeArquivoBMP,audioCriacao,audioEncerramento,usaGerenciadorTimer,idJanela));
+    static int CriaGeradorParticulas(int maxParticulas,std::string nomeArquivoBMP,int audioCriacao, int audioEncerramento, int idJanela=0){
+        return geradores->Insere(new CPIGGeradorParticulas(1,maxParticulas,nomeArquivoBMP,audioCriacao,audioEncerramento,idJanela));
     }
 
-    static int CriaGeradorParticulas(int maxParticulas,PIGAnimacao animacaoBase,int audioCriacao, int audioEncerramento, int idJanela=0,int usaGerenciadorTimer=1){
-        return geradores->Insere(new CPIGGeradorParticulas(maxParticulas,animacaoBase,audioCriacao,audioEncerramento,usaGerenciadorTimer,idJanela));
+    static int CriaGeradorParticulas(int maxParticulas,PIGAnimacao animacaoBase,int audioCriacao, int audioEncerramento, int idJanela=0){
+        return geradores->Insere(new CPIGGeradorParticulas(1,maxParticulas,animacaoBase,audioCriacao,audioEncerramento,idJanela));
     }
 
-    static int CriaGeradorParticulas(int maxParticulas,PIGObjeto objetoBase,int audioCriacao, int audioEncerramento, int idJanela=0,int usaGerenciadorTimer=1){
-        return geradores->Insere(new CPIGGeradorParticulas(maxParticulas,objetoBase,audioCriacao,audioEncerramento,usaGerenciadorTimer,idJanela));
+    static int CriaGeradorParticulas(int maxParticulas,PIGObjeto objetoBase,int audioCriacao, int audioEncerramento, int idJanela=0){
+        return geradores->Insere(new CPIGGeradorParticulas(1,maxParticulas,objetoBase,audioCriacao,audioEncerramento,idJanela));
     }
 
     static void DestroiGeradorParticulas(int idGerador){

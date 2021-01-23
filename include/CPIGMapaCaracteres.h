@@ -7,7 +7,7 @@ class CPIGMapaCaracteres{
 
 protected:
 
-    static std::string PigDelimitadores;
+    static std::string delimitadores;
 
     int **alturaExtra;
     int **larguraLetra;
@@ -208,7 +208,7 @@ public:
         return larguraLetra[estilo][aux-PIG_PRIMEIRO_CAR];
     }
 
-    std::vector<std::string> ExtraiLinhas(std::string texto, int largMax, std::string delim=PigDelimitadores){
+    std::vector<std::string> ExtraiLinhas(std::string texto, int largMax, std::string delim=delimitadores){
         std::vector<std::string> resp;
         if (texto=="") return resp;
 
@@ -273,7 +273,7 @@ public:
         SDL_Rect rectDestino;
         rectDestino.x = x;
 
-        int altJanela = CPIGGerenciadorJanelas::GetJanela(janela)->GetAltura();
+        int *altJanela = CPIGGerenciadorJanelas::GetJanela(janela)->GetAltura();
         SDL_Point ponto = {delta,tamFonte};
         Uint16 aux;
 
@@ -291,7 +291,7 @@ public:
 
             rectDestino.w = larguraLetra[estiloFixo][aux-PIG_PRIMEIRO_CAR];
             rectDestino.h = tamFonte+alturaExtra[estiloFixo][aux-PIG_PRIMEIRO_CAR];
-            rectDestino.y = altJanela-y-rectDestino.h;
+            rectDestino.y = *altJanela-y-rectDestino.h;
 
             //printf("%d %d %d %d\n",rectDestino.x,rectDestino.y,rectDestino.h,rectDestino.w);
 
@@ -319,7 +319,7 @@ public:
     virtual void Escreve(std::string texto,SDL_Texture *textura,PIG_Cor cor){
         SDL_SetRenderTarget(render,textura);
         SDL_SetRenderDrawColor(render,0,0,0,0);
-        int altJanela = CPIGGerenciadorJanelas::GetJanela(janela)->GetAltura();
+        int *altJanela = CPIGGerenciadorJanelas::GetJanela(janela)->GetAltura();
         //SDL_SetRenderDrawBlendMode(render, SDL_BLENDMODE_BLEND);
         /*switch(op1){
         case 0: SDL_SetTextureBlendMode(textura, SDL_BLENDMODE_ADD);break;
@@ -331,7 +331,7 @@ public:
         SDL_SetTextureBlendMode(textura, SDL_BLENDMODE_BLEND);
         SDL_SetTextureColorMod(textura,cor.r,cor.g,cor.b);
         //SDL_SetTextureAlphaMod(textura, 255);
-        Escreve(texto,0,altJanela-tamFonte+fontDescent,cor,PIG_TEXTO_ESQUERDA,0,1);
+        Escreve(texto,0,*altJanela-tamFonte+fontDescent,cor,PIG_TEXTO_ESQUERDA,0,1);
         //SDL_SetTextureBlendMode(textura, SDL_BLENDMODE_ADD);
         //SDL_SetTextureAlphaMod(textura, 255);
         SDL_SetRenderTarget(render, NULL);
@@ -344,6 +344,6 @@ public:
 };
 
 typedef CPIGMapaCaracteres* PIGMapaCaracteres;
-std::string CPIGMapaCaracteres::PigDelimitadores = " \n";
+std::string CPIGMapaCaracteres::delimitadores = " \n";
 
 #endif // _CMAPACARACTERES_

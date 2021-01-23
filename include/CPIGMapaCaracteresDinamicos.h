@@ -148,7 +148,7 @@ public:
 
         SDL_Rect rectDestino;
         rectDestino.x = x;
-        int altJanela = CPIGGerenciadorJanelas::GetJanela(janela)->GetAltura();
+        int *altJanela = CPIGGerenciadorJanelas::GetJanela(janela)->GetAltura();
         //rectDestino.y = CGerenciadorJanelas::GetJanela(janela)->GetAltura()-y-tamFonte;
         PIG_Cor corAtual = BRANCO;
         PIG_Estilo estiloAtual = PIG_ESTILO_NORMAL;
@@ -169,7 +169,7 @@ public:
 
             rectDestino.w = larguraLetra[estiloAtual][aux-PIG_PRIMEIRO_CAR];
             rectDestino.h = tamFonte+alturaExtra[estiloAtual][aux-PIG_PRIMEIRO_CAR];
-            rectDestino.y = altJanela-y-rectDestino.h;
+            rectDestino.y = *altJanela-y-rectDestino.h;
 
             SDL_RenderCopyEx(render,glyphsT[estiloAtual][aux-PIG_PRIMEIRO_CAR],NULL,&rectDestino,-ang,&ponto,PIG_FLIP_NENHUM);
 
@@ -188,12 +188,12 @@ public:
     void Escreve(std::string texto,SDL_Texture *textura,PIG_Cor cor){
         SDL_SetRenderTarget(render,textura);
         SDL_SetRenderDrawColor(render,0,0,0,0);
-        int altJanela = CPIGGerenciadorJanelas::GetJanela(janela)->GetAltura();
+        int *altJanela = CPIGGerenciadorJanelas::GetJanela(janela)->GetAltura();
 
         SDL_SetTextureBlendMode(textura, SDL_BLENDMODE_BLEND);
         SDL_SetTextureColorMod(textura,cor.r,cor.g,cor.b);
 
-        Escreve(texto,0,altJanela-tamFonte+fontDescent,cor,PIG_TEXTO_ESQUERDA,0,1);
+        Escreve(texto,0,*altJanela-tamFonte+fontDescent,cor,PIG_TEXTO_ESQUERDA,0,1);
 
         SDL_SetRenderTarget(render, NULL);
     }
@@ -203,7 +203,7 @@ public:
         if (texto=="") return;
         CPIGStringFormatada formatada = Processa(texto);
         //formatada.Print();
-        std::vector<CPIGStringFormatada> linhas = formatada.ExtraiLinhas(largMax,PigDelimitadores);
+        std::vector<CPIGStringFormatada> linhas = formatada.ExtraiLinhas(largMax,delimitadores);
         EscreveLonga(linhas,x,y,espacoEntreLinhas,pos,angulo);
         linhas.clear();
         formatada.Clear();
@@ -230,7 +230,7 @@ public:
     //retorna as linhas já formatadas e organizadas pela largura máxima fornecida
     std::vector<CPIGStringFormatada> ExtraiLinhas(std::string texto, int largMax){
         CPIGStringFormatada formatada = Processa(texto);
-        std::vector<CPIGStringFormatada> linhas = formatada.ExtraiLinhas(largMax,PigDelimitadores);
+        std::vector<CPIGStringFormatada> linhas = formatada.ExtraiLinhas(largMax,delimitadores);
         formatada.Clear();
         return linhas;
     }

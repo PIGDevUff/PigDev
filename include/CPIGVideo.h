@@ -876,7 +876,7 @@ void DestroiVideoState(){
 public:
 
 CPIGVideo(std::string nomeArq,int idJanela=0):
-    CPIGSprite(CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura(),CPIGGerenciadorJanelas::GetJanela(idJanela)->GetLargura(),nomeArq,idJanela){
+    CPIGSprite(*CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura(),CPIGGerenciadorJanelas::GetJanela(idJanela)->GetLargura(),nomeArq,idJanela){
     volume = 0.5;
     janelaAtual = CPIGGerenciadorJanelas::GetJanela(idJanela);
 
@@ -1120,9 +1120,9 @@ void OcupaJanelaInteira(){
     angulo = 0;
     pos = {0,0};
     dest.x = 0;
-    dest.y = altJanela-pos.y-alt;
+    dest.y = *altJanela-pos.y-alt;
     pivoRelativo = {0,0};
-    dest.h = alt = janelaAtual->GetAltura();
+    dest.h = alt = *janelaAtual->GetAltura();
     dest.w = larg = janelaAtual->GetLargura();
     flip = PIG_FLIP_NENHUM;
     janelaToda = true;

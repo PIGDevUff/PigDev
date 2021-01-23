@@ -10,7 +10,7 @@ typedef struct tipoacao{
     void *param;
 } PIG_Automacao;
 
-typedef enum {PIG_TRANSICAO_NORMAL,PIG_TRANSICAO_LOOP, PIG_TRANSICAO_INVERTIDA} PIG_TipoTransicao;
+typedef enum {PIG_TRANSICAO_NORMAL,PIG_TRANSICAO_LOOP, PIG_TRANSICAO_VAIVEM} PIG_TipoTransicao;
 
 class CPIGAutomacao{
 
@@ -31,10 +31,22 @@ CPIGAutomacao(int idProprietario){
     timerAcoes = CPIGGerenciadorTimers::CriaTimer(true);
 }
 
+CPIGAutomacao(int idProprietario,CPIGAutomacao *outro){
+    idDono = idProprietario;
+    tipo = outro->tipo;
+    transAtual = 0;
+    timerAcoes = CPIGGerenciadorTimers::CriaTimer(true);
+    timelineAcoes = outro->timelineAcoes;
+    for (int i=0;i<outro->transicoes.size();i++){
+        PIGTransicao t = new CPIGTransicao(outro->transicoes[i]);
+        transicoes.push_back(t);
+    }
+}
+
 ~CPIGAutomacao(){
     CPIGGerenciadorTimers::DestroiTimer(timerAcoes);
-    for (int i=0;i<transicoes.size();i++)
-        delete transicoes[i];
+    LimpaTransicoes();
+    timelineAcoes.clear();
 }
 
 bool TemTransicoes(){
@@ -49,18 +61,19 @@ void SetTipoTransicao(PIG_TipoTransicao valor){
     tipo = valor;
 }
 
-void IniciaTransicoes(){
+void IniciaAutomacao(PIG_EstadoTransicao inicial){
+    CPIGGerenciadorTimers::GetTimer(timerAcoes)->Despausa();
     if (transAtual<transicoes.size()){
-        CPIGGerenciadorTimers::GetTimer(timerAcoes)->Despausa();
         transAtual = 0;
-        transicoes[transAtual]->IniciaTransicao();
+        transicoes[transAtual]->IniciaTransicao(inicial);
     }
 }
 
 PIGTransicao GetTransicaoAtual(){
     if (transicoes.size()==transAtual) return NULL;
     if (transicoes[transAtual]->CalculaTransicao()==0){
-        if (tipo == PIG_TRANSICAO_INVERTIDA){
+        PIG_EstadoTransicao atual = transicoes[transAtual]->GetEstado();
+        if (tipo == PIG_TRANSICAO_VAIVEM){
             static int somaTrans = 1;
             transAtual += somaTrans;
             if (transAtual==transicoes.size()||transAtual==-1){
@@ -77,10 +90,15 @@ PIGTransicao GetTransicaoAtual(){
                 if (transAtual==transicoes.size()) return NULL;//as transicoes acabaram
             }
         }
-        printf("trans atual: %d\n",transAtual);
-        transicoes[transAtual]->IniciaTransicao();
+        //printf("trans atual: %d (%d,%d)\n",transAtual,atual.x,atual.y);
+        transicoes[transAtual]->IniciaTransicao(atual);
     }
     return transicoes[transAtual];
+}
+
+void LimpaTransicoes(){
+    for (int i=0;i<transicoes.size();i++)
+        delete transicoes[i];
 }
 
 bool TemAcoes(){

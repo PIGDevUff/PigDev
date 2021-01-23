@@ -101,13 +101,10 @@ public:
 
 };
 
-//int CMouse::cursorAtual;
-//bool CMouse::cursorProprio;
 PIGSprite CPIGMouse::cursores;
 SDL_Point CPIGMouse::pTela;
 SDL_Point CPIGMouse::pWorld;
 int CPIGMouse::estadoBotaoDireito;
 int CPIGMouse::estadoBotaoEsquerdo;
 int CPIGMouse::estadoBotaoCentral;
-
 #endif // _CPIGMouse_

@@ -1,58 +1,60 @@
 #ifndef _CPIGTRANSICAO_
 #define _CPIGTRANSICAO_
 
-template <typename T>
-struct s{
-T ini,fim;
-};
+typedef struct {
+    int x,y,alt,larg;
+    double ang;
+    PIG_Cor cor;
+    int opacidade;
+    double personalizada[10];
+} PIG_EstadoTransicao;
 
-#define PIG_TROCA(x,y,z){z aux=x;x=y;y=aux;}
+PIG_EstadoTransicao operator+(PIG_EstadoTransicao a, PIG_EstadoTransicao b){
+    PIG_EstadoTransicao c;
+    c.x = a.x+b.x;
+    c.y = a.y+b.y;
+    c.alt = a.alt+b.alt;
+    c.larg = a.larg+b.larg;
+    c.ang = a.ang+b.ang;
+    c.cor = b.cor;
+    c.opacidade = a.opacidade+b.opacidade;
+    return c;
+}
 
 class CPIGTransicao{
 
 private:
-int id;
-struct s<int> *x,*y,*alt,*larg;
-struct s<PIG_Cor> *cor;
-struct s<double> *ang;
-struct s<double> *personalizada[10];
+PIG_EstadoTransicao ini,fim,delta;
 double tempoAtual,tempoTotal;
 int idTimer;
 
 public:
 
-CPIGTransicao(int idTransicao,double tempoTransicao){
-    id = idTransicao;
+CPIGTransicao(double tempoTransicao,PIG_EstadoTransicao modificacao){
     tempoTotal = tempoTransicao;
     idTimer = CPIGGerenciadorTimers::CriaTimer(true);
-    x = y = alt = larg = NULL;
-    cor = NULL;
-    ang = NULL;
-    for (int i=0;i<10;i++)
-        personalizada[i] = NULL;
+    delta = modificacao;
+}
+
+CPIGTransicao(CPIGTransicao *outro){
+    tempoTotal = outro->tempoTotal;
+    idTimer = CPIGGerenciadorTimers::CriaTimer(true);
+    delta = outro->delta;
 }
 
 CPIGTransicao(string str){
 
 }
 
-int GetID(){
-    return id;
-}
-
 ~CPIGTransicao(){
-    if (x) free(x);
-    if (y) free(y);
-    if (alt) free(alt);
-    if (larg) free(larg);
-    if (cor) free(cor);
-    if (ang) free(ang);
-    for (int i=0;i<10;i++)
-        if (personalizada[i]) free(personalizada[i]);
     CPIGGerenciadorTimers::DestroiTimer(idTimer);
 }
 
-void IniciaTransicao(){
+void IniciaTransicao(PIG_EstadoTransicao inicio){
+    ini = inicio;
+    //printf("1 ini %d,%d  fim %d,%d\n",ini.x,ini.y,fim.x,fim.y);
+    fim = ini+delta;
+    //printf("2 ini %d,%d  fim %d,%d\n",ini.x,ini.y,fim.x,fim.y);
     CPIGGerenciadorTimers::GetTimer(idTimer)->Reinicia(false);
 }
 
@@ -65,106 +67,101 @@ int CalculaTransicao(){
     return 1;
 }
 
-void InsereTransicaoX(int ini, int fim){
-    if (x) free(x);
-    x = (struct s<int>*) malloc(sizeof(struct s<int>));
-    x->ini = ini;
-    x->fim = fim;
+void InsereTransicaoX(int valorIni, int valorFim){
+    ini.x = valorIni;
+    fim.x = valorFim;
 }
 
-void InsereTransicaoY(int ini, int fim){
-    if (y) free(y);
-    y = (struct s<int>*) malloc(sizeof(struct s<int>));
-    y->ini = ini;
-    y->fim = fim;
+void InsereTransicaoY(int valorIni, int valorFim){
+    ini.y = valorIni;
+    fim.y = valorFim;
 }
 
-void InsereTransicaoAltura(int ini, int fim){
-    if (alt) free(alt);
-    alt = (struct s<int>*) malloc(sizeof(struct s<int>));
-    alt->ini = ini;
-    alt->fim = fim;
+void InsereTransicaoAltura(int valorIni, int valorFim){
+    ini.alt = valorIni;
+    fim.alt = valorFim;
 }
 
-void InsereTransicaoLargura(int ini, int fim){
-    if (larg) free(larg);
-    larg = (struct s<int>*) malloc(sizeof(struct s<int>));
-    larg->ini = ini;
-    larg->fim = fim;
+void InsereTransicaoLargura(int valorIni, int valorFim){
+    ini.larg = valorIni;
+    fim.larg = valorFim;
 }
 
-void InsereTransicaoCor(PIG_Cor ini, PIG_Cor fim){
-    if (cor) free(cor);
-    cor = (struct s<PIG_Cor>*) malloc(sizeof(struct s<PIG_Cor>));
-    cor->ini = ini;
-    cor->fim = fim;
+void InsereTransicaoCor(PIG_Cor valorIni, PIG_Cor valorFim){
+    ini.cor = valorIni;
+    fim.cor = valorFim;
 }
 
-void InsereTransicaoAngulo(double ini, double fim){
-    if (ang) free(ang);
-    ang = (struct s<double>*) malloc(sizeof(struct s<double>));
-    ang->ini = ini;
-    ang->fim = fim;
+void InsereTransicaoOpacidade(int valorIni, int valorFim){
+    ini.opacidade = valorIni;
+    fim.opacidade = valorFim;
 }
 
-void InsereTransicaoPersonalizada(int indice,double ini, double fim){
-    if (personalizada[indice]) free(personalizada[indice]);
-    personalizada[indice] = (struct s<double>*) malloc(sizeof(struct s<double>));
-    personalizada[indice]->ini = ini;
-    personalizada[indice]->fim = fim;
+void InsereTransicaoAngulo(double valorIni, double valorFim){
+    ini.ang = valorIni;
+    fim.ang = valorFim;
 }
 
-int GetX(int &valor){
-    if (!x) return 0;
-    valor = x->fim*(tempoAtual) + x->ini*(1-tempoAtual);
-    return 1;
+void InsereTransicaoPersonalizada(int indice,double valorIni, double valorFim){
+    ini.personalizada[indice] = valorIni;
+    fim.personalizada[indice] = valorFim;
 }
 
-int GetY(int &valor){
-    if (!y) return 0;
-    valor = y->fim*(tempoAtual) + y->ini*(1-tempoAtual);
-    return 1;
+int GetX(){
+    return fim.x*(tempoAtual) + ini.x*(1-tempoAtual);
 }
 
-int GetAltura(int &valor){
-    if (!alt) return 0;
-    valor = alt->fim*(tempoAtual) + alt->ini*(1-tempoAtual);
-    return 1;
+int GetY(){
+    return fim.y*(tempoAtual) + ini.y*(1-tempoAtual);
 }
 
-int GetLargura(int &valor){
-    if (!larg) return 0;
-    valor = larg->fim*(tempoAtual) + larg->ini*(1-tempoAtual);
-    return 1;
+int GetAltura(){
+    return fim.alt*(tempoAtual) + ini.alt*(1-tempoAtual);
 }
 
-int GetCor(PIG_Cor &valor){
-    if (!cor) return 0;
-    valor = PIGMixCor(cor->ini,cor->fim,tempoAtual);
-    return 1;
+int GetLargura(){
+    return fim.larg*(tempoAtual) + ini.larg*(1-tempoAtual);
 }
 
-int GetAngulo(double &valor){
-    if (!ang) return 0;
-    valor = ang->fim*(tempoAtual) + ang->ini*(1-tempoAtual);
-    return 1;
+PIG_Cor GetCor(){
+    return PIGMixCor(ini.cor,fim.cor,tempoAtual);
 }
 
-int GetPersonalizada(int indice,double &valor){
-    if (!personalizada[indice]) return 0;
-    valor = personalizada[indice]->fim*(tempoAtual) + personalizada[indice]->ini*(1-tempoAtual);
-    return 1;
+int GetOpacidade(){
+    return fim.opacidade*(tempoAtual) + ini.opacidade*(1-tempoAtual);
+}
+
+double GetAngulo(){
+    return fim.ang*(tempoAtual) + ini.ang*(1-tempoAtual);
+}
+
+double GetPersonalizada(int indice){
+    return fim.personalizada[indice]*(tempoAtual) + ini.personalizada[indice]*(1-tempoAtual);
+}
+
+PIG_EstadoTransicao GetEstado(){
+    PIG_EstadoTransicao atual;
+    atual.x = fim.x*(tempoAtual) + ini.x*(1-tempoAtual);
+    atual.y = fim.y*(tempoAtual) + ini.y*(1-tempoAtual);
+    atual.alt = fim.alt*(tempoAtual) + ini.alt*(1-tempoAtual);
+    atual.larg = fim.larg*(tempoAtual) + ini.larg*(1-tempoAtual);
+    atual.ang = fim.ang*(tempoAtual) + ini.ang*(1-tempoAtual);
+    atual.cor = PIGMixCor(ini.cor,fim.cor,tempoAtual);
+    atual.opacidade = fim.opacidade*(tempoAtual) + ini.opacidade*(1-tempoAtual);
+    return atual;
 }
 
 void Inverte(){
-    if (x) PIG_TROCA(x->ini,x->fim,int);
-    if (y) PIG_TROCA(y->ini,y->fim,int);
-    if (alt) PIG_TROCA(alt->ini,alt->fim,int);
-    if (larg) PIG_TROCA(larg->ini,larg->fim,int);
-    if (cor) PIG_TROCA(cor->ini,cor->fim,PIG_Cor);
-    if (ang) PIG_TROCA(ang->ini,ang->fim,double);
-    for (int i=0;i<10;i++)
-        if (personalizada[i]) PIG_TROCA(personalizada[i]->ini,personalizada[i]->fim,double);
+    delta.x *= -1;
+    delta.y *= -1;
+    delta.alt *= -1;
+    delta.larg *= -1;
+    delta.ang *= -1;
+    delta.opacidade *= -1;
+}
+
+CPIGTransicao *PreparaApos(double tempo, PIG_EstadoTransicao estado){
+    return new CPIGTransicao(tempo,estado);
 }
 
 };

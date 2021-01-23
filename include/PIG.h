@@ -1,7 +1,3 @@
-/********************************
-Versão 0.7.2 da Biblioteca PIG.h
-********************************/
-
 #include "SDL.h"
 #include "SDL_ttf.h"
 #include "SDL_image.h"
@@ -14,7 +10,6 @@ Versão 0.7.2 da Biblioteca PIG.h
 #include "CPIGRepositorio.h"
 
 #include "CPIGGerenciadorTimers.h"
-//#include "CPIGTransicao.h"
 
 #include "CPIGAssetLoader.h"
 #include "CPIGOffscreenRenderer.h"
@@ -31,6 +26,7 @@ Versão 0.7.2 da Biblioteca PIG.h
 #include "CPIGGerenciadorForms.h"
 #include "CPIGJogo.h"
 
+
 /********************************
 / Variáveis Globais
 /********************************/
@@ -39,8 +35,8 @@ PIGJogo jogo=NULL;
 /********************************
 A função CriaJogo() é responsável pela criação da janela do jogo e pelos componentes audio-visuais.
 Ela deve ser chamada antes de qualquer outra função da biblioteca PIG.h. Não é possível criar dois
-jogos no mesmo progama. Logo, somente a primeira chamada terá efeito. A janela padrão da aplicação terá o tamanho definido pelas constantes ALT_TELA e LARG_TELA
-definidas no arquivo Tipos.PIG.h, exceto se forem passados outros valores.
+jogos no mesmo progama. Logo, somente a primeira chamada terá efeito. A janela padrão da aplicação terá o tamanho definido pelas constantes PIG_ALT_TELA e PIG_LARG_TELA
+definidas no arquivo PIGTipos.h, exceto se forem passados outros valores.
 Parâmetros:
 nomeJanela (entrada, passagem por referência*): indica o nome que a janela do jogo mostrará no seu título.
 É utilizado o operador * apenas por se tratar de um parâmetro string. O valor do parâmetro não é alterado dentro da função.
@@ -68,7 +64,6 @@ void CriaJogo(char *nomeJanela,int cursorProprio=0,int altura=PIG_ALT_TELA,int l
         CPIGGerenciadorFontes::Inicia();
         CPIGGerenciadorTimers::Inicia();
         CPIGGerenciadorAudios::Inicia();
-
         CPIGGerenciadorParticulas::Inicia();
         CPIGGerenciadorControles::Inicia();
         CPIGGerenciadorSockets::Inicia();
@@ -123,7 +118,7 @@ PIG_Teclado GetTeclado(){
 /********************************
 A função GetEvento() indica se houve algum tipo de evento desde a última vez que a função foi chamada.
 Um evento pode ser uma tecla pressionada, um clique do mouse ou outra coisa relacionada à tela do jogo.
-Maiores informaçõe podem ser vistas no arquivo Tipo_PIG.h
+Maiores informaçõe podem ser vistas no arquivo PIGTipos.h
 Retorno:
 O valor de retorno é um struct contendo o tipo de evento ocorrido e vários outros structs com informações específicas.
 ********************************/
@@ -237,13 +232,35 @@ void CriaFrameCursor(int idFrame, int xBitmap, int yBitmap, int altura, int larg
     CPIGMouse::CriaFrameCursor(idFrame,xBitmap,yBitmap,altura,largura);
 }
 
+/********************************
+A função CarregaFramesPorLinhaCursor() é responsável por subdividir o arquivo de imagem em linhas (de mesmo tamanho) e colunas (de mesmo tamanho).
+Cada subdivisão representará um frame que será automaticamente criado para o cursor do mouse, com numeração incremental a partir do parâmetro "frameInicial".
+Ao final das "qtdColunas" da primeira linha, a definição dos frames continua na linha inferior.
+A função pode ser utilizada em spritesheets regulares.
+Parâmetros:
+frameInicial (entrada, passagem por valor): numeração do primeiro frame a ser criado pela função. Os demais frames terão numeração consecutiva.
+qtdLinhas (entrada, passagem por valor): quantidade de linhas na qual o arquivo de imagem será dividido.
+qtdColunas (entrada, passagem por valor): quantidade de colunas na qual o arquivo de imagem será dividido.
+********************************/
+void CarregaFramesPorLinhaCursor(int frameInicial, int qtdLinhas, int qtdColunas){
+    CPIGMouse::CarregaFramesPorLinha(frameInicial,qtdLinhas,qtdColunas);
+}
+
+
+/********************************
+A função CarregaFramesPorColunaCursor() é responsável por subdividir o arquivo de imagem em linhas (de mesmo tamanho) e colunas (de mesmo tamanho).
+Cada subdivisão representará um frame que será automaticamente criado para o cursor do mouse, com numeração incremental a partir do parâmetro "frameInicial".
+Ao final das "qtdLinhas" da primeira coluna, a definição dos frames continua na coluna seguinte.
+A função pode ser utilizada em spritesheets regulares.
+Parâmetros:
+frameInicial (entrada, passagem por valor): numeração do primeiro frame a ser criado pela função. Os demais frames terão numeração consecutiva.
+qtdLinhas (entrada, passagem por valor): quantidade de linhas na qual o arquivo de imagem será dividido.
+qtdColunas (entrada, passagem por valor): quantidade de colunas na qual o arquivo de imagem será dividido.
+********************************/
 void CarregaFramesPorColunaCursor(int frameInicial, int qtdLinhas, int qtdColunas){
     CPIGMouse::CarregaFramesPorColuna(frameInicial,qtdLinhas,qtdColunas);
 }
 
-void CarregaFramesPorLinhaCursor(int frameInicial, int qtdLinhas, int qtdColunas){
-    CPIGMouse::CarregaFramesPorLinha(frameInicial,qtdLinhas,qtdColunas);
-}
 
 /********************************
 A função MudaCursor() é responsável por alterar o cursor atual do mouse por outro já definido (função DefineFrameCursor).
@@ -334,7 +351,7 @@ idJanela (entrada, passagem por valor não-obrigatório): indica o número da janel
 Retorno:
 inteiro que representa a altura da janela em pixels.
 ********************************/
-int GetAlturaJanela(int idJanela=0){
+int *GetAlturaJanela(int idJanela=0){
     return CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
 }
 
@@ -349,6 +366,7 @@ int GetLarguraJanela(int idJanela=0){
     return CPIGGerenciadorJanelas::GetJanela(idJanela)->GetLargura();
 }
 
+
 /********************************
 A função SetTamanhoJanela() é responsável por definir o tamanho para a janela.
 Parâmetros:
@@ -356,9 +374,118 @@ altura (entrada, passagem por valor): indica a quantidade de linhas da janela (e
 largura (entrada, passagem por valor): indica a quantidade de colunas da janela (em pixels).
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela a ser alterada.
 ********************************/
-//void SetTamanhoJanela(int altura, int largura,int idJanela=0){
-//    CPIGGerenciadorJanelas::SetTamanho(altura,largura,idJanela);
-//}
+void SetTamanhoJanela(int altura, int largura,int idJanela=0){
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->SetTamanho(altura,largura);
+}
+
+/********************************
+A função SetAfastamentoCamera() é responsável por afastar ou aproximar a câmera dos objetos da tela, em um eixo perpendicular.
+O valor de afastamento deve variar entre PIG_AFASTAMENTO_MINIMO (0.1) e PIG_AFASTAMENTO_MAXIMO (100).
+Quanto maior for o valor, mais "afastada" estará a câmera dos objetos. O valor padrão é 1.0.
+Parâmetros:
+afastamento (entrada, passagem por valor): indica o afastamento da câmera em relação ao plano representado pela tela.
+idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela a ser alterada.
+Retorno:
+O valor retornado é igual ao afastamento após a execução da função.
+********************************/
+double SetAfastamentoCamera(double afastamento,int idJanela=0){
+    return CPIGGerenciadorJanelas::GetJanela(idJanela)->SetAfastamento(afastamento);
+}
+
+/********************************
+A função GetAfastamentoCamera() recupera o valor atual de afastamento da câmera.
+O valor de afastamento deve variar entre PIG_AFASTAMENTO_MINIMO (0.1) e PIG_AFASTAMENTO_MAXIMO (100).
+Quanto maior for o valor, mais "afastada" estará a câmera dos objetos. O valor padrão é 1.0.
+Parâmetros:
+idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela a ser alterada.
+Retorno:
+O valor retornado é igual ao afastamento atual da câmera.
+********************************/
+double GetAfastamentoCamera(int idJanela=0){
+    return CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAfastamento();
+}
+
+/********************************
+A função MoveCamera() é responsável por reposicionar a câmera no cenário. O ponto de referência é o canto inferior esquerdo da tela.
+Todos os objetos serão automaticamente recolocados na tela conforme a posição da câmera.
+Parâmetros:
+posicaoX (entrada, passagem por valor): indica a posição no eixo X onde a câmera ficará.
+posicaoY (entrada, passagem por valor): indica a posição no eixo Y onde a câmera ficará.
+idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela a ser alterada.
+********************************/
+void MoveCamera(int posicaoX, int posicaoY, int idJanela=0){
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->MoveCamera(posicaoX,posicaoY);
+}
+
+/********************************
+A função DeslocaCamera() é responsável por deslocar a câmera em relação à sua posição atual.
+Parâmetros:
+deltaX (entrada, passagem por valor): valor a ser somado ou subtraído na componente X da posição da câmera.
+deltaY (entrada, passagem por valor): valor a ser somado ou subtraído na componente Y da posição da câmera.
+idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela a ser alterada.
+********************************/
+void DeslocaCamera(int deltaX, int deltaY, int idJanela=0){
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->DeslocaCamera(deltaX,deltaY);
+}
+
+/********************************
+A função GetXYCamera() é responsável recuperar o valor da posição (X,Y) da câmera de acordo com o sistema de coordenadas do jogo.
+Parâmetros:
+posicaoX (saída, passagem por referencia): indica a posicao no eixo X da câmera.
+posicaoY (saída, passagem por referencia): indica a posicao no eixo Y da câmera.
+idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela.
+********************************/
+void GetXYCamera(int *posicaoX, int *posicaoY, int idJanela=0){
+    SDL_Point p = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetPosicaoCamera();
+    *posicaoX = p.x;
+    *posicaoY = p.y;
+}
+
+/********************************
+A função PreparaCameraMovel() é responsável utilizar a câmera movel relativa à janela em questão.
+A câmera móvel está sujeita à movimentações e ajuste de zoom (afastamento). Todas as renderizações posteriores estarão sujeitas a essas transformações.
+Parâmetros:
+idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela.
+********************************/
+void PreparaCameraMovel(int idJanela=0){
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->PreparaCameraMovel();
+}
+
+/********************************
+A função PreparaCameraFixa() é responsável utilizar a câmera fixa relativa à janela em questão.
+A câmera fixa não está sujeita à movimentações e ajuste de zoom (afastamento). Todas as renderizações posteriores serão feitas utilizando o sistema de coordenadas da tela.
+Parâmetros:
+idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela.
+********************************/
+void PreparaCameraFixa(int idJanela=0){
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->PreparaCameraFixa();
+}
+
+/********************************
+A função ConverteCoordenadaDaTelaParaMundo() transforma uma coordenada da tela para uma coordenada do cenário, de acordo com o afastamento e a posição da câmera e do sistema de coordenadas do jogo.
+Parâmetros:
+telaX (entrada, passagem por valor): indica a componente X da coordenada da tela em questão.
+telaY (entrada, passagem por valor): indica a componente Y da coordenada da tela em questão.
+mundoX (saída, passagem por referencia): indica a componente X da coordenada do cenário.
+mundoY (saída, passagem por referencia): indica a componente Y da coordenada do cenário.
+idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela.
+********************************/
+void ConverteCoordenadaDaTelaParaMundo(int telaX, int telaY, int *mundoX, int *mundoY, int idJanela=0){
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaScreenWorld(telaX, telaY, *mundoX, *mundoY);
+}
+
+/********************************
+A função ConverteCoordenadaDoMundoParaTela() transforma uma coordenada do cenário para uma coordenada da tela, de acordo com o afastamento e a posição da câmera e do sistema de coordenadas do jogo.
+Parâmetros:
+mundoX (entrada, passagem por valor): indica a componente X da coordenada do cenário em questão.
+mundoY (entrada, passagem por valor): indica a componente Y da coordenada do cenário em questão.
+telaX (saída, passagem por referencia): indica a componente X da coordenada da tela.
+telaY (saída, passagem por referencia): indica a componente Y da coordenada da tela.
+idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela.
+********************************/
+void ConverteCoordenadaDoMundoParaTela(int mundoX, int mundoY, int *telaX, int *telaY, int idJanela=0){
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaWorldScreen(mundoX, mundoY, *telaX, *telaY);
+}
 
 /********************************
 A função GetTituloJanela() é responsável por recuperar o título (caption) atual da janela.
@@ -367,8 +494,7 @@ tituloJanela (saída, passagem por referência): armazena o título da janela que f
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela a ser consultada.
 ********************************/
 void GetTituloJanela(char *tituloJanela,int idJanela=0){
-    std::string resp = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetTitulo();
-    strcpy(tituloJanela,resp.c_str());
+    strcpy(tituloJanela,CPIGGerenciadorJanelas::GetJanela(idJanela)->GetTitulo().c_str());
 }
 
 /********************************
@@ -443,7 +569,9 @@ posicaoY (saida, passagem por referência): indica o valor no eixo Y (vertical), 
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela a ser reposicionada.
 ********************************/
 void GetPosicaoJanela(int *posicaoX,int *posicaoY,int idJanela=0){
-    CPIGGerenciadorJanelas::GetJanela(idJanela)->GetPosicao(*posicaoX,*posicaoY);
+    SDL_Point p = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetXY();
+    *posicaoX = p.x;
+    *posicaoY = p.y;
 }
 
 /********************************
@@ -457,11 +585,11 @@ void SetBordaJanela(int valor,int idJanela=0){
 }
 
 /********************************
-A função SetModoJanela() é responsável por definir o modo de exibição de uma janela. A janela pode ser exibida em três diferentes modos: JANELA_NORMAL, que é o modo padrão onde a janela ocupa o espaço da tela definido por sua altura e largura atual;
-JANELA_TELACHEIA_DISPLAY, que é o modo no qual a janela fica em tela cheia com a resolução idêntica à da tela; JANELA_TELACHEIA, que é o modo onde a janela fica em tela cheia, mas com a resolução atual mantida.
+A função SetModoJanela() é responsável por definir o modo de exibição de uma janela. A janela pode ser exibida em três diferentes modos: PIG_JANELA_NORMAL, que é o modo padrão onde a janela ocupa o espaço da tela definido por sua altura e largura atual;
+PIG_JANELA_TELACHEIA_DISPLAY, que é o modo no qual a janela fica em tela cheia com a resolução idêntica à da tela; PIG_JANELA_TELACHEIA, que é o modo onde a janela fica em tela cheia, mas com a resolução atual mantida.
 A tela cheia não é acionada automaticamente com a combinção ALT+ENTER, é preciso executar o comando específico.
 Parâmetros:
-modo (entrada, passagem por valor): indica qual dos três modos (JANELA_NORMAL, JANELA_TELACHEIA, JANELA_TELACHEIA_DISPLAY) deve ser usado para exibir a janela.
+modo (entrada, passagem por valor): indica qual dos três modos (PIG_JANELA_NORMAL, PIG_JANELA_TELACHEIA, PIG_JANELA_TELACHEIA_DISPLAY) deve ser usado para exibir a janela.
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela a ser reposicionada.
 ********************************/
 void SetModoJanela(int modo,int idJanela=0){
@@ -469,13 +597,13 @@ void SetModoJanela(int modo,int idJanela=0){
 }
 
 /********************************
-A função GetModoJanela() é responsável por recuperar o modo de exibição de uma janela. A janela pode ser exibida em três diferentes modos: JANELA_NORMAL, que é o modo padrão onde a janela ocupa o espaço da tela definido por sua altura e largura atual;
-JANELA_TELACHEIA_DISPLAY, que é o modo no qual a janela fica em tela cheia com a resolução idêntica à da tela; JANELA_TELACHEIA, que é o modo onde a janela fica em tela cheia, mas com a resolução atual mantida.
-A tela cheia não é acionada automaticamente com a combinção ALT+ENTER, é preciso executar o comando específico.
+A função GetModoJanela() é responsável por recuperar o modo de exibição de uma janela. A janela pode ser exibida em três diferentes modos: PIG_JANELA_NORMAL, que é o modo padrão onde a janela ocupa o espaço da tela definido por sua altura e largura atual;
+PIG_JANELA_TELACHEIA_DISPLAY, que é o modo no qual a janela fica em tela cheia com a resolução idêntica à da tela; PIG_JANELA_TELACHEIA, que é o modo onde a janela fica em tela cheia, mas com a resolução atual mantida.
+A tela cheia não é acionada automaticamente com a combinação ALT+ENTER, é preciso executar o comando específico.
 Parâmetros:
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela a ser reposicionada.
 Retorno:
-inteiro que indica qual dos três modos (JANELA_NORMAL, JANELA_TELACHEIA, JANELA_TELACHEIA_DISPLAY) está sendo usado para exibir a janela.
+inteiro que indica qual dos três modos (PIG_JANELA_NORMAL, PIG_JANELA_TELACHEIA, PIG_JANELA_TELACHEIA_DISPLAY) está sendo usado para exibir a janela.
 ********************************/
 int GetModoJanela(int idJanela=0){
     return CPIGGerenciadorJanelas::GetJanela(idJanela)->GetModo();
@@ -553,7 +681,7 @@ idControle (entrada, passagem por valor): indica qual controle está sendo verifi
 nomeControle (saída, passagem por referência): armazena a string contendo o nome que foi recuperada para o controle.
 ********************************/
 void GetNomeControle(int idControle,char *nomeControle){
-    CPIGGerenciadorControles::GetControle(idControle)->GetNome(nomeControle);
+    strcpy(nomeControle,CPIGGerenciadorControles::GetControle(idControle)->GetNome().c_str());
 }
 
 
@@ -577,30 +705,30 @@ void DesenhaLinhaSimples(int pontoX1,int pontoY1,int pontoX2,int pontoY2, PIG_Co
 
 /********************************
 A função DesenhaLinhasDisjuntas() é responsável por desenhar linhas separadamente, ou seja, os ponto iniciais de cada linha estão nas posições pares e
-os pontos finais estão nas posições ímpares. Assim, os vetores precisam ter tamanho qtd*2.
+os pontos finais estão nas posições ímpares. Assim, os vetores precisam ter tamanho qtdPontos*2.
 Parâmetros:
-pontosX (entrada, passagem por referência): vetor de inteiros, de tamanho qtd*2, contendo os valores X (inicias e finais) de cada linha.
-pontosY (entrada, passagem por referência): vetor de inteiros, de tamanho qtd*2, contendo os valores Y (inicias e finais) de cada linha.
-qtd (entrada, passagem por valor): quantidade de linhas a serem desenhadas.
+pontosX (entrada, passagem por referência): vetor de inteiros, de tamanho qtdPontos*2, contendo os valores X (inicias e finais) de cada linha.
+pontosY (entrada, passagem por referência): vetor de inteiros, de tamanho qtdPontos*2, contendo os valores Y (inicias e finais) de cada linha.
+qtdPontos (entrada, passagem por valor): quantidade de linhas a serem desenhadas.
 cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho das linhas;
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde as linhas serão desenhadas.
 ********************************/
-void DesenhaLinhasDisjuntas(int *pontosX,int *pontosY,int qtd, PIG_Cor cor, int idJanela=0){
-    CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhasDisjuntas(pontosX,pontosY,qtd,cor);
+void DesenhaLinhasDisjuntas(int pontosX[],int pontosY[],int qtdPontos, PIG_Cor cor, int idJanela=0){
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhasDisjuntas(pontosX,pontosY,qtdPontos,cor);
 }
 
 /********************************
 A função DesenhaLinhasSequencia() é responsável por desenhar linhas em sequência, ou seja, o ponto final da primeira linha
 corresponde ao ponto inicial da segunda linha.
 Parâmetros:
-pontosX (entrada, passagem por referência): vetor de inteiros, de tamanho qtd+1, contendo os valores X de cada linha da sequência.
-pontosY (entrada, passagem por referência): vetor de inteiros, de tamanho qtd+1, contendo os valores Y de cada linha da sequência.
-qtd (entrada, passagem por valor): quantidade de linhas a serem desenhadas.
+pontosX (entrada, passagem por referência): vetor de inteiros, de tamanho qtdPontos+1, contendo os valores X de cada linha da sequência.
+pontosY (entrada, passagem por referência): vetor de inteiros, de tamanho qtdPontos+1, contendo os valores Y de cada linha da sequência.
+qtdPontos (entrada, passagem por valor): quantidade de linhas a serem desenhadas.
 cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho das linhas;
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde as linhas serão desenhadas.
 ********************************/
-void DesenhaLinhasSequencia(int *pontosX,int *pontosY,int qtd, PIG_Cor cor, int idJanela=0){
-    CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhasSequencia(pontosX,pontosY,qtd,cor);
+void DesenhaLinhasSequencia(int pontosX[],int pontosY[],int qtdPontos, PIG_Cor cor, int idJanela=0){
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhasSequencia(pontosX,pontosY,qtdPontos,cor);
 }
 
 /********************************
@@ -638,14 +766,14 @@ A função DesenhaPoligono() é responsável por desenhar na janela um polígono de p
 de cada um dos vértices do polígono.
 AVISO: essa função utiliza o renderizador offscreen para gerar o polígono e posteriormente o renderiza na janela em questão; isto pode fazer o FPS da aplicação diminuir consideravelmente.
 Parâmetros:
-pontosX (entrada, passagem por referência): vetor de inteiros, de tamanho qtd, contendo as coordenadas X de cada vértice do polígono.
-pontosY (entrada, passagem por referência): vetor de inteiros, de tamanho qtd, contendo as coordenadas Y de cada vértice do polígono.
-qtd (entrada, passagem por valor): quantidade de lados do polígono.
+pontosX (entrada, passagem por referência): vetor de inteiros, de tamanho qtdPontos, contendo as coordenadas X de cada vértice do polígono.
+pontosY (entrada, passagem por referência): vetor de inteiros, de tamanho qtdPontos, contendo as coordenadas Y de cada vértice do polígono.
+qtdPontos (entrada, passagem por valor): quantidade de lados do polígono.
 cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho do polígono;
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde o polígono será desenhado.
 ********************************/
-void DesenhaPoligono(int *pontosX,int *pontosY,int qtd, PIG_Cor cor, int idJanela=0){
-    CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaPoligono(pontosX,pontosY,qtd,cor);
+void DesenhaPoligono(int pontosX[],int pontosY[],int qtdPontos, PIG_Cor cor, int idJanela=0){
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaPoligono(pontosX,pontosY,qtdPontos,cor);
 }
 
 
@@ -864,8 +992,8 @@ tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente represe
 corLetra (entrada, passagem por valor): representa a cor de preenchimento da fonte.
 contorno (entrada, passagem por valor): representa a espessura do contorno que fonte terá. Caso não seja desejado um contorno, basta utilizar um valor 0.
 corContorno (entrada, passagem por valor): representa a cor do contorno da fonte.
-estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combinação binária de: ESTILO_NEGRITO, para negrito; ESTILO_SUBLINHADO, para sublinhado; ESTILO_ITALICO, para itálico;
-ESTILO_CORTADO, para uma linha horizontal à meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado ESTILO_NORMAL.
+estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combinação binária de: PIG_ESTILO_NEGRITO, para negrito; PIG_ESTILO_SUBLINHADO, para sublinhado; PIG_ESTILO_ITALICO, para itálico;
+PIG_ESTILO_CORTADO, para uma linha horizontal à meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado PIG_ESTILO_NORMAL.
 idJanela (entrada, passagem por valor não-obrigatório): indica qual janela vai receber a fonte. Uma fonte só pode ser usada na janela na qual foi criada.
 retono:
 inteiro que representa a ideintificação única da fonte. Futuras referência a esta fonte devem idenitificá-las pelo número.
@@ -880,8 +1008,8 @@ Parâmetros:
 nome (entrada, passagem por referência): nome do arquivo que contém a fonte (normalmente com extensão ttf).
 tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura média (em pixels) dos caracteres da fonte.
 corLetra (entrada, passagem por valor): representa a cor de preenchimento da fonte. Caso a cor não seja informada, será utilizada a cor padrão (BRANCO).
-estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combinação binária de: ESTILO_NEGRITO, para negrito; ESTILO_SUBLINHADO, para sublinhado; ESTILO_ITALICO, para itálico;
-ESTILO_CORTADO, para uma linha horizontal à meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado ESTILO_NORMAL.
+estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combinação binária de: PIG_ESTILO_NEGRITO, para negrito; PIG_ESTILO_SUBLINHADO, para sublinhado; PIG_ESTILO_ITALICO, para itálico;
+PIG_ESTILO_CORTADO, para uma linha horizontal à meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado PIG_ESTILO_NORMAL.
 idJanela (entrada, passagem por valor não-obrigatório): indica qual janela vai receber a fonte. Uma fonte só pode ser usada na janela na qual foi criada.
 retono:
 inteiro que representa a ideintificação única da fonte. Futuras referência a esta fonte devem idenitificá-las pelo número.
@@ -913,8 +1041,8 @@ tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente represe
 arquivoFundo (entrada, passagem por referência): indica o nome do arquivo de imagem que servirá de fundo para a fonte.
 contorno (entrada, passagem por valor): representa a espessura do contorno que fonte terá. Caso não seja desejado um contorno, basta utilizar um valor 0.
 corContorno (entrada, passagem por valor): representa a cor do contorno da fonte.
-estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combinação binária de: ESTILO_NEGRITO, para negrito; ESTILO_SUBLINHADO, para sublinhado; ESTILO_ITALICO, para itálico;
-ESTILO_CORTADO, para uma linha horizontal à meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado ESTILO_NORMAL.
+estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combinação binária de: PIG_ESTILO_NEGRITO, para negrito; PIG_ESTILO_SUBLINHADO, para sublinhado; PIG_ESTILO_ITALICO, para itálico;
+PIG_ESTILO_CORTADO, para uma linha horizontal à meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado PIG_ESTILO_NORMAL.
 idJanela (entrada, passagem por valor não-obrigatório): indica qual janela vai receber a fonte. Uma fonte só pode ser usada na janela na qual foi criada.
 retono:
 inteiro que representa a ideintificação única da fonte. Futuras referência a esta fonte devem idenitificá-las pelo número.
@@ -929,8 +1057,8 @@ Parâmetros:
 nome (entrada, passagem por referência): nome do arquivo que contém a fonte (normalmente com extensão ttf).
 tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura média (em pixels) dos caracteres da fonte.
 arquivoFundo (entrada, passagem por referência): indica o nome do arquivo de imagem que servirá de fundo para a fonte.
-estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combinação binária de: ESTILO_NEGRITO, para negrito; ESTILO_SUBLINHADO, para sublinhado; ESTILO_ITALICO, para itálico;
-ESTILO_CORTADO, para uma linha horizontal à meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado ESTILO_NORMAL.
+estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combinação binária de: PIG_ESTILO_NEGRITO, para negrito; PIG_ESTILO_SUBLINHADO, para sublinhado; PIG_ESTILO_ITALICO, para itálico;
+PIG_ESTILO_CORTADO, para uma linha horizontal à meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado PIG_ESTILO_NORMAL.
 idJanela (entrada, passagem por valor não-obrigatório): indica qual janela vai receber a fonte. Uma fonte só pode ser usada na janela na qual foi criada.
 retono:
 inteiro que representa a ideintificação única da fonte. Futuras referência a esta fonte devem idenitificá-las pelo número.
@@ -1074,7 +1202,6 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o 
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do número inteiro.
 ********************************/
 void EscreveInteiroDireita(int valor, int x, int y,PIG_Cor cor=BRANCO, int numFonte=0,float angulo=0){
-    //CPIGGerenciadorFontes::EscreverInteiro(valor,x,y,numFonte,cor,PIG_TEXTO_DIREITA,angulo);
     std::stringstream str;
     str<<valor;
     CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str.str(),x,y,cor,PIG_TEXTO_DIREITA,angulo);
@@ -1281,7 +1408,6 @@ int CriaSpriteOffScreen(PIG_Cor *corFundo=NULL,int retiraFundo=1){
     return CPIGGerenciadorSprites::CriaSpriteOffScreen(jogo->GetOffScreenRender(),corFundo,retiraFundo);
 }
 
-
 /********************************
 A função DestroiSprite() é responsável por eliminar o sprite em questão do jogo.
 Parâmetros:
@@ -1291,16 +1417,46 @@ void DestroiSprite(int idSprite){
     CPIGGerenciadorSprites::DestroiSprite(idSprite);
 }
 
+/********************************
+A função CarregaArquivoFramesSprite() é responsável por ler de arquivo texto os frames de um sprite.
+Cada linha do arquivo texto deve conter 5 números inteiros: o número do frame, a posição do frame no eixo X do arquivo de imagem,
+a posição do frame no eixo Y do arquivo de imagem, a altura do frame e a largura do frame (todas as unidades em pixels).
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite.
+nomeArq (entrada, passagem por referência): nome do arquivo texto contendo os frames.
+********************************/
 void CarregaArquivoFramesSprite(int idSprite, char *nomeArq){
     CPIGGerenciadorSprites::GetSprite(idSprite)->CarregaArquivoFrames(nomeArq);
 }
 
-void CarregaFramesPorLinhaSprite(int idSprite, int idFrameInicial, int qtdLinhas, int qtdColunas){
-    CPIGGerenciadorSprites::GetSprite(idSprite)->CriaFramesAutomaticosPorLinha(idFrameInicial,qtdLinhas,qtdColunas);
+/********************************
+A função CarregaFramesPorLinhaSprite() é responsável por subdividir o arquivo de imagem em linhas (de mesmo tamanho) e colunas (de mesmo tamanho).
+Cada subdivisão representará um frame que será automaticamente criado para a animação, com numeração incremental a partir do parâmetro "frameInicial".
+Ao final das "qtdColunas" da primeira linha, a definição dos frames continua na linha inferior.
+A função pode ser utilizada em spritesheets regulares.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite.
+frameInicial (entrada, passagem por valor): numeração do primeiro frame a ser criado pela função. Os demais frames terão numeração consecutiva.
+qtdLinhas (entrada, passagem por valor): quantidade de linhas na qual o arquivo de imagem será dividido.
+qtdColunas (entrada, passagem por valor): quantidade de colunas na qual o arquivo de imagem será dividido.
+********************************/
+void CarregaFramesPorLinhaSprite(int idSprite, int frameInicial, int qtdLinhas, int qtdColunas){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->CriaFramesAutomaticosPorLinha(frameInicial,qtdLinhas,qtdColunas);
 }
 
-void CarregaFramesPorColunaSprite(int idSprite, int idFrameInicial, int qtdLinhas, int qtdColunas){
-    CPIGGerenciadorSprites::GetSprite(idSprite)->CriaFramesAutomaticosPorColuna(idFrameInicial,qtdLinhas,qtdColunas);
+/********************************
+A função CarregaFramesPorColunaSprite() é responsável por subdividir o arquivo de imagem em linhas (de mesmo tamanho) e colunas (de mesmo tamanho).
+Cada subdivisão representará um frame que será automaticamente criado para a animação, com numeração incremental a partir do parâmetro "frameInicial".
+Ao final das "qtdLinhas" da primeira coluna, a definição dos frames continua na coluna seguinte.
+A função pode ser utilizada em spritesheets regulares.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite.
+frameInicial (entrada, passagem por valor): numeração do primeiro frame a ser criado pela função. Os demais frames terão numeração consecutiva.
+qtdLinhas (entrada, passagem por valor): quantidade de linhas na qual o arquivo de imagem será dividido.
+qtdColunas (entrada, passagem por valor): quantidade de colunas na qual o arquivo de imagem será dividido.
+********************************/
+void CarregaFramesPorColunaSprite(int idSprite, int frameInicial, int qtdLinhas, int qtdColunas){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->CriaFramesAutomaticosPorColuna(frameInicial,qtdLinhas,qtdColunas);
 }
 
 /********************************
@@ -1419,9 +1575,9 @@ A função GetFlipSprite() é responsável por recuperar o valor da manipulação caus
 Parâmetros:
 idSprite (entrada, passagem por valor): identificador do sprite a ser virado.
 Retorno:
-inteiro que indica o tipo de Flip. Pode ser FLIP_NENHUM (nenhum tipo de inversão),
-FLIP_HORIZONTAL (inverte da esquerda para a direita), FLIP_VERTICAL (inverte de cima para baixo),
-ou FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
+inteiro que indica o tipo de Flip. Pode ser PIG_FLIP_NENHUM (nenhum tipo de inversão),
+PIG_FLIP_HORIZONTAL (inverte da esquerda para a direita), PIG_FLIP_VERTICAL (inverte de cima para baixo),
+ou PIG_FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
 ********************************/
 PIG_Flip GetFlipSprite(int idSprite){
     return CPIGGerenciadorSprites::GetSprite(idSprite)->GetFlip();
@@ -1532,7 +1688,6 @@ A função DesenhaSprite() é responsável por desenhar um sprite na tela. O sprite 
 de posição e ângulo informado até o momento. Além disso, se o sprite estiver virado (flipping), isso também será levado em consideração.
 Parâmetros:
 idSprite (entrada, passagem por valor): identificador do sprite a ser desenhado.
-offScreen (entrada, passagem por valor): indica se o sprite deve ser desenhado no Renderizador Offscreen.
 ********************************/
 void DesenhaSprite(int idSprite){
     CPIGGerenciadorSprites::GetSprite(idSprite)->Desenha();
@@ -1548,12 +1703,108 @@ void DesenhaSpriteOffScreen(int idSprite){
     CPIGGerenciadorSprites::GetSprite(idSprite)->DesenhaOffScreen(jogo->GetOffScreenRender());
 }
 
-
-void DesenhaSprite(char *nomeArq,int x, int y, int retiraFundo=1,int idJanela=0){
+/********************************
+A função DesenhaSprite() é responsável por desenhar um sprite na tela. O sprite será desenhado contendo toda a imagem, na posição indica.
+Não será aplicada nenhuma modificação, como ângulo, coloração, ou opacidade, por exemplo.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite a ser desenhado.
+********************************/
+void DesenhaSpriteSimples(char *nomeArq,int x, int y, int retiraFundo=1,int idJanela=0){
     CPIGGerenciadorSprites::DesenhaSprite(nomeArq, x, y, retiraFundo,idJanela);
 }
 
+/********************************
+A função InsereTransicaoSprite() é responsável por criar e inserir uma nova transição ao final de sequência de transições do sprite.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite.
+tempo (entrada, passagem por valor): duracao (em segundos) da transição.
+deltaX (entrada, passagem por valor): diferença da posição no eixo X em relação à posição do sprite no início da transição.
+deltaY (entrada, passagem por valor): diferença da posição no eixo Y em relação à posição do sprite no início da transição.
+deltaAltura (entrada, passagem por valor): diferença da altura do sprite em relação ao início da transição.
+deltaLargura (entrada, passagem por valor): diferença da largura do sprite em relação ao início da transição.
+deltaAngulo (entrada, passagem por valor): diferença de ângulo (em graus) do sprite em relação ao início da transição.
+corFinal (entrada, passagem por valor): coloração do sprite ao final da transição.
+deltaOpacidade (entrada, passagem por valor): diferença do nível de opacidade do sprite em relação ao início da transição.
+********************************/
+void InsereTransicaoSprite(int idSprite,double tempo,int deltaX,int deltaY,int deltaAltura,int deltaLargura,double deltaAngulo,PIG_Cor corFinal,int deltaOpacidade){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->InsereTransicao(tempo,{deltaX,deltaY,deltaAltura,deltaLargura,deltaAngulo,corFinal,deltaOpacidade});
+}
 
+
+/********************************
+A função LeArquivoTransicaoSprite() é responsável por ler, criar e inserir as transições para um sprite, provenientes de um arquivo texto.
+Cada linha do arquivo texto corresponde a uma transição (em ordem) e deve possuir 11 valores:
+1) um double representando a duracao (em segundos) da transição.
+2) um inteiro repreentando a diferença da posição no eixo X em relação à posição do sprite no início da transição.
+3) um inteiro repreentando a diferença da posição no eixo Y em relação à posição do sprite no início da transição.
+4) um inteiro repreentando a diferença da altura do sprite em relação ao início da transição.
+5) um inteiro repreentando a diferença da largura do sprite em relação ao início da transição.
+6) um double repreentando a diferença de ângulo (em graus) do sprite em relação ao início da transição.
+7) um inteiro repreentando a componente R (vermelho) da coloração do sprite ao final da transição.
+8) um inteiro repreentando a componente G (verde) da coloração do sprite ao final da transição.
+9) um inteiro repreentando a componente B (azul) da coloração do sprite ao final da transição.
+10) um inteiro repreentando a componente A (canal alfa) da coloração do sprite ao final da transição.
+11) um inteiro repreentando a diferença do nível de opacidade do sprite em relação ao início da transição.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite.
+nomeArq (entrada, passagem por referência): nome com extensão do arquivo texto contendo as transições.
+********************************/
+void LeArquivoTransicaoSprite(int idSprite,char *nomeArq){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->LeTransicoes(nomeArq);
+}
+
+/********************************
+A função IniciaAutomacaoSprite() é responsável por iniciar as transições já inseridas no sprite, de acordo como o tipo de transição informada.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite.
+********************************/
+void IniciaAutomacaoSprite(int idSprite){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->IniciaAutomacao();
+}
+
+/********************************
+A função TrataAutomacaoSprite() é responsável por calcular o estado da transição corrente do sprite e aplicar essas modificação a ela.
+A função deve ser chamada a cada frame, para ter resultados mais precisos.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite.
+********************************/
+void TrataAutomacaoSprite(int idSprite){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->TrataAutomacao();
+}
+
+/********************************
+A função DefineTipoTransicaoSprite() é responsável por determinar como a sequência de transições será executada.
+É possível fazê-la uma única vez (PIG_TRANSICAO_NORMAL), em loop (PIG_TRANSICAO_LOOP) ou indo até o final da sequência e retornando, em vai-vém (PIG_TRANSICAO_VAIVEM).
+A função deve ser chamada a cada frame, para ter resultados mais precisos.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite.
+********************************/
+void DefineTipoTransicaoSprite(int idSprite,PIG_TipoTransicao valor){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->DefineTipoTransicao(valor);
+}
+
+/********************************
+A função LimpaTransicoesSprite() é responsável por remover a sequência de transições do sprite.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite.
+********************************/
+void LimpaTransicoesSprite(int idSprite){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->LimpaTransicoes();
+}
+
+/********************************
+A função InsereAcaoSprite() é responsável por inserir na linha de tempo de automação do sprite uma ação a ser executada.
+A ação é composta por uma função "acao" que será executada quando a linha de tempo atingir o parâmetro "tempo" e será repetida a cada "repeticao" segundos.
+A ação pode armazenar um ponteiro genérico "param" que será utilizado na chamada da função.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite.
+tempo (entrada, passagem por valor): tempo (em segundos) da primeira chamada da função.
+repeticao (entrada, passagem por valor): tempo (em segundos) entre a chamada anterior e a próxima. O valor -1 indica que a função não será repetida.
+param (entrada, passagem por referência): ponteiro genérico para um valor que será utilizado na chamada da função.
+********************************/
+void InsereAcaoSprite(int idSprite,double tempo,double repeticao,PIG_FuncaoSimples acao,void *param){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->InsereAcao(tempo,repeticao,acao,idSprite,param);
+}
 
 
 
@@ -1911,7 +2162,7 @@ void GetDimensoesOriginaisObjeto(int idObjeto, int *altura, int *largura){
 }
 
 /********************************
-A função CiraFrameObjeto() é responsável por delimitar o posicionamento dos pixels do arquivo de imagem que serão
+A função CriaFrameObjeto() é responsável por delimitar o posicionamento dos pixels do arquivo de imagem que serão
 utilizados para representar o objeto na tela. Desta forma, nem toda a imagem será automaticamente utilizada para
 representar o objeto. O sistema de coordenadas deve ser o padrão dos arquivos de imagem, com o eixo Y aumentando para baixo.
 Parâmetros:
@@ -1926,18 +2177,48 @@ void CriaFrameObjeto(int idObjeto, int idFrame, int xBitmap, int yBitmap, int al
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->DefineFrame(idFrame, {xBitmap,yBitmap,altura,largura});
 }
 
+
+/********************************
+A função CarregaArquivoFramesObjeto() é responsável por ler de arquivo texto os frames de um objeto.
+Cada linha do arquivo texto deve conter 5 números inteiros: o número do frame, a posição do frame no eixo X do arquivo de imagem,
+a posição do frame no eixo Y do arquivo de imagem, a altura do frame e a largura do frame (todas as unidades em pixels).
+Parâmetros:
+idObjeto (entrada, passagem por valor): identificador do objeto.
+nomeArq (entrada, passagem por referência): nome do arquivo texto contendo os frames.
+********************************/
 void CarregaArquivoFramesObjeto(int idObjeto, char *nomeArq){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->CarregaArquivoFrames(nomeArq);
 }
 
-void CarregaFramesPorLinhaObjeto(int idObjeto, int idFrameInicial, int qtdLinhas, int qtdColunas){
-    CPIGGerenciadorSprites::GetObjeto(idObjeto)->CriaFramesAutomaticosPorLinha(idFrameInicial,qtdLinhas,qtdColunas);
+/********************************
+A função CarregaFramesPorLinhaObjeto() é responsável por subdividir o arquivo de imagem em linhas (de mesmo tamanho) e colunas (de mesmo tamanho).
+Cada subdivisão representará um frame que será automaticamente criado para a animação, com numeração incremental a partir do parâmetro "frameInicial".
+Ao final das "qtdColunas" da primeira linha, a definição dos frames continua na linha inferior.
+A função pode ser utilizada em spritesheets regulares.
+Parâmetros:
+idObjeto (entrada, passagem por valor): identificador do objeto.
+frameInicial (entrada, passagem por valor): numeração do primeiro frame a ser criado pela função. Os demais frames terão numeração consecutiva.
+qtdLinhas (entrada, passagem por valor): quantidade de linhas na qual o arquivo de imagem será dividido.
+qtdColunas (entrada, passagem por valor): quantidade de colunas na qual o arquivo de imagem será dividido.
+********************************/
+void CarregaFramesPorLinhaObjeto(int idObjeto, int frameInicial, int qtdLinhas, int qtdColunas){
+    CPIGGerenciadorSprites::GetObjeto(idObjeto)->CriaFramesAutomaticosPorLinha(frameInicial,qtdLinhas,qtdColunas);
 }
 
-void CarregaFramesPorColunaObjeto(int idObjeto, int idFrameInicial, int qtdLinhas, int qtdColunas){
-    CPIGGerenciadorSprites::GetObjeto(idObjeto)->CriaFramesAutomaticosPorColuna(idFrameInicial,qtdLinhas,qtdColunas);
+/********************************
+A função CarregaFramesPorColunaObjeto() é responsável por subdividir o arquivo de imagem em linhas (de mesmo tamanho) e colunas (de mesmo tamanho).
+Cada subdivisão representará um frame que será automaticamente criado para a animação, com numeração incremental a partir do parâmetro "frameInicial".
+Ao final das "qtdLinhas" da primeira coluna, a definição dos frames continua na coluna seguinte.
+A função pode ser utilizada em spritesheets regulares.
+Parâmetros:
+idObjeto (entrada, passagem por valor): identificador do objeto.
+frameInicial (entrada, passagem por valor): numeração do primeiro frame a ser criado pela função. Os demais frames terão numeração consecutiva.
+qtdLinhas (entrada, passagem por valor): quantidade de linhas na qual o arquivo de imagem será dividido.
+qtdColunas (entrada, passagem por valor): quantidade de colunas na qual o arquivo de imagem será dividido.
+********************************/
+void CarregaFramesPorColunaObjeto(int idObjeto, int frameInicial, int qtdLinhas, int qtdColunas){
+    CPIGGerenciadorSprites::GetObjeto(idObjeto)->CriaFramesAutomaticosPorColuna(frameInicial,qtdLinhas,qtdColunas);
 }
-
 
 /********************************
 A função MudaFrameObjeto() é responsável por modificar o frame (já definido pela função DefineFrameObjeto) de um objeto
@@ -2016,26 +2297,52 @@ idObjeto2 (entrada, passagem por valor): identificador do segundo objeto.
 Retorno:
 Inteiro indicando se houve colisão (valor diferente de zero) ou não (valor igual a 0, zero).
 ********************************/
-//int TestaColisaoObjetos(int idObjeto1,int idObjeto2){
-//    return CPIGGerenciadorSprites::TestaColisao(idObjeto1,idObjeto2)&&CPIGGerenciadorSprites::TestaColisao(idObjeto2,idObjeto1);
-//}
-
 int TestaColisaoObjetos(int idObjeto1,int idObjeto2){
     return CPIGGerenciadorSprites::GetObjeto(idObjeto1)->Colisao(CPIGGerenciadorSprites::GetObjeto(idObjeto2))
            &&CPIGGerenciadorSprites::GetObjeto(idObjeto2)->Colisao(CPIGGerenciadorSprites::GetObjeto(idObjeto1));
 }
 
-void DefineAreaColisao(int idObjeto, int* x, int* y, int quantidadePontos) {
+/********************************
+A função DefineAreaColisaoObjeto() é responsável estabelecer um polígono que será utilizado como área de colisão do objeto com os demais.
+Os vetores X e Y deve ter pelo menos qtdPontos elementos.
+Parâmetros:
+idObjeto (entrada, passagem por valor): identificador do objeto.
+pontosX (entrada, passagem por referência): vetor de inteiros, de tamanho qtdPontos, contendo os valores X de cada ponto do polígono.
+pontosY (entrada, passagem por referência): vetor de inteiros, de tamanho qtdPontos, contendo os valores Y de cada ponto do polígono.
+qtdPontos (entrada, passagem por valor): quantidade de pontos do polígono.
+********************************/
+void DefineAreaColisaoObjeto(int idObjeto, int pontosX[], int pontosY[], int qtdPontos) {
     std::vector<SDL_Point> vertices;
 
-    for (int i = 0; i < quantidadePontos; i++) {
-        SDL_Point aux = {x[i], y[i]};
-        vertices.push_back(aux);
+    for (int i = 0; i < qtdPontos; i++) {
+        vertices.push_back({pontosX[i], pontosY[i]});
     }
 
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->SetVertices(vertices);
 }
 
+/********************************
+A função DefineRaioColisaoObjeto() é responsável por estabelecer um raio, em relação ao pivô do objeto, que será utilizado para teste de colisão circular deste objeto com os demais.
+A definição do raio só será útil se o tipode colisão deste objeto for circular, definido pela função DefineTipoColisaoObjeto().
+Parâmetros:
+idObjeto (entrada, passagem por valor): identificador do objeto.
+raio (entrada, passagem por valor): tamanho do raio que formará a área de colisão deste objeto.
+********************************/
+void DefineRaioColisaoObjeto(int idObjeto, float raio){
+    CPIGGerenciadorSprites::GetObjeto(idObjeto)->SetRaioColisaoCircular(raio);
+}
+
+/********************************
+A função DefineTipoColisaoObjeto() é responsável por definir o tipod e colisão que será utilizada por este objeto com os demais.
+É possível ter 3 tipos de colisão: por bouding-box (PIG_COLISAO_OOBB - área de colisão delimitada pelo ponto X,Y do objeto, sua altura e largura e rotação),
+por polígono (PIG_COLISAO_POLIGONO) área de colisão formada por pontos genéricos) e circular (PIG_COLISAO_CIRCULAR) área de colisão em forma de círculo, com raio definido a partir do ponto pivô)
+Parâmetros:
+idObjeto (entrada, passagem por valor): identificador do objeto.
+modo (entrada, passagem por valor): modo de colisão a ser utilizado por este objeto.
+********************************/
+void DefineTipoColisaoObjeto(int idObjeto, PIG_ModoColisao modo){
+    CPIGGerenciadorSprites::GetObjeto(idObjeto)->SetModoColisao(modo);
+}
 
 /********************************
 A função GetPixelsObjeto() é responsável por extrair os pixels da imagem que originou o objeto, devolvendo-os como
@@ -2061,6 +2368,100 @@ retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imag
 void AtualizaPixelsObjeto(int idObjeto,int retiraFundo=1){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->AtualizaPixels(retiraFundo);
 }
+
+
+/********************************
+A função InsereTransicaoObjeto() é responsável por criar e inserir uma nova transição ao final de sequência de transições do objeto.
+Parâmetros:
+idObjeto (entrada, passagem por valor): identificador do objeto.
+tempo (entrada, passagem por valor): duracao (em segundos) da transição.
+deltaX (entrada, passagem por valor): diferença da posição no eixo X em relação à posição do objeto no início da transição.
+deltaY (entrada, passagem por valor): diferença da posição no eixo Y em relação à posição do objeto no início da transição.
+deltaAltura (entrada, passagem por valor): diferença da altura do objeto em relação ao início da transição.
+deltaLargura (entrada, passagem por valor): diferença da largura do objeto em relação ao início da transição.
+deltaAngulo (entrada, passagem por valor): diferença de ângulo (em graus) do objeto em relação ao início da transição.
+corFinal (entrada, passagem por valor): coloração do objeto ao final da transição.
+deltaOpacidade (entrada, passagem por valor): diferença do nível de opacidade do objeto em relação ao início da transição.
+********************************/
+void InsereTransicaoObjeto(int idObjeto,double tempo,int deltaX,int deltaY,int deltaAltura,int deltaLargura,double deltaAngulo,PIG_Cor corFinal,int deltaOpacidade){
+    CPIGGerenciadorSprites::GetObjeto(idObjeto)->InsereTransicao(tempo,{deltaX,deltaY,deltaAltura,deltaLargura,deltaAngulo,corFinal,deltaOpacidade});
+}
+
+/********************************
+A função LeArquivoTransicaoObjeto() é responsável por ler, criar e inserir as transições para um objeto, provenientes de um arquivo texto.
+Cada linha do arquivo texto corresponde a uma transição (em ordem) e deve possuir 11 valores:
+1) um double representando a duracao (em segundos) da transição.
+2) um inteiro repreentando a diferença da posição no eixo X em relação à posição do objeto no início da transição.
+3) um inteiro repreentando a diferença da posição no eixo Y em relação à posição do objeto no início da transição.
+4) um inteiro repreentando a diferença da altura do objeto em relação ao início da transição.
+5) um inteiro repreentando a diferença da largura do objeto em relação ao início da transição.
+6) um double repreentando a diferença de ângulo (em graus) do objeto em relação ao início da transição.
+7) um inteiro repreentando a componente R (vermelho) da coloração do objeto ao final da transição.
+8) um inteiro repreentando a componente G (verde) da coloração do objeto ao final da transição.
+9) um inteiro repreentando a componente B (azul) da coloração do objeto ao final da transição.
+10) um inteiro repreentando a componente A (canal alfa) da coloração do objeto ao final da transição.
+11) um inteiro repreentando a diferença do nível de opacidade do objeto em relação ao início da transição.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do objeto.
+nomeArq (entrada, passagem por referência): nome com extensão do arquivo texto contendo as transições.
+********************************/
+void LeArquivoTransicaoObjeto(int idObjeto,char *nomeArq){
+    CPIGGerenciadorSprites::GetObjeto(idObjeto)->LeTransicoes(nomeArq);
+}
+
+/********************************
+A função IniciaAutomacaoObjeto() é responsável por iniciar as transições já inseridas no objeto, de acordo como o tipo de transição informada.
+Parâmetros:
+idObjeto (entrada, passagem por valor): identificador do objeto.
+********************************/
+void IniciaAutomacaoObjeto(int idObjeto){
+    CPIGGerenciadorSprites::GetObjeto(idObjeto)->IniciaAutomacao();
+}
+
+/********************************
+A função TrataAutomacaoObjeto() é responsável por calcular o estado da transição corrente do objeto e aplicar essas modificação a ela.
+A função deve ser chamada a cada frame, para ter resultados mais precisos.
+Parâmetros:
+idObjeto (entrada, passagem por valor): identificador do objeto.
+********************************/
+void TrataAutomacaoObjeto(int idObjeto){
+    CPIGGerenciadorSprites::GetObjeto(idObjeto)->TrataAutomacao();
+}
+
+/********************************
+A função DefineTipoTransicaoObjeto() é responsável por determinar como a sequência de transições será executada.
+É possível fazê-la uma única vez (PIG_TRANSICAO_NORMAL), em loop (PIG_TRANSICAO_LOOP) ou indo até o final da sequência e retornando, em vai-vém (PIG_TRANSICAO_VAIVEM).
+A função deve ser chamada a cada frame, para ter resultados mais precisos.
+Parâmetros:
+idObjeto (entrada, passagem por valor): identificador do objeto.
+********************************/
+void DefineTipoTransicaoObjeto(int idObjeto,PIG_TipoTransicao valor){
+    CPIGGerenciadorSprites::GetObjeto(idObjeto)->DefineTipoTransicao(valor);
+}
+
+/********************************
+A função LimpaTransicoesObjeto() é responsável por remover a sequência de transições do objeto.
+Parâmetros:
+idObjeto (entrada, passagem por valor): identificador do objeto.
+********************************/
+void LimpaTransicoesObjeto(int idObjeto){
+    CPIGGerenciadorSprites::GetObjeto(idObjeto)->LimpaTransicoes();
+}
+
+/********************************
+A função InsereAcaoObjeto() é responsável por inserir na linha de tempo de automação do objeto uma ação a ser executada.
+A ação é composta por uma função "acao" que será executada quando a linha de tempo atingir o parâmetro "tempo" e será repetida a cada "repeticao" segundos.
+A ação pode armazenar um ponteiro genérico "param" que será utilizado na chamada da função.
+Parâmetros:
+idObjeto (entrada, passagem por valor): identificador do objeto.
+tempo (entrada, passagem por valor): tempo (em segundos) da primeira chamada da função.
+repeticao (entrada, passagem por valor): tempo (em segundos) entre a chamada anterior e a próxima. O valor -1 indica que a função não será repetida.
+param (entrada, passagem por referência): ponteiro genérico para um valor que será utilizado na chamada da função.
+********************************/
+void InsereAcaoObjeto(int idObjeto,double tempo,double repeticao,PIG_FuncaoSimples acao,void *param){
+    CPIGGerenciadorSprites::GetObjeto(idObjeto)->InsereAcao(tempo,repeticao,acao,idObjeto,param);
+}
+
 
 /********************************
 Seção de gerador de partículas
@@ -2146,6 +2547,7 @@ void DeslocaGeradorParticulas(int idGerador,int deltaX,int deltaY){
     CPIGGerenciadorParticulas::GetGerador(idGerador)->Desloca(deltaX,deltaY);
 }
 
+/*
 /********************************
 A função MudaDirecaoParticulas() modifica a direção na qual as partículas se movimentarão após serem criadas.
 Somente as partículas criadas posteriormente seguirão a direção especificada.
@@ -2154,19 +2556,57 @@ idGerador (entrada, passagem por valor): informa o identificador do GDP passado 
 valorX (entrada, passagem por valor): informa a componente X da direção a ser definida para as partículas.
 valorY (entrada, passagem por valor): informa a componente Y da direção a ser definida para as partículas.
 ********************************/
-void MudaDirecaoParticulas(int idGerador,int valorX,int valorY){
-    CPIGGerenciadorParticulas::GetGerador(idGerador)->MudaDirecao(valorX,valorY);
+//void MudaDirecaoParticulas(int idGerador,int valorX,int valorY){
+    //CPIGGerenciadorParticulas::GetGerador(idGerador)->MudaDirecao(valorX,valorY);
+//}
+
+/********************************
+A função InsereTransicaoParticulas() é responsável por criar e inserir uma nova transição ao final de sequência de transições das partículas do gerador.
+Parâmetros:
+idGerador (entrada, passagem por valor): identificador do gerador.
+tempo (entrada, passagem por valor): duracao (em segundos) da transição das partículas.
+deltaX (entrada, passagem por valor): diferença da posição no eixo X em relação à posição das partículas no início da transição.
+deltaY (entrada, passagem por valor): diferença da posição no eixo Y em relação à posição das partículas no início da transição.
+deltaAltura (entrada, passagem por valor): diferença da altura das partículas em relação ao início da transição.
+deltaLargura (entrada, passagem por valor): diferença da largura das partículas em relação ao início da transição.
+deltaAngulo (entrada, passagem por valor): diferença de ângulo (em graus) das partículas em relação ao início da transição.
+corFinal (entrada, passagem por valor): coloração das partículas ao final da transição.
+deltaOpacidade (entrada, passagem por valor): diferença do nível de opacidade das partículas em relação ao início da transição.
+********************************/
+void InsereTransicaoParticulas(int idGerador,double tempo,int deltaX,int deltaY,int deltaAlt,int deltaLarg,double deltaAng,PIG_Cor corFinal, int deltaOpacidade){
+    CPIGGerenciadorParticulas::GetGerador(idGerador)->InsereTransicao(tempo,{deltaX,deltaY,deltaAlt,deltaLarg,deltaAng,corFinal,deltaOpacidade});
 }
 
 /********************************
-A função MudaRotacaoParticulas() modifica a velocidade angular das partículas após serem criadas.
-Somente as partículas criadas posteriormente seguirão a velocidade angular especificada.
+A função DefineTipoTransicaoParticulas() é responsável por determinar como a sequência de transições do gerador de partículas será executada.
+É possível fazê-la uma única vez (PIG_TRANSICAO_NORMAL), em loop (PIG_TRANSICAO_LOOP) ou indo até o final da sequência e retornando, em vai-vém (PIG_TRANSICAO_VAIVEM).
+A função deve ser chamada a cada frame, para ter resultados mais precisos.
+Parâmetros:
+idGerador (entrada, passagem por valor): identificador do gerador.
+********************************/
+void DefineTipoTransicaoParticulas(int idGerador,PIG_TipoTransicao valor){
+    CPIGGerenciadorParticulas::GetGerador(idGerador)->DefineTipoTransicao(valor);
+}
+
+/********************************
+A função LimpaTransicoesPArticulas() é responsável por remover a sequência de transições do gerador de partículas.
+Parâmetros:
+idGerador (entrada, passagem por valor): identificador do gerador de partículas.
+********************************/
+void LimpaTransicoesParticulas(int idGerador){
+    CPIGGerenciadorParticulas::GetGerador(idGerador)->LimpaTransicoes();
+}
+
+
+/********************************
+A função MudaRotacaoParticulas() modifica o ângulo de desenho das partículas após serem criadas.
+Somente as partículas criadas posteriormente terão o ângulo especificada.
 Parâmetros:
 idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da função CriaGeradorParticulas().
-angPerSec (entrada, passagem por valor): informa a velocidade em graus por segundo.
+angulo (entrada, passagem por valor): informa o angulo das partículas.
 ********************************/
-void MudaRotacaoParticulas(int idGerador,float grausPerSec){
-    CPIGGerenciadorParticulas::GetGerador(idGerador)->MudaRotacao(grausPerSec);
+void MudaAnguloParticulas(int idGerador,double angulo){
+    CPIGGerenciadorParticulas::GetGerador(idGerador)->SetAngulo(angulo);
 }
 
 /********************************
@@ -2178,31 +2618,42 @@ idGerador (entrada, passagem por valor): informa o identificador do GDP passado 
 cor (entrada,passagem por valor): cor do sistema RGB utilizada para mesclagem com o arquivo de imagem da partícula.
 ********************************/
 void MudaCorParticulas(int idGerador,PIG_Cor cor){
-    CPIGGerenciadorParticulas::GetGerador(idGerador)->MudaCor(cor);
+    CPIGGerenciadorParticulas::GetGerador(idGerador)->SetColoracao(cor);
 }
 
 /********************************
-A função MudaEscalaParticulas() modifica o tamanho das partículas após serem criadas, durante o seu tempo de vida.
-Somente as partículas criadas posteriormente seguirão a velocidade angular especificada.
+A função MudaOpacidadeParticulas() modifica a opacidade das partículas após serem criadas.
+Somente as partículas criadas posteriormente terão a opacidade especificada.
 Parâmetros:
 idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da função CriaGeradorParticulas().
-escalaInicial (entrada, passagem por valor): informa a escala da partícula ao ser criada.
-escalaFinal (entrada, passagem por valor): informa a escala da partícula ao final do seu tempo de vida.
+opacidade (entrada, passagem por valor): informa a opacidade das partículas.
 ********************************/
-void MudaEscalaParticulas(int idGerador,float escalaInicial,float escalaFinal){
-    CPIGGerenciadorParticulas::GetGerador(idGerador)->MudaEscala(escalaInicial,escalaFinal);
+void MudaAnguloParticulas(int idGerador,int opacidade){
+    CPIGGerenciadorParticulas::GetGerador(idGerador)->SetOpacidade(opacidade);
+}
+
+/********************************
+A função MudaDimensoesParticulas() modifica o tamanho das partículas após serem criadas.
+Somente as partículas criadas posteriormente terão o tamanho definido.
+Parâmetros:
+idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da função CriaGeradorParticulas().
+altura (entrada, passagem por valor): informa a altura da partícula ao ser criada.
+largura (entrada, passagem por valor): informa a largura da partícula ao ser criada.
+********************************/
+void MudaEscalaParticulas(int idGerador,int altura, int largura){
+    CPIGGerenciadorParticulas::GetGerador(idGerador)->SetDimensoes(altura,largura);
 }
 
 /********************************
 A função SetPivoParticulas() determina o ponto a ser considerado como pivo da partícula.
-Somente as partículas criadas posteriormente seguirão a velocidade angular especificada.
+Somente as partículas criadas posteriormente terão o pivô especificado.
 Parâmetros:
 idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da função CriaGeradorParticulas().
 posicaoX (entrada, passagem por valor): Valor da coordenada X do pivô em relação ao ponto (0,0) da partícula.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y do pivô em relação ao ponto (0,0) da partícula.
 ********************************/
 void SetPivoParticulas(int idGerador,int posicaoX,int posicaoY){
-    CPIGGerenciadorParticulas::GetGerador(idGerador)->MudaEscala(posicaoX,posicaoY);
+    CPIGGerenciadorParticulas::GetGerador(idGerador)->SetPivo(posicaoX,posicaoY);
 }
 
 /********************************
@@ -2303,7 +2754,7 @@ idTimer (entrada, passagem por valor): identificador do timer.
 Retorno:
 número real indicando o tempo (em segundos) desde a criação do timer.
 ********************************/
-float TempoDecorrido(int idTimer){
+double TempoDecorrido(int idTimer){
     return CPIGGerenciadorTimers::GetTimer(idTimer)->GetTempoDecorrido();
 }
 
@@ -2428,18 +2879,47 @@ void CriaFrameAnimacao(int idAnimacao,int codigoFrame,int xBitmap,int yBitmap,in
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->DefineFrame(codigoFrame,{xBitmap,yBitmap,altura,largura});
 }
 
+/********************************
+A função CarregaArquivoFramesAnimacao() é responsável por ler de arquivo texto os frames de uma animação.
+Cada linha do arquivo texto deve conter 5 números inteiros: o número do frame, a posição do frame no eixo X do arquivo de imagem,
+a posição do frame no eixo Y do arquivo de imagem, a altura do frame e a largura do frame (todas as unidades em pixels).
+Parâmetros:
+idObjeto (entrada, passagem por valor): identificador da animação.
+nomeArq (entrada, passagem por referência): nome do arquivo texto contendo os frames.
+********************************/
 void CarregaArquivoFramesAnimacao(int idAnimacao, char *nomeArq){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->CarregaArquivoFrames(nomeArq);
 }
 
-void CarregaFramesPorLinhaAnimacao(int idAnimacao, int idFrameInicial, int qtdLinhas, int qtdColunas){
-    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->CriaFramesAutomaticosPorLinha(idFrameInicial,qtdLinhas,qtdColunas);
+/********************************
+A função CarregaFramesPorLinhaAnimacao() é responsável por subdividir o arquivo de imagem em linhas (de mesmo tamanho) e colunas (de mesmo tamanho).
+Cada subdivisão representará um frame que será automaticamente criado para a animação, com numeração incremental a partir do parâmetro "frameInicial".
+Ao final das "qtdColunas" da primeira linha, a definição dos frames continua na linha inferior.
+A função pode ser utilizada em spritesheets regulares.
+Parâmetros:
+idAnimacao (entrada, passagem por valor): identificador da animação.
+frameInicial (entrada, passagem por valor): numeração do primeiro frame a ser criado pela função. Os demais frames terão numeração consecutiva.
+qtdLinhas (entrada, passagem por valor): quantidade de linhas na qual o arquivo de imagem será dividido.
+qtdColunas (entrada, passagem por valor): quantidade de colunas na qual o arquivo de imagem será dividido.
+********************************/
+void CarregaFramesPorLinhaAnimacao(int idAnimacao, int frameInicial, int qtdLinhas, int qtdColunas){
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->CriaFramesAutomaticosPorLinha(frameInicial,qtdLinhas,qtdColunas);
 }
 
-void CarregaFramesPorColunaAnimacao(int idAnimacao, int idFrameInicial, int qtdLinhas, int qtdColunas){
-    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->CriaFramesAutomaticosPorColuna(idFrameInicial,qtdLinhas,qtdColunas);
+/********************************
+A função CarregaFramesPorColunaAnimacao() é responsável por subdividir o arquivo de imagem em linhas (de mesmo tamanho) e colunas (de mesmo tamanho).
+Cada subdivisão representará um frame que será automaticamente criado para a animação, com numeração incremental a partir do parâmetro "frameInicial".
+Ao final das "qtdLinhas" da primeira coluna, a definição dos frames continua na coluna seguinte.
+A função pode ser utilizada em spritesheets regulares.
+Parâmetros:
+idAnimacao (entrada, passagem por valor): identificador da animação.
+frameInicial (entrada, passagem por valor): numeração do primeiro frame a ser criado pela função. Os demais frames terão numeração consecutiva.
+qtdLinhas (entrada, passagem por valor): quantidade de linhas na qual o arquivo de imagem será dividido.
+qtdColunas (entrada, passagem por valor): quantidade de colunas na qual o arquivo de imagem será dividido.
+********************************/
+void CarregaFramesPorColunaAnimacao(int idAnimacao, int frameInicial, int qtdLinhas, int qtdColunas){
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->CriaFramesAutomaticosPorColuna(frameInicial,qtdLinhas,qtdColunas);
 }
-
 
 /********************************
 A função CriaModoAnimacao() é responsável por criar um modo, ou seja, uma sequência de sprites.
@@ -2455,8 +2935,8 @@ void CriaModoAnimacao(int idAnimacao,int codigoModo,int loop){
 }
 
 /********************************
-A função InsereFrameAnimacao() é responsável por associar os frames aos modos correspondentes. Um mesmo
-frame pode fazer parte de diversos modos, mas cada modo deve ter no máximo MAX_FRAMES_MODO-1 frames.
+A função InsereFrameAnimacao() é responsável por associar os frames aos modos correspondentes.
+Um mesmo frame pode fazer parte de diversos modos.
 Parâmetros:
 idAnimacao (entrada, passagem por valor): identificador da animação em questão.
 codigoModo (entrada, passagem por valor): numero do modo a ter um frame inserido.
@@ -2466,6 +2946,20 @@ idAudio (entrada, passagem por valor não-obrigatório): identificador do audio (j
 ********************************/
 void InsereFrameAnimacao(int idAnimacao,int codigoModo, int codigoFrame, float tempo, int idAudio=-1){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->InsereFrame(codigoModo,codigoFrame,tempo,idAudio);
+}
+
+
+/********************************
+A função InsereAudioFrameAnimacao() é responsável por acrescentar um audio a um dos frames.
+O audio é tocado assim que o frame é desenhado pela primeira vez.
+Parâmetros:
+idAnimacao (entrada, passagem por valor): identificador da animação em questão.
+codigoModo (entrada, passagem por valor): número do modo a ter um frame inserido.
+indiceFrame (entrada, passagem por valor): índice (posição) do frame no modo em questão.
+idAudio (entrada, passagem por valor não-obrigatório): identificador do audio (já criado anteriormente) que deve ser tocado quando o frame for exibido. O valor -1 deve ser utilizado se nenhum audio deve ser tocado.
+********************************/
+void InsereAudioFrameAnimacao(int idAnimacao, int codigoModo, int indiceFrame, int idAudio){
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetAudioFrame(codigoModo,indiceFrame,idAudio);
 }
 
 /********************************
@@ -2502,6 +2996,49 @@ inteiro que indica se houve colisão da animação com o objeto.
 ********************************/
 int ColisaoAnimacaoObjeto(int idAnimacao,int idObjeto){
     return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->Colisao(CPIGGerenciadorSprites::GetObjeto(idObjeto));
+}
+
+
+/********************************
+A função DefineAreaColisaoObjeto() é responsável estabelecer um polígono que será utilizado como área de colisão da animação com as demais.
+Os vetores X e Y deve ter pelo menos qtdPontos elementos.
+Parâmetros:
+idAnimacao (entrada, passagem por valor): identificador da animação.
+pontosX (entrada, passagem por referência): vetor de inteiros, de tamanho qtdPontos, contendo os valores X de cada ponto do polígono.
+pontosY (entrada, passagem por referência): vetor de inteiros, de tamanho qtdPontos, contendo os valores Y de cada ponto do polígono.
+qtdPontos (entrada, passagem por valor): quantidade de pontos da animação.
+********************************/
+void DefineAreaColisaoAnimacao(int idAnimacao, int pontosX[], int pontosY[], int qtdPontos) {
+    std::vector<SDL_Point> vertices;
+
+    for (int i = 0; i < qtdPontos; i++) {
+        vertices.push_back({pontosX[i], pontosY[i]});
+    }
+
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetVertices(vertices);
+}
+
+/********************************
+A função DefineRaioColisaoAnimacao() é responsável por estabelecer um raio, em relação ao pivô da animação, que será utilizado para teste de colisão circular desta animação com as demais.
+A definição do raio só será útil se o tipode colisão deste objeto for circular, definido pela função DefineTipoColisaoObjeto().
+Parâmetros:
+idAnimacao (entrada, passagem por valor): identificador da animação.
+raio (entrada, passagem por valor): tamanho do raio que formará a área de colisão desta animação.
+********************************/
+void DefineRaioColisaoAnimacao(int idAnimacao, float raio){
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetRaioColisaoCircular(raio);
+}
+
+/********************************
+A função DefineTipoColisaoAnimacao() é responsável por definir o tipod e colisão que será utilizada por esta animação com as demais.
+É possível ter 3 tipos de colisão: por bouding-box (PIG_COLISAO_OOBB - área de colisão delimitada pelo ponto X,Y da animação, sua altura e largura e rotação),
+por polígono (PIG_COLISAO_POLIGONO) área de colisão formada por pontos genéricos) e circular (PIG_COLISAO_CIRCULAR) área de colisão em forma de círculo, com raio definido a partir do ponto pivô)
+Parâmetros:
+idAnimacao (entrada, passagem por valor): identificador da animação.
+modo (entrada, passagem por valor): modo de colisão a ser utilizado por esta animação.
+********************************/
+void DefineTipoColisaoAnimacao(int idAnimacao, PIG_ModoColisao modo){
+    CPIGGerenciadorSprites::GetObjeto(idAnimacao)->SetModoColisao(modo);
 }
 
 /********************************
@@ -2562,7 +3099,6 @@ int GetOpacidadeAnimacao(int idAnimacao){
     return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetOpacidade();
 }
 
-
 /********************************
 A função SetColoracaoAnimacao() é responsável por mesclar uma determinada cor com os pixels do arquivo de imagem.
 Após a modificação, todos os desenhos desta animação serão mostrados já com a mesclagem definida.
@@ -2609,7 +3145,7 @@ Parâmetros:
 idAnimacao (entrada, passagem por valor): identificador da animação.
 angulo (entrada, passagem por valor): valor para indicar a angulação da animação em graus.
 ********************************/
-void SetAnguloAnimacao(int idAnimacao, float angulo){
+void SetAnguloAnimacao(int idAnimacao, double angulo){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetAngulo(angulo);
 }
 
@@ -2622,7 +3158,7 @@ idAnimacao (entrada, passagem por valor): identificador da animação.
 Retorno:
 Retorna o valor do ângulo em graus.
 ********************************/
-float GetAnguloAnimacao(int idAnimacao){
+double GetAnguloAnimacao(int idAnimacao){
     return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetAngulo();
 }
 
@@ -2838,6 +3374,99 @@ void GetXYAnimacao(int idAnimacao,int *posicaoX,int *posicaoY){
     *posicaoX = p.x;
     *posicaoY = p.y;
 }
+
+/********************************
+A função InsereTransicaoAnimacao() é responsável por criar e inserir uma nova transição ao final de sequência de transições da animação.
+Parâmetros:
+idAnimacao (entrada, passagem por valor): identificador da animação.
+tempo (entrada, passagem por valor): duracao (em segundos) da transição.
+deltaX (entrada, passagem por valor): diferença da posição no eixo X em relação à posição da animação no início da transição.
+deltaY (entrada, passagem por valor): diferença da posição no eixo Y em relação à posição da animação no início da transição.
+deltaAltura (entrada, passagem por valor): diferença da altura da animação em relação ao início da transição.
+deltaLargura (entrada, passagem por valor): diferença da largura da animação em relação ao início da transição.
+deltaAngulo (entrada, passagem por valor): diferença de ângulo (em graus) da animação em relação ao início da transição.
+corFinal (entrada, passagem por valor): coloração da animação ao final da transição.
+deltaOpacidade (entrada, passagem por valor): diferença do nível de opacidade da animação em relação ao início da transição.
+********************************/
+void InsereTransicaoAnimacao(int idAnimacao,double tempo,int deltaX,int deltaY,int deltaAltura,int deltaLargura,double deltaAngulo,PIG_Cor corFinal,int deltaOpacidade){
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->InsereTransicao(tempo,{deltaX,deltaY,deltaAltura,deltaLargura,deltaAngulo,corFinal,deltaOpacidade});
+}
+
+/********************************
+A função LeArquivoTransicaoAnimacao() é responsável por ler, criar e inserir as transições para uma animação, provenientes de um arquivo texto.
+Cada linha do arquivo texto corresponde a uma transição (em ordem) e deve possuir 11 valores:
+1) um double representando a duracao (em segundos) da transição.
+2) um inteiro repreentando a diferença da posição no eixo X em relação à posição da animação no início da transição.
+3) um inteiro repreentando a diferença da posição no eixo Y em relação à posição da animação no início da transição.
+4) um inteiro repreentando a diferença da altura da animação em relação ao início da transição.
+5) um inteiro repreentando a diferença da largura da animação em relação ao início da transição.
+6) um double repreentando a diferença de ângulo (em graus) da animação em relação ao início da transição.
+7) um inteiro repreentando a componente R (vermelho) da coloração da animação ao final da transição.
+8) um inteiro repreentando a componente G (verde) da coloração da animação ao final da transição.
+9) um inteiro repreentando a componente B (azul) da coloração da animação ao final da transição.
+10) um inteiro repreentando a componente A (canal alfa) da coloração da animação ao final da transição.
+11) um inteiro repreentando a diferença do nível de opacidade da animação em relação ao início da transição.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador da animação.
+nomeArq (entrada, passagem por referência): nome com extensão do arquivo texto contendo as transições.
+********************************/
+void LeArquivoTransicaoAnimacao(int idAnimacao,char *nomeArq){
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->LeTransicoes(nomeArq);
+}
+
+/********************************
+A função IniciaAutomacaoAnimacao() é responsável por iniciar as transições já inseridas na animação, de acordo como o tipo de transição informada.
+Parâmetros:
+idAnimacao (entrada, passagem por valor): identificador da animação.
+********************************/
+void IniciaAutomacaoAnimacao(int idAnimacao){
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->IniciaAutomacao();
+}
+
+/********************************
+A função TrataAutomacaoAnimacao() é responsável por calcular o estado da transição corrente da animação e aplicar essas modificação a ela.
+A função deve ser chamada a cada frame, para ter resultados mais precisos.
+Parâmetros:
+idAnimacao (entrada, passagem por valor): identificador da animação.
+********************************/
+void TrataAutomacaoAnimacao(int idAnimacao){
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->TrataAutomacao();
+}
+
+/********************************
+A função DefineTipoTransicaoAnimacao() é responsável por determinar como a sequência de transições da animação será executada.
+É possível fazê-la uma única vez (PIG_TRANSICAO_NORMAL), em loop (PIG_TRANSICAO_LOOP) ou indo até o final da sequência e retornando, em vai-vém (PIG_TRANSICAO_VAIVEM).
+A função deve ser chamada a cada frame, para ter resultados mais precisos.
+Parâmetros:
+idAnimacao (entrada, passagem por valor): identificador da animação.
+********************************/
+void DefineTipoTransicaoAnimacao(int idAnimacao,PIG_TipoTransicao valor){
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->DefineTipoTransicao(valor);
+}
+
+/********************************
+A função LimpaTransicoesAnimacao() é responsável por remover a sequência de transições do animação.
+Parâmetros:
+idAnimacao (entrada, passagem por valor): identificador da animação.
+********************************/
+void LimpaTransicoesAnimacao(int idAnimacao){
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->LimpaTransicoes();
+}
+
+/********************************
+A função InsereAcaoAnimacao() é responsável por inserir na linha de tempo de automação do animação uma ação a ser executada.
+A ação é composta por uma função "acao" que será executada quando a linha de tempo atingir o parâmetro "tempo" e será repetida a cada "repeticao" segundos.
+A ação pode armazenar um ponteiro genérico "param" que será utilizado na chamada da função.
+Parâmetros:
+idAnimacao (entrada, passagem por valor): identificador da animação.
+tempo (entrada, passagem por valor): tempo (em segundos) da primeira chamada da função.
+repeticao (entrada, passagem por valor): tempo (em segundos) entre a chamada anterior e a próxima. O valor -1 indica que a função não será repetida.
+param (entrada, passagem por referência): ponteiro genérico para um valor que será utilizado na chamada da função.
+********************************/
+void InsereAcaoAnimacao(int idAnimacao,double tempo,double repeticao,PIG_FuncaoSimples acao,void *param){
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->InsereAcao(tempo,repeticao,acao,idAnimacao,param);
+}
+
 
 
 /********************************
@@ -3375,8 +4004,7 @@ idSocket (entrada, passagem por valor): identificador do socket.
 hostname (saída, passagem por referência): nome do computador (da rede local) ou do endereço IP ao qual está conectado o socket cliente.
 ********************************/
 void GetHostRemotoSocketCliente(int idSocket,char *hostname){
-    std::string resp = CPIGGerenciadorSockets::GetCliente(idSocket)->GetHostRemoto();
-    strcpy(hostname,resp.c_str());
+    strcpy(hostname,CPIGGerenciadorSockets::GetCliente(idSocket)->GetHostRemoto().c_str());
 }
 
 /********************************
@@ -3386,8 +4014,7 @@ idSocket (entrada, passagem por valor): identificador do socket.
 hostname (saída, passagem por referência): nome do computador (na rede local) ou do endereço IP da máquina no qual está aberto o socket cliente.
 ********************************/
 void GetHostLocalSocketCliente(int idSocket,char *hostname){
-    std::string resp = CPIGGerenciadorSockets::GetCliente(idSocket)->GetHostLocal();
-    strcpy(hostname,resp.c_str());
+    strcpy(hostname,CPIGGerenciadorSockets::GetCliente(idSocket)->GetHostLocal().c_str());
 }
 
 /********************************
@@ -3397,8 +4024,7 @@ idSocket (entrada, passagem por valor): identificador do socket.
 hostname (saída, passagem por referência): nome do computador (na rede local) ou do endereço IP da máquina no qual está aberto o socket servidor.
 ********************************/
 void GetHostLocalSocketServidor(int idSocket,char *hostname){
-    std::string resp = CPIGGerenciadorSockets::GetServidor(idSocket)->GetHostLocal();
-    strcpy(hostname,resp.c_str());
+    strcpy(hostname,CPIGGerenciadorSockets::GetServidor(idSocket)->GetHostLocal().c_str());
 }
 
 /********************************
@@ -3408,8 +4034,7 @@ idSocket (entrada, passagem por valor): identificador do socket.
 hostname (saída, passagem por referência): nome do computador (na rede local) ou do endereço IP da máquina no qual está aberto o socket UDP.
 ********************************/
 void GetHostLocalSocketUDP(int idSocket,char *hostname){
-    std::string resp = CPIGGerenciadorSockets::GetSocketUDP(idSocket)->GetHostLocal();
-    strcpy(hostname,resp.c_str());
+    strcpy(hostname,CPIGGerenciadorSockets::GetSocketUDP(idSocket)->GetHostLocal().c_str());
 }
 
 /********************************
@@ -3582,7 +4207,7 @@ Parâmetro:
 idVideo (entrada, passagem por valor): identificador do vídeo a ser desenhado.
 ********************************/
 int DesenhaVideo(int idVideo){
-    CPIGGerenciadorVideos::GetVideo(idVideo)->Desenha();
+    return CPIGGerenciadorVideos::GetVideo(idVideo)->Desenha();
 }
 
 /********************************
@@ -3835,7 +4460,6 @@ void UsaResolucaoOriginalVideo(int idVideo){
     CPIGGerenciadorVideos::GetVideo(idVideo)->UsaResolucaoOriginal();
 }
 
-
 /********************************
 A função SetColoracaoVideo() é responsável por mesclar uma determinada cor com os pixels do frame do vídeo.
 Após a modificação, todos os desenhos deste vídeo serão mostrados já com a mesclagem definida.
@@ -3956,6 +4580,46 @@ void PIG_Componentes_SetVisivel(int idComponente,int valor){
     CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetVisivel(valor);
 }
 
+PIG_Cor PIG_Componentes_GetCorLabel(int idComponente){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->GetCorLabel();
+}
+
+std::string PIG_Componentes_GetHint(int idComponente){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->GetHint();
+}
+
+int PIG_Componentes_GetFonteHint(int idComponente){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->GetFonteHint();
+}
+
+int PIG_Componentes_GetVisivel(int idComponente){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->GetVisivel();
+}
+
+int PIG_Componentes_GetHabilitado(int idComponente){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->GetHabilitado();
+}
+
+int PIG_Componentes_GetAcionado(int idComponente){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->GetAcionado();
+}
+
+int PIG_Componentes_GetMouseOver(int idComponente){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->GetMouseOver();
+}
+
+PIG_PosicaoComponente PIG_Componentes_GetPosComponente(int idComponente){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->GetPosComponente();
+}
+
+void PIG_Componentes_GetDimensoes(int idComponente,int &altura, int &largura){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->GetDimensoes(altura,largura);
+}
+
+void PIG_Componentes_GetDimensoesOriginais(int idComponente,int &altura, int &largura){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->GetDimensoesOriginais(altura,largura);
+}
+
 /*******BOTAO*********/
 
 int PIG_CriaBotao(int idForm,int x,int y,int alt,int larg,char* nomeArq,int retiraFundo = 1){
@@ -3997,7 +4661,7 @@ void PIG_AreaDeTexto_SetBotoesScrollBarVertical(int idComponente,int larguraBoto
 }
 
 void PIG_AreaDeTexto_SetBotoesScrollBarHorizontal(int idComponente,int larguraBotoes,char* imgBotao1,char* imgBotao2,int retiraFundoB1 = 1,int retiraFundoB2 = 1){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->SetBotoesScrollBarVertical(larguraBotoes,imgBotao1,imgBotao2,retiraFundoB1,retiraFundoB2);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->SetBotoesScrollBarHorizontal(larguraBotoes,imgBotao1,imgBotao2,retiraFundoB1,retiraFundoB2);
 }
 
 void PIG_AreaDeTexto_SetPosPadraoScrollHorizontal(int idComponente,PIG_PosicaoComponente pos){
@@ -4044,7 +4708,7 @@ void PIG_AreaDeTexto_SetCorCursor(int idComponente,PIG_Cor cor){
     CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->SetCorCursor(cor);
 }
 
-std::vector<std::string> PIG_AreaDeTexto_GetLinhasTexto(int idComponente){
+vector<string> PIG_AreaDeTexto_GetLinhasTexto(int idComponente){
     CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->GetLinhasTexto();
 }
 
@@ -4106,18 +4770,125 @@ int PIG_CriaListBox(int idForm,int x, int y,int larguraTotal,int alturaLinha,int
     return CPIGGerenciadorForms::GetForm(idForm)->CriaListBox(x,y,larguraTotal,alturaLinha,alturaMaxima,alturaItem,largItem,nomeArq,retiraFundo);
 }
 
-int PIG_ListBox_CriaItem(int idComponente,char* texto,char* imagemIcone = "",char *imagemFundo="",char* hintMsg="",bool itemHabilitado = true, int audio=-1,int retiraFundoImg = 1){
+void PIG_ListBox_CriaItem(int idComponente,char* texto,char* imagemIcone = "",char *imagemFundo="",char* hintMsg="",bool itemHabilitado = true, int audio=-1,int retiraFundoImg = 1){
     CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->CriaItem(texto,imagemIcone,imagemFundo,false,itemHabilitado,audio,hintMsg,retiraFundoImg);
 }
 
+int PIG_ListBox_SetAcionado(int idComponente,int indice, int marcado){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->SetAcionado(indice,marcado);
+}
+
+void PIG_ListBox_DefineDimensaoImagemItem(int idComponente,int alturaImagemIcone, int larguraImagemIcone){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->DefineDimensaoImagemItem(alturaImagemIcone,larguraImagemIcone);
+}
+
+void PIG_ListBox_AlinhaLabelDireita(int idComponente){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->AlinhaLabelDireita();
+}
+
+void PIG_ListBox_AlinhaLabelEsquerda(int idComponente){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->AlinhaLabelEsquerda();
+}
+
+void PIG_ListBox_AlinhaLabelCentro(int idComponente){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->AlinhaLabelCentro();
+}
+
+void PIG_ListBox_AlinhaIconeDireita(int idComponente){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->AlinhaIconeDireita();
+}
+
+void PIG_ListBox_AlinhaIconeEsquerda(int idComponente){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->AlinhaIconeEsquerda();
+}
+
+void PIG_ListBox_SetFonteItensLista(int idComponente,int fonte){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->SetFonteItensLista(fonte);
+}
+
+int PIG_ListBox_GetAcionadoItem(int idComponente,int item){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->GetAcionadoItem(item);
+}
+
+int PIG_ListBox_SetAudioItem(int idComponente,int item, int audio){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->SetAudioItem(item,audio);
+}
+
+int PIG_ListBox_GetHabilitadoItem(int idComponente,int item){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->GetHabilitadoItem(item);
+}
+
+int PIG_ListBox_SetHabilitadoItem(int idComponente,int item,int valor){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->SetHabilitadoItem(item,valor);
+}
+
+int PIG_ListBox_GetItemDestaque(int idComponente){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->GetItemDestaque();
+}
+
+int PIG_ListBox_SetAcionadoItem(int idComponente,int indice,int marcado){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->SetAcionadoItem(indice,marcado);
+}
 /**********DROPDOWN**************/
 
 int PIG_CriaDropDown(int idForm,int x, int y, int larguraTotal,int alturaLinha,int alturaMaxima,int alturaItem,int larguraItem,char* nomeArq,int retiraFundo=1){
     return CPIGGerenciadorForms::GetForm(idForm)->CriaDropDown(x,y,larguraTotal,alturaLinha,alturaMaxima,alturaItem,larguraItem,nomeArq,retiraFundo);
 }
 
-int PIG_DropDown_CriaItem(int idComponente,char* texto,char* imagemIcone = "",char *imagemFundo="", char* hintMsg="",bool itemHabilitado = true, int audio=-1,int retiraFundoImg = 1){
+void PIG_DropDown_CriaItem(int idComponente,char* texto,char* imagemIcone = "",char *imagemFundo="", char* hintMsg="",bool itemHabilitado = true, int audio=-1,int retiraFundoImg = 1){
     CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->CriaItem(texto,imagemIcone,imagemFundo,itemHabilitado,audio,hintMsg,retiraFundoImg);
+}
+
+void PIG_DropDown_DefineDimensaoImagemItem(int idComponente,int alturaImagemIcone, int larguraImagemIcone){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->DefineDimensaoImagemItem(alturaImagemIcone,larguraImagemIcone);
+}
+
+void PIG_DropDown_AlinhaLabelDireita(int idComponente){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->AlinhaLabelDireita();
+}
+
+void PIG_DropDown_AlinhaLabelEsquerda(int idComponente){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->AlinhaLabelEsquerda();
+}
+
+void PIG_DropDown_AlinhaLabelCentro(int idComponente){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->AlinhaLabelCentro();
+}
+
+void PIG_DropDown_AlinhaIconeDireita(int idComponente){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->AlinhaIconeDireita();
+}
+
+void PIG_DropDown_AlinhaIconeEsquerda(int idComponente){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->AlinhaIconeEsquerda();
+}
+
+void PIG_DropDown_SetFonteItensLista(int idComponente,int fonte){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->SetFonteItensLista(fonte);
+}
+
+int PIG_DropDown_GetAcionadoItem(int idComponente,int item){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->GetAcionadoItem(item);
+}
+
+int PIG_DropDown_SetAudioItem(int idComponente,int item, int audio){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->SetAudioItem(item,audio);
+}
+
+int PIG_DropDown_GetHabilitadoItem(int idComponente,int item){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->GetHabilitadoItem(item);
+}
+
+int PIG_DropDown_SetHabilitadoItem(int idComponente,int item,int valor){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->SetHabilitadoItem(item,valor);
+}
+
+int PIG_DropDown_GetItemDestaque(int idComponente){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->GetItemDestaque();
+}
+
+int PIG_DropDown_SetAcionadoItem(int idComponente,int indice,int marcado){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->SetAcionadoItem(indice,marcado);
 }
 
 /**********GAUGE**************/
@@ -4146,10 +4917,94 @@ void PIG_Gauge_ZeraValor(int idComponente){
     CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGauge>(idComponente)->ZeraValor();
 }
 
+void PIG_Gauge_SetValorMinMax(int idComponente,int minimo,int maximo){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGauge>(idComponente)->SetValorMinMax(minimo,maximo);
+}
+
+void PIG_Gauge_AvancaBarra(int idComponente,float valor){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGauge>(idComponente)->AvancaBarra(valor);
+}
+
+void PIG_Gauge_SetDistanciaXYBarra(int idComponente,int dx,int dy){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGauge>(idComponente)->SetDistanciaXYBarra(dx,dy);
+}
+
+void PIG_Gauge_SetPorcentagemConcluida(int idComponente,float porcentagem){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGauge>(idComponente)->SetPorcentagemConcluida(porcentagem);
+}
+
+void PIG_Gauge_SetOrientacaoBarra(int idComponente,PIG_GaugeCrescimentoBarra orientacao){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGauge>(idComponente)->SetOrientacaoBarra(orientacao);
+}
+
+float PIG_Gauge_GetValorBarraAtual(int idComponente){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGauge>(idComponente)->GetValorBarraAtual();
+}
+
+void PIG_Gauge_SetValorBarraAtual(int idComponente,float valor){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGauge>(idComponente)->SetValorBarraAtual(valor);
+}
+
 /**********GAUGECIRCULAR**************/
 
 int PIG_CriaGaugeCircular(int idForm,int x, int y,int altura,int largura,int raioInterior,char* imgGauge,int retiraFundo=1){
     return CPIGGerenciadorForms::GetForm(idForm)->CriaGaugeCircular(x,y,altura,largura,raioInterior,imgGauge,retiraFundo);
+}
+
+void PIG_GaugeCircular_SetRaioInterno(int idComponente,int valorRaio){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->SetRaioInterno(valorRaio);
+}
+
+void PIG_GaugeCircular_SetAnguloBase(int idComponente,double novoAng){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->SetAnguloBase(novoAng);
+}
+
+void PIG_GaugeCircular_SetDeltaAngulo(int idComponente,double novoDelta){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->SetDeltaAngulo(novoDelta);
+}
+
+void PIG_GaugeCircular_IncrementaValor(int idComponente,int delta){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->IncrementaValor(delta);
+}
+
+void PIG_GaugeCircular_SetValorMax(int idComponente,int novoValor){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->SetValorMax(novoValor);
+}
+
+void PIG_GaugeCircular_SetValorMin(int idComponente,int novoValor){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->SetValorMin(novoValor);
+}
+
+void PIG_GaugeCircular_SetCorInicial(int idComponente,PIG_Cor cor){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->SetCorInicial(cor);
+}
+
+void PIG_GaugeCircular_SetCorFinal(int idComponente,PIG_Cor cor){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->SetCorFinal(cor);
+}
+
+void PIG_GaugeCircular_SetCorFundo(int idComponente,PIG_Cor cor){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->SetCorFundo(cor);
+}
+
+int PIG_GaugeCircular_GetValor(int idComponente){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->GetValor();
+}
+
+std::string PIG_GaugeCircular_GetValorString(int idComponente){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->GetValorString();
+}
+
+int PIG_GaugeCircular_GetValorMax(int idComponente){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->GetValorMax();
+}
+
+int PIG_GaugeCircular_GetValorMin(int idComponente){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->GetValorMin();
+}
+
+void PIG_GaugeCircular_AtualizaValor(int idComponente,int novoValor){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->AtualizaValor(novoValor);
 }
 
 /**********RADIOBOX**************/
