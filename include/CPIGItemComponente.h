@@ -213,7 +213,7 @@ public:
         return 0;
     }
 
-    void Move(int nx, int ny)override{
+    void Move(double nx, double ny)override{
         int dx = nx-pos.x;
         int dy = ny-pos.y;
         CPIGComponente::Desloca(dx,dy);

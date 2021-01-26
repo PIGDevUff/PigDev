@@ -1,7 +1,7 @@
 #ifndef _CPIGOBJETO_
 #define _CPIGOBJETO_
 
-typedef enum {PIG_COLISAO_OOBB, PIG_COLISAO_POLIGONO, PIG_COLISAO_CIRCULAR} PIG_ModoColisao;
+typedef enum {PIG_COLISAO_NENHUMA, PIG_COLISAO_OOBB, PIG_COLISAO_POLIGONO, PIG_COLISAO_CIRCULAR} PIG_ModoColisao;
 
 class CPIGObjeto: public CPIGSprite {
 
@@ -13,12 +13,12 @@ std::map<int, float> valoresIntFloat;
 std::map<std::string, float> valoresStringFloat;
 std::map<int, std::string> valoresIntString;
 std::map<std::string, std::string> valoresStringString;
-SDL_Point bb[4];
+PIGPonto2D bb[4];
 int raio;
 PIG_ModoColisao modo;
 
-std::vector<SDL_Point> vertices;
-std::vector<SDL_Point> verticesOriginais;
+std::vector<PIGPonto2D> vertices;
+std::vector<PIGPonto2D> verticesOriginais;
 bool bbAlterado;
 
 void DesenhaBB() {
@@ -76,14 +76,14 @@ void DesenhaCircular(PIG_Cor cor) {
 }
 
 void AtualizaBB() {
-    SDL_Point pivoAbs;
+    PIGPonto2D pivoAbs;
 
     //SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
     pivoAbs.x = pivoRelativo.x + pos.x;
     pivoAbs.y = -pivoRelativo.y + pos.y + alt; //inverte o eixo Y, pois o pivoRel considera o eixo Y aumentando para baixo
-    float angRad = -angulo * M_PI / 180.0;
-    float seno = sin(angRad);
-    float cosseno = cos(angRad);
+    double angRad = -angulo * M_PI / 180.0;
+    double seno = sin(angRad);
+    double cosseno = cos(angRad);
 
     //matriz de rota��o
     // ( cos(ang) sin(ang))   (Vx)   (Rx)
@@ -130,7 +130,7 @@ void Atualiza(){
     }
 }
 
-bool ColisaoCirculoPoligono(std::vector<SDL_Point> vertices) {
+bool ColisaoCirculoPoligono(std::vector<PIGPonto2D> vertices) {
     for(auto vertice : vertices) {
         if(PIGDistancia({pos.x + pivoRelativo.x, pos.y + pivoRelativo.y}, vertice) <= raio) {
             return true;
@@ -167,19 +167,19 @@ bool ColisaoCirculoPoligono(std::vector<SDL_Point> vertices) {
 
 public:
 
-CPIGObjeto(std::string nomeArquivo, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0)
+CPIGObjeto(std::string nomeArquivo, int retiraFundo = 1, PIG_Cor *corFundo = NULL, int janela = 0)
 : CPIGSprite(nomeArquivo, retiraFundo, corFundo, janela){
     modo = PIG_COLISAO_OOBB;
     bbAlterado = true;
 }
 
-CPIGObjeto(PIGOffscreenRenderer offRender, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0)
+CPIGObjeto(PIGOffscreenRenderer offRender, int retiraFundo = 1, PIG_Cor *corFundo = NULL, int janela = 0)
 : CPIGSprite(offRender, retiraFundo, corFundo, janela){
     modo = PIG_COLISAO_OOBB;
     bbAlterado = true;
 }
 
-CPIGObjeto(CPIGObjeto *objBase, PIG_Cor *corFundo = NULL, int retiraFundo = 1, int janela = 0)
+CPIGObjeto(CPIGObjeto *objBase, int retiraFundo = 1, PIG_Cor *corFundo = NULL, int janela = 0)
 : CPIGSprite(objBase, retiraFundo, corFundo, janela){
     SetModoColisao(objBase->modo);
     SetRaioColisaoCircular(objBase->raio);
@@ -226,13 +226,13 @@ void SetValorString(std::string chave, std::string valor){
     valoresStringString[chave] = valor;
 }
 
-void SetVertices(std::vector<SDL_Point> verts) {
+void SetVertices(std::vector<PIGPonto2D> verts) {
     vertices = verts;
     verticesOriginais = verts;
 }
 
 void SetAngulo(double a) override{
-    angulo = a;
+    CPIGSprite::SetAngulo(a);
     bbAlterado = true;
 }
 
@@ -298,11 +298,11 @@ bool GetValorString(std::string chave, std::string &valor){
     return true;
 }
 
-SDL_Point GetBB(int i) {
+PIGPonto2D GetBB(int i) {
     return bb[i];
 }
 
-std::vector<SDL_Point> GetVertices() {
+std::vector<PIGPonto2D> GetVertices() {
     return vertices;
 }
 
@@ -314,12 +314,12 @@ PIG_ModoColisao GetModoColisao() {
     return modo;
 }
 
-virtual void Move(int nx, int ny) override {
+virtual void Move(double nx, double ny) override {
     CPIGSprite::Move(nx,ny);
     bbAlterado = true;
 }
 
-virtual void Desloca(int dx, int dy) override {
+virtual void Desloca(double dx, double dy) override {
     CPIGSprite::Desloca(dx,dy);
     bbAlterado = true;
 }
@@ -327,20 +327,21 @@ virtual void Desloca(int dx, int dy) override {
 int Desenha() override{
     CPIGSprite::Desenha();
     /*switch(modo) {//modo
-        case PIG_OOBB:
+        case PIG_COLISAO_OOBB:
             DesenhaBB();
             break;
-        case PIG_POLIGONO:
+        case PIG_COLISAO_POLIGONO:
             DesenhaPoligono({0, 0, 255, 255});
             break;
-        case PIG_CIRCULAR:
+        case PIG_COLISAO_CIRCULAR:
             DesenhaCircular({0, 0, 255, 255});
             break;
-    }
-    return 0;*/
+    }*/
+    return 0;
 }
 
 virtual bool Colisao(CPIGObjeto *outro){
+    if (modo==PIG_COLISAO_NENHUMA) return false;
     Atualiza();
     outro->Atualiza();
 
@@ -349,6 +350,7 @@ virtual bool Colisao(CPIGObjeto *outro){
     if(modo == PIG_COLISAO_OOBB) {
         if(modoOutro == PIG_COLISAO_OOBB) {
             if(ColisaoOOBB(outro) || outro->ColisaoOOBB(this)) {
+                //fprintf(arqP,"%f,%f,%d,%d %f,%f,%d,%d\n",pos.x,pos.y,alt,larg,outro->pos.x,outro->pos.y,outro->alt,outro->larg);
                 return true;//ColisaoPoligono(outro->GetVertices()) || outro->ColisaoPoligono({bb[0], bb[1], bb[2], bb[3]});
             }
         } else if(modoOutro == PIG_COLISAO_POLIGONO) {
@@ -365,7 +367,7 @@ virtual bool Colisao(CPIGObjeto *outro){
             }
         } else if(modoOutro == PIG_COLISAO_OOBB) {
             if(ColisaoOOBB(outro) && outro->ColisaoOOBB(this)) {
-                std::vector<SDL_Point> verticesOutro = {outro->GetBB(0), outro->GetBB(1), outro->GetBB(2), outro->GetBB(3)};
+                std::vector<PIGPonto2D> verticesOutro = {outro->GetBB(0), outro->GetBB(1), outro->GetBB(2), outro->GetBB(3)};
                 return ColisaoPoligono(verticesOutro) || outro->ColisaoPoligono(vertices);
             }
         } else if(modoOutro == PIG_COLISAO_CIRCULAR) {
@@ -377,18 +379,18 @@ virtual bool Colisao(CPIGObjeto *outro){
         } else if(modoOutro == PIG_COLISAO_POLIGONO) {
             return ColisaoCirculoPoligono(outro->GetVertices());
         } else if(modoOutro == PIG_COLISAO_OOBB) {
-            std::vector<SDL_Point> verticesOutro = {outro->GetBB(0), outro->GetBB(1), outro->GetBB(2), outro->GetBB(3)};
+            std::vector<PIGPonto2D> verticesOutro = {outro->GetBB(0), outro->GetBB(1), outro->GetBB(2), outro->GetBB(3)};
             return ColisaoCirculoPoligono(verticesOutro);
         }
     }
     return false;
 }
 
-bool PontoDentro(SDL_Point p) {
+bool PontoDentro(PIGPonto2D p) {
     int i = 0;
     int quant_intersecoes = 0;
 
-    std::vector<SDL_Point> verticesAux;
+    std::vector<PIGPonto2D> verticesAux;
 
     if(this->modo == PIG_COLISAO_OOBB) {
         verticesAux = {bb[0], bb[1], bb[2], bb[3]};
@@ -408,7 +410,7 @@ bool PontoDentro(SDL_Point p) {
 
 private:
 
-bool Intersecao(int i, int f, SDL_Point p) {
+bool Intersecao(int i, int f, PIGPonto2D p) {
     float m = ((float)vertices[f].y - vertices[i].y) /
               ((float)vertices[f].x - vertices[i].x);
     int x;
@@ -432,27 +434,42 @@ bool Intersecao(int i, int f, SDL_Point p) {
 }
 
 bool ColisaoCircular(CPIGObjeto *outro) {
-    SDL_Point outroPivo = outro->GetPivo();
-    SDL_Point outroPos = outro->GetXY();
+    PIGPonto2D outroPivo = outro->GetPivo();
+    PIGPonto2D outroPos = outro->GetXY();
 
     return PIGDistancia({outroPos.x + outroPivo.x, outroPos.y + outroPivo.y}, {pos.x + pivoRelativo.x, pos.y + pivoRelativo.y}) <= (float)(raio + outro->GetRaio());
 }
 
-int ColisaoOOBB(CPIGObjeto *outro) {
+bool ColisaoOOBB(CPIGObjeto *outro) {
 
     // caso em q o angulo é 0
     // caso em que o vetor que vai de bb[0] para bb[1] é paralelo ao eixo X, ou seja, nao ira existir uma "projecao" no eixo X
     // os pontos sao trocados para que seja usado o antigo bb[3] para bb[0]
+    bool swapei = false;
+    string str;
+    char cstr[100]="";
+    vector<string> vet;
     if (bb[1].y == bb[0].y) {
         for (int i = 1; i < 4; i++) {
             std::swap(bb[i].x, bb[0].x);
             std::swap(bb[i].y, bb[0].y);
+            swapei = true;
         }
+    }else{
+        sprintf(cstr,"bb== %d %d\n",bb[1].y,bb[0].y);
+        vet.push_back(cstr);
+        sprintf(cstr,"(%d,%d) (%d,%d) (%d,%d) (%d,%d)\n",bb[0].x,bb[0].y,bb[1].x,bb[1].y,bb[2].x,bb[2].y,bb[3].x,bb[3].y);
+        vet.push_back(cstr);
     }
 
     // projecao dos vetores no eixo X deste objeto
-    double projecaoAB = PIGProjecaoX((double)(bb[1].y - bb[0].y) / (double)(bb[1].x - bb[0].x), bb[0]);
-    double projecaoCD = PIGProjecaoX((double)(bb[3].y - bb[2].y) / (double)(bb[3].x - bb[2].x), bb[2]);
+    double projecaoAB = PIGProjecaoX((double)(bb[1].y - bb[0].y) / (double)(bb[1].x - bb[0].x), bb[0],swapei,vet);
+    double projecaoCD = PIGProjecaoX((double)(bb[3].y - bb[2].y) / (double)(bb[3].x - bb[2].x), bb[2],swapei,vet);
+
+    if (!swapei){
+        sprintf(cstr,"proj %f %f\n",projecaoAB,projecaoCD);
+        vet.push_back(cstr);
+    }
 
     //SDL_SetRenderDrawColor(renderer,255,255,255,255);
     //SDL_RenderDrawLine(renderer,(int)projecaoAB,300,(int)projecaoCD,300);
@@ -460,7 +477,12 @@ int ColisaoOOBB(CPIGObjeto *outro) {
     // projecao dos pontos(com o angulo dos anteriores) no eixo X do outro objeto
     double projecao[4];
     for (int i = 0; i < 4; i++)
-        projecao[i] = PIGProjecaoX((double)(bb[1].y - bb[0].y) / (double)(bb[1].x - bb[0].x), outro->GetBB(i));
+        projecao[i] = PIGProjecaoX((double)(bb[1].y - bb[0].y) / (double)(bb[1].x - bb[0].x), outro->GetBB(i),swapei,vet);
+
+    if (!swapei){
+        sprintf(cstr,"proj %f %f %f %f\n",projecao[0],projecao[1],projecao[2],projecao[3]);
+        vet.push_back(cstr);
+    }
 
     double menorA = (projecaoAB < projecaoCD) ? projecaoAB : projecaoCD;
     double maiorA = (projecaoAB > projecaoCD) ? projecaoAB : projecaoCD;
@@ -483,10 +505,27 @@ int ColisaoOOBB(CPIGObjeto *outro) {
     menorB = PIGMinVetor(projecao,4);
     maiorB = PIGMaxVetor(projecao,4);
 
+    if (menorA < maiorB && maiorA > menorB){
+        if (!swapei){
+                sprintf(cstr,"swapei %d\n",swapei);
+                vet.push_back(cstr);
+                sprintf(cstr,"(%d,%d) (%d,%d) (%d,%d) (%d,%d)\n",bb[0].x,bb[0].y,bb[1].x,bb[1].y,bb[2].x,bb[2].y,bb[3].x,bb[3].y);
+                vet.push_back(cstr);
+                sprintf(cstr,"(%d,%d) (%d,%d) (%d,%d) (%d,%d)\n",outro->GetBB(0).x,outro->GetBB(0).y,outro->GetBB(1).x,outro->GetBB(1).y,outro->GetBB(2).x,outro->GetBB(2).y,outro->GetBB(3).x,outro->GetBB(3).y);
+                vet.push_back(cstr);
+                sprintf(cstr,"%f %f %f %f proj %f %f\n",menorA,maiorB,maiorA,menorB,projecaoAB,projecaoCD);
+                vet.push_back(cstr);
+
+                for (int f=0;f<vet.size();f++)
+                    ;//printf("%s",vet[f].c_str());
+                //system("pause");
+        }
+    }
+
     return (menorA < maiorB && maiorA > menorB);
 }
 
-bool ColisaoPoligono(std::vector<SDL_Point> vertices) {
+bool ColisaoPoligono(std::vector<PIGPonto2D> vertices) {
     for (auto vertice : vertices) {
         if (PontoDentro(vertice)) return true;
     }

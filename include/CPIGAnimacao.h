@@ -32,7 +32,7 @@ void AtualizaFrameAtual(PIGModoAnimacao modo){
 public:
 
 //cria uma animação a partir de um arquivo de spritesheet
-CPIGAnimacao(std::string nomeArq,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NULL,int retiraFundo=1,int idJanela=0):CPIGObjeto(nomeArq,corFundo,retiraFundo,idJanela){
+CPIGAnimacao(std::string nomeArq,int usaGerenciadorTimer=0,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0):CPIGObjeto(nomeArq,retiraFundo,corFundo,idJanela){
     offset= {0,0};
     modoAtual = 0;
 
@@ -50,7 +50,7 @@ CPIGAnimacao(std::string nomeArq,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NUL
 }
 
 //cria uma animaçãoa partir deoutra animação já existente
-CPIGAnimacao(CPIGAnimacao* base,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NULL,int retiraFundo=1,int idJanela=0):CPIGObjeto(base->nomeArquivo,corFundo,retiraFundo,idJanela){
+CPIGAnimacao(CPIGAnimacao* base,int usaGerenciadorTimer=0,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0):CPIGObjeto(base->nomeArquivo,retiraFundo,corFundo,idJanela){
 
     for (int i=0;i<PIG_MAX_MODOS;i++){
         if (base->modos[i])
@@ -70,7 +70,7 @@ CPIGAnimacao(CPIGAnimacao* base,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NULL
 }
 
 //cria uma animação a partir de um objeto
-CPIGAnimacao(PIGObjeto base,int usaGerenciadorTimer=0,PIG_Cor *corFundo=NULL,int retiraFundo=1,int idJanela=0):CPIGObjeto(base,corFundo,retiraFundo,idJanela){
+CPIGAnimacao(PIGObjeto base,int usaGerenciadorTimer=0,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0):CPIGObjeto(base,retiraFundo,corFundo,idJanela){
     offset = {0,0};
     modoAtual = 0;
 

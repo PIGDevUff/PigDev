@@ -52,10 +52,9 @@ CPIGTransicao(string str){
 
 void IniciaTransicao(PIG_EstadoTransicao inicio){
     ini = inicio;
-    //printf("1 ini %d,%d  fim %d,%d\n",ini.x,ini.y,fim.x,fim.y);
     fim = ini+delta;
-    //printf("2 ini %d,%d  fim %d,%d\n",ini.x,ini.y,fim.x,fim.y);
     CPIGGerenciadorTimers::GetTimer(idTimer)->Reinicia(false);
+    tempoAtual = 0.0;
 }
 
 int CalculaTransicao(){
@@ -141,6 +140,7 @@ double GetPersonalizada(int indice){
 
 PIG_EstadoTransicao GetEstado(){
     PIG_EstadoTransicao atual;
+    //atual.tempoAtual = tempoAtual;
     atual.x = fim.x*(tempoAtual) + ini.x*(1-tempoAtual);
     atual.y = fim.y*(tempoAtual) + ini.y*(1-tempoAtual);
     atual.alt = fim.alt*(tempoAtual) + ini.alt*(1-tempoAtual);
@@ -148,7 +148,12 @@ PIG_EstadoTransicao GetEstado(){
     atual.ang = fim.ang*(tempoAtual) + ini.ang*(1-tempoAtual);
     atual.cor = PIGMixCor(ini.cor,fim.cor,tempoAtual);
     atual.opacidade = fim.opacidade*(tempoAtual) + ini.opacidade*(1-tempoAtual);
+    //fprintf(arqP,"get %f %d %d %d %d %f\n",atual.tempoAtual,atual.x,atual.y,atual.alt,atual.larg,atual.ang);
     return atual;
+}
+
+PIG_EstadoTransicao GetFim(){
+    return fim;
 }
 
 void Inverte(){

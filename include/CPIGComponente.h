@@ -250,7 +250,7 @@ public:
 
     void SetPosPadraoExternaComponente(PIG_PosicaoComponente pos,CPIGComponente *componenteAssociado){
         int altComponente,largComponente;
-        SDL_Point p = componenteAssociado->GetXY();
+        PIGPonto2D p = componenteAssociado->GetXY();
         //int largura,altura;
 
         posComponente = pos;
@@ -342,7 +342,7 @@ public:
 
     }
 
-    void Move(int nx, int ny)override{
+    void Move(double nx, double ny)override{
         int dx = nx-pos.x;
         int dy = ny-pos.y;
         CPIGSprite::Desloca(dx,dy);

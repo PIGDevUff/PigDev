@@ -16,7 +16,7 @@ class CPIGAutomacao{
 
 private:
 PIG_TipoTransicao tipo;
-int transAtual;
+int transAtual,somaTrans;
 vector<PIGTransicao> transicoes;
 vector<PIG_Automacao> timelineAcoes;
 int timerAcoes;
@@ -28,13 +28,15 @@ CPIGAutomacao(int idProprietario){
     idDono = idProprietario;
     tipo = PIG_TRANSICAO_NORMAL;
     transAtual = 0;
+    somaTrans = +1;
     timerAcoes = CPIGGerenciadorTimers::CriaTimer(true);
 }
 
 CPIGAutomacao(int idProprietario,CPIGAutomacao *outro){
     idDono = idProprietario;
     tipo = outro->tipo;
-    transAtual = 0;
+    transAtual = outro->transAtual;
+    somaTrans = outro->somaTrans;
     timerAcoes = CPIGGerenciadorTimers::CriaTimer(true);
     timelineAcoes = outro->timelineAcoes;
     for (int i=0;i<outro->transicoes.size();i++){
@@ -72,9 +74,8 @@ void IniciaAutomacao(PIG_EstadoTransicao inicial){
 PIGTransicao GetTransicaoAtual(){
     if (transicoes.size()==transAtual) return NULL;
     if (transicoes[transAtual]->CalculaTransicao()==0){
-        PIG_EstadoTransicao atual = transicoes[transAtual]->GetEstado();
+        PIG_EstadoTransicao atual = transicoes[transAtual]->GetFim();
         if (tipo == PIG_TRANSICAO_VAIVEM){
-            static int somaTrans = 1;
             transAtual += somaTrans;
             if (transAtual==transicoes.size()||transAtual==-1){
                 somaTrans=-somaTrans;
@@ -91,6 +92,7 @@ PIGTransicao GetTransicaoAtual(){
             }
         }
         //printf("trans atual: %d (%d,%d)\n",transAtual,atual.x,atual.y);
+        //fprintf(arqP,"mudou para %d\n",transAtual);
         transicoes[transAtual]->IniciaTransicao(atual);
     }
     return transicoes[transAtual];

@@ -7,6 +7,8 @@
 #include "PIGFuncoesBasicas.h"
 #include "CPIGErros.h"
 
+//FILE *arqP;
+
 #include "CPIGRepositorio.h"
 
 #include "CPIGGerenciadorTimers.h"
@@ -21,7 +23,7 @@
 #include "CPIGGerenciadorSprites.h"
 
 #include "CPIGGerenciadorVideos.h"
-#include "CPIGGerenciadorParticulas.h"
+//#include "CPIGGerenciadorParticulas.h"
 #include "CPIGGerenciadorControles.h"
 #include "CPIGGerenciadorForms.h"
 #include "CPIGJogo.h"
@@ -64,7 +66,6 @@ void CriaJogo(char *nomeJanela,int cursorProprio=0,int altura=PIG_ALT_TELA,int l
         CPIGGerenciadorFontes::Inicia();
         CPIGGerenciadorTimers::Inicia();
         CPIGGerenciadorAudios::Inicia();
-        CPIGGerenciadorParticulas::Inicia();
         CPIGGerenciadorControles::Inicia();
         CPIGGerenciadorSockets::Inicia();
         CPIGGerenciadorVideos::Inicia();
@@ -185,7 +186,6 @@ a função deve ser chamada e ela irá realizar a liberação de memória dos elemento
 void FinalizaJogo(){
     CPIGGerenciadorControles::Encerra();
     CPIGGerenciadorFontes::Encerra();
-    CPIGGerenciadorParticulas::Encerra();
     CPIGGerenciadorAudios::Encerra();
     CPIGGerenciadorTimers::Encerra();
     CPIGGerenciadorVideos::Encerra();
@@ -1386,13 +1386,25 @@ pode ser criado através dessa função. O sprite ainda não será desenhado, apenas 
 Parâmetros:
 nomeArquivo (entrada, passagem por referência): string que informa o nome do arquivo da imagem do sprite a ser criado.
 retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou não ao ler o arquivo em questão. O valor padrão é 1, indicando que o fundo deve ser retirado.
-opacidade (entrada,passagem por valor): nível de opacidade do sprite na faixa 0-255. O valor padrão é 255, indicando nível máximo de opacidade.
+corFundo (entrada, passagem por referência não-obrigatório): indica se há uma cor específica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o parâmetro retiraFundo seja diferente de 0, o pixel (0,0) da imagem será considerado como cor de fundo.
 idJanela (entrada, passagem por valor não-obrigatório): indica qual janela vai receber o sprite.
 Retorno:
 inteiro que representa o identificador único do sprite. Todas as operações subsequentes com este sprite deverão receber este identificador como parâmetro.
 ********************************/
-int CriaSprite(char* nomeArquivo,PIG_Cor *corFundo=NULL,int retiraFundo=1, int idJanela=0){
+int CriaSprite(char* nomeArquivo,int retiraFundo=1,PIG_Cor *corFundo=NULL, int idJanela=0){
     return CPIGGerenciadorSprites::CriaSprite(nomeArquivo,retiraFundo,corFundo,idJanela);
+}
+
+/********************************
+A função CriaSprite() é responsável por criar um sprite. Qualquer sprite que for necessário,
+pode ser criado através dessa função. O sprite ainda não será desenhado, apenas criado dentro do jogo.
+Parâmetros:
+idSprite(entrada, passagem por valor): identificador do sprite original que será copiado.
+Retorno:
+inteiro que representa o identificador único do sprite. Todas as operações subsequentes com este sprite deverão receber este identificador como parâmetro.
+********************************/
+int CriaSprite(int idSprite){
+    return CPIGGerenciadorSprites::CriaSprite(idSprite);
 }
 
 /********************************
@@ -1400,12 +1412,12 @@ A função CriaSpriteOffScreen() é responsável por criar um sprite a partir da ima
 renderizador Offscreen. O renderizador precisa ter sido preparado anteriormente.
 Parâmetros:
 retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou não ao ler o arquivo em questão. O valor padrão é 1, indicando que o fundo deve ser retirado.
-opacidade (entrada,passagem por valor): nível de opacidade do sprite na faixa 0-255. O valor padrão é 255, indicando nível máximo de opacidade.
+corFundo (entrada, passagem por referência não-obrigatório): indica se há uma cor específica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o parâmetro retiraFundo seja diferente de 0, o pixel (0,0) da imagem será considerado como cor de fundo.
 Retorno:
 inteiro que representa o identificador único do sprite. Todas as operações subsequentes com este sprite deverão receber este identificador como parâmetro.
 ********************************/
-int CriaSpriteOffScreen(PIG_Cor *corFundo=NULL,int retiraFundo=1){
-    return CPIGGerenciadorSprites::CriaSpriteOffScreen(jogo->GetOffScreenRender(),corFundo,retiraFundo);
+int CriaSpriteOffScreen(int retiraFundo=1,PIG_Cor *corFundo=NULL){
+    return CPIGGerenciadorSprites::CriaSpriteOffScreen(jogo->GetOffScreenRender(),retiraFundo,corFundo);
 }
 
 /********************************
@@ -1467,7 +1479,7 @@ posicaoX (saída, passagem por referencia): indica a posicao no eixo X do sprite.
 posicaoY (saída, passagem por referencia): indica a posicao no eixo Y do sprite.
 ********************************/
 void GetXYSprite(int idSprite,int *posicaoX,int *posicaoY){
-    SDL_Point p = CPIGGerenciadorSprites::GetSprite(idSprite)->GetXY();
+    PIGPonto2D p = CPIGGerenciadorSprites::GetSprite(idSprite)->GetXY();
     *posicaoX = p.x;
     *posicaoY = p.y;
 }
@@ -1532,7 +1544,7 @@ void SetPivoSprite(int idSprite,int posicaoX,int posicaoY){
 }
 
 /********************************
-A função SetPivoSprite() define um ponto relativo (X,Y) em relação ao ponto (0,0) e ao tamanho do sprite, sobre o qual o sprite será
+A função SetPivoSprite() define um ponto (X,Y) proporcional ao tamanho do sprite, sobre o qual o sprite será
 rotacionado quando a função SetAnguloSprite() for executada.
 Parâmetros:
 idSprite (entrada, passagem por valor): identificador do sprite.
@@ -1552,7 +1564,7 @@ posicaoX (saída, passagem por referência): Valor da coordenada X do pivô em rela
 posicaoY (saída, passagem por referência): Valor da coordenada Y do pivô em relação ao ponto (0,0) do sprite.
 ********************************/
 void GetPivoSprite(int idSprite,int *posicaoX,int *posicaoY){
-    SDL_Point p = CPIGGerenciadorSprites::GetSprite(idSprite)->GetPivo();
+    PIGPonto2D p = CPIGGerenciadorSprites::GetSprite(idSprite)->GetPivo();
     *posicaoX = p.x;
     *posicaoY = p.y;
 }
@@ -1563,8 +1575,8 @@ desenhado na nova orientação no próximo comando DesenhaSprite().
 Parâmetros:
 idSprite (entrada, passagem por valor): identificador do sprite a ser virado.
 valor (entrada, passagem por valor): valor do tipo de Flip. Pode ser FLIP_NENHUM (nenhum tipo de inversão),
-FLIP_HORIZONTAL (inverte da esquerda para a direita), FLIP_VERTICAL (inverte de cima para baixo),
-ou FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
+PIG_FLIP_HORIZONTAL (inverte da esquerda para a direita), PIG_FLIP_VERTICAL (inverte de cima para baixo),
+ou PIG_FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
 ********************************/
 void SetFlipSprite(int idSprite,PIG_Flip valor){
     CPIGGerenciadorSprites::GetSprite(idSprite)->SetFlip(valor);
@@ -1818,13 +1830,25 @@ pode ser criado através dessa função. O objeto ainda não será desenhado, apenas 
 Parâmetros:
 nomeArquivo (entrada, passagem por referência): string que informa o nome do arquivo da imagem do objeto a ser criado.
 retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou não ao ler o arquivo em questão. O valor padrão é 1, indicando que o fundo deve ser retirado.
-opacidade (entrada,passagem por valor): nível de opacidade do objeto na faixa 0-255. O valor padrão é 255, indicando nível máximo de opacidade.
+corFundo (entrada, passagem por referência não-obrigatório): indica se há uma cor específica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o parâmetro retiraFundo seja diferente de 0, o pixel (0,0) da imagem será considerado como cor de fundo.
 idJanela (entrada, passagem por valor não-obrigatório): indica qual janela vai receber o objeto.
 Retorno:
 inteiro que representa o identificador único do objeto. Todas as operações subsequentes com este objeto deverão receber este identificador como parâmetro.
 ********************************/
-int CriaObjeto(char* nomeArquivo,PIG_Cor *corFundo=NULL,int retiraFundo=1, int idJanela=0){
-    return CPIGGerenciadorSprites::CriaObjeto(nomeArquivo,corFundo,retiraFundo,idJanela);
+int CriaObjeto(char* nomeArquivo,int retiraFundo=1,PIG_Cor *corFundo=NULL, int idJanela=0){
+    return CPIGGerenciadorSprites::CriaObjeto(nomeArquivo,retiraFundo,corFundo,idJanela);
+}
+
+/********************************
+A função CriaObjeto() é responsável por criar um objeto. Qualquer objeto que for necessário,
+pode ser criado através dessa função. O objeto ainda não será desenhado, apenas criado dentro do jogo.
+Parâmetros:
+idObjeto (entrada, passagem por valor): identificador do objeto original que será copiado.
+Retorno:
+inteiro que representa o identificador único do objeto. Todas as operações subsequentes com este objeto deverão receber este identificador como parâmetro.
+********************************/
+int CriaObjeto(int idObjeto){
+    return CPIGGerenciadorSprites::CriaObjeto(idObjeto);
 }
 
 /********************************
@@ -1832,12 +1856,12 @@ A função CriaObjetoOffScreen() é responsável por criar um objeto a partir da ima
 renderizador Offscreen. O renderizador precisa ter sido preparado anteriormente.
 Parâmetros:
 retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou não ao ler o arquivo em questão. O valor padrão é 1, indicando que o fundo deve ser retirado.
-opacidade (entrada,passagem por valor): nível de opacidade do objeto na faixa 0-255. O valor padrão é 255, indicando nível máximo de opacidade.
+corFundo (entrada, passagem por referência não-obrigatório): indica se há uma cor específica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o parâmetro retiraFundo seja diferente de 0, o pixel (0,0) da imagem será considerado como cor de fundo.
 Retorno:
 inteiro que representa o identificador único do objeto. Todas as operações subsequentes com este objeto deverão receber este identificador como parâmetro.
 ********************************/
-int CriaObjetoOffScreen(PIG_Cor *corFundo=NULL,int retiraFundo=1){
-    return CPIGGerenciadorSprites::CriaObjetoOffScreen(jogo->GetOffScreenRender(),corFundo,retiraFundo);
+int CriaObjetoOffScreen(int retiraFundo=1,PIG_Cor *corFundo=NULL){
+    return CPIGGerenciadorSprites::CriaObjetoOffScreen(jogo->GetOffScreenRender(),retiraFundo,corFundo);
 }
 
 
@@ -2008,7 +2032,7 @@ posicaoX (saída, passagem por referencia): indica a posicao no eixo X do objeto.
 posicaoY (saída, passagem por referencia): indica a posicao no eixo Y do objeto.
 ********************************/
 void GetXYObjeto(int idObjeto,int *posicaoX,int *posicaoY){
-    SDL_Point p = CPIGGerenciadorSprites::GetObjeto(idObjeto)->GetXY();
+    PIGPonto2D p = CPIGGerenciadorSprites::GetObjeto(idObjeto)->GetXY();
     *posicaoX = p.x;
     *posicaoY = p.y;
 }
@@ -2073,7 +2097,7 @@ void SetPivoObjeto(int idObjeto,int posicaoX,int posicaoY){
 }
 
 /********************************
-A função SetPivoObjeto() define um ponto relativo (X,Y) em relação ao ponto (0,0) e ao tamanho do objeto, sobre o qual o objeto será
+A função SetPivoObjeto() define um ponto (X,Y) proporcional ao tamanho do objeto, sobre o qual o objeto será
 rotacionado quando a função SetAnguloObjeto() for executada.
 Parâmetros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
@@ -2093,7 +2117,7 @@ posicaoX (saída, passagem por referência): Valor da coordenada X do pivô em rela
 posicaoY (saída, passagem por referência): Valor da coordenada Y do pivô em relação ao ponto (0,0) do objeto.
 ********************************/
 void GetPivoObjeto(int idObjeto,int *posicaoX,int *posicaoY){
-    SDL_Point p = CPIGGerenciadorSprites::GetObjeto(idObjeto)->GetPivo();
+    PIGPonto2D p = CPIGGerenciadorSprites::GetObjeto(idObjeto)->GetPivo();
     *posicaoX = p.x;
     *posicaoY = p.y;
 }
@@ -2103,9 +2127,9 @@ A função SetFlipObjeto() é responsável por virar o objeto, invertendo-o em algum
 desenhado na nova orientação no próximo comando DesenhaObjeto().
 Parâmetros:
 idObjeto (entrada, passagem por valor): identificador do objeto a ser virado.
-valor (entrada, passagem por valor): valor do tipo de Flip. Pode ser FLIP_NENHUM (nenhum tipo de inversão),
-FLIP_HORIZONTAL (inverte da esquerda para a direita), FLIP_VERTICAL (inverte de cima para baixo),
-ou FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
+valor (entrada, passagem por valor): valor do tipo de Flip. Pode ser PIG_FLIP_NENHUM (nenhum tipo de inversão),
+PIG_FLIP_HORIZONTAL (inverte da esquerda para a direita), PIG_FLIP_VERTICAL (inverte de cima para baixo),
+ou PIG_FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
 ********************************/
 void SetFlipObjeto(int idObjeto,PIG_Flip valor){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->SetFlip(valor);
@@ -2116,9 +2140,9 @@ A função GetFlipObjeto() é responsável por recuperar o valor da manipulação caus
 Parâmetros:
 idObjeto (entrada, passagem por valor): identificador do objeto a ser virado.
 Retorno:
-inteiro que indica o tipo de Flip. Pode ser FLIP_NENHUM (nenhum tipo de inversão),
-FLIP_HORIZONTAL (inverte da esquerda para a direita), FLIP_VERTICAL (inverte de cima para baixo),
-ou FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
+inteiro que indica o tipo de Flip. Pode ser PIG_FLIP_NENHUM (nenhum tipo de inversão),
+PIG_FLIP_HORIZONTAL (inverte da esquerda para a direita), PIG_FLIP_VERTICAL (inverte de cima para baixo),
+ou PIG_FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
 ********************************/
 PIG_Flip GetFlipObjeto(int idObjeto){
     return CPIGGerenciadorSprites::GetObjeto(idObjeto)->GetFlip();
@@ -2312,7 +2336,7 @@ pontosY (entrada, passagem por referência): vetor de inteiros, de tamanho qtdPon
 qtdPontos (entrada, passagem por valor): quantidade de pontos do polígono.
 ********************************/
 void DefineAreaColisaoObjeto(int idObjeto, int pontosX[], int pontosY[], int qtdPontos) {
-    std::vector<SDL_Point> vertices;
+    std::vector<PIGPonto2D> vertices;
 
     for (int i = 0; i < qtdPontos; i++) {
         vertices.push_back({pontosX[i], pontosY[i]});
@@ -2471,15 +2495,17 @@ Seção de gerador de partículas
 A função CriaGeradorParticulas() cria um novo gerador de partículas (GDP). As partículas em si precisam ser criadas
 posteriormente através da função CriaParticula(), passando o identificador do GDP como parâmetro.
 Parâmetros:
-maxParticulas (entrada, passagem por valor): informa o maior número de partículas que o gerador terá simultaneamente. O maior valor aceito é 1000 partículas.
+maxParticulas (entrada, passagem por valor): informa o maior número de partículas que o gerador terá simultaneamente. O maior valor aceito é PIG_MAX_PARTICULAS partículas.
 nomeArquivo (entrada, passagem por referência): indica o caminho relativo ou absoluto do arquivo de imagem,
 que será utilizado para cada partícula do GDP.
 audioCriacao (entrada, passagem por valor não-obrigatório): indica qual audio previamente criado deve ser tocado quando uma partícula for efetivamente criada.
 audioEncerramento (entrada, passagem por valor não-obrigatório): indica qual audio previamente criado deve ser tocado quando uma partícula for destruida por acabar o tempo de vida ou por sair da área de ativação.
+retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou não ao ler o arquivo em questão. O valor padrão é 1, indicando que o fundo deve ser retirado.
+corFundo (entrada, passagem por referência não-obrigatório): indica se há uma cor específica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o parâmetro retiraFundo seja diferente de 0, o pixel (0,0) da imagem será considerado como cor de fundo.
 idJanela (entrada, passagem por valor não-obrigatório): indica qual janela vai receber o GDP.
 ********************************/
-int CriaGeradorParticulas(int maxParticulas,char* nomeArquivo,int audioCriacao=-1,int audioEncerramento=-1,int idJanela=0){
-    return CPIGGerenciadorParticulas::CriaGeradorParticulas(maxParticulas,nomeArquivo,audioCriacao,audioEncerramento,idJanela);
+int CriaGeradorParticulas(int maxParticulas,char* nomeArquivo,int audioCriacao=-1,int audioEncerramento=-1,int retiraFundo=1,PIG_Cor *corFundo=NULL, int idJanela=0){
+    return CPIGGerenciadorSprites::CriaGeradorParticulas(maxParticulas,nomeArquivo,audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela);
 }
 
 /********************************
@@ -2487,15 +2513,17 @@ A função CriaGeradorParticulasPorAnimacao() cria um novo gerador de partículas (
 posteriormente através da função CriaParticula(), passando o identificador do GDP como parâmetro. As partículas serão semelhantes a uma animação já criada anteriormente
 que é indicada pelo parâmetro idAnimação.
 Parâmetros:
-maxParticulas (entrada, passagem por valor): informa o maior número de partículas que o gerador terá simultaneamente. O maior valor aceito é 1000 partículas.
+maxParticulas (entrada, passagem por valor): informa o maior número de partículas que o gerador terá simultaneamente. O maior valor aceito é PIG_MAX_PARTICULAS partículas.
 idAnimacao (entrada, passagem por referência): identificador da animação (já criada anteriormente) que será utilizada
 para cada partícula do GDP.
 audioCriacao (entrada, passagem por valor não-obrigatório): indica qual audio previamente criado deve ser tocado quando uma partícula for efetivamente criada.
 audioEncerramento (entrada, passagem por valor não-obrigatório): indica qual audio previamente criado deve ser tocado quando uma partícula for destruida por acabar o tempo de vida ou por sair da área de ativação.
+retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou não ao ler o arquivo em questão. O valor padrão é 1, indicando que o fundo deve ser retirado.
+corFundo (entrada, passagem por referência não-obrigatório): indica se há uma cor específica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o parâmetro retiraFundo seja diferente de 0, o pixel (0,0) da imagem será considerado como cor de fundo.
 idJanela (entrada, passagem por valor não-obrigatório): indica qual janela vai receber o GDP.
 ********************************/
-int CriaGeradorParticulasPorAnimacao(int maxParticulas,int idAnimacao,int audioCriacao=-1,int audioEncerramento=-1,int idJanela=0){
-    return CPIGGerenciadorParticulas::CriaGeradorParticulas(maxParticulas,CPIGGerenciadorSprites::GetAnimacao(idAnimacao),audioCriacao,audioEncerramento,idJanela);
+int CriaGeradorParticulasPorAnimacao(int maxParticulas,int idAnimacao,int audioCriacao=-1,int audioEncerramento=-1,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
+    return CPIGGerenciadorSprites::CriaGeradorParticulas(maxParticulas,CPIGGerenciadorSprites::GetAnimacao(idAnimacao),audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela);
 }
 
 /********************************
@@ -2503,15 +2531,17 @@ A função CriaGeradorParticulasPorObjeto() cria um novo gerador de partículas (GD
 posteriormente através da função CriaParticula(), passando o identificador do GDP como parâmetro. As partículas serão semelhantes a um objeto já criado anteriormente
 que é indicado pelo parâmetro idObjeto.
 Parâmetros:
-maxParticulas (entrada, passagem por valor): informa o maior número de partículas que o gerador terá simultaneamente. O maior valor aceito é 1000 partículas.
+maxParticulas (entrada, passagem por valor): informa o maior número de partículas que o gerador terá simultaneamente. O maior valor aceito é PIG_MAX_PARTICULAS partículas.
 idObjeto (entrada, passagem por referência): identificador do objeto (já criado anteriormente) que será utilizado
 para cada partícula do GDP.
 audioCriacao (entrada, passagem por valor não-obrigatório): indica qual audio previamente criado deve ser tocado quando uma partícula for efetivamente criada.
 audioEncerramento (entrada, passagem por valor não-obrigatório): indica qual audio previamente criado deve ser tocado quando uma partícula for destruida por acabar o tempo de vida ou por sair da área de ativação.
+retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou não ao ler o arquivo em questão. O valor padrão é 1, indicando que o fundo deve ser retirado.
+corFundo (entrada, passagem por referência não-obrigatório): indica se há uma cor específica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o parâmetro retiraFundo seja diferente de 0, o pixel (0,0) da imagem será considerado como cor de fundo.
 idJanela (entrada, passagem por valor não-obrigatório): indica qual janela vai receber o GDP.
 ********************************/
-int CriaGeradorParticulasPorObjeto(int maxParticulas,int idObjeto,int audioCriacao=-1,int audioEncerramento=-1,int idJanela=0){
-    return CPIGGerenciadorParticulas::CriaGeradorParticulas(maxParticulas,CPIGGerenciadorSprites::GetObjeto(idObjeto),audioCriacao,audioEncerramento,idJanela);
+int CriaGeradorParticulasPorObjeto(int maxParticulas,int idObjeto,int audioCriacao=-1,int audioEncerramento=-1,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
+    return CPIGGerenciadorSprites::CriaGeradorParticulas(maxParticulas,CPIGGerenciadorSprites::GetObjeto(idObjeto),audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela);
 }
 
 /********************************
@@ -2521,7 +2551,7 @@ Parâmetros:
 idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da função CriaGeradorParticulas().
 ********************************/
 void DestroiGeradorParticulas(int idGerador){
-    CPIGGerenciadorParticulas::DestroiGeradorParticulas(idGerador);
+    CPIGGerenciadorSprites::DestroiGeradorParticulas(idGerador);
 }
 
 /********************************
@@ -2533,7 +2563,7 @@ posicaoX (entrada, passagem por valor): informa a nova posição X do GDP, em rela
 posicaoY (entrada, passagem por valor): informa a nova posição Y do GDP, em relação ao sistema de coordenadas do jogo.
 ********************************/
 void MoveGeradorParticulas(int idGerador,int posicaoX,int posicaoY){
-    CPIGGerenciadorParticulas::GetGerador(idGerador)->Move(posicaoX,posicaoY);
+    CPIGGerenciadorSprites::GetGerador(idGerador)->Move(posicaoX,posicaoY);
 }
 
 /********************************
@@ -2544,7 +2574,7 @@ deltaX (entrada, passagem por valor): valor a ser somado ou subtraído na compone
 deltaY (entrada, passagem por valor): valor a ser somado ou subtraído na componente Y da posição do GDP.
 ********************************/
 void DeslocaGeradorParticulas(int idGerador,int deltaX,int deltaY){
-    CPIGGerenciadorParticulas::GetGerador(idGerador)->Desloca(deltaX,deltaY);
+    CPIGGerenciadorSprites::GetGerador(idGerador)->Desloca(deltaX,deltaY);
 }
 
 /*
@@ -2574,7 +2604,7 @@ corFinal (entrada, passagem por valor): coloração das partículas ao final da tra
 deltaOpacidade (entrada, passagem por valor): diferença do nível de opacidade das partículas em relação ao início da transição.
 ********************************/
 void InsereTransicaoParticulas(int idGerador,double tempo,int deltaX,int deltaY,int deltaAlt,int deltaLarg,double deltaAng,PIG_Cor corFinal, int deltaOpacidade){
-    CPIGGerenciadorParticulas::GetGerador(idGerador)->InsereTransicao(tempo,{deltaX,deltaY,deltaAlt,deltaLarg,deltaAng,corFinal,deltaOpacidade});
+    CPIGGerenciadorSprites::GetGerador(idGerador)->InsereTransicao(tempo,{deltaX,deltaY,deltaAlt,deltaLarg,deltaAng,corFinal,deltaOpacidade});
 }
 
 /********************************
@@ -2585,7 +2615,7 @@ Parâmetros:
 idGerador (entrada, passagem por valor): identificador do gerador.
 ********************************/
 void DefineTipoTransicaoParticulas(int idGerador,PIG_TipoTransicao valor){
-    CPIGGerenciadorParticulas::GetGerador(idGerador)->DefineTipoTransicao(valor);
+    CPIGGerenciadorSprites::GetGerador(idGerador)->DefineTipoTransicao(valor);
 }
 
 /********************************
@@ -2594,7 +2624,7 @@ Parâmetros:
 idGerador (entrada, passagem por valor): identificador do gerador de partículas.
 ********************************/
 void LimpaTransicoesParticulas(int idGerador){
-    CPIGGerenciadorParticulas::GetGerador(idGerador)->LimpaTransicoes();
+    CPIGGerenciadorSprites::GetGerador(idGerador)->LimpaTransicoes();
 }
 
 
@@ -2606,7 +2636,7 @@ idGerador (entrada, passagem por valor): informa o identificador do GDP passado 
 angulo (entrada, passagem por valor): informa o angulo das partículas.
 ********************************/
 void MudaAnguloParticulas(int idGerador,double angulo){
-    CPIGGerenciadorParticulas::GetGerador(idGerador)->SetAngulo(angulo);
+    CPIGGerenciadorSprites::GetGerador(idGerador)->SetAngulo(angulo);
 }
 
 /********************************
@@ -2618,7 +2648,7 @@ idGerador (entrada, passagem por valor): informa o identificador do GDP passado 
 cor (entrada,passagem por valor): cor do sistema RGB utilizada para mesclagem com o arquivo de imagem da partícula.
 ********************************/
 void MudaCorParticulas(int idGerador,PIG_Cor cor){
-    CPIGGerenciadorParticulas::GetGerador(idGerador)->SetColoracao(cor);
+    CPIGGerenciadorSprites::GetGerador(idGerador)->SetColoracao(cor);
 }
 
 /********************************
@@ -2629,7 +2659,7 @@ idGerador (entrada, passagem por valor): informa o identificador do GDP passado 
 opacidade (entrada, passagem por valor): informa a opacidade das partículas.
 ********************************/
 void MudaAnguloParticulas(int idGerador,int opacidade){
-    CPIGGerenciadorParticulas::GetGerador(idGerador)->SetOpacidade(opacidade);
+    CPIGGerenciadorSprites::GetGerador(idGerador)->SetOpacidade(opacidade);
 }
 
 /********************************
@@ -2641,7 +2671,7 @@ altura (entrada, passagem por valor): informa a altura da partícula ao ser criad
 largura (entrada, passagem por valor): informa a largura da partícula ao ser criada.
 ********************************/
 void MudaEscalaParticulas(int idGerador,int altura, int largura){
-    CPIGGerenciadorParticulas::GetGerador(idGerador)->SetDimensoes(altura,largura);
+    CPIGGerenciadorSprites::GetGerador(idGerador)->SetDimensoes(altura,largura);
 }
 
 /********************************
@@ -2653,48 +2683,59 @@ posicaoX (entrada, passagem por valor): Valor da coordenada X do pivô em relação
 posicaoY (entrada, passagem por valor): Valor da coordenada Y do pivô em relação ao ponto (0,0) da partícula.
 ********************************/
 void SetPivoParticulas(int idGerador,int posicaoX,int posicaoY){
-    CPIGGerenciadorParticulas::GetGerador(idGerador)->SetPivo(posicaoX,posicaoY);
+    CPIGGerenciadorSprites::GetGerador(idGerador)->SetPivo(posicaoX,posicaoY);
+}
+
+/********************************
+A função SetPivoSprite() define um ponto (X,Y) proporcional ao tamanho da partícula, sobre o qual o partícula será
+rotacionado quando a função SetAnguloParticula() for executada.
+Parâmetros:
+idGerador (entrada, passagem por valor): identificador do gerador de partículas.
+relX (entrada, passagem por valor): porcentagem da largura da partícula onde ficará o pivô.
+relY (entrada, passagem por valor): porcentagem da altura da partícula onde ficará o pivô.
+********************************/
+void SetPivoParticulas(int idGerador,float relX,float relY){
+    CPIGGerenciadorSprites::GetGerador(idGerador)->SetPivo(relX,relY);
 }
 
 /********************************
 A função CriaParticula() adiciona uma nova partícula ao jogo relacionada com o GDP passado como parâmetro.
+A partículas é criada com todas as características (ângulo, cor, tamanho, posição, transições etc) que forem correntes ao gerador neste momento.
 Parâmetros:
 idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da função CriaGeradorParticulas().
-fadingOut (entrada, passagem por valor): valor lógico que indica se a partícula deve esmaecer ao longo do tempo.
+Retorno:
+inteiro indicando a quantidade atual de partículas do gerador (valor maior ou igual a zero).
+Se a partícula não tiver sido criada por excesso de partículas ativas, o valor retornado é -1.
+********************************/
+int CriaParticula(int idGerador){
+    return CPIGGerenciadorSprites::GetGerador(idGerador)->CriaParticula();
+}
+
+/********************************
+A função DefineLimitesParticula() é responsável por definir um espaço no cenário onde a partícula será considerada ativa.
+Também é definido um tempo de vida máximo, após o qual a partícula não será mais considerada ativa.
+Parâmetros:
+idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da função CriaGeradorParticulas().
 minX (entrada, passagem por valor): valor mínimo de X para que a partícula seja considerada ativa
 minY (entrada, passagem por valor): valor mínimo de Y para que a partícula seja considerada ativa
 maxX (entrada, passagem por valor): valor máximo de X para que a partícula seja considerada ativa
 maxY (entrada, passagem por valor): valor máximo de Y para que a partícula seja considerada ativa
-maxTempo (entrada, passagem por valor): tempo de vida da partícula
-Retorno:
-inteiro indicando se a partícula foi criada (valor maior ou igual a zero) ou não (valor menor do que zero).
-A partícula não será criada se já houver o número máximo de partículas ativas.
+maxTempo (entrada, passagem por valor): tempo máximo de vida da partícula
 ********************************/
-int CriaParticula(int idGerador,int fadingOut=0,int minX=-50,int minY=-50,int maxX=PIG_LARG_TELA+50,int maxY=PIG_ALT_TELA+50,float maxTempo=999999.9){
-    return CPIGGerenciadorParticulas::GetGerador(idGerador)->CriaParticula(fadingOut,minX,minY,maxX,maxY,maxTempo);
-}
-
-/********************************
-A função MoveParticulas() faz com que todas as partícula ativas do GDP em questão se movimentem de acordo com as componentes
-X e Y passadas na função MudaDirecaoParticulas(). As partículas que saírem da tela de jogo ou aqueles que já existerm a mais de 10000 segundos
-serão consideradas inativas e deixarão de existir.
-Parâmetros:
-idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da função CriaGeradorParticulas().
-********************************/
-void MoveParticulas(int idGerador){
-    CPIGGerenciadorParticulas::GetGerador(idGerador)->MoveParticulas();
+void DefineLimitesParticula(int idGerador,int minX,int minY,int maxX,int maxY,double maxTempo){
+    return CPIGGerenciadorSprites::GetGerador(idGerador)->DefineLimites({minX,minY,maxX,maxY},maxTempo);
 }
 
 /********************************
 A função QuantidadeParticulasAtivas() indica quantas partículas do GDP em questão ainda estão ativas. As partículas deixam de
-ser ativas quando saem da tela do jogo, quando colidem com algum objeto ou depois de 10000 segundos de vida.
+ser ativas quando saem da tela do jogo, quando colidem com algum objeto ou quando esgotam seu tempo de vida.
 Parâmetros:
 idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da função CriaGeradorParticulas().
 Retorno:
 inteiro que indica o número de partículas ativas.
 ********************************/
 int QuantidadeParticulasAtivas(int idGerador){
-    return CPIGGerenciadorParticulas::GetGerador(idGerador)->GetQtdAtivas();
+    return CPIGGerenciadorSprites::GetGerador(idGerador)->GetQtdAtivas();
 }
 
 /********************************
@@ -2703,7 +2744,7 @@ Parâmetros:
 idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da função CriaGeradorParticulas().
 ********************************/
 void DesenhaParticulas(int idGerador){
-    CPIGGerenciadorParticulas::GetGerador(idGerador)->Desenha();
+    CPIGGerenciadorSprites::GetGerador(idGerador)->Desenha();
 }
 
 /********************************
@@ -2715,7 +2756,7 @@ Retorno:
 inteiro que indica se houve colisão de alguma partícula ativa do GDP (valor diferente de zero) ou não (valor igual a 0, zero).
 ********************************/
 int ColisaoParticulasObjeto(int idGerador,int idObjeto){
-    return CPIGGerenciadorParticulas::GetGerador(idGerador)->Colisao(CPIGGerenciadorSprites::GetObjeto(idObjeto));
+    return CPIGGerenciadorSprites::GetGerador(idGerador)->Colisao(CPIGGerenciadorSprites::GetObjeto(idObjeto));
 }
 
 /********************************
@@ -2727,7 +2768,7 @@ Retorno:
 inteiro que indica se houve colisão de alguma partícula ativa do GDP (valor diferente de zero) ou não (valor igual a 0, zero).
 ********************************/
 int ColisaoParticulasAnimacao(int idGerador,int idAnimacao){
-    return CPIGGerenciadorParticulas::GetGerador(idGerador)->Colisao(CPIGGerenciadorSprites::GetAnimacao(idAnimacao));
+    return CPIGGerenciadorSprites::GetGerador(idGerador)->Colisao(CPIGGerenciadorSprites::GetAnimacao(idAnimacao));
 }
 
 /********************************
@@ -2821,26 +2862,26 @@ Seção das animações
 /********************************
 A função CriaAnimacao() é responsável por criar uma animacao. A animação pode ser considerada um tipo especial
 de objeto, capaz de mudar de figura (sprite) dentro de um tempo determinado. Uma sequência completa de
-sprites é chamada de modo. Uma mesma animção pode apresentar vários modos diferentes.
+sprites é chamada de modo. Uma mesma animação pode apresentar vários modos diferentes.
 Para que a animação funcione corretamente, será necessário: definir cada frame (pedaço do arquivo bitmap que contém o sprite desejado),
 criar um ou mais modos, inserir os frames criados no modo correspondente e dizer qual modo deverá ser exibido inicialmente.
 Tudo isso pode ser feito por outras funções que manipulam as animações.
 Parâmetros:
 nomeArquivo (entrada, passagem por referência): string que informa o nome do arquivo da imagem (spritesheet) da animação.
 retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou não ao ler o arquivo em questão. O valor padrão é 1, indicando que o fundo deve ser retirado.
-opacidade (entrada,passagem por valor): nível de opacidade do objeto na faixa 0-255. O valor padrão é 255, indicando nível máximo de opacidade.
+corFundo (entrada, passagem por referência não-obrigatório): indica se há uma cor específica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o parâmetro retiraFundo seja diferente de 0, o pixel (0,0) da imagem será considerado como cor de fundo.
 idJanela (entrada, passagem por valor não-obrigatório): indica qual janela vai receber a animação.
 Retorno:
 inteiro que representa o identificador único da animação. Todas as operações subsequentes com esta animação deverão receber este identificador como parâmetro.
 ********************************/
-int CriaAnimacao(char* nomeArquivo,PIG_Cor *corFundo=NULL,int retiraFundo=1,int idJanela=0){
-    return CPIGGerenciadorSprites::CriaAnimacao(nomeArquivo,corFundo,retiraFundo,idJanela);
+int CriaAnimacao(char* nomeArquivo,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
+    return CPIGGerenciadorSprites::CriaAnimacao(nomeArquivo,retiraFundo,corFundo,idJanela);
 }
 
 /********************************
 A função CriaAnimacao() é responsável por criar uma animacao. A animação pode ser considerada um tipo especial
 de objeto, capaz de mudar de figura (sprite) dentro de um tempo determinado. Uma sequência completa de
-sprites é chamada de modo. Uma mesma animção pode apresentar vários modos diferentes.
+sprites é chamada de modo. Uma mesma animação pode apresentar vários modos diferentes.
 Esta forma de criar uma animação, copia todos os frames e modos de outra animação já existente, evitando assim
 que toda esta preparação precise ser feita novamente. O usuário deve ter cuidado de não destruir a animação
 original enquanto as cópias estiverem ativas ou haverá erros de execução. Da mesma forma, não se deve alterar os
@@ -3009,7 +3050,7 @@ pontosY (entrada, passagem por referência): vetor de inteiros, de tamanho qtdPon
 qtdPontos (entrada, passagem por valor): quantidade de pontos da animação.
 ********************************/
 void DefineAreaColisaoAnimacao(int idAnimacao, int pontosX[], int pontosY[], int qtdPontos) {
-    std::vector<SDL_Point> vertices;
+    std::vector<PIGPonto2D> vertices;
 
     for (int i = 0; i < qtdPontos; i++) {
         vertices.push_back({pontosX[i], pontosY[i]});
@@ -3175,6 +3216,18 @@ void SetPivoAnimacao(int idAnimacao,int posicaoX,int posicaoY){
 }
 
 /********************************
+A função SetPivoAnimacao() define um ponto (X,Y) proporcional ao tamanho da animação, sobre o qual a animação será
+rotacionado quando a função SetAnguloAnimacao() for executada.
+Parâmetros:
+idAnimacao (entrada, passagem por valor): identificador da animação.
+relX (entrada, passagem por valor): porcentagem da largura da animação onde ficará o pivô.
+relY (entrada, passagem por valor): porcentagem da altura da animação onde ficará o pivô.
+********************************/
+void SetPivoAnimacao(int idAnimacao,float relX,float relY){
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetPivo(relX,relY);
+}
+
+/********************************
 A função GetPivoAnimacao() define um ponto (X,Y) em relação ao ponto (0,0) da animacao, sobre o qual a animação será
 rotacionado quando a função SetAnguloAnimacao() for executada.
 Parâmetros:
@@ -3183,7 +3236,7 @@ posicaoX (saída, passagem por referência): Valor da coordenada X do pivô em rela
 posicaoY (saída, passagem por referência): Valor da coordenada Y do pivô em relação ao ponto (0,0) da animação.
 ********************************/
 void GetPivoAnimacao(int idAnimacao,int *posicaoX,int *posicaoY){
-    SDL_Point p = CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetPivo();
+    PIGPonto2D p = CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetPivo();
     *posicaoX = p.x;
     *posicaoY = p.y;
 }
@@ -3370,7 +3423,7 @@ posicaoX (saída, passagem por referencia): indica a posicao no eixo X da animaçã
 posicaoY (saída, passagem por referencia): indica a posicao no eixo Y da animação.
 ********************************/
 void GetXYAnimacao(int idAnimacao,int *posicaoX,int *posicaoY){
-    SDL_Point p = CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetXY();
+    PIGPonto2D p = CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetXY();
     *posicaoX = p.x;
     *posicaoY = p.y;
 }
@@ -4388,7 +4441,7 @@ posicaoX (saída, passagem por referência): Valor da coordenada X do pivô em rela
 posicaoY (saída, passagem por referência): Valor da coordenada Y do pivô em relação ao ponto (0,0) do vídeo.
 ********************************/
 void GetPivoVideo(int idVideo, int *posicaoX,int *posicaoY){
-    SDL_Point p = CPIGGerenciadorVideos::GetVideo(idVideo)->GetPivo();
+    PIGPonto2D p = CPIGGerenciadorVideos::GetVideo(idVideo)->GetPivo();
     *posicaoX = p.x;
     *posicaoY = p.y;
 }

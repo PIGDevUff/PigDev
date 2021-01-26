@@ -80,6 +80,12 @@ Principais definições utilizadas pela PIG
 #define PIG_EXECUTA_SE_DEBUG(x)
 #endif
 
+
+typedef struct{
+    double x,y;
+}PIGPonto2D;
+
+
 //Tipo de callback genérica utilizada em diversos locais
 typedef int (*PIG_FuncaoSimples)(int,void*);
 

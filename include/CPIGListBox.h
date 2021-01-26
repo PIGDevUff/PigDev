@@ -31,7 +31,7 @@ private:
     void DesenhaRetanguloMarcacao(){
         if(itemDestaque !=-1){
             //int posX,posY;
-            SDL_Point p = itens[itemDestaque]->GetXY();
+            PIGPonto2D p = itens[itemDestaque]->GetXY();
             CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado(p.x,p.y,altBaseLista,larg,AZUL);
         }
     }

@@ -238,8 +238,9 @@ public:
     }
 
     int Desenha(){
-        SDL_RenderCopyEx(renderer,text,NULL,&dest,-angulo,&pivoRelativo,flip);
-        SDL_RenderCopyEx(renderer,textGauge,NULL,&dest,-angulo,&pivoRelativo,flip);
+        SDL_Point p = {pivoRelativo.x,pivoRelativo.y};
+        SDL_RenderCopyEx(renderer,text,NULL,&dest,-angulo,&p,flip);
+        SDL_RenderCopyEx(renderer,textGauge,NULL,&dest,-angulo,&p,flip);
 
         DesenhaLabel();
         EscreveHint();

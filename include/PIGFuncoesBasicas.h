@@ -173,15 +173,20 @@ inline int PIGArredondaProximo(float valor) {
     return valor;
 }
 
-inline double PIGProjecaoY(double coefAngular, SDL_Point p) {
+inline double PIGProjecaoY(double coefAngular, PIGPonto2D p) {
     if (std::isinf(coefAngular))
         return (double)p.y;
     return coefAngular * (-p.x) + p.y;
 }
 
-inline double PIGProjecaoX(double coefAngular, SDL_Point p) {
+inline double PIGProjecaoX(double coefAngular, PIGPonto2D p, bool swapei,std::vector<std::string> &vet) {
     if (std::isinf(coefAngular))
         return (double)p.x;
+    if (!swapei){
+        char str[100]="";
+        sprintf(str,"PIGPROJX %f %f %f %f\n",coefAngular,coefAngular*p.x,-p.y + (coefAngular * p.x),(-p.y + (coefAngular * p.x)) / coefAngular);
+    vet.push_back(str);
+    }
     return (-p.y + (coefAngular * p.x)) / coefAngular;
 }
 
@@ -201,10 +206,12 @@ inline double PIGMaxVetor(double  vetor[], int tamVetor) {
     return maior;
 }
 
-inline int PIGDistancia(SDL_Point a, SDL_Point b) {
-    int deltaX = (b.x - a.x);
-    int deltaY = (b.y - a.y);
-    return (int)sqrt((deltaX * deltaX) + (deltaY * deltaY));
+
+
+inline double PIGDistancia(PIGPonto2D a, PIGPonto2D b) {
+    double deltaX = (b.x - a.x);
+    double deltaY = (b.y - a.y);
+    return sqrt((deltaX * deltaX) + (deltaY * deltaY));
 }
 
 inline bool PIGValorEntre(int x, int a, int b) {

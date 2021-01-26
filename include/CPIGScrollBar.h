@@ -335,8 +335,8 @@ public:
     int Desenha(){
         if(visivel==false) return -1;
 
-        SDL_RenderCopyEx(renderer, text, &frames[frameAtual],&dest,-angulo,&pivoRelativo,flip);
-
+        //SDL_RenderCopyEx(renderer, text, &frames[frameAtual],&dest,-angulo,&pivoRelativo,flip);
+        CPIGSprite::Desenha();
         if(botao1 && botao2){
             botao1->Desenha();
             botao2->Desenha();

@@ -20,14 +20,11 @@ double ModificaHP(double valor){
 public:
     bool viva;
 
-    CPIGParticula(PIGObjeto objBase,int vida,PIG_Cor *corFundo=NULL,int retiraFundo=1,int idJanela=0):
-        CPIGObjeto(objBase,corFundo,retiraFundo,idJanela){
+    CPIGParticula(PIGObjeto objBase,int vida,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0):
+        CPIGObjeto(objBase,retiraFundo,corFundo,idJanela){
         hp = vida;
-        espacoVida.x = -50;
-        espacoVida.y = -50;
-        espacoVida.h = PIG_ALT_TELA+50;
-        espacoVida.w = PIG_LARG_TELA+50;
-        tempoVida = 10;
+        espacoVida = {INT_MIN,INT_MIN,INT_MAX,INT_MAX};
+        tempoVida = 9999999;
         viva = true;
         timer = CPIGGerenciadorTimers::CriaTimer();
     }
@@ -38,26 +35,29 @@ public:
     }
 
     ~CPIGParticula(){
-            CPIGGerenciadorTimers::DestroiTimer(timer);
+        CPIGGerenciadorTimers::DestroiTimer(timer);
     }
 
-    void Move(int nx, int ny) override{
+    void Move(double nx, double ny) override{
         if (!viva) return;
         if (CPIGGerenciadorTimers::GetTimer(timer)->GetTempoDecorrido()>tempoVida){
             viva = false;
+            //printf("morri tempo\n");
             return;
         }
         CPIGObjeto::Move(nx,ny);
         //printf("rect %d,%d, %d,%d,%d,%d\n",pos.x,pos.y,espacoVida.x,espacoVida.y,espacoVida.w,espacoVida.h);
-        viva = (pos.x>espacoVida.x)&&(pos.x<espacoVida.x+espacoVida.w)&&(pos.y>espacoVida.y)&&(pos.y<espacoVida.y+espacoVida.h);
+        viva = (pos.x>espacoVida.x)&&(pos.x<espacoVida.w)&&(pos.y>espacoVida.y)&&(pos.y<espacoVida.h);
         //printf("movendo %d,%d %d\n",nx,ny,viva);
+        //if (!viva) {
+        //    printf("morri espaco %.2f %.2f %d,%d %d,%d\n",pos.x,pos.y,espacoVida.x,espacoVida.y,espacoVida.w,espacoVida.h);
+        //}
     }
 
     bool Colisao(PIGObjeto outro) override{
         bool resp = CPIGObjeto::Colisao(outro);
         if (resp){
             ModificaHP(-1);
-            //printf("colidi viva %d,%d,%d,%d   %d,%d,%d,%d\n",pos.x,pos.y,alt,larg,outro->pos.x,outro->pos.y,outro->alt,outro->larg);
         }
         return resp;
     }

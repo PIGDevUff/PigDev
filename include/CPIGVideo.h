@@ -1019,9 +1019,10 @@ int Desenha(){
     if (estado==PIG_VIDEO_PARADO) return 1;
     VideoRefreshTimer();
     //printf("1");
+    SDL_Point p = {pivoRelativo.x,pivoRelativo.y};
     SDL_LockMutex(mutexTex);
     if (is->pictq[is->pictqRindex].texture)
-    SDL_RenderCopyEx(janelaAtual->GetRenderer(), is->pictq[is->pictqRindex].texture, NULL, &dest,-angulo,&pivoRelativo,flip);
+        SDL_RenderCopyEx(janelaAtual->GetRenderer(), is->pictq[is->pictqRindex].texture, NULL, &dest,-angulo,&p,flip);
     SDL_UnlockMutex(mutexTex);
     return 0;
 }

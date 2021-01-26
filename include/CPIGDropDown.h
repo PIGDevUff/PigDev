@@ -51,7 +51,7 @@ private:
             CPIGSprite::Desenha();
         }
         if (itemDestaque>=0){                       //desenha o item no cabeçalho do dropdown
-            SDL_Point pItem = itens[itemDestaque]->GetXY();
+            PIGPonto2D pItem = itens[itemDestaque]->GetXY();
             itens[itemDestaque]->Move(pItem.x,pos.y);     //move o item para o ponto do cabeçalho
             itens[itemDestaque]->Desenha();         //desenha o item no cabeçalho
             itens[itemDestaque]->Move(pItem.x,pItem.y); //devolve o item para a posição normal (onde também deverá ser desenhado)

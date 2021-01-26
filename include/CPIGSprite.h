@@ -6,11 +6,11 @@
 class CPIGSprite{
 
 protected:
-
-SDL_Point pos,pivoRelativo;
+PIGPonto2D pos;
+PIGPonto2D pivoRelativo;
 int alt,larg,altOriginal,largOriginal;
 int idJanela,*altJanela;
-double angulo;
+double angulo,pivoX,pivoY;
 SDL_Rect dest;
 int frameAtual;
 std::unordered_map<int,SDL_Rect> frames;
@@ -23,8 +23,8 @@ PIG_Cor **pixels;
 int opacidade;
 std::string nomeArquivo;
 PIGAutomacao automacao;
-//CPIGSprite *pai;
-//vector<CPIGSprite*> filhos;
+int tipoFixo;
+vector<CPIGSprite*> filhos;
 
 void CriaTextura(int retiraFundo, PIG_Cor *corFundo=NULL){
     if (retiraFundo){
@@ -58,12 +58,13 @@ void CarregaImagem(std::string nomeArq){
 
 void IniciaBase(int altura,int largura,int janela){
     frameAtual = 0;
-    frames[0] = {0,0,0,0};
     automacao = NULL;
+    tipoFixo = 0;
     IniciaCor();
     IniciaJanela(janela);
     IniciaDimensoes(altura,largura);
     IniciaOrientacao();
+    //pai = NULL;
 }
 
 void ExtraiPixels() {
@@ -135,6 +136,7 @@ void IniciaOrientacao(){
     pos = {0,0};
     angulo = 0;
     pivoRelativo = {0,alt};
+    pivoX = pivoY = -1;
 
     dest.x = pos.x;
     dest.y = *altJanela-pos.y-alt;
@@ -149,11 +151,12 @@ void IniciaOrientacao(){
 }
 
 void AplicaTransicao(PIG_EstadoTransicao estado){
+    //fprintf(arqP,"set %f %d %d %d %d %f\n",estado.tempoAtual,estado.x,estado.y,estado.alt,estado.larg,estado.ang);
     Move(estado.x,estado.y);
-    SetDimensoes(estado.alt,estado.larg);
-    SetColoracao(estado.cor);
-    SetOpacidade(estado.opacidade);
-    SetAngulo(estado.ang);
+    if (estado.alt!=alt||estado.larg!=larg) SetDimensoes(estado.alt,estado.larg);
+    if (!(estado.cor==BRANCO)) SetColoracao(estado.cor);
+    if (estado.opacidade!=opacidade) SetOpacidade(estado.opacidade);
+    if (estado.ang!=angulo) SetAngulo(estado.ang);
 }
 
 public:
@@ -223,7 +226,7 @@ CPIGSprite(CPIGSprite *spriteBase,int retiraFundo=1,PIG_Cor *corFundo=NULL,int j
 CPIGSprite(int janela){
     idJanela = janela;
     nomeArquivo = "";
-    pivoRelativo = {0,0};
+    pivoRelativo = {0,alt};
     angulo = 0;
     flip = PIG_FLIP_NENHUM;
     text = NULL;
@@ -234,9 +237,11 @@ CPIGSprite(int janela){
     automacao = NULL;
     altJanela = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
     renderer = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetRenderer();
+    //pai = NULL;
 }
 
-/*int RecebeFilho(CPIGSprite *filho){
+int RecebeFilho(CPIGSprite *filho, int fixo){
+    filho->tipoFixo = fixo;
     filhos.push_back(filho);
     return 1;
 }
@@ -248,19 +253,17 @@ int Retirafilho(CPIGSprite *filho){
             return 1;
         }
     return 0;
-}*/
+}
 
 void InsereTransicao(PIGTransicao t){
-    if (!automacao){
+    if (!automacao)
         automacao = new CPIGAutomacao(1);
-    }
     automacao->InsereTransicao(t);
 }
 
 void InsereTransicao(double tempo, PIG_EstadoTransicao estado){
-    if (!automacao){
+    if (!automacao)
         automacao = new CPIGAutomacao(1);
-    }
     automacao->InsereTransicao(new CPIGTransicao(tempo,estado));
 }
 
@@ -273,7 +276,7 @@ void LeTransicoes(string nomeArq){
     }
     //printf("arquivo %s\n",nomeArq.c_str());
     FILE *arq = fopen(nomeArq.c_str(),"r");
-    while (fscanf(arq,"%lf %d %d %d %d %f %d %d %d %d %d\n",&tempo,&dx,&dy,&dAlt,&dLarg,&dAng,&dCor.r,&dCor.g,&dCor.b,&dCor.a,&dOpa)>0){
+    while (fscanf(arq,"%lf %d %d %d %d %lf %d %d %d %d %d\n",&tempo,&dx,&dy,&dAlt,&dLarg,&dAng,&dCor.r,&dCor.g,&dCor.b,&dCor.a,&dOpa)>0){
         //printf("%f %d %d %d %d %f %d %d %d %d %d\n",tempo,dx,dy,dAlt,dLarg,dAng,dCor.r,dCor.g,dCor.b,dCor.a,dOpa);
         automacao->InsereTransicao(new CPIGTransicao(tempo,{dx,dy,dAlt,dLarg,dAng,dCor,dOpa}));
     }
@@ -341,7 +344,7 @@ void DefineFrame(int idFrame,SDL_Rect r){
     frames[idFrame] = r;
 }
 
-SDL_Point GetXY(){
+PIGPonto2D GetXY(){
     return pos;
 }
 
@@ -354,8 +357,59 @@ PIG_Cor GetColoracao(){
     return coloracao;
 }
 
+void Rotaciona(double px,double py, double graus){
+    double cosseno = cos(graus*M_PI/180.0);
+    double seno = sin(graus*M_PI/180.0);
+
+    double dx = pos.x-px;
+    double dy = pos.y-py;
+    double nx = cosseno*dx - seno*dy;
+    double ny = seno*dx + cosseno*dy;
+
+    Move(nx+px,ny+py);
+
+    SetAngulo(angulo+graus);
+}
+
 virtual void SetAngulo(double a){
+    double delta = a-angulo;
     angulo = a;
+
+    //double cosseno = cos(delta*M_PI/180.0);
+    //double seno = sin(delta*M_PI/180.0);
+    double pivoRealX = pos.x+pivoRelativo.x;
+    double pivoRealY = pos.y+(alt-pivoRelativo.y);
+
+    for (int i=0;i<filhos.size();i++){
+        if (filhos[i]->tipoFixo==0) continue;
+        if (filhos[i]->tipoFixo==1){
+            filhos[i]->Rotaciona(pivoRealX,pivoRealY,delta);
+        }else{
+            //double px = cosseno*pivoRelativo.x - seno*(pivoRelativo.y-alt) + pos.x;
+            //double py = seno*pivoRelativo.x + cosseno*(pivoRelativo.y-alt) + pos.y;
+
+            //printf("pivo absoluto %f,%f ",px,py);
+
+            //double dx = -filhos[i]->pivoRelativo.x;//-filhos[i]->pos.x;
+            //double dy = alt-filhos[i]->pivoRelativo.y;//-(filhos[i]->alt-filhos[i]->pos.y);
+
+            //printf("dist relat %f,%f\n",dx,dy);
+
+            //double nx = cosseno*dx - seno*dy;
+            //double ny = seno*dx + cosseno*dy;
+            //nx+filhos[i]->pivoRelativo.x+filhos[i]->pos.x-(filhos[i]->pivoRelativo.x+filhos[i]->pos.x-pivoRealX)
+            //ny+{filhos[i]->pos.y-(filhos[i]->alt-filhos[i]->pivoRelativo.y)} -(filhos[i]->pos.y-(filhos[i]->alt-filhos[i]->pivoRelativo.y)+ alt-filhos[i]->pivoRelativo.y;)
+            double pivoFilhoX = filhos[i]->pivoRelativo.x+filhos[i]->pos.x;
+            double pivoFilhoY = filhos[i]->pos.y+filhos[i]->alt-filhos[i]->pivoRelativo.y;
+            filhos[i]->Rotaciona(pivoFilhoX, pivoFilhoY,delta);
+            filhos[i]->Desloca(-pivoFilhoX+pivoRealX,-(alt-filhos[i]->pivoRelativo.y));//-pivoFilhoY-(alt-filhos[i]->pivoRelativo.y));
+            //filhos[i]->Move(nx+pivoRealX,ny-dy);
+            //filhos[i]->SetAngulo(filhos[i]->GetAngulo()+delta);
+        }
+
+
+    }
+    //system("pause");
 }
 
 double GetAngulo(){
@@ -370,34 +424,40 @@ PIG_Flip GetFlip(){
     return flip;
 }
 
-//Pivô relativo ao ponto (,0) por meio de soma
+//Pivô relativo ao ponto (0,0) por meio de soma
 void SetPivo(int px,int py){
     pivoRelativo.x = px;
-    pivoRelativo.y = dest.h-py;
+    pivoRelativo.y = alt-py;
+    pivoX = pivoY = -1; //não será utilizado um pivo proporcional ao tamanho;
 }
 
 //Pivo relativo ao ponto (0,0) por meio de multiplicação
-void SetPivo(float px,float py){
-    pivoRelativo.x = px*dest.w;
-    pivoRelativo.y = dest.h-py*dest.h;
+void SetPivo(double px,double py){
+    pivoX = px;
+    pivoY = py;
+    pivoRelativo.x = px*larg;
+    pivoRelativo.y = alt*(1-py);
 }
 
 //recupera o ponto pivô
-SDL_Point GetPivo(){
+PIGPonto2D GetPivo(){
     return pivoRelativo;
 }
 
-inline virtual void Move(int nx,int ny){
+inline virtual void Move(double nx,double ny){
     Desloca(nx-pos.x,ny-pos.y);
 }
 
-virtual void Desloca(int dx, int dy){
+
+virtual void Desloca(double dx, double dy){
     pos.x += dx;
     pos.y += dy;
     dest.x = pos.x;
     dest.y = *altJanela-alt-pos.y;
-    //for (int i=0;i<filhos.size();i++)
-    //    filhos[i]->Desloca(dx,dy);
+    for (int i=0;i<filhos.size();i++){
+        filhos[i]->Desloca(dx,dy);
+        //printf("desloc %f,%f\n",filhos[i]->pos.x,filhos[i]->pos.y);
+    }
 }
 
 virtual void SetDimensoes(int altura,int largura){
@@ -406,7 +466,10 @@ virtual void SetDimensoes(int altura,int largura){
     dest.x = pos.x;
     dest.y = *altJanela-alt-pos.y;
 
-    pivoRelativo.y = alt;//necessário porque o poivô relativo é usado com eixo Y invertido (para baixo)
+    if (pivoX>0){
+        SetPivo(pivoX,pivoY);
+    //}else pivoRelativo.y = alt-pivoRelativo.y;//necessário porque o poivô relativo é usado com eixo Y invertido (para baixo)
+    }else SetPivo(pivoRelativo.x,pivoRelativo.y);
 }
 
 virtual void GetDimensoes(int &altura, int &largura){
@@ -469,11 +532,15 @@ void CriaFramesAutomaticosPorColuna(int idFrameInicial,int qtdLinhas, int qtdCol
 virtual int Desenha(){
     dest.y = *altJanela-alt-pos.y;
     SDL_Rect enquadrado = dest;
-    //printf("%d,%d,%d,%d\n",dest.x,dest.y,dest.h,dest.w);
+    //if (fixoPai)
+    //printf("%d,%d,%d,%d\n",dest.x,*altJanela-dest.y,dest.h,dest.w);
+    SDL_Point p = {pivoRelativo.x,pivoRelativo.y};
     CPIGGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaWorldScreen(enquadrado.x,enquadrado.y,enquadrado.x,enquadrado.y);
-    SDL_RenderCopyEx(renderer, text, &frames[frameAtual], &enquadrado, -angulo, &pivoRelativo, flip);
-    //for (int i=0;i<filhos.size();i++)
-    //    filhos[i]->Desenha();
+    SDL_RenderCopyEx(renderer, text, &frames[frameAtual], &enquadrado, -angulo, &p, flip);
+    //printf("%d %d\n",pivoRelativo.x,pivoRelativo.y);
+    for (int i=0;i<filhos.size();i++){
+        filhos[i]->Desenha();
+    }
     return 0;
 }
 
@@ -481,10 +548,11 @@ void DesenhaOffScreen(PIGOffscreenRenderer offRender){
     SDL_Texture *textAux = SDL_CreateTextureFromSurface(offRender->GetRenderer(), bitmap);
     SDL_Rect rectAux = dest;
     rectAux.y = offRender->GetAltura() - alt - pos.y;
-    SDL_RenderCopyEx(offRender->GetRenderer(), textAux, &frames[frameAtual], &rectAux, -angulo, &pivoRelativo, flip);
+    SDL_Point p = {pivoRelativo.x,pivoRelativo.y};
+    SDL_RenderCopyEx(offRender->GetRenderer(), textAux, &frames[frameAtual], &rectAux, -angulo, &p, flip);
     SDL_DestroyTexture(textAux);
-    //for (int i=0;i<filhos.size();i++)
-    //    filhos[i]->DesenhaOffScreen(offRender);
+    for (int i=0;i<filhos.size();i++)
+        filhos[i]->DesenhaOffScreen(offRender);
 }
 
 void AtualizaPixels(int retiraFundo = 1, int opacidadeObj = 255) {
