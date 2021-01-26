@@ -7,8 +7,6 @@
 #include "PIGFuncoesBasicas.h"
 #include "CPIGErros.h"
 
-//FILE *arqP;
-
 #include "CPIGRepositorio.h"
 
 #include "CPIGGerenciadorTimers.h"
@@ -23,7 +21,6 @@
 #include "CPIGGerenciadorSprites.h"
 
 #include "CPIGGerenciadorVideos.h"
-//#include "CPIGGerenciadorParticulas.h"
 #include "CPIGGerenciadorControles.h"
 #include "CPIGGerenciadorForms.h"
 #include "CPIGJogo.h"
@@ -4637,8 +4634,8 @@ PIG_Cor PIG_Componentes_GetCorLabel(int idComponente){
     return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->GetCorLabel();
 }
 
-std::string PIG_Componentes_GetHint(int idComponente){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->GetHint();
+void PIG_Componentes_GetHint(int idComponente,char* hint){
+    strcpy(hint,(char*)(CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->GetHint()).c_str());
 }
 
 int PIG_Componentes_GetFonteHint(int idComponente){
@@ -4765,8 +4762,8 @@ vector<string> PIG_AreaDeTexto_GetLinhasTexto(int idComponente){
     CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->GetLinhasTexto();
 }
 
-string PIG_AreaDeTexto_GetTexto(int idComponente){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->GetTexto();
+void PIG_AreaDeTexto_GetTexto(int idComponente,char* texto){
+    strcpy(texto,(char*)(CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->GetTexto()).c_str());
 }
 
 /**********CAMPOTEXTO**************/
@@ -4791,8 +4788,8 @@ void PIG_CampoTexto_SetCorCursor(int idComponente,PIG_Cor cor){
     CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCampoTextoESenha>(idComponente)->SetCorCursor(cor);
 }
 
-string PIG_CampoTexto_GetTexto(int idComponente){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCampoTextoESenha>(idComponente)->GetTexto();
+void PIG_CampoTexto_GetTexto(int idComponente,char* texto){
+    strcpy(texto,(char*)(CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCampoTextoESenha>(idComponente)->GetTexto()).c_str());
 }
 
 /**********CAMPOSENHA**************/
@@ -4831,7 +4828,7 @@ int PIG_ListBox_SetAcionado(int idComponente,int indice, int marcado){
     return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->SetAcionado(indice,marcado);
 }
 
-void PIG_ListBox_DefineDimensaoImagemItem(int idComponente,int alturaImagemIcone, int larguraImagemIcone){
+void PIG_ListBox_DefineDimensaoIconeItem(int idComponente,int alturaImagemIcone, int larguraImagemIcone){
     CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->DefineDimensaoIconeItem(alturaImagemIcone,larguraImagemIcone);
 }
 
@@ -4892,7 +4889,7 @@ void PIG_DropDown_CriaItem(int idComponente,char* texto,char* imagemIcone = "",c
     CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->CriaItem(texto,imagemIcone,imagemFundo,itemHabilitado,audio,hintMsg,retiraFundoImg);
 }
 
-void PIG_DropDown_DefineDimensaoImagemItem(int idComponente,int alturaImagemIcone, int larguraImagemIcone){
+void PIG_DropDown_DefineDimensaoIconeItem(int idComponente,int alturaImagemIcone, int larguraImagemIcone){
     CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->DefineDimensaoIconeItem(alturaImagemIcone,larguraImagemIcone);
 }
 
@@ -5044,8 +5041,8 @@ int PIG_GaugeCircular_GetValor(int idComponente){
     return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->GetValor();
 }
 
-std::string PIG_GaugeCircular_GetValorString(int idComponente){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->GetValorString();
+void PIG_GaugeCircular_GetValorString(int idComponente,char* valor){
+    strcpy(valor,(char*)(CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->GetValorString()).c_str());
 }
 
 int PIG_GaugeCircular_GetValorMax(int idComponente){
