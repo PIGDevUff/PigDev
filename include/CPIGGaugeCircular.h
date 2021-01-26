@@ -33,6 +33,55 @@ private:
     double porcentagemConcluida;
     SDL_Texture *textGauge;
 
+    void AtualizaTextura(){
+        PIG_Cor corBarra = PIGMixCor(corInicial,corFinal,porcentagemConcluida);//cor da barra mizada entre a cor inicial e a final
+        PIG_Cor opcoes[4] = {VERDE,AZUL,ROXO,LARANJA}; //4 cores quaisquer
+        PIG_Cor croma1, croma2; //cores usada como cromakey para transparencias (não podem ser nem a cor da barra, nem a cor do fundo)
+
+        //escolha das cores
+        int i=0;
+        croma1=opcoes[i];
+        while (PIGCoresIguais(croma1,corBarra)||PIGCoresIguais(croma1,corFundo)){//não pode ser a cor da barra nem do fundo
+            croma1=opcoes[++i];
+        }
+        croma2=opcoes[i];
+        while (PIGCoresIguais(croma2,corBarra)||PIGCoresIguais(croma2,corFundo)||PIGCoresIguais(croma2,croma1)){//não pode ser a cor da barra, nem do fundo, nem a cor croma1
+            croma2=opcoes[++i];
+        }
+
+        //circulo interno para criar efeito de coroa circular
+        off->DesenhaCirculoFinal(raioInterno,croma2,croma1,0,360.0,2);
+        off->SetCorTransparente(2,true,croma2);
+        //off->SalvarImagemPNG("interno.png",2);
+
+        //circulo com a barra na cor desejada
+        off->DesenhaCirculoFinal(larg/2-2,croma1,corBarra,angBase,porcentagemConcluida*(deltaAng)+angBase,0);
+        off->SetCorTransparente(0,true,croma1);
+        //off->SalvarImagemPNG("barra.png",0);
+
+        //criculo com o fundo na cor de fundo
+        off->DesenhaCirculoFinal(larg/2-2,croma1,corFundo,angBase,angBase+deltaAng,1);
+        off->SetCorTransparente(1,true,croma1);
+        //off->SalvarImagemPNG("fundo.png",1);
+
+        //mistura o circulo interno com a barra
+        off->MergeSurface(2,0,SDL_BLENDMODE_NONE);
+        //off->SalvarImagemPNG("circ20.png",0);
+
+        //mistura o circulo interno com o fundo
+        off->MergeSurface(2,1,SDL_BLENDMODE_NONE);
+        //off->SalvarImagemPNG("circ21.png",1);
+
+        //sobre a barra em cima do fundo
+        off->MergeSurface(0,1,SDL_BLENDMODE_NONE);
+        //off->SalvarImagemPNG("circ01.png",1);
+
+        if (textGauge) SDL_DestroyTexture(textGauge);
+        textGauge = SDL_CreateTextureFromSurface(renderer,off->GetSurface(1));
+        //bitmap = off->GetSurface(1);
+        //CriaTextura(1);
+    }
+
 public:
 
     CPIGGaugeCircular(int idComponente,int px, int py,int altura,int largura,int raioInterior,int janela=0):
@@ -188,59 +237,21 @@ public:
         AtualizaTextura();
     }
 
-    void AtualizaTextura(){
-        PIG_Cor corBarra = PIGMixCor(corInicial,corFinal,porcentagemConcluida);//cor da barra mizada entre a cor inicial e a final
-        PIG_Cor opcoes[4] = {VERDE,AZUL,ROXO,LARANJA}; //4 cores quaisquer
-        PIG_Cor croma1, croma2; //cores usada como cromakey para transparencias (não podem ser nem a cor da barra, nem a cor do fundo)
-
-        //escolha das cores
-        int i=0;
-        croma1=opcoes[i];
-        while (PIGCoresIguais(croma1,corBarra)||PIGCoresIguais(croma1,corFundo)){//não pode ser a cor da barra nem do fundo
-            croma1=opcoes[++i];
-        }
-        croma2=opcoes[i];
-        while (PIGCoresIguais(croma2,corBarra)||PIGCoresIguais(croma2,corFundo)||PIGCoresIguais(croma2,croma1)){//não pode ser a cor da barra, nem do fundo, nem a cor croma1
-            croma2=opcoes[++i];
-        }
-
-        //circulo interno para criar efeito de coroa circular
-        off->DesenhaCirculoFinal(raioInterno,croma2,croma1,0,360.0,2);
-        off->SetCorTransparente(2,true,croma2);
-        //off->SalvarImagemPNG("interno.png",2);
-
-        //circulo com a barra na cor desejada
-        off->DesenhaCirculoFinal(larg/2-2,croma1,corBarra,angBase,porcentagemConcluida*(deltaAng)+angBase,0);
-        off->SetCorTransparente(0,true,croma1);
-        //off->SalvarImagemPNG("barra.png",0);
-
-        //criculo com o fundo na cor de fundo
-        off->DesenhaCirculoFinal(larg/2-2,croma1,corFundo,angBase,angBase+deltaAng,1);
-        off->SetCorTransparente(1,true,croma1);
-        //off->SalvarImagemPNG("fundo.png",1);
-
-        //mistura o circulo interno com a barra
-        off->MergeSurface(2,0,SDL_BLENDMODE_NONE);
-        //off->SalvarImagemPNG("circ20.png",0);
-
-        //mistura o circulo interno com o fundo
-        off->MergeSurface(2,1,SDL_BLENDMODE_NONE);
-        //off->SalvarImagemPNG("circ21.png",1);
-
-        //sobre a barra em cima do fundo
-        off->MergeSurface(0,1,SDL_BLENDMODE_NONE);
-        //off->SalvarImagemPNG("circ01.png",1);
-
-        if (textGauge) SDL_DestroyTexture(textGauge);
-        textGauge = SDL_CreateTextureFromSurface(renderer,off->GetSurface(1));
-        //bitmap = off->GetSurface(1);
-        //CriaTextura(1);
-    }
-
     int Desenha(){
         SDL_Point p = {pivoRelativo.x,pivoRelativo.y};
-        SDL_RenderCopyEx(renderer,text,NULL,&dest,-angulo,&p,flip);
-        SDL_RenderCopyEx(renderer,textGauge,NULL,&dest,-angulo,&p,flip);
+
+        //vai desenhar a textura de base
+        CPIGSprite::Desenha();
+        //SDL_RenderCopyEx(renderer,text,NULL,&dest,-angulo,&p,flip);
+        SDL_Texture *textAux = text;
+        text = textGauge;
+
+        //vai desenhar o gauge em si
+        CPIGSprite::Desenha();
+        //SDL_RenderCopyEx(renderer,textGauge,NULL,&dest,-angulo,&p,flip);
+
+        //recupera a textura de base
+        text = textAux;
 
         DesenhaLabel();
         EscreveHint();

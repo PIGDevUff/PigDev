@@ -23,17 +23,13 @@ protected:
     //inicializa o componente com valores padrão
     void IniciaBase(int idComponente, int px, int py){
         id = idComponente;
-        posLabel = PIG_COMPONENTE_CENTRO_CENTRO;
         lab = new CPIGLabel("",0,BRANCO,idJanela);
         hint = new CPIGLabel("",0,BRANCO,idJanela);
-        PosicionaLabel();
+        SetPosicaoPadraoLabel(PIG_COMPONENTE_CENTRO_CENTRO);
         audioComponente = -1;
         pos = {px,py};
-        temFoco = false;
-        acionado = false;
-        mouseOver = false;
-        visivel = true;
-        habilitado = true;
+        mouseOver = acionado = temFoco = false;
+        habilitado = visivel = true;
     }
 
     //escreve o hint do componente na tela
@@ -198,18 +194,16 @@ public:
     }
 
     //define a posição do label (dentre posições pré-estabelecidas)
-    virtual int SetPosicaoPadraoLabel(PIG_PosicaoComponente pos){
+    virtual void SetPosicaoPadraoLabel(PIG_PosicaoComponente pos){
         posLabel = pos;
         PosicionaLabel();
-        return 1;
     }
 
     //define a posição do label (posição arbiraria, relativa à posição do componente)
-    virtual int SetPosicaoPersonalizadaLabel(int rx, int ry){
+    virtual void SetPosicaoPersonalizadaLabel(int rx, int ry){
         lab->Move(pos.x+rx,pos.y+ry);
         posLabel = PIG_COMPONENTE_PERSONALIZADA;//evitar que o usuário esqueça de chamar também a SetPosicaoPadraoLabel
         PosicionaLabel();
-        return 1;
     }
 
     virtual void SetVisivel(bool valor){
@@ -251,12 +245,10 @@ public:
     void SetPosPadraoExternaComponente(PIG_PosicaoComponente pos,CPIGComponente *componenteAssociado){
         int altComponente,largComponente;
         PIGPonto2D p = componenteAssociado->GetXY();
-        //int largura,altura;
 
         posComponente = pos;
         componenteAssociado->GetDimensoes(altComponente,largComponente);
 
-        //this->GetDimensoes(altura,largura);
 
         switch(pos){
         case PIG_COMPONENTE_CIMA_CENTRO:
@@ -303,50 +295,53 @@ public:
     }
 
     void SetPosPadraoComponenteNaTela(PIG_Ancora ancora){
-        int largTela,altTela;
-        int altura,largura;
-        largTela = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetLargura();
-        altTela = *CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
+        int largJanela;//,altTela;
+        //int altura,largura;
+        largJanela = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetLargura();
+        altJanela = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
 
-        this->GetDimensoes(altura,largura);
+        //this->GetDimensoes(altura,largura);
 
         switch(ancora){
         case PIG_ANCORA_SUL:
-            Move((largTela - largura)/2,0);
+            Move((largJanela - larg)/2,0);
             break;
         case PIG_ANCORA_SUDOESTE:
             Move(0,0);
             break;
         case PIG_ANCORA_SUDESTE:
-            Move(largTela - largura,0);
+            Move(largJanela - larg,0);
             break;
         case PIG_ANCORA_NORTE:
-            Move((largTela - largura)/2,altTela - altura);
+            Move((largJanela - larg)/2,*altJanela - alt);
             break;
         case PIG_ANCORA_NOROESTE:
-            Move(0,altTela - altura);
+            Move(0,*altJanela - alt);
             break;
         case PIG_ANCORA_NORDESTE:
-            Move(largTela - largura,altTela - altura);
+            Move(largJanela - larg,*altJanela - alt);
             break;
         case PIG_ANCORA_CENTRO:
-            Move((largTela - largura)/2,(altTela - altura)/2);
+            Move((largJanela - larg)/2,(*altJanela - alt)/2);
             break;
         case PIG_ANCORA_OESTE:
-            Move(0,(altTela - altura)/2);
+            Move(0,(*altJanela - alt)/2);
             break;
         case PIG_ANCORA_LESTE:
-            Move(largTela - largura,(altTela - altura)/2);
+            Move(largJanela - larg,(*altJanela - alt)/2);
             break;
         }
 
     }
 
     void Move(double nx, double ny)override{
-        int dx = nx-pos.x;
-        int dy = ny-pos.y;
-        CPIGSprite::Desloca(dx,dy);
-        lab->Desloca(dx,dy);
+        CPIGSprite::Desloca(nx-pos.x,ny-pos.y);
+        PosicionaLabel();
+    }
+
+    void SetDimensoes(int altura,int largura)override{
+        CPIGSprite::SetDimensoes(altura,largura);
+        PosicionaLabel();
     }
 
 };

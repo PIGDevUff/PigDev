@@ -138,12 +138,15 @@ public:
     int TrataEventoMouse(PIG_Evento evento){
         int resp = -1;
         bool mouseOverAntes = mouseOver;
-
         SDL_Point p;
         if (CPIGGerenciadorJanelas::GetJanela(idJanela)->GetUsandoCameraFixa())
             p = CPIGMouse::PegaXYTela();
         else p = CPIGMouse::PegaXYWorld();
         if (ChecaMouseOver(p)){
+
+            if (!habilitado) return PIG_SELECIONADO_DESABILITADO;
+            if (!visivel) return PIG_SELECIONADO_INVISIVEL;
+
             if (!recolhida){        //se o dropdown está exibindo os itens, é preciso tratá-los individualmente
                 for (int i=0;i<itens.size();i++){
                     if(itens[i]->TrataEventoMouse(evento) == PIG_SELECIONADO_TRATADO){
@@ -176,6 +179,18 @@ public:
 
     int TrataEventoTeclado(PIG_Evento evento){
         return 0;
+    }
+
+    void Move(double nx,double ny){
+        CPIGSprite::Move(nx,ny);
+        SetPosicaoPadraoLabel(posLabel);
+        int posY;
+
+        for(int i=0;i<itens.size();i++){
+            posY = (pos.y + alt) - (altBaseLista*(i+1)) - altImagem;
+            itens[i]->Move(pos.x,posY);
+        }
+
     }
 
 };

@@ -13,7 +13,6 @@ private:
     CPIGScrollBar *scrollVertical,*scrollHorizontal;
     bool scrollVerticalAtivado,scrollHorizontalAtivado;
     int xOriginal,yOriginal;
-    int largReal,altReal;
 
     std::vector<std::string> linhas;
 
@@ -49,20 +48,14 @@ private:
 
     //Verifica se é necessário acionar a ScrollBarVertical quando o texto é modificado
     void AcionaScrollBarVertical(){
-        //int temp;
         scrollVerticalAtivado = ((espacoEntreLinhas + altLetra)*(linhas.size())) > (alt - (margemVertBaixo+margemVertCima));
         scrollVertical->SetVisivel(scrollVerticalAtivado);
-        //if(!scrollVerticalAtivado) scrollVertical->DefineEstado(COMPONENTE_INVISIVEL);
-        //else scrollVertical->DefineEstado(COMPONENTE_NORMAL);
     }
 
     //Verifica se é necessário acionar a ScrollBarHorizontal quando o texto é modificado
     void AcionaScrollBarHorizontal(){
-        //int temp;
         scrollHorizontalAtivado = GetLarguraLinhaMaior() > (larg - (margemHorDir+margemHorEsq));
         scrollHorizontal->SetVisivel(scrollHorizontalAtivado);
-        //if(!scrollHorizontalAtivado) scrollHorizontal->DefineEstado(COMPONENTE_INVISIVEL);
-        //else scrollHorizontal->DefineEstado(COMPONENTE_NORMAL);
     }
 
     int GetLarguraLinhaMaior(){
@@ -257,7 +250,7 @@ private:
 
         texto = auxB;
         AvancaCursor();
-
+        return 1;
     };
 
     void SetHabilitado(bool valor){
@@ -290,8 +283,6 @@ public:
             corLinhasTexto = PRETO;
             scrollHorizontalAtivado = scrollVerticalAtivado = false;
             scrollHorizontal = scrollVertical = NULL;
-            largReal = larg;
-            altReal = alt;
             xOriginal = pos.x;
             yOriginal = pos.y;
             AjustaAlinhamento();
@@ -354,7 +345,6 @@ public:
         scrollHorizontal->MudaOrientacaoCrescimento();
         scrollHorizontalAtivado = false;
         scrollHorizontal->SetVisivel(false);
-        //scrollHorizontal->DefineEstado(COMPONENTE_INVISIVEL);
         SetPosPadraoScrollHorizontal(PIG_COMPONENTE_BAIXO_CENTRO);
         scrollHorizontal->SetAreaDeAcaoScroll(pos.x,pos.y,alt,larg);
     }
@@ -402,19 +392,18 @@ public:
         if(scrollVertical) scrollVertical->Move(px,py);
     }
 
-    void SetDimensoes(int altura,int largura){
+    void SetDimensoes(int altura,int largura)override{
         CPIGSprite::SetDimensoes(altura,largura);
-        largReal = largura;
-        altReal = altura;
-        ResetaValoresBase();
+        PosicionaLabel();
         if(scrollHorizontal){
             scrollHorizontal->SetPosPadraoExternaComponente(scrollHorizontal->GetPosComponente(),this);
-            scrollHorizontal->SetAreaDeAcaoScroll(pos.x,pos.y,alt,larg);
+            scrollHorizontal->SetAreaDeAcaoScroll(pos.x,pos.y,larg,alt);
         }
         if(scrollVertical){
             scrollVertical->SetPosPadraoExternaComponente(scrollVertical->GetPosComponente(),this);
-            scrollVertical->SetAreaDeAcaoScroll(pos.x,pos.y,alt,larg);
+            scrollVertical->SetAreaDeAcaoScroll(pos.x,pos.y,larg,alt);
         }
+        ResetaValoresBase();
     }
 
     int Desenha() override{
@@ -435,6 +424,7 @@ public:
 
         SDL_Rect r={pos.x+margemHorEsq,*altJanela-pos.y-alt+margemVertCima,larg-(margemHorEsq+margemHorDir),alt-(margemVertBaixo+margemVertCima)};
         CPIGGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaWorldScreen(r.x,r.y,r.x,r.y);
+
         SDL_RenderSetClipRect(renderer,&r);
 
         DesenhaCursor();//desenha o cursor (se estiver em edição)
@@ -468,10 +458,7 @@ public:
     }
 
     int TrataEventoMouse(PIG_Evento evento){
-        SDL_Point p;
-        if (CPIGGerenciadorJanelas::GetJanela(idJanela)->GetUsandoCameraFixa())
-            p = CPIGMouse::PegaXYTela();
-        else p = CPIGMouse::PegaXYWorld();
+        SDL_Point p = CPIGMouse::PegaXYWorld();
         ChecaMouseOver(p);
 
         if(scrollVerticalAtivado) scrollVertical->TrataEventoMouse(evento);
@@ -487,7 +474,7 @@ public:
         return PIG_NAO_SELECIONADO;
     }
 
-    virtual int TrataEventoTeclado(PIG_Evento evento){
+    int TrataEventoTeclado(PIG_Evento evento)override{
         return CPIGCaixaTexto::TrataEventoTeclado(evento);
     }
 

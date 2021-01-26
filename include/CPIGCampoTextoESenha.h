@@ -71,9 +71,9 @@ public:
             yCursor = yBase;
             mascara = '*';
             if(campoSenha){
-                GetTextoVisivelPtr = &CPIGCampoTextoESenha::GetTextoMask;
+                GetTextoVisivelPtr = &CPIGCampoTextoESenha::CPIGCampoTextoESenha::GetTextoMask;
             }else{
-                GetTextoVisivelPtr = &GetTexto;
+                GetTextoVisivelPtr = &CPIGCampoTextoESenha::GetTexto;
             }
     }
 
@@ -143,12 +143,8 @@ public:
         margemVertBaixo = vertBaixo;
         margemHorDir = horDir;
         margemHorEsq = horEsq;
-        yBaseOriginal = pos.y+margemVertBaixo;
-        xBaseOriginal = pos.x+margemHorEsq;
-        yBase = yBaseOriginal;
-        xBase = xBaseOriginal;
-        xCursor = xBase;
-        yCursor = yBase;
+        yCursor = yBase = yBaseOriginal = pos.y+margemVertBaixo;
+        xCursor = xBase = xBaseOriginal = pos.x+margemHorEsq;
         AjustaAlinhamento();
     }
 
@@ -171,6 +167,13 @@ public:
 
     int TrataEventoTeclado(PIG_Evento evento){
         return CPIGCaixaTexto::TrataEventoTeclado(evento);
+    }
+
+    void Move(double nx,double ny)override{
+        CPIGComponente::Move(nx,ny);
+        yCursor = yBase = yBaseOriginal = pos.y+margemVertBaixo;
+        xCursor = xBase = xBaseOriginal = pos.x+margemHorEsq;
+        AjustaAlinhamento();
     }
 
 };

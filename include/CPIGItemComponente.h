@@ -1,7 +1,7 @@
 /**************************************************
-A classe CPigItemComponente descreve o código dos items que compõem certos componentes como checkbox, radiobox, listbox e dropdown.
+A classe CPIGItemComponente descreve o código dos items que compõem certos componentes como checkbox, radiobox, listbox e dropdown.
 Todos esses componentes se caracterizam por possuir diversos itens e por se poder marcar/selecionar um ou mais desses itens.
-Os elementos principais da classe CPigItemComponente são: o texto do item (label, obrigatório), a imagem de fundo (textura básica do componente, opcional) e um ícone (imagem extra, opcional).
+Os elementos principais da classe CPIGItemComponente são: o texto do item (label, obrigatório), a imagem de fundo (textura básica do componente, opcional) e um ícone (imagem extra, opcional).
 Além disso, os objetos da classe possuem um ponteiro para função que permite que o frame do ícone seja alterado externamente.
 O ícone pode ser alterado para representar a marcação ou não do item dentro de um cehckbox ou radiobox.
 O label é posicionado sempre internamente, mas pode estar alinhado à direita (com ou sem a presença do ícone), à esquerda (com ou sem a presença do ícone) ou centralizado (com ou sem a presença do ícone).
@@ -98,11 +98,17 @@ public:
     }
 
     int Desenha()override{
-        SDL_RenderCopyEx(renderer,text,&frames[frameAtual],&dest,-angulo,NULL,flip);
+        CPIGSprite::Desenha();
+        //SDL_RenderCopyEx(renderer,text,&frames[frameAtual],&dest,-angulo,NULL,flip);
         if (icone)
             icone->Desenha();
         DesenhaLabel();
         EscreveHint();
+        return 1;
+    }
+
+    void SetDimensoesIcone(int alturaIcone,int largIcone){
+        icone->SetDimensoes(alturaIcone,largIcone);
     }
 
     void AlinhaLabelDireita(){
@@ -152,6 +158,7 @@ public:
             icone->GetDimensoes(altIcone,largIcone);
             posIcone=PIG_COMPONENTE_DIR_CENTRO;
             icone->Move(pos.x+larg-largIcone,pos.y);
+            //printf("teste\n");
             if (posRelativaLabel == PIG_COMPONENTE_ESQ_CENTRO){
                 AlinhaLabelEsquerda();
             }else if (posRelativaLabel == PIG_COMPONENTE_CENTRO_CENTRO){
@@ -177,7 +184,7 @@ public:
     }
 
     //define a posição do label (dentre posições pré-estabelecidas)
-    int SetPosicaoPadraoLabel(PIG_PosicaoComponente pos)override{
+    void SetPosicaoPadraoLabel(PIG_PosicaoComponente pos)override{
         posLabel = pos;
         if (posRelativaLabel == PIG_COMPONENTE_ESQ_CENTRO){
             AlinhaLabelEsquerda();
@@ -186,7 +193,6 @@ public:
         }else if (posRelativaLabel == PIG_COMPONENTE_DIR_CENTRO){
             AlinhaLabelDireita();
         }
-        return 0;
     }
 
     int TrataEventoMouse(PIG_Evento evento)override{

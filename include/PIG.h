@@ -4832,7 +4832,7 @@ int PIG_ListBox_SetAcionado(int idComponente,int indice, int marcado){
 }
 
 void PIG_ListBox_DefineDimensaoImagemItem(int idComponente,int alturaImagemIcone, int larguraImagemIcone){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->DefineDimensaoImagemItem(alturaImagemIcone,larguraImagemIcone);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->DefineDimensaoIconeItem(alturaImagemIcone,larguraImagemIcone);
 }
 
 void PIG_ListBox_AlinhaLabelDireita(int idComponente){
@@ -4893,7 +4893,7 @@ void PIG_DropDown_CriaItem(int idComponente,char* texto,char* imagemIcone = "",c
 }
 
 void PIG_DropDown_DefineDimensaoImagemItem(int idComponente,int alturaImagemIcone, int larguraImagemIcone){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->DefineDimensaoImagemItem(alturaImagemIcone,larguraImagemIcone);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->DefineDimensaoIconeItem(alturaImagemIcone,larguraImagemIcone);
 }
 
 void PIG_DropDown_AlinhaLabelDireita(int idComponente){

@@ -74,8 +74,7 @@ protected:
         }
 
         if (evento.teclado.acao==PIG_TECLA_PRESSIONADA){//teclas especiais
-            TrataTeclasEspeciais(evento);
-            return 1;
+            return TrataTeclasEspeciais(evento);
         }
         return 0;
     }

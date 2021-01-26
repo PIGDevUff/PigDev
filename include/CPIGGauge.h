@@ -124,10 +124,6 @@ public:
         frameBarra = fBarra;
     }
 
-    virtual int VerificaSeComponenteEstaSelecionado(PIG_Evento evento){
-        return 2;
-    }
-
     void SetDistanciaXYBarra(int dx,int dy){
         xBarra = dx;
         yBarra = dy;
@@ -167,16 +163,19 @@ public:
         aux.y = dest.y+yBarra*scalaY;
 
         //base
+        SDL_Point p = {pivoRelativo.x,pivoRelativo.y};
+        frames[frameAtual] = frameBase;
+        //SDL_RenderCopyEx(renderer, text, &frameBase,&dest,-angulo,&p,flip); //Desenha Barra
         CPIGSprite::Desenha();
-        //SDL_RenderCopyEx(renderer, text, &frameBase,&dest,-angulo,&pivoRelativo,flip);
 
         aux2 = dest;
-        dest=aux;
+        dest = aux;
         //definir o valor de r, de acordo com a orientação da barra
         SDL_Rect clip = GeraClip(aux);
         SDL_RenderSetClipRect(renderer,&clip);
 
-        //SDL_RenderCopyEx(renderer, text, &frameBarra,&aux,-angulo,&pivoRelativo,flip);
+        frames[frameAtual] = frameBarra;
+        //SDL_RenderCopyEx(renderer, text, &frameBarra,&aux,-angulo,&p,flip);
         CPIGSprite::Desenha();
 
         dest = aux2;

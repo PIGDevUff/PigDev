@@ -132,17 +132,6 @@ public:
         CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,itemMarcado,itemHabilitado,audio,hintMsg,retiraFundo);
     }
 
-    void Move(int nx,int ny){
-        CPIGSprite::Move(nx,ny);
-        int posY;
-
-        for(int i=0;i<itens.size();i++){
-            posY = (pos.y + alt) - (altBaseLista*(i+1));
-            itens[i]->Move(pos.x,posY);
-        }
-
-    }
-
     int Desenha(){
         if (visivel==false) return 0;
 
@@ -151,10 +140,15 @@ public:
         }
         DesenhaLabel();
 
+        SDL_Rect r = {pos.x,*altJanela-pos.y-alt,larg,alt};
+        SDL_RenderSetClipRect(renderer,&r);
+
         for (PIGItemComponente i: itens)
             i->Desenha();
 
         DesenhaRetanguloMarcacao();
+
+        SDL_RenderSetClipRect(renderer,NULL);
 
         return 1;
     }
@@ -168,6 +162,7 @@ public:
         itens[indice]->SetAcionado(marcado);
         return 1;
     }
+
 
 };
 typedef CPIGListBox* PIGListBox;

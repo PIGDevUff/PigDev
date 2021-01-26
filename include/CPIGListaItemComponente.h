@@ -14,7 +14,7 @@ protected:
     int itemDestaque;
     int altIcone,largIcone;                           //altura e largura das imagens dos itens
 
-    void IniciaBase(int largTotal,int alturaLinha, int alturaTotal){
+    void IniciaBase(int alturaLinha, int alturaTotal){
         SetPosicaoPadraoLabel(PIG_COMPONENTE_CIMA_CENTRO);//posição padrão do label
         altBaseLista = alturaLinha;
         altMaxima = alturaTotal;
@@ -40,8 +40,9 @@ protected:
             }
         }
         item->SetHint(hintMsg);
-        if (audio==-1)
-            audio = audioComponente;//audio padrao do componente
+
+        if (audio==-1) audio = audioComponente;//audio padrao do componente
+
         item->SetAudio(audio);
         item->SetAcionado(itemMarcado);
         item->SetHabilitado(itemHabilitado);
@@ -52,7 +53,7 @@ public:
 
     CPIGListaItemComponente(int idComponente, int posX, int posY, int larguraTotal, int alturaLinha, int alturaTotal,std::string nomeArqFundoLista, int retiraFundo=1,int janela = 0):
         CPIGComponente(idComponente,posX,posY,alturaTotal,larguraTotal,nomeArqFundoLista,retiraFundo,janela){
-        IniciaBase(larguraTotal,alturaLinha,alturaTotal);
+        IniciaBase(alturaLinha,alturaTotal);
     }
 
     ~CPIGListaItemComponente(){
@@ -61,11 +62,11 @@ public:
         itens.clear();
     }
 
-    void DefineDimensaoImagemItem(int alturaImagemIcone, int larguraImagemIcone){
+    void DefineDimensaoIconeItem(int alturaImagemIcone, int larguraImagemIcone){
         altIcone = alturaImagemIcone;
         largIcone = larguraImagemIcone;
         for (int i=0;i<itens.size();i++){
-            itens[i]->SetDimensoes(altIcone,largIcone);
+            itens[i]->SetDimensoesIcone(altIcone,largIcone);
         }
     }
 
@@ -161,14 +162,6 @@ public:
             i->SetAudio(audio);
     }
 
-    void Move(int nx,int ny){
-        int dx = nx-pos.x;
-        int dy = ny-pos.y;
-        CPIGSprite::Desloca(dx,dy);
-        for(int i=0;i<itens.size();i++)
-            itens[i]->Desloca(dx, dy);
-    }
-
     int GetItemDestaque(){
         return itemDestaque;
     }
@@ -183,6 +176,19 @@ public:
         itens[indice]->SetAcionado(marcado);
         return 1;
     }
+
+    void Move(double nx,double ny){
+        double dx = nx-pos.x;
+        double dy = ny-pos.y;
+        CPIGSprite::Desloca(dx,dy);
+        PosicionaLabel();
+
+        for(int i=0;i<itens.size();i++)
+            itens[i]->Desloca(dx, dy);
+
+        AlinhaLabelEsquerda();
+    }
+
 };
 typedef CPIGListaItemComponente *PIGListaComponente;
 #endif //_CPIGLISTAITEMCOMPONENTE_

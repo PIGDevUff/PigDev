@@ -10,9 +10,6 @@ private:
 
 protected:
 
-    //tipo de função a ser usada no acionamento do botao
-    //o parâmetro int devolverá à função o identificador do botão
-    //o parâmetro void* devolverá à função um parâmetro personalizado passado ao método DefineAcao();
     PIG_FuncaoSimples acao;
     void *param;
     PIGTimer timer;
@@ -98,7 +95,6 @@ public:
     CPIGBotao(int idComponente,int px, int py, int alt,int larg,std::string nomeArq, int retiraFundo=1,int janela=0):
         CPIGComponente(idComponente,px,py,alt,larg,nomeArq,retiraFundo,janela){
             tecla = PIG_TECLA_ENTER;//sem tecla de atalho
-            acao = NULL;//não tem ação registrada
             param = NULL;//não tem parâmetro associado à ação
             CriaFramesAutomaticosPorLinha(1,1,4);
             MudaFrameAtual(1); //frame de estado normal do botao
@@ -106,6 +102,7 @@ public:
             botaoRepeticao = false;
             SetPosicaoPadraoLabel(PIG_COMPONENTE_CENTRO_CENTRO);
             timer = new CPIGTimer(false);
+            acao = NULL;//não tem ação registrada
         }
 
     CPIGBotao(std::string nomeArqParam):CPIGBotao(LeArquivoParametros(nomeArqParam)){}
@@ -128,8 +125,8 @@ public:
         ChecaMouseOver(p);
 
         if (mouseOver){
-            if (habilitado==false) return PIG_SELECIONADO_DESABILITADO;
-            if (visivel==false) return PIG_SELECIONADO_INVISIVEL;
+            if (!habilitado) return PIG_SELECIONADO_DESABILITADO;
+            if (!visivel) return PIG_SELECIONADO_INVISIVEL;
             if(evento.mouse.acao==PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO) return OnMouseClick();
             return PIG_SELECIONADO_MOUSEOVER;
         }
@@ -138,8 +135,11 @@ public:
     }
 
     int TrataEventoTeclado(PIG_Evento evento){
-        if (evento.teclado.acao==PIG_TECLA_PRESSIONADA && evento.teclado.tecla==tecla)
+        if (evento.teclado.acao==PIG_TECLA_PRESSIONADA && evento.teclado.tecla==tecla){
+            if (!habilitado) return PIG_SELECIONADO_DESABILITADO;
+            if (!visivel) return PIG_SELECIONADO_INVISIVEL;
             if (timer->GetTempoDecorrido()>tempoRepeticao) return OnMouseClick();
+        }
 
         return 0;
     }
@@ -161,20 +161,12 @@ public:
         AjustaFrame();
     }
 
-    int TrataEvento(PIG_Evento evento){
-        if (evento.tipoEvento == PIG_EVENTO_MOUSE)    return TrataEventoMouse(evento);
-        if (evento.tipoEvento == PIG_EVENTO_TECLADO) return TrataEventoTeclado(evento);
-
-        return PIG_NAO_SELECIONADO;
-    }
-
     int Desenha(){
 
         if (visivel==false) return 0;
 
         TrataTimer();
 
-        //SDL_RenderCopyEx(renderer, text, &frames[frameAtual],&dest,-angulo,&pivoRelativo,flip);
         CPIGSprite::Desenha();
 
         DesenhaLabel();

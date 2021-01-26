@@ -9,8 +9,8 @@ typedef enum{PIG_HORIZONTAL,PIG_VERTICAL}PIG_Orientacao;
 //tipo de função a ser usada em alterações na posição do handle da barra
 //o parâmetro int devolverá à função o identificador do botão
 //o parâmetro double devolverá à função a porcentagem atual da barra
-//o parâmetro void* devolverá à função um parâetro personalizado passado ao método DefineAcao();
-typedef int (*AcaoScroll)(int,double,void*);
+//o parâmetro void* devolverá à função um parâmetro personalizado passado ao método DefineAcao();
+//typedef void (*AcaoScroll)(int,double,void*);
 
 class CPIGScrollBar : public CPIGComponente{
 
@@ -25,7 +25,7 @@ class CPIGScrollBar : public CPIGComponente{
     bool orientacaoCrescimento;
     int largReal,altReal;
     void *param;
-    AcaoScroll acao;
+    PIG_FuncaoSimples acao;
     SDL_Rect areaDeAcaoScroll;
 
     static int AcaoSetas(int idBotao, void* pontObjeto){
@@ -98,12 +98,12 @@ class CPIGScrollBar : public CPIGComponente{
     }
 
     //Recebe um valor e move o handle de forma proporcional
-    int AvancaHandle(int novoValor,int delta = 0){
+    void AvancaHandle(int novoValor,int delta = 0){
         if(!orientacaoCrescimento) delta = -delta;
         vAtual = PIGLimitaValor(novoValor + delta,vMin,vMax);
         porcentagemConcluida = (1.0 * (vAtual - vMin))/(vMax - vMin);
         AjustaHandle();
-        if (acao) acao(id,porcentagemConcluida,param);
+        if (acao) acao(id,param);
     }
 
 /*******************************************/
@@ -122,7 +122,7 @@ class CPIGScrollBar : public CPIGComponente{
 
     int TrataBotoes(PIG_Evento evento){
         if(botao1 && botao2){
-            if(botao1->TrataEventoMouse(evento) || botao2->TrataEventoMouse(evento)) return PIG_SELECIONADO_TRATADO;
+            if(botao1->TrataEventoMouse(evento) == PIG_SELECIONADO_TRATADO || botao2->TrataEventoMouse(evento) == PIG_SELECIONADO_TRATADO) return PIG_SELECIONADO_TRATADO;
         }
         return PIG_NAO_SELECIONADO;
     }
@@ -241,11 +241,9 @@ public:
     int TrataEvento(PIG_Evento evento){
         if(visivel==false||habilitado==false) return PIG_NAO_SELECIONADO;
         if(evento.tipoEvento == EVENTO_NULO) return PIG_NAO_SELECIONADO;
-
         //if(TrataBotoes(evento) == PIG_SELECIONADO_TRATADO) return PIG_SELECIONADO_TRATADO;
         if(evento.tipoEvento == EVENTO_TECLADO && setasAtivadas) return TrataEventoTeclado(evento);
         if(evento.tipoEvento == EVENTO_MOUSE) return TrataEventoMouse(evento);
-
         return PIG_NAO_SELECIONADO;
     }*/
 
@@ -335,8 +333,9 @@ public:
     int Desenha(){
         if(visivel==false) return -1;
 
-        //SDL_RenderCopyEx(renderer, text, &frames[frameAtual],&dest,-angulo,&pivoRelativo,flip);
         CPIGSprite::Desenha();
+        //SDL_RenderCopyEx(renderer, text, &frames[frameAtual],&dest,-angulo,&pivoRelativo,flip);
+
         if(botao1 && botao2){
             botao1->Desenha();
             botao2->Desenha();

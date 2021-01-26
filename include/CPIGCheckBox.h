@@ -89,15 +89,21 @@ public:
     }
 
     int Desenha(){
-        if (visivel==false) return 0;
+        if (!visivel) return 0;
+
+        DesenhaLabel();
+
+        SDL_Rect r={pos.x,*altJanela-pos.y-alt,larg,alt};
+        SDL_RenderSetClipRect(renderer,&r);
 
         if (text){//se tiver imagem de fundo
             CPIGSprite::Desenha();
         }
-        DesenhaLabel();
 
         for (PIGItemComponente i: itens)
             i->Desenha();
+
+        SDL_RenderSetClipRect(renderer,NULL);
 
         return 1;
     }
@@ -105,6 +111,7 @@ public:
     int TrataEventoMouse(PIG_Evento evento){
         int resp = 0;
         bool mouseOverAntes = mouseOver;
+
         SDL_Point p;
         if (CPIGGerenciadorJanelas::GetJanela(idJanela)->GetUsandoCameraFixa())
             p = CPIGMouse::PegaXYTela();
@@ -149,6 +156,12 @@ public:
 
         return resp;
 
+    }
+
+    void SetDimensoes(int altura,int largura)override{
+        CPIGComponente::SetDimensoes(altura,largura);
+        altMaxima = altura;
+        Move(pos.x,pos.y);
     }
 
 };
