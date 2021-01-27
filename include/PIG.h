@@ -3,23 +3,20 @@
 #include "SDL_image.h"
 #include "SDL_net.h"
 #include "SDL_mixer.h"
+
 #include "PIGTipos.h"
 #include "PIGFuncoesBasicas.h"
 #include "CPIGErros.h"
 
 #include "CPIGRepositorio.h"
-
 #include "CPIGGerenciadorTimers.h"
-
 #include "CPIGAssetLoader.h"
 #include "CPIGOffscreenRenderer.h"
-
 #include "CPIGGerenciadorAudios.h"
 #include "CPIGGerenciadorJanelas.h"
 #include "CPIGGerenciadorSockets.h"
 #include "CPIGGerenciadorFontes.h"
 #include "CPIGGerenciadorSprites.h"
-
 #include "CPIGGerenciadorVideos.h"
 #include "CPIGGerenciadorControles.h"
 #include "CPIGGerenciadorForms.h"
