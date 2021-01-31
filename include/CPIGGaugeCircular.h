@@ -99,7 +99,7 @@ public:
         off = new CPIGOffscreenRenderer(altura,largura,3);
 
         Move(px,py);
-        SetPivo(larg/2,alt/2);
+        SetPivoProporcional({larg/2.0,alt/2.0});
         textGauge = NULL;
         AtualizaTextura();
         crescimentoHorario=true;
@@ -120,7 +120,7 @@ public:
         off = new CPIGOffscreenRenderer(altura,largura,3);
 
         Move(px,py);
-        SetPivo(larg/2,alt/2);
+        SetPivoProporcional({larg/2.0,alt/2.0});
         textGauge = NULL;
         AtualizaTextura();
         crescimentoHorario=true;
@@ -238,7 +238,7 @@ public:
     }
 
     int Desenha(){
-        SDL_Point p = {pivoRelativo.x,pivoRelativo.y};
+        //SDL_Point p = {pivoRelativo.x,pivoRelativo.y};
 
         //vai desenhar a textura de base
         CPIGSprite::Desenha();

@@ -48,12 +48,12 @@ void MoveParticulas(){
 public:
 
     CPIGGeradorParticulas(int idGerador,int maximoParticulas,PIGObjeto objBase, int audioCriacao,int audioEncerramento, bool retiraFundo, PIG_Cor *corFundo, int idJanela)
-        :CPIGObjeto(objBase,1,NULL,idJanela){
+        :CPIGObjeto(idGerador,objBase,1,NULL,idJanela){
         IniciaBase(idGerador,maximoParticulas,audioCriacao,audioEncerramento,corFundo,retiraFundo,idJanela);
     }
 
     CPIGGeradorParticulas(int idGerador,int maximoParticulas,std::string nomeArqImagem,int audioCriacao,int audioEncerramento, bool retiraFundo, PIG_Cor *corFundo, int idJanela)
-        :CPIGObjeto(nomeArqImagem,1,NULL,idJanela){
+        :CPIGObjeto(idGerador,nomeArqImagem,1,NULL,idJanela){
         id = idGerador;
         IniciaBase(idGerador,maximoParticulas,audioCriacao,audioEncerramento,corFundo,retiraFundo,idJanela);
     }

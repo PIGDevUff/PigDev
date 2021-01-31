@@ -240,7 +240,6 @@ void CarregaFramesPorLinhaCursor(int frameInicial, int qtdLinhas, int qtdColunas
     CPIGMouse::CarregaFramesPorLinha(frameInicial,qtdLinhas,qtdColunas);
 }
 
-
 /********************************
 A função CarregaFramesPorColunaCursor() é responsável por subdividir o arquivo de imagem em linhas (de mesmo tamanho) e colunas (de mesmo tamanho).
 Cada subdivisão representará um frame que será automaticamente criado para o cursor do mouse, com numeração incremental a partir do parâmetro "frameInicial".
@@ -255,7 +254,6 @@ void CarregaFramesPorColunaCursor(int frameInicial, int qtdLinhas, int qtdColuna
     CPIGMouse::CarregaFramesPorColuna(frameInicial,qtdLinhas,qtdColunas);
 }
 
-
 /********************************
 A função MudaCursor() é responsável por alterar o cursor atual do mouse por outro já definido (função DefineFrameCursor).
 Parâmetro:
@@ -266,6 +264,18 @@ Se o identifador informado não corresponder a um frame já criado, o valor de ret
 int MudaCursor(int idFrame){
     return CPIGMouse::MudaCursor(idFrame);
 }
+
+
+/********************************
+A função GetEstadoBotaoMouse() é responsável por recuperar o eatado atual de um dos botoes (PIG_MOUSE_DIREITO, PIG_MOUSE_CENTRAL ou PIG_MOUSE_RODINHA) do mouse.
+O valor retornado pode ser PIG_MOUSE_PRESSIONADO ou PIG_MOUSE_LIBERADO.
+Retorno:
+inteiro que indica a o estado atual do botão do mouse solicitado.
+********************************/
+int GetEstadoBotaoMouse(int botao){
+    return CPIGMouse::GetEstadoBotao(botao);
+}
+
 
 /********************************
 Seção de tratamento de janelas
@@ -1526,27 +1536,27 @@ float GetAnguloSprite(int idSprite){
 }
 
 /********************************
-A função SetPivoSprite() define um ponto (X,Y) em relação ao ponto (0,0) do sprite, sobre o qual o sprite será
+A função SetPivoAbsolutoSprite() define um ponto (X,Y) em relação ao ponto (0,0) do sprite, sobre o qual o sprite será
 rotacionado quando a função SetAnguloSprite() for executada.
 Parâmetros:
 idSprite (entrada, passagem por valor): identificador do sprite.
 posicaoX (entrada, passagem por valor): Valor da coordenada X do pivô em relação ao ponto (0,0) do sprite.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y do pivô em relação ao ponto (0,0) do sprite.
 ********************************/
-void SetPivoSprite(int idSprite,int posicaoX,int posicaoY){
-    CPIGGerenciadorSprites::GetSprite(idSprite)->SetPivo(posicaoX,posicaoY);
+void SetPivoAbsolutoSprite(int idSprite,int posicaoX,int posicaoY){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->SetPivoAbsoluto({posicaoX,posicaoY});
 }
 
 /********************************
-A função SetPivoSprite() define um ponto (X,Y) proporcional ao tamanho do sprite, sobre o qual o sprite será
+A função SetPivoProporcionalSprite() define um ponto (X,Y) proporcional ao tamanho do sprite, sobre o qual o sprite será
 rotacionado quando a função SetAnguloSprite() for executada.
 Parâmetros:
 idSprite (entrada, passagem por valor): identificador do sprite.
 relX (entrada, passagem por valor): porcentagem da largura do sprite onde ficará o pivô.
 relY (entrada, passagem por valor): porcentagem da altura do sprite onde ficará o pivô.
 ********************************/
-void SetPivoSprite(int idSprite,float relX,float relY){
-    CPIGGerenciadorSprites::GetSprite(idSprite)->SetPivo(relX,relY);
+void SetPivoProporcionalSprite(int idSprite,float relX,float relY){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->SetPivoProporcional({relX,relY});
 }
 
 /********************************
@@ -1652,6 +1662,17 @@ Se o identifador do frame informado não corresponder a um frame já criado, o val
 ********************************/
 int MudaFrameSprite(int idSprite, int idFrame){
     return CPIGGerenciadorSprites::GetSprite(idSprite)->MudaFrameAtual(idFrame);
+}
+
+/********************************
+A função GetFrameAtualSprite() recupera o valor do frame atual exibido no sprite.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite.
+Retorno:
+Número do frame atual do sprite.
+********************************/
+int GetFrameAtualSprite(int idSprite){
+    return CPIGGerenciadorSprites::GetSprite(idSprite)->GetFrameAtual();
 }
 
 /********************************
@@ -1809,7 +1830,7 @@ repeticao (entrada, passagem por valor): tempo (em segundos) entre a chamada ant
 param (entrada, passagem por referência): ponteiro genérico para um valor que será utilizado na chamada da função.
 ********************************/
 void InsereAcaoSprite(int idSprite,double tempo,double repeticao,PIG_FuncaoSimples acao,void *param){
-    CPIGGerenciadorSprites::GetSprite(idSprite)->InsereAcao(tempo,repeticao,acao,idSprite,param);
+    CPIGGerenciadorSprites::GetSprite(idSprite)->InsereAcao(tempo,repeticao,acao,param);
 }
 
 
@@ -1858,6 +1879,16 @@ int CriaObjetoOffScreen(int retiraFundo=1,PIG_Cor *corFundo=NULL){
     return CPIGGerenciadorSprites::CriaObjetoOffScreen(jogo->GetOffScreenRender(),retiraFundo,corFundo);
 }
 
+/********************************
+A função GetFrameAtualObjeto() recupera o valor do frame atual exibido no objeto.
+Parâmetros:
+idObjeto (entrada, passagem por valor): identificador do objeto.
+Retorno:
+Número do frame atual do objeto.
+********************************/
+int GetFrameAtualObjeto(int idObjeto){
+    return CPIGGerenciadorSprites::GetObjeto(idObjeto)->GetFrameAtual();
+}
 
 /********************************
 A função DestroiObjeto() é responsável por eliminar o objeto em questão do jogo.
@@ -2079,27 +2110,27 @@ float GetAnguloObjeto(int idObjeto){
 }
 
 /********************************
-A função SetPivoObjeto() define um ponto (X,Y) em relação ao ponto (0,0) do objeto, sobre o qual o objeto será
+A função SetPivoAbsolutoObjeto() define um ponto (X,Y) em relação ao ponto (0,0) do objeto, sobre o qual o objeto será
 rotacionado quando a função SetAnguloObjeto() for executada.
 Parâmetros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
 posicaoX (entrada, passagem por valor): Valor da coordenada X do pivô em relação ao ponto (0,0) do objeto.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y do pivô em relação ao ponto (0,0) do objeto.
 ********************************/
-void SetPivoObjeto(int idObjeto,int posicaoX,int posicaoY){
-    CPIGGerenciadorSprites::GetObjeto(idObjeto)->SetPivo(posicaoX,posicaoY);
+void SetPivoAbsolutoObjeto(int idObjeto,int posicaoX,int posicaoY){
+    CPIGGerenciadorSprites::GetObjeto(idObjeto)->SetPivoAbsoluto({posicaoX,posicaoY});
 }
 
 /********************************
-A função SetPivoObjeto() define um ponto (X,Y) proporcional ao tamanho do objeto, sobre o qual o objeto será
+A função SetPivoProporcionalObjeto() define um ponto (X,Y) proporcional ao tamanho do objeto, sobre o qual o objeto será
 rotacionado quando a função SetAnguloObjeto() for executada.
 Parâmetros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
 relX (entrada, passagem por valor): porcentagem da largura do objeto onde ficará o pivô.
 relY (entrada, passagem por valor): porcentagem da altura do objeto onde ficará o pivô.
 ********************************/
-void SetPivoObjeto(int idObjeto,float relX,float relY){
-    CPIGGerenciadorSprites::GetObjeto(idObjeto)->SetPivo(relX,relY);
+void SetPivoProporcionalObjeto(int idObjeto,float relX,float relY){
+    CPIGGerenciadorSprites::GetObjeto(idObjeto)->SetPivoProporcional({relX,relY});
 }
 
 /********************************
@@ -2477,7 +2508,7 @@ repeticao (entrada, passagem por valor): tempo (em segundos) entre a chamada ant
 param (entrada, passagem por referência): ponteiro genérico para um valor que será utilizado na chamada da função.
 ********************************/
 void InsereAcaoObjeto(int idObjeto,double tempo,double repeticao,PIG_FuncaoSimples acao,void *param){
-    CPIGGerenciadorSprites::GetObjeto(idObjeto)->InsereAcao(tempo,repeticao,acao,idObjeto,param);
+    CPIGGerenciadorSprites::GetObjeto(idObjeto)->InsereAcao(tempo,repeticao,acao,param);
 }
 
 
@@ -2669,27 +2700,27 @@ void MudaEscalaParticulas(int idGerador,int altura, int largura){
 }
 
 /********************************
-A função SetPivoParticulas() determina o ponto a ser considerado como pivo da partícula.
+A função SetPivoAbsolutoParticulas() determina o ponto a ser considerado como pivo da partícula.
 Somente as partículas criadas posteriormente terão o pivô especificado.
 Parâmetros:
 idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da função CriaGeradorParticulas().
 posicaoX (entrada, passagem por valor): Valor da coordenada X do pivô em relação ao ponto (0,0) da partícula.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y do pivô em relação ao ponto (0,0) da partícula.
 ********************************/
-void SetPivoParticulas(int idGerador,int posicaoX,int posicaoY){
-    CPIGGerenciadorSprites::GetGerador(idGerador)->SetPivo(posicaoX,posicaoY);
+void SetPivoAbsolutoParticulas(int idGerador,int posicaoX,int posicaoY){
+    CPIGGerenciadorSprites::GetGerador(idGerador)->SetPivoAbsoluto({posicaoX,posicaoY});
 }
 
 /********************************
-A função SetPivoSprite() define um ponto (X,Y) proporcional ao tamanho da partícula, sobre o qual o partícula será
+A função SetPivoProporcionalParticula() define um ponto (X,Y) proporcional ao tamanho da partícula, sobre o qual o partícula será
 rotacionado quando a função SetAnguloParticula() for executada.
 Parâmetros:
 idGerador (entrada, passagem por valor): identificador do gerador de partículas.
 relX (entrada, passagem por valor): porcentagem da largura da partícula onde ficará o pivô.
 relY (entrada, passagem por valor): porcentagem da altura da partícula onde ficará o pivô.
 ********************************/
-void SetPivoParticulas(int idGerador,float relX,float relY){
-    CPIGGerenciadorSprites::GetGerador(idGerador)->SetPivo(relX,relY);
+void SetPivoProporcionalParticulas(int idGerador,float relX,float relY){
+    CPIGGerenciadorSprites::GetGerador(idGerador)->SetPivoProporcional({relX,relY});
 }
 
 /********************************
@@ -3010,6 +3041,17 @@ void MudaModoAnimacao(int idAnimacao,int codigoModo,int indiceFrame,int forcado=
 }
 
 /********************************
+A função GetFrameAtualAnimacao() recupera o valor do frame atual exibido na animação.
+Parâmetros:
+idAnimacao (entrada, passagem por valor): identificador da animação.
+Retorno:
+Número do frame atual da animação.
+********************************/
+int GetFrameAtualAnimacao(int idAnimacao){
+    return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetFrameAtual();
+}
+
+/********************************
 A função ColisaoAnimacoes() indica se houve colisão entre duas animações, de forma semelhante aos objetos.
 Parâmetros:
 idAnimacao1 (entrada, passagem por valor): identificador da primeira animação.
@@ -3198,27 +3240,27 @@ double GetAnguloAnimacao(int idAnimacao){
 }
 
 /********************************
-A função SetPivoAnimacao() define um ponto (X,Y) em relação ao ponto (0,0) da animação, sobre o qual a animação será
+A função SetPivoAbsolutoAnimacao() define um ponto (X,Y) em relação ao ponto (0,0) da animação, sobre o qual a animação será
 rotacionado quando a função SetAnguloAnimacao() for executada.
 Parâmetros:
 idAnimacao (entrada, passagem por valor): identificador da animação.
 posicaoX (entrada, passagem por valor): Valor da coordenada X do pivô em relação ao ponto (0,0) da animação.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y do pivô em relação ao ponto (0,0) da animação.
 ********************************/
-void SetPivoAnimacao(int idAnimacao,int posicaoX,int posicaoY){
-    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetPivo(posicaoX,posicaoY);
+void SetPivoAbsolutoAnimacao(int idAnimacao,int posicaoX,int posicaoY){
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetPivoAbsoluto({posicaoX,posicaoY});
 }
 
 /********************************
-A função SetPivoAnimacao() define um ponto (X,Y) proporcional ao tamanho da animação, sobre o qual a animação será
+A função SetPivoProporcionalAnimacao() define um ponto (X,Y) proporcional ao tamanho da animação, sobre o qual a animação será
 rotacionado quando a função SetAnguloAnimacao() for executada.
 Parâmetros:
 idAnimacao (entrada, passagem por valor): identificador da animação.
 relX (entrada, passagem por valor): porcentagem da largura da animação onde ficará o pivô.
 relY (entrada, passagem por valor): porcentagem da altura da animação onde ficará o pivô.
 ********************************/
-void SetPivoAnimacao(int idAnimacao,float relX,float relY){
-    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetPivo(relX,relY);
+void SetPivoProporcionalAnimacao(int idAnimacao,float relX,float relY){
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetPivoProporcional({relX,relY});
 }
 
 /********************************
@@ -3511,7 +3553,7 @@ repeticao (entrada, passagem por valor): tempo (em segundos) entre a chamada ant
 param (entrada, passagem por referência): ponteiro genérico para um valor que será utilizado na chamada da função.
 ********************************/
 void InsereAcaoAnimacao(int idAnimacao,double tempo,double repeticao,PIG_FuncaoSimples acao,void *param){
-    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->InsereAcao(tempo,repeticao,acao,idAnimacao,param);
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->InsereAcao(tempo,repeticao,acao,param);
 }
 
 
@@ -4403,27 +4445,27 @@ PIG_Flip GetFlipVideo(int idVideo){
 }
 
 /********************************
-A função SetPivoVideo() define um ponto (X,Y) em relação ao ponto (0,0) do vídeo, sobre o qual o video será
+A função SetPivoAbsolutoVideo() define um ponto (X,Y) em relação ao ponto (0,0) do vídeo, sobre o qual o video será
 rotacionado quando a função SetAnguloVideo() for executada.
 Parâmetros:
 idVideo (entrada, passagem por valor): identificador do vídeo.
 posicaoX (entrada, passagem por valor): Valor da coordenada X do pivô em relação ao ponto (0,0) do vídeo.
 posicaoY (entrada, passagem por valor): Valor da coordenada Y do pivô em relação ao ponto (0,0) do vídeo.
 ********************************/
-void SetPivoVideo(int idVideo, int posicaoX,int posicaoY){
-    CPIGGerenciadorVideos::GetVideo(idVideo)->SetPivo(posicaoX,posicaoY);
+void SetPivoAbsolutoVideo(int idVideo, int posicaoX,int posicaoY){
+    CPIGGerenciadorVideos::GetVideo(idVideo)->SetPivoAbsoluto({posicaoX,posicaoY});
 }
 
 /********************************
-A função SetPivoObjeto() define um ponto relativo (X,Y) em relação ao video (0,0) e ao tamanho do vídeo, sobre o qual o vídeo será
+A função SetPivoProporcionalVideo() define um ponto relativo (X,Y) em relação ao video (0,0) e ao tamanho do vídeo, sobre o qual o vídeo será
 rotacionado quando a função SetAnguloVideo() for executada.
 Parâmetros:
 idVideo (entrada, passagem por valor): identificador do vídeo.
 relX (entrada, passagem por valor): porcentagem da largura do vídeo onde ficará o pivô.
 relY (entrada, passagem por valor): porcentagem da altura do vídeo onde ficará o pivô.
 ********************************/
-void SetPivoVideo(int idVideo, float relX,float relY){
-    CPIGGerenciadorVideos::GetVideo(idVideo)->SetPivo(relX,relY);
+void SetPivoProporcionalVideo(int idVideo, float relX,float relY){
+    CPIGGerenciadorVideos::GetVideo(idVideo)->SetPivoProporcional({relX,relY});
 }
 
 /********************************

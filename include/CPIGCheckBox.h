@@ -100,10 +100,12 @@ public:
             CPIGSprite::Desenha();
         }
 
+        SDL_RenderSetClipRect(renderer,NULL);
+
         for (PIGItemComponente i: itens)
             i->Desenha();
 
-        SDL_RenderSetClipRect(renderer,NULL);
+
 
         return 1;
     }

@@ -111,11 +111,13 @@ protected:
 
 public:
 
-    CPIGComponente(int idComponente,int px,int py, int altura, int largura, int janela=0):CPIGSprite(altura, largura, "",janela){
+    CPIGComponente(int idComponente,int px,int py, int altura, int largura, int janela=0)
+    :CPIGSprite(-1,altura, largura, "",janela){
         IniciaBase(idComponente,px,py);
     }
 
-    CPIGComponente(int idComponente,int px,int py, int altura, int largura, std::string nomeArq,int retiraFundo=1,int janela=0):CPIGSprite(nomeArq,retiraFundo,NULL,janela){
+    CPIGComponente(int idComponente,int px,int py, int altura, int largura, std::string nomeArq,int retiraFundo=1,int janela=0)
+    :CPIGSprite(-1,nomeArq,retiraFundo,NULL,janela){
         IniciaBase(idComponente,px,py);
         CPIGSprite::SetDimensoes(altura,largura);
     }

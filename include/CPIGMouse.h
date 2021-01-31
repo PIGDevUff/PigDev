@@ -65,6 +65,14 @@ public:
         return 1;
     }
 
+    static int GetEstadoBotao(int botao){
+        switch(botao){
+        case PIG_MOUSE_DIREITO: return estadoBotaoDireito;
+        case PIG_MOUSE_CENTRAL: return estadoBotaoCentral;
+        case PIG_MOUSE_ESQUERDO: return estadoBotaoEsquerdo;
+        }
+    }
+
     static int MudaCursor(int indice){
         if (cursores)
             return cursores->MudaFrameAtual(indice);
@@ -83,7 +91,7 @@ public:
 
     static void CarregaCursor(std::string nomeArquivo,int idJanela=0){
         if (cursores) delete cursores;
-        cursores = new CPIGSprite(nomeArquivo,idJanela);
+        cursores = new CPIGSprite(-1,nomeArquivo,idJanela);
         cursores->SetDimensoes(32,32);
     }
 

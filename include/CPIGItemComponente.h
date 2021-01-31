@@ -28,7 +28,7 @@ private:
 
     void IniciaBase(std::string labelItem,std::string arqImagemIcone="",int alturaIcone=0,int larguraIcone=0){
         if (arqImagemIcone!=""){
-            icone = new CPIGSprite(arqImagemIcone,1,NULL,idJanela);
+            icone = new CPIGSprite(-1,arqImagemIcone,1,NULL,idJanela);
             icone->SetDimensoes(alturaIcone,larguraIcone);
             AlinhaIconeEsquerda();
             posIcone = PIG_COMPONENTE_ESQ_CENTRO;

@@ -46,10 +46,7 @@ public:
     void Reinicia(bool congelado){
         pausa = inicio = std::chrono::system_clock::now();
         totalPausa = 0;
-        pausado = false;
-        if (congelado){
-            Pausa();
-        }
+        pausado = congelado;
     }
 
     CPIGTimer* Copia(){

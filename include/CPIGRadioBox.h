@@ -97,10 +97,10 @@ public:
         if (text)//se tiver imagem de fundo
             CPIGSprite::Desenha();
 
+        SDL_RenderSetClipRect(renderer,NULL);
+
         for (PIGItemComponente i: itens)
             i->Desenha();
-
-        SDL_RenderSetClipRect(renderer,NULL);
 
         return 1;
     }

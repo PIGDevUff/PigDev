@@ -143,12 +143,12 @@ public:
         SDL_Rect r = {pos.x,*altJanela-pos.y-alt,larg,alt};
         SDL_RenderSetClipRect(renderer,&r);
 
-        for (PIGItemComponente i: itens)
-            i->Desenha();
-
         DesenhaRetanguloMarcacao();
 
         SDL_RenderSetClipRect(renderer,NULL);
+
+        for (PIGItemComponente i: itens)
+            i->Desenha();
 
         return 1;
     }

@@ -2,8 +2,8 @@
 Principais definições utilizadas pela PIG
 ********************************/
 
-#define PIG_ALT_TELA                    480
-#define PIG_LARG_TELA                   640
+#define PIG_ALT_TELA                    600
+#define PIG_LARG_TELA                   800
 
 #define PIG_AFASTAMENTO_MINIMO          0.1
 #define PIG_AFASTAMENTO_MAXIMO          100.0
@@ -300,7 +300,7 @@ typedef struct PIG_Evento{
 #define PIG_FLIP_NENHUM             SDL_FLIP_NONE
 #define PIG_FLIP_HORIZONTAL         SDL_FLIP_HORIZONTAL
 #define PIG_FLIP_VERTICAL           SDL_FLIP_VERTICAL
-#define PIG_FLIP_HORIZ_VERT         FLIP_HORIZONTAL|FLIP_VERTICAL
+#define PIG_FLIP_HORIZ_VERT         (PIG_Flip)(PIG_FLIP_HORIZONTAL|PIG_FLIP_VERTICAL)
 
 //Seção de estilos
 

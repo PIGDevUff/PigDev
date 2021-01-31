@@ -876,7 +876,7 @@ void DestroiVideoState(){
 public:
 
 CPIGVideo(std::string nomeArq,int idJanela=0):
-    CPIGSprite(*CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura(),CPIGGerenciadorJanelas::GetJanela(idJanela)->GetLargura(),nomeArq,idJanela){
+    CPIGSprite(-1,*CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura(),CPIGGerenciadorJanelas::GetJanela(idJanela)->GetLargura(),nomeArq,idJanela){
     volume = 0.5;
     janelaAtual = CPIGGerenciadorJanelas::GetJanela(idJanela);
 
@@ -1019,10 +1019,10 @@ int Desenha(){
     if (estado==PIG_VIDEO_PARADO) return 1;
     VideoRefreshTimer();
     //printf("1");
-    SDL_Point p = {pivoRelativo.x,pivoRelativo.y};
+    //SDL_Point p = {pivoAbs.x,pivoAbs.y};
     SDL_LockMutex(mutexTex);
     if (is->pictq[is->pictqRindex].texture)
-        SDL_RenderCopyEx(janelaAtual->GetRenderer(), is->pictq[is->pictqRindex].texture, NULL, &dest,-angulo,&p,flip);
+        SDL_RenderCopyEx(janelaAtual->GetRenderer(), is->pictq[is->pictqRindex].texture, NULL, &dest,-angulo,&pivoInteiro,flip);
     SDL_UnlockMutex(mutexTex);
     return 0;
 }
@@ -1122,7 +1122,7 @@ void OcupaJanelaInteira(){
     pos = {0,0};
     dest.x = 0;
     dest.y = *altJanela-pos.y-alt;
-    pivoRelativo = {0,0};
+    pivoAbs = {0,alt};
     dest.h = alt = *janelaAtual->GetAltura();
     dest.w = larg = janelaAtual->GetLargura();
     flip = PIG_FLIP_NENHUM;

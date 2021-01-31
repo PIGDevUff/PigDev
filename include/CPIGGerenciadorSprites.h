@@ -48,47 +48,58 @@ public:
     }
 
     static int CriaSprite(std::string nomeArquivoBMP,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
-        return sprites->Insere(new CPIGSprite(nomeArquivoBMP,retiraFundo,corFundo,idJanela));
+        int id = sprites->ProxID();
+        return sprites->Insere(new CPIGSprite(id,nomeArquivoBMP,retiraFundo,corFundo,idJanela));
     }
 
     static int CriaSprite(int idSpriteBase,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
-        return sprites->Insere(new CPIGSprite(GetSprite(idSpriteBase),retiraFundo,corFundo,idJanela));
+        int id = sprites->ProxID();
+        return sprites->Insere(new CPIGSprite(id,GetSprite(idSpriteBase),retiraFundo,corFundo,idJanela));
     }
 
     static int CriaSpriteOffScreen(PIGOffscreenRenderer offRenderer,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
-        return sprites->Insere(new CPIGSprite(offRenderer,retiraFundo,corFundo,idJanela));
+        int id = sprites->ProxID();
+        return sprites->Insere(new CPIGSprite(id,offRenderer,retiraFundo,corFundo,idJanela));
     }
 
     static int CriaObjeto(std::string nomeArquivoBMP,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
-        return objetos->Insere(new CPIGObjeto(nomeArquivoBMP,retiraFundo,corFundo,idJanela));
+        int id = objetos->ProxID();
+        return objetos->Insere(new CPIGObjeto(id,nomeArquivoBMP,retiraFundo,corFundo,idJanela));
     }
 
     static int CriaObjeto(int idObjetoBase,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
-        return objetos->Insere(new CPIGObjeto(GetObjeto(idObjetoBase),retiraFundo,corFundo,idJanela));
+        int id = objetos->ProxID();
+        return objetos->Insere(new CPIGObjeto(id,GetObjeto(idObjetoBase),retiraFundo,corFundo,idJanela));
     }
 
     static int CriaObjetoOffScreen(PIGOffscreenRenderer offRenderer,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
-        return objetos->Insere(new CPIGObjeto(offRenderer,retiraFundo,corFundo,idJanela));
+        int id = objetos->ProxID();
+        return objetos->Insere(new CPIGObjeto(id,offRenderer,retiraFundo,corFundo,idJanela));
     }
 
     static int CriaAnimacao(std::string nomeArquivoBMP,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
-        return animacoes->Insere(new CPIGAnimacao(nomeArquivoBMP,0,retiraFundo,corFundo,idJanela));
+        int id = animacoes->ProxID();
+        return animacoes->Insere(new CPIGAnimacao(id,nomeArquivoBMP,0,retiraFundo,corFundo,idJanela));
     }
 
     static int CriaAnimacao(int idAnimacaoBase,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
-        return animacoes->Insere(new CPIGAnimacao(GetAnimacao(idAnimacaoBase),0,retiraFundo,corFundo,idJanela));
+        int id = animacoes->ProxID();
+        return animacoes->Insere(new CPIGAnimacao(id,GetAnimacao(idAnimacaoBase),0,retiraFundo,corFundo,idJanela));
     }
 
     static int CriaGeradorParticulas(int maxParticulas,std::string nomeArquivoBMP,int audioCriacao, int audioEncerramento, bool retiraFundo=true, PIG_Cor *corFundo=NULL, int idJanela=0){
-        return geradores->Insere(new CPIGGeradorParticulas(1,maxParticulas,nomeArquivoBMP,audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela));
+        int id = geradores->ProxID();
+        return geradores->Insere(new CPIGGeradorParticulas(id,maxParticulas,nomeArquivoBMP,audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela));
     }
 
     static int CriaGeradorParticulas(int maxParticulas,PIGAnimacao animacaoBase,int audioCriacao, int audioEncerramento, bool retiraFundo=true, PIG_Cor *corFundo=NULL, int idJanela=0){
-        return geradores->Insere(new CPIGGeradorParticulas(1,maxParticulas,animacaoBase,audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela));
+        int id = geradores->ProxID();
+        return geradores->Insere(new CPIGGeradorParticulas(id,maxParticulas,animacaoBase,audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela));
     }
 
     static int CriaGeradorParticulas(int maxParticulas,PIGObjeto objetoBase,int audioCriacao, int audioEncerramento, bool retiraFundo=true, PIG_Cor *corFundo=NULL, int idJanela=0){
-        return geradores->Insere(new CPIGGeradorParticulas(1,maxParticulas,objetoBase,audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela));
+        int id = geradores->ProxID();
+        return geradores->Insere(new CPIGGeradorParticulas(id,maxParticulas,objetoBase,audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela));
     }
 
     static void DestroiSprite(int idSprite){
@@ -111,7 +122,9 @@ public:
         int id;
         std::unordered_map<std::string, int>::iterator it = spritesSimples.find(nomeArq);
         if (it == spritesSimples.end()){//não achou
-            id = sprites->Insere(new CPIGSprite(nomeArq,retiraFundo,NULL,idJanela));
+            int next = sprites->ProxID();
+            id = sprites->Insere(new CPIGSprite(next,nomeArq,retiraFundo,NULL,idJanela));
+            spritesSimples[nomeArq] = id;
         }else{
             id = it->second;
         }

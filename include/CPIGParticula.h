@@ -21,7 +21,7 @@ public:
     bool viva;
 
     CPIGParticula(PIGObjeto objBase,int vida,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0):
-        CPIGObjeto(objBase,retiraFundo,corFundo,idJanela){
+        CPIGObjeto(-1,objBase,retiraFundo,corFundo,idJanela){
         hp = vida;
         espacoVida = {INT_MIN,INT_MIN,INT_MAX,INT_MAX};
         tempoVida = 9999999;

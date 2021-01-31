@@ -163,7 +163,7 @@ public:
         aux.y = dest.y+yBarra*scalaY;
 
         //base
-        SDL_Point p = {pivoRelativo.x,pivoRelativo.y};
+        //SDL_Point p = {pivoRelativo.x,pivoRelativo.y};
         frames[frameAtual] = frameBase;
         //SDL_RenderCopyEx(renderer, text, &frameBase,&dest,-angulo,&p,flip); //Desenha Barra
         CPIGSprite::Desenha();

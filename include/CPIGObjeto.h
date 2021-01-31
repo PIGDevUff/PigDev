@@ -58,29 +58,30 @@ void DesenhaCircular(PIG_Cor cor) {
 
     SDL_RenderDrawLine(
         renderer,
-        pos.x + pivoRelativo.x - raio, *altJanela - (pos.y + pivoRelativo.y),
-        pos.x + pivoRelativo.x, *altJanela - (pos.y + pivoRelativo.y + raio));
+        pos.x + pivoAbs.x - raio, *altJanela - (pos.y + pivoAbs.y),
+        pos.x + pivoAbs.x, *altJanela - (pos.y + pivoAbs.y + raio));
     SDL_RenderDrawLine(
         renderer,
-        pos.x + pivoRelativo.x, *altJanela - (pos.y + pivoRelativo.y + raio),
-        pos.x + pivoRelativo.x + raio, *altJanela - (pos.y + pivoRelativo.y));
+        pos.x + pivoAbs.x, *altJanela - (pos.y + pivoAbs.y + raio),
+        pos.x + pivoAbs.x + raio, *altJanela - (pos.y + pivoAbs.y));
     SDL_RenderDrawLine(
         renderer,
-        pos.x + pivoRelativo.x + raio, *altJanela - (pos.y + pivoRelativo.y),
-        pos.x + pivoRelativo.x, *altJanela - (pos.y + pivoRelativo.y - raio));
+        pos.x + pivoAbs.x + raio, *altJanela - (pos.y + pivoAbs.y),
+        pos.x + pivoAbs.x, *altJanela - (pos.y + pivoAbs.y - raio));
     SDL_RenderDrawLine(
         renderer,
-        pos.x + pivoRelativo.x, *altJanela - (pos.y + pivoRelativo.y - raio),
-        pos.x + pivoRelativo.x - raio, *altJanela - (pos.y + pivoRelativo.y));
+        pos.x + pivoAbs.x, *altJanela - (pos.y + pivoAbs.y - raio),
+        pos.x + pivoAbs.x - raio, *altJanela - (pos.y + pivoAbs.y));
 
 }
 
 void AtualizaBB() {
-    PIGPonto2D pivoAbs;
+    PIGPonto2D pivoAux = {pivoAbs.x + pos.x, -pivoAbs.y + pos.y + alt};
 
     //SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
-    pivoAbs.x = pivoRelativo.x + pos.x;
-    pivoAbs.y = -pivoRelativo.y + pos.y + alt; //inverte o eixo Y, pois o pivoRel considera o eixo Y aumentando para baixo
+    //pivoAux.x = pivoRelativo.x + pos.x;
+    //pivoAux.y = -pivoRelativo.y + pos.y + alt; //inverte o eixo Y, pois o pivoRel considera o eixo Y aumentando para baixo
+
     double angRad = -angulo * M_PI / 180.0;
     double seno = sin(angRad);
     double cosseno = cos(angRad);
@@ -91,17 +92,17 @@ void AtualizaBB() {
 
     //vetor (Rx,Ry) � a resposta do vetor (Vx,Vy) rotacionado em ang
 
-    bb[0].x = (pos.x - pivoAbs.x) * cosseno + (pos.y - pivoAbs.y) * seno + pivoAbs.x;
-    bb[0].y = (pos.y - pivoAbs.y) * cosseno - (pos.x - pivoAbs.x) * seno + pivoAbs.y;
+    bb[0].x = (pos.x - pivoAux.x) * cosseno + (pos.y - pivoAux.y) * seno + pivoAux.x;
+    bb[0].y = (pos.y - pivoAux.y) * cosseno - (pos.x - pivoAux.x) * seno + pivoAux.y;
 
-    bb[1].x = (pos.x + larg - pivoAbs.x) * cosseno + (pos.y - pivoAbs.y) * seno + pivoAbs.x;
-    bb[1].y = (pos.y - pivoAbs.y) * cosseno - (pos.x + larg - pivoAbs.x) * seno + pivoAbs.y;
+    bb[1].x = (pos.x + larg - pivoAux.x) * cosseno + (pos.y - pivoAux.y) * seno + pivoAux.x;
+    bb[1].y = (pos.y - pivoAux.y) * cosseno - (pos.x + larg - pivoAux.x) * seno + pivoAux.y;
 
-    bb[2].x = (pos.x + larg - pivoAbs.x) * cosseno + (pos.y + alt - pivoAbs.y) * seno + pivoAbs.x;
-    bb[2].y = (pos.y + alt - pivoAbs.y) * cosseno - (pos.x + larg - pivoAbs.x) * seno + pivoAbs.y;
+    bb[2].x = (pos.x + larg - pivoAux.x) * cosseno + (pos.y + alt - pivoAux.y) * seno + pivoAux.x;
+    bb[2].y = (pos.y + alt - pivoAux.y) * cosseno - (pos.x + larg - pivoAux.x) * seno + pivoAux.y;
 
-    bb[3].x = (pos.x - pivoAbs.x) * cosseno + (pos.y + alt - pivoAbs.y) * seno + pivoAbs.x;
-    bb[3].y = (pos.y + alt - pivoAbs.y) * cosseno - (pos.x - pivoAbs.x) * seno + pivoAbs.y;
+    bb[3].x = (pos.x - pivoAux.x) * cosseno + (pos.y + alt - pivoAux.y) * seno + pivoAux.x;
+    bb[3].y = (pos.y + alt - pivoAux.y) * cosseno - (pos.x - pivoAux.x) * seno + pivoAux.y;
 
     //printf("bb %d,%d %d,%d, %d,%d %d,%d\n",bb[0].x,bb[0].y,bb[1].x,bb[1].y,bb[2].x,bb[2].y,bb[3].x,bb[3].y);
 }
@@ -109,7 +110,7 @@ void AtualizaBB() {
 void AtualizaVertices() {
     double _angulo = M_PI * angulo / 180.0;
 
-    SDL_Point pivo = {pivoRelativo.x + pos.x, -pivoRelativo.y + pos.y + alt};
+    SDL_Point pivo = {pivoAbs.x + pos.x, -pivoAbs.y + pos.y + alt};
 
     for (int i = 0; i < vertices.size(); i++) {
         vertices[i] = {verticesOriginais[i].x + pos.x, verticesOriginais[i].y + pos.y};
@@ -132,7 +133,7 @@ void Atualiza(){
 
 bool ColisaoCirculoPoligono(std::vector<PIGPonto2D> vertices) {
     for(auto vertice : vertices) {
-        if(PIGDistancia({pos.x + pivoRelativo.x, pos.y + pivoRelativo.y}, vertice) <= raio) {
+        if(PIGDistancia({pos.x + pivoAbs.x, pos.y + pivoAbs.y}, vertice) <= raio) {
             return true;
         }
     }
@@ -144,18 +145,18 @@ bool ColisaoCirculoPoligono(std::vector<PIGPonto2D> vertices) {
 
         float mPoligono = ((float)vertices[f].y - vertices[i].y) / ((float)vertices[f].x - vertices[i].x);
 
-        if(mPoligono == 0 && PIGValorEntre((pos.x + pivoRelativo.x), vertices[i].x, vertices[f].x) && PIGDistancia({(pos.x + pivoRelativo.x), vertices[i].y}, {(pos.x + pivoRelativo.x), (pos.y + pivoRelativo.y)}) <= raio) {
+        if(mPoligono == 0 && PIGValorEntre((pos.x + pivoAbs.x), vertices[i].x, vertices[f].x) && PIGDistancia({(pos.x + pivoAbs.x), vertices[i].y}, {(pos.x + pivoAbs.x), (pos.y + pivoAbs.y)}) <= raio) {
             return true;
-        } else if(std::isinf(mPoligono) && PIGValorEntre((pos.y + pivoRelativo.y), vertices[i].y, vertices[f].y) && PIGDistancia({vertices[i].x, (pos.y + pivoRelativo.y)}, {(pos.x + pivoRelativo.x), (pos.y + pivoRelativo.y)}) <= raio) {
+        } else if(std::isinf(mPoligono) && PIGValorEntre((pos.y + pivoAbs.y), vertices[i].y, vertices[f].y) && PIGDistancia({vertices[i].x, (pos.y + pivoAbs.y)}, {(pos.x + pivoAbs.x), (pos.y + pivoAbs.y)}) <= raio) {
             return true;
         } else {
 
             float mCirculo  = -1 / mPoligono;
 
-            float xProxCentro = ((mPoligono * ((float)vertices[i].x)) - (mCirculo * ((float)pos.x + pivoRelativo.x)) + ((float)pos.y + pivoRelativo.y) - ((float)vertices[i].y))/(mPoligono - mCirculo);
+            float xProxCentro = ((mPoligono * ((float)vertices[i].x)) - (mCirculo * ((float)pos.x + pivoAbs.x)) + ((float)pos.y + pivoAbs.y) - ((float)vertices[i].y))/(mPoligono - mCirculo);
             float yProxCentro = mPoligono * (xProxCentro - ((float)vertices[i].x)) + ((float)vertices[i].y);
 
-            if(PIGDistancia({pos.x + pivoRelativo.x, pos.y + pivoRelativo.y}, {(int)xProxCentro, (int)yProxCentro}) <= raio && PIGValorEntre((int)xProxCentro, vertices[i].x, vertices[f].x)) return true;
+            if(PIGDistancia({pos.x + pivoAbs.x, pos.y + pivoAbs.y}, {(int)xProxCentro, (int)yProxCentro}) <= raio && PIGValorEntre((int)xProxCentro, vertices[i].x, vertices[f].x)) return true;
 
             i = (i + 1) % vertices.size();
         }
@@ -167,20 +168,20 @@ bool ColisaoCirculoPoligono(std::vector<PIGPonto2D> vertices) {
 
 public:
 
-CPIGObjeto(std::string nomeArquivo, int retiraFundo = 1, PIG_Cor *corFundo = NULL, int janela = 0)
-: CPIGSprite(nomeArquivo, retiraFundo, corFundo, janela){
+CPIGObjeto(int idObjeto,std::string nomeArquivo, int retiraFundo = 1, PIG_Cor *corFundo = NULL, int janela = 0)
+: CPIGSprite(idObjeto,nomeArquivo, retiraFundo, corFundo, janela){
     modo = PIG_COLISAO_OOBB;
     bbAlterado = true;
 }
 
-CPIGObjeto(PIGOffscreenRenderer offRender, int retiraFundo = 1, PIG_Cor *corFundo = NULL, int janela = 0)
-: CPIGSprite(offRender, retiraFundo, corFundo, janela){
+CPIGObjeto(int idObjeto,PIGOffscreenRenderer offRender, int retiraFundo = 1, PIG_Cor *corFundo = NULL, int janela = 0)
+: CPIGSprite(idObjeto,offRender, retiraFundo, corFundo, janela){
     modo = PIG_COLISAO_OOBB;
     bbAlterado = true;
 }
 
-CPIGObjeto(CPIGObjeto *objBase, int retiraFundo = 1, PIG_Cor *corFundo = NULL, int janela = 0)
-: CPIGSprite(objBase, retiraFundo, corFundo, janela){
+CPIGObjeto(int idObjeto,CPIGObjeto *objBase, int retiraFundo = 1, PIG_Cor *corFundo = NULL, int janela = 0)
+: CPIGSprite(idObjeto,objBase, retiraFundo, corFundo, janela){
     SetModoColisao(objBase->modo);
     SetRaioColisaoCircular(objBase->raio);
     SetVertices(objBase->vertices);
@@ -437,7 +438,7 @@ bool ColisaoCircular(CPIGObjeto *outro) {
     PIGPonto2D outroPivo = outro->GetPivo();
     PIGPonto2D outroPos = outro->GetXY();
 
-    return PIGDistancia({outroPos.x + outroPivo.x, outroPos.y + outroPivo.y}, {pos.x + pivoRelativo.x, pos.y + pivoRelativo.y}) <= (float)(raio + outro->GetRaio());
+    return PIGDistancia({outroPos.x + outroPivo.x, outroPos.y + outroPivo.y}, {pos.x + pivoAbs.x, pos.y + pivoAbs.y}) <= (float)(raio + outro->GetRaio());
 }
 
 bool ColisaoOOBB(CPIGObjeto *outro) {
