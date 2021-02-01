@@ -291,7 +291,7 @@ void DesenhaLinhaSimples(int x1,int y1,int x2,int y2,PIG_Cor cor){
 void DesenhaLinhasDisjuntas(int x[],int y[],int qtd,PIG_Cor cor){
     SDL_SetRenderDrawColor(renderer,cor.r,cor.g,cor.b,255);
     int camX1,camY1,camX2,camY2;
-    for (int k=0;k<qtd*2;k+=2){
+    for (int k=0;k<qtd;k+=2){
         GetCamera()->ConverteCoordenadaWorldScreen(x[k],altura-y[k],camX1,camY1);
         GetCamera()->ConverteCoordenadaWorldScreen(x[k+1],altura-y[k+1],camX2,camY2);
         SDL_RenderDrawLine(renderer,camX1,camY1,camX2,camY2);
