@@ -320,20 +320,11 @@ public:
         SDL_SetRenderTarget(render,textura);
         SDL_SetRenderDrawColor(render,0,0,0,0);
         int *altJanela = CPIGGerenciadorJanelas::GetJanela(janela)->GetAltura();
-        //SDL_SetRenderDrawBlendMode(render, SDL_BLENDMODE_BLEND);
-        /*switch(op1){
-        case 0: SDL_SetTextureBlendMode(textura, SDL_BLENDMODE_ADD);break;
-        case 1: SDL_SetTextureBlendMode(textura, SDL_BLENDMODE_NONE);break;
-        case 2: SDL_SetTextureBlendMode(textura, SDL_BLENDMODE_MOD);break;
-        case 3: SDL_SetTextureBlendMode(textura, SDL_BLENDMODE_BLEND);break;
-        case 4: SDL_SetTextureBlendMode(textura, SDL_BLENDMODE_ADD);break;
-        }*/
+
         SDL_SetTextureBlendMode(textura, SDL_BLENDMODE_BLEND);
         SDL_SetTextureColorMod(textura,cor.r,cor.g,cor.b);
-        //SDL_SetTextureAlphaMod(textura, 255);
+
         Escreve(texto,0,*altJanela-tamFonte+fontDescent,cor,PIG_TEXTO_ESQUERDA,0,1);
-        //SDL_SetTextureBlendMode(textura, SDL_BLENDMODE_ADD);
-        //SDL_SetTextureAlphaMod(textura, 255);
         SDL_SetRenderTarget(render, NULL);
     }
 

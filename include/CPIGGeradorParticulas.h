@@ -7,7 +7,6 @@ class CPIGGeradorParticulas: public CPIGObjeto{
 
 private:
 
-int id;
 int maxParticulas;       //qtd de partículas vivvas e máximo de partículas vivas
 std::vector<PIGParticula> parts;
 double hpParticulas,maxTempo;
@@ -16,8 +15,7 @@ int audioInicio,audioFim;
 PIG_Cor *corFundoImagem;
 bool retiraFundoImagem;
 
-void IniciaBase(int idGerador,int maximoParticulas, int audioCriacao,int audioEncerramento, PIG_Cor *corFundo, bool retiraFundo, int idJanela){
-    id = idGerador;
+void IniciaBase(int idGerador,int maximoParticulas, int audioCriacao,int audioEncerramento, PIG_Cor *corFundo, bool retiraFundo){
     maxParticulas = maximoParticulas;
     audioInicio = audioCriacao;
     audioFim = audioEncerramento;
@@ -49,13 +47,12 @@ public:
 
     CPIGGeradorParticulas(int idGerador,int maximoParticulas,PIGObjeto objBase, int audioCriacao,int audioEncerramento, bool retiraFundo, PIG_Cor *corFundo, int idJanela)
         :CPIGObjeto(idGerador,objBase,1,NULL,idJanela){
-        IniciaBase(idGerador,maximoParticulas,audioCriacao,audioEncerramento,corFundo,retiraFundo,idJanela);
+        IniciaBase(idGerador,maximoParticulas,audioCriacao,audioEncerramento,corFundo,retiraFundo);
     }
 
     CPIGGeradorParticulas(int idGerador,int maximoParticulas,std::string nomeArqImagem,int audioCriacao,int audioEncerramento, bool retiraFundo, PIG_Cor *corFundo, int idJanela)
         :CPIGObjeto(idGerador,nomeArqImagem,1,NULL,idJanela){
-        id = idGerador;
-        IniciaBase(idGerador,maximoParticulas,audioCriacao,audioEncerramento,corFundo,retiraFundo,idJanela);
+        IniciaBase(idGerador,maximoParticulas,audioCriacao,audioEncerramento,corFundo,retiraFundo);
     }
 
     ~CPIGGeradorParticulas(){

@@ -25,7 +25,7 @@ class CPIGTransicao{
 
 private:
 PIG_EstadoTransicao ini,fim,delta;
-double tempoAtual,tempoTotal;
+double tempoAtual,tempoTotal,sobraAnterior; //sobraAnterior é um tempo excedido na transição anterior a ser descontado nesta transição
 int idTimer;
 
 public:
@@ -34,12 +34,14 @@ CPIGTransicao(double tempoTransicao,PIG_EstadoTransicao modificacao){
     tempoTotal = tempoTransicao;
     idTimer = CPIGGerenciadorTimers::CriaTimer(true);
     delta = modificacao;
+    sobraAnterior=0;
 }
 
 CPIGTransicao(CPIGTransicao *outro){
     tempoTotal = outro->tempoTotal;
     idTimer = CPIGGerenciadorTimers::CriaTimer(true);
     delta = outro->delta;
+    sobraAnterior=0;
 }
 
 CPIGTransicao(string str){
@@ -50,20 +52,21 @@ CPIGTransicao(string str){
     CPIGGerenciadorTimers::DestroiTimer(idTimer);
 }
 
-void IniciaTransicao(PIG_EstadoTransicao inicio){
+void IniciaTransicao(PIG_EstadoTransicao inicio,double sobra=0){
     ini = inicio;
     fim = ini+delta;
     CPIGGerenciadorTimers::GetTimer(idTimer)->Reinicia(false);
     tempoAtual = 0.0;
+    sobraAnterior = sobra;
 }
 
-int CalculaTransicao(){
-    tempoAtual =  CPIGGerenciadorTimers::GetTimer(idTimer)->GetTempoDecorrido()/tempoTotal;
+double CalculaTransicao(){
+    double t = CPIGGerenciadorTimers::GetTimer(idTimer)->GetTempoDecorrido()+sobraAnterior;
+    tempoAtual =  t/tempoTotal;
     if (tempoAtual>1){
         tempoAtual=1;
-        return 0;
     }
-    return 1;
+    return t-tempoTotal;
 }
 
 void InsereTransicaoX(int valorIni, int valorFim){
