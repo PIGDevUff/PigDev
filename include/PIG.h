@@ -1404,11 +1404,14 @@ A função CriaSprite() é responsável por criar um sprite. Qualquer sprite que for
 pode ser criado através dessa função. O sprite ainda não será desenhado, apenas criado dentro do jogo.
 Parâmetros:
 idSprite(entrada, passagem por valor): identificador do sprite original que será copiado.
+retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou não ao ler o arquivo em questão. O valor padrão é 1, indicando que o fundo deve ser retirado.
+corFundo (entrada, passagem por referência não-obrigatório): indica se há uma cor específica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o parâmetro retiraFundo seja diferente de 0, o pixel (0,0) da imagem será considerado como cor de fundo.
+idJanela (entrada, passagem por valor não-obrigatório): indica qual janela vai receber o sprite.
 Retorno:
 inteiro que representa o identificador único do sprite. Todas as operações subsequentes com este sprite deverão receber este identificador como parâmetro.
 ********************************/
-int CriaSprite(int idSprite){
-    return CPIGGerenciadorSprites::CriaSprite(idSprite);
+int CriaSprite(int idSprite,int retiraFundo=1,PIG_Cor *corFundo=NULL, int idJanela=0){
+    return CPIGGerenciadorSprites::CriaSprite(idSprite,retiraFundo,corFundo,idJanela);
 }
 
 /********************************
@@ -1859,11 +1862,14 @@ A função CriaObjeto() é responsável por criar um objeto. Qualquer objeto que for
 pode ser criado através dessa função. O objeto ainda não será desenhado, apenas criado dentro do jogo.
 Parâmetros:
 idObjeto (entrada, passagem por valor): identificador do objeto original que será copiado.
+retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou não ao ler o arquivo em questão. O valor padrão é 1, indicando que o fundo deve ser retirado.
+corFundo (entrada, passagem por referência não-obrigatório): indica se há uma cor específica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o parâmetro retiraFundo seja diferente de 0, o pixel (0,0) da imagem será considerado como cor de fundo.
+idJanela (entrada, passagem por valor não-obrigatório): indica qual janela vai receber o objeto.
 Retorno:
 inteiro que representa o identificador único do objeto. Todas as operações subsequentes com este objeto deverão receber este identificador como parâmetro.
 ********************************/
-int CriaObjeto(int idObjeto){
-    return CPIGGerenciadorSprites::CriaObjeto(idObjeto);
+int CriaObjeto(int idObjeto,int retiraFundo=1,PIG_Cor *corFundo=NULL, int idJanela=0){
+    return CPIGGerenciadorSprites::CriaObjeto(idObjeto,retiraFundo,corFundo,idJanela);
 }
 
 /********************************
@@ -1875,8 +1881,8 @@ corFundo (entrada, passagem por referência não-obrigatório): indica se há uma co
 Retorno:
 inteiro que representa o identificador único do objeto. Todas as operações subsequentes com este objeto deverão receber este identificador como parâmetro.
 ********************************/
-int CriaObjetoOffScreen(int retiraFundo=1,PIG_Cor *corFundo=NULL){
-    return CPIGGerenciadorSprites::CriaObjetoOffScreen(jogo->GetOffScreenRender(),retiraFundo,corFundo);
+int CriaObjetoOffScreen(int retiraFundo=1,PIG_Cor *corFundo=NULL, int idJanela=0){
+    return CPIGGerenciadorSprites::CriaObjetoOffScreen(jogo->GetOffScreenRender(),retiraFundo,corFundo,idJanela);
 }
 
 /********************************
@@ -2913,11 +2919,14 @@ original enquanto as cópias estiverem ativas ou haverá erros de execução. Da mes
 frames ou os modos da cópia, pois pode provocar erros na animação original.
 Parâmetros:
 idAnimacao (entrada, passagem por valor): indica o identificador da animação original que será copiada.
+retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou não ao ler o arquivo em questão. O valor padrão é 1, indicando que o fundo deve ser retirado.
+corFundo (entrada, passagem por referência não-obrigatório): indica se há uma cor específica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o parâmetro retiraFundo seja diferente de 0, o pixel (0,0) da imagem será considerado como cor de fundo.
+idJanela (entrada, passagem por valor não-obrigatório): indica qual janela vai receber a animação.
 Retorno:
 inteiro que representa o identificador único da animação. Todas as operações subsequentes com esta animação deverão receber este identificador como parâmetro.
 ********************************/
-int CriaAnimacao(int idAnimacao){
-    return CPIGGerenciadorSprites::CriaAnimacao(idAnimacao);
+int CriaAnimacao(int idAnimacao,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
+    return CPIGGerenciadorSprites::CriaAnimacao(idAnimacao,retiraFundo,corFundo,idJanela);
 }
 
 /********************************
