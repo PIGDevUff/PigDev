@@ -37,7 +37,7 @@
 					<Add option="-lSDL2_ttf" />
 					<Add option="-lSDL2_mixer" />
 					<Add option="-lSDL2_net" />
-					<Add directory="../lib" />
+					<Add directory="../libLinux/x86" />
 					<Add directory="../bin" />
 				</Linker>
 			</Target>
