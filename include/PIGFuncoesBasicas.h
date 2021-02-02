@@ -18,6 +18,7 @@
 #include <cmath>
 #include <unordered_map>
 #include <stdint.h>
+#include <limits.h>
 
 //separa uma string em palavras, usando os delimitadores indicados
 std::vector<std::string> PIGSeparaPalavras(std::string texto,std::string delim){
