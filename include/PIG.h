@@ -1644,7 +1644,7 @@ A função RestauraDimensoesOriginaisSprite() é responsável por restaurar o sprite
 Parâmetros:
 idSprite (entrada, passagem por valor): identificador do sprite.
 ********************************/
-void SetDimensoesSprite(int idSprite, int altura, int largura){
+void RestauraDimensoesOriginaisSprite(int idSprite, int altura, int largura){
     CPIGGerenciadorSprites::GetSprite(idSprite)->RestauraDimensoesOriginais();
 }
 
@@ -2230,7 +2230,7 @@ A função RestauraDimensoesOriginaisObjeto() é responsável por restaurar o objeto
 Parâmetros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
 ********************************/
-void RestauraDimensoesOriginaisObjeto(int idSprite, int altura, int largura){
+void RestauraDimensoesOriginaisObjeto(int idObjeto, int altura, int largura){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->RestauraDimensoesOriginais();
 }
 
