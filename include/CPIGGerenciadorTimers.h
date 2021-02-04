@@ -32,7 +32,7 @@ public:
     static void PausaTodos(){
         PIGTimer t = timers->GetPrimeiroElemento();
         while (t != NULL){
-            t->Pausa();
+            t->PausaGeral();
             t = timers->GetProximoElemento();
         }
     }
@@ -40,7 +40,7 @@ public:
     static void DespausaTodos(){
         PIGTimer t = timers->GetPrimeiroElemento();
         while (t != NULL){
-            t->Despausa();
+            t->DespausaGeral();
             t = timers->GetProximoElemento();
         }
     }

@@ -101,7 +101,11 @@ double tempoFrame;
 PIGJanela janelaAtual;
 PIGTimer timerProx;
 PIGFilaPacotes filaAudio,filaVideo;
-SDL_mutex *mutexTex;
+SDL_mutex *mutexBuffer;
+int altPixels,largPixels,pitch;
+bool mudouFrameVideo;
+void *bufferVideo;
+
 
 double get_video_clock() {
   double delta = (av_gettime() - is->video_current_pts_time) / 1000000.0;
@@ -130,7 +134,7 @@ static int DecodeThread(void* pUserData){
             }
 
             if(av_seek_frame(is->pFormatCtx, stream_index, seek_target, is->seek_flags) < 0) {
-                fprintf(stderr, "%s: error while seeking\n", is->pFormatCtx->filename);
+                fprintf(stderr, "%s: error while seeking video-frame\n", is->pFormatCtx->filename);
             }else{
                 //printf("fui pro else\n");
                 if(is->audioStream >= 0){
@@ -228,29 +232,31 @@ int QueuePicture(AVFrame *frame, double pts){
             return -1;
     }
 
-    if (vp->texture){
-        sws_scale(is->pSwsCtx,
-                  (const uint8_t * const *)(&frame->data[0]),
-                  frame->linesize,
-                  0,
-                  is->videoCtx->height,
-                  is->pFrameRGB->data,
-                  is->pFrameRGB->linesize);
+    sws_scale(is->pSwsCtx,
+              (const uint8_t * const *)(&frame->data[0]),
+              frame->linesize,
+              0,
+              is->videoCtx->height,
+              is->pFrameRGB->data,
+              is->pFrameRGB->linesize);
 
-        SDL_LockMutex(mutexTex);
-        SDL_UpdateTexture(vp->texture, NULL, is->pFrameRGB->data[0], is->pFrameRGB->linesize[0]);
-        SDL_UnlockMutex(mutexTex);
+    SDL_LockMutex(mutexBuffer);
 
-        vp->pts = pts;
+    pitch = is->pFrameRGB->linesize[0];
+    memcpy(bufferVideo,is->pFrameRGB->data[0],pitch*altPixels);
+    mudouFrameVideo = true;
 
-        if (++is->pictqWindex == VIDEO_PICTURE_QUEUE_SIZE){
-            is->pictqWindex = 0;
-        }
+    SDL_UnlockMutex(mutexBuffer);
 
-        SDL_LockMutex(is->pictqCs);
-        is->pictqSize++;
-        SDL_UnlockMutex(is->pictqCs);
+    vp->pts = pts;
+
+    if (++is->pictqWindex == VIDEO_PICTURE_QUEUE_SIZE){
+        is->pictqWindex = 0;
     }
+
+    SDL_LockMutex(is->pictqCs);
+    is->pictqSize++;
+    SDL_UnlockMutex(is->pictqCs);
 
     return 0;
 }
@@ -374,7 +380,7 @@ void VideoRefreshTimer(){
                 actualDelay = 0.01;
             }
 
-            DisplayVideo();
+            //AjustaAspecto();
 
             if (++is->pictqRindex == VIDEO_PICTURE_QUEUE_SIZE) {
                 is->pictqRindex = 0;
@@ -392,13 +398,13 @@ void VideoRefreshTimer(){
     }
 }
 
-void DisplayVideo(){
+void AjustaAspecto2(){
     double aspectRatio;
     int windowW, windowH;
 
     VideoPicture *vp = &is->pictq[is->pictqRindex];
 
-    if (vp->texture&&!janelaToda){
+    if (vp->texture){
         if (is->videoCtx->sample_aspect_ratio.num == 0){
             aspectRatio = 0;
         }else{
@@ -410,8 +416,6 @@ void DisplayVideo(){
             aspectRatio = is->videoCtx->width / (double)is->videoCtx->height;
         }
         SDL_GetWindowSize(janelaAtual->GetWindow(), &windowW, &windowH);
-        //destVideo.h = windowH;
-        //destVideo.w = ((int)rint(destVideo.h * aspectRatio)) & -3;
 
         dest.h = windowH;
         dest.w = ((int)rint(dest.h * aspectRatio)) & -3;
@@ -421,13 +425,19 @@ void DisplayVideo(){
         }
         dest.x = (windowW - dest.w) / 2;
         dest.y = (windowH - dest.h) / 2;
+
     }
+    //printf("aspecto %d,%d\n",dest.h,dest.w);
 }
 
 void AllocPicture(){
     VideoPicture *vp = &is->pictq[is->pictqWindex];
-    SDL_LockMutex(mutexTex);
-    if (vp->texture){
+    //SDL_LockMutex(mutexTex);
+
+    //altPixels = is->videoCtx->height;
+    //largPixels = is->videoCtx->width;
+    //printf("%d,%d  %d\n",altPixels,largPixels,pitch);
+    /*if (vp->texture){
         SDL_DestroyTexture(vp->texture);
     }
 
@@ -436,14 +446,16 @@ void AllocPicture(){
         SDL_TEXTUREACCESS_STREAMING,
         is->videoCtx->width,
         is->videoCtx->height);
-    SDL_UnlockMutex(mutexTex);
+    //SDL_UnlockMutex(mutexTex);
     vp->width = is->videoCtx->width;
     vp->height = is->videoCtx->height;
 
     SDL_SetTextureBlendMode(vp->texture, SDL_BLENDMODE_BLEND);
     SDL_SetTextureAlphaMod(vp->texture,opacidade);
     SDL_SetTextureColorMod(vp->texture,coloracao.r,coloracao.g,coloracao.b);
+*/
 
+//SDL_UnlockMutex(mutexTex);
     SDL_LockMutex(is->pictqCs);
     vp->allocated = 1;
     SDL_CondSignal(is->pictqCv);
@@ -767,7 +779,7 @@ int CriaVideoState(){
 
     //av_dump_format(is->pFormatCtx, 0, filename, 0);
 
-    printf("Marcando Streams\n");
+    //printf("Marcando Streams\n");
     for (int s = 0; s < is->pFormatCtx->nb_streams; ++s){
         if (is->pFormatCtx->streams[s]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO && is->audioStream < 0){
             is->audioStream = s;
@@ -877,7 +889,7 @@ public:
 
 CPIGVideo(std::string nomeArq,int idJanela=0):
     CPIGSprite(-1,*CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura(),CPIGGerenciadorJanelas::GetJanela(idJanela)->GetLargura(),nomeArq,idJanela){
-    volume = 0.5;
+    volume = 1.2;
     janelaAtual = CPIGGerenciadorJanelas::GetJanela(idJanela);
 
     janelaToda = true;
@@ -893,11 +905,50 @@ CPIGVideo(std::string nomeArq,int idJanela=0):
     filaAudio = new CPIGFilaPacotes();
     filaVideo = new CPIGFilaPacotes();
 
-    mutexTex = SDL_CreateMutex();
+    mutexBuffer = SDL_CreateMutex();
+
+    is = NULL;
+
+    mudouFrameVideo = true;
+
+    CriaVideoState();
+
+    altPixels = is->videoCtx->height;
+    largPixels = is->videoCtx->width;
+
+    DestroiVideoState();
+
+    text = SDL_CreateTexture(janelaAtual->GetRenderer(),
+        SDL_PIXELFORMAT_RGB24,
+        SDL_TEXTUREACCESS_STREAMING,
+        largPixels,
+        altPixels);
+
+    frames[frameAtual] = {0,0,largPixels,altPixels};
+    mudouFrameVideo = true;
+    bufferVideo = malloc(altPixels*largPixels*4);
+
+    //printf("Play() encerrado com sucesso\n");
+    /*pausa = av_gettime();
+
+    timerProx->Reinicia(0);// = new CTimer(0);
+    */
 }
 
 ~CPIGVideo(){
+    nomeArquivo = "";
     Stop();//caso seja chamado o destrutor sem o video já ter sido parado
+
+    //DestroiVideoState();
+
+    //printf("Finalizei stop()\n\n");
+    free(bufferVideo);
+
+    if (audioDeviceId != -1){
+        //SDL_PauseAudioDevice(audioDeviceId,1);
+        SDL_CloseAudioDevice(audioDeviceId);
+    }
+
 
     if (filaAudio){
         filaAudio->LiberaBlock();
@@ -916,8 +967,8 @@ CPIGVideo(std::string nomeArq,int idJanela=0):
 
     if (timerProx)
         delete timerProx;
-    if (mutexTex)
-        SDL_DestroyMutex(mutexTex);
+    if (mutexBuffer)
+        SDL_DestroyMutex(mutexBuffer);
 }
 
 void SetSeek(double incremento){
@@ -940,7 +991,6 @@ void Play(){
 
     int erro = CriaVideoState();
 
-    //SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
     //printf("Vou criar thread de video\n");
     hVideoThread = SDL_CreateThread(VideoThread,"iii",this);
     if (!hVideoThread){
@@ -961,7 +1011,6 @@ void Play(){
     //printf("Audio device: %d\n",audioDeviceId);
     SDL_PauseAudioDevice(audioDeviceId,0);
 
-    printf("Play() encerrado com sucesso\n");
 }
 
 void Stop(){
@@ -976,7 +1025,7 @@ void Stop(){
     //printf("Vou encerrar audio device\n");
     if (audioDeviceId != -1){
         SDL_PauseAudioDevice(audioDeviceId,1);
-        SDL_CloseAudioDevice(audioDeviceId);
+        //SDL_CloseAudioDevice(audioDeviceId);
     }
     filaAudio->Flush();
     filaVideo->Flush();
@@ -987,9 +1036,11 @@ void Stop(){
     //printf("Liberado1\n");
     if (hVideoThread)   SDL_WaitThread(hVideoThread,&status);
 
-    DestroiVideoState();
 
-    //printf("Finalizei stop()\n\n");
+    DestroiVideoState();
+    is = NULL;
+    mudouFrameVideo = true;
+    memset(bufferVideo,0,altPixels*largPixels*4);
 }
 
 void Pause(){
@@ -1015,16 +1066,24 @@ void Resume(){
     }
 }
 
-int Desenha(){
-    if (estado==PIG_VIDEO_PARADO) return 1;
+int Desenha()override{
+    if (estado==PIG_VIDEO_PARADO) return 0;
     VideoRefreshTimer();
     //printf("1");
-    //SDL_Point p = {pivoAbs.x,pivoAbs.y};
-    SDL_LockMutex(mutexTex);
-    if (is->pictq[is->pictqRindex].texture)
-        SDL_RenderCopyEx(janelaAtual->GetRenderer(), is->pictq[is->pictqRindex].texture, NULL, &dest,-angulo,&pivoInteiro,flip);
-    SDL_UnlockMutex(mutexTex);
-    return 0;
+
+    if (mudouFrameVideo){
+        SDL_LockMutex(mutexBuffer);
+        SDL_UpdateTexture(text,NULL,bufferVideo,pitch);
+        SDL_UnlockMutex(mutexBuffer);
+        SDL_SetTextureBlendMode(text, SDL_BLENDMODE_BLEND);
+        SDL_SetTextureAlphaMod(text,opacidade);
+        SetColoracao(coloracao);
+        mudouFrameVideo = false;
+    }
+
+    CPIGSprite::Desenha();
+
+    return 1;
 }
 
 void SetVolume(double valor){
@@ -1037,10 +1096,12 @@ double GetVolume(){
 }
 
 double GetTempoAtual(){
+    if (is==NULL) return 0;
     return is->videoClock;
 }
 
 std::string GetTempoAtualString(){
+    if (is==NULL) return "";
     double base = is->videoClock;
     double fH = base / 3600.;
     int     H = static_cast<int>(fH);
@@ -1052,6 +1113,7 @@ std::string GetTempoAtualString(){
 }
 
 double GetTempoTotal(){
+    if (is==NULL) return 0;
     return (is->pFormatCtx->duration*1.0/AV_TIME_BASE);
 }
 
@@ -1074,63 +1136,19 @@ double GetFPS(){
     return 1.0/tempoFrame;
 }
 
-/*void SetAngulo(float a){
-    angulo = a;
-}
-
-double GetAngulo(){
-    return angulo;
-}
-
-void SetFlip(PIG_Flip valor){
-    flip = valor;
-}
-
-PIG_Flip GetFlip(){
-    return flip;
-}
-
-void SetPivo(int px,int py){
-    pivoRelativo.x = px;
-    pivoRelativo.y = destVideo.h-py;
-    //printf("pivo mudado para %d,%d\n",pivoRelativo.x,pivoRelativo.y);
-}
-
-void SetPivo(float px,float py){
-    pivoRelativo.x = px*destVideo.w;
-    pivoRelativo.y = destVideo.h-py*destVideo.h;
-}
-
-void GetPivo(int &px,int &py){
-    px = pivoRelativo.x;
-    py = pivoRelativo.y;
-}
-*/
-
-void Move(int nx,int ny){
-    CPIGSprite::Move(nx,ny);
-    janelaToda = false;
-}
-
-void SetDimensoes(int altura,int largura)override{
-    CPIGSprite::SetDimensoes(altura,largura);
-    janelaToda = false;
-}
-
 void OcupaJanelaInteira(){
-    angulo = 0;
-    pos = {0,0};
-    dest.x = 0;
-    dest.y = *altJanela-pos.y-alt;
-    pivoAbs = {0,alt};
-    dest.h = alt = *janelaAtual->GetAltura();
-    dest.w = larg = janelaAtual->GetLargura();
-    flip = PIG_FLIP_NENHUM;
-    janelaToda = true;
+    int windowW,windowH;
+    SDL_GetWindowSize(janelaAtual->GetWindow(), &windowW, &windowH);
+    SetDimensoes(windowH,windowW);
 }
 
 void UsaResolucaoOriginal(){
-    janelaToda = false;
+    SetDimensoes(altPixels,largPixels);
+}
+
+void GetResolucao(int &altura, int &largura){
+    altura = altPixels;
+    largura = largPixels;
 }
 
 };

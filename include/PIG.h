@@ -181,11 +181,11 @@ void FinalizaJogo(){
     CPIGGerenciadorControles::Encerra();
     CPIGGerenciadorFontes::Encerra();
     CPIGGerenciadorAudios::Encerra();
-    CPIGGerenciadorTimers::Encerra();
     CPIGGerenciadorVideos::Encerra();
     CPIGGerenciadorSockets::Encerra();
     CPIGGerenciadorForms::Encerra();
     CPIGGerenciadorSprites::Encerra();
+    CPIGGerenciadorTimers::Encerra();
     CPIGMouse::Encerra();
     CPIGAssetLoader::Encerra();
     delete jogo;
@@ -1640,6 +1640,15 @@ void GetDimensoesOriginaisSprite(int idSprite, int *altura, int *largura){
 }
 
 /********************************
+A função RestauraDimensoesOriginaisSprite() é responsável por restaurar o sprite com o tamanho original da image.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite.
+********************************/
+void SetDimensoesSprite(int idSprite, int altura, int largura){
+    CPIGGerenciadorSprites::GetSprite(idSprite)->RestauraDimensoesOriginais();
+}
+
+/********************************
 A função CriaFrameSprite() é responsável por delimitar o posicionamento dos pixels do arquivo de imagem que serão
 utilizados para representar o sprite na tela. Desta forma, nem toda a imagem será automaticamente utilizada para
 representar o sprite. O sistema de coordenadas deve ser o padrão dos arquivos de imagem, com o eixo Y aumentando para baixo.
@@ -2215,6 +2224,16 @@ largura (saída, passagem por referência): largura original em pixels do objeto.
 void GetDimensoesOriginaisObjeto(int idObjeto, int *altura, int *largura){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->GetDimensoesOriginais(*altura,*largura);
 }
+
+/********************************
+A função RestauraDimensoesOriginaisObjeto() é responsável por restaurar o objeto com o tamanho original da imagem.
+Parâmetros:
+idObjeto (entrada, passagem por valor): identificador do objeto.
+********************************/
+void RestauraDimensoesOriginaisObjeto(int idSprite, int altura, int largura){
+    CPIGGerenciadorSprites::GetObjeto(idObjeto)->RestauraDimensoesOriginais();
+}
+
 
 /********************************
 A função CriaFrameObjeto() é responsável por delimitar o posicionamento dos pixels do arquivo de imagem que serão
@@ -4445,9 +4464,9 @@ A função GetFlipVideo() é responsável por recuperar o valor da manipulação causa
 Parâmetros:
 idVideo (entrada, passagem por valor): identificador do vídeo a ser virado.
 Retorno:
-inteiro que indica o tipo de Flip. Pode ser FLIP_NENHUM (nenhum tipo de inversão),
-FLIP_HORIZONTAL (inverte da esquerda para a direita), FLIP_VERTICAL (inverte de cima para baixo),
-ou FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
+inteiro que indica o tipo de Flip. Pode ser PIG_FLIP_NENHUM (nenhum tipo de inversão),
+PIG_FLIP_HORIZONTAL (inverte da esquerda para a direita), PIG_FLIP_VERTICAL (inverte de cima para baixo),
+ou PIG_FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
 ********************************/
 PIG_Flip GetFlipVideo(int idVideo){
     return CPIGGerenciadorVideos::GetVideo(idVideo)->GetFlip();
@@ -4535,7 +4554,7 @@ altura (saída, passagem por referência): altura original em pixels do vídeo.
 largura (saída, passagem por referência): largura original em pixels do vídeo.
 ********************************/
 void GetDimensoesOriginaisVideo(int idVideo, int *altura, int *largura){
-    CPIGGerenciadorVideos::GetVideo(idVideo)->GetDimensoesOriginais(*altura,*largura);
+    CPIGGerenciadorVideos::GetVideo(idVideo)->GetResolucao(*altura,*largura);
 }
 
 /********************************

@@ -8,10 +8,11 @@ private:
     std::chrono::system_clock::time_point inicio;
     std::chrono::system_clock::time_point pausa;
     double totalPausa;
-    bool pausado;
+    bool pausado,pausadoGeral;
 
 public:
     CPIGTimer(bool congelado){
+        pausadoGeral=false;
         Reinicia(congelado);
     }
 
@@ -20,7 +21,7 @@ public:
 
     double GetTempoDecorrido(){
         std::chrono::duration<double> tempo;
-        if (pausado){
+        if (pausado||pausadoGeral){
             tempo = std::chrono::duration_cast<std::chrono::duration<double>>(pausa-inicio);
         }else{
             tempo = std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::system_clock::now()-inicio);
@@ -31,14 +32,40 @@ public:
     void Pausa(){
         if (!pausado){
             pausado = true;
-            pausa = std::chrono::system_clock::now();
+            if (!pausadoGeral)
+                pausa = std::chrono::system_clock::now();
         }
+    }
+
+    void PausaGeral(){
+        if (!pausadoGeral){
+            pausadoGeral = true;
+            if (!pausado){
+                pausa = std::chrono::system_clock::now();
+            }
+        }
+    }
+
+    void DespausaGeral(){
+        if (pausadoGeral){
+            pausadoGeral = false;
+            if (!pausado){
+                std::chrono::duration<double> tempo = std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::system_clock::now()-pausa);
+                totalPausa += tempo.count();
+            }
+        }
+    }
+
+    double GetPausa(){
+        return totalPausa;
     }
 
     void Despausa(){
         if (pausado){
-            std::chrono::duration<double> tempo = std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::system_clock::now()-pausa);
-            totalPausa += tempo.count();
+            if (!pausadoGeral){
+                std::chrono::duration<double> tempo = std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::system_clock::now()-pausa);
+                totalPausa += tempo.count();
+            }
             pausado = false;
         }
     }

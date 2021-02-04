@@ -337,9 +337,6 @@ void DefineTipoTransicao(PIG_TipoTransicao tipo){
         free(pixels);
     }
 
-    //for (int i=0;i<filhos.size();i++)
-    //    delete filhos[i];
-
     if (automacao) delete automacao;
 
     if (text) SDL_DestroyTexture(text);
@@ -455,9 +452,8 @@ virtual void Desloca(double dx, double dy){
     dest.x = pos.x;
     dest.y = *altJanela-alt-pos.y;
     for (int i=0;i<filhos.size();i++){
-        if (filhos[i]->tipoFixo==1)
-        filhos[i]->Desloca(dx,dy);
-        //printf("desloc %f,%f\n",filhos[i]->pos.x,filhos[i]->pos.y);
+        if (filhos[i]->tipoFixo!=0)
+            filhos[i]->Desloca(dx,dy);
     }
 }
 
@@ -487,6 +483,10 @@ void GetDimensoesOriginais(int &altura,int &largura){
 void SetOpacidade(int valor){
     opacidade = valor;
     SDL_SetTextureAlphaMod(text,valor);
+}
+
+void RestauraDimensoesOriginais(){
+    SetDimensoes(altOriginal,largOriginal);
 }
 
 int GetOpacidade(){
@@ -542,7 +542,7 @@ virtual int Desenha(){
     //SDL_Point p = {pivoRelativo.x,pivoRelativo.y};
     CPIGGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaWorldScreen(enquadrado.x,enquadrado.y,enquadrado.x,enquadrado.y);
     SDL_RenderCopyEx(renderer, text, &frames[frameAtual], &enquadrado, -angulo, &pivoInteiro, flip);
-    //printf("%d %d\n",pivoRelativo.x,pivoRelativo.y);
+    //printf("%d %d\n",pivoInteiro.x,pivoInteiro.y);
     for (int i=0;i<filhos.size();i++){
         filhos[i]->Desenha();
     }
