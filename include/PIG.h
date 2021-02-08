@@ -2889,7 +2889,7 @@ A função ReiniciaTimer() é responsável por zerar a contagem do tempo de um timer
 Na prática, é equivalente a encerrer um temporizador e recriá-lo em seguida.
 Parâmetros:
 idTimer (entrada, passagem por valor): identificador do timer.
-congelado (entrada, passagem por valor): valor lógico que indica se o timer deve ser reiniciado sem iniciar de imediato a contagem de tempo ou não.
+congelado (entrada, passagem por valor): valor lógico que indica se o timer deve ser zerado sem iniciar de imediato a contagem de tempo ou não.
 ********************************/
 void ReiniciaTimer(int idTimer, int congelado=false){
     CPIGGerenciadorTimers::GetTimer(idTimer)->Reinicia(congelado);

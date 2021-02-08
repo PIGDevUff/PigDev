@@ -291,7 +291,7 @@ void LeTransicoes(string nomeArq){
     double dAng=0,tempo=0;
     PIG_Cor dCor=BRANCO;
     if (!automacao){
-        automacao = new CPIGAutomacao(1);
+        automacao = new CPIGAutomacao(id);
     }
     //printf("arquivo %s\n",nomeArq.c_str());
     FILE *arq = fopen(nomeArq.c_str(),"r");
