@@ -180,14 +180,14 @@ inline double PIGProjecaoY(double coefAngular, PIGPonto2D p) {
     return coefAngular * (-p.x) + p.y;
 }
 
-inline double PIGProjecaoX(double coefAngular, PIGPonto2D p, bool swapei,std::vector<std::string> &vet) {
+inline double PIGProjecaoX(double coefAngular, PIGPonto2D p){//, bool swapei,std::vector<std::string> &vet) {
     if (std::isinf(coefAngular))
         return (double)p.x;
-    if (!swapei){
+    /*if (!swapei){
         char str[100]="";
         sprintf(str,"PIGPROJX %f %f %f %f\n",coefAngular,coefAngular*p.x,-p.y + (coefAngular * p.x),(-p.y + (coefAngular * p.x)) / coefAngular);
     vet.push_back(str);
-    }
+    }*/
     return (-p.y + (coefAngular * p.x)) / coefAngular;
 }
 

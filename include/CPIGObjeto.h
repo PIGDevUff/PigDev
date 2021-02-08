@@ -342,7 +342,8 @@ int Desenha() override{
 }
 
 virtual bool Colisao(CPIGObjeto *outro){
-    if (modo==PIG_COLISAO_NENHUMA) return false;
+    if (modo==PIG_COLISAO_NENHUMA||outro==NULL) return false;
+
     Atualiza();
     outro->Atualiza();
 
@@ -400,7 +401,7 @@ bool PontoDentro(PIGPonto2D p) {
     }
 
     do {
-        if (Intersecao(i, (i + 1) % verticesAux.size(), p))
+        if (Intersecao(i, (i + 1) % verticesAux.size(), verticesAux, p))
             quant_intersecoes++;
 
         i = (i + 1) % verticesAux.size();
@@ -411,27 +412,27 @@ bool PontoDentro(PIGPonto2D p) {
 
 private:
 
-bool Intersecao(int i, int f, PIGPonto2D p) {
-    float m = ((float)vertices[f].y - vertices[i].y) /
-              ((float)vertices[f].x - vertices[i].x);
+bool Intersecao(int i, int f, vector<PIGPonto2D> v, PIGPonto2D p) {
+    double m = ((double)v[f].y - v[i].y) /
+              ((double)v[f].x - v[i].x);
     int x;
 
     if (m == 0)
-        return p.y == vertices[i].y &&
-               PIGValorEntre(p.x, vertices[i].x, vertices[f].x);
+        return p.y == v[i].y &&
+               PIGValorEntre(p.x, v[i].x, v[f].x);
 
-    if (p.y == vertices[i].y && p.x <= vertices[i].x) {
-        int anterior = i == 0 ? vertices.size() - 1 : i - 1;
-        return PIGValorEntre(p.y, vertices[anterior].y, vertices[f].y);
+    if (p.y == v[i].y && p.x <= v[i].x) {
+        int anterior = i == 0 ? v.size() - 1 : i - 1;
+        return PIGValorEntre(p.y, v[anterior].y, v[f].y);
     }
 
     if (std::isinf(m))
-        x = vertices[i].x;
+        x = v[i].x;
     else
-        x = (((float)p.y - vertices[i].y) / (float)m) +
-            ((float)vertices[i].x);
+        x = (((double)p.y - v[i].y) / (double)m) +
+            ((double)v[i].x);
 
-    return (x >= p.x) && PIGValorEntre(p.y, vertices[i].y, vertices[f].y);
+    return (x >= p.x) && PIGValorEntre(p.y, v[i].y, v[f].y);
 }
 
 bool ColisaoCircular(CPIGObjeto *outro) {
@@ -446,31 +447,32 @@ bool ColisaoOOBB(CPIGObjeto *outro) {
     // caso em q o angulo é 0
     // caso em que o vetor que vai de bb[0] para bb[1] é paralelo ao eixo X, ou seja, nao ira existir uma "projecao" no eixo X
     // os pontos sao trocados para que seja usado o antigo bb[3] para bb[0]
-    bool swapei = false;
-    string str;
-    char cstr[100]="";
-    vector<string> vet;
+    //bool swapei = false;
+    //string str;
+    //char cstr[100]="";
+    //vector<string> vet;
     if (bb[1].y == bb[0].y) {
         for (int i = 1; i < 4; i++) {
             std::swap(bb[i].x, bb[0].x);
             std::swap(bb[i].y, bb[0].y);
-            swapei = true;
+            //swapei = true;
         }
     }else{
-        sprintf(cstr,"bb== %d %d\n",bb[1].y,bb[0].y);
+        /*sprintf(cstr,"bb== %d %d\n",bb[1].y,bb[0].y);
         vet.push_back(cstr);
         sprintf(cstr,"(%d,%d) (%d,%d) (%d,%d) (%d,%d)\n",bb[0].x,bb[0].y,bb[1].x,bb[1].y,bb[2].x,bb[2].y,bb[3].x,bb[3].y);
         vet.push_back(cstr);
+        */
     }
 
     // projecao dos vetores no eixo X deste objeto
-    double projecaoAB = PIGProjecaoX((double)(bb[1].y - bb[0].y) / (double)(bb[1].x - bb[0].x), bb[0],swapei,vet);
-    double projecaoCD = PIGProjecaoX((double)(bb[3].y - bb[2].y) / (double)(bb[3].x - bb[2].x), bb[2],swapei,vet);
+    double projecaoAB = PIGProjecaoX((double)(bb[1].y - bb[0].y) / (double)(bb[1].x - bb[0].x), bb[0]);//,swapei,vet);
+    double projecaoCD = PIGProjecaoX((double)(bb[3].y - bb[2].y) / (double)(bb[3].x - bb[2].x), bb[2]);//,swapei,vet);
 
-    if (!swapei){
+    /*if (!swapei){
         sprintf(cstr,"proj %f %f\n",projecaoAB,projecaoCD);
         vet.push_back(cstr);
-    }
+    }*/
 
     //SDL_SetRenderDrawColor(renderer,255,255,255,255);
     //SDL_RenderDrawLine(renderer,(int)projecaoAB,300,(int)projecaoCD,300);
@@ -478,12 +480,12 @@ bool ColisaoOOBB(CPIGObjeto *outro) {
     // projecao dos pontos(com o angulo dos anteriores) no eixo X do outro objeto
     double projecao[4];
     for (int i = 0; i < 4; i++)
-        projecao[i] = PIGProjecaoX((double)(bb[1].y - bb[0].y) / (double)(bb[1].x - bb[0].x), outro->GetBB(i),swapei,vet);
+        projecao[i] = PIGProjecaoX((double)(bb[1].y - bb[0].y) / (double)(bb[1].x - bb[0].x), outro->GetBB(i));//,swapei,vet);
 
-    if (!swapei){
+    /*if (!swapei){
         sprintf(cstr,"proj %f %f %f %f\n",projecao[0],projecao[1],projecao[2],projecao[3]);
         vet.push_back(cstr);
-    }
+    }*/
 
     double menorA = (projecaoAB < projecaoCD) ? projecaoAB : projecaoCD;
     double maiorA = (projecaoAB > projecaoCD) ? projecaoAB : projecaoCD;
@@ -506,7 +508,7 @@ bool ColisaoOOBB(CPIGObjeto *outro) {
     menorB = PIGMinVetor(projecao,4);
     maiorB = PIGMaxVetor(projecao,4);
 
-    if (menorA < maiorB && maiorA > menorB){
+    /*if (menorA < maiorB && maiorA > menorB){
         if (!swapei){
                 sprintf(cstr,"swapei %d\n",swapei);
                 vet.push_back(cstr);
@@ -521,7 +523,7 @@ bool ColisaoOOBB(CPIGObjeto *outro) {
                     ;//printf("%s",vet[f].c_str());
                 //system("pause");
         }
-    }
+    }*/
 
     return (menorA < maiorB && maiorA > menorB);
 }
