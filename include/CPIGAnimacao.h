@@ -19,6 +19,10 @@ void AtualizaFrameAtual(PIGModoAnimacao modo){
     frameAtual = modo->GetFrameAtual();
     CPIGSprite::MudaFrameAtual(frameAtual);
 
+    int a,l;
+    if (modo->GetDimensoesAtual(a,l))
+        SetDimensoes(a,l);
+
     int audio = modo->GetAudioAtual();
     if (audio>=0){
         CPIGGerenciadorAudios::Play(audio);
@@ -52,7 +56,7 @@ CPIGAnimacao(int idAnimacao,std::string nomeArq,int usaGerenciadorTimer=0,int re
 
 //cria uma animaçãoa partir deoutra animação já existente
 CPIGAnimacao(int idAnimacao,CPIGAnimacao* base,int usaGerenciadorTimer=0,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0)
-:CPIGObjeto(idAnimacao,base->nomeArquivo,retiraFundo,corFundo,idJanela){
+:CPIGObjeto(idAnimacao,base,retiraFundo,corFundo,idJanela){
 
     for (int i=0;i<PIG_MAX_MODOS;i++){
         if (base->modos[i])
@@ -110,8 +114,8 @@ void CriaModo(int idModo, int loop){
 }
 
 //insere um frame em um dos modos
-void InsereFrame(int idModo, int idFrame, float delayFrame,int audio){
-    modos[idModo]->InsereEstagio(idFrame,delayFrame,audio);
+void InsereFrame(int idModo, int idFrame, float delayFrame, int audio, int alturaFrame, int larguraFrame){
+    modos[idModo]->InsereEstagio(idFrame,delayFrame,audio,alturaFrame,larguraFrame);
 }
 
 //muda o modo atual

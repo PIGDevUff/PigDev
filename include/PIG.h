@@ -3037,9 +3037,11 @@ codigoModo (entrada, passagem por valor): numero do modo a ter um frame inserido
 codigoFrame (entrada, passagem por valor): numero do frame a ser inserido no modo.
 tempo (entrada, passagem por valor): duração (em segundos) da exibição automática do frame neste modo específico.
 idAudio (entrada, passagem por valor não-obrigatório): identificador do audio (já criado anteriormente) que deve ser tocado quando o frame for exibido. O valor -1 deve ser utilizado se nenhum audio deve ser tocado.
+alturaAnimacao (entrada, passagem por valor não-obrigatório): tamanho em pixels altura da animação quando estiver exibindo este frame. Um valor negativo neste parâmetro ou no próximo (larguraAnimacao) indica que não haverá alteração de dimensões da animação.
+larguraAnimacao (entrada, passagem por valor não-obrigatório): tamanho em pixels largura da animação quando estiver exibindo este frame. Um valor negativo neste parâmetro ou no anterior (alturaAnimacao) indica que não haverá alteração de dimensões da animação.
 ********************************/
-void InsereFrameAnimacao(int idAnimacao,int codigoModo, int codigoFrame, float tempo, int idAudio=-1){
-    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->InsereFrame(codigoModo,codigoFrame,tempo,idAudio);
+void InsereFrameAnimacao(int idAnimacao,int codigoModo, int codigoFrame, float tempo, int idAudio=-1, int alturaAnimacao=-1, int larguraAnimacao=-1){
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->InsereFrame(codigoModo,codigoFrame,tempo,idAudio,alturaAnimacao,larguraAnimacao);
 }
 
 
@@ -3066,6 +3068,17 @@ forcado (entrada, passagem por valor): valor lógico que indica se a mudança de m
 ********************************/
 void MudaModoAnimacao(int idAnimacao,int codigoModo,int indiceFrame,int forcado=1){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->MudaModo(codigoModo,indiceFrame,forcado);
+}
+
+/********************************
+A função GetModoAtualAnimacao() é responsável por recuperar o valor do modo atual da animação.
+Parâmetros:
+idAnimacao (entrada, passagem por valor): identificador da animação em questão.
+Retorno:
+inteiro que representa o modo atual da animação.
+********************************/
+int GetModoAtualAnimacao(int idAnimacao){
+    return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetModoAtual();
 }
 
 /********************************

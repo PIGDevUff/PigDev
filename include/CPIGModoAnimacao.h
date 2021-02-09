@@ -6,6 +6,7 @@ typedef struct{
     int frame;      //número do frame
     double tempo;   //tempo de exibição do frame
     int audio;      //audio a ser tocado quando o frame for exibido
+    int altura,largura;
 }EstagioAnimacao;
 
 class CPIGModoAnimacao{
@@ -39,8 +40,8 @@ public:
     }
 
     //cria um novo estágio (frame)
-    int InsereEstagio(int idFrame, double tempo, int idAudio){
-        EstagioAnimacao estagio={idFrame,tempo,idAudio};
+    int InsereEstagio(int idFrame, double tempo, int idAudio, int altura, int largura){
+        EstagioAnimacao estagio={idFrame,tempo,idAudio,altura,largura};
         estagios.push_back(estagio);
         return estagios.size()-1;
     }
@@ -100,6 +101,13 @@ public:
     //retorna o tempo de um frame já criado (pelo seu índice no vetor)
     double GetTempoFrame(int indiceFrame){
         return estagios[indiceFrame].tempo;
+    }
+
+    bool GetDimensoesAtual(int &altura, int &largura){
+        if (estagios[frameAtual].altura < 0) return false;
+        altura = estagios[frameAtual].altura;
+        largura = estagios[frameAtual].largura;
+        return true;
     }
 
     //teste se já passou o tempo necessário para mudar de frame
