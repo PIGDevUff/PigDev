@@ -223,7 +223,7 @@ altura (entrada, passagem por valor): altura em pixels do frame.
 largura (entrada, passagem por valor): largura em pixels do frame.
 ********************************/
 void CriaFrameCursor(int idFrame, int xBitmap, int yBitmap, int altura, int largura){
-    CPIGMouse::CriaFrameCursor(idFrame,xBitmap,yBitmap,altura,largura);
+    CPIGMouse::CriaFrameCursor(idFrame,{xBitmap,yBitmap,largura,altura});
 }
 
 /********************************
@@ -1661,7 +1661,7 @@ altura (entrada, passagem por valor): altura em pixels do frame.
 largura (entrada, passagem por valor): largura em pixels do frame.
 ********************************/
 void CriaFrameSprite(int idSprite, int idFrame, int xBitmap, int yBitmap, int altura, int largura){
-    CPIGGerenciadorSprites::GetSprite(idSprite)->DefineFrame(idFrame, {xBitmap,yBitmap,altura,largura});
+    CPIGGerenciadorSprites::GetSprite(idSprite)->DefineFrame(idFrame, {xBitmap,yBitmap,largura,altura});
 }
 
 /********************************
@@ -2248,7 +2248,7 @@ altura (entrada, passagem por valor): altura em pixels do frame.
 largura (entrada, passagem por valor): largura em pixels do frame.
 ********************************/
 void CriaFrameObjeto(int idObjeto, int idFrame, int xBitmap, int yBitmap, int altura, int largura){
-    CPIGGerenciadorSprites::GetObjeto(idObjeto)->DefineFrame(idFrame, {xBitmap,yBitmap,altura,largura});
+    CPIGGerenciadorSprites::GetObjeto(idObjeto)->DefineFrame(idFrame, {xBitmap,yBitmap,largura,altura});
 }
 
 
@@ -2970,7 +2970,7 @@ altura (entrada, passagem por valor): altura em pixels do frame.
 largura (entrada, passagem por valor): largura em pixels do frame.
 ********************************/
 void CriaFrameAnimacao(int idAnimacao,int codigoFrame,int xBitmap,int yBitmap,int altura,int largura){
-    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->DefineFrame(codigoFrame,{xBitmap,yBitmap,altura,largura});
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->DefineFrame(codigoFrame,{xBitmap,yBitmap,largura,altura});
 }
 
 /********************************
