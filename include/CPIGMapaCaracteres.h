@@ -69,8 +69,8 @@ protected:
         if (font==NULL)
             printf("Erro: arquivo de fonte (%s) nao localizado\n",nomeFonte);
 
-        alturaExtra = (int**)malloc(sizeof(int)*(PIG_TOTALESTILOS));
-        larguraLetra = (int**)malloc(sizeof(int)*(PIG_TOTALESTILOS));
+        alturaExtra = (int**)malloc(sizeof(int*)*(PIG_TOTALESTILOS));
+        larguraLetra = (int**)malloc(sizeof(int*)*(PIG_TOTALESTILOS));
         glyphsT = (SDL_Texture***) malloc(sizeof(SDL_Texture**)*(PIG_TOTALESTILOS));
         for (int i=0;i<PIG_TOTALESTILOS;i++){
             alturaExtra[i] = NULL;
