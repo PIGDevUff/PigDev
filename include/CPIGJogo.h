@@ -29,7 +29,7 @@ public:
 
 
 		//SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS,"1");
-        if( SDL_Init( SDL_INIT_EVERYTHING) < 0 ){
+        if( SDL_Init(SDL_INIT_EVERYTHING) < 0 ){
             printf( "Nao foi possivel iniciar o SDL! SDL_Error: %s\n", SDL_GetError() );
         }else{
             CPIGGerenciadorJanelas::Inicia(nome,altura,largura);
