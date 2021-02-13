@@ -311,6 +311,11 @@ void LimpaTransicoes(){
     if (automacao) automacao->LimpaTransicoes();
 }
 
+bool ExecutandoTransicao(){
+    if (automacao==NULL) return NULL;
+    return automacao->ExecutandoTransiao();
+}
+
 void TrataAutomacao(){
     if (automacao){
         PIGTransicao t = automacao->GetTransicaoAtual();

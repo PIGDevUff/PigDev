@@ -223,7 +223,7 @@ altura (entrada, passagem por valor): altura em pixels do frame.
 largura (entrada, passagem por valor): largura em pixels do frame.
 ********************************/
 void CriaFrameCursor(int idFrame, int xBitmap, int yBitmap, int altura, int largura){
-    CPIGMouse::CriaFrameCursor(idFrame,{xBitmap,yBitmap,largura,altura});
+    CPIGMouse::CriaFrameCursor(idFrame,xBitmap,yBitmap,altura,largura);
 }
 
 /********************************
@@ -1661,7 +1661,7 @@ altura (entrada, passagem por valor): altura em pixels do frame.
 largura (entrada, passagem por valor): largura em pixels do frame.
 ********************************/
 void CriaFrameSprite(int idSprite, int idFrame, int xBitmap, int yBitmap, int altura, int largura){
-    CPIGGerenciadorSprites::GetSprite(idSprite)->DefineFrame(idFrame, {xBitmap,yBitmap,largura,altura});
+    CPIGGerenciadorSprites::GetSprite(idSprite)->DefineFrame(idFrame, {xBitmap,yBitmap,altura,largura});
 }
 
 /********************************
@@ -1769,6 +1769,16 @@ void InsereTransicaoSprite(int idSprite,double tempo,int deltaX,int deltaY,int d
     CPIGGerenciadorSprites::GetSprite(idSprite)->InsereTransicao(tempo,{deltaX,deltaY,deltaAltura,deltaLargura,deltaAngulo,corFinal,deltaOpacidade});
 }
 
+/********************************
+A função ExecutandoTransicaoSprite() retorna a informação sobre a execução (neste momento) de transições do sprite.
+Parâmetros:
+idSprite (entrada, passagem por valor): identificador do sprite.
+Retorno:
+inteiro que indica se o sprite está executando alguma transição no momento (valor diferente de 0) ou não (valor igual a 0).
+********************************/
+int ExecutandoTransicaoSprite(int idSprite){
+    return CPIGGerenciadorSprites::GetSprite(idSprite)->ExecutandoTransicao();
+}
 
 /********************************
 A função LeArquivoTransicaoSprite() é responsável por ler, criar e inserir as transições para um sprite, provenientes de um arquivo texto.
@@ -2248,7 +2258,7 @@ altura (entrada, passagem por valor): altura em pixels do frame.
 largura (entrada, passagem por valor): largura em pixels do frame.
 ********************************/
 void CriaFrameObjeto(int idObjeto, int idFrame, int xBitmap, int yBitmap, int altura, int largura){
-    CPIGGerenciadorSprites::GetObjeto(idObjeto)->DefineFrame(idFrame, {xBitmap,yBitmap,largura,altura});
+    CPIGGerenciadorSprites::GetObjeto(idObjeto)->DefineFrame(idFrame, {xBitmap,yBitmap,altura,largura});
 }
 
 
@@ -2443,7 +2453,6 @@ void AtualizaPixelsObjeto(int idObjeto,int retiraFundo=1){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->AtualizaPixels(retiraFundo);
 }
 
-
 /********************************
 A função InsereTransicaoObjeto() é responsável por criar e inserir uma nova transição ao final de sequência de transições do objeto.
 Parâmetros:
@@ -2459,6 +2468,17 @@ deltaOpacidade (entrada, passagem por valor): diferença do nível de opacidade do
 ********************************/
 void InsereTransicaoObjeto(int idObjeto,double tempo,int deltaX,int deltaY,int deltaAltura,int deltaLargura,double deltaAngulo,PIG_Cor corFinal,int deltaOpacidade){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->InsereTransicao(tempo,{deltaX,deltaY,deltaAltura,deltaLargura,deltaAngulo,corFinal,deltaOpacidade});
+}
+
+/********************************
+A função ExecutandoTransicaoObjeto() retorna a informação sobre a execução (neste momento) de transições do objeto.
+Parâmetros:
+idObjeto (entrada, passagem por valor): identificador do objeto.
+Retorno:
+inteiro que indica se o objeto está executando alguma transição no momento (valor diferente de 0) ou não (valor igual a 0).
+********************************/
+int ExecutandoTransicaoObjeto(int idObjeto){
+    return CPIGGerenciadorSprites::GetObjeto(idObjeto)->ExecutandoTransicao();
 }
 
 /********************************
@@ -2677,9 +2697,8 @@ void LimpaTransicoesParticulas(int idGerador){
     CPIGGerenciadorSprites::GetGerador(idGerador)->LimpaTransicoes();
 }
 
-
 /********************************
-A função MudaRotacaoParticulas() modifica o ângulo de desenho das partículas após serem criadas.
+A função MudaAnguloParticulas() modifica o ângulo de desenho das partículas após serem criadas.
 Somente as partículas criadas posteriormente terão o ângulo especificada.
 Parâmetros:
 idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da função CriaGeradorParticulas().
@@ -2708,7 +2727,7 @@ Parâmetros:
 idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da função CriaGeradorParticulas().
 opacidade (entrada, passagem por valor): informa a opacidade das partículas.
 ********************************/
-void MudaAnguloParticulas(int idGerador,int opacidade){
+void MudaOpacidadeParticulas(int idGerador,int opacidade){
     CPIGGerenciadorSprites::GetGerador(idGerador)->SetOpacidade(opacidade);
 }
 
@@ -2720,7 +2739,7 @@ idGerador (entrada, passagem por valor): informa o identificador do GDP passado 
 altura (entrada, passagem por valor): informa a altura da partícula ao ser criada.
 largura (entrada, passagem por valor): informa a largura da partícula ao ser criada.
 ********************************/
-void MudaEscalaParticulas(int idGerador,int altura, int largura){
+void MudaDimensoesParticulas(int idGerador,int altura, int largura){
     CPIGGerenciadorSprites::GetGerador(idGerador)->SetDimensoes(altura,largura);
 }
 
@@ -2798,26 +2817,26 @@ void DesenhaParticulas(int idGerador){
 }
 
 /********************************
-A função ColisaoParticulasObjeto() indica se houve colisão de alguma partícula ativa do GDP com um outro objeto específico, através do seu identificador.
+A função TestaColisaoParticulasObjeto() indica se houve colisão de alguma partícula ativa do GDP com um outro objeto específico, através do seu identificador.
 Parâmetros:
 idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da função CriaGeradorParticulas().
 idObjeto (entrada, passagem por valor): identificador do objeto que pode ter colidido com as partículas do GDP.
 Retorno:
 inteiro que indica se houve colisão de alguma partícula ativa do GDP (valor diferente de zero) ou não (valor igual a 0, zero).
 ********************************/
-int ColisaoParticulasObjeto(int idGerador,int idObjeto){
+int TestaColisaoParticulasObjeto(int idGerador,int idObjeto){
     return CPIGGerenciadorSprites::GetGerador(idGerador)->Colisao(CPIGGerenciadorSprites::GetObjeto(idObjeto));
 }
 
 /********************************
-A função ColisaoParticulasAnimacao() indica se houve colisão de alguma partícula ativa do GDP com uma outra animção específica, através do seu identificador.
+A função TestaColisaoParticulasAnimacao() indica se houve colisão de alguma partícula ativa do GDP com uma outra animção específica, através do seu identificador.
 Parâmetros:
 idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da função CriaGeradorParticulas().
 idAnimacao (entrada, passagem por valor): identificador da animação que pode ter colidido com as partículas do GDP.
 Retorno:
 inteiro que indica se houve colisão de alguma partícula ativa do GDP (valor diferente de zero) ou não (valor igual a 0, zero).
 ********************************/
-int ColisaoParticulasAnimacao(int idGerador,int idAnimacao){
+int TestaColisaoParticulasAnimacao(int idGerador,int idAnimacao){
     return CPIGGerenciadorSprites::GetGerador(idGerador)->Colisao(CPIGGerenciadorSprites::GetAnimacao(idAnimacao));
 }
 
@@ -3093,26 +3112,26 @@ int GetFrameAtualAnimacao(int idAnimacao){
 }
 
 /********************************
-A função ColisaoAnimacoes() indica se houve colisão entre duas animações, de forma semelhante aos objetos.
+A função TestaColisaoAnimacoes() indica se houve colisão entre duas animações, de forma semelhante aos objetos.
 Parâmetros:
 idAnimacao1 (entrada, passagem por valor): identificador da primeira animação.
 idAnimacao2 (entrada, passagem por valor): identificador da segunda animação.
 Retorno:
 inteiro que indica se houve colisão entre as animações.
 ********************************/
-int ColisaoAnimacoes(int idAnimacao1,int idAnimacao2){
+int TestaColisaoAnimacoes(int idAnimacao1,int idAnimacao2){
     return CPIGGerenciadorSprites::GetAnimacao(idAnimacao1)->Colisao(CPIGGerenciadorSprites::GetAnimacao(idAnimacao2));
 }
 
 /********************************
-A função ColisaoAnimacaoObjeto() indica se houve colisão de alguma animacao com algum outro objeto específico, através do seu identificador.
+A função TestaColisaoAnimacaoObjeto() indica se houve colisão de alguma animacao com algum outro objeto específico, através do seu identificador.
 Parâmetros:
 idAnimacao (entrada, passagem por valor): identificador da animação que pode ter colidido com o objeto.
 idObjeto (entrada, passagem por valor): identificador do objeto que pode ter colidido com a animação.
 Retorno:
 inteiro que indica se houve colisão da animação com o objeto.
 ********************************/
-int ColisaoAnimacaoObjeto(int idAnimacao,int idObjeto){
+int TestaColisaoAnimacaoObjeto(int idAnimacao,int idObjeto){
     return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->Colisao(CPIGGerenciadorSprites::GetObjeto(idObjeto));
 }
 
@@ -3156,7 +3175,7 @@ idAnimacao (entrada, passagem por valor): identificador da animação.
 modo (entrada, passagem por valor): modo de colisão a ser utilizado por esta animação.
 ********************************/
 void DefineTipoColisaoAnimacao(int idAnimacao, PIG_ModoColisao modo){
-    CPIGGerenciadorSprites::GetObjeto(idAnimacao)->SetModoColisao(modo);
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetModoColisao(modo);
 }
 
 /********************************
@@ -3247,9 +3266,9 @@ A função GetFlipAnimacao() é responsável por recuperar o valor da manipulação ca
 Parâmetros:
 idAnimacao (entrada, passagem por valor): identificador da animação a ser virada.
 Retorno:
-inteiro que indica o tipo de Flip. Pode ser FLIP_NENHUM (nenhum tipo de inversão),
-FLIP_HORIZONTAL (inverte da esquerda para a direita), FLIP_VERTICAL (inverte de cima para baixo),
-ou FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
+inteiro que indica o tipo de Flip. Pode ser PIG_FLIP_NENHUM (nenhum tipo de inversão),
+PIG_FLIP_HORIZONTAL (inverte da esquerda para a direita), PIG_FLIP_VERTICAL (inverte de cima para baixo),
+ou PIG_FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
 ********************************/
 PIG_Flip GetFlipAnimacao(int idAnimacao){
     return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetFlip();
@@ -3520,6 +3539,17 @@ deltaOpacidade (entrada, passagem por valor): diferença do nível de opacidade da
 ********************************/
 void InsereTransicaoAnimacao(int idAnimacao,double tempo,int deltaX,int deltaY,int deltaAltura,int deltaLargura,double deltaAngulo,PIG_Cor corFinal,int deltaOpacidade){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->InsereTransicao(tempo,{deltaX,deltaY,deltaAltura,deltaLargura,deltaAngulo,corFinal,deltaOpacidade});
+}
+
+/********************************
+A função ExecutandoTransicaoAnimacao() retorna a informação sobre a execução (neste momento) de transições da animação.
+Parâmetros:
+idAnimacao (entrada, passagem por valor): identificador da animação.
+Retorno:
+inteiro que indica se a animação está executando alguma transição no momento (valor diferente de 0) ou não (valor igual a 0).
+********************************/
+int ExecutandoTransicaoAnimacao(int idAnimacao){
+    return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->ExecutandoTransicao();
 }
 
 /********************************

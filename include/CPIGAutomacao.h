@@ -75,6 +75,11 @@ void IniciaAutomacao(PIG_EstadoTransicao inicial){
     }
 }
 
+bool ExecutandoTransiao(){
+    if (transicoes.size()<=transAtual||iniciado==false) return false;
+    return transicoes[transAtual]->CalculaTransicao() < 0;
+}
+
 PIGTransicao GetTransicaoAtual(){
     if (transicoes.size()<=transAtual||iniciado==false) return NULL;
     double sobra = transicoes[transAtual]->CalculaTransicao();
@@ -106,6 +111,8 @@ PIGTransicao GetTransicaoAtual(){
 void LimpaTransicoes(){
     for (int i=0;i<transicoes.size();i++)
         delete transicoes[i];
+    transicoes.clear();
+    transAtual = 0;
 }
 
 bool TemAcoes(){

@@ -90,6 +90,8 @@ public:
         }
         if (componenteMouseOver!=-1)
             componentes[componenteMouseOver]->Desenha();
+
+        return 1;
     }
 
     int TrataEvento(PIG_Evento evento){

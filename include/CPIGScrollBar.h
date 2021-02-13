@@ -35,6 +35,7 @@ class CPIGScrollBar : public CPIGComponente{
         }else if (idBotao==scroll->id+2){
             scroll->AvancaHandle(scroll->vAtual,scroll->deltaBotao);
         }
+        return 1;
     }
 
 /***************Novos Métodos**************/
@@ -313,7 +314,6 @@ public:
         xOriginal = px;
         yOriginal = py;
         AjustaOrientacao();
-
     }
 
     void SetAreaDeAcaoScroll(int x,int y,int altura,int largura){
