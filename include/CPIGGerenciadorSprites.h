@@ -79,12 +79,17 @@ public:
 
     static int CriaAnimacao(std::string nomeArquivoBMP,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
         int id = animacoes->ProxID();
-        return animacoes->Insere(new CPIGAnimacao(id,nomeArquivoBMP,0,retiraFundo,corFundo,idJanela));
+        return animacoes->Insere(new CPIGAnimacao(id,nomeArquivoBMP,retiraFundo,corFundo,idJanela));
     }
 
-    static int CriaAnimacao(int idAnimacaoBase,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
+    static int CriaAnimacao(PIGAnimacao animaBase,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
         int id = animacoes->ProxID();
-        return animacoes->Insere(new CPIGAnimacao(id,GetAnimacao(idAnimacaoBase),0,retiraFundo,corFundo,idJanela));
+        return animacoes->Insere(new CPIGAnimacao(id,animaBase,retiraFundo,corFundo,idJanela));
+    }
+
+    static int CriaAnimacao(PIGObjeto objetoBase,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
+        int id = animacoes->ProxID();
+        return animacoes->Insere(new CPIGAnimacao(id,objetoBase,retiraFundo,corFundo,idJanela));
     }
 
     static int CriaGeradorParticulas(int maxParticulas,std::string nomeArquivoBMP,int audioCriacao, int audioEncerramento, bool retiraFundo=true, PIG_Cor *corFundo=NULL, int idJanela=0){

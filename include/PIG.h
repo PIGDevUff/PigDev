@@ -2948,7 +2948,7 @@ int CriaAnimacao(char* nomeArquivo,int retiraFundo=1,PIG_Cor *corFundo=NULL,int 
 }
 
 /********************************
-A função CriaAnimacao() é responsável por criar uma animacao. A animação pode ser considerada um tipo especial
+A função CriaAnimacao() é responsável por criar uma animacao a partir de outra já existente. A animação pode ser considerada um tipo especial
 de objeto, capaz de mudar de figura (sprite) dentro de um tempo determinado. Uma sequência completa de
 sprites é chamada de modo. Uma mesma animação pode apresentar vários modos diferentes.
 Esta forma de criar uma animação, copia todos os frames e modos de outra animação já existente, evitando assim
@@ -2964,8 +2964,29 @@ Retorno:
 inteiro que representa o identificador único da animação. Todas as operações subsequentes com esta animação deverão receber este identificador como parâmetro.
 ********************************/
 int CriaAnimacao(int idAnimacao,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
-    return CPIGGerenciadorSprites::CriaAnimacao(idAnimacao,retiraFundo,corFundo,idJanela);
+    return CPIGGerenciadorSprites::CriaAnimacao(CPIGGerenciadorSprites::GetAnimacao(idAnimacao),retiraFundo,corFundo,idJanela);
 }
+
+/********************************
+A função CriaAnimacaoDeObjeto() é responsável por criar uma animacao a partir de um objeto já existente. A animação pode ser considerada um tipo especial
+de objeto, capaz de mudar de figura (sprite) dentro de um tempo determinado. Uma sequência completa de
+sprites é chamada de modo. Uma mesma animação pode apresentar vários modos diferentes.
+Esta forma de criar uma animação, copia todos os frames e modos de outra animação já existente, evitando assim
+que toda esta preparação precise ser feita novamente. O usuário deve ter cuidado de não destruir a animação
+original enquanto as cópias estiverem ativas ou haverá erros de execução. Da mesma forma, não se deve alterar os
+frames ou os modos da cópia, pois pode provocar erros na animação original.
+Parâmetros:
+idObjeto (entrada, passagem por valor): indica o identificador do objeto original que servirá de base para a criação da animação.
+retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou não ao ler o arquivo em questão. O valor padrão é 1, indicando que o fundo deve ser retirado.
+corFundo (entrada, passagem por referência não-obrigatório): indica se há uma cor específica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o parâmetro retiraFundo seja diferente de 0, o pixel (0,0) da imagem será considerado como cor de fundo.
+idJanela (entrada, passagem por valor não-obrigatório): indica qual janela vai receber a animação.
+Retorno:
+inteiro que representa o identificador único da animação. Todas as operações subsequentes com esta animação deverão receber este identificador como parâmetro.
+********************************/
+int CriaAnimacaoDeObjeto(int idObjeto,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
+    return CPIGGerenciadorSprites::CriaAnimacao(CPIGGerenciadorSprites::GetObjeto(idObjeto),retiraFundo,corFundo,idJanela);
+}
+
 
 /********************************
 A função DestroiAnimacao() é responsável por eliminar a animação em questão do jogo.

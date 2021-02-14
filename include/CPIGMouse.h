@@ -103,8 +103,8 @@ public:
         if (cursores) cursores->CriaFramesAutomaticosPorLinha(frameInicial,qtdLinhas,qtdColunas);
     }
 
-    static void CriaFrameCursor(int idFrame,SDL_Rect rect){
-        if (cursores) cursores->DefineFrame(idFrame,rect);
+    static void CriaFrameCursor(int idFrame,int x, int y, int alt, int larg){
+        if (cursores) cursores->DefineFrame(idFrame,{x,y,larg,alt});
     }
 
 };

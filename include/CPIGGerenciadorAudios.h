@@ -28,7 +28,7 @@ inline static void TrataParadaBackground(){
     eventoAudio.type = SDL_USEREVENT;
     eventoAudio.user.code = PIG_EVENTO_AUDIO;
     eventoAudio.user.data1 = (int*)malloc(sizeof(int)*1);
-    *((int*)eventoAudio.user.data1) =  PIG_ID_BACKGROUND;
+    *((int*)eventoAudio.user.data1) = PIG_ID_BACKGROUND;
     SDL_PushEvent(&eventoAudio);
 }
 
@@ -131,8 +131,8 @@ inline static void SetVolumeTudo(int volume){
 
 inline static void Play(int idAudio){
     PIGAudio audio = GetAudio(idAudio);
-    audio->Play();
-    audioIds[audio->GetCanal()] = idAudio;
+    int c = audio->Play();
+    audioIds[c] = idAudio;
 }
 
 inline static void StopTudo(){

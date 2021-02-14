@@ -50,7 +50,6 @@ void SetVolume(int valor){
         Mix_Volume(canal,volume);
 }
 
-
 int GetCanal(){
     return canal;
 }
@@ -71,10 +70,11 @@ int GetLoops(){
     return loops;
 }
 
-void Play(){
+int Play(){
     status = PIG_AUDIO_TOCANDO;
     canal = Mix_PlayChannelTimed(-1,chunk,loops,tempoExecucao);
     Mix_Volume(canal,volume);
+    return canal;
 }
 
 void Pause(){

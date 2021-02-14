@@ -2,8 +2,9 @@
 #define _CPIGGERADORPARTICULAS_
 
 #include "CPIGParticula.h"
+#include "CPIGAnimacao.h"
 
-class CPIGGeradorParticulas: public CPIGObjeto{
+class CPIGGeradorParticulas: public CPIGAnimacao{
 
 private:
 
@@ -46,12 +47,17 @@ void MoveParticulas(){
 public:
 
     CPIGGeradorParticulas(int idGerador,int maximoParticulas,PIGObjeto objBase, int audioCriacao,int audioEncerramento, bool retiraFundo, PIG_Cor *corFundo, int idJanela)
-        :CPIGObjeto(idGerador,objBase,1,NULL,idJanela){
+        :CPIGAnimacao(idGerador,objBase,retiraFundo,corFundo,idJanela){
+        IniciaBase(idGerador,maximoParticulas,audioCriacao,audioEncerramento,corFundo,retiraFundo);
+    }
+
+    CPIGGeradorParticulas(int idGerador,int maximoParticulas,PIGAnimacao animaBase, int audioCriacao,int audioEncerramento, bool retiraFundo, PIG_Cor *corFundo, int idJanela)
+        :CPIGAnimacao(idGerador,animaBase,retiraFundo,corFundo,idJanela){
         IniciaBase(idGerador,maximoParticulas,audioCriacao,audioEncerramento,corFundo,retiraFundo);
     }
 
     CPIGGeradorParticulas(int idGerador,int maximoParticulas,std::string nomeArqImagem,int audioCriacao,int audioEncerramento, bool retiraFundo, PIG_Cor *corFundo, int idJanela)
-        :CPIGObjeto(idGerador,nomeArqImagem,1,NULL,idJanela){
+        :CPIGAnimacao(idGerador,nomeArqImagem,retiraFundo,corFundo,idJanela){
         IniciaBase(idGerador,maximoParticulas,audioCriacao,audioEncerramento,corFundo,retiraFundo);
     }
 
@@ -89,6 +95,7 @@ public:
         //CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(pos.x,pos.y,10,10,ROXO);
         for (int i=0;i<parts.size();i++)
             parts[i]->Desenha();
+        return 1;
     }
 
     bool Colisao(PIGObjeto outro){

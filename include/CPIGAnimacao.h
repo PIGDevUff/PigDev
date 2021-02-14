@@ -8,7 +8,7 @@ class CPIGAnimacao:public CPIGObjeto{
 private:
 
 PIGModoAnimacao modos[PIG_MAX_MODOS];  //modos da animação
-PIGTimer tempoFrame;               //timer da animação (se estiver sendo utilizado um timer específico)
+//PIGTimer tempoFrame;               //timer da animação (se estiver sendo utilizado um timer específico)
 int idTimer;                    //timer da animação (se estiver sendo utilizado o gerenciador de timers)
 SDL_Point offset;                  //offset (x,y) a ser utilizado junto com a posição (x,y) para desenhar oa animação
 int modoAtual;                  //número que indica o modo atual
@@ -28,15 +28,13 @@ void AtualizaFrameAtual(PIGModoAnimacao modo){
         CPIGGerenciadorAudios::Play(audio);
     }
 
-    if (tempoFrame)
-        tempoFrame->Reinicia(false);
-    else CPIGGerenciadorTimers::GetTimer(idTimer)->Reinicia(false);
+    CPIGGerenciadorTimers::GetTimer(idTimer)->Reinicia(false);
 }
 
 public:
 
 //cria uma animação a partir de um arquivo de spritesheet
-CPIGAnimacao(int idAnimacao,std::string nomeArq,int usaGerenciadorTimer=0,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0)
+CPIGAnimacao(int idAnimacao,std::string nomeArq,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0)
 :CPIGObjeto(idAnimacao,nomeArq,retiraFundo,corFundo,idJanela){
     offset= {0,0};
     modoAtual = 0;
@@ -44,20 +42,12 @@ CPIGAnimacao(int idAnimacao,std::string nomeArq,int usaGerenciadorTimer=0,int re
     for (int i=0;i<PIG_MAX_MODOS;i++)
         modos[i] = NULL;
 
-
-    if (usaGerenciadorTimer){
-        tempoFrame = NULL;
-        idTimer = CPIGGerenciadorTimers::CriaTimer();
-    }else{
-        tempoFrame = new CPIGTimer(false);
-        idTimer = -1;
-    }
+    idTimer = CPIGGerenciadorTimers::CriaTimer();
 }
 
 //cria uma animaçãoa partir deoutra animação já existente
-CPIGAnimacao(int idAnimacao,CPIGAnimacao* base,int usaGerenciadorTimer=0,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0)
+CPIGAnimacao(int idAnimacao,CPIGAnimacao* base,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0)
 :CPIGObjeto(idAnimacao,base,retiraFundo,corFundo,idJanela){
-
     for (int i=0;i<PIG_MAX_MODOS;i++){
         if (base->modos[i])
             modos[i] = new CPIGModoAnimacao(base->modos[i]);
@@ -66,17 +56,11 @@ CPIGAnimacao(int idAnimacao,CPIGAnimacao* base,int usaGerenciadorTimer=0,int ret
     offset = base->offset;
     modoAtual = base->modoAtual;
 
-    if (usaGerenciadorTimer){
-        tempoFrame = NULL;
-        idTimer = CPIGGerenciadorTimers::CriaTimer();
-    }else{
-        tempoFrame = new CPIGTimer(false);
-        idTimer = -1;
-    }
+    idTimer = CPIGGerenciadorTimers::CriaTimer();
 }
 
 //cria uma animação a partir de um objeto
-CPIGAnimacao(int idAnimacao,PIGObjeto base,int usaGerenciadorTimer=0,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0)
+CPIGAnimacao(int idAnimacao,PIGObjeto base,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0)
 :CPIGObjeto(idAnimacao,base,retiraFundo,corFundo,idJanela){
     offset = {0,0};
     modoAtual = 0;
@@ -85,13 +69,7 @@ CPIGAnimacao(int idAnimacao,PIGObjeto base,int usaGerenciadorTimer=0,int retiraF
         modos[i] = NULL;
     }
 
-    if (usaGerenciadorTimer){
-        tempoFrame = NULL;
-        idTimer = CPIGGerenciadorTimers::CriaTimer();
-    }else{
-        tempoFrame = new CPIGTimer(false);
-        idTimer = -1;
-    }
+    idTimer = CPIGGerenciadorTimers::CriaTimer();
 }
 
 //destroi uma animação
@@ -101,10 +79,7 @@ CPIGAnimacao(int idAnimacao,PIGObjeto base,int usaGerenciadorTimer=0,int retiraF
             delete modos[i];
     }
 
-    if (tempoFrame)
-        delete tempoFrame;
-    else if (idTimer!=-1)
-        CPIGGerenciadorTimers::DestroiTimer(idTimer);
+    CPIGGerenciadorTimers::DestroiTimer(idTimer);
 }
 
 //cria um modo vazio, sem frames associados
@@ -141,9 +116,7 @@ int Desenha()override{
     if (modos[modoAtual]!=NULL){
         float tempoDecorrido;
 
-        if (tempoFrame)
-            tempoDecorrido = tempoFrame->GetTempoDecorrido();
-        else tempoDecorrido = CPIGGerenciadorTimers::GetTimer(idTimer)->GetTempoDecorrido();
+        tempoDecorrido = CPIGGerenciadorTimers::GetTimer(idTimer)->GetTempoDecorrido();
 
         if (modos[modoAtual]->TestaTempo(tempoDecorrido)){
             AtualizaFrameAtual(modos[modoAtual]);
@@ -166,16 +139,12 @@ int Desenha()override{
 
 //pausa a animação
 void Pausa(){
-    if (tempoFrame)
-        tempoFrame->Pausa();
-    else CPIGGerenciadorTimers::GetTimer(idTimer)->Pausa();
+    CPIGGerenciadorTimers::GetTimer(idTimer)->Pausa();
 }
 
 //despausa a animação
 void Despausa(){
-    if (tempoFrame)
-        tempoFrame->Despausa();
-    else CPIGGerenciadorTimers::GetTimer(idTimer)->Despausa();
+    CPIGGerenciadorTimers::GetTimer(idTimer)->Despausa();
 }
 
 //define o tempo de um frame já criado

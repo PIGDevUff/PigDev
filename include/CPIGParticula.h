@@ -1,9 +1,9 @@
 #ifndef _CPIGPARTICULA_
 #define _CPIGPARTICULA_
 
-#include "CPIGObjeto.h"
+#include "CPIGAnimacao.h"
 
-class CPIGParticula: public CPIGObjeto{
+class CPIGParticula: public CPIGAnimacao{
 
 private:
 
@@ -20,8 +20,8 @@ double ModificaHP(double valor){
 public:
     bool viva;
 
-    CPIGParticula(PIGObjeto objBase,int vida,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0):
-        CPIGObjeto(-1,objBase,retiraFundo,corFundo,idJanela){
+    CPIGParticula(PIGAnimacao base,int vida,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0):
+        CPIGAnimacao(-1,base,retiraFundo,corFundo,idJanela){
         hp = vida;
         espacoVida = {INT_MIN,INT_MIN,INT_MAX,INT_MAX};
         tempoVida = 9999999;
