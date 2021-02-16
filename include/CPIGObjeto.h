@@ -1,18 +1,15 @@
 #ifndef _CPIGOBJETO_
 #define _CPIGOBJETO_
 
+#include "CPIGAtributos.h"
+
 typedef enum {PIG_COLISAO_NENHUMA, PIG_COLISAO_OOBB, PIG_COLISAO_POLIGONO, PIG_COLISAO_CIRCULAR} PIG_ModoColisao;
 
 class CPIGObjeto: public CPIGSprite {
 
 protected:
 
-std::map<int, int> valoresIntInt;
-std::map<std::string, int> valoresStringInt;
-std::map<int, float> valoresIntFloat;
-std::map<std::string, float> valoresStringFloat;
-std::map<int, std::string> valoresIntString;
-std::map<std::string, std::string> valoresStringString;
+PIGAtributos atributos;
 PIGPonto2D bb[4];
 int raio;
 PIG_ModoColisao modo;
@@ -172,12 +169,14 @@ CPIGObjeto(int idObjeto,std::string nomeArquivo, int retiraFundo = 1, PIG_Cor *c
 : CPIGSprite(idObjeto,nomeArquivo, retiraFundo, corFundo, janela){
     modo = PIG_COLISAO_OOBB;
     bbAlterado = true;
+    atributos = NULL;
 }
 
 CPIGObjeto(int idObjeto,PIGOffscreenRenderer offRender, int retiraFundo = 1, PIG_Cor *corFundo = NULL, int janela = 0)
 : CPIGSprite(idObjeto,offRender, retiraFundo, corFundo, janela){
     modo = PIG_COLISAO_OOBB;
     bbAlterado = true;
+    atributos = NULL;
 }
 
 CPIGObjeto(int idObjeto,CPIGObjeto *objBase, int retiraFundo = 1, PIG_Cor *corFundo = NULL, int janela = 0)
@@ -190,42 +189,83 @@ CPIGObjeto(int idObjeto,CPIGObjeto *objBase, int retiraFundo = 1, PIG_Cor *corFu
     SetAngulo(angulo);
     AtualizaBB();
 
-    valoresIntInt = objBase->valoresIntInt;
-    valoresStringInt = objBase->valoresStringInt;
-    valoresIntFloat = objBase->valoresIntFloat;
-    valoresStringFloat = objBase->valoresStringFloat;
-    valoresIntString = objBase->valoresIntString;
-    valoresStringString = objBase->valoresStringString;
+    if (objBase->atributos)
+        atributos = new CPIGAtributos(objBase->atributos);
+    else atributos = NULL;
 
     bbAlterado = true;
 }
 
 ~CPIGObjeto(){
+    if (atributos) delete atributos;
 }
 
 void SetValorInt(int chave, int valor){
-    valoresIntInt[chave] = valor;
+    if (atributos==NULL)
+        atributos = new CPIGAtributos();
+    atributos->SetValorInt(chave,valor);
 }
 
 void SetValorInt(std::string chave, int valor){
-    valoresStringInt[chave] = valor;
+    if (atributos==NULL)
+        atributos = new CPIGAtributos();
+    atributos->SetValorInt(chave,valor);
 }
 
 void SetValorFloat(int chave, float valor){
-    valoresIntFloat[chave] = valor;
+    if (atributos==NULL)
+        atributos = new CPIGAtributos();
+    atributos->SetValorFloat(chave,valor);
 }
 
 void SetValorFloat(std::string chave, float valor){
-    valoresStringFloat[chave] = valor;
+    if (atributos==NULL)
+        atributos = new CPIGAtributos();
+    atributos->SetValorFloat(chave,valor);
 }
 
 void SetValorString(int chave, std::string valor){
-    valoresIntString[chave] = valor;
+    if (atributos==NULL)
+        atributos = new CPIGAtributos();
+    atributos->SetValorString(chave,valor);
 }
 
 void SetValorString(std::string chave, std::string valor){
-    valoresStringString[chave] = valor;
+    if (atributos==NULL)
+        atributos = new CPIGAtributos();
+    atributos->SetValorString(chave,valor);
 }
+
+bool GetValorInt(int chave, int &valor){
+    if (atributos==NULL) return false;
+    return atributos->GetValorInt(chave,valor);
+}
+
+bool GetValorInt(std::string chave, int &valor){
+    if (atributos==NULL) return false;
+    return atributos->GetValorInt(chave,valor);
+}
+
+bool GetValorFloat(int chave, float &valor){
+    if (atributos==NULL) return false;
+    return atributos->GetValorFloat(chave,valor);
+}
+
+bool GetValorFloat(std::string chave, float &valor){
+    if (atributos==NULL) return false;
+    return atributos->GetValorFloat(chave,valor);
+}
+
+bool GetValorString(int chave, std::string &valor){
+    if (atributos==NULL) return false;
+    return atributos->GetValorString(chave,valor);
+}
+
+bool GetValorString(std::string chave, std::string &valor){
+    if (atributos==NULL) return false;
+    return atributos->GetValorString(chave,valor);
+}
+
 
 void SetVertices(std::vector<PIGPonto2D> verts) {
     vertices = verts;
@@ -243,60 +283,6 @@ void SetRaioColisaoCircular(int raio) {
 
 void SetModoColisao(PIG_ModoColisao valor) {
     modo = valor;
-}
-
-bool GetValorInt(int chave, int &valor){
-    std::map<int, int>::iterator it;
-    it = valoresIntInt.find(chave);
-    if (it == valoresIntInt.end())
-        return false;
-    valor = it->second;
-    return true;
-}
-
-bool GetValorInt(std::string chave, int &valor){
-    std::map<std::string, int>::iterator it;
-    it = valoresStringInt.find(chave);
-    if (it == valoresStringInt.end())
-        return false;
-    valor = it->second;
-    return true;
-}
-
-bool GetValorFloat(int chave, float &valor){
-    std::map<int, float>::iterator it;
-    it = valoresIntFloat.find(chave);
-    if (it == valoresIntFloat.end())
-        return false;
-    valor = it->second;
-    return true;
-}
-
-bool GetValorFloat(std::string chave, float &valor){
-    std::map<std::string, float>::iterator it;
-    it = valoresStringFloat.find(chave);
-    if (it == valoresStringFloat.end())
-        return false;
-    valor = it->second;
-    return true;
-}
-
-bool GetValorString(int chave, std::string &valor){
-    std::map<int, std::string>::iterator it;
-    it = valoresIntString.find(chave);
-    if (it == valoresIntString.end())
-        return false;
-    valor = it->second;
-    return true;
-}
-
-bool GetValorString(std::string chave, std::string &valor){
-    std::map<std::string, std::string>::iterator it;
-    it = valoresStringString.find(chave);
-    if (it == valoresStringString.end())
-        return false;
-    valor = it->second;
-    return true;
 }
 
 PIGPonto2D GetBB(int i) {
@@ -529,6 +515,7 @@ bool ColisaoOOBB(CPIGObjeto *outro) {
 }
 
 bool ColisaoPoligono(std::vector<PIGPonto2D> vertices) {
+    int i=0;
     for (auto vertice : vertices) {
         if (PontoDentro(vertice)) return true;
     }

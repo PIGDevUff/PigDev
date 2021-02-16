@@ -101,8 +101,6 @@ PIGTransicao GetTransicaoAtual(){
                 if (transAtual==transicoes.size()) return NULL;//as transicoes acabaram
             }
         }
-        //printf("trans atual: %d (%d,%d)\n",transAtual,atual.x,atual.y);
-        //fprintf(arqP,"mudou para %d\n",transAtual);
         transicoes[transAtual]->IniciaTransicao(atual,sobra);
     }
     return transicoes[transAtual];
@@ -141,6 +139,5 @@ int TrataAcao(){
 
 };
 typedef CPIGAutomacao *PIGAutomacao;
-
 
 #endif // _CPIGAUTOMACAO_

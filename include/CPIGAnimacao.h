@@ -8,7 +8,6 @@ class CPIGAnimacao:public CPIGObjeto{
 private:
 
 PIGModoAnimacao modos[PIG_MAX_MODOS];  //modos da animação
-//PIGTimer tempoFrame;               //timer da animação (se estiver sendo utilizado um timer específico)
 int idTimer;                    //timer da animação (se estiver sendo utilizado o gerenciador de timers)
 SDL_Point offset;                  //offset (x,y) a ser utilizado junto com a posição (x,y) para desenhar oa animação
 int modoAtual;                  //número que indica o modo atual
@@ -45,12 +44,13 @@ CPIGAnimacao(int idAnimacao,std::string nomeArq,int retiraFundo=1,PIG_Cor *corFu
     idTimer = CPIGGerenciadorTimers::CriaTimer();
 }
 
-//cria uma animaçãoa partir deoutra animação já existente
+//cria uma animação a partir deoutra animação já existente
 CPIGAnimacao(int idAnimacao,CPIGAnimacao* base,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0)
-:CPIGObjeto(idAnimacao,base,retiraFundo,corFundo,idJanela){
+:CPIGObjeto(idAnimacao,(PIGObjeto)base,retiraFundo,corFundo,idJanela){
     for (int i=0;i<PIG_MAX_MODOS;i++){
         if (base->modos[i])
             modos[i] = new CPIGModoAnimacao(base->modos[i]);
+        else modos[i]=NULL;
     }
 
     offset = base->offset;

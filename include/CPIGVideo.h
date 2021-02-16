@@ -243,7 +243,6 @@ int QueuePicture(AVFrame *frame, double pts){
     SDL_LockMutex(mutexBuffer);
 
     pitch = is->pFrameRGB->linesize[0];
-    //printf("pitch %d\n",pitch);
     memcpy(bufferVideo,is->pFrameRGB->data[0],pitch*altPixels);
     mudouFrameVideo = true;
 
@@ -766,7 +765,7 @@ int CriaVideoState(){
     int rv = avformat_open_input(&is->pFormatCtx, nomeArquivo.c_str(), NULL, NULL);
     if (rv < 0){
         Stop();
-        printf("Erro Video: nao foi possivel abrir a midia %s!!!\n",nomeArquivo);
+        printf("Erro Video: nao foi possivel abrir a midia %s!!!\n",nomeArquivo.c_str());
         return -3;
     }
 
@@ -910,6 +909,8 @@ CPIGVideo(std::string nomeArq,int idJanela=0):
 
     is = NULL;
 
+    mudouFrameVideo = true;
+
     CriaVideoState();
 
     altPixels = is->videoCtx->height;
@@ -924,7 +925,7 @@ CPIGVideo(std::string nomeArq,int idJanela=0):
         altPixels);
 
     frames[frameAtual] = {0,0,largPixels,altPixels};
-    mudouFrameVideo = false;
+    mudouFrameVideo = true;
     bufferVideo = malloc(altPixels*largPixels*4);
 
     //printf("Play() encerrado com sucesso\n");
@@ -1070,17 +1071,15 @@ int Desenha()override{
     VideoRefreshTimer();
     //printf("1");
 
-
     if (mudouFrameVideo){
         SDL_LockMutex(mutexBuffer);
         SDL_UpdateTexture(text,NULL,bufferVideo,pitch);
-        mudouFrameVideo = false;
         SDL_UnlockMutex(mutexBuffer);
         SDL_SetTextureBlendMode(text, SDL_BLENDMODE_BLEND);
         SDL_SetTextureAlphaMod(text,opacidade);
         SetColoracao(coloracao);
+        mudouFrameVideo = false;
     }
-
 
     CPIGSprite::Desenha();
 

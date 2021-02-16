@@ -1,6 +1,8 @@
 #ifndef _CPIGJOGO_
 #define _CPIGJOGO_
 
+#include "CPIGAtributos.h"
+
 class CPIGJogo{
 
 private:
@@ -13,6 +15,7 @@ private:
     int rodando;
     std::string diretorioAtual;
     PIGOffscreenRenderer offRenderer;
+    PIGAtributos atributos;
 
 public:
 
@@ -25,11 +28,12 @@ public:
         offRenderer = NULL;
 
         diretorioAtual = PIGGetDiretorioAtual();
+        atributos = NULL;
         //printf("path: %s\n",diretorioAtual);//exibir a pasta original da PIG
 
 
 		//SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS,"1");
-        if( SDL_Init(SDL_INIT_EVERYTHING) < 0 ){
+        if( SDL_Init( SDL_INIT_EVERYTHING) < 0 ){
             printf( "Nao foi possivel iniciar o SDL! SDL_Error: %s\n", SDL_GetError() );
         }else{
             CPIGGerenciadorJanelas::Inicia(nome,altura,largura);
@@ -42,6 +46,8 @@ public:
     }
 
     ~CPIGJogo(){
+
+        if (atributos) delete atributos;
 
         SDLNet_Quit();
 
@@ -260,8 +266,70 @@ public:
         }
     }
 
-    int GetEstado(){
-        return estado;
+    void SetValorInt(int chave, int valor){
+        if (atributos==NULL)
+            atributos = new CPIGAtributos();
+        atributos->SetValorInt(chave,valor);
+    }
+
+    void SetValorInt(std::string chave, int valor){
+        if (atributos==NULL)
+            atributos = new CPIGAtributos();
+        atributos->SetValorInt(chave,valor);
+    }
+
+    void SetValorFloat(int chave, float valor){
+        if (atributos==NULL)
+            atributos = new CPIGAtributos();
+        atributos->SetValorFloat(chave,valor);
+    }
+
+    void SetValorFloat(std::string chave, float valor){
+        if (atributos==NULL)
+            atributos = new CPIGAtributos();
+        atributos->SetValorFloat(chave,valor);
+    }
+
+    void SetValorString(int chave, std::string valor){
+        if (atributos==NULL)
+            atributos = new CPIGAtributos();
+        atributos->SetValorString(chave,valor);
+    }
+
+    void SetValorString(std::string chave, std::string valor){
+        if (atributos==NULL)
+            atributos = new CPIGAtributos();
+        atributos->SetValorString(chave,valor);
+    }
+
+    bool GetValorInt(int chave, int &valor){
+        if (atributos==NULL) return false;
+        return atributos->GetValorInt(chave,valor);
+    }
+
+    bool GetValorInt(std::string chave, int &valor){
+        if (atributos==NULL) return false;
+        return atributos->GetValorInt(chave,valor);
+    }
+
+    bool GetValorFloat(int chave, float &valor){
+        if (atributos==NULL) return false;
+        return atributos->GetValorFloat(chave,valor);
+    }
+
+    bool GetValorFloat(std::string chave, float &valor){
+        if (atributos==NULL) return false;
+        return atributos->GetValorFloat(chave,valor);
+    }
+
+    bool GetValorString(int chave, std::string &valor){
+        if (atributos==NULL) return false;
+        return atributos->GetValorString(chave,valor);
+    }
+
+    bool GetValorString(std::string chave, std::string &valor){
+        if (atributos==NULL) return false;
+        return atributos->GetValorString(chave,valor);
     }
 
     int GetRodando(){

@@ -135,6 +135,8 @@ void IniciaOrientacao(){
     flip = SDL_FLIP_NONE;
 }
 
+protected:
+
 void AplicaTransicao(PIG_EstadoTransicao estado){
     Move(estado.x,estado.y);
     if (estado.alt!=alt||estado.larg!=larg) SetDimensoes(estado.alt,estado.larg);
@@ -144,6 +146,10 @@ void AplicaTransicao(PIG_EstadoTransicao estado){
 }
 
 public:
+
+    int GetID(){
+        return id;
+    }
 
 //Construtor para arquivos de vídeo ou Componentes
 CPIGSprite(int idSprite,int altura,int largura,std::string nomeArq,int janela=0){
@@ -214,8 +220,9 @@ CPIGSprite(int idSprite,CPIGSprite *spriteBase,int retiraFundo=1,PIG_Cor *corFun
 
     Move(spriteBase->pos.x,spriteBase->pos.y);
 
-    if (spriteBase->automacao)
+    if (spriteBase->automacao){
         automacao = new CPIGAutomacao(id,spriteBase->automacao);
+    }else automacao = NULL;
 }
 
 //Construtor para sprite "vazio", cuja imagem será gerada posteriormente
@@ -274,64 +281,75 @@ int Retirafilho(CPIGSprite *filho){
     return 0;
 }
 
-void InsereTransicao(PIGTransicao t){
-    if (!automacao)
-        automacao = new CPIGAutomacao(id);
-    automacao->InsereTransicao(t);
+void InsereTransicao(PIGTransicao t,PIGAutomacao *automaExt=NULL){
+    if (automaExt==NULL) automaExt=&automacao;
+    if (*automaExt==NULL)
+        *automaExt = new CPIGAutomacao(id);
+    (*automaExt)->InsereTransicao(t);
 }
 
-void InsereTransicao(double tempo, PIG_EstadoTransicao estado){
-    if (!automacao)
-        automacao = new CPIGAutomacao(id);
-    automacao->InsereTransicao(new CPIGTransicao(tempo,estado));
+void InsereTransicao(double tempo, PIG_EstadoTransicao estado,PIGAutomacao *automaExt=NULL){
+    if (automaExt==NULL) automaExt=&automacao;
+    if (*automaExt==NULL)
+        *automaExt = new CPIGAutomacao(id);
+    (*automaExt)->InsereTransicao(new CPIGTransicao(tempo,estado));
 }
 
-void LeTransicoes(string nomeArq){
+void LeTransicoes(string nomeArq,PIGAutomacao *automaExt=NULL){
     int dx=0,dy=0,dAlt=0,dLarg=0,dOpa=0;
     double dAng=0,tempo=0;
     PIG_Cor dCor=BRANCO;
-    if (!automacao){
-        automacao = new CPIGAutomacao(id);
+
+    if (automaExt==NULL) automaExt=&automacao;
+    if (*automaExt==NULL){
+        *automaExt = new CPIGAutomacao(id);
     }
     //printf("arquivo %s\n",nomeArq.c_str());
     FILE *arq = fopen(nomeArq.c_str(),"r");
     while (fscanf(arq,"%lf %d %d %d %d %lf %d %d %d %d %d\n",&tempo,&dx,&dy,&dAlt,&dLarg,&dAng,&dCor.r,&dCor.g,&dCor.b,&dCor.a,&dOpa)>0){
         //printf("%f %d %d %d %d %f %d %d %d %d %d\n",tempo,dx,dy,dAlt,dLarg,dAng,dCor.r,dCor.g,dCor.b,dCor.a,dOpa);
-        automacao->InsereTransicao(new CPIGTransicao(tempo,{dx,dy,dAlt,dLarg,dAng,dCor,dOpa}));
+        (*automaExt)->InsereTransicao(new CPIGTransicao(tempo,{dx,dy,dAlt,dLarg,dAng,dCor,dOpa}));
     }
     fclose(arq);
 }
 
-void IniciaAutomacao(){
-    if (automacao)
-        automacao->IniciaAutomacao({pos.x,pos.y,alt,larg,angulo,coloracao,opacidade});
+void IniciaAutomacao(PIGAutomacao *automaExt=NULL){
+    if ( automaExt ==NULL) automaExt=&automacao;
+    if (*automaExt)
+        (*automaExt)->IniciaAutomacao({pos.x,pos.y,alt,larg,angulo,coloracao,opacidade});
 }
 
-void LimpaTransicoes(){
-    if (automacao) automacao->LimpaTransicoes();
+void LimpaTransicoes(PIGAutomacao *automaExt=NULL){
+    if (automaExt==NULL) automaExt=&automacao;
+    if (*automaExt) (*automaExt)->LimpaTransicoes();
 }
 
-bool ExecutandoTransicao(){
-    if (automacao==NULL) return NULL;
-    return automacao->ExecutandoTransiao();
+bool ExecutandoTransicao(PIGAutomacao *automaExt=NULL){
+    if (automaExt==NULL) automaExt=&automacao;
+    if (*automaExt==NULL) return NULL;
+    return (*automaExt)->ExecutandoTransiao();
 }
 
-void TrataAutomacao(){
-    if (automacao){
-        PIGTransicao t = automacao->GetTransicaoAtual();
+void TrataAutomacao(PIGAutomacao *automaExt=NULL){
+    if (automaExt==NULL) automaExt=&automacao;
+    if (*automaExt){
+        PIGTransicao t = (*automaExt)->GetTransicaoAtual();
         if (t) AplicaTransicao(t->GetEstado());
-        automacao->TrataAcao();
+        (*automaExt)->TrataAcao();
     }
 }
 
-void InsereAcao(double tempo, double repeticao, PIG_FuncaoSimples acao, void *param){
-    if (!automacao)
-        automacao = new CPIGAutomacao(id);
-    automacao->InsereAcao(acao,tempo,repeticao,param);
+void InsereAcao(double tempo, double repeticao, PIG_FuncaoSimples acao, void *param,PIGAutomacao *automaExt=NULL){
+    if (automaExt==NULL) automaExt=&automacao;
+    if (*automaExt==NULL)
+        *automaExt = new CPIGAutomacao(id);
+
+    (*automaExt)->InsereAcao(acao,tempo,repeticao,param);
 }
 
-void DefineTipoTransicao(PIG_TipoTransicao tipo){
-    if (automacao) automacao->SetTipoTransicao(tipo);
+void DefineTipoTransicao(PIG_TipoTransicao tipo,PIGAutomacao *automaExt=NULL){
+    if (automaExt==NULL) automaExt=&automacao;
+    if (*automaExt) (*automaExt)->SetTipoTransicao(tipo);
 }
 
 //Destrutor para todos os tipos de Sprites
@@ -558,7 +576,6 @@ void DesenhaOffScreen(PIGOffscreenRenderer offRender){
     SDL_Texture *textAux = SDL_CreateTextureFromSurface(offRender->GetRenderer(), bitmap);
     SDL_Rect rectAux = dest;
     rectAux.y = offRender->GetAltura() - alt - pos.y;
-    //SDL_Point p = {pivoRelativo.x,pivoRelativo.y};
     SDL_RenderCopyEx(offRender->GetRenderer(), textAux, &frames[frameAtual], &rectAux, -angulo, &pivoInteiro, flip);
     SDL_DestroyTexture(textAux);
     for (int i=0;i<filhos.size();i++)

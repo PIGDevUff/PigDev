@@ -4,7 +4,6 @@
 #include "CPIGSprite.h"
 #include "CPIGObjeto.h"
 #include "CPIGAnimacao.h"
-#include "CPIGGeradorParticulas.h"
 
 class CPIGGerenciadorSprites{
 
@@ -13,7 +12,6 @@ private:
     static CPIGRepositorio<PIGSprite> *sprites;
     static CPIGRepositorio<PIGObjeto> *objetos;
     static CPIGRepositorio<PIGAnimacao> *animacoes;
-    static CPIGRepositorio<PIGGeradorParticulas> *geradores;
 
 public:
 
@@ -29,22 +27,16 @@ public:
         return animacoes->GetElemento(idAnimacao);
     }
 
-    static PIGGeradorParticulas GetGerador(int idGerador){
-        return geradores->GetElemento(idGerador);
-    }
-
     static void Inicia(){
         sprites = new CPIGRepositorio<PIGSprite>(PIG_MAX_SPRITES,"sprites");
         objetos = new CPIGRepositorio<PIGObjeto>(PIG_MAX_OBJETOS,"objetos");
         animacoes = new CPIGRepositorio<PIGAnimacao>(PIG_MAX_ANIMACOES,"animacoes");
-        geradores = new CPIGRepositorio<PIGGeradorParticulas>(PIG_MAX_GERADORPARTICULAS,"geradores");
     }
 
     static void Encerra(){
         delete sprites;
         delete objetos;
         delete animacoes;
-        delete geradores;
     }
 
     static int CriaSprite(std::string nomeArquivoBMP,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
@@ -92,19 +84,12 @@ public:
         return animacoes->Insere(new CPIGAnimacao(id,objetoBase,retiraFundo,corFundo,idJanela));
     }
 
-    static int CriaGeradorParticulas(int maxParticulas,std::string nomeArquivoBMP,int audioCriacao, int audioEncerramento, bool retiraFundo=true, PIG_Cor *corFundo=NULL, int idJanela=0){
-        int id = geradores->ProxID();
-        return geradores->Insere(new CPIGGeradorParticulas(id,maxParticulas,nomeArquivoBMP,audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela));
+    static int GetProxIndiceAnimacao(){
+        return animacoes->ProxID();
     }
 
-    static int CriaGeradorParticulas(int maxParticulas,PIGAnimacao animacaoBase,int audioCriacao, int audioEncerramento, bool retiraFundo=true, PIG_Cor *corFundo=NULL, int idJanela=0){
-        int id = geradores->ProxID();
-        return geradores->Insere(new CPIGGeradorParticulas(id,maxParticulas,animacaoBase,audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela));
-    }
-
-    static int CriaGeradorParticulas(int maxParticulas,PIGObjeto objetoBase,int audioCriacao, int audioEncerramento, bool retiraFundo=true, PIG_Cor *corFundo=NULL, int idJanela=0){
-        int id = geradores->ProxID();
-        return geradores->Insere(new CPIGGeradorParticulas(id,maxParticulas,objetoBase,audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela));
+    static int InsereAnimacao(PIGAnimacao animaBase){
+        return animacoes->Insere(animaBase);
     }
 
     static void DestroiSprite(int idSprite){
@@ -117,10 +102,6 @@ public:
 
     static void DestroiAnimacao(int idAnimacao){
         animacoes->Remove(idAnimacao);
-    }
-
-    static void DestroiGeradorParticulas(int idGerador){
-        geradores->Remove(idGerador);
     }
 
     static void DesenhaSprite(std::string nomeArq,int x,int y,int retiraFundo=1, int idJanela=0){
@@ -145,5 +126,4 @@ std::unordered_map<std::string,int> CPIGGerenciadorSprites::spritesSimples;
 CPIGRepositorio<PIGSprite> *CPIGGerenciadorSprites::sprites;
 CPIGRepositorio<PIGObjeto> *CPIGGerenciadorSprites::objetos;
 CPIGRepositorio<PIGAnimacao> *CPIGGerenciadorSprites::animacoes;
-CPIGRepositorio<PIGGeradorParticulas> *CPIGGerenciadorSprites::geradores;
 #endif //_CPIGGERENCIADORSPRITES_

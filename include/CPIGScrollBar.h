@@ -314,6 +314,7 @@ public:
         xOriginal = px;
         yOriginal = py;
         AjustaOrientacao();
+
     }
 
     void SetAreaDeAcaoScroll(int x,int y,int altura,int largura){

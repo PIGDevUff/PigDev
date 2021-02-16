@@ -20,8 +20,8 @@ double ModificaHP(double valor){
 public:
     bool viva;
 
-    CPIGParticula(PIGAnimacao base,int vida,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0):
-        CPIGAnimacao(-1,base,retiraFundo,corFundo,idJanela){
+    CPIGParticula(int idParticula,PIGAnimacao base,int vida,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0):
+        CPIGAnimacao(idParticula,base,retiraFundo,corFundo,idJanela){
         hp = vida;
         espacoVida = {INT_MIN,INT_MIN,INT_MAX,INT_MAX};
         tempoVida = 9999999;
@@ -38,13 +38,13 @@ public:
         CPIGGerenciadorTimers::DestroiTimer(timer);
     }
 
+    inline void ChecaTempoVida(){
+        viva = viva&&CPIGGerenciadorTimers::GetTimer(timer)->GetTempoDecorrido()<=tempoVida;
+        //if (!viva) PRINTF("%d morri por tempo\n",id);
+    }
+
     void Move(double nx, double ny) override{
         if (!viva) return;
-        if (CPIGGerenciadorTimers::GetTimer(timer)->GetTempoDecorrido()>tempoVida){
-            viva = false;
-            //printf("morri tempo\n");
-            return;
-        }
         CPIGObjeto::Move(nx,ny);
         //printf("rect %d,%d, %d,%d,%d,%d\n",pos.x,pos.y,espacoVida.x,espacoVida.y,espacoVida.w,espacoVida.h);
         viva = (pos.x>espacoVida.x)&&(pos.x<espacoVida.w)&&(pos.y>espacoVida.y)&&(pos.y<espacoVida.h);

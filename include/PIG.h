@@ -17,6 +17,7 @@
 #include "CPIGGerenciadorSockets.h"
 #include "CPIGGerenciadorFontes.h"
 #include "CPIGGerenciadorSprites.h"
+#include "CPIGGerenciadorGDP.h"
 #include "CPIGGerenciadorVideos.h"
 #include "CPIGGerenciadorControles.h"
 #include "CPIGGerenciadorForms.h"
@@ -57,6 +58,7 @@ void CriaJogo(char *nomeJanela,int cursorProprio=0,int altura=PIG_ALT_TELA,int l
         CPIGAssetLoader::Inicia();
         CPIGMouse::Inicia(cursorProprio);
         CPIGGerenciadorSprites::Inicia();
+        CPIGGerenciadorGDP::Inicia();
         CPIGGerenciadorFontes::Inicia();
         CPIGGerenciadorTimers::Inicia();
         CPIGGerenciadorAudios::Inicia();
@@ -68,14 +70,152 @@ void CriaJogo(char *nomeJanela,int cursorProprio=0,int altura=PIG_ALT_TELA,int l
 }
 
 /********************************
+A função SetValorIntJogo() é responsável incorporar ao jogo um atributo inteiro.
+Parâmetros:
+indice (entrada, passagem por valor): relaciona um número inteiro ao atributo.
+valor (entrada, passagem por valor): valor do atributo inteiro a ser associado ao jogo.
+********************************/
+void SetValorIntJogo(int indice,int valor){
+    jogo->SetValorInt(indice,valor);
+}
+
+/********************************
+A função SetValorFloatJogo() é responsável incorporar ao jogo um atributo float.
+Parâmetros:
+indice (entrada, passagem por valor): relaciona um número inteiro ao atributo.
+valor (entrada, passagem por valor): valor do atributo float a ser associado ao jogo.
+********************************/
+void SetValorFloatJogo(int indice,float valor){
+    jogo->SetValorFloat(indice,valor);
+}
+
+/********************************
+A função SetValorIntJogo() é responsável incorporar ao jogo um atributo inteiro.
+Parâmetros:
+indice (entrada, passagem por valor): relaciona um número inteiro ao atributo.
+valor (entrada, passagem por referência): valor do atributo string a ser associado ao jogo.
+********************************/
+void SetValorStringJogo(int indice,char *valor){
+    jogo->SetValorString(indice,valor);
+}
+
+/********************************
+A função SetValorIntJogo() é responsável incorporar ao jogo um atributo inteiro.
+Parâmetros:
+indice (entrada, passagem por referência): relaciona uma string ao atributo.
+valor (entrada, passagem por valor): valor do atributo inteiro a ser associado ao jogo.
+********************************/
+void SetValorIntJogo(char *indice,int valor){
+    jogo->SetValorInt(indice,valor);
+}
+
+/********************************
+A função SetValorFloatJogo() é responsável incorporar ao jogo um atributo float.
+Parâmetros:
+indice (entrada, passagem por referência): relaciona uma string ao atributo.
+valor (entrada, passagem por valor): valor do atributo float a ser associado ao jogo.
+********************************/
+void SetValorFloatJogo(char *indice,float valor){
+    jogo->SetValorFloat(indice,valor);
+}
+
+/********************************
+A função SetValorIntJogo() é responsável incorporar ao jogo um atributo inteiro.
+Parâmetros:
+indice (entrada, passagem por referência): relaciona uma string ao atributo.
+valor (entrada, passagem por referência): valor do atributo string a ser associado ao jogo.
+********************************/
+void SetValorStringJogo(char *indice,char *valor){
+    jogo->SetValorString(indice,valor);
+}
+
+/********************************
+A função GetValorIntJogo() é responsável recuperar o valor de um atributo inteiro relacionado ao jogo.
+Parâmetros:
+indice (entrada, passagem por valor): indica o número do atributo que se deseja recuperar.
+valor (saída, passagem por referência): indica o valor do atributo, se a função retornar um resultado diferente de zero.
+Retorno:
+Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo não existir, a função retorna o valor 0 (zero).
+********************************/
+int GetValorIntJogo(int indice,int *valor){
+    return jogo->GetValorInt(indice,*valor);
+}
+
+/********************************
+A função GetValorFloatJogo() é responsável recuperar o valor de um atributo float relacionado ao jogo.
+Parâmetros:
+indice (entrada, passagem por valor): indica o número do atributo que se deseja recuperar.
+valor (saída, passagem por referência): indica o valor do atributo, se a função retornar um resultado diferente de zero.
+Retorno:
+Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo não existir, a função retorna o valor 0 (zero).
+********************************/
+int GetValorFloatJogo(int indice,float *valor){
+    return jogo->GetValorFloat(indice,*valor);
+}
+
+/********************************
+A função GetValorStringJogo() é responsável recuperar o valor de um atributo string relacionado ao jogo.
+Parâmetros:
+indice (entrada, passagem por valor): indica o número do atributo que se deseja recuperar.
+valor (saída, passagem por referência): indica o valor do atributo, se a função retornar um resultado diferente de zero.
+Retorno:
+Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo não existir, a função retorna o valor 0 (zero).
+********************************/
+int GetValorStringJogo(int indice,char *valor){
+    std::string str;
+    bool resp = jogo->GetValorString(indice,str);
+    strcpy(valor,str.c_str());
+    return resp;
+}
+
+/********************************
+A função GetValorIntJogo() é responsável recuperar o valor de um atributo inteiro relacionado ao jogo.
+Parâmetros:
+indice (entrada, passagem por referência): indica o nome do atributo que se deseja recuperar.
+valor (saída, passagem por referência): indica o valor do atributo, se a função retornar um resultado diferente de zero.
+Retorno:
+Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo não existir, a função retorna o valor 0 (zero).
+********************************/
+int GetValorIntJogo(char *indice,int *valor){
+    return jogo->GetValorInt(indice,*valor);
+}
+
+/********************************
+A função GetValorFloatJogo() é responsável recuperar o valor de um atributo float relacionado ao jogo.
+Parâmetros:
+indice (entrada, passagem por valor): indica o nome do atributo que se deseja recuperar.
+valor (saída, passagem por referência): indica o valor do atributo, se a função retornar um resultado diferente de zero.
+Retorno:
+Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo não existir, a função retorna o valor 0 (zero).
+********************************/
+int GetValorFloatJogo(char *indice,float *valor){
+    return jogo->GetValorFloat(indice,*valor);
+}
+
+/********************************
+A função GetValorStringJogo() é responsável recuperar o valor de um atributo string relacionado ao jogo.
+Parâmetros:
+indice (entrada, passagem por valor): indica o nome do atributo que se deseja recuperar.
+valor (saída, passagem por referência): indica o valor do atributo, se a função retornar um resultado diferente de zero.
+Retorno:
+Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo não existir, a função retorna o valor 0 (zero).
+********************************/
+int GetValorStringJogo(char *indice,char *valor){
+    std::string str;
+    bool resp = jogo->GetValorString(indice,str);
+    strcpy(valor,str.c_str());
+    return resp;
+}
+
+/********************************
 A função GetEstadoJogo() indica o estado do jogo. Este estado é apenas um valor inteiro
 que pode ser usado para indicar uma fase do jogo, ou a vez de algum jogador por exemplo.
 Retorno:
 inteiro indicando o valor do estado do jogo.
 ********************************/
-int GetEstadoJogo(){
-    return jogo->GetEstado();
-}
+//int GetEstadoJogo(){
+//    return jogo->GetEstado();
+//}
 
 /********************************
 A função SetEstadoJogo() atribui um novo valor ao estado do jogo. Este estado é apenas um valor inteiro
@@ -83,9 +223,9 @@ que pode ser usado para indicar uma fase do jogo, ou a vez de algum jogador por 
 Parâmetro:
 estado (entrada, passagem por valor): indica o novo estado do jogo;
 ********************************/
-void SetEstadoJogo(int estado){
-    jogo->SetEstado(estado);
-}
+//void SetEstadoJogo(int estado){
+//    jogo->SetEstado(estado);
+//}
 
 /********************************
 A função DefineFundoJanela() permite escolher um arquivo de imagem como fundo (background) de uma janela que será automaticamente desenhado a cada nova etapa de desenho na tela.
@@ -185,6 +325,7 @@ void FinalizaJogo(){
     CPIGGerenciadorSockets::Encerra();
     CPIGGerenciadorForms::Encerra();
     CPIGGerenciadorSprites::Encerra();
+    CPIGGerenciadorGDP::Encerra();
     CPIGGerenciadorTimers::Encerra();
     CPIGMouse::Encerra();
     CPIGAssetLoader::Encerra();
@@ -2485,18 +2626,18 @@ int ExecutandoTransicaoObjeto(int idObjeto){
 A função LeArquivoTransicaoObjeto() é responsável por ler, criar e inserir as transições para um objeto, provenientes de um arquivo texto.
 Cada linha do arquivo texto corresponde a uma transição (em ordem) e deve possuir 11 valores:
 1) um double representando a duracao (em segundos) da transição.
-2) um inteiro repreentando a diferença da posição no eixo X em relação à posição do objeto no início da transição.
-3) um inteiro repreentando a diferença da posição no eixo Y em relação à posição do objeto no início da transição.
-4) um inteiro repreentando a diferença da altura do objeto em relação ao início da transição.
-5) um inteiro repreentando a diferença da largura do objeto em relação ao início da transição.
-6) um double repreentando a diferença de ângulo (em graus) do objeto em relação ao início da transição.
-7) um inteiro repreentando a componente R (vermelho) da coloração do objeto ao final da transição.
-8) um inteiro repreentando a componente G (verde) da coloração do objeto ao final da transição.
-9) um inteiro repreentando a componente B (azul) da coloração do objeto ao final da transição.
-10) um inteiro repreentando a componente A (canal alfa) da coloração do objeto ao final da transição.
-11) um inteiro repreentando a diferença do nível de opacidade do objeto em relação ao início da transição.
+2) um inteiro representando a diferença da posição no eixo X em relação à posição do objeto no início da transição.
+3) um inteiro representando a diferença da posição no eixo Y em relação à posição do objeto no início da transição.
+4) um inteiro representando a diferença da altura do objeto em relação ao início da transição.
+5) um inteiro representando a diferença da largura do objeto em relação ao início da transição.
+6) um double representando a diferença de ângulo (em graus) do objeto em relação ao início da transição.
+7) um inteiro representando a componente R (vermelho) da coloração do objeto ao final da transição.
+8) um inteiro representando a componente G (verde) da coloração do objeto ao final da transição.
+9) um inteiro representando a componente B (azul) da coloração do objeto ao final da transição.
+10) um inteiro representando a componente A (canal alfa) da coloração do objeto ao final da transição.
+11) um inteiro representando a diferença do nível de opacidade do objeto em relação ao início da transição.
 Parâmetros:
-idSprite (entrada, passagem por valor): identificador do objeto.
+idObjeto (entrada, passagem por valor): identificador do objeto.
 nomeArq (entrada, passagem por referência): nome com extensão do arquivo texto contendo as transições.
 ********************************/
 void LeArquivoTransicaoObjeto(int idObjeto,char *nomeArq){
@@ -2575,7 +2716,7 @@ corFundo (entrada, passagem por referência não-obrigatório): indica se há uma co
 idJanela (entrada, passagem por valor não-obrigatório): indica qual janela vai receber o GDP.
 ********************************/
 int CriaGeradorParticulas(int maxParticulas,char* nomeArquivo,int audioCriacao=-1,int audioEncerramento=-1,int retiraFundo=1,PIG_Cor *corFundo=NULL, int idJanela=0){
-    return CPIGGerenciadorSprites::CriaGeradorParticulas(maxParticulas,nomeArquivo,audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela);
+    return CPIGGerenciadorGDP::CriaGeradorParticulas(maxParticulas,nomeArquivo,audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela);
 }
 
 /********************************
@@ -2593,7 +2734,7 @@ corFundo (entrada, passagem por referência não-obrigatório): indica se há uma co
 idJanela (entrada, passagem por valor não-obrigatório): indica qual janela vai receber o GDP.
 ********************************/
 int CriaGeradorParticulasPorAnimacao(int maxParticulas,int idAnimacao,int audioCriacao=-1,int audioEncerramento=-1,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
-    return CPIGGerenciadorSprites::CriaGeradorParticulas(maxParticulas,CPIGGerenciadorSprites::GetAnimacao(idAnimacao),audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela);
+    return CPIGGerenciadorGDP::CriaGeradorParticulas(maxParticulas,CPIGGerenciadorSprites::GetAnimacao(idAnimacao),audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela);
 }
 
 /********************************
@@ -2611,7 +2752,7 @@ corFundo (entrada, passagem por referência não-obrigatório): indica se há uma co
 idJanela (entrada, passagem por valor não-obrigatório): indica qual janela vai receber o GDP.
 ********************************/
 int CriaGeradorParticulasPorObjeto(int maxParticulas,int idObjeto,int audioCriacao=-1,int audioEncerramento=-1,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
-    return CPIGGerenciadorSprites::CriaGeradorParticulas(maxParticulas,CPIGGerenciadorSprites::GetObjeto(idObjeto),audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela);
+    return CPIGGerenciadorGDP::CriaGeradorParticulas(maxParticulas,CPIGGerenciadorSprites::GetObjeto(idObjeto),audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela);
 }
 
 /********************************
@@ -2621,7 +2762,7 @@ Parâmetros:
 idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da função CriaGeradorParticulas().
 ********************************/
 void DestroiGeradorParticulas(int idGerador){
-    CPIGGerenciadorSprites::DestroiGeradorParticulas(idGerador);
+    CPIGGerenciadorGDP::DestroiGeradorParticulas(idGerador);
 }
 
 /********************************
@@ -2633,7 +2774,7 @@ posicaoX (entrada, passagem por valor): informa a nova posição X do GDP, em rela
 posicaoY (entrada, passagem por valor): informa a nova posição Y do GDP, em relação ao sistema de coordenadas do jogo.
 ********************************/
 void MoveGeradorParticulas(int idGerador,int posicaoX,int posicaoY){
-    CPIGGerenciadorSprites::GetGerador(idGerador)->Move(posicaoX,posicaoY);
+    CPIGGerenciadorGDP::GetGerador(idGerador)->Move(posicaoX,posicaoY);
 }
 
 /********************************
@@ -2644,7 +2785,7 @@ deltaX (entrada, passagem por valor): valor a ser somado ou subtraído na compone
 deltaY (entrada, passagem por valor): valor a ser somado ou subtraído na componente Y da posição do GDP.
 ********************************/
 void DeslocaGeradorParticulas(int idGerador,int deltaX,int deltaY){
-    CPIGGerenciadorSprites::GetGerador(idGerador)->Desloca(deltaX,deltaY);
+    CPIGGerenciadorGDP::GetGerador(idGerador)->Desloca(deltaX,deltaY);
 }
 
 /*
@@ -2674,38 +2815,142 @@ corFinal (entrada, passagem por valor): coloração das partículas ao final da tra
 deltaOpacidade (entrada, passagem por valor): diferença do nível de opacidade das partículas em relação ao início da transição.
 ********************************/
 void InsereTransicaoParticulas(int idGerador,double tempo,int deltaX,int deltaY,int deltaAlt,int deltaLarg,double deltaAng,PIG_Cor corFinal, int deltaOpacidade){
-    CPIGGerenciadorSprites::GetGerador(idGerador)->InsereTransicao(tempo,{deltaX,deltaY,deltaAlt,deltaLarg,deltaAng,corFinal,deltaOpacidade});
+    CPIGGerenciadorGDP::GetGerador(idGerador)->InsereTransicao(tempo,{deltaX,deltaY,deltaAlt,deltaLarg,deltaAng,corFinal,deltaOpacidade});
 }
 
 /********************************
-A função DefineTipoTransicaoParticulas() é responsável por determinar como a sequência de transições do gerador de partículas será executada.
+A função DefineTipoTransicaoParticulas() é responsável por determinar como a sequência de transições das partículas do gerador será executada.
 É possível fazê-la uma única vez (PIG_TRANSICAO_NORMAL), em loop (PIG_TRANSICAO_LOOP) ou indo até o final da sequência e retornando, em vai-vém (PIG_TRANSICAO_VAIVEM).
 A função deve ser chamada a cada frame, para ter resultados mais precisos.
 Parâmetros:
 idGerador (entrada, passagem por valor): identificador do gerador.
 ********************************/
 void DefineTipoTransicaoParticulas(int idGerador,PIG_TipoTransicao valor){
-    CPIGGerenciadorSprites::GetGerador(idGerador)->DefineTipoTransicao(valor);
+    CPIGGerenciadorGDP::GetGerador(idGerador)->DefineTipoTransicao(valor);
 }
 
 /********************************
-A função LimpaTransicoesPArticulas() é responsável por remover a sequência de transições do gerador de partículas.
+A função LimpaTransicoesParticulas() é responsável por remover a sequência de transições das partículas do gerador.
 Parâmetros:
 idGerador (entrada, passagem por valor): identificador do gerador de partículas.
 ********************************/
 void LimpaTransicoesParticulas(int idGerador){
-    CPIGGerenciadorSprites::GetGerador(idGerador)->LimpaTransicoes();
+    CPIGGerenciadorGDP::GetGerador(idGerador)->LimpaTransicoes();
 }
 
 /********************************
-A função MudaAnguloParticulas() modifica o ângulo de desenho das partículas após serem criadas.
+A função InsereTransicaoGDP() é responsável por criar e inserir uma nova transição ao final de sequência de transições do gerador em si.
+Essa transição modifica as características do gerador, que podem se refletir também nas características das partículas que serão posteriormente criadas usando o próprio gerador como modelo.
+Parâmetros:
+idGerador (entrada, passagem por valor): identificador do gerador.
+tempo (entrada, passagem por valor): duracao (em segundos) da transição do gerador.
+deltaX (entrada, passagem por valor): diferença da posição no eixo X em relação à posição do gerador no início da transição.
+deltaY (entrada, passagem por valor): diferença da posição no eixo Y em relação à posição do gerador no início da transição.
+deltaAltura (entrada, passagem por valor): diferença da altura que o modelo terá em relação ao início da transição.
+deltaLargura (entrada, passagem por valor): diferença da largura que o modelo terá em relação ao início da transição.
+deltaAngulo (entrada, passagem por valor): diferença de ângulo (em graus) que o modelo terá em relação ao início da transição.
+corFinal (entrada, passagem por valor): coloração que o modelo terá ao final da transição.
+deltaOpacidade (entrada, passagem por valor): diferença do nível de opacidade que o modelo terá em relação ao início da transição.
+********************************/
+void InsereTransicaoGDP(int idGerador,double tempo,int deltaX,int deltaY,int deltaAlt,int deltaLarg,double deltaAng,PIG_Cor corFinal, int deltaOpacidade){
+    CPIGGerenciadorGDP::GetGerador(idGerador)->InsereTransicaoGDP(tempo,{deltaX,deltaY,deltaAlt,deltaLarg,deltaAng,corFinal,deltaOpacidade});
+}
+
+/********************************
+A função LeArquivoTransicaoGDP() é responsável por ler, criar e inserir as transições para um gerador, provenientes de um arquivo texto.
+Cada linha do arquivo texto corresponde a uma transição (em ordem) e deve possuir 11 valores:
+1) um double representando a duracao (em segundos) da transição.
+2) um inteiro representando a diferença da posição no eixo X em relação à posição do gerador no início da transição.
+3) um inteiro representando a diferença da posição no eixo Y em relação à posição do gerador no início da transição.
+4) um inteiro representando a diferença da altura do modelo em relação ao início da transição.
+5) um inteiro representando a diferença da largura do modelo em relação ao início da transição.
+6) um double representando a diferença de ângulo (em graus) do modelo em relação ao início da transição.
+7) um inteiro representando a componente R (vermelho) da coloração do modelo ao final da transição.
+8) um inteiro representando a componente G (verde) da coloração do modelo ao final da transição.
+9) um inteiro representando a componente B (azul) da coloração do modelo ao final da transição.
+10) um inteiro representando a componente A (canal alfa) da coloração do modelo ao final da transição.
+11) um inteiro representando a diferença do nível de opacidade do modelo em relação ao início da transição.
+Parâmetros:
+idGerador (entrada, passagem por valor): identificador do gerador.
+nomeArq (entrada, passagem por referência): nome com extensão do arquivo texto contendo as transições.
+********************************/
+void LeTransicoesGDP(int idGerador,string nomeArq){
+    CPIGGerenciadorGDP::GetGerador(idGerador)->LeTransicoesGDP(nomeArq);
+}
+
+/********************************
+A função IniciaAutomacaoGDP() é responsável por iniciar as transições já inseridas no gerador, de acordo como o tipo de transição informada.
+Parâmetros:
+idGerador (entrada, passagem por valor): identificador do gerador.
+********************************/
+void IniciaAutomacaoGDP(int idGerador){
+    CPIGGerenciadorGDP::GetGerador(idGerador)->IniciaAutomacaoGDP();
+}
+
+/********************************
+A função LimpaTransicoesGDP() é responsável por remover a sequência de transições do gerador de partículas em si.
+Parâmetros:
+idGerador (entrada, passagem por valor): identificador do gerador de partículas.
+********************************/
+void LimpaTransicoesGDP(int idGerador){
+    CPIGGerenciadorGDP::GetGerador(idGerador)->LimpaTransicoesGDP();
+}
+
+/********************************
+A função ExecutandoTransicaoGDP() retorna a informação sobre a execução (neste momento) de transições do gerador.
+Parâmetros:
+idGerador (entrada, passagem por valor): identificador do gerador.
+Retorno:
+inteiro que indica se o gerador está executando alguma transição no momento (valor diferente de 0) ou não (valor igual a 0).
+********************************/
+bool ExecutandoTransicaoGDP(int idGerador){
+    return CPIGGerenciadorGDP::GetGerador(idGerador)->ExecutandoTransicaoGDP();
+}
+
+/********************************
+A função TrataAutomacaoGDP() é responsável por calcular o estado da transição corrente do gerador e aplicar essas modificação a ela.
+A função deve ser chamada a cada frame, para ter resultados mais precisos.
+Parâmetros:
+idGerador (entrada, passagem por valor): identificador do gerador.
+********************************/
+void TrataAutomacaoGDP(int idGerador){
+    CPIGGerenciadorGDP::GetGerador(idGerador)->TrataAutomacaoGDP();
+}
+
+/********************************
+A função InsereAcaoGDP() é responsável por inserir na linha de tempo de automação do gerador uma ação a ser executada.
+A ação é composta por uma função "acao" que será executada quando a linha de tempo atingir o parâmetro "tempo" e será repetida a cada "repeticao" segundos.
+A ação pode armazenar um ponteiro genérico "param" que será utilizado na chamada da função.
+Parâmetros:
+idGerador (entrada, passagem por valor): identificador do gerador.
+tempo (entrada, passagem por valor): tempo (em segundos) da primeira chamada da função.
+repeticao (entrada, passagem por valor): tempo (em segundos) entre a chamada anterior e a próxima. O valor -1 indica que a função não será repetida.
+param (entrada, passagem por referência): ponteiro genérico para um valor que será utilizado na chamada da função.
+********************************/
+void InsereAcaoGDP(int idGerador,double tempo, double repeticao, PIG_FuncaoSimples acao, void *param){
+    CPIGGerenciadorGDP::GetGerador(idGerador)->InsereAcaoGDP(tempo,repeticao,acao,param);
+}
+
+/********************************
+A função DefineTipoTransicaoGDP() é responsável por determinar como a sequência de transições do gerador de partículas será executada.
+É possível fazê-la uma única vez (PIG_TRANSICAO_NORMAL), em loop (PIG_TRANSICAO_LOOP) ou indo até o final da sequência e retornando, em vai-vém (PIG_TRANSICAO_VAIVEM).
+A função deve ser chamada a cada frame, para ter resultados mais precisos.
+Parâmetros:
+idGerador (entrada, passagem por valor): identificador do gerador.
+********************************/
+void DefineTipoTransicaoGDP(int idGerador,PIG_TipoTransicao tipo){
+    CPIGGerenciadorGDP::GetGerador(idGerador)->DefineTipoTransicaoGDP(tipo);
+}
+
+/********************************
+A função SetAnguloParticulas() modifica o ângulo de desenho das partículas após serem criadas.
 Somente as partículas criadas posteriormente terão o ângulo especificada.
 Parâmetros:
 idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da função CriaGeradorParticulas().
 angulo (entrada, passagem por valor): informa o angulo das partículas.
 ********************************/
-void MudaAnguloParticulas(int idGerador,double angulo){
-    CPIGGerenciadorSprites::GetGerador(idGerador)->SetAngulo(angulo);
+void SetAnguloParticulas(int idGerador,double angulo){
+    CPIGGerenciadorGDP::GetGerador(idGerador)->SetAngulo(angulo);
 }
 
 /********************************
@@ -2716,31 +2961,31 @@ Parâmetros:
 idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da função CriaGeradorParticulas().
 cor (entrada,passagem por valor): cor do sistema RGB utilizada para mesclagem com o arquivo de imagem da partícula.
 ********************************/
-void MudaCorParticulas(int idGerador,PIG_Cor cor){
-    CPIGGerenciadorSprites::GetGerador(idGerador)->SetColoracao(cor);
+void SetCorParticulas(int idGerador,PIG_Cor cor){
+    CPIGGerenciadorGDP::GetGerador(idGerador)->SetColoracao(cor);
 }
 
 /********************************
-A função MudaOpacidadeParticulas() modifica a opacidade das partículas após serem criadas.
+A função SetOpacidadeParticulas() modifica a opacidade das partículas após serem criadas.
 Somente as partículas criadas posteriormente terão a opacidade especificada.
 Parâmetros:
 idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da função CriaGeradorParticulas().
 opacidade (entrada, passagem por valor): informa a opacidade das partículas.
 ********************************/
-void MudaOpacidadeParticulas(int idGerador,int opacidade){
-    CPIGGerenciadorSprites::GetGerador(idGerador)->SetOpacidade(opacidade);
+void SetOpacidadeParticulas(int idGerador,int opacidade){
+    CPIGGerenciadorGDP::GetGerador(idGerador)->SetOpacidade(opacidade);
 }
 
 /********************************
-A função MudaDimensoesParticulas() modifica o tamanho das partículas após serem criadas.
+A função SetDimensoesParticulas() modifica o tamanho das partículas após serem criadas.
 Somente as partículas criadas posteriormente terão o tamanho definido.
 Parâmetros:
 idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da função CriaGeradorParticulas().
 altura (entrada, passagem por valor): informa a altura da partícula ao ser criada.
 largura (entrada, passagem por valor): informa a largura da partícula ao ser criada.
 ********************************/
-void MudaDimensoesParticulas(int idGerador,int altura, int largura){
-    CPIGGerenciadorSprites::GetGerador(idGerador)->SetDimensoes(altura,largura);
+void SetDimensoesParticulas(int idGerador,int altura, int largura){
+    CPIGGerenciadorGDP::GetGerador(idGerador)->SetDimensoes(altura,largura);
 }
 
 /********************************
@@ -2752,7 +2997,7 @@ posicaoX (entrada, passagem por valor): Valor da coordenada X do pivô em relação
 posicaoY (entrada, passagem por valor): Valor da coordenada Y do pivô em relação ao ponto (0,0) da partícula.
 ********************************/
 void SetPivoAbsolutoParticulas(int idGerador,int posicaoX,int posicaoY){
-    CPIGGerenciadorSprites::GetGerador(idGerador)->SetPivoAbsoluto({posicaoX,posicaoY});
+    CPIGGerenciadorGDP::GetGerador(idGerador)->SetPivoAbsoluto({posicaoX,posicaoY});
 }
 
 /********************************
@@ -2764,7 +3009,7 @@ relX (entrada, passagem por valor): porcentagem da largura da partícula onde fic
 relY (entrada, passagem por valor): porcentagem da altura da partícula onde ficará o pivô.
 ********************************/
 void SetPivoProporcionalParticulas(int idGerador,float relX,float relY){
-    CPIGGerenciadorSprites::GetGerador(idGerador)->SetPivoProporcional({relX,relY});
+    CPIGGerenciadorGDP::GetGerador(idGerador)->SetPivoProporcional({relX,relY});
 }
 
 /********************************
@@ -2777,7 +3022,7 @@ inteiro indicando a quantidade atual de partículas do gerador (valor maior ou ig
 Se a partícula não tiver sido criada por excesso de partículas ativas, o valor retornado é -1.
 ********************************/
 int CriaParticula(int idGerador){
-    return CPIGGerenciadorSprites::GetGerador(idGerador)->CriaParticula();
+    return CPIGGerenciadorGDP::GetGerador(idGerador)->CriaParticula();
 }
 
 /********************************
@@ -2792,7 +3037,7 @@ maxY (entrada, passagem por valor): valor máximo de Y para que a partícula seja 
 maxTempo (entrada, passagem por valor): tempo máximo de vida da partícula
 ********************************/
 void DefineLimitesParticula(int idGerador,int minX,int minY,int maxX,int maxY,double maxTempo){
-    return CPIGGerenciadorSprites::GetGerador(idGerador)->DefineLimites({minX,minY,maxX,maxY},maxTempo);
+    return CPIGGerenciadorGDP::GetGerador(idGerador)->DefineLimites({minX,minY,maxX,maxY},maxTempo);
 }
 
 /********************************
@@ -2804,7 +3049,7 @@ Retorno:
 inteiro que indica o número de partículas ativas.
 ********************************/
 int QuantidadeParticulasAtivas(int idGerador){
-    return CPIGGerenciadorSprites::GetGerador(idGerador)->GetQtdAtivas();
+    return CPIGGerenciadorGDP::GetGerador(idGerador)->GetQtdAtivas();
 }
 
 /********************************
@@ -2813,7 +3058,7 @@ Parâmetros:
 idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da função CriaGeradorParticulas().
 ********************************/
 void DesenhaParticulas(int idGerador){
-    CPIGGerenciadorSprites::GetGerador(idGerador)->Desenha();
+    CPIGGerenciadorGDP::GetGerador(idGerador)->Desenha();
 }
 
 /********************************
@@ -2825,7 +3070,7 @@ Retorno:
 inteiro que indica se houve colisão de alguma partícula ativa do GDP (valor diferente de zero) ou não (valor igual a 0, zero).
 ********************************/
 int TestaColisaoParticulasObjeto(int idGerador,int idObjeto){
-    return CPIGGerenciadorSprites::GetGerador(idGerador)->Colisao(CPIGGerenciadorSprites::GetObjeto(idObjeto));
+    return CPIGGerenciadorGDP::GetGerador(idGerador)->Colisao(CPIGGerenciadorSprites::GetObjeto(idObjeto));
 }
 
 /********************************
@@ -2837,8 +3082,9 @@ Retorno:
 inteiro que indica se houve colisão de alguma partícula ativa do GDP (valor diferente de zero) ou não (valor igual a 0, zero).
 ********************************/
 int TestaColisaoParticulasAnimacao(int idGerador,int idAnimacao){
-    return CPIGGerenciadorSprites::GetGerador(idGerador)->Colisao(CPIGGerenciadorSprites::GetAnimacao(idAnimacao));
+    return CPIGGerenciadorGDP::GetGerador(idGerador)->Colisao(CPIGGerenciadorSprites::GetAnimacao(idAnimacao));
 }
+
 
 /********************************
 Seção dos temporizadores
@@ -2887,7 +3133,7 @@ void PausaTudo(){
 }
 
 /********************************
-A função DespausaTimer() é responsável por retomar a contagem do tempo de um timer após uma pausa.
+A função DespausaTimer() é responsável por retomar a contagem do tempo de todos os timers após uma pausa.
 Parâmetros:
 idTimer (entrada, passagem por valor): identificador do timer.
 ********************************/
@@ -3235,6 +3481,97 @@ void DeslocaAnimacao(int idAnimacao,int deltaX,int deltaY){
 }
 
 /********************************
+A função SetLoopModoAnimacao() é responsável por definir a existência ou não de loop em um modo de uma animação.
+Parâmetros:
+idAnimacao (entrada, passagem por valor): identificador da animacao a ser deslocada.
+codigoModo (entrada, passagem por valor): numero do modo em questão.
+loop (entrada, passagem por valor): valor que indica a existência (diferente de zero) ou não (igual a zero) de loop no modo em questão.
+********************************/
+void SetLoopModoAnimacao(int idAnimacao,int modo,int loop){
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetLoopModo(modo,loop);
+}
+
+/********************************
+A função SetTempoFrameAnimacao() é responsável por definir uma nova duração para exibição do frame.
+Parâmetros:
+idAnimacao (entrada, passagem por valor): identificador da animacao a ser deslocada.
+codigoModo (entrada, passagem por valor): numero do modo em questão.
+indiceFrame (entrada, passagem por valor): indica a partir de qual frame o modo deve ser exibido. O valor 0 significa aprtir do primeiro frame.
+tempo (entrada, passagem por valor): valor que indica a nova duração de exibição do frame, em segundos.
+********************************/
+void SetTempoFrameAnimacao(int idAnimacao,int modo,int indiceFrame,float tempo){
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetTempoFrame(modo,indiceFrame,tempo);
+}
+
+/********************************
+A função SetAudioFrameAnimacao() é responsável por definir um novo audio a ser executado quando o frame em questão começar a ser exibido.
+Parâmetros:
+idAnimacao (entrada, passagem por valor): identificador da animacao a ser deslocada.
+codigoModo (entrada, passagem por valor): numero do modo em questão.
+indiceFrame (entrada, passagem por valor): indica a partir de qual frame o modo deve ser exibido. O valor 0 significa aprtir do primeiro frame.
+idAudio (entrada, passagem por valor): identificador do audio (já criado) a ser tocado quando o frame começar a ser exibido.
+********************************/
+void SetAudioFrameAnimacao(int idAnimacao,int modo,int indiceFrame,int idAudio){
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetAudioFrame(modo,indiceFrame,idAudio);
+}
+
+/********************************
+A função GetLoopModoAnimacao() é responsável por recuperar a existência ou não de loop em um modo de uma animação.
+Parâmetros:
+idAnimacao (entrada, passagem por valor): identificador da animacao a ser deslocada.
+codigoModo (entrada, passagem por valor): numero do modo em questão.
+Retorno:
+inteiro que indica a existência (diferente de zero) ou não (igual a zero) de loop no modo em questão.
+********************************/
+int GetLoopModoAnimacao(int idAnimacao,int modo){
+    return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetLoopModo(modo);
+}
+
+/********************************
+A função GetAudioFrameAnimacao() é responsável por recuprar o identificador do audio a ser executado quando o frame em questão começar a ser exibido.
+Parâmetros:
+idAnimacao (entrada, passagem por valor): identificador da animacao a ser deslocada.
+codigoModo (entrada, passagem por valor): numero do modo em questão.
+indiceFrame (entrada, passagem por valor): indica a partir de qual frame o modo deve ser exibido. O valor 0 significa aprtir do primeiro frame.
+Retorno:
+inteiro que representa o identificador do audio (já criado) a ser tocado quando o frame começar a ser exibido.
+********************************/
+int GetAudioFrameAnimacao(int idAnimacao,int modo,int indiceFrame){
+    return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetAudioFrame(modo,indiceFrame);
+}
+
+/********************************
+A função GetTempoFrameAnimacao() é responsável por recuperar a duração da exibição do frame.
+Parâmetros:
+idAnimacao (entrada, passagem por valor): identificador da animacao a ser deslocada.
+codigoModo (entrada, passagem por valor): numero do modo em questão.
+indiceFrame (entrada, passagem por valor): indica a partir de qual frame o modo deve ser exibido. O valor 0 significa aprtir do primeiro frame.
+Retorno:
+float que indica a nova duração de exibição do frame, em segundos.
+********************************/
+float GetTempoFrameAnimacao(int idAnimacao,int modo,int indiceFrame){
+    return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetTempoFrame(modo,indiceFrame);
+}
+
+/********************************
+A função PausaAnimacao() é responsável por pausar a exibição dos frames da animação.
+Parâmetros:
+idAnimacao (entrada, passagem por valor): identificador da animacao a ser deslocada.
+********************************/
+void PausaAnimacao(int idAnimacao){
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->Pausa();
+}
+
+/********************************
+A função DespausaAnimacao() é responsável por despausar a exibição dos frames da animação.
+Parâmetros:
+idAnimacao (entrada, passagem por valor): identificador da animacao a ser deslocada.
+********************************/
+void DesausaAnimacao(int idAnimacao){
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->Despausa();
+}
+
+/********************************
 A função SetOpacidadeAnimacao() é responsável por modificar o nível de opacidade da animação.
 O nível de opacidade varia de 0-255, sendo 0 totalmente transparente e 255 totalmente opaco.
 Parâmetros:
@@ -3274,9 +3611,9 @@ A função SetFlipAnimacao() é responsável por virar a animação, invertendo-a em a
 desenhada na nova orientação no próximo comando DesenhaAnimacao().
 Parâmetros:
 idAnimacao (entrada, passagem por valor): identificador da animação a ser virada.
-valor (entrada, passagem por valor): valor do tipo de Flip. Pode ser FLIP_NENHUM (nenhum tipo de inversão),
-FLIP_HORIZONTAL (inverte da esquerda para a direita), FLIP_VERTICAL (inverte de cima para baixo),
-ou FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
+valor (entrada, passagem por valor): valor do tipo de Flip. Pode ser PIG_FLIP_NENHUM (nenhum tipo de inversão),
+PIG_FLIP_HORIZONTAL (inverte da esquerda para a direita), PIG_FLIP_VERTICAL (inverte de cima para baixo),
+ou PIG_FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
 ********************************/
 void SetFlipAnimacao(int idAnimacao,PIG_Flip valor){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetFlip(valor);
