@@ -422,7 +422,9 @@ public:
             scrollHorizontal->Desenha();
         }
 
-        SDL_Rect r={pos.x+margemHorEsq,*altJanela-pos.y-alt+margemVertCima,larg-(margemHorEsq+margemHorDir),alt-(margemVertBaixo+margemVertCima)};
+        DesenhaLabel();
+
+        SDL_Rect r={(int)pos.x+margemHorEsq,*altJanela-((int)pos.y)-alt+margemVertCima,larg-(margemHorEsq+margemHorDir),alt-(margemVertBaixo+margemVertCima)};
         CPIGGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaWorldScreen(r.x,r.y,r.x,r.y);
 
         SDL_RenderSetClipRect(renderer,&r);
@@ -434,7 +436,6 @@ public:
         //desbloqueia o desenho fora da area do componente
         SDL_RenderSetClipRect(renderer,NULL);
 
-        DesenhaLabel();
         EscreveHint();
 
         return 1;

@@ -29,12 +29,12 @@ private:
     }
 
     int ChecaMouseOver(SDL_Point pMouse)override{
-        SDL_Rect r={pos.x,0,larg,0};
+        SDL_Rect r={(int)pos.x,0,larg,0};
         if (recolhida){
-            r.y = pos.y;
+            r.y = (int)pos.y;
             r.h = altBaseLista;
         }else{
-            r.y = pos.y-(itens.size())*altBaseLista;
+            r.y = ((int)pos.y)-(itens.size())*altBaseLista;
             r.h = (itens.size()+1)*altBaseLista;
         }
         SetMouseOver(SDL_PointInRect(&pMouse,&r));
@@ -43,10 +43,10 @@ private:
     }
 
     void DesenhaItemDestaque(){
-        //SDL_Rect rectAux = dest;
-        //rectAux.h = altBaseLista;
+        SDL_Rect rectAux = dest;
+        rectAux.h = altBaseLista;
+        SDL_RenderSetClipRect(renderer,&rectAux);
         if (text){//se tiver imagem de fundo
-            //SDL_RenderCopyEx(renderer,text,NULL,&rectAux,-angulo,NULL,flip);
             dest.h=altBaseLista;
             CPIGSprite::Desenha();
         }
@@ -56,6 +56,7 @@ private:
             itens[itemDestaque]->Desenha();         //desenha o item no cabeçalho
             itens[itemDestaque]->Move(pItem.x,pItem.y); //devolve o item para a posição normal (onde também deverá ser desenhado)
         }
+        SDL_RenderSetClipRect(renderer,NULL);
     }
 
 public:
@@ -117,19 +118,17 @@ public:
         if (recolhida){
             DesenhaItemDestaque();
         }else{
-            //SDL_Rect r = dest;
-            //r.h = (itens.size()+1)*altBaseLista;
-            //r.y = dest.y;
-            //SDL_RenderSetClipRect(renderer,&r);
+            SDL_Rect r = dest;
+
+            SDL_RenderSetClipRect(renderer,&r);
             dest.h = (itens.size()+1)*altBaseLista;
             frameAtual=0;
             CPIGSprite::Desenha();
 
-            //SDL_RenderCopyEx(renderer,text,NULL,&r,-angulo,NULL,flip);
-
             for (PIGItemComponente i: itens)
                 i->Desenha();
-            //SDL_RenderSetClipRect(renderer,NULL);
+
+            SDL_RenderSetClipRect(renderer,NULL);
         }
 
         return 1;

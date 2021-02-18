@@ -49,7 +49,7 @@ protected:
         if (visivel==false||habilitado==false)
             return -1;
 
-        SDL_Rect r={pos.x,pos.y,larg,alt};
+        SDL_Rect r={(int)pos.x,(int)pos.y,larg,alt};
         SetMouseOver(SDL_PointInRect(&pMouse,&r));
         return mouseOver;
     }
@@ -112,12 +112,12 @@ protected:
 public:
 
     CPIGComponente(int idComponente,int px,int py, int altura, int largura, int janela=0)
-    :CPIGSprite(-1,altura, largura, "",janela){
+    :CPIGSprite(idComponente,altura, largura, "",janela){
         IniciaBase(idComponente,px,py);
     }
 
     CPIGComponente(int idComponente,int px,int py, int altura, int largura, std::string nomeArq,int retiraFundo=1,int janela=0)
-    :CPIGSprite(-1,nomeArq,retiraFundo,NULL,janela){
+    :CPIGSprite(idComponente,nomeArq,retiraFundo,NULL,janela){
         IniciaBase(idComponente,px,py);
         CPIGSprite::SetDimensoes(altura,largura);
     }

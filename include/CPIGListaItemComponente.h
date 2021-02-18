@@ -180,6 +180,7 @@ public:
     void Move(double nx,double ny){
         double dx = nx-pos.x;
         double dy = ny-pos.y;
+
         CPIGSprite::Desloca(dx,dy);
         PosicionaLabel();
 

@@ -77,9 +77,9 @@ public:
         return CPIGRadioBox(idComponente,px,py,larguraTotal,alturaLinha,alturaMaxima,imgItem,alturaItem,larguraItem,imgFundo,retiraFundo,janela);
     }
 
-    void CriaItem(std::string itemLabel, std::string arqImagemFundo="",bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
+    void CriaItem(std::string itemLabel, std::string arqImagemFundoItem="",bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
         int yItem = pos.y+alt-(altBaseLista)*(itens.size()+1);
-        CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundo,false,itemHabilitado,audioComponente,hintMsg,retiraFundo);
+        CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,false,itemHabilitado,audioComponente,hintMsg,retiraFundo);
         itens[itens.size()-1]->DefineFuncaoAjusteFrame(AjustaFrame);
         PIGSprite icone = itens[itens.size()-1]->GetIcone();
         icone->CriaFramesAutomaticosPorLinha(1,1,6);
@@ -91,16 +91,16 @@ public:
 
         DesenhaLabel();
 
-        SDL_Rect r={pos.x,*altJanela-pos.y-alt,larg,alt};
+        SDL_Rect r = {(int)pos.x,*altJanela-((int)pos.y)-alt,larg,alt};
         SDL_RenderSetClipRect(renderer,&r);
 
         if (text)//se tiver imagem de fundo
             CPIGSprite::Desenha();
 
-        SDL_RenderSetClipRect(renderer,NULL);
-
         for (PIGItemComponente i: itens)
             i->Desenha();
+
+        SDL_RenderSetClipRect(renderer,NULL);
 
         return 1;
     }

@@ -84,6 +84,22 @@ public:
         return animacoes->Insere(new CPIGAnimacao(id,objetoBase,retiraFundo,corFundo,idJanela));
     }
 
+    static int GetProxIndiceSprite(){
+        return sprites->ProxID();
+    }
+
+    static int InsereSprite(PIGSprite spriteBase){
+        return sprites->Insere(spriteBase);
+    }
+
+    static int GetProxIndiceObjeto(){
+        return objetos->ProxID();
+    }
+
+    static int InsereObjeto(PIGObjeto objBase){
+        return objetos->Insere(objBase);
+    }
+
     static int GetProxIndiceAnimacao(){
         return animacoes->ProxID();
     }

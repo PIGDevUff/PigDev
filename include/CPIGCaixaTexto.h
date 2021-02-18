@@ -19,7 +19,7 @@ protected:
     int ChecaMouseOver(SDL_Point pMouse) override{
         if (visivel==false) return -1;
 
-        SDL_Rect r = {pos.x + margemHorEsq,pos.y + margemVertBaixo,larg - (margemHorDir + margemHorEsq),alt - (margemVertBaixo + margemVertCima)};
+        SDL_Rect r = {(int)pos.x + margemHorEsq,((int)pos.y) + margemVertBaixo,larg - (margemHorDir + margemHorEsq),alt - (margemVertBaixo + margemVertCima)};
 
         SetMouseOver(SDL_PointInRect(&pMouse,&r));
         return mouseOver;

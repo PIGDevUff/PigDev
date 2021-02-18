@@ -98,12 +98,23 @@ public:
     }
 
     int Desenha()override{
+
         CPIGSprite::Desenha();
-        //SDL_RenderCopyEx(renderer,text,&frames[frameAtual],&dest,-angulo,NULL,flip);
+
         if (icone)
             icone->Desenha();
         DesenhaLabel();
-        EscreveHint();
+
+        if (SDL_RenderIsClipEnabled(renderer)){
+            SDL_Rect r;
+            SDL_RenderGetClipRect(renderer,&r);
+            SDL_RenderSetClipRect(renderer,NULL);
+            EscreveHint();
+            SDL_RenderSetClipRect(renderer,&r);
+        }else{
+            EscreveHint();
+        }
+
         return 1;
     }
 
@@ -158,7 +169,7 @@ public:
             icone->GetDimensoes(altIcone,largIcone);
             posIcone=PIG_COMPONENTE_DIR_CENTRO;
             icone->Move(pos.x+larg-largIcone,pos.y);
-            //printf("teste\n");
+
             if (posRelativaLabel == PIG_COMPONENTE_ESQ_CENTRO){
                 AlinhaLabelEsquerda();
             }else if (posRelativaLabel == PIG_COMPONENTE_CENTRO_CENTRO){
@@ -222,8 +233,12 @@ public:
     void Move(double nx, double ny)override{
         int dx = nx-pos.x;
         int dy = ny-pos.y;
-        CPIGComponente::Desloca(dx,dy);
+        Desloca(dx,dy);
         SetPosicaoPadraoLabel(posLabel);
+    }
+
+    void Desloca(double dx, double dy)override{
+        CPIGSprite::Desloca(dx,dy);
         if (icone) icone->Desloca(dx,dy);
     }
 

@@ -6,7 +6,7 @@
 class CPIGCheckBox: public CPIGListaItemComponente{
 
 protected:
-    std::string arqIcone;
+    std::string arqImagemIcone;
 
     void SetFoco(bool valor){
         temFoco = valor;
@@ -38,7 +38,7 @@ public:
 
     CPIGCheckBox(int idComponente, int posX, int posY, int larguraTotal,int alturaLinha,int alturaMaxima,std::string imgIcone, int alturaIcone, int larguraIcone,std::string imgFundo, int retiraFundo=1,int janela = 0):
         CPIGListaItemComponente(idComponente,posX,posY,larguraTotal,alturaLinha,alturaMaxima,imgFundo,retiraFundo,janela){
-            arqIcone = imgIcone;
+            arqImagemIcone = imgIcone;
         }
 
     CPIGCheckBox(std::string nomeArqParam):CPIGCheckBox(LeArquivoParametros(nomeArqParam)){}
@@ -81,7 +81,7 @@ public:
 
     void CriaItem(std::string itemLabel, std::string arqImagemFundoItem="", bool itemMarcado = false, bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
         int yItem = pos.y+alt-(altBaseLista)*(itens.size()+1);
-        CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqIcone,arqImagemFundoItem,itemMarcado,itemHabilitado,audio,hintMsg,retiraFundo);
+        CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,itemMarcado,itemHabilitado,audio,hintMsg,retiraFundo);
         itens[itens.size()-1]->DefineFuncaoAjusteFrame(AjustaFrame);
         PIGSprite icone = itens[itens.size()-1]->GetIcone();
         icone->CriaFramesAutomaticosPorLinha(1,1,6);
@@ -89,23 +89,20 @@ public:
     }
 
     int Desenha(){
-        if (!visivel) return 0;
+        if (visivel==false) return 0;
 
         DesenhaLabel();
 
-        SDL_Rect r={pos.x,*altJanela-pos.y-alt,larg,alt};
+        SDL_Rect r = {(int)pos.x,*altJanela-((int)pos.y)-alt,larg,alt};
         SDL_RenderSetClipRect(renderer,&r);
 
-        if (text){//se tiver imagem de fundo
+        if (text)//se tiver imagem de fundo
             CPIGSprite::Desenha();
-        }
-
-        SDL_RenderSetClipRect(renderer,NULL);
 
         for (PIGItemComponente i: itens)
             i->Desenha();
 
-
+        SDL_RenderSetClipRect(renderer,NULL);
 
         return 1;
     }
@@ -157,12 +154,16 @@ public:
             if(itens[i]->GetAcionado())resp.push_back(i);
 
         return resp;
-
     }
 
     void SetDimensoes(int altura,int largura)override{
         CPIGComponente::SetDimensoes(altura,largura);
         altMaxima = altura;
+
+        for(PIGItemComponente i : itens){
+            i->SetDimensoes(altIcone,largura);
+        }
+
         Move(pos.x,pos.y);
     }
 

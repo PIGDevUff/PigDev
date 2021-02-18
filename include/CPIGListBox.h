@@ -30,7 +30,6 @@ private:
 
     void DesenhaRetanguloMarcacao(){
         if(itemDestaque !=-1){
-            //int posX,posY;
             PIGPonto2D p = itens[itemDestaque]->GetXY();
             CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado(p.x,p.y,altBaseLista,larg,AZUL);
         }
@@ -135,20 +134,20 @@ public:
     int Desenha(){
         if (visivel==false) return 0;
 
-        if (text){//se tiver imagem de fundo
-            CPIGSprite::Desenha();//SDL_RenderCopyEx(renderer,text,NULL,&dest,-angulo,NULL,flip);
-        }
         DesenhaLabel();
 
-        SDL_Rect r = {pos.x,*altJanela-pos.y-alt,larg,alt};
+        SDL_Rect r = {(int)pos.x,*altJanela-((int)pos.y)-alt,larg,alt};
         SDL_RenderSetClipRect(renderer,&r);
+
+        if (text)//se tiver imagem de fundo
+            CPIGSprite::Desenha();//SDL_RenderCopyEx(renderer,text,NULL,&dest,-angulo,NULL,flip);
 
         DesenhaRetanguloMarcacao();
 
-        SDL_RenderSetClipRect(renderer,NULL);
-
         for (PIGItemComponente i: itens)
             i->Desenha();
+
+        SDL_RenderSetClipRect(renderer,NULL);
 
         return 1;
     }
