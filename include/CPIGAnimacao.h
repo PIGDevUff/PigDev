@@ -12,15 +12,14 @@ int idTimer;                    //timer da animação (se estiver sendo utilizado 
 SDL_Point offset;                  //offset (x,y) a ser utilizado junto com a posição (x,y) para desenhar oa animação
 int modoAtual;                  //número que indica o modo atual
 
-
 //muda o frame a ser exibido do modo atual
 void AtualizaFrameAtual(PIGModoAnimacao modo){
     frameAtual = modo->GetFrameAtual();
     CPIGSprite::MudaFrameAtual(frameAtual);
 
     int a,l;
-    if (modo->GetDimensoesAtual(a,l))
-        SetDimensoes(a,l);
+    modo->GetDimensoesAtual(a,l);
+    SetDimensoes(a,l);
 
     int audio = modo->GetAudioAtual();
     if (audio>=0){
@@ -89,7 +88,11 @@ void CriaModo(int idModo, int loop){
 }
 
 //insere um frame em um dos modos
-void InsereFrame(int idModo, int idFrame, float delayFrame, int audio, int alturaFrame, int larguraFrame){
+void InsereFrame(int idModo, int idFrame, float delayFrame, int audio, int alturaFrame=-1, int larguraFrame=-1){
+    if (alturaFrame==-1)
+        alturaFrame = alt;
+    if (larguraFrame==-1)
+        larguraFrame = larg;
     modos[idModo]->InsereEstagio(idFrame,delayFrame,audio,alturaFrame,larguraFrame);
 }
 

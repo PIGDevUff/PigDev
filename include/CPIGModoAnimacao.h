@@ -103,11 +103,11 @@ public:
         return estagios[indiceFrame].tempo;
     }
 
-    bool GetDimensoesAtual(int &altura, int &largura){
-        if (estagios[frameAtual].altura < 0) return false;
+    void GetDimensoesAtual(int &altura, int &largura){
+        //if (estagios[frameAtual].altura < 0) return false;
         altura = estagios[frameAtual].altura;
         largura = estagios[frameAtual].largura;
-        return true;
+        //return true;
     }
 
     //teste se já passou o tempo necessário para mudar de frame
