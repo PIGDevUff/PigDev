@@ -76,8 +76,7 @@ void IniciaAutomacao(PIG_EstadoTransicao inicial){
 }
 
 bool ExecutandoTransiao(){
-    if (transicoes.size()<=transAtual||iniciado==false) return false;
-    return transicoes[transAtual]->CalculaTransicao() < 0;
+    return iniciado&&transAtual<transicoes.size();
 }
 
 PIGTransicao GetTransicaoAtual(){
@@ -98,7 +97,7 @@ PIGTransicao GetTransicaoAtual(){
             if (tipo == PIG_TRANSICAO_LOOP)
                 transAtual %= transicoes.size(); //volta à transicao com índice 0
             else{
-                if (transAtual==transicoes.size()) return NULL;//as transicoes acabaram
+                if (transAtual==transicoes.size()) return transicoes[transAtual-1];//as transicoes acabaram
             }
         }
         transicoes[transAtual]->IniciaTransicao(atual,sobra);
@@ -119,6 +118,7 @@ bool TemAcoes(){
 
 int InsereAcao(PIG_FuncaoSimples acao,double inicio,double repeticao,void *param){
     int i=0;
+    inicio += CPIGGerenciadorTimers::GetTimer(timerAcoes)->GetTempoDecorrido();
     while (i<timelineAcoes.size()&&timelineAcoes[i].inicio<inicio)
         i++;
     timelineAcoes.insert(timelineAcoes.begin()+i,{inicio,repeticao,acao,param});
