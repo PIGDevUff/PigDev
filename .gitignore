@@ -9,6 +9,7 @@ libMacOsX/*
 libWindows/*
 *.wav
 *.mp3
+*.mp4
 *.aif
 *.midi
 *.bmp
@@ -16,4 +17,5 @@ libWindows/*
 *.jpg
 *.jpeg
 *.o
-*.zip
+*.rar
+*.dll

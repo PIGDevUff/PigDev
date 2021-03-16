@@ -417,6 +417,16 @@ int GetEstadoBotaoMouse(int botao){
     return CPIGMouse::GetEstadoBotao(botao);
 }
 
+/********************************
+A função ExecutaBackground() é responsável por executar uma função em bckground, ou seja, fora do fluxo principal de execução do programa.
+Essa execução é feita por outra Thread, com suporte do Sistema Operacional
+Parâmetros:
+dados (entrada, passagem por referência): ponteiro genérico para qualquer tipo de dado a ser utilizado na função.
+********************************/
+void ExecutaBackground(PIG_FuncaoBackground funcao,void *dados){
+    SDL_CreateThread(funcao,"",dados);
+}
+
 
 /********************************
 Seção de tratamento de janelas
