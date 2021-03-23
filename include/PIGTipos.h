@@ -88,6 +88,8 @@ typedef struct{
 
 //Tipo de callback genérica utilizada em diversos locais
 typedef int (*PIG_FuncaoSimples)(int,void*);
+typedef int (*PIG_FuncaoBackground)(void*);
+
 
 /********************************
 O tipo PIG_Cor é um struct formado por 4 campos: r,g,b,a correspondendo aos valores de vermelho, verde, azul e alfa (transparência) do pixel
