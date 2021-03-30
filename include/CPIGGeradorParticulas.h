@@ -36,7 +36,7 @@ void AtualizaParticulas(){
         //printf("viva %d %d %d\n",i,parts[i]->viva,parts[i]->GetID());
         if (parts[i]->viva==false){
             //delete parts[i];
-            //printf("antes del %d\n",parts[i]->GetID());
+            printf("antes del %d (%f)\n",parts[i]->GetID(),maxTempo);
             CPIGGerenciadorSprites::DestroiAnimacao(parts[i]->GetID());
             //parts[i] = NULL;
             if (audioFim>=0)
@@ -84,6 +84,7 @@ public:
         idPart = CPIGGerenciadorSprites::InsereAnimacao(part);
 
         part->DefineLimites(maxEspaco,maxTempo);
+        printf("com tempo %f\n",maxTempo);
         part->IniciaAutomacao();
         parts.push_back(part);
 

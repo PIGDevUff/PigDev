@@ -851,7 +851,7 @@ pontoX1 (entrada, passagem por valor): inteiro que indica o início da linha no e
 pontoY1 (entrada, passagem por valor): inteiro que indica o início da linha no eixo Y.
 pontoX2 (entrada, passagem por valor): inteiro que indica o fim da linha no eixo X.
 pontoY2 (entrada, passagem por valor): inteiro que indica o fim da linha no eixo Y.
-cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho da linha;
+cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho da linha.
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde a linha será desenhada.
 ********************************/
 void DesenhaLinhaSimples(int pontoX1,int pontoY1,int pontoX2,int pontoY2, PIG_Cor cor, int idJanela=0){
@@ -865,7 +865,7 @@ Parâmetros:
 pontosX (entrada, passagem por referência): vetor de inteiros, de tamanho qtdPontos*2, contendo os valores X (inicias e finais) de cada linha.
 pontosY (entrada, passagem por referência): vetor de inteiros, de tamanho qtdPontos*2, contendo os valores Y (inicias e finais) de cada linha.
 qtdPontos (entrada, passagem por valor): quantidade de linhas a serem desenhadas.
-cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho das linhas;
+cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho das linhas.
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde as linhas serão desenhadas.
 ********************************/
 void DesenhaLinhasDisjuntas(int pontosX[],int pontosY[],int qtdPontos, PIG_Cor cor, int idJanela=0){
@@ -879,7 +879,7 @@ Parâmetros:
 pontosX (entrada, passagem por referência): vetor de inteiros, de tamanho qtdPontos+1, contendo os valores X de cada linha da sequência.
 pontosY (entrada, passagem por referência): vetor de inteiros, de tamanho qtdPontos+1, contendo os valores Y de cada linha da sequência.
 qtdPontos (entrada, passagem por valor): quantidade de linhas a serem desenhadas.
-cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho das linhas;
+cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho das linhas.
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde as linhas serão desenhadas.
 ********************************/
 void DesenhaLinhasSequencia(int pontosX[],int pontosY[],int qtdPontos, PIG_Cor cor, int idJanela=0){
@@ -894,7 +894,7 @@ posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja colocar o retângulo.
 altura (entrada, passagem por valor): Valor onde o usuário irá fornecer o número correspondente em pixels à altura desse retângulo.
 largura (entrada, passagem por valor): Valor onde o usuário irá fornecer o número correspondente em pixels à largura desse retângulo.
-cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho do retângulo;
+cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho do retângulo.
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde o retângulo será desenhado.
 ********************************/
 void DesenhaRetangulo(int posicaoX, int posicaoY, int altura, int largura, PIG_Cor cor, int idJanela=0){
@@ -909,7 +909,7 @@ posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu
 posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja colocar o retângulo.
 altura (entrada, passagem por valor): Valor onde o usuário irá fornecer o número correspondente em pixels à altura desse retângulo.
 largura (entrada, passagem por valor): Valor onde o usuário irá fornecer o número correspondente em pixels à largura desse retângulo.
-cor (entrada, passagem por valor): indica a cor no sistema RGB para a borda do retângulo;
+cor (entrada, passagem por valor): indica a cor no sistema RGB para a borda do retângulo.
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde o retângulo será desenhado.
 ********************************/
 void DesenhaRetanguloVazado(int posicaoX, int posicaoY, int altura, int largura, PIG_Cor cor, int idJanela=0){
@@ -924,7 +924,7 @@ Parâmetros:
 pontosX (entrada, passagem por referência): vetor de inteiros, de tamanho qtdPontos, contendo as coordenadas X de cada vértice do polígono.
 pontosY (entrada, passagem por referência): vetor de inteiros, de tamanho qtdPontos, contendo as coordenadas Y de cada vértice do polígono.
 qtdPontos (entrada, passagem por valor): quantidade de lados do polígono.
-cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho do polígono;
+cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho do polígono.
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde o polígono será desenhado.
 ********************************/
 void DesenhaPoligono(int pontosX[],int pontosY[],int qtdPontos, PIG_Cor cor, int idJanela=0){
@@ -1101,7 +1101,7 @@ posicaoX (entrada, passagem por valor): Valor da coordenada X onde o usuário des
 posicaoY (entrada, passagem por valor): Valor da coordenada Y onde o usuário deseja colocar o retângulo.
 altura (entrada, passagem por valor): Valor onde o usuário irá fornecer o número correspondente em pixels à altura desse retângulo.
 largura (entrada, passagem por valor): Valor onde o usuário irá fornecer o número correspondente em pixels à largura desse retângulo.
-cor (entrada, passagem por valor): indica a cor no sistema RGB para o preenchimento do retângulo;
+cor (entrada, passagem por valor): indica a cor no sistema RGB para o preenchimento do retângulo.
 ********************************/
 void DesenhaRetanguloOffScreen(int x1,int y1,int altura,int largura,PIG_Cor cor){
     jogo->GetOffScreenRender()->DesenharRetangulo(x1,y1,altura,largura,cor);
@@ -1115,7 +1115,7 @@ posicaoX (entrada, passagem por valor): Valor da coordenada X onde o usuário des
 posicaoY (entrada, passagem por valor): Valor da coordenada Y onde o usuário deseja colocar o retângulo.
 altura (entrada, passagem por valor): Valor onde o usuário irá fornecer o número correspondente em pixels à altura desse retângulo.
 largura (entrada, passagem por valor): Valor onde o usuário irá fornecer o número correspondente em pixels à largura desse retângulo.
-cor (entrada, passagem por valor): indica a cor no sistema RGB para a borda do retângulo;
+cor (entrada, passagem por valor): indica a cor no sistema RGB para a borda do retângulo.
 ********************************/
 void DesenhaRetanguloVazadoOffScreen(int x1,int y1,int altura,int largura,PIG_Cor cor){
     jogo->GetOffScreenRender()->DesenharRetanguloVazado(x1,y1,altura,largura,cor);
@@ -1128,12 +1128,40 @@ pontoX1 (entrada, passagem por valor): inteiro que indica o início da linha no e
 pontoY1 (entrada, passagem por valor): inteiro que indica o início da linha no eixo Y.
 pontoX2 (entrada, passagem por valor): inteiro que indica o fim da linha no eixo X.
 pontoY2 (entrada, passagem por valor): inteiro que indica o fim da linha no eixo Y.
-cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho das linhas;
+cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho das linhas.
 ********************************/
 void DesenhaLinhaSimplesOffScreen(int x1,int y1,int x2,int y2,PIG_Cor cor){
     jogo->GetOffScreenRender()->DesenharLinha(x1,y1,x2,y2,cor);
 }
 
+/********************************
+A função DesenhaLinhasDisjuntasOffScreen() é responsável por desenhar no bitmap offscreen linhas separadamente, ou seja, os ponto iniciais de cada linha estão nas posições pares e
+os pontos finais estão nas posições ímpares. Assim, os vetores precisam ter tamanho qtdPontos*2.
+Parâmetros:
+pontosX (entrada, passagem por referência): vetor de inteiros, de tamanho qtdPontos*2, contendo os valores X (inicias e finais) de cada linha.
+pontosY (entrada, passagem por referência): vetor de inteiros, de tamanho qtdPontos*2, contendo os valores Y (inicias e finais) de cada linha.
+qtdPontos (entrada, passagem por valor): quantidade de linhas a serem desenhadas.
+cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho das linhas.
+********************************/
+void DesenhaLinhasDisjuntasOffScreen(int pontosX[],int pontosY[],int qtdPontos, PIG_Cor cor){
+    jogo->GetOffScreenRender()->DesenhaLinhasDisjuntas(pontosX,pontosY,qtdPontos,cor);
+}
+
+/********************************
+A função DesenhaLinhasSequenciaOffScreen() é responsável por desenhar no bitmap offscreen linhas em sequência, ou seja, o ponto final da primeira linha
+corresponde ao ponto inicial da segunda linha.
+Parâmetros:
+pontosX (entrada, passagem por referência): vetor de inteiros, de tamanho qtdPontos+1, contendo os valores X de cada linha da sequência.
+pontosY (entrada, passagem por referência): vetor de inteiros, de tamanho qtdPontos+1, contendo os valores Y de cada linha da sequência.
+qtdPontos (entrada, passagem por valor): quantidade de linhas a serem desenhadas.
+cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho das linhas.
+********************************/
+void DesenhaLinhasSequenciaOffScreen(int pontosX[],int pontosY[],int qtdPontos, PIG_Cor cor){
+    jogo->GetOffScreenRender()->DesenhaLinhasSequencia(pontosX,pontosY,qtdPontos,cor);
+}
+
+
+///escrever
 
 /********************************
 Seção de fontes
@@ -1220,6 +1248,72 @@ inteiro que representa a ideintificação única da fonte. Futuras referência a est
 ********************************/
 int CriaFonteFundo(char *nome,int tamanho,char *arquivoFundo,PIG_Estilo estilo=PIG_ESTILO_NORMAL,int idJanela=0){
     return CPIGGerenciadorFontes::CriaFonteFundo(nome,tamanho,estilo,arquivoFundo,idJanela);
+}
+
+
+/********************************
+A função CriaFonteNormalOffscreen() é responsável por disponibilizar uma nova fonte com preenchimento sólido.
+Parâmetros:
+nome (entrada, passagem por referência): nome do arquivo que contém a fonte (normalmente com extensão ttf).
+tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura média (em pixels) dos caracteres da fonte.
+corLetra (entrada, passagem por valor): representa a cor de preenchimento da fonte.
+contorno (entrada, passagem por valor): representa a espessura do contorno que fonte terá. Caso não seja desejado um contorno, basta utilizar um valor 0.
+corContorno (entrada, passagem por valor): representa a cor do contorno da fonte.
+estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combinação binária de: PIG_ESTILO_NEGRITO, para negrito; PIG_ESTILO_SUBLINHADO, para sublinhado; PIG_ESTILO_ITALICO, para itálico;
+PIG_ESTILO_CORTADO, para uma linha horizontal à meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado PIG_ESTILO_NORMAL.
+retono:
+inteiro que representa a ideintificação única da fonte. Futuras referência a esta fonte devem idenitificá-las pelo número.
+********************************/
+int CriaFonteNormalOffscreen(char *nome,int tamanho,PIG_Cor corLetra,int contorno,PIG_Cor corContorno,PIG_Estilo estilo=PIG_ESTILO_NORMAL){
+    return CPIGGerenciadorFontes::CriaFonteNormalOffScreen(nome,tamanho,estilo,corLetra,contorno,corContorno,jogo->GetOffScreenRender(),0);
+}
+
+/********************************
+A função CriaFonteNormalOffscreen() é responsável por disponibilizar uma nova fonte com preenchimento sólido.
+Parâmetros:
+nome (entrada, passagem por referência): nome do arquivo que contém a fonte (normalmente com extensão ttf).
+tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura média (em pixels) dos caracteres da fonte.
+corLetra (entrada, passagem por valor): representa a cor de preenchimento da fonte. Caso a cor não seja informada, será utilizada a cor padrão (BRANCO).
+estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combinação binária de: PIG_ESTILO_NEGRITO, para negrito; PIG_ESTILO_SUBLINHADO, para sublinhado; PIG_ESTILO_ITALICO, para itálico;
+PIG_ESTILO_CORTADO, para uma linha horizontal à meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado PIG_ESTILO_NORMAL.
+retono:
+inteiro que representa a ideintificação única da fonte. Futuras referência a esta fonte devem idenitificá-las pelo número.
+********************************/
+int CriaFonteNormalOffscreen(char *nome,int tamanho,PIG_Cor corLetra=PIG_FONTE_PADRAO_COR,PIG_Estilo estilo=PIG_ESTILO_NORMAL){
+    return CPIGGerenciadorFontes::CriaFonteNormalOffScreen(nome,tamanho,estilo,jogo->GetOffScreenRender(),corLetra,0);
+}
+
+
+/********************************
+A função CriaFonteFundoOffscreen() é responsável por disponibilizar uma nova fonte com preenchimento de um bitmap específico.
+Parâmetros:
+nome (entrada, passagem por referência): nome do arquivo que contém a fonte (normalmente com extensão ttf).
+tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura média (em pixels) dos caracteres da fonte.
+arquivoFundo (entrada, passagem por referência): indica o nome do arquivo de imagem que servirá de fundo para a fonte.
+contorno (entrada, passagem por valor): representa a espessura do contorno que fonte terá. Caso não seja desejado um contorno, basta utilizar um valor 0.
+corContorno (entrada, passagem por valor): representa a cor do contorno da fonte.
+estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combinação binária de: PIG_ESTILO_NEGRITO, para negrito; PIG_ESTILO_SUBLINHADO, para sublinhado; PIG_ESTILO_ITALICO, para itálico;
+PIG_ESTILO_CORTADO, para uma linha horizontal à meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado PIG_ESTILO_NORMAL.
+retono:
+inteiro que representa a ideintificação única da fonte. Futuras referência a esta fonte devem idenitificá-las pelo número.
+********************************/
+int CriaFonteFundoOffscreen(char *nome,int tamanho,char *arquivoFundo,int contorno,PIG_Cor corContorno,PIG_Estilo estilo=PIG_ESTILO_NORMAL){
+    return CPIGGerenciadorFontes::CriaFonteFundoOffScreen(nome,tamanho,estilo,arquivoFundo,contorno,corContorno,jogo->GetOffScreenRender(),0);
+}
+
+/********************************
+A função CriaFonteFundoOffscreen() é responsável por disponibilizar uma nova fonte com preenchimento de um bitmap específico.
+Parâmetros:
+nome (entrada, passagem por referência): nome do arquivo que contém a fonte (normalmente com extensão ttf).
+tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura média (em pixels) dos caracteres da fonte.
+arquivoFundo (entrada, passagem por referência): indica o nome do arquivo de imagem que servirá de fundo para a fonte.
+estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combinação binária de: PIG_ESTILO_NEGRITO, para negrito; PIG_ESTILO_SUBLINHADO, para sublinhado; PIG_ESTILO_ITALICO, para itálico;
+PIG_ESTILO_CORTADO, para uma linha horizontal à meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado PIG_ESTILO_NORMAL.
+retono:
+inteiro que representa a ideintificação única da fonte. Futuras referência a esta fonte devem idenitificá-las pelo número.
+********************************/
+int CriaFonteFundoOffscreen(char *nome,int tamanho,char *arquivoFundo,PIG_Estilo estilo=PIG_ESTILO_NORMAL){
+    return CPIGGerenciadorFontes::CriaFonteFundoOffScreen(nome,tamanho,estilo,arquivoFundo,jogo->GetOffScreenRender(),0);
 }
 
 /********************************

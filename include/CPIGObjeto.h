@@ -5,11 +5,10 @@
 
 typedef enum {PIG_COLISAO_NENHUMA, PIG_COLISAO_OOBB, PIG_COLISAO_POLIGONO, PIG_COLISAO_CIRCULAR} PIG_ModoColisao;
 
-class CPIGObjeto: public CPIGSprite {
+class CPIGObjeto: public CPIGSprite, public CPIGAtributos {
 
 protected:
 
-PIGAtributos atributos;
 PIGPonto2D bb[4];
 int raio;
 PIG_ModoColisao modo;
@@ -18,36 +17,18 @@ std::vector<PIGPonto2D> vertices;
 std::vector<PIGPonto2D> verticesOriginais;
 bool bbAlterado;
 
-void DesenhaBB() {
-    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);//retângulo verde para o OOBB (com ângulo)
-    SDL_RenderDrawLine(renderer, bb[0].x, *altJanela - bb[0].y, bb[1].x, *altJanela - bb[1].y);
-    SDL_RenderDrawLine(renderer, bb[1].x, *altJanela - bb[1].y, bb[2].x, *altJanela - bb[2].y);
-    SDL_RenderDrawLine(renderer, bb[2].x, *altJanela - bb[2].y, bb[3].x, *altJanela - bb[3].y);
-    SDL_RenderDrawLine(renderer, bb[3].x, *altJanela - bb[3].y, bb[0].x, *altJanela - bb[0].y);
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-    SDL_RenderDrawRect(renderer, &dest);//retângulo vermelhor para o AABB (sem ângulo)
+void DesenhaBB(){
+    for (int i=0;i<4;i++)
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(bb[i].x,bb[i].y,bb[(i+1)%4].x,bb[(i+1)%4].y,VERDE);
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado(pos.x,pos.y,alt,larg,VERMELHO);
 }
 
 void DesenhaPoligono(PIG_Cor cor) {
-    if (vertices.empty()) return;
-
-    int i = 0;
-    do {
-        SDL_Rect rect;
-        rect.x = vertices[i].x;
-        rect.y = *altJanela - (vertices[i].y + 10);
-        rect.h = 10;
-        rect.w = 10;
-
-        SDL_SetRenderDrawColor(renderer, cor.r, cor.g, cor.b, 255);
-        SDL_RenderDrawLine(
-            renderer, vertices[i].x, *altJanela - vertices[i].y,
-            vertices[(i + 1) % vertices.size()].x,
-            *altJanela - vertices[(i + 1) % vertices.size()].y);
-        SDL_RenderFillRect(renderer, &rect);
-
-        i = (i + 1) % vertices.size();
-    } while (i != 0);
+    int qtdVertices = vertices.size();
+    for (int i=0;i<qtdVertices;i++){
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(vertices[i].x,vertices[i].y,10,10,cor);
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(vertices[i].x,vertices[i].y,vertices[(i + 1) % qtdVertices].x,vertices[(i + 1) % qtdVertices].y,cor);
+    }
 }
 
 void DesenhaCircular(PIG_Cor cor) {
@@ -166,21 +147,19 @@ bool ColisaoCirculoPoligono(std::vector<PIGPonto2D> vertices) {
 public:
 
 CPIGObjeto(int idObjeto,std::string nomeArquivo, int retiraFundo = 1, PIG_Cor *corFundo = NULL, int janela = 0)
-: CPIGSprite(idObjeto,nomeArquivo, retiraFundo, corFundo, janela){
+:CPIGSprite(idObjeto,nomeArquivo, retiraFundo, corFundo, janela),CPIGAtributos(){
     modo = PIG_COLISAO_OOBB;
     bbAlterado = true;
-    atributos = NULL;
 }
 
 CPIGObjeto(int idObjeto,PIGOffscreenRenderer offRender, int retiraFundo = 1, PIG_Cor *corFundo = NULL, int janela = 0)
-: CPIGSprite(idObjeto,offRender, retiraFundo, corFundo, janela){
+:CPIGSprite(idObjeto,offRender, retiraFundo, corFundo, janela),CPIGAtributos(){
     modo = PIG_COLISAO_OOBB;
     bbAlterado = true;
-    atributos = NULL;
 }
 
 CPIGObjeto(int idObjeto,CPIGObjeto *objBase, int retiraFundo = 1, PIG_Cor *corFundo = NULL, int janela = 0)
-: CPIGSprite(idObjeto,objBase, retiraFundo, corFundo, janela){
+:CPIGSprite(idObjeto,objBase, retiraFundo, corFundo, janela),CPIGAtributos(){
     SetModoColisao(objBase->modo);
     SetRaioColisaoCircular(objBase->raio);
     SetVertices(objBase->vertices);
@@ -189,83 +168,12 @@ CPIGObjeto(int idObjeto,CPIGObjeto *objBase, int retiraFundo = 1, PIG_Cor *corFu
     SetAngulo(angulo);
     AtualizaBB();
 
-    if (objBase->atributos)
-        atributos = new CPIGAtributos(objBase->atributos);
-    else atributos = NULL;
-
     bbAlterado = true;
 }
 
 ~CPIGObjeto(){
-    if (atributos) delete atributos;
+    //if (atributos) delete atributos;
 }
-
-void SetValorInt(int chave, int valor){
-    if (atributos==NULL)
-        atributos = new CPIGAtributos();
-    atributos->SetValorInt(chave,valor);
-}
-
-void SetValorInt(std::string chave, int valor){
-    if (atributos==NULL)
-        atributos = new CPIGAtributos();
-    atributos->SetValorInt(chave,valor);
-}
-
-void SetValorFloat(int chave, float valor){
-    if (atributos==NULL)
-        atributos = new CPIGAtributos();
-    atributos->SetValorFloat(chave,valor);
-}
-
-void SetValorFloat(std::string chave, float valor){
-    if (atributos==NULL)
-        atributos = new CPIGAtributos();
-    atributos->SetValorFloat(chave,valor);
-}
-
-void SetValorString(int chave, std::string valor){
-    if (atributos==NULL)
-        atributos = new CPIGAtributos();
-    atributos->SetValorString(chave,valor);
-}
-
-void SetValorString(std::string chave, std::string valor){
-    if (atributos==NULL)
-        atributos = new CPIGAtributos();
-    atributos->SetValorString(chave,valor);
-}
-
-bool GetValorInt(int chave, int &valor){
-    if (atributos==NULL) return false;
-    return atributos->GetValorInt(chave,valor);
-}
-
-bool GetValorInt(std::string chave, int &valor){
-    if (atributos==NULL) return false;
-    return atributos->GetValorInt(chave,valor);
-}
-
-bool GetValorFloat(int chave, float &valor){
-    if (atributos==NULL) return false;
-    return atributos->GetValorFloat(chave,valor);
-}
-
-bool GetValorFloat(std::string chave, float &valor){
-    if (atributos==NULL) return false;
-    return atributos->GetValorFloat(chave,valor);
-}
-
-bool GetValorString(int chave, std::string &valor){
-    if (atributos==NULL) return false;
-    return atributos->GetValorString(chave,valor);
-}
-
-bool GetValorString(std::string chave, std::string &valor){
-    if (atributos==NULL) return false;
-    return atributos->GetValorString(chave,valor);
-}
-
 
 void SetVertices(std::vector<PIGPonto2D> verts) {
     vertices = verts;

@@ -57,13 +57,15 @@ protected:
     }
 
     //inicia os atributos da classe
-    void IniciaBase(char *nomeFonte,int tamanhoFonte,int idJanela,PIG_Estilo estilo){
+    void IniciaBase(char *nomeFonte,int tamanhoFonte,int idJanela,PIG_Estilo estilo,SDL_Renderer *renderer){
         nome.assign(nomeFonte);
         tamFonte = tamanhoFonte;
         janela = idJanela;
         estiloFixo = estilo;
 
-        render = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetRenderer();
+        if (idJanela>-1)
+            render = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetRenderer();
+        else render = renderer;
         font = TTF_OpenFont(nome.c_str(), tamanhoFonte);
         fontDescent = TTF_FontDescent(font);
         if (font==NULL)
@@ -82,8 +84,8 @@ protected:
 
 public:
 
-    CPIGMapaCaracteres(char *nomeFonte,int tamanhoFonte,int estilo, char *nomeFundo, int idJanela){
-        IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo);
+    CPIGMapaCaracteres(char *nomeFonte,int tamanhoFonte,int estilo, char *nomeFundo, int idJanela,SDL_Renderer *renderer=NULL){
+        IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo, renderer);
 
         SDL_Surface *fundo = IMG_Load(nomeFundo);//carrega a imagem de fundo
         SDL_SetSurfaceBlendMode(fundo,SDL_BLENDMODE_MOD);
@@ -91,24 +93,24 @@ public:
         SDL_FreeSurface(fundo);
     }
 
-    CPIGMapaCaracteres(char *nomeFonte,int tamanhoFonte,int estilo, char *nomeFundo,int outline,PIG_Cor corOutline, int idJanela){
-        IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo);
+    CPIGMapaCaracteres(char *nomeFonte,int tamanhoFonte,int estilo, char *nomeFundo,int outline,PIG_Cor corOutline, int idJanela,SDL_Renderer *renderer=NULL){
+        IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo, renderer);
 
         SDL_Surface *fundo = IMG_Load(nomeFundo);//carrega a imagem de fundo
         SDL_SetSurfaceBlendMode(fundo,SDL_BLENDMODE_MOD);
         CriaLetrasSurface(estilo, outline, corOutline, fundo);
     }
 
-    CPIGMapaCaracteres(char *nomeFonte,int tamanhoFonte,int estilo, PIG_Cor corFonte,int outline,PIG_Cor corOutline, int idJanela){
-        IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo);
+    CPIGMapaCaracteres(char *nomeFonte,int tamanhoFonte,int estilo, PIG_Cor corFonte,int outline,PIG_Cor corOutline, int idJanela,SDL_Renderer *renderer=NULL){
+        IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo, renderer);
 
         CriaLetrasSurface(estilo, outline, corOutline, NULL);//, corFonte);
 
         SDL_SetRenderTarget(render, NULL);
     }
 
-    CPIGMapaCaracteres(char *nomeFonte,int tamanhoFonte,int estilo, PIG_Cor corFonte, int idJanela){
-        IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo);
+    CPIGMapaCaracteres(char *nomeFonte,int tamanhoFonte,int estilo, PIG_Cor corFonte, int idJanela,SDL_Renderer *renderer=NULL){
+        IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo, renderer);
 
         CriaLetrasSurface(estilo, 0, BRANCO, NULL);//, corFonte);
 
@@ -258,6 +260,7 @@ public:
     }
 
     virtual void Escreve(std::string texto,int x,int y,PIG_Cor corFonte=BRANCO,PIG_PosTexto pos=PIG_TEXTO_ESQUERDA,float ang=0,int alvoTextura=0){
+        int w,h;
         if (texto=="") return;
         int larguraPixels = GetLarguraPixelsString(texto);
         int delta=0;
@@ -273,7 +276,14 @@ public:
         SDL_Rect rectDestino;
         rectDestino.x = x;
 
-        int *altJanela = CPIGGerenciadorJanelas::GetJanela(janela)->GetAltura();
+        int *altJanela;
+        if (janela>-1)
+            altJanela = CPIGGerenciadorJanelas::GetJanela(janela)->GetAltura();
+        else{
+            SDL_GetRendererOutputSize(render,&w,&h);
+            altJanela = &h;
+        }
+
         SDL_Point ponto = {delta,tamFonte};
         Uint16 aux;
 
@@ -296,7 +306,8 @@ public:
             //printf("%d %d %d %d\n",rectDestino.x,rectDestino.y,rectDestino.h,rectDestino.w);
 
             SDL_Rect enquadrado = rectDestino;
-            CPIGGerenciadorJanelas::GetJanela(janela)->ConverteCoordenadaWorldScreen(enquadrado.x,enquadrado.y,enquadrado.x,enquadrado.y);
+            if (janela>-1)
+                CPIGGerenciadorJanelas::GetJanela(janela)->ConverteCoordenadaWorldScreen(enquadrado.x,enquadrado.y,enquadrado.x,enquadrado.y);
 
             SDL_RenderCopyEx(render,glyphsT[estiloFixo][aux-PIG_PRIMEIRO_CAR],NULL,&enquadrado,-ang,&ponto,PIG_FLIP_NENHUM);
 
@@ -317,9 +328,16 @@ public:
     }
 
     virtual void Escreve(std::string texto,SDL_Texture *textura,PIG_Cor cor){
+        int w,h;
         SDL_SetRenderTarget(render,textura);
         SDL_SetRenderDrawColor(render,0,0,0,0);
-        int *altJanela = CPIGGerenciadorJanelas::GetJanela(janela)->GetAltura();
+        int *altJanela;
+        if (janela>-1)
+            altJanela = CPIGGerenciadorJanelas::GetJanela(janela)->GetAltura();
+        else{
+            SDL_GetRendererOutputSize(render,&w,&h);
+            altJanela = &h;
+        }
 
         SDL_SetTextureBlendMode(textura, SDL_BLENDMODE_BLEND);
         SDL_SetTextureColorMod(textura,cor.r,cor.g,cor.b);

@@ -35,19 +35,35 @@ public:
     }
 
     static int CriaFonteFundo(char *nome,int tamanho,int estilo,char *arquivoFundo,int contorno,PIG_Cor corContorno,int idJanela=0){
-        return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,arquivoFundo,contorno,corContorno,idJanela));
+        return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,arquivoFundo,contorno,corContorno,idJanela,NULL));
     }
 
     static int CriaFonteFundo(char *nome,int tamanho,int estilo,char *arquivoFundo,int idJanela=0){
-        return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,arquivoFundo,idJanela));
+        return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,arquivoFundo,idJanela,NULL));
     }
 
     static int CriaFonteNormal(char *nome,int tamanho,int estilo,PIG_Cor corLetra,int contorno,PIG_Cor corContorno,int idJanela=0){
-        return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,corLetra,contorno,corContorno,idJanela));
+        return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,corLetra,contorno,corContorno,idJanela,NULL));
     }
 
-    static int CriaFonteNormal(char *nome,int tamanho,int estilo,PIG_Cor corLetra=BRANCO,int idJanela=0){
-        return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,corLetra,idJanela));
+    static int CriaFonteNormal(char *nome,int tamanho,int estilo,PIG_Cor corLetra=PIG_FONTE_PADRAO_COR,int idJanela=0){
+        return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,corLetra,idJanela,NULL));
+    }
+
+    static int CriaFonteFundoOffScreen(char *nome,int tamanho,int estilo,char *arquivoFundo,int contorno,PIG_Cor corContorno,PIGOffscreenRenderer off,int layer=0){
+        return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,arquivoFundo,contorno,corContorno,-1,off->GetLayer(layer)->render));
+    }
+
+    static int CriaFonteFundoOffScreen(char *nome,int tamanho,int estilo,char *arquivoFundo,PIGOffscreenRenderer off,int layer=0){
+        return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,arquivoFundo,-1,off->GetLayer(layer)->render));
+    }
+
+    static int CriaFonteNormalOffScreen(char *nome,int tamanho,int estilo,PIG_Cor corLetra,int contorno,PIG_Cor corContorno,PIGOffscreenRenderer off,int layer=0){
+        return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,corLetra,contorno,corContorno,-1,off->GetLayer(layer)->render));
+    }
+
+    static int CriaFonteNormalOffScreen(char *nome,int tamanho,int estilo,PIGOffscreenRenderer off,PIG_Cor corLetra=PIG_FONTE_PADRAO_COR,int layer=0){
+        return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,corLetra,-1,off->GetLayer(layer)->render));
     }
 
     static int CriaFonteDinamica(char *nome,int tamanho,int idJanela=0){

@@ -3,7 +3,7 @@
 
 #include "CPIGAtributos.h"
 
-class CPIGJogo{
+class CPIGJogo: public CPIGAtributos{
 
 private:
 
@@ -15,11 +15,10 @@ private:
     int rodando;
     std::string diretorioAtual;
     PIGOffscreenRenderer offRenderer;
-    PIGAtributos atributos;
 
 public:
 
-    CPIGJogo(char *nome,int cursor=0,int altura=PIG_ALT_TELA,int largura=PIG_LARG_TELA){
+    CPIGJogo(char *nome,int cursor=0,int altura=PIG_ALT_TELA,int largura=PIG_LARG_TELA):CPIGAtributos(){
         rodando = true;
         teclado = SDL_GetKeyboardState(NULL);
         estado = 0;
@@ -28,7 +27,6 @@ public:
         offRenderer = NULL;
 
         diretorioAtual = PIGGetDiretorioAtual();
-        atributos = NULL;
         //printf("path: %s\n",diretorioAtual);//exibir a pasta original da PIG
 
 
@@ -46,9 +44,6 @@ public:
     }
 
     ~CPIGJogo(){
-
-        if (atributos) delete atributos;
-
         SDLNet_Quit();
 
         delete timerFPS;
@@ -264,72 +259,6 @@ public:
 
             timerFPS->Reinicia(false);
         }
-    }
-
-    void SetValorInt(int chave, int valor){
-        if (atributos==NULL)
-            atributos = new CPIGAtributos();
-        atributos->SetValorInt(chave,valor);
-    }
-
-    void SetValorInt(std::string chave, int valor){
-        if (atributos==NULL)
-            atributos = new CPIGAtributos();
-        atributos->SetValorInt(chave,valor);
-    }
-
-    void SetValorFloat(int chave, float valor){
-        if (atributos==NULL)
-            atributos = new CPIGAtributos();
-        atributos->SetValorFloat(chave,valor);
-    }
-
-    void SetValorFloat(std::string chave, float valor){
-        if (atributos==NULL)
-            atributos = new CPIGAtributos();
-        atributos->SetValorFloat(chave,valor);
-    }
-
-    void SetValorString(int chave, std::string valor){
-        if (atributos==NULL)
-            atributos = new CPIGAtributos();
-        atributos->SetValorString(chave,valor);
-    }
-
-    void SetValorString(std::string chave, std::string valor){
-        if (atributos==NULL)
-            atributos = new CPIGAtributos();
-        atributos->SetValorString(chave,valor);
-    }
-
-    bool GetValorInt(int chave, int &valor){
-        if (atributos==NULL) return false;
-        return atributos->GetValorInt(chave,valor);
-    }
-
-    bool GetValorInt(std::string chave, int &valor){
-        if (atributos==NULL) return false;
-        return atributos->GetValorInt(chave,valor);
-    }
-
-    bool GetValorFloat(int chave, float &valor){
-        if (atributos==NULL) return false;
-        return atributos->GetValorFloat(chave,valor);
-    }
-
-    bool GetValorFloat(std::string chave, float &valor){
-        if (atributos==NULL) return false;
-        return atributos->GetValorFloat(chave,valor);
-    }
-
-    bool GetValorString(int chave, std::string &valor){
-        if (atributos==NULL) return false;
-        return atributos->GetValorString(chave,valor);
-    }
-
-    bool GetValorString(std::string chave, std::string &valor){
-        if (atributos==NULL) return false;
-        return atributos->GetValorString(chave,valor);
     }
 
     int GetRodando(){

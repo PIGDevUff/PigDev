@@ -246,6 +246,26 @@ public:
         SDL_RenderDrawLine(layers[layer].render,x1,alt-y1-1,x2,alt-y2-1);
     }
 
+    void DesenhaLinhasDisjuntas(int x[],int y[],int qtd,PIG_Cor cor,int layer=0){
+        SDL_SetRenderDrawColor(layers[layer].render,cor.r,cor.g,cor.b,255);
+        for (int k=0;k<qtd;k+=2){
+            SDL_RenderDrawLine(layers[layer].render,x[k],alt-y[k],x[k+1],alt-y[k+1]);
+            //SDL_RenderDrawLine(renderer,x[k]-camera->GetX(),altura-y[k]+camera->GetY(),x[k+1]-camera->GetX(),altura-y[k+1]+camera->GetY());
+        }
+    }
+
+    void DesenhaLinhasSequencia(int x[],int y[],int qtd,PIG_Cor cor,int layer=0){
+        SDL_SetRenderDrawColor(layers[layer].render,cor.r,cor.g,cor.b,255);
+        for (int k=0;k<qtd-1;k++){
+            SDL_RenderDrawLine(layers[layer].render,x[k],alt-y[k],x[k+1],alt-y[k+1]);
+            //SDL_RenderDrawLine(renderer,x[k]-camera->GetX(),altura-y[k]+camera->GetY(),x[k+1]-camera->GetX(),altura-y[k+1]+camera->GetY());
+        }
+    }
+
+    ///escrever
+
+
+
     void DesenharRetangulo(int x,int y,int altura,int largura,PIG_Cor cor,int layer=0){
         SDL_Rect r={x,alt-y-altura-1,largura,altura};
 
@@ -316,6 +336,12 @@ public:
 
     double GetYCaneta(){
         return py;
+    }
+
+    PIG_Layer *GetLayer(int indice){
+        if (indice<qtdLayers){
+            return &layers[indice];
+        }else throw CPIGErroIndice(indice,"layer do rendereizador offscreen");
     }
 
     ~CPIGOffscreenRenderer(){
