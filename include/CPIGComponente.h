@@ -57,49 +57,49 @@ protected:
     //move o label de acordo com a posição
     void PosicionaLabel(){
         int altLabel,largLabel;
-        lab->GetDimensoes(altLabel,largLabel);// = lab->GetAltura(),largLabel=lab->GetLargura();
+        lab->GetDimensoes(altLabel,largLabel);
         switch(posLabel){
             case PIG_COMPONENTE_CIMA_CENTRO:
                 lab->Move(pos.x+larg/2-largLabel/2,pos.y+alt+5);
                 break;
             case PIG_COMPONENTE_CIMA_DIR:
-                lab->Move(pos.x+larg,pos.y+alt+5);//,fonteLabel,CPIG_TEXTO_DIREITA);
+                lab->Move(pos.x+larg,pos.y+alt+5);
                 break;
             case PIG_COMPONENTE_CIMA_ESQ:
-                lab->Move(pos.x-largLabel,pos.y+alt+5);//,fonteLabel,CPIG_TEXTO_ESQUERDA);
+                lab->Move(pos.x-largLabel,pos.y+alt+5);
                 break;
             case PIG_COMPONENTE_BAIXO_CENTRO:
-                lab->Move(pos.x+larg/2-largLabel/2,pos.y-altLabel);//,fonteLabel,CPIG_TEXTO_CENTRO);
+                lab->Move(pos.x+larg/2-largLabel/2,pos.y-altLabel);
                 break;
             case PIG_COMPONENTE_BAIXO_DIR:
-                lab->Move(pos.x+larg,pos.y-altLabel);//,fonteLabel,CPIG_TEXTO_DIREITA);
+                lab->Move(pos.x+larg,pos.y-altLabel);
                 break;
             case PIG_COMPONENTE_BAIXO_ESQ:
-                lab->Move(pos.x-largLabel,pos.y-altLabel);//,fonteLabel,CPIG_TEXTO_ESQUERDA);
+                lab->Move(pos.x-largLabel,pos.y-altLabel);
                 break;
             case PIG_COMPONENTE_ESQ_BAIXO:
-                lab->Move(pos.x-5-largLabel,pos.y);//,fonteLabel);//,CPIG_TEXTO_DIREITA);
+                lab->Move(pos.x-5-largLabel,pos.y);
                 break;
             case PIG_COMPONENTE_ESQ_CENTRO:
-                lab->Move(pos.x-5-largLabel,pos.y+(alt-altLabel)/2);//,fonteLabel,CPIG_TEXTO_DIREITA);
+                lab->Move(pos.x-5-largLabel,pos.y+(alt-altLabel)/2);
                 break;
             case PIG_COMPONENTE_ESQ_CIMA:
-                lab->Move(pos.x-5-largLabel,pos.y + (alt-altLabel));//,fonteLabel,CPIG_TEXTO_ESQUERDA);
+                lab->Move(pos.x-5-largLabel,pos.y + (alt-altLabel));
                 break;
             case PIG_COMPONENTE_DIR_BAIXO:
-                lab->Move(pos.x+larg+5,pos.y);//,fonteLabel,CPIG_TEXTO_ESQUERDA);
+                lab->Move(pos.x+larg+5,pos.y);
                 break;
             case PIG_COMPONENTE_DIR_CENTRO:
-                lab->Move(pos.x+larg+5,pos.y + (alt-altLabel)/2);//,fonteLabel,CPIG_TEXTO_ESQUERDA);
+                lab->Move(pos.x+larg+5,pos.y + (alt-altLabel)/2);
                 break;
             case PIG_COMPONENTE_DIR_CIMA:
-                lab->Move(pos.x+larg+5,pos.y + (alt-altLabel));//,fonteLabel,CPIG_TEXTO_ESQUERDA);
+                lab->Move(pos.x+larg+5,pos.y + (alt-altLabel));
                 break;
             case PIG_COMPONENTE_CENTRO_CENTRO:
-                lab->Move(pos.x+larg/2-largLabel/2,pos.y+(alt-altLabel)/2);//,fonteLabel,CPIG_TEXTO_CENTRO);
+                lab->Move(pos.x+larg/2-largLabel/2,pos.y+(alt-altLabel)/2);
                 break;
             case PIG_COMPONENTE_PERSONALIZADA:
-                //lab->Move(x+labelX,y+labelY);//,fonteLabel,CPIG_TEXTO_ESQUERDA);
+                //lab->Move(pos.x+labelX,pos.y+labelY);
                 break;
             }
     }
@@ -297,12 +297,10 @@ public:
     }
 
     void SetPosPadraoComponenteNaTela(PIG_Ancora ancora){
-        int largJanela;//,altTela;
-        //int altura,largura;
+        int largJanela;
+
         largJanela = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetLargura();
         altJanela = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
-
-        //this->GetDimensoes(altura,largura);
 
         switch(ancora){
         case PIG_ANCORA_SUL:
