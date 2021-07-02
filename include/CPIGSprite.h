@@ -451,11 +451,19 @@ void SetPivoAbsoluto(PIGPonto2D pivo){
 }
 
 //Pivo relativo ao ponto (0,0) por meio de multiplicação
-void SetPivoProporcional(PIGPonto2D pivo){
+/*void SetPivoProporcional(PIGPonto2D pivo){
     proporcaoPivo = pivo;
     pivoAbs.x = pivo.x*larg;
     pivoAbs.y = alt*(1-pivo.y);
     pivoInteiro = {pivoAbs.x,pivoAbs.y};
+    usaPivoRelativo = true;
+}*/
+
+void SetPivoProporcional(PIGPonto2D pivo){
+    proporcaoPivo = pivo;
+    pivoAbs.x = pivo.x*larg;
+    pivoAbs.y = alt*pivo.y;
+    pivoInteiro = {pivoAbs.x,alt-pivoAbs.y};
     usaPivoRelativo = true;
 }
 
