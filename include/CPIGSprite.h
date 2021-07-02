@@ -85,6 +85,7 @@ void ExtraiPixels() {
         pix32 = (Uint32 *)bitmap->pixels;
         for (int h = 0; h < bitmap->h; h++) {
             for (int w = 0; w < bitmap->w; w++) {
+                //printf("%d,%d\n",h,w);
                 SDL_GetRGBA((Uint32)*pix32, bitmap->format, &(pixels[h][w].r), &(pixels[h][w].g), &(pixels[h][w].b), &(pixels[h][w].a));
                 pix32++;
             }
@@ -240,6 +241,7 @@ CPIGSprite(int janela){
     bitmap = NULL;
     frameAtual = 0;
     frames[0] ={0,0,0,0};
+    pos = {0,0};
     pixels = NULL;
     automacao = NULL;
     altJanela = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
@@ -451,14 +453,6 @@ void SetPivoAbsoluto(PIGPonto2D pivo){
 }
 
 //Pivo relativo ao ponto (0,0) por meio de multiplicação
-/*void SetPivoProporcional(PIGPonto2D pivo){
-    proporcaoPivo = pivo;
-    pivoAbs.x = pivo.x*larg;
-    pivoAbs.y = alt*(1-pivo.y);
-    pivoInteiro = {pivoAbs.x,pivoAbs.y};
-    usaPivoRelativo = true;
-}*/
-
 void SetPivoProporcional(PIGPonto2D pivo){
     proporcaoPivo = pivo;
     pivoAbs.x = pivo.x*larg;
@@ -572,6 +566,7 @@ virtual int Desenha(){
     //printf("%d,%d,%d,%d\n",dest.x,*altJanela-dest.y,dest.h,dest.w);
     //SDL_Point p = {pivoRelativo.x,pivoRelativo.y};
     CPIGGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaWorldScreen(enquadrado.x,enquadrado.y,enquadrado.x,enquadrado.y);
+    //printf("%d,%d,%d,%d\n",enquadrado.x,enquadrado.y,enquadrado.w,enquadrado.h);
     SDL_RenderCopyEx(renderer, text, &frames[frameAtual], &enquadrado, -angulo, &pivoInteiro, flip);
     //printf("%d %d\n",pivoInteiro.x,pivoInteiro.y);
     for (int i=0;i<filhos.size();i++){
