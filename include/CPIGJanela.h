@@ -29,7 +29,7 @@ CPIGJanela(std::string tituloJanela,int idJanela,int altTela,int largTela){
     titulo = tituloJanela;
     altura = altTela;
     largura = largTela;
-    window = SDL_CreateWindow( tituloJanela.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, largura, altura, SDL_WINDOW_SHOWN|SDL_WINDOW_OPENGL );
+    window = SDL_CreateWindow( tituloJanela.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, largura, altura, SDL_WINDOW_SHOWN|SDL_WINDOW_OPENGL );
     if( window == NULL ){
         printf( "Janela %d nao pode ser criada! Erro da SDL: %s\n",id, SDL_GetError() );
     }else{

@@ -172,7 +172,6 @@ CPIGObjeto(int idObjeto,CPIGObjeto *objBase, int retiraFundo = 1, PIG_Cor *corFu
 }
 
 ~CPIGObjeto(){
-    //if (atributos) delete atributos;
 }
 
 void SetVertices(std::vector<PIGPonto2D> verts) {

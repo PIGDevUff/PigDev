@@ -22,8 +22,6 @@ void AtualizaTextura(){
     frames[0].x = frames[0].y = 0;
     frames[0].h = alt;
     frames[0].w = larg;
-    //altJanela = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
-    //printf("atual %d\n",*altJanela);
 }
 
 public:

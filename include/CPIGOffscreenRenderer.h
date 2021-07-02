@@ -67,7 +67,7 @@ public:
         SDL_RenderClear(layers[layer].render);
     }
 
-    CPIGOffscreenRenderer(int altura,int largura,int qtdMaxCamadas=1){
+    CPIGOffscreenRenderer(int altura,int largura,int qtdMaxCamadas=10){
         alt = altura;
         larg=largura;
         depth = 32; //32 bits por pixel
@@ -113,19 +113,16 @@ public:
             q1.push_back(p);
             double a = atan(1.*y/-x)*180/M_PI;
             ang1.push_back(a);
-            //printf("q1 %d,%d %f\n",p.x,p.y,a);
 
             p = {centroX-y,centroY+x};
             q2.push_back(p);
             a = 180+atan(1.*x/y)*180/M_PI;
             ang2.push_back(a);
-            //printf("q2 %d,%d %f\n",p.x,p.y,a);
 
             p = {centroX+x,centroY+y};
             q3.push_back(p);
             a = atan(1.*-y/x)*180/M_PI+180;
             ang3.push_back(a);
-            //printf("q2 %d,%d %f\n",p.x,p.y,a);
 
             p = {centroX+y,centroY-x};
             q4.push_back(p);
@@ -133,19 +130,11 @@ public:
                 a=270;
             else a = 360+atan(1.*-x/-y)*180/M_PI;
             ang4.push_back(a);
-            //printf("q4 %d,%d %f\n",p.x,p.y,a);
 
             raio = err;
             if (raio <= y) err += ++y*2+1;           /* e_xy+e_y < 0 */
             if (raio > x || err > y) err += ++x*2+1; /* e_xy+e_x > 0 or no 2nd y-step */
         }while (x < 0);
-
-        for (int i=0;i<q1.size();i++){
-            //printf("q1 %d,%d %f\n",q1[i].x,q1[i].y,ang1[i]);
-            //printf("q2 %d,%d %f\n",q2[i].x,q2[i].y,ang2[i]);
-            //printf("q3 %d,%d %f\n",q3[i].x,q3[i].y,ang3[i]);
-            //printf("q4 %d,%d %f\n",q4[i].x,q4[i].y,ang4[i]);
-        }
 
         for (int i=0;i<q1.size();i++){
             if ((ang1[i]>=angInicial&&ang1[i]<=angFinal)||(ang1[i]+360>=angInicial&&ang1[i]+360<=angFinal)){
@@ -265,7 +254,6 @@ public:
     ///escrever
 
 
-
     void DesenharRetangulo(int x,int y,int altura,int largura,PIG_Cor cor,int layer=0){
         SDL_Rect r={x,alt-y-altura-1,largura,altura};
 
@@ -321,7 +309,6 @@ public:
         double nx = px + cos(ang*M_PI/180.0)*distancia;
         double ny = py + sin(ang*M_PI/180.0)*distancia;
         DesenharLinha(px,py,nx,ny,corAtual,layer);
-        //printf("%d %d %d %d\n",px,py,nx,ny);
         px = nx;
         py = ny;
     }
@@ -341,7 +328,7 @@ public:
     PIG_Layer *GetLayer(int indice){
         if (indice<qtdLayers){
             return &layers[indice];
-        }else throw CPIGErroIndice(indice,"layer do rendereizador offscreen");
+        }else throw CPIGErroIndice(indice,"layer do renderizador offscreen");
     }
 
     ~CPIGOffscreenRenderer(){

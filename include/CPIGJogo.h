@@ -29,7 +29,6 @@ public:
         diretorioAtual = PIGGetDiretorioAtual();
         //printf("path: %s\n",diretorioAtual);//exibir a pasta original da PIG
 
-
 		//SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS,"1");
         if( SDL_Init( SDL_INIT_EVERYTHING) < 0 ){
             printf( "Nao foi possivel iniciar o SDL! SDL_Error: %s\n", SDL_GetError() );
