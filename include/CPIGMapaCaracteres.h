@@ -22,8 +22,6 @@ protected:
     std::string nome;
     int tamFonte;
 
-
-
     //cria o conjunto de glifos das letras com as características fornecidas
     void CriaLetrasSurface(PIG_Estilo estilo, int nivelOutline, PIG_Cor corOutline, SDL_Surface *fundo,  PIG_Cor corFonte=BRANCO){
         TTF_SetFontStyle(font,estilo);
