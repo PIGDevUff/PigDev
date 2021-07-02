@@ -22,6 +22,8 @@ protected:
     std::string nome;
     int tamFonte;
 
+
+
     //cria o conjunto de glifos das letras com as características fornecidas
     void CriaLetrasSurface(PIG_Estilo estilo, int nivelOutline, PIG_Cor corOutline, SDL_Surface *fundo,  PIG_Cor corFonte=BRANCO){
         TTF_SetFontStyle(font,estilo);
@@ -259,6 +261,12 @@ public:
         return resp;
     }
 
+    /*inline Uint8 PIGConverteParaByte(Uint16 valor){
+            if (aux==65475) continue;
+            if (aux>6500) aux+=64;
+            aux = aux % 256;//UTF16 string, retirando só o byte que interessa
+    }*/
+
     virtual void Escreve(std::string texto,int x,int y,PIG_Cor corFonte=BRANCO,PIG_PosTexto pos=PIG_TEXTO_ESQUERDA,float ang=0,int alvoTextura=0){
         int w,h;
         if (texto=="") return;
@@ -289,6 +297,8 @@ public:
 
         for (int i=0;i<texto.size();i++){
             aux = texto[i];
+            if (aux==65475) continue;
+            if (aux>6500) aux+=64;
             aux = aux % 256;//UTF16 string, retirando só o byte que interessa
             if (aux-PIG_PRIMEIRO_CAR<0) continue;
             //printf("aux: %d  %d",aux,aux-PRIMEIRO_CAR);
