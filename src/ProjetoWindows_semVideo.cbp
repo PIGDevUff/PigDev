@@ -7,11 +7,10 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Release">
-				<Option output="Projeto" prefix_auto="1" extension_auto="1" />
+				<Option output="SaladaDeFrutas" prefix_auto="1" extension_auto="1" />
 				<Option object_output="." />
-				<Option type="1" />
+				<Option type="0" />
 				<Option compiler="gcc" />
-				<Option use_console_runner="0" />
 				<Compiler>
 					<Add option="-march=core2" />
 					<Add option="-O3" />
@@ -19,7 +18,6 @@
 					<Add option="-std=c++11" />
 					<Add option="-std=c11" />
 					<Add option="-m32" />
-					<Add option="-DPIGCOMVIDEO" />
 					<Add directory="../include" />
 					<Add directory="../include/SDL" />
 					<Add directory="../include/SDL_image" />
@@ -28,14 +26,6 @@
 				<Linker>
 					<Add option="-m32" />
 					<Add option="-lmingw32 -lSDL2main -lSDL2  -lSDL2_net  -lSDL2_image -lSDL2_ttf -lSDL2_mixer" />
-					<Add library="../libWindows/libavformat.dll.a" />
-					<Add library="../libWindows/libavcodec.dll.a" />
-					<Add library="../libWindows/libswresample.dll.a" />
-					<Add library="../libWindows/libswscale.dll.a" />
-					<Add library="../libWindows/libavutil.dll.a" />
-					<Add library="../libWindows/libavdevice.dll.a" />
-					<Add library="../libWindows/libavfilter.dll.a" />
-					<Add library="../libWindows/libpostproc.dll.a" />
 					<Add directory="../libWindows" />
 				</Linker>
 			</Target>

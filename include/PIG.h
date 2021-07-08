@@ -18,7 +18,9 @@
 #include "CPIGGerenciadorFontes.h"
 #include "CPIGGerenciadorSprites.h"
 #include "CPIGGerenciadorGDP.h"
+#ifdef PIGCOMVIDEO
 #include "CPIGGerenciadorVideos.h"
+#endif
 #include "CPIGGerenciadorControles.h"
 #include "CPIGGerenciadorForms.h"
 #include "CPIGJogo.h"
@@ -64,7 +66,9 @@ void CriaJogo(char *nomeJanela,int cursorProprio=0,int altura=PIG_ALT_TELA,int l
         CPIGGerenciadorAudios::Inicia();
         CPIGGerenciadorControles::Inicia();
         CPIGGerenciadorSockets::Inicia();
+        #ifdef PIGCOMVIDEO
         CPIGGerenciadorVideos::Inicia();
+        #endif
         CPIGGerenciadorForms::Inicia();
     }
 }
@@ -321,7 +325,9 @@ void FinalizaJogo(){
     CPIGGerenciadorControles::Encerra();
     CPIGGerenciadorFontes::Encerra();
     CPIGGerenciadorAudios::Encerra();
+    #ifdef PIGCOMVIDEO
     CPIGGerenciadorVideos::Encerra();
+    #endif
     CPIGGerenciadorSockets::Encerra();
     CPIGGerenciadorForms::Encerra();
     CPIGGerenciadorSprites::Encerra();
@@ -4745,6 +4751,9 @@ int EnviaDadosSocketUDP(int idSocket,void *buffer,int tamanhoBuffer, char *hostR
     return CPIGGerenciadorSockets::GetSocketUDP(idSocket)->EnviaDados(buffer,tamanhoBuffer,hostRemoto,porta);
 }
 
+
+#ifdef PIGCOMVIDEO
+
 /********************************
 Seção dos vídeos.
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -5117,6 +5126,7 @@ int GetOpacidadeVideo(int idVideo){
     return CPIGGerenciadorVideos::GetVideo(idVideo)->GetOpacidade();
 }
 
+#endif
 
 /*******FORM*********/
 
