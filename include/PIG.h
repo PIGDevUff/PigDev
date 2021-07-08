@@ -3281,6 +3281,76 @@ void DestroiTimer(int idTimer){
 }
 
 /********************************
+A função AssociaGrupoTimer() é responsável por associar um timer a um grupo específico.
+Os timers de um mesmo grupo pode ser tratados simultaneamente
+(ex: diversos timers de um prsonagem/objeto podem ser pausados/despausados/reiniciados com uma função só).
+Parâmetros:
+idTimer (entrada, passagem por valor): identificador do timer.
+idGrupo (entrada, passagem por valor): identificador do grupos (qualquer valor entre 0 e PIG_MAX_GRUPOS_TIMERS-1).
+Retorno:
+número inteiro que indica se o grupo é válido (1) ou não (0).
+********************************/
+int AssociaGrupoTimer(int idTimer, int idGrupo){
+    return CPIGGerenciadorTimers::AssociaTimerGrupo(idTimer,idGrupo);
+}
+
+/********************************
+A função DesassociaGrupoTimer() é responsável por desassociar um timer de um grupo específico.
+Os timers de um mesmo grupo pode ser tratados simultaneamente
+(ex: diversos timers de um prsonagem/objeto podem ser pausados/despausados/reiniciados com uma função só).
+Parâmetros:
+idTimer (entrada, passagem por valor): identificador do timer.
+idGrupo (entrada, passagem por valor): identificador do grupos (qualquer valor entre 0 e PIG_MAX_GRUPOS_TIMERS-1).
+Retorno:
+número inteiro que indica se o grupo é válido (1) ou não (0).
+********************************/
+int DesassociaGrupoTimer(int idTimer, int idGrupo){
+    return CPIGGerenciadorTimers::DesassociaTimerGrupo(idTimer,idGrupo);
+}
+
+/********************************
+A função PausaGrupoTimers() é responsável por pausar todos os timers de um grupo específico.
+Os timers de um mesmo grupo pode ser tratados simultaneamente
+(ex: diversos timers de um prsonagem/objeto podem ser pausados/despausados/reiniciados com uma função só).
+Parâmetros:
+idGrupo (entrada, passagem por valor): identificador do grupos (qualquer valor entre 0 e PIG_MAX_GRUPOS_TIMERS-1).
+Retorno:
+número inteiro que indica se o grupo é inválido (-1) ou quantos timers foram pausados no grupo (maior ou igual a 0).
+********************************/
+int PausaGrupoTimers(int idGrupo){
+    return CPIGGerenciadorTimers::PausaGrupo(idGrupo);
+}
+
+/********************************
+A função DespausaGrupoTimers() é responsável por despausar todos os timers de um grupo específico.
+Os timers de um mesmo grupo pode ser tratados simultaneamente
+(ex: diversos timers de um prsonagem/objeto podem ser pausados/despausados/reiniciados com uma função só).
+Parâmetros:
+idGrupo (entrada, passagem por valor): identificador do grupos (qualquer valor entre 0 e PIG_MAX_GRUPOS_TIMERS-1).
+Retorno:
+número inteiro que indica se o grupo é inválido (-1) ou quantos timers foram despausados no grupo (maior ou igual a 0).
+********************************/
+int DespausaGrupoTimers(int idGrupo){
+    return CPIGGerenciadorTimers::DespausaGrupo(idGrupo);
+}
+
+/********************************
+A função ReiniciaGrupoTimers() é responsável por reiniciar todos os timers de um grupo específico.
+Os timers de um mesmo grupo pode ser tratados simultaneamente
+(ex: diversos timers de um prsonagem/objeto podem ser pausados/despausados/reiniciados com uma função só).
+Parâmetros:
+idGrupo (entrada, passagem por valor): identificador do grupos (qualquer valor entre 0 e PIG_MAX_GRUPOS_TIMERS-1).
+congelado (entrada, passagem por valor): valor lógico que indica se o timer deve ser zerado sem iniciar de imediato a contagem de tempo ou não.
+Retorno:
+número inteiro que indica se o grupo é inválido (-1) ou quantos timers foram reiniciados no grupo (maior ou igual a 0).
+********************************/
+int ReiniciaGrupoTimers(int idGrupo, int congelado=false){
+    return CPIGGerenciadorTimers::ReiniciaGrupo(idGrupo,congelado);
+}
+
+
+
+/********************************
 Seção das animações
 ********************************/
 

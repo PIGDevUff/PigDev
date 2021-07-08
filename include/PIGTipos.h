@@ -51,6 +51,7 @@ Principais definições utilizadas pela PIG
 #define PIG_MAX_MODOS                   50
 
 #define PIG_MAX_TIMERS                  50000
+#define PIG_MAX_GRUPOS_TIMERS           100
 
 #define PIG_MAX_GERADORPARTICULAS       100
 #define PIG_MAX_PARTICULAS              1000
