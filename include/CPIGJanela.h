@@ -2,7 +2,7 @@
 #define _CPIGJanela_
 
 #include "CPIGCamera.h"
-#include "CPIGOffscreenRenderer.h"
+//#include "CPIGOffscreenRenderer.h"
 
 class CPIGJanela{
 

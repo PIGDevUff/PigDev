@@ -74,6 +74,10 @@ public:
         fontes->Remove(idFonte);
     }
 
+    static SDL_Surface *GetSurface(char *str, PIG_Cor cor,int idFonte=0){
+        //return fontes->GetElemento(idFonte)->GetSurface(str,cor);
+    }
+
 };
 
 CPIGRepositorio<PIGMapaCaracteres> *CPIGGerenciadorFontes::fontes;

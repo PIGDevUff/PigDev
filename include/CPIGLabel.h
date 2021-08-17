@@ -27,7 +27,6 @@ void AtualizaTextura(){
 public:
 
 CPIGLabel(std::string texto,int numFonte,PIG_Cor corFonte=BRANCO,int idJanela=0):CPIGSprite(idJanela){
-    //renderer = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetRenderer();
     fonte = numFonte;
     text = NULL;
     cor = corFonte;

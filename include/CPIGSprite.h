@@ -6,11 +6,10 @@
 class CPIGSprite{
 
 protected:
-int id;
-PIGPonto2D pos;
+
 int alt,larg,altOriginal,largOriginal;
-int idJanela,*altJanela;
-PIGPonto2D proporcaoPivo,pivoAbs;
+int id,idJanela,*altJanela;
+PIGPonto2D pos,proporcaoPivo,pivoAbs;
 SDL_Point pivoInteiro;
 bool usaPivoRelativo;
 double angulo;
@@ -28,6 +27,8 @@ std::string nomeArquivo;
 PIGAutomacao automacao;
 int tipoFixo;
 vector<CPIGSprite*> filhos;
+
+private:
 
 void CarregaImagem(std::string nomeArq){
     nomeArquivo = nomeArq;
@@ -51,49 +52,21 @@ void IniciaBase(int altura,int largura,int janela){
 }
 
 void ExtraiPixels() {
-    Uint8 *pix8;
-    Uint32 *pix32;
 
     pixels = (PIG_Cor **)malloc(sizeof(PIG_Cor *) * bitmap->h);
     for (int i = 0; i < bitmap->h; i++) {
         pixels[i] = (PIG_Cor *)calloc(sizeof(PIG_Cor), bitmap->w);
     }
 
-    if (bitmap->format->BytesPerPixel == 3) {
-        for (int h = 0; h < bitmap->h; h++) {
-            pix8 = (Uint8 *)bitmap->pixels + (h * bitmap->pitch);
-            for (int w = 0; w < bitmap->w; w++) {
-                if (bitmap->format->format == SDL_PIXELFORMAT_RGB24) {
-                    pixels[h][w].r = *pix8;
-                    pix8++;
-                    pixels[h][w].g = *pix8;
-                    pix8++;
-                    pixels[h][w].b = *pix8;
-                    pix8++;
-                } else {
-                    pixels[h][w].b = *pix8;
-                    pix8++;
-                    pixels[h][w].g = *pix8;
-                    pix8++;
-                    pixels[h][w].r = *pix8;
-                    pix8++;
-                }
-                pixels[h][w].a = 255;
-            }
-        }
-    } else if (bitmap->format->BytesPerPixel == 4) {
-        pix32 = (Uint32 *)bitmap->pixels;
-        for (int h = 0; h < bitmap->h; h++) {
-            for (int w = 0; w < bitmap->w; w++) {
-                //printf("%d,%d\n",h,w);
-                SDL_GetRGBA((Uint32)*pix32, bitmap->format, &(pixels[h][w].r), &(pixels[h][w].g), &(pixels[h][w].b), &(pixels[h][w].a));
-                pix32++;
-            }
+    Uint32 *pix32 = (Uint32 *)bitmap->pixels;
+    for (int h = 0; h < bitmap->h; h++) {
+        for (int w = 0; w < bitmap->w; w++) {
+            SDL_GetRGBA((Uint32)*pix32, bitmap->format, &(pixels[h][w].r), &(pixels[h][w].g), &(pixels[h][w].b), &(pixels[h][w].a));
+            pix32++;
         }
     }
-}
 
-private:
+}
 
 //Atributos relativos à coloração e textura do Sprite
 void IniciaCor(){
@@ -148,9 +121,9 @@ void AplicaTransicao(PIG_EstadoTransicao estado){
 
 public:
 
-    int GetID(){
-        return id;
-    }
+int GetID(){
+    return id;
+}
 
 //Construtor para arquivos de vídeo ou Componentes
 CPIGSprite(int idSprite,int altura,int largura,std::string nomeArq,int janela=0){
@@ -168,7 +141,6 @@ CPIGSprite(int idSprite,std::string nomeArq,int retiraFundo=1,PIG_Cor *corFundo=
     CarregaImagem(nomeArq);
 
     IniciaBase(bitmap->h,bitmap->w,janela);
-
     PreparaTextura(retiraFundo,corFundo);
     ExtraiPixels();
 }
@@ -190,13 +162,8 @@ CPIGSprite(int idSprite,PIGOffscreenRenderer offRender, int retiraFundo=1,PIG_Co
 //Construtor para Sprite "copiado" de outro Sprite
 CPIGSprite(int idSprite,CPIGSprite *spriteBase,int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
     id = idSprite;
-    nomeArquivo = spriteBase->nomeArquivo;
 
-    #ifdef PIG_SHARE_BITMAP
-    bitmap = CPIGAssetLoader::LoadImage(spriteBase->nomeArquivo);
-    #else
-    bitmap = IMG_Load(spriteBase->nomeArquivo.c_str());
-    #endif
+    CarregaImagem(spriteBase->nomeArquivo);
 
     IniciaBase(bitmap->h,bitmap->w,janela);
     PreparaTextura(retiraFundo,corFundo);
@@ -470,7 +437,6 @@ inline virtual void Move(double nx,double ny){
     Desloca(nx-pos.x,ny-pos.y);
 }
 
-
 virtual void Desloca(double dx, double dy){
     pos.x += dx;
     pos.y += dy;
@@ -587,36 +553,12 @@ void DesenhaOffScreen(PIGOffscreenRenderer offRender){
 
 void AtualizaPixels(int retiraFundo = 1, int opacidadeObj = 255) {
     if (!pixels) return;
-    Uint8 *pix8;
-    Uint32 *pix32;
-    if (bitmap->format->BytesPerPixel == 3) {
-        for (int h = 0; h < bitmap->h; h++) {
-            pix8 = (Uint8 *)bitmap->pixels + (h * bitmap->pitch);
-            for (int w = 0; w < bitmap->w; w++) {
-                if (bitmap->format->format == SDL_PIXELFORMAT_RGB24) {
-                    *pix8 = pixels[h][w].r;
-                    pix8++;
-                    *pix8 = pixels[h][w].g;
-                    pix8++;
-                    *pix8 = pixels[h][w].b;
-                    pix8++;
-                } else {
-                    *pix8 = pixels[h][w].b;
-                    pix8++;
-                    *pix8 = pixels[h][w].g;
-                    pix8++;
-                    *pix8 = pixels[h][w].r;
-                    pix8++;
-                }
-            }
-        }
-    } else if (bitmap->format->BytesPerPixel == 4) {
-        pix32 = (Uint32 *)bitmap->pixels;
-        for (int h = 0; h < bitmap->h; h++) {
-            for (int w = 0; w < bitmap->w; w++) {
-                SDL_GetRGBA((Uint32)*pix32, bitmap->format, &(pixels[h][w].r), &(pixels[h][w].g), &(pixels[h][w].b), &(pixels[h][w].a));
-                pix32++;
-            }
+
+    Uint32 *pix32 = (Uint32 *)bitmap->pixels;
+    for (int h = 0; h < bitmap->h; h++) {
+        for (int w = 0; w < bitmap->w; w++) {
+            SDL_GetRGBA((Uint32)*pix32, bitmap->format, &(pixels[h][w].r), &(pixels[h][w].g), &(pixels[h][w].b), &(pixels[h][w].a));
+            pix32++;
         }
     }
 

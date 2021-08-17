@@ -6,7 +6,6 @@ src/ProjetoMacOsX.layout
 *.depend
 libLinux/*
 libMacOsX/*
-libWindows/*
 *.wav
 *.mp3
 *.mp4
