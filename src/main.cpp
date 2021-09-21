@@ -1,6 +1,6 @@
 #include "PIG.h"
 
-PIG_Evento evento;          //evento ser tratadoi a cada pssada do loop principal
+PIG_Evento evento;          //evento ser tratado a cada passada do loop principal
 PIG_Teclado meuTeclado;     //variável como mapeamento do teclado
 
 int main( int argc, char* args[] ){
@@ -17,9 +17,9 @@ int main( int argc, char* args[] ){
         //pega um evento que tenha ocorrido desde a última passada do loop
         evento = GetEvento();
 
-        //aqui o evento deve ser tratado e as coisas devem ser atualizadas
+        //aqui o evento deve ser tratado e tudo deve ser atualizado
 
-        //será feita aprepação do frame que será exibido na tela
+        //será feita a preparação do frame que será exibido na tela
         IniciaDesenho();
 
         //todas as chamadas de desenho devem ser feitas aqui na ordem desejada
@@ -33,4 +33,3 @@ int main( int argc, char* args[] ){
 
     return 0;
 }
-
