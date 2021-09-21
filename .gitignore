@@ -3,9 +3,6 @@ src/Projeto
 src/main.o
 src/*.layout
 src/*.depend
-lib/*
-lib/*
-lib/*
 *.wav
 *.mp3
 *.mp4
