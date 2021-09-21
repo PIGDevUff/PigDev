@@ -1,6 +1,7 @@
 src/Projeto.exe
 src/Projeto
 src/main.o
+src/main.cpp
 src/*.layout
 src/*.depend
 *.wav
