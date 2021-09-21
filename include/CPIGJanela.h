@@ -2,7 +2,6 @@
 #define _CPIGJanela_
 
 #include "CPIGCamera.h"
-//#include "CPIGOffscreenRenderer.h"
 
 class CPIGJanela{
 
@@ -37,7 +36,7 @@ CPIGJanela(std::string tituloJanela,int idJanela,int altTela,int largTela){
         //printf("Meu id %d meu handler %d\n",idJanela,handler);
         SDL_GetWindowPosition(window,&pos.x,&pos.y);
         SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
-        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC|SDL_RENDERER_ACCELERATED|SDL_RENDERER_TARGETTEXTURE);
+        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED|SDL_RENDERER_TARGETTEXTURE);
         corFundo = PRETO;
         SDL_SetRenderDrawColor( renderer, corFundo.r, corFundo.g, corFundo.b, corFundo.a );
         SDL_SetRenderDrawBlendMode(renderer,SDL_BLENDMODE_BLEND);

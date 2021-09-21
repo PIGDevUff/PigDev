@@ -27,8 +27,8 @@ protected:
         TTF_SetFontStyle(font,estilo);
 
         glyphsT[estilo] = (SDL_Texture**) malloc(sizeof(SDL_Texture*)*(PIG_ULTIMO_CAR-PIG_PRIMEIRO_CAR));
-        larguraLetra[estilo] = (int*)malloc(sizeof(int*)*(PIG_ULTIMO_CAR-PIG_PRIMEIRO_CAR));
-        alturaExtra[estilo] = (int*)malloc(sizeof(int*)*(PIG_ULTIMO_CAR-PIG_PRIMEIRO_CAR));
+        larguraLetra[estilo] = (int*)malloc(sizeof(int)*(PIG_ULTIMO_CAR-PIG_PRIMEIRO_CAR));
+        alturaExtra[estilo] = (int*)malloc(sizeof(int)*(PIG_ULTIMO_CAR-PIG_PRIMEIRO_CAR));
 
         for (Uint16 letra=PIG_PRIMEIRO_CAR;letra<PIG_ULTIMO_CAR;letra++){
             SDL_Surface *surf = TTF_RenderGlyph_Blended(font,letra,corFonte);//superficie gerada com a forna da letra simples
@@ -71,8 +71,8 @@ protected:
         if (font==NULL)
             printf("Erro: arquivo de fonte (%s) nao localizado\n",nomeFonte);
 
-        alturaExtra = (int**)malloc(sizeof(int)*(PIG_TOTALESTILOS));
-        larguraLetra = (int**)malloc(sizeof(int)*(PIG_TOTALESTILOS));
+        alturaExtra = (int**)malloc(sizeof(int*)*(PIG_TOTALESTILOS));
+        larguraLetra = (int**)malloc(sizeof(int*)*(PIG_TOTALESTILOS));
         glyphsT = (SDL_Texture***) malloc(sizeof(SDL_Texture**)*(PIG_TOTALESTILOS));
         for (int i=0;i<PIG_TOTALESTILOS;i++){
             alturaExtra[i] = NULL;

@@ -1,11 +1,11 @@
 src/Projeto.exe
+src/Projeto
 src/main.o
-src/ProjetoWindows.layout
-src/ProjetoLinux.layout
-src/ProjetoMacOsX.layout
-*.depend
-libLinux/*
-libMacOsX/*
+src/*.layout
+src/*.depend
+lib/*
+lib/*
+lib/*
 *.wav
 *.mp3
 *.mp4
