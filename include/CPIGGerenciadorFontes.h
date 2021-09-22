@@ -26,6 +26,9 @@ public:
 
         fontes = new CPIGRepositorio<PIGMapaCaracteres>(PIG_MAX_FONTES,"fontes");
         fontes->Insere(new CPIGMapaCaracteres(PIG_FONTE_PADRAO_NOME,PIG_FONTE_PADRAO_TAM,PIG_ESTILO_NORMAL,PIG_FONTE_PADRAO_COR,0));
+        //fontes->Insere(new CPIGMapaCaracteres(PIG_FONTE_PADRAO_NOME,PIG_FONTE_PADRAO_TAM,PIG_ESTILO_NORMAL,"figura.bmp",0,BRANCO,0));
+        //fontes->Insere(new CPIGMapaCaracteresDinamicos("..//fontes//arial.ttf",PIG_FONTE_PADRAO_TAM,0));
+        //fontes->Insere(new CPIGMapaCaracteres(PIG_FONTE_PADRAO_NOME,PIG_FONTE_PADRAO_TAM,PIG_ESTILO_NORMAL,PIG_FONTE_PADRAO_COR,1,AZUL,0));
     }
 
     static void Encerra(){
@@ -35,22 +38,22 @@ public:
     }
 
     static int CriaFonteFundo(char *nome,int tamanho,int estilo,char *arquivoFundo,int contorno,PIG_Cor corContorno,int idJanela=0){
-        return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,arquivoFundo,contorno,corContorno,idJanela,NULL));
+        return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,arquivoFundo,contorno,corContorno,idJanela));
     }
 
     static int CriaFonteFundo(char *nome,int tamanho,int estilo,char *arquivoFundo,int idJanela=0){
-        return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,arquivoFundo,idJanela,NULL));
+        return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,arquivoFundo,idJanela));
     }
 
     static int CriaFonteNormal(char *nome,int tamanho,int estilo,PIG_Cor corLetra,int contorno,PIG_Cor corContorno,int idJanela=0){
-        return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,corLetra,contorno,corContorno,idJanela,NULL));
+        return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,corLetra,contorno,corContorno,idJanela));
     }
 
     static int CriaFonteNormal(char *nome,int tamanho,int estilo,PIG_Cor corLetra=PIG_FONTE_PADRAO_COR,int idJanela=0){
-        return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,corLetra,idJanela,NULL));
+        return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,corLetra,idJanela));
     }
 
-    static int CriaFonteFundoOffScreen(char *nome,int tamanho,int estilo,char *arquivoFundo,int contorno,PIG_Cor corContorno,PIGOffscreenRenderer off,int layer=0){
+    /*static int CriaFonteFundoOffScreen(char *nome,int tamanho,int estilo,char *arquivoFundo,int contorno,PIG_Cor corContorno,PIGOffscreenRenderer off,int layer=0){
         return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,arquivoFundo,contorno,corContorno,-1,off->GetLayer(layer)->render));
     }
 
@@ -65,7 +68,7 @@ public:
     static int CriaFonteNormalOffScreen(char *nome,int tamanho,int estilo,PIGOffscreenRenderer off,PIG_Cor corLetra=PIG_FONTE_PADRAO_COR,int layer=0){
         return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,corLetra,-1,off->GetLayer(layer)->render));
     }
-
+*/
     static int CriaFonteDinamica(char *nome,int tamanho,int idJanela=0){
         return fontes->Insere(new CPIGMapaCaracteresDinamicos(nome,tamanho,idJanela));
     }
@@ -75,7 +78,7 @@ public:
     }
 
     static SDL_Surface *GetSurface(char *str, PIG_Cor cor,int idFonte=0){
-        //return fontes->GetElemento(idFonte)->GetSurface(str,cor);
+        return fontes->GetElemento(idFonte)->GetSurface(str,cor);
     }
 
 };

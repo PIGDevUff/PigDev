@@ -84,7 +84,7 @@ public:
         idPart = CPIGGerenciadorSprites::InsereAnimacao(part);
 
         part->DefineLimites(maxEspaco,maxTempo);
-        printf("com tempo %f\n",maxTempo);
+
         part->IniciaAutomacao();
         parts.push_back(part);
 

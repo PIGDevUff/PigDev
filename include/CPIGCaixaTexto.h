@@ -29,7 +29,7 @@ protected:
     void DesenhaCursor(){
         if (temFoco){
             if (cursorExibido){
-                CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(xCursor,yCursor,xCursor,yCursor+altLetra,corCursor);
+                PIGDesenhaLinhaSimples(xCursor,yCursor,xCursor,yCursor+altLetra,corCursor);
             }
             if (timer&&timer->GetTempoDecorrido()>1){
                 cursorExibido = !cursorExibido;
@@ -42,21 +42,21 @@ protected:
     virtual int TrataTeclasEspeciais(PIG_Evento evento){
         switch (evento.teclado.tecla){
             case PIG_TECLA_BACKSPACE:
-                RetiraTextoBackSpace();return 1;
+                RetiraTextoBackSpace();break;
             case PIG_TECLA_DELETE:
-                RetiraTextoDelete();return 1;
+                RetiraTextoDelete();break;
             case PIG_TECLA_DIREITA:
-                AvancaCursor();return 1;
+                AvancaCursor();break;
             case PIG_TECLA_ESQUERDA:
-                VoltaCursor();return 1;
+                VoltaCursor();break;
             case PIG_TECLA_CIMA:
-                SobeCursor();return 1;
+                SobeCursor();break;
             case PIG_TECLA_BAIXO:
-                DesceCursor();return 1;
+                DesceCursor();break;
             case PIG_TECLA_ENTER:
-                PulaLinha();return 1;
+                PulaLinha();break;
         }
-        return 0;
+        return OnAction();
     }
 
     //trata os diversos tipos de eventos de teclado que podem ocorrer
@@ -67,8 +67,7 @@ protected:
 
         if (evento.teclado.acao==PIG_TECLA_INPUT){//caracteres normais
             if (AdicionaTexto( ConverteString(evento.teclado.texto).c_str() ) ){
-                if (audioComponente>=0) CPIGGerenciadorAudios::Play(audioComponente);
-                return 1;
+                return OnAction();
             }
             return 0;
         }
@@ -82,12 +81,11 @@ protected:
     std::string texto;
     int fonteTexto;
     int posCursor;
-    int xBase,xCursor,yCursor,yBase;
-    int xBaseOriginal,yBaseOriginal;
+    int xTexto,yTexto,xCursor,yCursor;
     int margemHorEsq,margemHorDir,margemVertCima,margemVertBaixo;
     int altLetra;
 
-    virtual void AjustaAlinhamento() =0;//pure virtual, porque cada classe derivada vai fazer ajustes diferentes
+    virtual void AjustaPosicaoTextoCursor(){}//pure virtual, porque cada classe derivada vai fazer ajustes diferentes
 
     virtual int SobeCursor() = 0;
 
@@ -97,23 +95,11 @@ protected:
 
     virtual std::string GetTextoVisivel() =0;//pure virtual, porque cada classe derivada vai retornar um texto de forma diferente
 
-    //posiciona o cursor no eixo X (necessário, pois pode haver texto "escondido" à esquerda)
-    void AjustaBaseTextoEixoX(int largParcial){
-        while(xCursor > pos.x+larg - margemHorDir){
-            xBase-=1;
-            xCursor = xBase + largParcial;
-        }
-        while(xCursor <= pos.x + margemHorEsq){
-            xBase+=1;
-            xCursor = xBase + largParcial;
-        }
-    }
-
     //posiciona o cursor uma posição à frente
     int AvancaCursor(){
         if (posCursor>=texto.size()) return 0;//não tem caracter na frente do cursor
         posCursor++;
-        AjustaAlinhamento();
+        AjustaPosicaoTextoCursor();
         return 1;
     }
 
@@ -121,7 +107,7 @@ protected:
     int VoltaCursor(){
         if (posCursor==0) return 0;//não tem caractere atrés do cursor
         posCursor--;
-        AjustaAlinhamento();
+        AjustaPosicaoTextoCursor();
         return 1;
     }
 
@@ -147,7 +133,7 @@ protected:
     }
 
     //adiciona um texto (caracter ou string) na posição indicada pelo cursor (se possível)
-    int AdicionaTexto(std::string frase){
+    virtual int AdicionaTexto(std::string frase){
         if (texto.size()+frase.size()>maxCaracteres) return 0;//ultrapassa o limite máximo de carcteres
         if (somenteNumeros&&!PIGSomenteNumeros(frase)) return 0;//não é número
 
@@ -171,36 +157,38 @@ protected:
         return resp;
     }
 
-    //o botao esquerdo faz com que a edição do trexto comece ou que o cursor seja reposicionado
-    virtual int TrataMouseBotaoEsquerdo(SDL_Point p,int inicioLinha = 0){
-        int delta = p.x-xBase;
-        int largParcial = 0;
-        int largUltimaLetra = 0;
+    int CalculaPosicaoCursor(string linha, int xMouse){
+        int delta = xMouse-xTexto;
+        int largParcial = 0, largUltimaLetra = 0;
+        int resp = 0;
 
-        std::string textoBase = GetTextoVisivel();
-
-        for (int i=inicioLinha;i<=textoBase.size();i++){
+        for (int i=0;i<linha.size();i++){
             std::string aux;
 
-            aux.assign(textoBase,inicioLinha,i - inicioLinha);
+            aux.assign(linha,0,i+1);
 
-            largParcial += CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetLarguraPixelsString(aux);
+            largParcial = CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetLarguraPixelsString(aux);
 
-            if (delta<largParcial-largUltimaLetra){
-                posCursor = i-1;
-                if (textoBase[posCursor]=='\n')
-                    posCursor--;
-                AjustaAlinhamento();
-                return PIG_SELECIONADO_TRATADO;
+            //printf("aux: <%s> %d %d\n",aux.c_str(),largParcial,delta);
+
+            if (delta<largParcial){
+                if (delta-largUltimaLetra<largParcial-delta){
+                    return i;
+                }else return i+1;
+                //if (linha[resp]=='\n')
+                //    resp--;
+
             }
-
             largUltimaLetra = largParcial;
         }
 
-        posCursor = texto.size();
+        return linha.size();
+    }
 
-        AjustaAlinhamento();
-
+    //o botao esquerdo faz com que a edição do trexto comece ou que o cursor seja reposicionado
+    virtual int TrataMouseBotaoEsquerdo(SDL_Point p,int inicioLinha = 0){
+        posCursor = CalculaPosicaoCursor(GetTextoVisivel(),p.x);
+        AjustaPosicaoTextoCursor();
         return PIG_SELECIONADO_TRATADO;
     }
 
@@ -209,15 +197,16 @@ public:
 
     CPIGCaixaTexto(int idComponente,int px, int py, int altura,int largura,std::string nomeArq,int maxCars = 200,bool apenasNumeros=false,int retiraFundo=1,int janela=0):
         CPIGComponente(idComponente,px,py,altura,largura,nomeArq,retiraFundo,janela){
-        margemHorEsq = margemHorDir = margemVertCima = margemVertBaixo = 0;
+        margemHorEsq = margemHorDir = margemVertCima = margemVertBaixo = 5;
         posLabel = PIG_COMPONENTE_ESQ_BAIXO;//posição padrão do label
         posCursor = 0;//cursor no início do texto
         cursorExibido = true;
-        timer = new CPIGTimer(false);//o timer do curosor que só será exibido quando estiver editando
+        timer = new CPIGTimer(false);//o timer do cursor que só será exibido quando estiver editando
         SetFonteTexto(0);
         maxCaracteres = maxCars;
         somenteNumeros = apenasNumeros;
         corCursor = PRETO;
+        AjustaPosicaoTextoCursor();
     }
 
     ~CPIGCaixaTexto(){
@@ -228,13 +217,14 @@ public:
     virtual int SetTexto(std::string frase){
         texto = frase;
         posCursor=0;
+        AjustaPosicaoTextoCursor();
         return 1;
     }
 
     virtual void SetFonteTexto(int fonte){
         fonteTexto = fonte;
         altLetra = CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetTamanhoBaseFonte()+CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetFonteDescent();
-        yBaseOriginal = pos.y+alt-altLetra;
+        AjustaPosicaoTextoCursor();
     }
 
     //recupera o texto armazenado no componente
@@ -254,11 +244,23 @@ public:
 
     //reposiciona o componente
     void Move(int nx, int ny){
-        CPIGComponente::Move(nx,ny);
-        AjustaAlinhamento();
+        int dx = nx-pos.x;
+        int dy = ny-pos.y;
+        CPIGComponente::Desloca(dx,dy);
+        xCursor += dx;
+        yCursor += dy;
+        xTexto += dx;
+        yTexto += dy;
     }
 
-    virtual void SetMargens(int horEsq,int horDir, int vertBaixo,int vertCima) = 0;
+        //define as margens do componente
+    void SetMargens(int horEsq,int horDir, int vertBaixo,int vertCima){
+        margemVertCima = vertCima;
+        margemVertBaixo = vertBaixo;
+        margemHorDir = horDir;
+        margemHorEsq = horEsq;
+        AjustaPosicaoTextoCursor();
+    }
 
 };
 

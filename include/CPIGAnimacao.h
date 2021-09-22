@@ -14,8 +14,7 @@ int modoAtual;                  //número que indica o modo atual
 
 //muda o frame a ser exibido do modo atual
 void AtualizaFrameAtual(PIGModoAnimacao modo){
-    frameAtual = modo->GetFrameAtual();
-    CPIGSprite::MudaFrameAtual(frameAtual);
+    CPIGSprite::MudaFrameAtual(modo->GetFrameAtual());
 
     int a,l;
     modo->GetDimensoesAtual(a,l);
@@ -115,13 +114,14 @@ int GetModoAtual(){
 //desenha a animação
 int Desenha()override{
     int resp=0; //0 indica que que o modo de animação atual não encerrou
-
+    //printf("comecando\n");
     if (modos[modoAtual]!=NULL){
         float tempoDecorrido;
-
+        //printf("calculando %d\n",idTimer);
         tempoDecorrido = CPIGGerenciadorTimers::GetTimer(idTimer)->GetTempoDecorrido();
 
         if (modos[modoAtual]->TestaTempo(tempoDecorrido)){
+            //printf("mudando frame (%d)\n",modoAtual);
             AtualizaFrameAtual(modos[modoAtual]);
         }else resp = modos[modoAtual]->GetEncerrou();//pode ter encerrado de desenhar todos os estágios do modo
     }

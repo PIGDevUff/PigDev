@@ -3,11 +3,13 @@
 
 class CPIGHashNodeImagem{
 
+
 public:
     int cont;
     SDL_Surface *imagem;
     CPIGHashNodeImagem(std::string nomeArq){
         cont = 1;
+        //imagem = IMG_Load(nomeArq.c_str());
         SDL_Surface *aux = IMG_Load(nomeArq.c_str());
         imagem = SDL_ConvertSurfaceFormat(aux,SDL_PIXELFORMAT_RGBA32,0);
         SDL_FreeSurface(aux);

@@ -2,6 +2,7 @@
 #define _CPIGGerenciadorJanelas_
 
 #include "CPIGJanela.h"
+
 class CPIGGerenciadorJanelas{
 
 private:

@@ -27,6 +27,7 @@ public:
         offRenderer = NULL;
 
         diretorioAtual = PIGGetDiretorioAtual();
+
         //printf("path: %s\n",diretorioAtual);//exibir a pasta original da PIG
 
 		//SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS,"1");
@@ -35,6 +36,7 @@ public:
         }else{
             CPIGGerenciadorJanelas::Inicia(nome,altura,largura);
         }
+
 
         // Initialize the joystick subsystem
         SDL_InitSubSystem(SDL_INIT_JOYSTICK);

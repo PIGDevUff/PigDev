@@ -1,111 +1,74 @@
 #ifndef _CPIGGAUGECIRCULAR_
 #define _CPIGGAUGECIRCULAR_
 
-#include "CPIGComponente.h"
+#include "CPIGGauge.h"
 
-class CPIGGaugeCircular:public CPIGComponente{
-
-protected:
-    void SetFoco(bool valor){
-        temFoco = valor;
-    }
-
-    void SetAcionado(bool valor){
-        acionado = valor;
-    }
-
-    void SetMouseOver(bool valor){
-        mouseOver = valor;
-    }
-
-    void SetHabilitado(bool valor){
-        habilitado = valor;
-    }
+class CPIGGaugeCircular:public CPIGGauge{
 
 private:
 
     double angBase,deltaAng;
     int raioInterno;
-    PIG_Cor corInicial,corFinal,corFundo;
-    PIGOffscreenRenderer off;
     bool crescimentoHorario;
-    int valor,valorMin,valorMax;
-    double porcentagemConcluida;
-    SDL_Texture *textGauge;
+    PIG_Cor corInicial,corFinal,corInterna;
 
-    void AtualizaTextura(){
-        PIG_Cor corBarra = PIGMixCor(corInicial,corFinal,porcentagemConcluida);//cor da barra mizada entre a cor inicial e a final
-        PIG_Cor opcoes[4] = {VERDE,AZUL,ROXO,LARANJA}; //4 cores quaisquer
-        PIG_Cor croma1, croma2; //cores usada como cromakey para transparencias (não podem ser nem a cor da barra, nem a cor do fundo)
+    CPIGGaugeCircular LeParametros(int idComponente,string parametros){
+        CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
 
-        //escolha das cores
-        int i=0;
-        croma1=opcoes[i];
-        while (PIGCoresIguais(croma1,corBarra)||PIGCoresIguais(croma1,corFundo)){//não pode ser a cor da barra nem do fundo
-            croma1=opcoes[++i];
+        CPIGGaugeCircular resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+                          atrib.GetInt("raioInterior",0),atrib.GetInt("janela",0));
+
+        return resp;
+    }
+
+    virtual void AtualizaMarcador()override{
+        //printf("porc conc %.1f\n",porcentagemConcluida);
+
+        PIGOffscreenRenderer off = new CPIGOffscreenRenderer(alt,larg,2);
+
+        PIG_Cor cor = PIGMixCor(corInicial,corFinal,porcentagemConcluida);//cor da barra mizada entre a cor inicial e a final
+
+        off->Ativa();
+        PIGDesenhaCirculo(larg/2,alt/2,larg/2,angBase,porcentagemConcluida*(deltaAng)+angBase,cor);
+        PIGDesenhaCirculo(larg/2,alt/2,raioInterno,0,360,corInterna);
+        off->Desativa();
+
+        if (bitmap){
+            SDL_FreeSurface(bitmap);
+            LiberaTextura();
         }
-        croma2=opcoes[i];
-        while (PIGCoresIguais(croma2,corBarra)||PIGCoresIguais(croma2,corFundo)||PIGCoresIguais(croma2,croma1)){//não pode ser a cor da barra, nem do fundo, nem a cor croma1
-            croma2=opcoes[++i];
-        }
+        bitmap = off->GetSurface();
+        //SDL_SaveBMP(bitmap,"gauge.bmp");
+        SDL_SetColorKey(bitmap,SDL_TRUE,0);
+        idTextura = PIGCriaTexturaSurface(bitmap,true);
+        delete off;
 
-        //circulo interno para criar efeito de coroa circular
-        off->DesenhaCirculoFinal(raioInterno,croma2,croma1,0,360.0,2);
-        off->SetCorTransparente(2,true,croma2);
-        //off->SalvarImagemPNG("interno.png",2);
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->Atualiza();
 
-        //circulo com a barra na cor desejada
-        off->DesenhaCirculoFinal(larg/2-2,croma1,corBarra,angBase,porcentagemConcluida*(deltaAng)+angBase,0);
-        off->SetCorTransparente(0,true,croma1);
-        //off->SalvarImagemPNG("barra.png",0);
+        if (crescimentoHorario==true) SetFlip(PIG_FLIP_VERTICAL);
 
-        //criculo com o fundo na cor de fundo
-        off->DesenhaCirculoFinal(larg/2-2,croma1,corFundo,angBase,angBase+deltaAng,1);
-        off->SetCorTransparente(1,true,croma1);
-        //off->SalvarImagemPNG("fundo.png",1);
-
-        //mistura o circulo interno com a barra
-        off->MergeSurface(2,0,SDL_BLENDMODE_NONE);
-        //off->SalvarImagemPNG("circ20.png",0);
-
-        //mistura o circulo interno com o fundo
-        off->MergeSurface(2,1,SDL_BLENDMODE_NONE);
-        //off->SalvarImagemPNG("circ21.png",1);
-
-        //sobre a barra em cima do fundo
-        off->MergeSurface(0,1,SDL_BLENDMODE_NONE);
-        //off->SalvarImagemPNG("circ01.png",1);
-
-        if (textGauge) SDL_DestroyTexture(textGauge);
-        textGauge = SDL_CreateTextureFromSurface(renderer,off->GetSurface(1));
-        //bitmap = off->GetSurface(1);
-        //CriaTextura(1);
+        OnAction();
     }
 
 public:
 
     CPIGGaugeCircular(int idComponente,int px, int py,int altura,int largura,int raioInterior,int janela=0):
-        CPIGComponente(idComponente,px,py,altura,largura,janela){
+        CPIGGauge(idComponente,px,py,altura,largura,janela){
 
         angBase = 0;
         deltaAng = 360;
         raioInterno = raioInterior;
-        valor = 0;
-        valorMin = 0;
-        valorMax = 100;
-        porcentagemConcluida = 0.0;
-        corInicial = corFinal = LARANJA;
-        corFundo = PRETO;
-        off = new CPIGOffscreenRenderer(altura,largura,3);
-
-        Move(px,py);
-        SetPivoProporcional({larg/2.0,alt/2.0});
-        textGauge = NULL;
-        AtualizaTextura();
         crescimentoHorario=true;
+
+        corInicial = corFinal = BRANCO;
+        corInterna = PRETO;
+
+        SetPivoProporcional({larg/2.0,alt/2.0});
+
+        AtualizaMarcador();
     }
 
-    CPIGGaugeCircular(int idComponente,int px, int py,int altura,int largura,int raioInterior,std::string nomeArq,int retiraFundo=1,int janela=0):
+    /*CPIGGaugeCircular(int idComponente,int px, int py,int altura,int largura,int raioInterior,std::string nomeArq,int retiraFundo=1,int janela=0):
         CPIGComponente(idComponente,px,py,altura,largura,nomeArq,retiraFundo,janela){
 
         angBase = 0;
@@ -117,144 +80,56 @@ public:
         porcentagemConcluida = 0.0;
         corInicial = corFinal = LARANJA;
         corFundo = PRETO;
-        off = new CPIGOffscreenRenderer(altura,largura,3);
 
         Move(px,py);
         SetPivoProporcional({larg/2.0,alt/2.0});
-        textGauge = NULL;
+
         AtualizaTextura();
         crescimentoHorario=true;
-    }
+    }*/
 
-    CPIGGaugeCircular(std::string nomeArqParam):CPIGGaugeCircular(LeArquivoParametros(nomeArqParam)){}
+    CPIGGaugeCircular(int idComponente,string parametros):CPIGGaugeCircular(LeParametros(idComponente,parametros)){}
 
-    CPIGGaugeCircular LeArquivoParametros(std::string nomeArqParam){
+    int Desenha(){
+        CPIGImagem::Desenha();
 
-        std::ifstream arquivo;
-        int idComponente,px,py,altura,largura,raioInterior,retiraFundo = 0,janela = 0;
+        DesenhaLabel();
 
-        std::string nomeArq = "",palavra;
+        EscreveHint();
 
-        arquivo.open(nomeArqParam);
-            //if(!arquivo.is_open()) printf("falha ler arquivo\n");
-            //formato "x valor"
-        while(!arquivo.eof()){
-            arquivo >> palavra;
-            if(palavra == "idComponente") arquivo >> idComponente;
-            if(palavra == "px") arquivo >> px;
-            if(palavra == "py") arquivo >> py;
-            if(palavra == "altura") arquivo >> altura;
-            if(palavra == "raioInterior") arquivo >> raioInterior;
-            if(palavra == "largura") arquivo >> largura;
-            if(palavra == "nomeArq") arquivo >> nomeArq;
-            if(palavra == "retiraFundo") arquivo >> retiraFundo;
-            if(palavra == "janela") arquivo >> janela;
-        }
-        arquivo.close();
-
-        return CPIGGaugeCircular(idComponente,px,py,altura,largura,raioInterior,nomeArq,retiraFundo,janela);
-    }
-
-    ~CPIGGaugeCircular(){
-        delete off;
+        return 1;
     }
 
     void SetRaioInterno(int valorRaio){
         if (valorRaio<0||valorRaio>0.9*larg/2) return;
 
         raioInterno = valorRaio;
-        AtualizaTextura();
+        AtualizaMarcador();
     }
 
     void SetAnguloBase(double novoAng){
         angBase = novoAng;
-        AtualizaTextura();
+        AtualizaMarcador();
     }
 
     void SetDeltaAngulo(double novoDelta){
         deltaAng = novoDelta;
-        AtualizaTextura();
-    }
-
-    void IncrementaValor(int delta){
-        valor = PIGLimitaValor(valor+delta, valorMin,valorMax);
-        porcentagemConcluida = 1.*(valor-valorMin)/(valorMax-valorMin);
-        AtualizaTextura();
-    }
-
-    void SetValorMax(int novoValor){
-        if (novoValor<=valorMin)return;
-        valorMax = novoValor;
-        if (valor>valorMax) valor = valorMax;
-        porcentagemConcluida = 1.*(valor-valorMin)/(valorMax-valorMin);
-        AtualizaTextura();
-    }
-
-    void SetValorMin(int novoValor){
-        if (novoValor>=valorMax) return;
-        valorMin = novoValor;
-        if (valor<valorMin) valor=valorMin;
-        porcentagemConcluida = 1.*(valor-valorMin)/(valorMax-valorMin);
-        AtualizaTextura();
+        AtualizaMarcador();
     }
 
     void SetCorInicial(PIG_Cor cor){
         corInicial = cor;
-        AtualizaTextura();
+        AtualizaMarcador();
     }
 
     void SetCorFinal(PIG_Cor cor){
         corFinal = cor;
-        AtualizaTextura();
+        AtualizaMarcador();
     }
 
-    void SetCorFundo(PIG_Cor cor){
-        corFundo = cor;
-        AtualizaTextura();
-    }
-
-    int GetValor(){
-        return valor;
-    }
-
-    std::string GetValorString(){
-        std::stringstream ss;
-        ss <<valor;
-        return ss.str();
-    }
-
-    int GetValorMax(){
-        return valorMax;
-    }
-
-    int GetValorMin(){
-        return valorMin;
-    }
-
-    void AtualizaValor(int novoValor){
-        if (valor==novoValor) return;
-        valor = novoValor;
-        AtualizaTextura();
-    }
-
-    int Desenha(){
-        //SDL_Point p = {pivoRelativo.x,pivoRelativo.y};
-
-        //vai desenhar a textura de base
-        CPIGSprite::Desenha();
-        //SDL_RenderCopyEx(renderer,text,NULL,&dest,-angulo,&p,flip);
-        SDL_Texture *textAux = text;
-        text = textGauge;
-
-        //vai desenhar o gauge em si
-        CPIGSprite::Desenha();
-        //SDL_RenderCopyEx(renderer,textGauge,NULL,&dest,-angulo,&p,flip);
-
-        //recupera a textura de base
-        text = textAux;
-
-        DesenhaLabel();
-        EscreveHint();
+    void SetCorInterna(PIG_Cor cor){
+        corInterna = cor;
+        AtualizaMarcador();
     }
 
     int TrataEventoMouse(PIG_Evento evento){

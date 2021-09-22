@@ -1,40 +1,21 @@
-#ifndef _CPIGGauge_
-#define _CPIGGauge_
+#ifndef _CPIGGAUGE_
+#define _CPIGGAUGE_
 
 #include "CPIGComponente.h"
 
-typedef enum {PIG_GAUGE_CIMA_BAIXO,PIG_GAUGE_BAIXO_CIMA,PIG_GAUGE_ESQ_DIR,PIG_GAUGE_DIR_ESQ} PIG_GaugeCrescimentoBarra;
+typedef enum {PIG_GAUGE_CIMA_BAIXO,PIG_GAUGE_BAIXO_CIMA,PIG_GAUGE_ESQ_DIR,PIG_GAUGE_DIR_ESQ} PIG_GaugeCrescimento;
 
 class CPIGGauge: public CPIGComponente{
 
-private:
+protected:
 
-    SDL_Rect frameBarra,frameBase;
+    PIGImagem marcador;
     double delta,porcentagemConcluida;
     double valorMax,valorMin,valorAtual;
-    int xBarra,yBarra,altBarra,largBarra;
-    PIG_GaugeCrescimentoBarra orientacaoCrescimento;
 
-    SDL_Rect GeraClip(SDL_Rect barra){
-        SDL_Rect resp = barra;
-        switch(orientacaoCrescimento){
-        case PIG_GAUGE_DIR_ESQ:
-            resp.x += (1-porcentagemConcluida/100.0)*barra.w;
-            break;
-        case PIG_GAUGE_ESQ_DIR:
-            resp.w = (porcentagemConcluida/100.0)*barra.w;
-            break;
-        case PIG_GAUGE_CIMA_BAIXO:
-            resp.h = (porcentagemConcluida/100.0)*barra.h;
-            break;
-        case PIG_GAUGE_BAIXO_CIMA:
-            resp.y += (1-porcentagemConcluida/100.0)*barra.h;
-            break;
-        }
+    PIG_GaugeCrescimento orientacaoCrescimento;
 
-        //printf("%d %d %d %d %f\n",resp.x,resp.y,resp.w,resp.h,porcentagemConcluida);
-        return resp;
-    }
+    virtual void AtualizaMarcador(){}
 
     void SetFoco(bool valor){
         temFoco = valor;
@@ -52,164 +33,120 @@ private:
         habilitado = valor;
     }
 
+    void IniciaBase(){
+        valorMin = valorAtual = 0;
+        valorMax = 100;
+        porcentagemConcluida = 0;
+        orientacaoCrescimento = PIG_GAUGE_ESQ_DIR;
+        delta = 1;
+        marcador = NULL;
+    }
+
+    CPIGGauge(int idComponente,int px, int py,int altura,int largura,std::string imgTrilha,int altMarcador, int largMarcador, std::string imgMarcador,int retiraFundoTrilha=1, int retiraFundoMarcador=1,int janela=0):
+        CPIGComponente(idComponente,px,py,altura,largura,imgTrilha,retiraFundoTrilha,janela){
+        //printf("iniciando gauge\n");
+        IniciaBase();
+        //printf("iniciado gauge\n");
+    }
+
+    CPIGGauge(int idComponente,int px, int py,int altura,int largura,int janela=0):
+        CPIGComponente(idComponente,px,py,altura,largura,janela){
+        IniciaBase();
+    }
+
 public:
 
-    CPIGGauge(int idComponente,int px, int py,int altura,int largura,std::string imgGauge,int retiraFundo=1,int janela=0):
-        CPIGComponente(idComponente,px,py,altura,largura,imgGauge,retiraFundo,janela){
-            valorMin = valorAtual = 0;
-            valorMax = 100;
-            porcentagemConcluida = 0;
-            orientacaoCrescimento = PIG_GAUGE_ESQ_DIR;
-            xBarra = 0;
-            yBarra = 0;
-            delta = 0;
-    }
-
-    CPIGGauge(std::string nomeArqParam):CPIGGauge(LeArquivoParametros(nomeArqParam)){}
-
-    static CPIGGauge LeArquivoParametros(std::string nomeArqParam){
-
-        std::ifstream arquivo;
-        int idComponente,px,py,altura,largura,retiraFundo=1,janela=0;
-        std::string imgGauge = "",variavel;
-
-        arquivo.open(nomeArqParam);
-
-        if(!arquivo.is_open()) throw CPIGErroArquivo(nomeArqParam);
-        //formato "x valor"
-        while(!arquivo.eof()){
-           arquivo >> variavel;
-            if(variavel == "idComponente") arquivo >> idComponente;
-            if(variavel == "px") arquivo >> px;
-            if(variavel == "py") arquivo >> py;
-            if(variavel == "altura") arquivo >> altura;
-            if(variavel == "largura") arquivo >> largura;
-            if(variavel == "imgGauge") arquivo >> imgGauge;
-            if(variavel == "retiraFundo") arquivo >> retiraFundo;
-            if(variavel == "janela") arquivo >> janela;
+    virtual int SetValorMin(double minimo){
+        if(minimo <= valorMax){
+            valorMin = minimo;
+            AvancaMarcador(0);
+            return 1;
         }
-
-        arquivo.close();
-
-        if(imgGauge == "") throw CPIGErroParametro("imgGauge",nomeArqParam);
-
-       // std::cout<<idComponente<<" "<<px<<" "<<py<<" "<<altura<<" "<<largura<<" "<<nomeArq<<" "<<retiraFundo<<" "<<janela<<std::endl;
-        return CPIGGauge(idComponente,px,py,altura,largura,imgGauge,retiraFundo,janela);
-
+        return 0;
     }
 
-    void SetValorMinMax(int minimo,int maximo){
-        if(minimo <= maximo){
+    virtual int SetValorMax(double maximo){
+        if(valorMin <= maximo){
             valorMax = maximo;
-            valorMin = valorAtual = minimo;
-            AvancaBarra(0);
+            AvancaMarcador(0);
+            return 1;
         }
+        return 0;
     }
 
-    void AvancaBarra(float valor){
-        valorAtual += valor;
-
-        if(valorAtual > valorMax){
-            porcentagemConcluida = 100.0;
-            valorAtual = valorMax;
-        }else{
-            porcentagemConcluida = (100.0 * (valorAtual - valorMin))/(valorMax - valorMin);
+    virtual int SetValorAtual(double valor){
+        if(valor>=valorMin && valor<=valorMax){
+            valorAtual = valor;
+            AvancaMarcador(0);
+            return 1;
         }
-
-        //AjustaOrientacaoBarra(porcentagemConcluida);
+        return 0;
     }
 
-    void SetFrames(SDL_Rect fBase,SDL_Rect fBarra){
-        frameBase = fBase;
-        frameBarra = fBarra;
-    }
-
-    void SetDistanciaXYBarra(int dx,int dy){
-        xBarra = dx;
-        yBarra = dy;
-    }
-
-    void SetPorcentagemConcluida(float porcentagem){
-        if(porcentagem >= 0 && porcentagem <=100){
-            valorAtual = valorMin + ( (valorMax - valorMin) * (porcentagem/100) );
-            AvancaBarra(0);
-        }
-    }
-
-    void SetDelta(float valor){
+    void SetDelta(double valor){
         delta = valor;
     }
 
-    void AvancaDelta(){
-        AvancaBarra(delta);
-    }
-
-    float GetPorcentagemConcluida(){
-        return porcentagemConcluida;
-    }
-
-    void SetOrientacaoBarra(PIG_GaugeCrescimentoBarra orientacao){
+    void SetOrientacao(PIG_GaugeCrescimento orientacao){
         orientacaoCrescimento = orientacao;
+        AtualizaMarcador();
     }
 
-    int Desenha(){
-        double scalaX = (1.*dest.w/frameBase.w);
-        double scalaY = (1.*dest.h/frameBase.h);
-
-        SDL_Rect aux,aux2;
-        aux.h = ceil(scalaY*frameBarra.h);
-        aux.w = ceil(scalaX*frameBarra.w);
-        aux.x = dest.x+xBarra*scalaX;
-        aux.y = dest.y+yBarra*scalaY;
-
-        //base
-        //SDL_Point p = {pivoRelativo.x,pivoRelativo.y};
-        frames[frameAtual] = frameBase;
-        //SDL_RenderCopyEx(renderer, text, &frameBase,&dest,-angulo,&p,flip); //Desenha Barra
-        CPIGSprite::Desenha();
-
-        aux2 = dest;
-        dest = aux;
-        //definir o valor de r, de acordo com a orientação da barra
-        SDL_Rect clip = GeraClip(aux);
-        SDL_RenderSetClipRect(renderer,&clip);
-
-        frames[frameAtual] = frameBarra;
-        //SDL_RenderCopyEx(renderer, text, &frameBarra,&aux,-angulo,&p,flip);
-        CPIGSprite::Desenha();
-
-        dest = aux2;
-
-        SDL_RenderSetClipRect(renderer,NULL);
-
-        DesenhaLabel();
-        return 1;
+    void SetPorcentagemConcluida(double porcentagem){
+        porcentagemConcluida = PIGLimitaValor(porcentagem,0.0,1.0);
+        valorAtual = valorMin + (valorMax - valorMin)*porcentagemConcluida;
+        AtualizaMarcador();
     }
 
-    float GetValorBarraAtual(){
+    double GetValorAtual(){
         return valorAtual;
     }
 
-    void SetValorBarraAtual(float valor){
-        if(valor >=valorMin && valor <=valorMax){
-            valorAtual = valor;
-            AvancaBarra(0);
-        }
+    double GetValorMax(){
+        return valorMax;
     }
 
-    void ZeraValor(){
+    double GetValorMin(){
+        return valorMin;
+    }
+
+    std::string GetStringValorMarcador(){
+        std::stringstream ss;
+        ss <<valorAtual;
+        return ss.str();
+    }
+
+    double GetPorcentagemConcluida(){
+        return porcentagemConcluida;
+    }
+
+    virtual void AvancaMarcador(double valor){
+        valorAtual += valor;
+
+        valorAtual = PIGLimitaValor(valorAtual,valorMin,valorMax);
+        porcentagemConcluida = (valorAtual - valorMin)/(valorMax - valorMin);
+
+        AtualizaMarcador();
+    }
+
+    void AvancaDelta(){
+        AvancaMarcador(delta);
+    }
+
+    void MinimizaValorAtual(){
         valorAtual = valorMin;
-        AvancaBarra(0);
+        AvancaMarcador(0);
     }
 
-    int TrataEventoMouse(PIG_Evento evento){
-        return 0;
+    void MaximizaValorAtual(){
+        valorAtual = valorMax;
+        AvancaMarcador(0);
     }
 
-    int TrataEventoTeclado(PIG_Evento evento){
-        return 0;
+    virtual void Desloca(double dx, double dy)override{
+        CPIGImagem::Desloca(dx,dy);
+        if (marcador) marcador->Desloca(dx,dy);
     }
-
 };
 typedef CPIGGauge *PIGGauge;
 #endif // _CPIGGAUGE_

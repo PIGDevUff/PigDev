@@ -98,22 +98,15 @@ public:
     }
 
     int Desenha()override{
-
-        CPIGSprite::Desenha();
+        if (idTextura)
+            CPIGImagem::Desenha();
 
         if (icone)
             icone->Desenha();
+
         DesenhaLabel();
 
-        if (SDL_RenderIsClipEnabled(renderer)){
-            SDL_Rect r;
-            SDL_RenderGetClipRect(renderer,&r);
-            SDL_RenderSetClipRect(renderer,NULL);
-            EscreveHint();
-            SDL_RenderSetClipRect(renderer,&r);
-        }else{
-            EscreveHint();
-        }
+        EscreveHint();
 
         return 1;
     }
@@ -208,7 +201,7 @@ public:
 
     int TrataEventoMouse(PIG_Evento evento)override{
         SDL_Point p;
-        if (CPIGGerenciadorJanelas::GetJanela(idJanela)->GetUsandoCameraFixa())
+        if (CPIGGerenciadorJanelas::GetJanela(idJanela)->GetTipoCamera()==PIG_CAMERA2D_FIXA)
             p = CPIGMouse::PegaXYTela();
         else p = CPIGMouse::PegaXYWorld();
 
@@ -238,7 +231,7 @@ public:
     }
 
     void Desloca(double dx, double dy)override{
-        CPIGSprite::Desloca(dx,dy);
+        CPIGImagem::Desloca(dx,dy);
         if (icone) icone->Desloca(dx,dy);
     }
 

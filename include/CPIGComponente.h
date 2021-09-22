@@ -10,7 +10,7 @@ typedef enum{PIG_COMPONENTE_CIMA_CENTRO,PIG_COMPONENTE_CIMA_ESQ,PIG_COMPONENTE_C
 typedef enum{PIG_ANCORA_NORTE,PIG_ANCORA_SUL,PIG_ANCORA_LESTE,PIG_ANCORA_OESTE,PIG_ANCORA_NORDESTE,PIG_ANCORA_NOROESTE,PIG_ANCORA_SUDESTE,PIG_ANCORA_SUDOESTE,PIG_ANCORA_CENTRO}PIG_Ancora;
 typedef enum{PIG_NAO_SELECIONADO,PIG_SELECIONADO_MOUSEOVER,PIG_SELECIONADO_INVISIVEL,PIG_SELECIONADO_DESABILITADO,PIG_SELECIONADO_TRATADO}PIG_EstadosEventos;
 
-class CPIGComponente: public CPIGSprite{
+class CPIGComponente: public CPIGImagem{
 
 protected:
 
@@ -19,6 +19,8 @@ protected:
     int id;
     PIG_PosicaoComponente posLabel,posComponente;
     PIGLabel lab,hint;
+    PIG_FuncaoSimples acao;
+    void *param;
 
     //inicializa o componente com valores padrão
     void IniciaBase(int idComponente, int px, int py){
@@ -27,16 +29,19 @@ protected:
         hint = new CPIGLabel("",0,BRANCO,idJanela);
         SetPosicaoPadraoLabel(PIG_COMPONENTE_CENTRO_CENTRO);
         audioComponente = -1;
-        pos = {(double)px,(double)py};
+        pos.x = px;
+        pos.y = py;
         mouseOver = acionado = temFoco = false;
         habilitado = visivel = true;
+        param = NULL;
+        acao = NULL;
     }
 
     //escreve o hint do componente na tela
     void EscreveHint(){
         if (mouseOver&&hint->GetTexto()!=""){
             SDL_Point p;
-            if (CPIGGerenciadorJanelas::GetJanela(idJanela)->GetUsandoCameraFixa())
+            if (CPIGGerenciadorJanelas::GetJanela(idJanela)->GetTipoCamera()==PIG_CAMERA2D_FIXA)
                 p = CPIGMouse::PegaXYTela();
             else p = CPIGMouse::PegaXYWorld();
             hint->Move(p.x+16,p.y+5);
@@ -96,12 +101,15 @@ protected:
                 lab->Move(pos.x+larg+5,pos.y + (alt-altLabel));
                 break;
             case PIG_COMPONENTE_CENTRO_CENTRO:
+                //printf("px %d larg %d larglabel %d py %d alt %d altLabel %d\n",(int)pos.x,larg,largLabel,(int)pos.y,alt,altLabel);
                 lab->Move(pos.x+larg/2-largLabel/2,pos.y+(alt-altLabel)/2);
                 break;
             case PIG_COMPONENTE_PERSONALIZADA:
                 //lab->Move(pos.x+labelX,pos.y+labelY);
                 break;
             }
+            //PIGPonto2D p = lab->GetXY();
+            //printf("p (%d): %d,%d\n",posLabel,(int)p.x,(int)p.y);
     }
 
     //desenha o label
@@ -109,22 +117,60 @@ protected:
         lab->Desenha();
     }
 
+    virtual int OnAction(){
+        if (acao) acao(id,param);//rever se NULL é necessário
+        if (audioComponente>=0) CPIGGerenciadorAudios::Play(audioComponente);
+        return PIG_SELECIONADO_TRATADO;
+    }
+
 public:
 
     CPIGComponente(int idComponente,int px,int py, int altura, int largura, int janela=0)
-    :CPIGSprite(idComponente,altura, largura, "",janela){
+    :CPIGImagem(idComponente,altura, largura, "",janela){
         IniciaBase(idComponente,px,py);
     }
 
     CPIGComponente(int idComponente,int px,int py, int altura, int largura, std::string nomeArq,int retiraFundo=1,int janela=0)
-    :CPIGSprite(idComponente,nomeArq,retiraFundo,NULL,janela){
+    :CPIGImagem(idComponente,nomeArq,retiraFundo,NULL,janela){
         IniciaBase(idComponente,px,py);
-        CPIGSprite::SetDimensoes(altura,largura);
+        CPIGImagem::SetDimensoes(altura,largura);
     }
 
     ~CPIGComponente(){
         if (lab) delete lab;
         if (hint) delete hint;
+    }
+
+    void DefineAcao(PIG_FuncaoSimples funcao,void *parametro){
+        acao = funcao;
+        param = parametro;
+    }
+
+    static CPIGAtributos GetAtributos(string parametros){
+        CPIGAtributos resp;
+        stringstream ss(parametros);
+        string variavel,valorString;
+        int valorInteiro;
+        double valorDouble;
+
+        while(ss >> variavel){
+            if(variavel == "idComponente") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "px") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "py") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "altura") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "largura") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "nomeArq") {ss >> valorString; resp.SetValorString(variavel,valorString);}
+            if(variavel == "nomeArqMarcador") {ss >> valorString; resp.SetValorString(variavel,valorString);}
+            if(variavel == "nomeArqItem") {ss >> valorString; resp.SetValorString(variavel,valorString);}
+            if(variavel == "label") {ss >> valorString; resp.SetValorString(variavel,valorString);}
+            if(variavel == "retiraFundo") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "retiraFundo") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "retiraFundoMarcador") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "label") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "janela") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+        }
+
+        return resp;
     }
 
     //recupera o id do componente
@@ -136,6 +182,7 @@ public:
     virtual int Desenha()=0;
 
     virtual int TrataEventoMouse(PIG_Evento evento)=0;
+
     virtual int TrataEventoTeclado(PIG_Evento evento)=0;
 
     //define a mensagem de hint do componente
@@ -151,12 +198,12 @@ public:
 
     //define a cor do label
     virtual void SetCorLabel(PIG_Cor corLabel){
-        lab->SetCor(corLabel);
+        lab->SetColoracao(corLabel);
     }
 
     //recupera a cor do label
     virtual PIG_Cor GetCorLabel(){
-        return lab->GetCor();
+        return lab->GetColoracao();
     }
 
     //define o audio padrão do componentePIG_COMPONENTE_CENTRO_CENTRO
@@ -171,7 +218,7 @@ public:
 
     //define a cor do hint
     virtual void SetCorHint(PIG_Cor cor){
-        hint->SetCor(cor);
+        hint->SetColoracao(cor);
     }
 
     //recupera o hint
@@ -297,12 +344,12 @@ public:
     }
 
     void SetPosPadraoComponenteNaTela(PIG_Ancora ancora){
-        int largJanela;
+        int largJanela,altJanela;
 
         largJanela = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetLargura();
-        altJanela = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
+        //altJanela = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
 
-        switch(ancora){
+        /*switch(ancora){
         case PIG_ANCORA_SUL:
             Move((largJanela - larg)/2,0);
             break;
@@ -332,16 +379,24 @@ public:
             break;
         }
 
+        */
+
     }
 
     void Move(double nx, double ny)override{
-        CPIGSprite::Desloca(nx-pos.x,ny-pos.y);
+        CPIGImagem::Desloca(nx-pos.x,ny-pos.y);
         PosicionaLabel();
     }
 
     void SetDimensoes(int altura,int largura)override{
-        CPIGSprite::SetDimensoes(altura,largura);
+        CPIGImagem::SetDimensoes(altura,largura);
         PosicionaLabel();
+    }
+
+    inline SDL_Point GetPosicaoMouse(){
+        if (CPIGGerenciadorJanelas::GetJanela(idJanela)->GetTipoCamera()==PIG_CAMERA2D_FIXA)
+            return CPIGMouse::PegaXYTela();
+        else return CPIGMouse::PegaXYWorld();
     }
 
 };

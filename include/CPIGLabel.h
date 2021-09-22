@@ -1,37 +1,46 @@
 #ifndef _CPIGLABEL_
 #define _CPIGLABEL_
 
-#include "CPIGSprite.h"
+#include "CPIGImagem.h"
 
-class CPIGLabel:public CPIGSprite{
+class CPIGLabel: public CPIGImagem{
 
 private:
 std::string frase;
 int fonte;
-PIG_Cor cor;
 
 void AtualizaTextura(){
+    if (bitmap){
+        SDL_FreeSurface(bitmap);
+        LiberaTextura();
+    }
+
     PIGMapaCaracteres mapa = CPIGGerenciadorFontes::GetFonte(fonte);
-    larg = mapa->GetLarguraPixelsString(frase);
-    alt = mapa->GetFonteAscent()+mapa->GetFonteDescent()+5;
-    if (text) SDL_DestroyTexture(text);
-    text = SDL_CreateTexture(CPIGGerenciadorJanelas::GetJanela(idJanela)->GetRenderer(),SDL_PIXELFORMAT_RGBA8888,SDL_TEXTUREACCESS_TARGET,larg,alt);
-    mapa->Escreve(frase,text,cor);
-    dest.w = larg;
-    dest.h = alt;
-    frames[0].x = frames[0].y = 0;
-    frames[0].h = alt;
-    frames[0].w = larg;
+    largOriginal = larg = mapa->GetLarguraPixelsString(frase);
+    altOriginal = alt = mapa->GetFonteAscent()+mapa->GetFonteDescent()+5;
+
+    PIGOffscreenRenderer off = new CPIGOffscreenRenderer(alt,larg,1);
+    off->Ativa();
+    mapa->Escreve(frase,0,0,false,coloracao,PIG_TEXTO_ESQUERDA,0);
+    bitmap = SDL_ConvertSurfaceFormat(off->GetSurface(),SDL_PIXELFORMAT_RGBA32,0);
+    delete off;
+
+    DefineFrame(0,{0,0,larg,alt});
+    MudaFrameAtual(0);
+
+    idTextura = PreparaTextura(0);
 }
 
 public:
 
-CPIGLabel(std::string texto,int numFonte,PIG_Cor corFonte=BRANCO,int idJanela=0):CPIGSprite(idJanela){
+CPIGLabel(std::string texto,int numFonte,PIG_Cor corFonte=BRANCO,int idJanela=0):
+    CPIGImagem(idJanela){
     fonte = numFonte;
-    text = NULL;
-    cor = corFonte;
     frase = texto;
-    AtualizaTextura();
+    SetColoracao(corFonte);
+    if (frase!="")
+        AtualizaTextura();
+    //printf("label criado em %d,%d\n",(int)pos.x,(int)pos.y);
 }
 
 void SetTexto(std::string texto){
@@ -41,11 +50,6 @@ void SetTexto(std::string texto){
 
 void SetFonte(int numFonte){
     fonte = numFonte;
-    AtualizaTextura();
-}
-
-void SetCor(PIG_Cor novaCor){
-    cor = novaCor;
     AtualizaTextura();
 }
 
@@ -65,8 +69,8 @@ int GetFonte(){
     return fonte;
 }
 
-PIG_Cor GetCor(){
-    return cor;
+virtual int Desenha() override{
+    CPIGImagem::Desenha();
 }
 
 };
