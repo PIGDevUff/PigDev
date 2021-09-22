@@ -27,7 +27,7 @@ protected:
         hint = new CPIGLabel("",0,BRANCO,idJanela);
         SetPosicaoPadraoLabel(PIG_COMPONENTE_CENTRO_CENTRO);
         audioComponente = -1;
-        pos = {px,py};
+        pos = {(double)px,(double)py};
         mouseOver = acionado = temFoco = false;
         habilitado = visivel = true;
     }

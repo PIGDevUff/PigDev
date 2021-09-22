@@ -120,7 +120,7 @@ public:
         //imagem de fundo
         CPIGSprite::Desenha();
 
-        SDL_Rect r={pos.x+margemHorEsq+1,*altJanela-pos.y-alt+margemVertCima,larg-(margemHorEsq+margemHorDir),alt-(margemVertBaixo+margemVertCima)};
+        SDL_Rect r={(int)(pos.x+margemHorEsq+1),(int)(*altJanela-pos.y-alt+margemVertCima),larg-(margemHorEsq+margemHorDir),alt-(margemVertBaixo+margemVertCima)};
 
         CPIGGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaWorldScreen(r.x,r.y,r.x,r.y);
 

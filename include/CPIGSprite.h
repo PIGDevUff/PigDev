@@ -92,7 +92,7 @@ void IniciaDimensoes(int altura,int largura){
 void IniciaOrientacao(){
     pos = {0,0};
     angulo = 0;
-    pivoAbs = {0,alt};
+    pivoAbs = {0,1.0*alt};
     pivoInteiro = {0,alt};
     proporcaoPivo = {0,0};
     usaPivoRelativo = false;
@@ -198,7 +198,7 @@ CPIGSprite(int janela){
     id = -1;
     idJanela = janela;
     nomeArquivo = "";
-    pivoAbs = {0,alt};
+    pivoAbs = {0,1.0*alt};
     pivoInteiro = {0,alt};
     proporcaoPivo = {0,0};
     usaPivoRelativo = false;
@@ -285,7 +285,7 @@ void LeTransicoes(string nomeArq,PIGAutomacao *automaExt=NULL){
 void IniciaAutomacao(PIGAutomacao *automaExt=NULL){
     if ( automaExt ==NULL) automaExt=&automacao;
     if (*automaExt)
-        (*automaExt)->IniciaAutomacao({pos.x,pos.y,alt,larg,angulo,coloracao,opacidade});
+        (*automaExt)->IniciaAutomacao({(int)pos.x,(int)pos.y,alt,larg,angulo,coloracao,opacidade});
 }
 
 void LimpaTransicoes(PIGAutomacao *automaExt=NULL){
@@ -415,7 +415,7 @@ PIG_Flip GetFlip(){
 void SetPivoAbsoluto(PIGPonto2D pivo){
     pivoAbs.x = pivo.x;
     pivoAbs.y = alt-pivo.y;
-    pivoInteiro = {pivoAbs.x,pivoAbs.y};
+    pivoInteiro = {(int)pivoAbs.x,(int)pivoAbs.y};
     usaPivoRelativo = false;
 }
 
@@ -424,7 +424,7 @@ void SetPivoProporcional(PIGPonto2D pivo){
     proporcaoPivo = pivo;
     pivoAbs.x = pivo.x*larg;
     pivoAbs.y = alt*pivo.y;
-    pivoInteiro = {pivoAbs.x,alt-pivoAbs.y};
+    pivoInteiro = {(int)pivoAbs.x,(int)(alt-pivoAbs.y)};
     usaPivoRelativo = true;
 }
 

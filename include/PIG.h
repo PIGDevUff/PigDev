@@ -1798,7 +1798,7 @@ posicaoX (entrada, passagem por valor): Valor da coordenada X do pivô em relação
 posicaoY (entrada, passagem por valor): Valor da coordenada Y do pivô em relação ao ponto (0,0) do sprite.
 ********************************/
 void SetPivoAbsolutoSprite(int idSprite,int posicaoX,int posicaoY){
-    CPIGGerenciadorSprites::GetSprite(idSprite)->SetPivoAbsoluto({posicaoX,posicaoY});
+    CPIGGerenciadorSprites::GetSprite(idSprite)->SetPivoAbsoluto({(double)posicaoX,(double)posicaoY});
 }
 
 /********************************
@@ -2394,7 +2394,7 @@ posicaoX (entrada, passagem por valor): Valor da coordenada X do pivô em relação
 posicaoY (entrada, passagem por valor): Valor da coordenada Y do pivô em relação ao ponto (0,0) do objeto.
 ********************************/
 void SetPivoAbsolutoObjeto(int idObjeto,int posicaoX,int posicaoY){
-    CPIGGerenciadorSprites::GetObjeto(idObjeto)->SetPivoAbsoluto({posicaoX,posicaoY});
+    CPIGGerenciadorSprites::GetObjeto(idObjeto)->SetPivoAbsoluto({(double)posicaoX,(double)posicaoY});
 }
 
 /********************************
@@ -2650,7 +2650,7 @@ void DefineAreaColisaoObjeto(int idObjeto, int pontosX[], int pontosY[], int qtd
     std::vector<PIGPonto2D> vertices;
 
     for (int i = 0; i < qtdPontos; i++) {
-        vertices.push_back({pontosX[i], pontosY[i]});
+        vertices.push_back({(double)pontosX[i],(double) pontosY[i]});
     }
 
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->SetVertices(vertices);
@@ -3107,7 +3107,7 @@ posicaoX (entrada, passagem por valor): Valor da coordenada X do pivô em relação
 posicaoY (entrada, passagem por valor): Valor da coordenada Y do pivô em relação ao ponto (0,0) da partícula.
 ********************************/
 void SetPivoAbsolutoParticulas(int idGerador,int posicaoX,int posicaoY){
-    CPIGGerenciadorGDP::GetGerador(idGerador)->SetPivoAbsoluto({posicaoX,posicaoY});
+    CPIGGerenciadorGDP::GetGerador(idGerador)->SetPivoAbsoluto({(double)posicaoX,(double)posicaoY});
 }
 
 /********************************
@@ -3596,7 +3596,7 @@ void DefineAreaColisaoAnimacao(int idAnimacao, int pontosX[], int pontosY[], int
     std::vector<PIGPonto2D> vertices;
 
     for (int i = 0; i < qtdPontos; i++) {
-        vertices.push_back({pontosX[i], pontosY[i]});
+        vertices.push_back({(double)pontosX[i], (double)pontosY[i]});
     }
 
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetVertices(vertices);
@@ -3846,7 +3846,7 @@ posicaoX (entrada, passagem por valor): Valor da coordenada X do pivô em relação
 posicaoY (entrada, passagem por valor): Valor da coordenada Y do pivô em relação ao ponto (0,0) da animação.
 ********************************/
 void SetPivoAbsolutoAnimacao(int idAnimacao,int posicaoX,int posicaoY){
-    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetPivoAbsoluto({posicaoX,posicaoY});
+    CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetPivoAbsoluto({(double)posicaoX,(double)posicaoY});
 }
 
 /********************************
@@ -5065,7 +5065,7 @@ posicaoX (entrada, passagem por valor): Valor da coordenada X do pivô em relação
 posicaoY (entrada, passagem por valor): Valor da coordenada Y do pivô em relação ao ponto (0,0) do vídeo.
 ********************************/
 void SetPivoAbsolutoVideo(int idVideo, int posicaoX,int posicaoY){
-    CPIGGerenciadorVideos::GetVideo(idVideo)->SetPivoAbsoluto({posicaoX,posicaoY});
+    CPIGGerenciadorVideos::GetVideo(idVideo)->SetPivoAbsoluto({(double)posicaoX,(double)posicaoY});
 }
 
 /********************************

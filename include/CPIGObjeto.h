@@ -88,7 +88,7 @@ void AtualizaBB() {
 void AtualizaVertices() {
     double _angulo = M_PI * angulo / 180.0;
 
-    SDL_Point pivo = {pivoAbs.x + pos.x, -pivoAbs.y + pos.y + alt};
+    PIGPonto2D pivo = {pivoAbs.x + pos.x, -pivoAbs.y + pos.y + alt};
 
     for (int i = 0; i < vertices.size(); i++) {
         vertices[i] = {verticesOriginais[i].x + pos.x, verticesOriginais[i].y + pos.y};
@@ -129,12 +129,12 @@ bool ColisaoCirculoPoligono(std::vector<PIGPonto2D> vertices) {
             return true;
         } else {
 
-            float mCirculo  = -1 / mPoligono;
+            double mCirculo  = -1 / mPoligono;
 
-            float xProxCentro = ((mPoligono * ((float)vertices[i].x)) - (mCirculo * ((float)pos.x + pivoAbs.x)) + ((float)pos.y + pivoAbs.y) - ((float)vertices[i].y))/(mPoligono - mCirculo);
-            float yProxCentro = mPoligono * (xProxCentro - ((float)vertices[i].x)) + ((float)vertices[i].y);
+            double xProxCentro = ((mPoligono * ((double)vertices[i].x)) - (mCirculo * ((double)pos.x + pivoAbs.x)) + ((double)pos.y + pivoAbs.y) - ((double)vertices[i].y))/(mPoligono - mCirculo);
+            double yProxCentro = mPoligono * (xProxCentro - ((double)vertices[i].x)) + ((double)vertices[i].y);
 
-            if(PIGDistancia({pos.x + pivoAbs.x, pos.y + pivoAbs.y}, {(int)xProxCentro, (int)yProxCentro}) <= raio && PIGValorEntre((int)xProxCentro, vertices[i].x, vertices[f].x)) return true;
+            if(PIGDistancia({pos.x + pivoAbs.x, pos.y + pivoAbs.y}, {xProxCentro, yProxCentro}) <= raio && PIGValorEntre((int)xProxCentro, vertices[i].x, vertices[f].x)) return true;
 
             i = (i + 1) % vertices.size();
         }
