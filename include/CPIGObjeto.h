@@ -18,21 +18,21 @@ std::vector<PIGPonto2D> verticesOriginais;
 bool bbAlterado;
 
 void DesenhaBB(){
-    for (int i=0;i<4;i++)
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(bb[i].x,bb[i].y,bb[(i+1)%4].x,bb[(i+1)%4].y,VERDE);
-    CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado(pos.x,pos.y,alt,larg,VERMELHO);
+    //for (int i=0;i<4;i++)
+    //    CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(bb[i].x,bb[i].y,bb[(i+1)%4].x,bb[(i+1)%4].y,VERDE);
+    //CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado(pos.x,pos.y,alt,larg,VERMELHO);
 }
 
 void DesenhaPoligono(PIG_Cor cor) {
-    int qtdVertices = vertices.size();
-    for (int i=0;i<qtdVertices;i++){
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(vertices[i].x,vertices[i].y,10,10,cor);
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(vertices[i].x,vertices[i].y,vertices[(i + 1) % qtdVertices].x,vertices[(i + 1) % qtdVertices].y,cor);
-    }
+    //int qtdVertices = vertices.size();
+    //for (int i=0;i<qtdVertices;i++){
+    //    CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(vertices[i].x,vertices[i].y,10,10,cor);
+    //    CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(vertices[i].x,vertices[i].y,vertices[(i + 1) % qtdVertices].x,vertices[(i + 1) % qtdVertices].y,cor);
+    //}
 }
 
 void DesenhaCircular(PIG_Cor cor) {
-    SDL_SetRenderDrawColor(renderer, cor.r, cor.g, cor.b, 255);
+    /*SDL_SetRenderDrawColor(renderer, cor.r, cor.g, cor.b, 255);
 
     SDL_RenderDrawLine(
         renderer,
@@ -50,11 +50,11 @@ void DesenhaCircular(PIG_Cor cor) {
         renderer,
         pos.x + pivoAbs.x, *altJanela - (pos.y + pivoAbs.y - raio),
         pos.x + pivoAbs.x - raio, *altJanela - (pos.y + pivoAbs.y));
-
+*/
 }
 
 void AtualizaBB() {
-    PIGPonto2D pivoAux = {pivoAbs.x + pos.x, -pivoAbs.y + pos.y + alt};
+    PIGPonto2D pivoAux = {pivoAbs.x + pos.x, pivoAbs.y + pos.y};
 
     //SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
     //pivoAux.x = pivoRelativo.x + pos.x;
@@ -88,7 +88,7 @@ void AtualizaBB() {
 void AtualizaVertices() {
     double _angulo = M_PI * angulo / 180.0;
 
-    PIGPonto2D pivo = {pivoAbs.x + pos.x, -pivoAbs.y + pos.y + alt};
+    PIGPonto2D pivo = {pivoAbs.x + pos.x, pivoAbs.y + pos.y};
 
     for (int i = 0; i < vertices.size(); i++) {
         vertices[i] = {verticesOriginais[i].x + pos.x, verticesOriginais[i].y + pos.y};
@@ -129,10 +129,10 @@ bool ColisaoCirculoPoligono(std::vector<PIGPonto2D> vertices) {
             return true;
         } else {
 
-            double mCirculo  = -1 / mPoligono;
+            float mCirculo  = -1 / mPoligono;
 
-            double xProxCentro = ((mPoligono * ((double)vertices[i].x)) - (mCirculo * ((double)pos.x + pivoAbs.x)) + ((double)pos.y + pivoAbs.y) - ((double)vertices[i].y))/(mPoligono - mCirculo);
-            double yProxCentro = mPoligono * (xProxCentro - ((double)vertices[i].x)) + ((double)vertices[i].y);
+            float xProxCentro = ((mPoligono * ((float)vertices[i].x)) - (mCirculo * ((float)pos.x + pivoAbs.x)) + ((float)pos.y + pivoAbs.y) - ((float)vertices[i].y))/(mPoligono - mCirculo);
+            float yProxCentro = mPoligono * (xProxCentro - ((float)vertices[i].x)) + ((float)vertices[i].y);
 
             if(PIGDistancia({pos.x + pivoAbs.x, pos.y + pivoAbs.y}, {xProxCentro, yProxCentro}) <= raio && PIGValorEntre((int)xProxCentro, vertices[i].x, vertices[f].x)) return true;
 
@@ -182,6 +182,7 @@ void SetVertices(std::vector<PIGPonto2D> verts) {
 void SetAngulo(double a) override{
     CPIGSprite::SetAngulo(a);
     bbAlterado = true;
+    AtualizaBB();
 }
 
 void SetRaioColisaoCircular(int raio) {

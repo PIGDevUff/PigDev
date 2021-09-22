@@ -8,6 +8,17 @@ class CPIGRadioBox: public CPIGListaItemComponente{
 protected:
     std::string arqImagemIcone;
 
+    CPIGRadioBox LeParametros(int idComponente,string parametros){
+        CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
+
+        CPIGRadioBox resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),
+                          atrib.GetInt("alturaLinha",0),
+                          atrib.GetString("nomeArqItem",0),atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),
+                          atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
+
+        return resp;
+    }
+
     void SetFoco(bool valor){
         temFoco = valor;
     }
@@ -36,50 +47,16 @@ protected:
 
 public:
 
-    CPIGRadioBox(int idComponente, int posX, int posY, int larguraTotal,int alturaLinha, int alturaMaxima,std::string imgIcone, int alturaIcone, int larguraIcone,std::string imgFundo, int retiraFundo=1,int janela = 0):
-        CPIGListaItemComponente(idComponente,posX,posY,larguraTotal,alturaLinha,alturaMaxima,imgFundo,retiraFundo,janela){
+    CPIGRadioBox(int idComponente, int posX, int posY, int larguraTotal,int alturaLinha,std::string imgIcone, int alturaIcone, int larguraIcone,std::string imgFundo, int retiraFundo=1,int janela = 0):
+        CPIGListaItemComponente(idComponente,posX,posY,larguraTotal,alturaLinha,imgFundo,retiraFundo,janela){
             arqImagemIcone = imgIcone;
         }
 
-    CPIGRadioBox(std::string nomeArqParam):CPIGRadioBox(LeArquivoParametros(nomeArqParam)){}
+    CPIGRadioBox(int idComponente,std::string parametros):CPIGRadioBox(LeParametros(idComponente,parametros)){}
 
-    static CPIGRadioBox LeArquivoParametros(std::string nomeArqParam){
-        std::ifstream arquivo;
-        int idComponente,px,py,alturaItem,larguraItem,larguraTotal,alturaLinha,alturaMaxima,retiraFundo=1,janela=0;
-        std::string imgFundo = "",imgItem = "",variavel;
-
-        arquivo.open(nomeArqParam);
-
-        if(!arquivo.is_open()) throw CPIGErroArquivo(nomeArqParam);
-        //formato "x valor"
-        while(!arquivo.eof()){
-           arquivo >> variavel;
-            if(variavel == "idComponente") arquivo >> idComponente;
-            if(variavel == "px") arquivo >> px;
-            if(variavel == "py") arquivo >> py;
-            if(variavel == "larguraTotal") arquivo >> larguraTotal;
-            if(variavel == "alturaItem") arquivo >> alturaItem;
-            if(variavel == "larguraItem") arquivo >> larguraItem;
-            if(variavel == "imgFundo") arquivo >> imgFundo;
-            if(variavel == "imgItem") arquivo >> imgItem;
-            if(variavel == "alturaLinha") arquivo >> alturaLinha;
-            if(variavel == "alturaMaxima") arquivo >> alturaMaxima;
-            if(variavel == "retiraFundo") arquivo >> retiraFundo;
-            if(variavel == "janela") arquivo >> janela;
-        }
-
-        arquivo.close();
-
-       // std::cout<<idComponente<<" "<<px<<" "<<py<<" "<<altura<<" "<<largura<<" "<<nomeArq<<" "<<retiraFundo<<" "<<janela<<std::endl;
-
-        if(imgItem == "") throw CPIGErroParametro("imgItem",imgItem);
-
-        return CPIGRadioBox(idComponente,px,py,larguraTotal,alturaLinha,alturaMaxima,imgItem,alturaItem,larguraItem,imgFundo,retiraFundo,janela);
-    }
-
-    void CriaItem(std::string itemLabel, std::string arqImagemFundoItem="",bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
-        int yItem = pos.y+alt-(altBaseLista)*(itens.size()+1);
-        CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,false,itemHabilitado,audioComponente,hintMsg,retiraFundo);
+    void CriaItem(std::string itemLabel, std::string arqImagemFundoItem="",bool itemHabilitado = true, std::string hintMsg="", int retiraFundo=1){
+        int yItem = pos.y+(altBaseLista)*(itens.size());
+        CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,false,itemHabilitado,hintMsg,retiraFundo);
         itens[itens.size()-1]->DefineFuncaoAjusteFrame(AjustaFrame);
         PIGSprite icone = itens[itens.size()-1]->GetIcone();
         icone->CriaFramesAutomaticosPorLinha(1,1,6);
@@ -91,16 +68,10 @@ public:
 
         DesenhaLabel();
 
-        SDL_Rect r = {(int)pos.x,*altJanela-((int)pos.y)-alt,larg,alt};
-        SDL_RenderSetClipRect(renderer,&r);
-
-        if (text)//se tiver imagem de fundo
-            CPIGSprite::Desenha();
+        CPIGImagem::Desenha();
 
         for (PIGItemComponente i: itens)
             i->Desenha();
-
-        SDL_RenderSetClipRect(renderer,NULL);
 
         return 1;
     }
@@ -109,16 +80,14 @@ public:
         int resp = -1;
         bool mouseOverAntes = mouseOver;
 
-        SDL_Point p;
-        if (CPIGGerenciadorJanelas::GetJanela(idJanela)->GetUsandoCameraFixa())
-            p = CPIGMouse::PegaXYTela();
-        else p = CPIGMouse::PegaXYWorld();
+        SDL_Point p = GetPosicaoMouse();
 
         if (ChecaMouseOver(p)>0){
             for (int i=0;i<itens.size();i++){
                 if (itens[i]->TrataEventoMouse(evento) == PIG_SELECIONADO_TRATADO){
                     if (itens[i]->GetAcionado())
                         resp = i;
+                    OnAction();
                 }
             }
             SetAcionadoItem(resp,resp!=-1);
@@ -139,8 +108,7 @@ public:
     }
 
     void SetDimensoes(int altura,int largura)override{
-        CPIGComponente::SetDimensoes(altura,largura);
-        altMaxima = altura;
+        CPIGComponente::SetDimensoes(itens.size()*altBaseLista,largura);
 
         for(PIGItemComponente i : itens){
             i->SetDimensoes(altIcone,largura);

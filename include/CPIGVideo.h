@@ -417,14 +417,14 @@ void AjustaAspecto2(){
         }
         SDL_GetWindowSize(janelaAtual->GetWindow(), &windowW, &windowH);
 
-        dest.h = windowH;
-        dest.w = ((int)rint(dest.h * aspectRatio)) & -3;
-        if (dest.w > windowW) {
-            dest.w = windowW;
-            dest.h = ((int)rint(dest.w / aspectRatio)) & -3;
+        alt = windowH;
+        larg = ((int)rint(alt * aspectRatio)) & -3;
+        if (larg > windowW) {
+            larg = windowW;
+            alt = ((int)rint(larg / aspectRatio)) & -3;
         }
-        dest.x = (windowW - dest.w) / 2;
-        dest.y = (windowH - dest.h) / 2;
+        pos.x = (windowW - larg) / 2;
+        pos.y = (windowH - alt) / 2;
 
     }
     //printf("aspecto %d,%d\n",dest.h,dest.w);
@@ -865,16 +865,6 @@ void DestroiVideoState(){
     DestroiStream(is->videoSt);
     DestroiStream(is->audioSt);
 
-    /*printf("flushei2\n");
-    if (is->audioSt->codec->internal)
-        avcodec_flush_buffers(is->audioSt->codec);
-
-    printf("fecha audio\n");
-    if (is->audioSt->codec){
-        avcodec_close(is->audioSt->codec);
-        is->audioSt->codec = NULL;
-    }*/
-
     //printf("Encerrando Contexto geral\n");
     avio_flush(is->pFormatCtx->pb);
     //printf("Liberando memoria do Contexto\n");
@@ -918,21 +908,11 @@ CPIGVideo(std::string nomeArq,int idJanela=0):
 
     DestroiVideoState();
 
-    text = SDL_CreateTexture(janelaAtual->GetRenderer(),
-        SDL_PIXELFORMAT_RGB24,
-        SDL_TEXTUREACCESS_STREAMING,
-        largPixels,
-        altPixels);
+    glGenTextures( 1, &idTextura );
 
-    frames[frameAtual] = {0,0,largPixels,altPixels};
+    DefineFrame(0,{0,0,largPixels,altPixels});
     mudouFrameVideo = true;
     bufferVideo = malloc(altPixels*largPixels*4);
-
-    //printf("Play() encerrado com sucesso\n");
-    /*pausa = av_gettime();
-
-    timerProx->Reinicia(0);// = new CTimer(0);
-    */
 }
 
 ~CPIGVideo(){
@@ -941,11 +921,9 @@ CPIGVideo(std::string nomeArq,int idJanela=0):
 
     //DestroiVideoState();
 
-    //printf("Finalizei stop()\n\n");
     free(bufferVideo);
 
     if (audioDeviceId != -1){
-        //SDL_PauseAudioDevice(audioDeviceId,1);
         SDL_CloseAudioDevice(audioDeviceId);
     }
 
@@ -1069,14 +1047,24 @@ void Resume(){
 int Desenha()override{
     if (estado==PIG_VIDEO_PARADO) return 0;
     VideoRefreshTimer();
-    //printf("1");
 
     if (mudouFrameVideo){
         SDL_LockMutex(mutexBuffer);
-        SDL_UpdateTexture(text,NULL,bufferVideo,pitch);
+
+        /* Typical Texture Generation Using Data From The Bitmap */
+        glBindTexture( GL_TEXTURE_2D, idTextura );
+
+        /* Generate The Texture */
+        glTexImage2D(GL_TEXTURE_2D, 0, 4, largPixels,
+              altPixels, 0, GL_RGB,
+              GL_UNSIGNED_BYTE, bufferVideo);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
         SDL_UnlockMutex(mutexBuffer);
-        SDL_SetTextureBlendMode(text, SDL_BLENDMODE_BLEND);
-        SDL_SetTextureAlphaMod(text,opacidade);
         SetColoracao(coloracao);
         mudouFrameVideo = false;
     }

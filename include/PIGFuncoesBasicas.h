@@ -20,6 +20,184 @@
 #include <stdint.h>
 #include <limits.h>
 
+void PIGPreparaStencil(){
+    glClearStencil(0);
+    glStencilMask(0xFF);
+    glClear( GL_STENCIL_BUFFER_BIT);
+
+    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE); // Do not draw any pixels on the back buffer
+    glEnable(GL_STENCIL_TEST); // Enables testing AND writing functionalities
+    glStencilFunc(GL_ALWAYS, 1, 0xFF); // Do not test the current value in the stencil buffer, always accept any value on there for drawing
+    glStencilMask(0xFF);
+    glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE); // Make every test succeed
+}
+
+void PIGFixaStencil(){
+    glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP); // Make sure you will no longer (over)write stencil values, even if any test succeeds
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE); // Make sure we draw on the backbuffer again.
+
+    glStencilFunc(GL_EQUAL, 1, 0xFF); // Now we will only draw pixels where the corresponding stencil buffer value equals 1
+}
+
+void PIGLiberaStencil(){
+    glDisable(GL_STENCIL_TEST);
+}
+
+GLuint PIGCriaTexturaSurface(SDL_Surface *surface,bool mipmap=true){
+    //printf("entreou1\n");
+    SDL_Surface *copia = SDL_ConvertSurfaceFormat(surface,SDL_PIXELFORMAT_RGBA32,0);//para for�ar a aplica��o da colorkey
+
+    GLuint textureId;
+
+    glGenTextures( 1, &textureId );
+    /* Typical Texture Generation Using Data From The Bitmap */
+    glBindTexture( GL_TEXTURE_2D, textureId );
+    /* Generate The Texture */
+//printf("entreou2\n");
+    glTexImage2D(GL_TEXTURE_2D, 0, copia->format->BytesPerPixel, copia->w,
+          copia->h, 0, GL_RGBA,
+          GL_UNSIGNED_BYTE, copia->pixels);
+
+
+
+    //printf("entreou3\n");
+
+    if (mipmap)
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+    //printf("Erro: %d\n",glGetError());
+
+    /* Linear Filtering */
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+//printf("entreou4\n");
+    SDL_FreeSurface(copia);
+    glBindTexture(GL_TEXTURE_2D,0);
+
+//printf("entreou5\n");
+    return textureId;
+}
+
+void PIGPrepara2DFixa(int altura,int largura,int invertida){
+    //printf("passou 000\n");
+    glMatrixMode(GL_PROJECTION);
+    //printf("passou 0000000100\n");
+    glLoadIdentity();
+    //printf("passou 0000000111\n");
+    glViewport(0,0,largura,altura);
+//printf("passou 001\n");
+    glOrtho(0, largura, invertida*altura, (1-invertida)*altura,-100, 100);
+//printf("passou 002\n");
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+//printf("passou 003\n");
+    glDisable(GL_DEPTH_TEST);
+    glEnable(GL_LIGHTING);
+ //   printf("passou 004\n");
+}
+
+void PIGPrepara2DMovel(int altura,int largura, double afastamento, float px,float py,float pz){
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glViewport(0,0,largura,altura);
+
+    glOrtho(-largura*afastamento/2, largura*afastamento/2, -altura*afastamento/2, altura*afastamento/2,-100, 100);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    glTranslatef(-px-largura/2,-py-altura/2,-pz);
+
+    glDisable(GL_DEPTH_TEST);
+    glEnable(GL_LIGHTING);
+}
+
+void PIGPrepara3D(int altura,int largura, float px,float py,float pz){
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(60.0,largura*1.0/altura,0.5,700.0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    glTranslatef(-px,-py,-pz);
+
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_LIGHTING);
+}
+
+void PIGLimparFundo(PIG_Cor cor){
+    // clear buffer
+    glClearColor(1.0*cor.r/255, 1.0*cor.g/255, 1.0*cor.b/255, 1.0*cor.a/255);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void PIGDesenhaLadoBase(int x[], int y[], int qtd, GLuint tipo, PIG_Cor cor){
+    glPushMatrix();
+
+    glEnable(GL_COLOR_MATERIAL);
+
+    glColor4ub(cor.r,cor.g,cor.b,cor.a);
+
+    glBegin(tipo);
+    for (int i=0;i<qtd;i++){
+        glVertex2f(x[i],y[i]);
+    }
+    glEnd();
+
+    glPopMatrix();
+}
+
+void PIGDesenhaRetangulo(int x, int y, int alturaRet, int larguraRet, PIG_Cor cor){
+    int px[4] = {x,x+larguraRet,x+larguraRet,x};
+    int py[4] = {y,y,y+alturaRet,y+alturaRet};
+
+    PIGDesenhaLadoBase(px,py,4,GL_QUADS,cor);
+}
+
+void PIGDesenhaRetanguloVazado(int x, int y, int alturaRet, int larguraRet, PIG_Cor cor){
+    int px[4] = {x,x+larguraRet,x+larguraRet,x};
+    int py[4] = {y,y,y+alturaRet,y+alturaRet};
+
+    PIGDesenhaLadoBase(px,py,4,GL_LINE_LOOP,cor);
+}
+
+void PIGDesenhaLinhaSimples(int x1,int y1,int x2,int y2,PIG_Cor cor){
+    int px[2] = {x1,x2};
+    int py[2] = {y1,y2};
+
+    PIGDesenhaLadoBase(px,py,2,GL_LINES,cor);
+}
+
+void PIGDesenhaCirculo(int x, int y, double raio, double angIni, double angFim, PIG_Cor cor){
+    int px[361] = {x};
+    int py[361] = {y};
+    int cont=1;
+    for (double ang = angIni; ang <=angFim; ang+=1){
+        double angRad = ang*M_PI/180;
+        px[cont] = cos(angRad)*raio + x + 0.5f;
+        py[cont] = sin(angRad)*raio + y + 0.5f;
+        cont++;
+    }
+
+    PIGDesenhaLadoBase(px,py,cont,GL_TRIANGLE_FAN,cor);
+}
+
+void PIGDesenhaLinhasDisjuntas(int x[],int y[],int qtd,PIG_Cor cor){
+    PIGDesenhaLadoBase(x,y,qtd,GL_LINES,cor);
+}
+
+void PIGDesenhaLinhasSequencia(int x[],int y[],int qtd,PIG_Cor cor){
+    PIGDesenhaLadoBase(x,y,qtd,GL_LINE_STRIP,cor);
+}
+
+void PIGDesenhaPoligono(int x[],int y[],int lados,PIG_Cor cor){
+    PIGDesenhaLadoBase(x,y,lados,GL_POLYGON,cor);
+}
+
 //separa uma string em palavras, usando os delimitadores indicados
 std::vector<std::string> PIGSeparaPalavras(std::string texto,std::string delim){
     std::vector<std::string> resp;
@@ -62,12 +240,8 @@ bool operator ==(PIG_Cor cor1, PIG_Cor cor2){
     return cor1.r==cor2.r&&cor1.g==cor2.g&&cor1.b==cor2.b&&cor1.a==cor2.a;
 }
 
-inline PIG_Cor operator *(PIG_Cor cor, double fator){
-    return {(uint8_t)(cor.r*fator),(uint8_t)(cor.g*fator),(uint8_t)(cor.b*fator)};
 }
 
-inline PIG_Cor operator +(PIG_Cor cor1,PIG_Cor cor2){
-    return {(uint8_t)(cor1.r+cor2.r),(uint8_t)(cor1.g+cor2.g),(uint8_t)(cor1.b+cor2.b)};
 }
 
 //cria uma cor a partir de uma string com um valor hexadecimal de 8 algarismos RRGGBBAA. Ex: 0xFF0000FF (vermelho)
