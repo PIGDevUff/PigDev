@@ -84,15 +84,6 @@ PIG_Cor PIGCriaCor(char *stringHexa){
     return cor;
 }
 
-//multiplica as componentes RGB da cor pelo fator
-PIG_Cor PIGMultiplicaCor(PIG_Cor cor, float valor){
-    PIG_Cor resp = cor;
-    resp.r *= valor;
-    resp.g *= valor;
-    resp.b *= valor;
-    return resp;
-}
-
 //troca a posição dos bytes de uma word(16bits)
 uint16_t PIGTroca2Bytes(uint16_t valor){
     return (valor/256)+((valor%256)*256);
