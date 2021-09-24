@@ -69,6 +69,8 @@ Principais definições utilizadas pela PIG
 #define PIG_MAX_COMPONENTES             500
 #define PIG_MAX_FORMS                   100
 
+#define PIG_MAX_TELAS                   2000
+
 #define PIG_INTERVALO_FPS               1.0
 
 #define PIG_SHARE_BITMAP
@@ -85,11 +87,6 @@ Principais definições utilizadas pela PIG
 typedef struct{
     double x,y;
 }PIGPonto2D;
-
-
-//Tipo de callback genérica utilizada em diversos locais
-typedef int (*PIG_FuncaoSimples)(int,void*);
-typedef int (*PIG_FuncaoBackground)(void*);
 
 
 /********************************
@@ -295,6 +292,11 @@ typedef struct PIG_Evento{
     //InfoEventoVideo video;
     PIG_InfoEventoRede rede;
 } PIG_Evento;
+
+//Tipo de callback genérica utilizada em diversos locais
+typedef int (*PIG_FuncaoSimples)(int,void*);
+typedef int (*PIG_FuncaoEvento)(int,PIG_Evento,void*);
+typedef int (*PIG_FuncaoBackground)(void*);
 
 #define PIG_Teclado                 const Uint8*
 

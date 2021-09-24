@@ -23,6 +23,7 @@
 #endif
 #include "CPIGGerenciadorControles.h"
 #include "CPIGGerenciadorForms.h"
+#include "CPIGGerenciadorTelas.h"
 #include "CPIGJogo.h"
 
 
@@ -70,6 +71,7 @@ void CriaJogo(char *nomeJanela,int cursorProprio=0,int altura=PIG_ALT_TELA,int l
         CPIGGerenciadorVideos::Inicia();
         #endif
         CPIGGerenciadorForms::Inicia();
+        CPIGGerenciadorTelas::Inicia();
     }
 }
 
@@ -330,6 +332,7 @@ void FinalizaJogo(){
     #endif
     CPIGGerenciadorSockets::Encerra();
     CPIGGerenciadorForms::Encerra();
+    CPIGGerenciadorTelas::Encerra();
     CPIGGerenciadorSprites::Encerra();
     CPIGGerenciadorGDP::Encerra();
     CPIGGerenciadorTimers::Encerra();
