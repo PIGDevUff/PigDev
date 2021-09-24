@@ -45,7 +45,7 @@ void PIGLiberaStencil(){
 
 GLuint PIGCriaTexturaSurface(SDL_Surface *surface,bool mipmap=true){
     //printf("entreou1\n");
-    SDL_Surface *copia = SDL_ConvertSurfaceFormat(surface,SDL_PIXELFORMAT_RGBA32,0);//para forï¿½ar a aplicaï¿½ï¿½o da colorkey
+    SDL_Surface *copia = SDL_ConvertSurfaceFormat(surface,SDL_PIXELFORMAT_RGBA32,0);//para forçar a aplicação da colorkey
 
     GLuint textureId;
 
@@ -240,8 +240,12 @@ bool operator ==(PIG_Cor cor1, PIG_Cor cor2){
     return cor1.r==cor2.r&&cor1.g==cor2.g&&cor1.b==cor2.b&&cor1.a==cor2.a;
 }
 
+PIG_Cor operator *(PIG_Cor cor, double fator){
+    return {(uint8_t)(cor.r*fator),(uint8_t)(cor.g*fator),(uint8_t)(cor.b*fator)};
 }
 
+PIG_Cor operator +(PIG_Cor cor1,PIG_Cor cor2){
+    return {(uint8_t)(cor1.r+cor2.r),(uint8_t)(cor1.g+cor2.g),(uint8_t)(cor1.b*cor2.b)};
 }
 
 //cria uma cor a partir de uma string com um valor hexadecimal de 8 algarismos RRGGBBAA. Ex: 0xFF0000FF (vermelho)
