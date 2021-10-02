@@ -8,7 +8,7 @@ typedef struct tipoacao{
     double tempoRepeticao;
     PIG_FuncaoSimples acao;
     void *param;
-} PIG_Automacao;
+} PIG_Acao;
 
 typedef enum {PIG_TRANSICAO_NORMAL,PIG_TRANSICAO_LOOP, PIG_TRANSICAO_VAIVEM} PIG_TipoTransicao;
 
@@ -18,8 +18,8 @@ private:
 PIG_TipoTransicao tipo;
 int transAtual,somaTrans;
 vector<PIGTransicao> transicoes;
-vector<PIG_Automacao> timelineAcoes;
-int timerAcoes;
+vector<PIG_Acao> timelineAcoes;
+PIGTimer timerAcoes;
 int idDono;
 bool iniciado;
 
@@ -30,8 +30,8 @@ CPIGAutomacao(int idProprietario){
     tipo = PIG_TRANSICAO_NORMAL;
     transAtual = 0;
     somaTrans = +1;
-    timerAcoes = CPIGGerenciadorTimers::CriaTimer(true);
-    iniciado =false;
+    timerAcoes = new CPIGTimer(true);
+    iniciado = false;
 }
 
 CPIGAutomacao(int idProprietario,CPIGAutomacao *outro){
@@ -39,7 +39,7 @@ CPIGAutomacao(int idProprietario,CPIGAutomacao *outro){
     tipo = outro->tipo;
     transAtual = outro->transAtual;
     somaTrans = outro->somaTrans;
-    timerAcoes = CPIGGerenciadorTimers::CriaTimer(true);
+    timerAcoes = new CPIGTimer(true);
     timelineAcoes = outro->timelineAcoes;
     for (int i=0;i<outro->transicoes.size();i++){
         PIGTransicao t = new CPIGTransicao(outro->transicoes[i]);
@@ -49,7 +49,7 @@ CPIGAutomacao(int idProprietario,CPIGAutomacao *outro){
 }
 
 ~CPIGAutomacao(){
-    CPIGGerenciadorTimers::DestroiTimer(timerAcoes);
+    delete timerAcoes;
     LimpaTransicoes();
     timelineAcoes.clear();
 }
@@ -68,14 +68,28 @@ void SetTipoTransicao(PIG_TipoTransicao valor){
 
 void IniciaAutomacao(PIG_EstadoTransicao inicial){
     iniciado=true;
-    CPIGGerenciadorTimers::GetTimer(timerAcoes)->Despausa();
+    timerAcoes->Despausa();
     if (transAtual<transicoes.size()){
         transAtual = 0;
         transicoes[transAtual]->IniciaTransicao(inicial);
     }
 }
 
-bool ExecutandoTransiao(){
+void PausaAutomacao(){
+    timerAcoes->Pausa();
+    if (transAtual<transicoes.size()){
+        transicoes[transAtual]->Pausa();
+    }
+}
+
+void DespausaAutomacao(){
+    timerAcoes->Despausa();
+    if (transAtual<transicoes.size()){
+        transicoes[transAtual]->Despausa();
+    }
+}
+
+bool ExecutandoTransicao(){
     return iniciado&&transAtual<transicoes.size();
 }
 
@@ -95,7 +109,7 @@ PIGTransicao GetTransicaoAtual(){
         }else{
             transAtual++;
             if (tipo == PIG_TRANSICAO_LOOP)
-                transAtual %= transicoes.size(); //volta à transicao com índice 0
+                transAtual %= transicoes.size(); //volta Ã  transicao com Ã­ndice 0
             else{
                 if (transAtual==transicoes.size()) return transicoes[transAtual-1];//as transicoes acabaram
             }
@@ -112,13 +126,17 @@ void LimpaTransicoes(){
     transAtual = 0;
 }
 
+void LimpaAcoes(){
+    timelineAcoes.clear();
+}
+
 bool TemAcoes(){
     return timelineAcoes.size()>0;
 }
 
 int InsereAcao(PIG_FuncaoSimples acao,double inicio,double repeticao,void *param){
     int i=0;
-    inicio += CPIGGerenciadorTimers::GetTimer(timerAcoes)->GetTempoDecorrido();
+    inicio += timerAcoes->GetTempoDecorrido();
     while (i<timelineAcoes.size()&&timelineAcoes[i].inicio<inicio)
         i++;
     timelineAcoes.insert(timelineAcoes.begin()+i,{inicio,repeticao,acao,param});
@@ -126,8 +144,8 @@ int InsereAcao(PIG_FuncaoSimples acao,double inicio,double repeticao,void *param
 }
 
 int TrataAcao(){
-    PIG_Automacao acaoAtual;
-    while (timelineAcoes.size()>0 && CPIGGerenciadorTimers::GetTimer(timerAcoes)->GetTempoDecorrido()>=(acaoAtual = timelineAcoes[0]).inicio){
+    PIG_Acao acaoAtual;
+    while (timelineAcoes.size()>0 && timerAcoes->GetTempoDecorrido()>=(acaoAtual = timelineAcoes[0]).inicio){
         acaoAtual.acao(idDono,acaoAtual.param);
         if (acaoAtual.tempoRepeticao>0)
             InsereAcao(acaoAtual.acao,acaoAtual.inicio+acaoAtual.tempoRepeticao,acaoAtual.tempoRepeticao,acaoAtual.param);//

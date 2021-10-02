@@ -296,7 +296,7 @@ void LimpaTransicoes(PIGAutomacao *automaExt=NULL){
 bool ExecutandoTransicao(PIGAutomacao *automaExt=NULL){
     if (automaExt==NULL) automaExt=&automacao;
     if (*automaExt==NULL) return NULL;
-    return (*automaExt)->ExecutandoTransiao();
+    return (*automaExt)->ExecutandoTransicao();
 }
 
 void TrataAutomacao(PIGAutomacao *automaExt=NULL){
@@ -308,12 +308,31 @@ void TrataAutomacao(PIGAutomacao *automaExt=NULL){
     }
 }
 
+void PausaAutomacao(PIGAutomacao *automaExt=NULL){
+    if (automaExt==NULL) automaExt=&automacao;
+    if (*automaExt){
+        (*automaExt)->PausaAutomacao();
+    }
+}
+
+void DespausaAutomacao(PIGAutomacao *automaExt=NULL){
+    if (automaExt==NULL) automaExt=&automacao;
+    if (*automaExt){
+        (*automaExt)->DespausaAutomacao();
+    }
+}
+
 void InsereAcao(double tempo, double repeticao, PIG_FuncaoSimples acao, void *param,PIGAutomacao *automaExt=NULL){
     if (automaExt==NULL) automaExt=&automacao;
     if (*automaExt==NULL)
         *automaExt = new CPIGAutomacao(id);
 
     (*automaExt)->InsereAcao(acao,tempo,repeticao,param);
+}
+
+void LimpaAcoes(PIGAutomacao *automaExt=NULL){
+    if (automaExt==NULL) automaExt=&automacao;
+    if (*automaExt) (*automaExt)->LimpaAcoes();
 }
 
 void DefineTipoTransicao(PIG_TipoTransicao tipo,PIGAutomacao *automaExt=NULL){

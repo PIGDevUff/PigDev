@@ -26,20 +26,20 @@ class CPIGTransicao{
 private:
 PIG_EstadoTransicao ini,fim,delta;
 double tempoAtual,tempoTotal,sobraAnterior; //sobraAnterior é um tempo excedido na transição anterior a ser descontado nesta transição
-int idTimer;
+PIGTimer timer;
 
 public:
 
 CPIGTransicao(double tempoTransicao,PIG_EstadoTransicao modificacao){
     tempoTotal = tempoTransicao;
-    idTimer = CPIGGerenciadorTimers::CriaTimer(true);
+    timer = new CPIGTimer(true);
     delta = modificacao;
     sobraAnterior=0;
 }
 
 CPIGTransicao(CPIGTransicao *outro){
     tempoTotal = outro->tempoTotal;
-    idTimer = CPIGGerenciadorTimers::CriaTimer(true);
+    timer = new CPIGTimer(true);
     delta = outro->delta;
     sobraAnterior=0;
 }
@@ -49,19 +49,19 @@ CPIGTransicao(string str){
 }
 
 ~CPIGTransicao(){
-    CPIGGerenciadorTimers::DestroiTimer(idTimer);
+    delete timer;
 }
 
 void IniciaTransicao(PIG_EstadoTransicao inicio,double sobra=0){
     ini = inicio;
     fim = ini+delta;
-    CPIGGerenciadorTimers::GetTimer(idTimer)->Reinicia(false);
+    timer->Reinicia(false);
     tempoAtual = 0.0;
     sobraAnterior = sobra;
 }
 
 double CalculaTransicao(){
-    double t = CPIGGerenciadorTimers::GetTimer(idTimer)->GetTempoDecorrido()+sobraAnterior;
+    double t = timer->GetTempoDecorrido()+sobraAnterior;
     tempoAtual =  t/tempoTotal;
     if (tempoAtual>1){
         tempoAtual=1;
@@ -170,6 +170,14 @@ void Inverte(){
 
 CPIGTransicao *PreparaApos(double tempo, PIG_EstadoTransicao estado){
     return new CPIGTransicao(tempo,estado);
+}
+
+void Pausa(){
+    timer->Pausa();
+}
+
+void Despausa(){
+    timer->Despausa();
 }
 
 };
