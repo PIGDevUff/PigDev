@@ -73,7 +73,6 @@ void CriaJogo(char *nomeJanela,int cursorProprio=0,int altura=PIG_ALT_TELA,int l
         #endif
         CPIGGerenciadorForms::Inicia();
         CPIGGerenciadorTelas::Inicia();
-        CPIGGerenciadorScripts::Inicia();
     }
 }
 
