@@ -135,6 +135,7 @@ bool TemAcoes(){
 }
 
 int InsereAcao(PIG_FuncaoSimples acao,double inicio,double repeticao,void *param){
+    //printf("inserindo acao no tempo %.2f com rep %.2f\n",inicio,repeticao);
     int i=0;
     inicio += timerAcoes->GetTempoDecorrido();
     while (i<timelineAcoes.size()&&timelineAcoes[i].inicio<inicio)
@@ -147,8 +148,9 @@ int TrataAcao(){
     PIG_Acao acaoAtual;
     while (timelineAcoes.size()>0 && timerAcoes->GetTempoDecorrido()>=(acaoAtual = timelineAcoes[0]).inicio){
         acaoAtual.acao(idDono,acaoAtual.param);
+        //printf("exec acao no tempo %.2f\n",acaoAtual.inicio);
         if (acaoAtual.tempoRepeticao>0)
-            InsereAcao(acaoAtual.acao,acaoAtual.inicio+acaoAtual.tempoRepeticao,acaoAtual.tempoRepeticao,acaoAtual.param);//
+            InsereAcao(acaoAtual.acao,acaoAtual.tempoRepeticao,acaoAtual.tempoRepeticao,acaoAtual.param);//
         timelineAcoes.erase(timelineAcoes.begin());
     }
     return timelineAcoes.size();

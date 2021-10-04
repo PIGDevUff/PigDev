@@ -32,7 +32,7 @@ void IniciaBase(int maximoParticulas, int audioCriacao,int audioEncerramento, PI
 void AtualizaParticulas(){
     int i=0;
     while (i<parts.size()){
-        parts[i]->ChecaTempoVida();
+        parts[i]->ChecaLimites();
         //printf("viva %d %d %d\n",i,parts[i]->viva,parts[i]->GetID());
         if (parts[i]->viva==false){
             //delete parts[i];

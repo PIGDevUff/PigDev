@@ -38,12 +38,18 @@ public:
         CPIGGerenciadorTimers::DestroiTimer(timer);
     }
 
-    inline void ChecaTempoVida(){
-        viva = viva&&CPIGGerenciadorTimers::GetTimer(timer)->GetTempoDecorrido()<=tempoVida;
+    inline void ChecaLimites(){
+        viva = viva &&CPIGGerenciadorTimers::GetTimer(timer)->GetTempoDecorrido()<=tempoVida
+                    &&(pos.x>espacoVida.x)&&(pos.x<espacoVida.w)&&(pos.y>espacoVida.y)&&(pos.y<espacoVida.h);
+        //if (!viva) printf("%d morri por tempo\n",id);
+        //if (!viva) return;
+        //printf("%d,%d %d,%d,%d,%d\n",(int)pos.x,(int)pos.y,espacoVida.x,espacoVida.y,espacoVida.w,espacoVida.h);
+        //viva = viva
         //if (!viva) PRINTF("%d morri por tempo\n",id);
+        //if (!viva) printf("%d morri por espaco\n",id);
     }
 
-    void Move(double nx, double ny) override{
+    /*void Move(double nx, double ny) override{
         if (!viva) return;
         CPIGObjeto::Move(nx,ny);
         //printf("rect %d,%d, %d,%d,%d,%d\n",pos.x,pos.y,espacoVida.x,espacoVida.y,espacoVida.w,espacoVida.h);
@@ -52,7 +58,7 @@ public:
         //if (!viva) {
         //    printf("morri espaco %.2f %.2f %d,%d %d,%d\n",pos.x,pos.y,espacoVida.x,espacoVida.y,espacoVida.w,espacoVida.h);
         //}
-    }
+    }*/
 
     bool Colisao(PIGObjeto outro) override{
         bool resp = CPIGObjeto::Colisao(outro);
