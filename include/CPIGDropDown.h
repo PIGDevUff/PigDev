@@ -7,8 +7,18 @@ class CPIGDropDown: public CPIGListaItemComponente{
 
 private:
 
-    int altImagem,largImagem;
     bool recolhida;
+
+    CPIGDropDown LeParametros(int idComponente,string parametros){
+        CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
+
+        CPIGDropDown resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),
+                          atrib.GetInt("alturaLinha",0),
+                          atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),
+                          atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
+
+        return resp;
+    }
 
     void SetFoco(bool valor)override{
         temFoco = valor;
@@ -59,55 +69,32 @@ private:
         SDL_RenderSetClipRect(renderer,NULL);
     }
 
+    void DesenhaListaItens(){
+        SDL_Rect r = dest;
+
+        SDL_RenderSetClipRect(renderer,&r);
+        dest.h = (itens.size()+1)*altBaseLista;
+        frameAtual=0;
+        CPIGSprite::Desenha();
+
+        for (PIGItemComponente i: itens)
+            i->Desenha();
+
+        SDL_RenderSetClipRect(renderer,NULL);
+    }
+
 public:
 
-    CPIGDropDown(int idComponente,int px, int py,int larguraTotal, int alturaLinha, int alturaMaxima,int alturaItem=0, int larguraItem=0,std::string nomeArqFundo="",int retiraFundo=1,int janela=0):
-        CPIGListaItemComponente(idComponente,px,py,larguraTotal,alturaLinha,alturaLinha,nomeArqFundo,retiraFundo,janela){
-            altImagem = alturaItem;
-            largImagem = larguraItem;
+    CPIGDropDown(int idComponente,int px, int py,int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0,std::string nomeArqFundo="",int retiraFundo=1,int janela=0):
+        CPIGListaItemComponente(idComponente,px,py,larguraTotal,alturaLinha,nomeArqFundo,retiraFundo,janela){
             SetRecolhida(true);
     }
 
-    CPIGDropDown(std::string nomeArqParam):CPIGDropDown(LeArquivoParametros(nomeArqParam)){}
+    CPIGDropDown(int idComponente,string parametros):CPIGDropDown(LeParametros(idComponente,parametros)){}
 
-    static CPIGDropDown LeArquivoParametros(std::string nomeArqParam){
-
-        std::ifstream arquivo;
-        int idComponente,px,py,alturaItem,larguraItem,larguraTotal,alturaLinha,alturaMaxima,retiraFundo=1,janela=0;
-        std::string imgFundo = "",variavel;
-
-        arquivo.open(nomeArqParam);
-
-        if(!arquivo.is_open()) throw CPIGErroArquivo(nomeArqParam);
-        //formato "x valor"
-        while(!arquivo.eof()){
-           arquivo >> variavel;
-            if(variavel == "idComponente") arquivo >> idComponente;
-            if(variavel == "px") arquivo >> px;
-            if(variavel == "py") arquivo >> py;
-            if(variavel == "larguraTotal") arquivo >> larguraTotal;
-            if(variavel == "alturaItem") arquivo >> alturaItem;
-            if(variavel == "larguraItem") arquivo >> larguraItem;
-            if(variavel == "imgFundo") arquivo >> imgFundo;
-            if(variavel == "alturaLinha") arquivo >> alturaLinha;
-            if(variavel == "alturaMaxima") arquivo >> alturaMaxima;
-            if(variavel == "retiraFundo") arquivo >> retiraFundo;
-            if(variavel == "janela") arquivo >> janela;
-        }
-
-        arquivo.close();
-
-       // std::cout<<idComponente<<" "<<px<<" "<<py<<" "<<altura<<" "<<largura<<" "<<nomeArq<<" "<<retiraFundo<<" "<<janela<<std::endl;
-
-        //if(imgItem == "") throw CPIGErroParametro("imgItem",imgItem);
-
-        return CPIGDropDown(idComponente,px,py,larguraTotal,alturaLinha,alturaMaxima,alturaItem,larguraItem,imgFundo,retiraFundo,janela);
-
-    }
-
-    void CriaItem(std::string itemLabel, std::string arqImagemIcone="",std::string arqImagemFundoItem="", bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
+    void CriaItem(std::string itemLabel, std::string arqImagemIcone="",std::string arqImagemFundoItem="", bool itemHabilitado = true, std::string hintMsg="", int retiraFundo=1){
         int yItem=pos.y-(itens.size()+1)*altBaseLista;
-        CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,false,itemHabilitado,audioComponente,hintMsg,retiraFundo);
+        CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,false,itemHabilitado,hintMsg,retiraFundo);
     }
 
     int Desenha(){
@@ -118,17 +105,7 @@ public:
         if (recolhida){
             DesenhaItemDestaque();
         }else{
-            SDL_Rect r = dest;
-
-            SDL_RenderSetClipRect(renderer,&r);
-            dest.h = (itens.size()+1)*altBaseLista;
-            frameAtual=0;
-            CPIGSprite::Desenha();
-
-            for (PIGItemComponente i: itens)
-                i->Desenha();
-
-            SDL_RenderSetClipRect(renderer,NULL);
+            DesenhaListaItens();
         }
 
         return 1;
@@ -183,13 +160,11 @@ public:
     void Move(double nx,double ny){
         CPIGSprite::Move(nx,ny);
         SetPosicaoPadraoLabel(posLabel);
-        int posY;
 
         for(int i=0;i<itens.size();i++){
-            posY = (pos.y + alt) - (altBaseLista*(i+1)) - altImagem;
+            int posY = pos.y - altBaseLista*(i+1);
             itens[i]->Move(pos.x,posY);
         }
-
     }
 
 };

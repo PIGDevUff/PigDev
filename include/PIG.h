@@ -5323,10 +5323,14 @@ int PIG_Form_Desenha(int idForm){
     return CPIGGerenciadorForms::GetForm(idForm)->Desenha();
 }
 
+void PIG_DestroiForm(int idForm){
+    CPIGGerenciadorForms::DestroiForm(idForm);
+}
+
 /*******COMPONENTES*********/
 
-int PIG_CriaComponentePorArquivo(int idForm,tipos_Componentes componente,char* nomeArquivo){
-    return CPIGGerenciadorForms::GetForm(idForm)->CriaComponentePorArquivo(componente,nomeArquivo);//CPIGGerenciadorForms::CriaComponentePorArquivo(idForm,componente,nomeArquivo);
+int PIG_CriaComponentePorParametro(int idForm,PIGTiposComponentes componente,char* parametros){
+    return CPIGGerenciadorForms::GetForm(idForm)->CriaComponentePorParametro(componente,parametros);//CPIGGerenciadorForms::CriaComponentePorArquivo(idForm,componente,nomeArquivo);
 }
 
 void PIG_Componentes_SetLabel(int idComponente,char* novoLabel){
@@ -5579,12 +5583,12 @@ void PIG_CampoSenha_SetCorCursor(int idComponente,PIG_Cor cor){
 
 /**********LISTA**************/
 
-int PIG_CriaListBox(int idForm,int x, int y,int larguraTotal,int alturaLinha,int alturaMaxima,int alturaItem,int largItem,char* nomeArq,int retiraFundo=1){
-    return CPIGGerenciadorForms::GetForm(idForm)->CriaListBox(x,y,larguraTotal,alturaLinha,alturaMaxima,alturaItem,largItem,nomeArq,retiraFundo);
+int PIG_CriaListBox(int idForm,int x, int y,int larguraTotal,int alturaLinha,int alturaItem,int largItem,char* nomeArq,int retiraFundo=1){
+    return CPIGGerenciadorForms::GetForm(idForm)->CriaListBox(x,y,larguraTotal,alturaLinha,alturaItem,largItem,nomeArq,retiraFundo);
 }
 
-void PIG_ListBox_CriaItem(int idComponente,char* texto,char* imagemIcone = "",char *imagemFundo="",char* hintMsg="",bool itemHabilitado = true, int audio=-1,int retiraFundoImg = 1){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->CriaItem(texto,imagemIcone,imagemFundo,false,itemHabilitado,audio,hintMsg,retiraFundoImg);
+void PIG_ListBox_CriaItem(int idComponente,char* texto,char* imagemIcone = "",char *imagemFundo="",char* hintMsg="",bool itemHabilitado = true, int retiraFundoImg = 1){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->CriaItem(texto,imagemIcone,imagemFundo,false,itemHabilitado,hintMsg,retiraFundoImg);
 }
 
 int PIG_ListBox_SetAcionado(int idComponente,int indice, int marcado){
@@ -5615,16 +5619,16 @@ void PIG_ListBox_AlinhaIconeEsquerda(int idComponente){
     CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->AlinhaIconeEsquerda();
 }
 
-void PIG_ListBox_SetFonteItensLista(int idComponente,int fonte){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->SetFonteItensLista(fonte);
+void PIG_ListBox_SetFonteItem(int idComponente,int fonte,int item=-1){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->SetFonteItem(fonte,item);
 }
 
 int PIG_ListBox_GetAcionadoItem(int idComponente,int item){
     return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->GetAcionadoItem(item);
 }
 
-int PIG_ListBox_SetAudioItem(int idComponente,int item, int audio){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->SetAudioItem(item,audio);
+void PIG_ListBox_SetAudioItem(int idComponente,int audio, int item=-1){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->SetAudioItem(item,audio);
 }
 
 int PIG_ListBox_GetHabilitadoItem(int idComponente,int item){
@@ -5644,12 +5648,12 @@ int PIG_ListBox_SetAcionadoItem(int idComponente,int indice,int marcado){
 }
 /**********DROPDOWN**************/
 
-int PIG_CriaDropDown(int idForm,int x, int y, int larguraTotal,int alturaLinha,int alturaMaxima,int alturaItem,int larguraItem,char* nomeArq,int retiraFundo=1){
-    return CPIGGerenciadorForms::GetForm(idForm)->CriaDropDown(x,y,larguraTotal,alturaLinha,alturaMaxima,alturaItem,larguraItem,nomeArq,retiraFundo);
+int PIG_CriaDropDown(int idForm,int x, int y, int larguraTotal,int alturaLinha,int alturaItem,int larguraItem,char* nomeArq,int retiraFundo=1){
+    return CPIGGerenciadorForms::GetForm(idForm)->CriaDropDown(x,y,larguraTotal,alturaLinha,alturaItem,larguraItem,nomeArq,retiraFundo);
 }
 
-void PIG_DropDown_CriaItem(int idComponente,char* texto,char* imagemIcone = "",char *imagemFundo="", char* hintMsg="",bool itemHabilitado = true, int audio=-1,int retiraFundoImg = 1){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->CriaItem(texto,imagemIcone,imagemFundo,itemHabilitado,audio,hintMsg,retiraFundoImg);
+void PIG_DropDown_CriaItem(int idComponente,char* texto,char* imagemIcone = "",char *imagemFundo="", char* hintMsg="",bool itemHabilitado = true, int retiraFundoImg = 1){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->CriaItem(texto,imagemIcone,imagemFundo,itemHabilitado,hintMsg,retiraFundoImg);
 }
 
 void PIG_DropDown_DefineDimensaoIconeItem(int idComponente,int alturaImagemIcone, int larguraImagemIcone){
@@ -5676,16 +5680,16 @@ void PIG_DropDown_AlinhaIconeEsquerda(int idComponente){
     CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->AlinhaIconeEsquerda();
 }
 
-void PIG_DropDown_SetFonteItensLista(int idComponente,int fonte){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->SetFonteItensLista(fonte);
+void PIG_DropDown_SetFonteItem(int idComponente,int fonte, int item=-1){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->SetFonteItem(fonte,item);
 }
 
 int PIG_DropDown_GetAcionadoItem(int idComponente,int item){
     return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->GetAcionadoItem(item);
 }
 
-int PIG_DropDown_SetAudioItem(int idComponente,int item, int audio){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->SetAudioItem(item,audio);
+void PIG_DropDown_SetAudioItem(int idComponente,int audio, int item=-1){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->SetAudioItem(item,audio);
 }
 
 int PIG_DropDown_GetHabilitadoItem(int idComponente,int item){
@@ -5822,12 +5826,12 @@ void PIG_GaugeCircular_AtualizaValor(int idComponente,int novoValor){
 
 /**********RADIOBOX**************/
 
-int PIG_CriaRadioBox(int idForm,int x, int y,int larguraTotal,int alturaLinha, int alturaMaxima,char* imagemItem, int alturaItem, int larguraItem,char* imagemFundo, int retiraFundo=1){
-    return CPIGGerenciadorForms::GetForm(idForm)->CriaRadioBox(x,y,larguraTotal,alturaLinha,alturaMaxima,imagemItem,alturaItem,larguraItem,imagemFundo,retiraFundo);
+int PIG_CriaRadioBox(int idForm,int x, int y,int larguraTotal,int alturaLinha, char* imagemItem, int alturaItem, int larguraItem,char* imagemFundo, int retiraFundo=1){
+    return CPIGGerenciadorForms::GetForm(idForm)->CriaRadioBox(x,y,larguraTotal,alturaLinha,imagemItem,alturaItem,larguraItem,imagemFundo,retiraFundo);
 }
 
-void PIG_RadioBox_CriaItem(int idComponente,char* itemLabel, char *imagemFundo="", char* hintMsg="", bool itemHabilitado = true, int audio=-1, int retiraFundo=1){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGRadioBox>(idComponente)->CriaItem(itemLabel,imagemFundo,itemHabilitado,audio,hintMsg,retiraFundo);
+void PIG_RadioBox_CriaItem(int idComponente,char* itemLabel, char *imagemFundo="", char* hintMsg="", bool itemHabilitado = true, int retiraFundo=1){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGRadioBox>(idComponente)->CriaItem(itemLabel,imagemFundo,itemHabilitado,hintMsg,retiraFundo);
 }
 
 int PIG_RadioBox_GetItemDestaque(int idComponente){
@@ -5842,8 +5846,8 @@ int PIG_RadioBox_GetEstadoMarcadoItem(int idComponente,int item){
     return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGRadioBox>(idComponente)->GetAcionadoItem(item);
 }
 
-int PIG_RadioBox_SetAudioItem(int idComponente,int item,int audio){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGRadioBox>(idComponente)->SetAudioItem(item,audio);
+void PIG_RadioBox_SetAudioItem(int idComponente,int item,int audio){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGRadioBox>(idComponente)->SetAudioItem(item,audio);
 }
 
 int PIG_RadioBox_GetEstadoHabilitadoItem(int idComponente,int item){
@@ -5860,12 +5864,12 @@ void PIG_RadioBox_SetEstadoHabilitadoItens(int idComponente,bool habilitado){
 
 /**********CHECKBOX**************/
 
-int PIG_CriaCheckBox(int idForm,int x, int y,int larguraTotal,int alturaLinha, int alturaMaxima,char* imagemItem, int alturaItem, int larguraItem,char* imagemFundo, int retiraFundo=1, int idJanela=0){
-    return CPIGGerenciadorForms::GetForm(idForm)->CriaCheckBox(x,y,larguraTotal,alturaLinha,alturaMaxima,imagemItem,alturaItem,larguraItem,imagemFundo,retiraFundo);
+int PIG_CriaCheckBox(int idForm,int x, int y,int larguraTotal,int alturaLinha, char* imagemItem, int alturaItem, int larguraItem,char* imagemFundo, int retiraFundo=1, int idJanela=0){
+    return CPIGGerenciadorForms::GetForm(idForm)->CriaCheckBox(x,y,larguraTotal,alturaLinha,imagemItem,alturaItem,larguraItem,imagemFundo,retiraFundo);
 }
 
-void PIG_CheckBox_CriaItem(int idComponente,char* itemLabel,char *imagemFundo="",char* hintMsg="",bool itemMarcado = false, bool itemHabilitado = true, int audio=-1,  int retiraFundo=1){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCheckBox>(idComponente)->CriaItem(itemLabel,imagemFundo,itemMarcado,itemHabilitado,audio,hintMsg,retiraFundo);
+void PIG_CheckBox_CriaItem(int idComponente,char* itemLabel,char *imagemFundo="",char* hintMsg="",bool itemMarcado = false, bool itemHabilitado = true, int retiraFundo=1){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCheckBox>(idComponente)->CriaItem(itemLabel,imagemFundo,itemMarcado,itemHabilitado,hintMsg,retiraFundo);
 }
 
 void PIG_CheckBox_SetMarcadoTodos(int idComponente,bool marcado){
@@ -5884,8 +5888,8 @@ int PIG_CheckBox_GetMarcadoItem(int idComponente,int item){
     return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCheckBox>(idComponente)->GetAcionadoItem(item);
 }
 
-int PIG_CheckBox_SetAudioItem(int idComponente,int item,int audio){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCheckBox>(idComponente)->SetAudioItem(item,audio);
+void PIG_CheckBox_SetAudioItem(int idComponente,int item,int audio){
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCheckBox>(idComponente)->SetAudioItem(item,audio);
 }
 
 int PIG_CheckBox_GetHabilitadoItem(int idComponente,int item){

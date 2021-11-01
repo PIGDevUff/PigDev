@@ -18,6 +18,16 @@ private:
 
     PIG_Cor corLinhasTexto;
 
+    CPIGAreaDeTexto LeParametros(int idComponente,string parametros){
+        CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
+
+        CPIGAreaDeTexto resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+                        atrib.GetString("nomeArq",""),atrib.GetInt("maxCaracters",200),
+                        atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
+
+        return resp;
+    }
+
     //Recupera todo o texto da área
     inline std::string GetTextoVisivel(){
         return GetTexto();
@@ -288,13 +298,13 @@ public:
             AjustaAlinhamento();
         }
 
-    CPIGAreaDeTexto(std::string nomeArqParam):CPIGAreaDeTexto(LeArquivoParametros(nomeArqParam)){}
+    CPIGAreaDeTexto(int idComponente,std::string nomeArqParam):CPIGAreaDeTexto(LeParametros(idComponente,nomeArqParam)){}
 
     ~CPIGAreaDeTexto(){
         linhas.clear();
     }
 
-    static CPIGAreaDeTexto LeArquivoParametros(std::string nomeArqParam){
+    /*static CPIGAreaDeTexto LeArquivoParametros(std::string nomeArqParam){
 
         std::ifstream arquivo;
         int idComponente,px,py,altura,largura,maxCars = 200,retiraFundo=1,janela=0;
@@ -324,7 +334,7 @@ public:
        // std::cout<<idComponente<<" "<<px<<" "<<py<<" "<<altura<<" "<<largura<<" "<<nomeArq<<" "<<retiraFundo<<" "<<janela<<std::endl;
         return CPIGAreaDeTexto(idComponente,px,py,altura,largura,nomeArq,maxCars,retiraFundo,janela);
 
-    }
+    }*/
 
     void SetScrollBarVertical(int larguraTotal,int comprimentoTotal,int larguraHandle,std::string imgHandle,std::string imgTrilha,int retiraFundoHandle=1,int retiraFundoTrilha=1){
         scrollVertical = new CPIGScrollBar(id + 1,pos.x + larg,pos.y,larguraTotal,comprimentoTotal,larguraHandle,imgHandle,imgTrilha,retiraFundoHandle,retiraFundoTrilha,idJanela);

@@ -6,7 +6,18 @@
 class CPIGListBox: public CPIGListaItemComponente{
 
 protected:
-    int altImagem,largImagem;
+    //int altImagem,largImagem;
+
+    CPIGListBox LeParametros(int idComponente,string parametros){
+        CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
+
+        CPIGListBox resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),
+                          atrib.GetInt("alturaLinha",0),
+                          atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),
+                          atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
+
+        return resp;
+    }
 
     void SetFoco(bool valor){
         temFoco = valor;
@@ -37,49 +48,14 @@ private:
 
 public:
 
-    CPIGListBox(int idComponente,int px, int py,int larguraTotal, int alturaLinha, int alturaMaxima,int alturaItem=0, int larguraItem=0,std::string nomeArqFundo="",int retiraFundo=1,int janela=0):
-        CPIGListaItemComponente(idComponente,px,py,larguraTotal,alturaLinha,alturaMaxima,nomeArqFundo,retiraFundo,janela){
-            altImagem = alturaItem;
-            largImagem = larguraItem;
+    CPIGListBox(int idComponente,int px, int py,int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0,std::string nomeArqFundo="",int retiraFundo=1,int janela=0):
+        CPIGListaItemComponente(idComponente,px,py,larguraTotal,alturaLinha,nomeArqFundo,retiraFundo,janela){
     }
 
-    CPIGListBox(std::string nomeArqParam):CPIGListBox(LeArquivoParametros(nomeArqParam)){}
+    CPIGListBox(int idComponente,std::string parametros):CPIGListBox(LeParametros(idComponente,parametros)){}
 
     ~CPIGListBox(){
         for (PIGItemComponente x: itens) delete x;
-    }
-
-    static CPIGListBox LeArquivoParametros(std::string nomeArqParam){
-
-        std::ifstream arquivo;
-        int idComponente,px,py,altura = 0,largura,alturaItens,larguraItens,alturaLinha,alturaMaxima,retiraFundo = 0,janela = 0;
-
-        std::string nomeArq = "",variavel;
-
-        arquivo.open(nomeArqParam);
-        if(!arquivo.is_open()) throw CPIGErroArquivo(nomeArqParam);
-        //formato "x valor"
-        while(!arquivo.eof()){
-           arquivo >> variavel;
-            if(variavel == "idComponente") arquivo >> idComponente;
-            if(variavel == "px") arquivo >> px;
-            if(variavel == "py") arquivo >> py;
-            if(variavel == "altura") arquivo >> altura;
-            if(variavel == "largura") arquivo >> largura;
-            if(variavel == "alturaItens") arquivo >> alturaItens;
-            if(variavel == "larguraItens") arquivo >> larguraItens;
-            if(variavel == "nomeArq") arquivo >> nomeArq;
-            if(variavel == "alturaLinha") arquivo >> alturaLinha;
-            if(variavel == "alturaMaxima") arquivo >> alturaMaxima;
-            if(variavel == "retiraFundo") arquivo >> retiraFundo;
-            if(variavel == "janela") arquivo >> janela;
-        }
-        arquivo.close();
-       // std::cout<<idComponente<<" "<<px<<" "<<py<<" "<<altura<<" "<<largura<<" "<<nomeArq<<" "<<retiraFundo<<" "<<janela<<std::endl;
-
-        if(nomeArq == "") throw CPIGErroParametro("nomeArq",nomeArqParam);
-
-        return CPIGListBox(idComponente,px,py,largura,alturaLinha,alturaMaxima,alturaItens,larguraItens,nomeArq,retiraFundo,janela);
     }
 
     int TrataEventoTeclado(PIG_Evento evento)override{
@@ -126,9 +102,9 @@ public:
         return resp>=0?PIG_SELECIONADO_TRATADO:PIG_NAO_SELECIONADO;
     }
 
-    void CriaItem(std::string itemLabel, std::string arqImagemIcone="", std::string arqImagemFundoItem="",bool itemMarcado = false, bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
+    void CriaItem(std::string itemLabel, std::string arqImagemIcone="", std::string arqImagemFundoItem="",bool itemMarcado = false, bool itemHabilitado = true, std::string hintMsg="", int retiraFundo=1){
         int yItem = pos.y+alt-(altBaseLista)*(itens.size()+1);
-        CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,itemMarcado,itemHabilitado,audio,hintMsg,retiraFundo);
+        CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,itemMarcado,itemHabilitado,hintMsg,retiraFundo);
     }
 
     int Desenha(){

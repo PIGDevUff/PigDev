@@ -10,6 +10,16 @@ private:
     char mascara;//símbolo usado quando o campo for de senha
     std::string (CPIGCampoTextoESenha::*GetTextoVisivelPtr)();//ponteiro para a função que vai retornar o texto visivel
 
+    static CPIGCampoTextoESenha LeParametros(int idComponente,std::string parametros){
+        CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
+
+        CPIGCampoTextoESenha resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+                        atrib.GetString("nomeArq",""),atrib.GetInt("maxCaracters",200),atrib.GetInt("apenasNumeros",0),atrib.GetInt("campoSenha",0),
+                        atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
+
+        return resp;
+    }
+
     //retorna o texto com a quantidade de símbolos (máscara) igual ao tamanho da string com textobase
     std::string GetTextoMask(){
         std::string resp;
@@ -77,11 +87,11 @@ public:
             }
     }
 
-    CPIGCampoTextoESenha(std::string nomeArqParam):CPIGCampoTextoESenha(LeArquivoParametros(nomeArqParam)){}
+    CPIGCampoTextoESenha(int idComponente,std::string nomeArqParam):CPIGCampoTextoESenha(LeParametros(idComponente,nomeArqParam)){}
 
     ~CPIGCampoTextoESenha(){}
 
-    static CPIGCampoTextoESenha LeArquivoParametros(std::string nomeArqParam){
+    /*static CPIGCampoTextoESenha LeArquivoParametros(std::string nomeArqParam){
 
         std::ifstream arquivo;
         int idComponente,px,py,altura,largura,maxCars = 200,retiraFundo=1,janela=0;
@@ -113,7 +123,7 @@ public:
        // std::cout<<idComponente<<" "<<px<<" "<<py<<" "<<altura<<" "<<largura<<" "<<nomeArq<<" "<<retiraFundo<<" "<<janela<<std::endl;
         return CPIGCampoTextoESenha(idComponente,px,py,altura,largura,nomeArq,maxCars,apenasNumeros,retiraFundo,janela,campoSenha);
 
-    }
+    }*/
 
     //desenha o componente completo
     int Desenha() override{

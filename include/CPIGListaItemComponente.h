@@ -7,24 +7,21 @@ class CPIGListaItemComponente: public CPIGComponente{
 
 protected:
 
-    int fonteItens;
-    int altBaseLista,altMaxima;                     //espaço vertical entre os itens
+    int altBaseLista;                     //espaço vertical entre os itens
     PIG_PosicaoComponente posIcones,posLabels;
     std::vector <PIGItemComponente> itens;
     int itemDestaque;
     int altIcone,largIcone;                           //altura e largura das imagens dos itens
 
-    void IniciaBase(int alturaLinha, int alturaTotal){
+    void IniciaBase(int alturaLinha){
         SetPosicaoPadraoLabel(PIG_COMPONENTE_CIMA_CENTRO);//posição padrão do label
         altBaseLista = alturaLinha;
-        altMaxima = alturaTotal;
         altIcone = largIcone = alturaLinha;
         posIcones = PIG_COMPONENTE_DIR_CENTRO;//só pode ser posicionamento à esquerda ou à direita
         itemDestaque = -1;
-        fonteItens = 0;
     }
 
-    void CriaItem(int yItem,std::string itemLabel, std::string arqImagemIcone="",std::string arqImagemFundo="",bool itemMarcado = false, bool itemHabilitado = true, int audio=-1, std::string hintMsg="", int retiraFundo=1){
+    void CriaItem(int yItem,std::string itemLabel, std::string arqImagemIcone="",std::string arqImagemFundo="",bool itemMarcado = false, bool itemHabilitado = true, std::string hintMsg="", int retiraFundo=1){
         PIGItemComponente item;
         if (arqImagemFundo==""){
             if (arqImagemIcone==""){
@@ -41,19 +38,21 @@ protected:
         }
         item->SetHint(hintMsg);
 
-        if (audio==-1) audio = audioComponente;//audio padrao do componente
+        //if (audio==-1) audio = audioComponente;//audio padrao do componente
 
-        item->SetAudio(audio);
+        item->SetAudio(audioComponente);
         item->SetAcionado(itemMarcado);
         item->SetHabilitado(itemHabilitado);
         itens.push_back(item);
+        alt += altBaseLista;
+        //printf("altura agora %d\n",alt);
     }
 
 public:
 
-    CPIGListaItemComponente(int idComponente, int posX, int posY, int larguraTotal, int alturaLinha, int alturaTotal,std::string nomeArqFundoLista, int retiraFundo=1,int janela = 0):
-        CPIGComponente(idComponente,posX,posY,alturaTotal,larguraTotal,nomeArqFundoLista,retiraFundo,janela){
-        IniciaBase(alturaLinha,alturaTotal);
+    CPIGListaItemComponente(int idComponente, int posX, int posY, int larguraTotal, int alturaLinha,std::string nomeArqFundoLista, int retiraFundo=1,int janela = 0):
+        CPIGComponente(idComponente,posX,posY,0,larguraTotal,nomeArqFundoLista,retiraFundo,janela){
+        IniciaBase(alturaLinha);
     }
 
     ~CPIGListaItemComponente(){
@@ -110,11 +109,6 @@ public:
         }
     }
 
-    void SetFonteItensLista(int fonte){
-        fonteItens = fonte;
-        for(PIGItemComponente item :itens) item->SetFonteLabel(fonte);
-    }
-
     virtual int Desenha()=0;
 
     int GetAcionadoItem(int item){
@@ -122,10 +116,28 @@ public:
         return itens[item]->GetAcionado();
     }
 
-    int SetAudioItem(int item, int audio){
-        if (item<0||item>=itens.size()) return -1;
-        itens[item]->SetAudio(audio);
-        return 1;
+    void SetAudioItem(int audio, int idItem=-1){
+        if (idItem==-1){
+            for(PIGItemComponente item :itens) item->SetAudio(audio);
+        }else if (idItem>=0&&idItem<itens.size()){
+            itens[idItem]->SetAudio(audio);
+        }
+    }
+
+    void SetCorLabelItem(PIG_Cor cor, int idItem=-1){
+        if (idItem==-1){
+            for(PIGItemComponente item :itens) item->SetCorLabel(cor);
+        }else if (idItem>=0&&idItem<itens.size()){
+            itens[idItem]->SetCorLabel(cor);
+        }
+    }
+
+    void SetFonteItem(int fonte, int idItem=-1){
+        if (idItem==-1){
+            for(PIGItemComponente item :itens) item->SetFonteLabel(fonte);
+        }else if (idItem>=0&&idItem<itens.size()){
+            itens[idItem]->SetFonteLabel(fonte);
+        }
     }
 
     int GetHabilitadoItem(int item){

@@ -62,7 +62,7 @@ protected:
         return PIG_SELECIONADO_TRATADO;
     }
 
-    CPIGBotao LeArquivoParametros(std::string nomeArqParam){
+    /*CPIGBotao LeArquivoParametros(std::string nomeArqParam){
 
         std::ifstream arquivo;
         int idComponente,px,py,altura,largura,retiraFundo = 0,janela = 0;
@@ -88,6 +88,14 @@ protected:
        // std::cout<<idComponente<<" "<<px<<" "<<py<<" "<<altura<<" "<<largura<<" "<<nomeArq<<" "<<retiraFundo<<" "<<janela<<std::endl;
 
         return CPIGBotao(idComponente,px,py,altura,largura,nomeArq,retiraFundo,janela);
+    }*/
+
+    static CPIGBotao LeParametros(int idComponente,string parametros){
+        CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
+
+        CPIGBotao resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+                       atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
+        return resp;
     }
 
 public:
@@ -105,7 +113,7 @@ public:
             acao = NULL;//não tem ação registrada
         }
 
-    CPIGBotao(std::string nomeArqParam):CPIGBotao(LeArquivoParametros(nomeArqParam)){}
+    CPIGBotao(int idComponente,std::string nomeArqParam):CPIGBotao(LeParametros(idComponente,nomeArqParam)){}
 
     ~CPIGBotao(){
         delete timer;

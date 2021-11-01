@@ -127,6 +127,33 @@ public:
         if (hint) delete hint;
     }
 
+    static CPIGAtributos GetAtributos(string parametros){
+        CPIGAtributos resp;
+        stringstream ss(parametros);
+        string variavel,valorString;
+        int valorInteiro;
+        double valorDouble;
+
+        while(ss >> variavel){
+            if(variavel == "idComponente") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "px") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "py") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "altura") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "largura") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "nomeArq") {ss >> valorString; resp.SetValorString(variavel,valorString);}
+            if(variavel == "nomeArqMarcador") {ss >> valorString; resp.SetValorString(variavel,valorString);}
+            if(variavel == "nomeArqItem") {ss >> valorString; resp.SetValorString(variavel,valorString);}
+            if(variavel == "label") {ss >> valorString; resp.SetValorString(variavel,valorString);}
+            if(variavel == "retiraFundo") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "retiraFundo") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "retiraFundoMarcador") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "label") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "janela") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+        }
+
+        return resp;
+    }
+
     //recupera o id do componente
     int GetId(){
         return id;

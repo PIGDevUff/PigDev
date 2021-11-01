@@ -122,6 +122,31 @@ bool GetValorString(std::string chave, std::string &valor){
     return true;
 }
 
+float GetFloat(string chave, float retNegativo){
+    std::map<std::string, float>::iterator it;
+    it = valoresStringFloat.find(chave);
+    if (it == valoresStringFloat.end())
+        return retNegativo;
+    return it->second;
+}
+
+string GetString(string chave, string retNegativo){
+    std::map<std::string, string>::iterator it;
+    it = valoresStringString.find(chave);
+    if (it == valoresStringString.end())
+        return retNegativo;
+    return it->second;
+}
+
+int GetInt(string chave, int retNegativo){
+    std::map<std::string, int>::iterator it;
+    it = valoresStringInt.find(chave);
+    if (it == valoresStringInt.end())
+        return retNegativo;
+    return it->second;
+}
+
+
 };
 typedef CPIGAtributos *PIGAtributos;
 
