@@ -6,7 +6,6 @@
 class CPIGListBox: public CPIGListaItemComponente{
 
 protected:
-    //int altImagem,largImagem;
 
     CPIGListBox LeParametros(int idComponente,string parametros){
         CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
@@ -77,10 +76,7 @@ public:
         int resp = -1;
         bool mouseOverAntes = mouseOver;
 
-        SDL_Point p;
-        if (CPIGGerenciadorJanelas::GetJanela(idJanela)->GetUsandoCameraFixa())
-            p = CPIGMouse::PegaXYTela();
-        else p = CPIGMouse::PegaXYWorld();
+        SDL_Point p = GetPosicaoMouse();
 
         if (ChecaMouseOver(p)>0){
             for (int i=0;i<itens.size();i++){
@@ -90,6 +86,7 @@ public:
                         resp = i;
                     SetHint(itens[i]->GetHint());
                     SetFonteHint(itens[i]->GetFonteHint());
+                    OnAction();
                 }
             }
             SetAcionado(resp,resp!=-1);
@@ -137,7 +134,6 @@ public:
         itens[indice]->SetAcionado(marcado);
         return 1;
     }
-
 
 };
 typedef CPIGListBox* PIGListBox;

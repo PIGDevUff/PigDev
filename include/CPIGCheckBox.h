@@ -82,20 +82,18 @@ public:
         return 1;
     }
 
-    int TrataEventoMouse(PIG_Evento evento){
+ int TrataEventoMouse(PIG_Evento evento){
         int resp = 0;
         bool mouseOverAntes = mouseOver;
 
-        SDL_Point p;
-        if (CPIGGerenciadorJanelas::GetJanela(idJanela)->GetUsandoCameraFixa())
-            p = CPIGMouse::PegaXYTela();
-        else p = CPIGMouse::PegaXYWorld();
+        SDL_Point p = GetPosicaoMouse();
 
         if (ChecaMouseOver(p)>0){
             for (int i=0;i<itens.size();i++){
-                if (itens[i]->TrataEventoMouse(evento) == PIG_SELECIONADO_TRATADO)
+                if (itens[i]->TrataEventoMouse(evento) == PIG_SELECIONADO_TRATADO){
                     resp = 1;
-
+                    OnAction();
+                }
             }
             if (resp) return PIG_SELECIONADO_TRATADO;
             else return PIG_SELECIONADO_MOUSEOVER;

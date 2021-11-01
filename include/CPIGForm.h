@@ -2,19 +2,20 @@
 #define _CPIGFORM_
 
 #include "CPIGComponente.h"
-#include "CPIGBotao.h"
-#include "CPIGScrollBar.h"
+#include "CPIGBotaoClick.h"
+#include "CPIGBotaoOnOff.h"
+#include "CPIGSlideBar.h"
 #include "CPIGCampoTextoESenha.h"
 #include "CPIGAreaDeTexto.h"
 #include "CPIGRadioBox.h"
 #include "CPIGCheckBox.h"
 #include "CPIGListBox.h"
 #include "CPIGDropDown.h"
-#include "CPIGGauge.h"
+#include "CPIGGaugeBar.h"
 #include "CPIGGaugeCircular.h"
 
 
-typedef enum{PIG_BOTAO,PIG_AREADETEXTO,PIG_CAMPOTEXTOSENHA,PIG_RADIOBOX,PIG_CHECKBOX,PIG_LISTBOX,PIG_DROPDOWN,PIG_GAUGE,PIG_GAUGECIRCULAR,PIG_SCROLLBAR}PIGTiposComponentes;
+typedef enum{PIG_BOTAOCLICK,PIG_BOTAOONOFF,PIG_AREADETEXTO,PIG_CAMPOTEXTOSENHA,PIG_RADIOBOX,PIG_CHECKBOX,PIG_LISTBOX,PIG_DROPDOWN,PIG_GAUGEBAR,PIG_GAUGECIRCULAR,PIG_SLIDEBAR}PIGTiposComponentes;
 
 class CPIGForm{
 
@@ -26,10 +27,6 @@ private:
     int totalComponentes;
     int componenteComFoco,componenteMouseOver;
     PIGComponente componentes[PIG_MAX_COMPONENTES];
-
-    inline int GetIdComponente(int componente){
-        return (id * PIG_MAX_COMPONENTES) + componente;
-    }
 
     int TrataMouseComponentes(PIG_Evento evento){
         componenteMouseOver = -1;
@@ -64,18 +61,68 @@ private:
         return PIG_NAO_SELECIONADO;
     }
 
-public:
-
-    CPIGForm(int idForm,int xForm, int yForm, int altForm, int largForm,int janela = 0){
-        pos = {xForm,yForm};
-        alt = altForm;
-        larg = largForm;
+    void IniciaBase(int idForm, int px, int py, int altura, int largura,int janela){
+        id = idForm;
+        pos = {px,py};
+        alt = altura;
+        larg = largura;
         idJanela = janela;
         totalComponentes = 0;
-        id = idForm;
         componenteComFoco = componenteMouseOver = -1;
         for(int i=0;i<PIG_MAX_COMPONENTES;i++)
             componentes[i] = NULL;
+    }
+
+    static PIGTiposComponentes GetTipoComponente(string tipo){
+        transform(tipo.begin(), tipo.end(), tipo.begin(), ::toupper);
+        if (tipo=="BOTAOCLICK") return PIG_BOTAOCLICK;
+        if (tipo=="BOTAOONOFF") return PIG_BOTAOONOFF;
+        if (tipo=="CAMPOTEXTOSENHA") return PIG_CAMPOTEXTOSENHA;
+        if (tipo=="AREATEXTO") return PIG_AREADETEXTO;
+        if (tipo=="CHECKBOX") return PIG_CHECKBOX;
+        if (tipo=="RADIOBOX") return PIG_RADIOBOX;
+        if (tipo=="LISTBOX") return PIG_LISTBOX;
+        if (tipo=="DROPDOWN") return PIG_DROPDOWN;
+        if (tipo=="GAUGEBAR") return PIG_GAUGEBAR;
+        if (tipo=="GAUGECIRCULAR") return PIG_GAUGECIRCULAR;
+        if (tipo=="SLIDEBAR") return PIG_SLIDEBAR;
+        printf("componente <%s> invalido lido da linha da parametros!!!\n");
+        return (PIGTiposComponentes)-1;
+    }
+
+public:
+
+    CPIGForm(int idForm,int xForm, int yForm, int altForm, int largForm,int janela = 0){
+        IniciaBase(idForm,xForm,yForm,altForm,largForm,janela);
+    }
+
+    CPIGForm(int idForm, string nomeArqTexto){
+        IniciaBase(idForm,0,0,0,0,0);
+
+        ifstream arq(nomeArqTexto);
+        string linha,variavel;
+        if (!arq.is_open())
+            printf("Erro abrir arquivo <%s> para construir form\n",nomeArqTexto.c_str());
+        else{
+            getline(arq,linha);
+
+            CPIGAtributos atribForm = CPIGComponente::GetAtributos(linha);
+            pos.x = atribForm.GetInt("px",0);
+            pos.y = atribForm.GetInt("py",0);
+            alt = atribForm.GetInt("altura",0);
+            larg = atribForm.GetInt("largura",0);
+            idJanela = atribForm.GetInt("janela",0);
+            //printf("processada primeira linha %d,%d %d,%d %d\n",(int)pos.x,(int)pos.y,alt,larg,idJanela);
+
+            while (arq.eof()==false){
+                arq >> variavel;
+                getline(arq,linha);
+
+                CriaComponentePorParametro(GetTipoComponente(variavel),linha);
+            }
+
+            arq.close();
+        }
     }
 
     ~CPIGForm(){
@@ -83,11 +130,17 @@ public:
             delete componentes[i];
     }
 
+    inline int GetIdComponente(int componente){
+        return (id * PIG_MAX_COMPONENTES) + componente;
+    }
+
     int Desenha(){
+        //desenha primeiro os componentes fora do mouse
         for(int i=0;i<totalComponentes;i++){
             if (i!=componenteMouseOver)
                 componentes[i]->Desenha();
         }
+        //desenha o componente sob o mouse para que o hint fique por cima dos demais
         if (componenteMouseOver!=-1)
             componentes[componenteMouseOver]->Desenha();
 
@@ -115,9 +168,15 @@ public:
         return comp;
     }
 
-    int CriaBotao(int px, int py, int altura,int largura,std::string nomeArq,int retiraFundo = 1){
+    int CriaBotaoClick(int px, int py, int altura,int largura,std::string nomeArq,int retiraFundo = 1){
         int idComponente = GetIdComponente(totalComponentes);
-        componentes[totalComponentes++] = new CPIGBotao(idComponente,px,py,altura,largura,nomeArq,retiraFundo,idJanela);
+        componentes[totalComponentes++] = new CPIGBotaoClick(idComponente,px,py,altura,largura,nomeArq,retiraFundo,idJanela);
+        return idComponente;
+    }
+
+    int CriaBotaoOnOff(int px, int py, int altura,int largura,std::string nomeArq,int retiraFundo = 1){
+        int idComponente = GetIdComponente(totalComponentes);
+        componentes[totalComponentes++] = new CPIGBotaoOnOff(idComponente,px,py,altura,largura,nomeArq,retiraFundo,idJanela);
         return idComponente;
     }
 
@@ -145,9 +204,9 @@ public:
         return idComponente;
     }
 
-    int CriaGauge(int px, int py,int altura,int largura,std::string imgGauge,int retiraFundo=1){
+    int CriaGaugeBar(int px, int py,int altura,int largura,std::string imgMoldura,std::string imgMarcador="",int retiraFundoMoldura=1,int retiraFundoMarcador=1){
         int idComponente = GetIdComponente(totalComponentes);
-        componentes[totalComponentes++] = new CPIGGauge(idComponente,px,py,altura,largura,imgGauge,retiraFundo,idJanela);
+        componentes[totalComponentes++] = new CPIGGaugeBar(idComponente,px,py,altura,largura,imgMoldura,imgMarcador,retiraFundoMoldura,retiraFundoMarcador,idJanela);
         return idComponente;
     }
 
@@ -163,25 +222,26 @@ public:
         return idComponente;
     }
 
-    int CriaGaugeCircular(int px, int py,int altura,int largura,int raioInterior,std::string nomeArq,int retiraFundo=1){
+    int CriaGaugeCircular(int px, int py,int altura,int largura,int raioInterior,int idJanela=0){
         int idComponente = GetIdComponente(totalComponentes);
-        componentes[totalComponentes++] = new CPIGGaugeCircular(idComponente,px,py,altura,largura,raioInterior,nomeArq,retiraFundo,idJanela);
+        componentes[totalComponentes++] = new CPIGGaugeCircular(idComponente,px,py,altura,largura,raioInterior,idJanela);
         return idComponente;
     }
 
-    int CriaComponentePorParametro(PIGTiposComponentes componente,std::string nomeArquivo){
+    int CriaComponentePorParametro(PIGTiposComponentes componente,string parametros){
         int idComponente = GetIdComponente(totalComponentes);
         switch(componente){
-            case PIG_BOTAO: componentes[totalComponentes++] = new CPIGBotao(idComponente,nomeArquivo);break;
-            case PIG_AREADETEXTO: componentes[totalComponentes++] = new CPIGAreaDeTexto(idComponente,nomeArquivo);break;
-            case PIG_CAMPOTEXTOSENHA: componentes[totalComponentes++] = new CPIGCampoTextoESenha(idComponente,nomeArquivo);break;
-            case PIG_RADIOBOX: componentes[totalComponentes++] = new CPIGRadioBox(idComponente,nomeArquivo);break;
-            case PIG_CHECKBOX: componentes[totalComponentes++] = new CPIGCheckBox(idComponente,nomeArquivo);break;
-            case PIG_LISTBOX: componentes[totalComponentes++] = new CPIGListBox(idComponente,nomeArquivo);break;
-            case PIG_DROPDOWN: componentes[totalComponentes++] = new CPIGDropDown(idComponente,nomeArquivo);break;
-            case PIG_GAUGE: componentes[totalComponentes++] = new CPIGGauge(nomeArquivo);break;
-            case PIG_SCROLLBAR: componentes[totalComponentes++] = new CPIGScrollBar(nomeArquivo);break;
-            case PIG_GAUGECIRCULAR: componentes[totalComponentes++] = new CPIGGaugeCircular(nomeArquivo);break;
+            case PIG_BOTAOCLICK: componentes[totalComponentes++] = new CPIGBotaoClick(idComponente,parametros);break;
+            case PIG_BOTAOONOFF: componentes[totalComponentes++] = new CPIGBotaoOnOff(idComponente,parametros);break;
+            case PIG_AREADETEXTO: componentes[totalComponentes++] = new CPIGAreaDeTexto(idComponente,parametros);break;
+            case PIG_CAMPOTEXTOSENHA: componentes[totalComponentes++] = new CPIGCampoTextoESenha(idComponente,parametros);break;
+            case PIG_RADIOBOX: componentes[totalComponentes++] = new CPIGRadioBox(idComponente,parametros);break;
+            case PIG_CHECKBOX: componentes[totalComponentes++] = new CPIGCheckBox(idComponente,parametros);break;
+            case PIG_LISTBOX: componentes[totalComponentes++] = new CPIGListBox(idComponente,parametros);break;
+            case PIG_DROPDOWN: componentes[totalComponentes++] = new CPIGDropDown(idComponente,parametros);break;
+            case PIG_GAUGEBAR: componentes[totalComponentes++] = new CPIGGaugeBar(idComponente,parametros);break;
+            case PIG_SLIDEBAR: componentes[totalComponentes++] = new CPIGSlideBar(idComponente,parametros);break;
+            case PIG_GAUGECIRCULAR: componentes[totalComponentes++] = new CPIGGaugeCircular(idComponente,parametros);break;
         }
         return idComponente;
     }

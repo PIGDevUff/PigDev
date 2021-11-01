@@ -86,16 +86,14 @@ public:
         int resp = -1;
         bool mouseOverAntes = mouseOver;
 
-        SDL_Point p;
-        if (CPIGGerenciadorJanelas::GetJanela(idJanela)->GetUsandoCameraFixa())
-            p = CPIGMouse::PegaXYTela();
-        else p = CPIGMouse::PegaXYWorld();
+        SDL_Point p = GetPosicaoMouse();
 
         if (ChecaMouseOver(p)>0){
             for (int i=0;i<itens.size();i++){
                 if (itens[i]->TrataEventoMouse(evento) == PIG_SELECIONADO_TRATADO){
                     if (itens[i]->GetAcionado())
                         resp = i;
+                    OnAction();
                 }
             }
             SetAcionadoItem(resp,resp!=-1);

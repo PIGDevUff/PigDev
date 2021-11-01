@@ -114,10 +114,8 @@ public:
     int TrataEventoMouse(PIG_Evento evento){
         int resp = -1;
         bool mouseOverAntes = mouseOver;
-        SDL_Point p;
-        if (CPIGGerenciadorJanelas::GetJanela(idJanela)->GetUsandoCameraFixa())
-            p = CPIGMouse::PegaXYTela();
-        else p = CPIGMouse::PegaXYWorld();
+        SDL_Point p = GetPosicaoMouse();
+
         if (ChecaMouseOver(p)){
 
             if (!habilitado) return PIG_SELECIONADO_DESABILITADO;
@@ -129,6 +127,7 @@ public:
                         if (itens[i]->GetAcionado()){
                             resp = i;
                         }
+                        OnAction();
                     }
                 }
                 SetAcionadoItem(resp,resp!=-1);
