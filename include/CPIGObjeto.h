@@ -171,8 +171,7 @@ CPIGObjeto(int idObjeto,CPIGObjeto *objBase, int retiraFundo = 1, PIG_Cor *corFu
     bbAlterado = true;
 }
 
-~CPIGObjeto(){
-}
+virtual ~CPIGObjeto(){}
 
 void SetVertices(std::vector<PIGPonto2D> verts) {
     vertices = verts;
@@ -422,7 +421,6 @@ bool ColisaoOOBB(CPIGObjeto *outro) {
 }
 
 bool ColisaoPoligono(std::vector<PIGPonto2D> vertices) {
-    int i=0;
     for (auto vertice : vertices) {
         if (PontoDentro(vertice)) return true;
     }

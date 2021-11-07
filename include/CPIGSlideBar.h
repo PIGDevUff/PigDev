@@ -6,6 +6,12 @@
 class CPIGSlideBar : public CPIGGauge{
 
     int deltaRodinha,deltaTeclado;
+    int altMarcador,largMarcador,xMarc,yMarc;
+
+    void IniciaCoresBasicas(){
+        coresBasicas[0] = BRANCO;
+        coresBasicas[1] = CINZA;
+    }
 
     CPIGSlideBar LeParametros(int idComponente,string parametros){
         CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
@@ -18,31 +24,37 @@ class CPIGSlideBar : public CPIGGauge{
     }
 
     void AtualizaMarcador()override{
-        int altMarcador,largMarcador;
-        marcador->GetDimensoes(altMarcador,largMarcador);
+        OnAction();
+
+        //marcador->GetDimensoes(altMarcador,largMarcador);
 
         switch (orientacaoCrescimento){
         case PIG_GAUGE_ESQ_DIR:
-                marcador->Move(pos.x+(int)(porcentagemConcluida*(larg-largMarcador)),pos.y);
+                xMarc = pos.x+(int)(porcentagemConcluida*(larg-largMarcador));
+                yMarc = pos.y;
                 break;
         case PIG_GAUGE_DIR_ESQ:
-                marcador->Move(pos.x+(int)((1-porcentagemConcluida)*(larg-largMarcador)),pos.y);
+                xMarc = pos.x+(int)((1-porcentagemConcluida)*(larg-largMarcador));
+                yMarc = pos.y;
                 break;
         case PIG_GAUGE_BAIXO_CIMA:
-                marcador->Move(pos.x,pos.y+(int)(porcentagemConcluida*(alt-altMarcador)));
+                xMarc = pos.x;
+                yMarc = pos.y+(int)(porcentagemConcluida*(alt-altMarcador));
                 break;
         case PIG_GAUGE_CIMA_BAIXO:
-                marcador->Move(pos.x,pos.y+(int)((1-porcentagemConcluida)*(alt-altMarcador)));
+                xMarc = pos.x;
+                yMarc = pos.y+(int)((1-porcentagemConcluida)*(alt-altMarcador));
                 break;
         }
 
-        OnAction();
+        if (marcador){
+            marcador->Move(xMarc,yMarc);
+        }
+
     }
 
     int TrataClickTrilha(int px,int py){
-        int altMarcador,largMarcador;
         double perc;
-        marcador->GetDimensoes(altMarcador,largMarcador);
 
         px = PIGLimitaValor(px,(int)pos.x+largMarcador/2,(int)pos.x+larg-largMarcador/2);
         py = PIGLimitaValor(py,(int)pos.y+altMarcador/2,(int)pos.y+alt-altMarcador/2);
@@ -84,13 +96,23 @@ public:
         CPIGGauge(idComponente,px,py,altTrilha,largTrilha,imgTrilha,altMarcador,largMarcador,imgMarcador,retiraFundoTrilha,retiraFundoMarcador,janela){
             deltaTeclado = deltaRodinha = 10;
             marcador = new CPIGSprite(-1,imgMarcador,retiraFundoMarcador,NULL,janela);
+            marcador->GetDimensoes(altMarcador,largMarcador);
             AtualizaMarcador();
+    }
+
+    CPIGSlideBar(int idComponente,int px, int py,int altTrilha, int largTrilha, int alturaMarcador, int larguraMarcador,int janela=0):
+        CPIGGauge(idComponente,px,py,altTrilha,largTrilha,janela){
+            deltaTeclado = deltaRodinha = 10;
+            altMarcador = alturaMarcador;
+            largMarcador = larguraMarcador;
+            AtualizaMarcador();
+            IniciaCoresBasicas();
     }
 
     CPIGSlideBar(int idComponente,string parametros):CPIGSlideBar(LeParametros(idComponente,parametros)){}
 
-    ~CPIGSlideBar(){
-        delete marcador;
+    virtual ~CPIGSlideBar(){
+        if (marcador) delete marcador;
     }
 
     int TrataEventoMouse(PIG_Evento evento){
@@ -142,9 +164,13 @@ public:
     int Desenha(){
         if(visivel==false) return -1;
 
-        CPIGSprite::Desenha();
+        if (text)
+            CPIGSprite::Desenha();
+        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
 
-        marcador->Desenha();
+        if (marcador)
+            marcador->Desenha();
+        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(xMarc,yMarc,altMarcador,largMarcador,coresBasicas[1]);
 
         DesenhaLabel();
 

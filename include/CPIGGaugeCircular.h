@@ -10,10 +10,13 @@ private:
     double angBase,deltaAng;
     int raioInterno;
     bool crescimentoHorario;
-
-    PIG_Cor corInicial,corFinal,corInterna;
     PIGOffscreenRenderer off;
-    SDL_Texture *textGauge;
+
+    void IniciaCoresBasicas(){
+        coresBasicas[0] = BRANCO;
+        coresBasicas[1] = VERMELHO;
+        coresBasicas[2] = VERMELHO;
+    }
 
     CPIGGaugeCircular LeParametros(int idComponente,string parametros){
         CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
@@ -25,18 +28,18 @@ private:
     }
 
     virtual void AtualizaMarcador()override{
-        PIG_Cor corBarra = PIGMixCor(corInicial,corFinal,porcentagemConcluida);//cor da barra mizada entre a cor inicial e a final
+        PIG_Cor corBarra = PIGMixCor(coresBasicas[1],coresBasicas[2],porcentagemConcluida);//cor da barra mizada entre a cor inicial e a final
         PIG_Cor opcoes[4] = {VERDE,AZUL,ROXO,LARANJA}; //4 cores quaisquer
         PIG_Cor croma1, croma2; //cores usada como cromakey para transparencias (não podem ser nem a cor da barra, nem a cor do fundo)
 
         //escolha das cores
         int i=0;
         croma1=opcoes[i];
-        while (PIGCoresIguais(croma1,corBarra)||PIGCoresIguais(croma1,corInterna)){//não pode ser a cor da barra nem do fundo
+        while (PIGCoresIguais(croma1,corBarra)||PIGCoresIguais(croma1,coresBasicas[0])){//não pode ser a cor da barra nem do fundo
             croma1=opcoes[++i];
         }
         croma2=opcoes[i];
-        while (PIGCoresIguais(croma2,corBarra)||PIGCoresIguais(croma2,corInterna)||PIGCoresIguais(croma2,croma1)){//não pode ser a cor da barra, nem do fundo, nem a cor croma1
+        while (PIGCoresIguais(croma2,corBarra)||PIGCoresIguais(croma2,coresBasicas[0])||PIGCoresIguais(croma2,croma1)){//não pode ser a cor da barra, nem do fundo, nem a cor croma1
             croma2=opcoes[++i];
         }
 
@@ -51,7 +54,7 @@ private:
         //off->SalvarImagemPNG("barra.png",0);
 
         //criculo com o fundo na cor de fundo
-        off->DesenhaCirculoFinal(larg/2-2,croma1,corInterna,angBase,angBase+deltaAng,1);
+        off->DesenhaCirculoFinal(larg/2-2,croma1,coresBasicas[0],angBase,angBase+deltaAng,1);
         off->SetCorTransparente(1,true,croma1);
         //off->SalvarImagemPNG("fundo.png",1);
 
@@ -67,10 +70,8 @@ private:
         off->MergeSurface(0,1,SDL_BLENDMODE_NONE);
         //off->SalvarImagemPNG("circ01.png",1);
 
-        if (textGauge) SDL_DestroyTexture(textGauge);
-        textGauge = SDL_CreateTextureFromSurface(renderer,off->GetSurface(1));
-        //bitmap = off->GetSurface(1);
-        //CriaTextura(1);
+        if (text) SDL_DestroyTexture(text);
+        text = SDL_CreateTextureFromSurface(renderer,off->GetSurface(1));
 
         OnAction();
     }
@@ -85,64 +86,31 @@ public:
         raioInterno = raioInterior;
         crescimentoHorario=true;
 
-        corInicial = corFinal = BRANCO;
-        corInterna = PRETO;
+        IniciaCoresBasicas();
 
         off = new CPIGOffscreenRenderer(altura,largura,3);
 
         Move(px,py);
         SetPivoProporcional({larg/2.0,alt/2.0});
-        textGauge = NULL;
+
         AtualizaMarcador();
-
     }
-
-    /*CPIGGaugeCircular(int idComponente,int px, int py,int altura,int largura,int raioInterior,std::string nomeArq,int retiraFundo=1,int janela=0):
-        CPIGComponente(idComponente,px,py,altura,largura,nomeArq,retiraFundo,janela){
-
-        angBase = 0;
-        deltaAng = 360;
-        raioInterno = raioInterior;
-        valor = 0;
-        valorMin = 0;
-        valorMax = 100;
-        porcentagemConcluida = 0.0;
-        corInicial = corFinal = LARANJA;
-        corFundo = PRETO;
-        off = new CPIGOffscreenRenderer(altura,largura,3);
-
-        Move(px,py);
-        SetPivoProporcional({larg/2.0,alt/2.0});
-        textGauge = NULL;
-        AtualizaTextura();
-        crescimentoHorario=true;
-    }*/
 
     CPIGGaugeCircular(int idComponente,string parametros):CPIGGaugeCircular(LeParametros(idComponente,parametros)){}
 
-    ~CPIGGaugeCircular(){
+    virtual ~CPIGGaugeCircular(){
         delete off;
     }
 
     int Desenha(){
-        //SDL_Point p = {pivoRelativo.x,pivoRelativo.y};
-
-        //vai desenhar a textura de base
-        CPIGSprite::Desenha();
-        //SDL_RenderCopyEx(renderer,text,NULL,&dest,-angulo,&p,flip);
-        SDL_Texture *textAux = text;
-        text = textGauge;
-
         //vai desenhar o gauge em si
         CPIGSprite::Desenha();
-        //SDL_RenderCopyEx(renderer,textGauge,NULL,&dest,-angulo,&p,flip);
-
-        //recupera a textura de base
-        text = textAux;
 
         DesenhaLabel();
 
         EscreveHint();
+
+        return 1;
     }
 
     void SetRaioInterno(int valorRaio){
@@ -163,17 +131,17 @@ public:
     }
 
     void SetCorInicial(PIG_Cor cor){
-        corInicial = cor;
+        coresBasicas[1] = cor;
         AtualizaMarcador();
     }
 
     void SetCorFinal(PIG_Cor cor){
-        corFinal = cor;
+        coresBasicas[2] = cor;
         AtualizaMarcador();
     }
 
     void SetCorInterna(PIG_Cor cor){
-        corInterna = cor;
+        coresBasicas[0] = cor;
         AtualizaMarcador();
     }
 
@@ -184,9 +152,6 @@ public:
     int TrataEventoTeclado(PIG_Evento evento){
         return 0;
     }
-
-
-
 };
 
 typedef CPIGGaugeCircular *PIGGaugeCircular;

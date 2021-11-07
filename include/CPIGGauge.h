@@ -44,15 +44,15 @@ protected:
 
     CPIGGauge(int idComponente,int px, int py,int altura,int largura,std::string imgTrilha,int altMarcador, int largMarcador, std::string imgMarcador,int retiraFundoTrilha=1, int retiraFundoMarcador=1,int janela=0):
         CPIGComponente(idComponente,px,py,altura,largura,imgTrilha,retiraFundoTrilha,janela){
-        //printf("iniciando gauge\n");
         IniciaBase();
-        //printf("iniciado gauge\n");
     }
 
     CPIGGauge(int idComponente,int px, int py,int altura,int largura,int janela=0):
         CPIGComponente(idComponente,px,py,altura,largura,janela){
         IniciaBase();
     }
+
+    virtual ~CPIGGauge(){}
 
 public:
 

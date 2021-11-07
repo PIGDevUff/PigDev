@@ -14,7 +14,12 @@ private:
     PIGSlideBar slideVertical,slideHorizontal;
     bool slideVerticalAtivado,slideHorizontalAtivado;
     std::vector<std::string> linhas;
-    PIG_Cor corLinhasPauta;
+
+    void IniciaCoresBasicas(){
+        coresBasicas[0] = CINZA;
+        coresBasicas[1] = PRETO;
+        coresBasicas[2] = AZUL;
+    }
 
     CPIGAreaDeTexto LeParametros(int idComponente,string parametros){
         CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
@@ -62,7 +67,7 @@ private:
     void AjustaSlideVerticalPeloCursor(){
         int alturaTotalTexto = linhas.size()*(espacoEntreLinhas+altLetra);
 
-        if ( alturaTotalTexto>(alt-margemVertCima+margemVertBaixo)){
+        if (alturaTotalTexto>(alt-margemVertCima+margemVertBaixo)){
             if (slideVerticalAtivado==false){
                 slideVerticalAtivado = true;
                 SetMargens(margemHorEsq,margemHorDir+20,margemVertBaixo,margemVertCima);
@@ -89,9 +94,9 @@ private:
     }
 
     //Desenha um contorno baseado nas dimensoes reais da área(somando a área em si e a scroll bar)
-    void DesenhaMarcacaoMargem(){
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado(pos.x+margemHorEsq,pos.y+margemVertBaixo,alt-margemVertBaixo-margemVertCima-1,larg-margemHorDir-margemHorEsq,corLinhasPauta);
-    }
+    //void DesenhaMarcacaoMargem(){
+    //    CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado(pos.x+margemHorEsq,pos.y+margemVertBaixo,alt-margemVertBaixo-margemVertCima-1,larg-margemHorDir-margemHorEsq,coresBasicas[2]);
+    //}
 
     void IniciaPosicaoTexto(){
         yTexto = pos.y + alt-altLetra-margemVertCima;
@@ -196,7 +201,7 @@ private:
         int xLinha = pos.x+margemHorEsq;
 
         while(yLinha >= pos.y+margemVertBaixo){
-            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(xLinha,yLinha,xLinha+larg-margemHorDir,yLinha,corLinhasPauta);
+            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(xLinha,yLinha,xLinha+larg-margemHorDir,yLinha,coresBasicas[2]);
             yLinha -= (espacoEntreLinhas + altLetra);
         }
     }
@@ -245,18 +250,32 @@ public:
             espacoEntreLinhas = 0;
             largMax = largura;
             linhasPauta = false;
-            corLinhasPauta = PRETO;
             slideHorizontalAtivado = slideVerticalAtivado = false;
-            slideHorizontal = new CPIGSlideBar(idComponente+1,px,py,20,largura,"moldura2.png",20,20,"marcador.png",0,0);
+            slideHorizontal = new CPIGSlideBar(idComponente+1,px,py,20,largura,20,20,janela);
 
-            slideVertical = new CPIGSlideBar(idComponente+2,px+largura-20,py,altura,20,"moldura3.png",20,20,"marcador.png",0,0);
+            slideVertical = new CPIGSlideBar(idComponente+2,px+largura-20,py,altura,20,20,20,janela);
             slideVertical->SetOrientacao(PIG_GAUGE_CIMA_BAIXO);
             AjustaPosicaoTextoCursor();
+            IniciaCoresBasicas();
+        }
+
+    CPIGAreaDeTexto(int idComponente,int px, int py, int altura,int largura,int maxCars = 200,int janela=0):
+        CPIGCaixaTexto(idComponente,px,py,altura,largura,maxCars,false,janela){ // A altura é um vetor, mas eu preciso dela, entao eu acabei colocando como o tamanho da fonte, qualquer coisa só mudar aqui
+            espacoEntreLinhas = 0;
+            largMax = largura;
+            linhasPauta = false;
+            slideHorizontalAtivado = slideVerticalAtivado = false;
+            slideHorizontal = new CPIGSlideBar(idComponente+1,px,py,20,largura,20,20,janela);
+
+            slideVertical = new CPIGSlideBar(idComponente+2,px+largura-20,py,altura,20,20,20,janela);
+            slideVertical->SetOrientacao(PIG_GAUGE_CIMA_BAIXO);
+            AjustaPosicaoTextoCursor();
+            IniciaCoresBasicas();
         }
 
     CPIGAreaDeTexto(int idComponente,string parametros):CPIGAreaDeTexto(LeParametros(idComponente,parametros)){}
 
-    ~CPIGAreaDeTexto(){
+    virtual ~CPIGAreaDeTexto(){
         linhas.clear();
         delete slideVertical;
         delete slideHorizontal;
@@ -280,7 +299,9 @@ public:
 
     int Desenha() override{
         //imagem de fundo
-        CPIGSprite::Desenha();//SDL_RenderCopyEx(renderer, text, &frames[frameAtual],&dest,-angulo,&pivoRelativo,flip);
+        if (text)
+            CPIGSprite::Desenha();
+        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
 
         //DesenhaMarcacaoMargem();
 
@@ -316,7 +337,7 @@ public:
 
     //define a cor da linhas horizontais
     void SetLinhasAbaixoTexto(bool visivel,PIG_Cor cor = PRETO){
-        corLinhasPauta = cor;
+        coresBasicas[2] = cor;
         linhasPauta = visivel;
     }
 

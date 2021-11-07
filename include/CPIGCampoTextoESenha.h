@@ -10,6 +10,11 @@ private:
     char mascara;//símbolo usado quando o campo for de senha
     std::string (CPIGCampoTextoESenha::*GetTextoVisivelPtr)();//ponteiro para a funçăo que vai retornar o texto visivel
 
+    void IniciaCoresBasicas(){
+        coresBasicas[0] = CINZA;
+        coresBasicas[1] = PRETO;
+    }
+
     static CPIGCampoTextoESenha LeParametros(int idComponente,std::string parametros){
         CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
 
@@ -98,21 +103,37 @@ public:
             }else{
                 GetTextoVisivelPtr = &CPIGCampoTextoESenha::GetTexto;
             }
+            IniciaCoresBasicas();
+    }
+
+    CPIGCampoTextoESenha(int idComponente,int px, int py, int altura,int largura,int maxCars = 200, bool apenasNumeros=false, bool campoSenha = false, int janela=0):
+        CPIGCaixaTexto(idComponente,px,py,altura,largura,maxCars,apenasNumeros,janela){
+            mascara = '*';
+            if(campoSenha){
+                GetTextoVisivelPtr = &CPIGCampoTextoESenha::CPIGCampoTextoESenha::GetTextoMask;
+            }else{
+                GetTextoVisivelPtr = &CPIGCampoTextoESenha::GetTexto;
+            }
+            IniciaCoresBasicas();
     }
 
     CPIGCampoTextoESenha(int idComponente,std::string parametros):CPIGCampoTextoESenha(LeParametros(idComponente,parametros)){}
 
+    virtual ~CPIGCampoTextoESenha(){}
+
     //desenha o componente completo
     int Desenha() override{
-        //imagem de fundo
-        CPIGSprite::Desenha();
 
-        SDL_Rect r={(int)(pos.x+margemHorEsq+1),(int)(*altJanela-pos.y-alt+margemVertCima),larg-(margemHorEsq+margemHorDir),alt-(margemVertBaixo+margemVertCima)};
+        SDL_Rect r={(int)(pos.x+margemHorEsq),(int)(*altJanela-pos.y-alt+margemVertCima),larg-(margemHorEsq+margemHorDir)+1,alt-(margemVertBaixo+margemVertCima)};
 
         CPIGGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaWorldScreen(r.x,r.y,r.x,r.y);
 
-        SDL_RenderSetClipRect(renderer,&r);
+        //imagem de fundo
+        if (text)
+            CPIGSprite::Desenha();
+        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
 
+        SDL_RenderSetClipRect(renderer,&r);
 
         CPIGGerenciadorFontes::GetFonte(fonteTexto)->Escreve(GetTextoVisivel(),xTexto,yTexto,BRANCO,PIG_TEXTO_ESQUERDA);
         DesenhaCursor();//desenha o cursor (se estiver em ediçăo)

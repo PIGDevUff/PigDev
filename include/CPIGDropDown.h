@@ -41,10 +41,10 @@ private:
     int ChecaMouseOver(SDL_Point pMouse)override{
         SDL_Rect r={(int)pos.x,0,larg,0};
         if (recolhida){
-            r.y = (int)pos.y;
+            r.y = ((int)pos.y)+alt-altBaseLista;
             r.h = altBaseLista;
         }else{
-            r.y = ((int)pos.y)-(itens.size())*altBaseLista;
+            r.y = ((int)pos.y)-altBaseLista;
             r.h = (itens.size()+1)*altBaseLista;
         }
         SetMouseOver(SDL_PointInRect(&pMouse,&r));
@@ -55,18 +55,20 @@ private:
     void DesenhaItemDestaque(){
         SDL_Rect rectAux = dest;
         rectAux.h = altBaseLista;
-        SDL_RenderSetClipRect(renderer,&rectAux);
+        //SDL_RenderSetClipRect(renderer,&rectAux);
         if (text){//se tiver imagem de fundo
             dest.h=altBaseLista;
             CPIGSprite::Desenha();
-        }
+        }else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,((int)pos.y)+alt-altBaseLista,altBaseLista,larg,coresBasicas[corAtual]);
+
         if (itemDestaque>=0){                       //desenha o item no cabeçalho do dropdown
             PIGPonto2D pItem = itens[itemDestaque]->GetXY();
-            itens[itemDestaque]->Move(pItem.x,pos.y);     //move o item para o ponto do cabeçalho
+            itens[itemDestaque]->Move(pItem.x,pos.y+alt-altBaseLista);     //move o item para o ponto do cabeçalho
+            //printf("%.0f, %0.f\n",pItem.x,pos.y);
             itens[itemDestaque]->Desenha();         //desenha o item no cabeçalho
             itens[itemDestaque]->Move(pItem.x,pItem.y); //devolve o item para a posição normal (onde também deverá ser desenhado)
         }
-        SDL_RenderSetClipRect(renderer,NULL);
+        //SDL_RenderSetClipRect(renderer,NULL);
     }
 
     void DesenhaListaItens(){
@@ -74,8 +76,11 @@ private:
 
         SDL_RenderSetClipRect(renderer,&r);
         dest.h = (itens.size()+1)*altBaseLista;
+        //printf("dim %.0f, h: %d\n",pos.y,dest.h);
         frameAtual=0;
-        CPIGSprite::Desenha();
+        if (text)
+            CPIGSprite::Desenha();
+        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,(itens.size()+1)*altBaseLista,larg,coresBasicas[corAtual]);
 
         for (PIGItemComponente i: itens)
             i->Desenha();
@@ -90,10 +95,17 @@ public:
             SetRecolhida(true);
     }
 
+    CPIGDropDown(int idComponente,int px, int py,int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0,int janela=0):
+        CPIGListaItemComponente(idComponente,px,py,larguraTotal,alturaLinha,janela){
+            SetRecolhida(true);
+    }
+
     CPIGDropDown(int idComponente,string parametros):CPIGDropDown(LeParametros(idComponente,parametros)){}
 
     void CriaItem(std::string itemLabel, std::string arqImagemIcone="",std::string arqImagemFundoItem="", bool itemHabilitado = true, std::string hintMsg="", int retiraFundo=1){
-        int yItem=pos.y-(itens.size()+1)*altBaseLista;
+        //int yItem=pos.y-(itens.size()+1)*altBaseLista;
+        int yItem = pos.y+alt-(altBaseLista)*(itens.size()+2);
+        //printf("item criado em %d\n",yItem);
         CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,false,itemHabilitado,hintMsg,retiraFundo);
     }
 

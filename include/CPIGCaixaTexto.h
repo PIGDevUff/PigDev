@@ -10,7 +10,6 @@ private:
     bool cursorExibido;
     int maxCaracteres;
     bool somenteNumeros;
-    PIG_Cor corCursor;
     PIGTimer timer;
 
 protected:
@@ -29,7 +28,7 @@ protected:
     void DesenhaCursor(){
         if (temFoco){
             if (cursorExibido){
-                CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(xCursor,yCursor,xCursor,yCursor+altLetra,corCursor);
+                CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(xCursor,yCursor,xCursor,yCursor+altLetra,coresBasicas[1]);
             }
             if (timer&&timer->GetTempoDecorrido()>1){
                 cursorExibido = !cursorExibido;
@@ -160,7 +159,6 @@ protected:
     int CalculaPosicaoCursor(string linha, int xMouse){
         int delta = xMouse-xTexto;
         int largParcial = 0, largUltimaLetra = 0;
-        int resp = 0;
 
         for (int i=0;i<linha.size();i++){
             std::string aux;
@@ -205,11 +203,23 @@ public:
         SetFonteTexto(0);
         maxCaracteres = maxCars;
         somenteNumeros = apenasNumeros;
-        corCursor = PRETO;
         AjustaPosicaoTextoCursor();
     }
 
-    ~CPIGCaixaTexto(){
+    CPIGCaixaTexto(int idComponente,int px, int py, int altura,int largura,int maxCars = 200,bool apenasNumeros=false,int janela=0):
+        CPIGComponente(idComponente,px,py,altura,largura,janela){
+        margemHorEsq = margemHorDir = margemVertCima = margemVertBaixo = 5;
+        posLabel = PIG_COMPONENTE_ESQ_BAIXO;//posição padrão do label
+        posCursor = 0;//cursor no início do texto
+        cursorExibido = true;
+        timer = new CPIGTimer(false);//o timer do cursor que só será exibido quando estiver editando
+        SetFonteTexto(0);
+        maxCaracteres = maxCars;
+        somenteNumeros = apenasNumeros;
+        AjustaPosicaoTextoCursor();
+    }
+
+    virtual ~CPIGCaixaTexto(){
         delete timer;
     }
 
@@ -231,9 +241,10 @@ public:
     std::string GetTexto(){
         return texto;
     }
+
     //define a cor do cursor
     void SetCorCursor(PIG_Cor cor){
-        corCursor = cor;
+        coresBasicas[1] = cor;
     }
 
     void SetFoco(bool valor) override{

@@ -51,6 +51,10 @@ public:
         CPIGListaItemComponente(idComponente,px,py,larguraTotal,alturaLinha,nomeArqFundo,retiraFundo,janela){
     }
 
+    CPIGListBox(int idComponente,int px, int py,int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0,int janela=0):
+        CPIGListaItemComponente(idComponente,px,py,larguraTotal,alturaLinha,janela){
+    }
+
     CPIGListBox(int idComponente,std::string parametros):CPIGListBox(LeParametros(idComponente,parametros)){}
 
     ~CPIGListBox(){
@@ -114,6 +118,7 @@ public:
 
         if (text)//se tiver imagem de fundo
             CPIGSprite::Desenha();//SDL_RenderCopyEx(renderer,text,NULL,&dest,-angulo,NULL,flip);
+        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[corAtual]);
 
         DesenhaRetanguloMarcacao();
 

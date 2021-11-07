@@ -42,6 +42,7 @@ protected:
             if (item->GetAcionado()) resp = 2;
             else resp = 1;
         }
+
         item->GetIcone()->MudaFrameAtual(resp);
     }
 
@@ -49,6 +50,11 @@ public:
 
     CPIGCheckBox(int idComponente, int posX, int posY, int larguraTotal,int alturaLinha,std::string imgIcone, int alturaIcone, int larguraIcone,std::string imgFundo, int retiraFundo=1,int janela = 0):
         CPIGListaItemComponente(idComponente,posX,posY,larguraTotal,alturaLinha,imgFundo,retiraFundo,janela){
+            arqImagemIcone = imgIcone;
+        }
+
+    CPIGCheckBox(int idComponente, int posX, int posY, int larguraTotal,int alturaLinha,std::string imgIcone, int alturaIcone, int larguraIcone,int janela = 0):
+        CPIGListaItemComponente(idComponente,posX,posY,larguraTotal,alturaLinha,janela){
             arqImagemIcone = imgIcone;
         }
 
@@ -69,15 +75,16 @@ public:
         DesenhaLabel();
 
         SDL_Rect r = {(int)pos.x,*altJanela-((int)pos.y)-alt,larg,alt};
-        SDL_RenderSetClipRect(renderer,&r);
+        //SDL_RenderSetClipRect(renderer,&r);
 
         if (text)//se tiver imagem de fundo
             CPIGSprite::Desenha();
+        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[corAtual]);
 
         for (PIGItemComponente i: itens)
             i->Desenha();
 
-        SDL_RenderSetClipRect(renderer,NULL);
+        //SDL_RenderSetClipRect(renderer,NULL);
 
         return 1;
     }

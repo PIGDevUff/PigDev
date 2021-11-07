@@ -68,7 +68,7 @@ public:
     static int PausaGrupo(int idGrupo){
         if (idGrupo<0||idGrupo>=PIG_MAX_GRUPOS_TIMERS) return -1;
         int cont=0;
-        for (int i=0;i<grupos[idGrupo].size();i++){
+        for (unsigned int i=0;i<grupos[idGrupo].size();i++){
             PIGTimer t = timers->GetElemento(grupos[idGrupo][i]);
             if (t) t->Pausa();
             cont++;
@@ -79,7 +79,7 @@ public:
     static int DespausaGrupo(int idGrupo){
         if (idGrupo<0||idGrupo>=PIG_MAX_GRUPOS_TIMERS) return -1;
         int cont=0;
-        for (int i=0;i<grupos[idGrupo].size();i++){
+        for (unsigned int i=0;i<grupos[idGrupo].size();i++){
             PIGTimer t = timers->GetElemento(grupos[idGrupo][i]);
             if (t) t->Despausa();
             cont++;
@@ -90,7 +90,7 @@ public:
     static int ReiniciaGrupo(int idGrupo,bool valor){
         if (idGrupo<0||idGrupo>=PIG_MAX_GRUPOS_TIMERS) return -1;
         int cont=0;
-        for (int i=0;i<grupos[idGrupo].size();i++){
+        for (unsigned int i=0;i<grupos[idGrupo].size();i++){
             PIGTimer t = timers->GetElemento(grupos[idGrupo][i]);
             if (t) t->Reinicia(valor);
             cont++;

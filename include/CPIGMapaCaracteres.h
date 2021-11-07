@@ -117,7 +117,7 @@ public:
         SDL_SetRenderTarget(render, NULL);
     }
 
-    ~CPIGMapaCaracteres(){
+    virtual ~CPIGMapaCaracteres(){
         TTF_CloseFont(font);
         for (int i=0;i<PIG_TOTALESTILOS;i++){
             if (glyphsT[i]){
@@ -296,7 +296,7 @@ public:
         for (int i=0;i<texto.size();i++){
             aux = texto[i];
             if (aux==65475) continue;
-            if (aux>6500) aux+=64;
+            //if (aux>6500) aux+=64;
             aux = aux % 256;//UTF16 string, retirando só o byte que interessa
             if (aux-PIG_PRIMEIRO_CAR<0) continue;
             //printf("aux: %d  %d",aux,aux-PRIMEIRO_CAR);

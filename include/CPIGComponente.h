@@ -20,6 +20,8 @@ protected:
     PIG_PosicaoComponente posLabel,posComponente;
     PIGLabel lab,hint;
     PIG_FuncaoSimples acao;
+    PIG_Cor coresBasicas[10];
+    int corAtual;
     void *param;
 
     //inicializa o componente com valores padrão
@@ -136,7 +138,7 @@ public:
         CPIGSprite::SetDimensoes(altura,largura);
     }
 
-    ~CPIGComponente(){
+    virtual ~CPIGComponente(){
         if (lab) delete lab;
         if (hint) delete hint;
     }
@@ -151,7 +153,6 @@ public:
         stringstream ss(parametros);
         string variavel,valorString;
         int valorInteiro;
-        double valorDouble;
 
         while(ss >> variavel){
             if(variavel == "idComponente") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}

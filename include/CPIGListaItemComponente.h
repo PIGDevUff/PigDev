@@ -13,12 +13,18 @@ protected:
     int itemDestaque;
     int altIcone,largIcone;                           //altura e largura das imagens dos itens
 
+    void IniciaCoresBasicas(){
+        coresBasicas[0] = CINZA;
+        corAtual = 0;
+    }
+
     void IniciaBase(int alturaLinha){
         SetPosicaoPadraoLabel(PIG_COMPONENTE_CIMA_CENTRO);//posição padrão do label
         altBaseLista = alturaLinha;
         altIcone = largIcone = alturaLinha;
         posIcones = PIG_COMPONENTE_DIR_CENTRO;//só pode ser posicionamento à esquerda ou à direita
         itemDestaque = -1;
+        IniciaCoresBasicas();
     }
 
     void CriaItem(int yItem,std::string itemLabel, std::string arqImagemIcone="",std::string arqImagemFundo="",bool itemMarcado = false, bool itemHabilitado = true, std::string hintMsg="", int retiraFundo=1){
@@ -44,7 +50,11 @@ protected:
         item->SetAcionado(itemMarcado);
         item->SetHabilitado(itemHabilitado);
         itens.push_back(item);
-        alt += altBaseLista;
+        //alt += altBaseLista;
+        //pos.y -= ;
+        CPIGSprite::SetDimensoes(alt+altBaseLista,larg);
+        CPIGSprite::Move(pos.x,pos.y-altBaseLista);
+        //dest.y -= altBaseLista;
         //printf("altura agora %d\n",alt);
     }
 
@@ -52,6 +62,11 @@ public:
 
     CPIGListaItemComponente(int idComponente, int posX, int posY, int larguraTotal, int alturaLinha,std::string nomeArqFundoLista, int retiraFundo=1,int janela = 0):
         CPIGComponente(idComponente,posX,posY,0,larguraTotal,nomeArqFundoLista,retiraFundo,janela){
+        IniciaBase(alturaLinha);
+    }
+
+    CPIGListaItemComponente(int idComponente, int posX, int posY, int larguraTotal, int alturaLinha,int janela = 0):
+        CPIGComponente(idComponente,posX,posY,0,larguraTotal,janela){
         IniciaBase(alturaLinha);
     }
 

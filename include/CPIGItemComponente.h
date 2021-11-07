@@ -37,6 +37,8 @@ private:
         posRelativaLabel = PIG_COMPONENTE_CENTRO_CENTRO;
         SetPosicaoPadraoLabel(PIG_COMPONENTE_CENTRO_CENTRO);
         AjustaFrame = NULL;
+        coresBasicas[0] = {0,0,0,0};
+        corAtual = 0;
     }
 
 public:
@@ -99,10 +101,14 @@ public:
 
     int Desenha()override{
 
-        CPIGSprite::Desenha();
+        //fundo
+        if (text)
+            CPIGSprite::Desenha();
+        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[corAtual]);
 
         if (icone)
             icone->Desenha();
+
         DesenhaLabel();
 
         if (SDL_RenderIsClipEnabled(renderer)){

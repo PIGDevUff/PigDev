@@ -129,6 +129,7 @@ int GetID(){
 CPIGSprite(int idSprite,int altura,int largura,std::string nomeArq,int janela=0){
     id = idSprite;
     nomeArquivo = nomeArq;
+    bitmap = NULL;
     IniciaBase(altura,largura,janela);
     pixels = NULL;
 }
@@ -341,7 +342,7 @@ void DefineTipoTransicao(PIG_TipoTransicao tipo,PIGAutomacao *automaExt=NULL){
 }
 
 //Destrutor para todos os tipos de Sprites
-~CPIGSprite(){
+virtual ~CPIGSprite(){
     if (pixels){
         for (int i = 0; i < bitmap->h; i++)
             free(pixels[i]);

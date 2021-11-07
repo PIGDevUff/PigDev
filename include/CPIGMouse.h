@@ -71,6 +71,7 @@ public:
         case PIG_MOUSE_CENTRAL: return estadoBotaoCentral;
         case PIG_MOUSE_ESQUERDO: return estadoBotaoEsquerdo;
         }
+        return 0;
     }
 
     static int MudaCursor(int indice){

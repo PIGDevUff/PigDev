@@ -15,6 +15,7 @@ int timer;
 double ModificaHP(double valor){
     hp += valor;
     viva = hp>0;
+    return hp;
 }
 
 public:

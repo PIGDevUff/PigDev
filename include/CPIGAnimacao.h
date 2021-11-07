@@ -72,7 +72,7 @@ CPIGAnimacao(int idAnimacao,PIGObjeto base,int retiraFundo=1,PIG_Cor *corFundo=N
 }
 
 //destroi uma animação
-~CPIGAnimacao(){
+virtual ~CPIGAnimacao(){
     for (int i=0;i<PIG_MAX_MODOS;i++){
         if (modos[i])
             delete modos[i];

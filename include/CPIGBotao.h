@@ -31,9 +31,16 @@ protected:
             SetPosicaoPadraoLabel(PIG_COMPONENTE_CENTRO_CENTRO);
         }
 
+    CPIGBotao(int idComponente,int px, int py, int alt,int larg,int janela=0):
+        CPIGComponente(idComponente,px,py,alt,larg,janela){
+            printf("passou botao\n");
+            tecla = PIG_TECLA_ENTER;//sem tecla de atalho
+            SetPosicaoPadraoLabel(PIG_COMPONENTE_CENTRO_CENTRO);
+        }
+
     //CPIGBotao(int idComponente,std::string nomeArqParam):CPIGBotao(LeParametros(idComponente,nomeArqParam)){}
 
-    ~CPIGBotao(){}
+    virtual ~CPIGBotao(){}
 
 public:
 
@@ -68,7 +75,9 @@ public:
     int Desenha(){
         if (visivel==false) return 0;
 
-        CPIGSprite::Desenha();
+        if (text)
+            CPIGSprite::Desenha();
+        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[corAtual]);
 
         DesenhaLabel();
 

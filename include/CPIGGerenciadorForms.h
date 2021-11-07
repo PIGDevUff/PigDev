@@ -26,6 +26,11 @@ public:
     static PIGForm GetFormComponente(int idComponente){
         return GetForm(idComponente / PIG_MAX_COMPONENTES);
     }
+    template <class T>
+    static T GetComponente(int idComponente){
+        PIGForm f = GetFormComponente(idComponente);
+        return f->GetComponente<T>(idComponente);
+    }
 
     static int CriaForm(int x,int y,int altura,int largura,int janela = 0){
         int resp = forms->ProxID();

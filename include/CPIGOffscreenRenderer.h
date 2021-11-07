@@ -86,7 +86,7 @@ public:
     void DesenhaCirculoFinal(int raio, PIG_Cor corFundo, PIG_Cor corCirculo, double angInicial,double angFinal,int layer=0){
         int xm = larg/2;
         int ym = alt/2;
-        SDL_Point p1,p2,p3,p4;
+        SDL_Point p1,p2;
         LimpaLayer(layer,corCirculo);
         DesenhaCirculoFatia(xm,ym,raio,corFundo,angInicial,angFinal,p1,p2,layer);
         if (angFinal-angInicial<360&&angFinal-angInicial>0){
@@ -98,8 +98,6 @@ public:
 
     void DesenhaCirculoFatia(int centroX,int centroY,int raio, PIG_Cor cor, double angInicial, double angFinal,SDL_Point &iniP,SDL_Point &fimP,int layer=0){
         if (angFinal==0) return;
-        int xm = centroX;
-        int ym = centroY;
         int ra = raio;
         int x = -raio, y = 0, err = 2-2*raio; /* II. Quadrant */
         std::vector<SDL_Point> q1,q2,q3,q4;

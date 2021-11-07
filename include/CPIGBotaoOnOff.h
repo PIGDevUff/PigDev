@@ -7,6 +7,16 @@ class CPIGBotaoOnOff: public CPIGBotao{
 
 protected:
 
+    void IniciaCoresBasicas(){
+        coresBasicas[1] = VERDE;
+        coresBasicas[2] = {100,255,100,255};
+        coresBasicas[3] = CINZA;
+        coresBasicas[4] = VERMELHO;
+        coresBasicas[5] = {255,100,100,255};
+        coresBasicas[6] = {160,160,160,255};
+        corAtual = 1;
+    }
+
     static CPIGBotaoOnOff LeParametros(int idComponente,string parametros){
         CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
 
@@ -18,19 +28,22 @@ protected:
     void AjustaFrame(){
         if (acionado){
             if (habilitado==false){
-                MudaFrameAtual(6);
+                corAtual = 6;
             }
             else if (mouseOver){
-                MudaFrameAtual(5);
-            }else MudaFrameAtual(4);
+                corAtual = 5;
+            }else corAtual = 4;
         }else{
             if (habilitado==false){
-                MudaFrameAtual(3);
+                corAtual = 3;
             }
             else if (mouseOver){
-                MudaFrameAtual(2);
-            }else MudaFrameAtual(1);
+                corAtual = 2;
+            }else corAtual = 1;
         }
+
+        if (text)
+            MudaFrameAtual(corAtual);
     }
 
     int OnAction() override{
@@ -44,6 +57,11 @@ public:
         CPIGBotao(idComponente,px,py,alt,larg,nomeArq,retiraFundo,janela){
             CriaFramesAutomaticosPorLinha(1,2,3);
             MudaFrameAtual(1); //frame de estado normal do botao
+        }
+
+    CPIGBotaoOnOff(int idComponente,int px, int py, int alt,int larg,int janela=0):
+        CPIGBotao(idComponente,px,py,alt,larg,janela){
+            IniciaCoresBasicas();
         }
 
     CPIGBotaoOnOff(int idComponente,std::string nomeArqParam):CPIGBotaoOnOff(LeParametros(idComponente,nomeArqParam)){}

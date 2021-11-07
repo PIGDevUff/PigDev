@@ -11,6 +11,14 @@ protected:
     bool botaoRepeticao;
     double tempoRepeticao;
 
+    void IniciaCoresBasicas(){
+        coresBasicas[1] = AZUL;
+        coresBasicas[2] = {100,100,255,255};
+        coresBasicas[3] = AMARELO;
+        coresBasicas[4] = CINZA;
+        corAtual = 1;
+    }
+
     static CPIGBotaoClick LeParametros(int idComponente,string parametros){
         CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
 
@@ -21,16 +29,19 @@ protected:
 
     void AjustaFrame(){
         if (visivel==false) return;
-        MudaFrameAtual(1);
+        corAtual = 1;
         if (habilitado==false){
-            MudaFrameAtual(4);
+            corAtual=4;
         }else{
             if (acionado){
-                MudaFrameAtual(3);
+                corAtual=3;
             }else if (mouseOver){
-                MudaFrameAtual(2);
+                corAtual=2;
             }
         }
+
+        if (text)
+            MudaFrameAtual(corAtual);
     }
 
     void TrataTimer(){
@@ -60,9 +71,17 @@ public:
             timer = new CPIGTimer(false);
         }
 
+    CPIGBotaoClick(int idComponente,int px, int py, int alt,int larg,int janela=0):
+        CPIGBotao(idComponente,px,py,alt,larg,janela){
+            IniciaCoresBasicas();
+            tempoRepeticao = 0.2;
+            botaoRepeticao = false;
+            timer = new CPIGTimer(false);
+        }
+
     CPIGBotaoClick(int idComponente,std::string nomeArqParam):CPIGBotaoClick(LeParametros(idComponente,nomeArqParam)){}
 
-    ~CPIGBotaoClick(){
+    virtual ~CPIGBotaoClick(){
         delete timer;
     }
 

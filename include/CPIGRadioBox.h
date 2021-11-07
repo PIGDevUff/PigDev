@@ -52,10 +52,15 @@ public:
             arqImagemIcone = imgIcone;
         }
 
+    CPIGRadioBox(int idComponente, int posX, int posY, int larguraTotal,int alturaLinha, std::string imgIcone, int alturaIcone, int larguraIcone,int janela = 0):
+        CPIGListaItemComponente(idComponente,posX,posY,larguraTotal,alturaLinha,janela){
+            arqImagemIcone = imgIcone;
+        }
+
     CPIGRadioBox(int idComponente,std::string nomeArqParam):CPIGRadioBox(LeParametros(idComponente,nomeArqParam)){}
 
     void CriaItem(std::string itemLabel, std::string arqImagemFundoItem="",bool itemHabilitado = true, std::string hintMsg="", int retiraFundo=1){
-        int yItem = pos.y+(altBaseLista)*(itens.size());
+        int yItem = pos.y+alt-(altBaseLista)*(itens.size()+1);
         CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,false,itemHabilitado,hintMsg,retiraFundo);
         itens[itens.size()-1]->DefineFuncaoAjusteFrame(AjustaFrame);
         PIGSprite icone = itens[itens.size()-1]->GetIcone();
@@ -69,15 +74,16 @@ public:
         DesenhaLabel();
 
         SDL_Rect r = {(int)pos.x,*altJanela-((int)pos.y)-alt,larg,alt};
-        SDL_RenderSetClipRect(renderer,&r);
+        //SDL_RenderSetClipRect(renderer,&r);
 
         if (text)//se tiver imagem de fundo
             CPIGSprite::Desenha();
+        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[corAtual]);
 
         for (PIGItemComponente i: itens)
             i->Desenha();
 
-        SDL_RenderSetClipRect(renderer,NULL);
+        //SDL_RenderSetClipRect(renderer,NULL);
 
         return 1;
     }

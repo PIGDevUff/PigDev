@@ -25,7 +25,7 @@ std::vector<std::string> PIGSeparaPalavras(std::string texto,std::string delim){
     std::vector<std::string> resp;
     std::string strAtual = "";
 
-    for (int i=0;i<texto.size();i++){
+    for (unsigned int i=0;i<texto.size();i++){
 
         if (delim.find(texto[i]) != std::string::npos){//achou delimitadores
             resp.push_back(strAtual);
@@ -47,7 +47,7 @@ std::vector<std::string> PIGSeparaPalavras(std::string texto,std::string delim){
 
 //verifica se uma string possui apenas digitos de 0 a 9
 bool PIGSomenteNumeros(std::string frase){
-    for (int i=0;i<frase.size();i++)
+    for (unsigned int i=0;i<frase.size();i++)
         if (frase[i]<'0'||frase[i]>'9')
             return false;
     return true;
@@ -207,7 +207,7 @@ inline double PIGDistancia(PIGPonto2D a, PIGPonto2D b) {
 }
 
 inline bool PIGValorEntre(int x, int a, int b) {
-    return ((x > a) && (x < b) || (x < a) && (x > b));
+    return (((x > a) && (x < b)) || ((x < a) && (x > b)));
 }
 
 #endif // _PigFuncoesBasicas_

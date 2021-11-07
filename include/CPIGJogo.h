@@ -18,7 +18,7 @@ private:
 
 public:
 
-    CPIGJogo(char *nome,int cursor=0,int altura=PIG_ALT_TELA,int largura=PIG_LARG_TELA):CPIGAtributos(){
+    CPIGJogo(const char *nome,int cursor=0,int altura=PIG_ALT_TELA,int largura=PIG_LARG_TELA):CPIGAtributos(){
         rodando = true;
         teclado = SDL_GetKeyboardState(NULL);
         estado = 0;
