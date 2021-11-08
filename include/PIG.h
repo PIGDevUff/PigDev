@@ -5445,6 +5445,10 @@ void PIG_Componentes_GetDimensoesOriginais(int idComponente,int &altura, int &la
     CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetDimensoesOriginais(altura,largura);
 }
 
+void PIG_Componentes_SetMargens(int idComponente,int horEsq,int horDir, int vertBaixo,int vertCima){
+    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetMargens(horEsq,horDir,vertBaixo,vertCima);
+}
+
 /*******BOTAOCLICK*********/
 
 int PIG_CriaBotaoClick(int idForm,int x,int y,int alt,int larg,char* nomeArq,int retiraFundo = 1){
@@ -5512,10 +5516,6 @@ void PIG_AreaDeTexto_SetTexto(int idComponente,char* frase){
     CPIGGerenciadorForms::GetComponente<PIGAreaDeTexto>(idComponente)->SetTexto(frase);
 }
 
-void PIG_AreaDeTexto_SetMargens(int idComponente,int horEsq,int horDir, int vertBaixo,int vertCima){
-    CPIGGerenciadorForms::GetComponente<PIGAreaDeTexto>(idComponente)->SetMargens(horEsq,horDir,vertBaixo,vertCima);
-}
-
 void PIG_AreaDeTexto_SetCorCursor(int idComponente,PIG_Cor cor){
     CPIGGerenciadorForms::GetComponente<PIGAreaDeTexto>(idComponente)->SetCorCursor(cor);
 }
@@ -5536,10 +5536,6 @@ int PIG_CriaCampoTexto(int idForm,int x, int y, int altura,int largura,char* nom
 
 int PIG_CriaCampoTexto(int idForm,int x, int y, int altura,int largura,int maxCars = 200, bool apenasNumeros=false){
     return CPIGGerenciadorForms::GetForm(idForm)->CriaCampoTextoESenha(x,y,altura,largura,maxCars,apenasNumeros,false);
-}
-
-void PIG_CampoTexto_SetMargens(int idComponente,int horEsq,int horDir, int vertBaixo,int vertCima){
-    CPIGGerenciadorForms::GetComponente<PIGCampoTextoESenha>(idComponente)->SetMargens(horEsq,horDir,vertBaixo,vertCima);
 }
 
 void PIG_CampoTexto_SetTexto(int idComponente,char* frase){
@@ -5566,10 +5562,6 @@ int PIG_CriaCampoSenha(int idForm,int x, int y, int altura,int largura,char* nom
 
 int PIG_CriaCampoSenha(int idForm,int x, int y, int altura,int largura,int maxCars = 200, bool apenasNumeros=false){
     return CPIGGerenciadorForms::GetForm(idForm)->CriaCampoTextoESenha(x,y,altura,largura,maxCars,apenasNumeros,true);
-}
-
-void PIG_CampoSenha_SetMargens(int idComponente,int horEsq,int horDir, int vertBaixo,int vertCima){
-    CPIGGerenciadorForms::GetComponente<PIGCampoTextoESenha>(idComponente)->SetMargens(horEsq,horDir,vertBaixo,vertCima);
 }
 
 void PIG_CampoSenha_SetTexto(int idComponente,char* frase){
@@ -5874,10 +5866,6 @@ void PIG_GaugeBar_SetValorMax(int idComponente,double maximo){
 
 void PIG_GaugeBar_AvancaBarra(int idComponente,double valor){
     CPIGGerenciadorForms::GetComponente<PIGGaugeBar>(idComponente)->AvancaMarcador(valor);
-}
-
-void PIG_GaugeBar_SetMargens(int idComponente,int margemEsq,int margemDir,int margemCima, int margemBaixo){
-    CPIGGerenciadorForms::GetComponente<PIGGaugeBar>(idComponente)->SetMargens(margemEsq,margemDir,margemCima,margemBaixo);
 }
 
 void PIG_GaugeBar_SetPorcentagemConcluida(int idComponente,double porcentagem){

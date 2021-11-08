@@ -76,10 +76,13 @@ public:
     }
 
     void SetAcionado(bool valor){
-        if (acionado&&!valor)
-            Desloca(-offX,+offY);
-        else if (!acionado&&valor)
-            Desloca(offX,-offY);
+        if (acionado&&!valor){
+            Desloca(-margemEsq,-margemBaixo);
+            SetDimensoes(alt-(margemCima+margemBaixo),larg-(margemEsq+margemDir));
+        }else if (!acionado&&valor){
+            Desloca(margemEsq,margemBaixo);
+            SetDimensoes(alt+(margemCima+margemBaixo),larg+(margemEsq+margemDir));
+        }
         acionado = valor;
         if (AjustaFrame) AjustaFrame(this);
     }

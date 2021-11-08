@@ -74,23 +74,23 @@ private:
     void AjustaSlideVerticalPeloCursor(){
         int alturaTotalTexto = linhas.size()*(espacoEntreLinhas+altLetra);
 
-        if (alturaTotalTexto>(alt-margemVertCima+margemVertBaixo)){
+        if (alturaTotalTexto>(alt-margemCima+margemBaixo)){
             if (slideVerticalAtivado==false){
                 slideVerticalAtivado = true;
-                SetMargens(margemHorEsq,margemHorDir+20,margemVertBaixo,margemVertCima);
-                SetLargMaxTexto(larg-margemHorDir-margemHorEsq);
+                SetMargens(margemEsq,margemDir+20,margemBaixo,margemCima);
+                SetLargMaxTexto(larg-margemDir-margemEsq);
             }
         }else slideVerticalAtivado = false;
 
         //printf("vett ativado %d\n",slideVerticalAtivado);
         if (slideVerticalAtivado){
-            slideVertical->SetValorMax(alturaTotalTexto-(alt-margemVertCima-margemVertBaixo));
+            slideVertical->SetValorMax(alturaTotalTexto-(alt-margemCima-margemBaixo));
             int deltaY=0;
-            if (yCursor<pos.y+margemVertBaixo){
-                deltaY = pos.y+margemVertBaixo-yCursor;
+            if (yCursor<pos.y+margemBaixo){
+                deltaY = pos.y+margemBaixo-yCursor;
                 //printf("posy %d marg %d yC %d",(int)pos.y,margemVertBaixo,yCursor);
-            }else if (yCursor+altLetra>pos.y+alt-margemVertCima){
-                deltaY = (pos.y+alt-margemVertCima) - (yCursor+altLetra);
+            }else if (yCursor+altLetra>pos.y+alt-margemCima){
+                deltaY = (pos.y+alt-margemCima) - (yCursor+altLetra);
                 //printf("posy %d alt %d marg %d yC %d",(int)pos.y,alt,margemVertCima,yCursor+altLetra);
             }
             //printf(" deltaY %d\n",deltaY);
@@ -106,8 +106,8 @@ private:
     //}
 
     void IniciaPosicaoTexto(){
-        yTexto = pos.y + alt-altLetra-margemVertCima;
-        xTexto = pos.x + margemHorEsq;
+        yTexto = pos.y + alt-altLetra-margemCima;
+        xTexto = pos.x + margemEsq;
     }
 
     //Ajusta o alinhamento do texto quando ocorre alguma modificaçăo
@@ -205,10 +205,10 @@ private:
     //
     void DesenhaLinhasHorizontais(){
         int yLinha = yTexto;
-        int xLinha = pos.x+margemHorEsq;
+        int xLinha = pos.x+margemEsq;
 
-        while(yLinha >= pos.y+margemVertBaixo){
-            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(xLinha,yLinha,xLinha+larg-margemHorDir,yLinha,coresBasicas[2]);
+        while(yLinha >= pos.y+margemBaixo){
+            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(xLinha,yLinha,xLinha+larg-margemDir,yLinha,coresBasicas[2]);
             yLinha -= (espacoEntreLinhas + altLetra);
         }
     }
@@ -300,6 +300,9 @@ public:
 
 
     int Desenha() override{
+
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x,pos.y,alt,larg);
+
         //imagem de fundo
         if (text)
             CPIGSprite::Desenha();
@@ -307,24 +310,19 @@ public:
 
         //DesenhaMarcacaoMargem();
 
-        DesenhaLabel();
-
-        SDL_Rect r={(int)pos.x+margemHorEsq,*altJanela-((int)pos.y)-alt+margemVertCima,larg-(margemHorEsq+margemHorDir),alt-(margemVertBaixo+margemVertCima)};
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaWorldScreen(r.x,r.y,r.x,r.y);
-
-        SDL_RenderSetClipRect(renderer,&r);
-
         DesenhaCursor();//desenha o cursor (se estiver em ediçăo)
         CPIGGerenciadorFontes::GetFonte(fonteTexto)->EscreveLonga(texto,xTexto,yTexto,largMax,(espacoEntreLinhas + altLetra),BRANCO,PIG_TEXTO_ESQUERDA);
 
         //desbloqueia o desenho fora da area do componente
-        SDL_RenderSetClipRect(renderer,NULL);
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
 
         if(linhasPauta) DesenhaLinhasHorizontais();
 
         if(slideVerticalAtivado) slideVertical->Desenha();
 
         if(slideHorizontalAtivado) slideHorizontal->Desenha();
+
+        DesenhaLabel();
 
         EscreveHint();
 

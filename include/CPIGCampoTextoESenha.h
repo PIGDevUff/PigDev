@@ -41,13 +41,13 @@ private:
     }
 
     //recupera a string com o texto visível (com máscara de senha ou năo)
-    std::string GetTextoVisivel(){
+    inline std::string GetTextoVisivel(){
         return (this->*GetTextoVisivelPtr)();
     }
 
     void IniciaPosicaoTexto(){
-        yTexto = pos.y+margemVertBaixo;
-        xTexto = pos.x+margemHorEsq;
+        yTexto = pos.y+margemBaixo;
+        xTexto = pos.x+margemEsq;
     }
 
     //ajusta o alinhamento do cursor
@@ -61,13 +61,13 @@ private:
         aux.assign(textoBase,0,posCursor); //pega a string apenas do início até onde o cursor está
         int largTextoAteCursor = CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetLarguraPixelsString(aux); //largura (em pixels) até o ponto do cursor
 
-        if (largTextoTotal>larg-margemHorDir-margemHorEsq){ //não cabe todo dentro da caixa
-            xTexto = (pos.x+larg-margemHorDir)-largTextoTotal;
-            int deltaCursor = pos.x+margemHorEsq-(xTexto+largTextoAteCursor);
+        if (largTextoTotal>larg-margemDir-margemEsq){ //não cabe todo dentro da caixa
+            xTexto = (pos.x+larg-margemDir)-largTextoTotal;
+            int deltaCursor = pos.x+margemEsq-(xTexto+largTextoAteCursor);
             if (deltaCursor>0)
                 xTexto += deltaCursor;
         }else{
-            xTexto = pos.x+margemHorEsq;
+            xTexto = pos.x+margemEsq;
         }
 
         xCursor = xTexto + largTextoAteCursor;
@@ -129,22 +129,18 @@ public:
     //desenha o componente completo
     int Desenha() override{
 
-        SDL_Rect r={(int)(pos.x+margemHorEsq),(int)(*altJanela-pos.y-alt+margemVertCima),larg-(margemHorEsq+margemHorDir)+1,alt-(margemVertBaixo+margemVertCima)};
-
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaWorldScreen(r.x,r.y,r.x,r.y);
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x,pos.y,alt,larg);
 
         //imagem de fundo
         if (text)
             CPIGSprite::Desenha();
         else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
 
-        SDL_RenderSetClipRect(renderer,&r);
-
         CPIGGerenciadorFontes::GetFonte(fonteTexto)->Escreve(GetTextoVisivel(),xTexto,yTexto,BRANCO,PIG_TEXTO_ESQUERDA);
         DesenhaCursor();//desenha o cursor (se estiver em ediçăo)
 
         //desbloqueia o desenho fora da area do componente
-        SDL_RenderSetClipRect(renderer,NULL);
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
 
         DesenhaLabel();
         EscreveHint();

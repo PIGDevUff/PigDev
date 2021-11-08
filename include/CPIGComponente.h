@@ -22,7 +22,7 @@ protected:
     PIG_FuncaoSimples acao;
     PIG_Cor coresBasicas[10];
     int corAtual;
-    int offX, offY;
+    int margemEsq,margemDir,margemCima,margemBaixo;
     void *param;
 
     //inicializa o componente com valores padrão
@@ -34,7 +34,7 @@ protected:
         audioComponente = -1;
         pos.x = px;
         pos.y = py;
-        offX = offY = 2;
+        margemEsq = margemDir = margemCima = margemBaixo = 0;
         mouseOver = acionado = temFoco = false;
         habilitado = visivel = true;
         param = NULL;
@@ -404,6 +404,13 @@ public:
         if (CPIGGerenciadorJanelas::GetJanela(idJanela)->GetUsandoCameraFixa())
             return CPIGMouse::PegaXYTela();
         else return CPIGMouse::PegaXYWorld();
+    }
+
+    virtual void SetMargens(int mEsq,int mDir,int mCima,int mBaixo){
+        margemEsq = mEsq;
+        margemDir = mDir;
+        margemCima = mCima;
+        margemBaixo = mBaixo;
     }
 
 };

@@ -35,25 +35,28 @@ class CPIGSlideBar : public CPIGGauge{
 
         switch (orientacaoCrescimento){
         case PIG_GAUGE_ESQ_DIR:
-                xMarc = pos.x+(int)(porcentagemConcluida*(larg-largMarcador))+offX;
-                yMarc = pos.y+offY;
+                xMarc = pos.x+(int)(porcentagemConcluida*(larg-largMarcador));
+                yMarc = pos.y;
                 break;
         case PIG_GAUGE_DIR_ESQ:
-                xMarc = pos.x+(int)((1-porcentagemConcluida)*(larg-largMarcador))+offX;
-                yMarc = pos.y+offY;
+                xMarc = pos.x+(int)((1-porcentagemConcluida)*(larg-largMarcador));
+                yMarc = pos.y;
                 break;
         case PIG_GAUGE_BAIXO_CIMA:
-                xMarc = pos.x+offX;
-                yMarc = pos.y+(int)(porcentagemConcluida*(alt-altMarcador))+offY;
+                xMarc = pos.x;
+                yMarc = pos.y+(int)(porcentagemConcluida*(alt-altMarcador));
                 break;
         case PIG_GAUGE_CIMA_BAIXO:
-                xMarc = pos.x+offX;
-                yMarc = pos.y+(int)((1-porcentagemConcluida)*(alt-altMarcador))+offY;
+                xMarc = pos.x;
+                yMarc = pos.y+(int)((1-porcentagemConcluida)*(alt-altMarcador));
                 break;
         }
 
+        xMarc += margemEsq;
+        yMarc += margemBaixo;
         if (marcador){
             marcador->Move(xMarc,yMarc);
+            marcador->SetDimensoes(altMarcador-(margemBaixo+margemCima),largMarcador-(margemEsq+margemDir));
         }
 
     }
@@ -175,7 +178,7 @@ public:
 
         if (marcador)
             marcador->Desenha();
-        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(xMarc,yMarc,altMarcador,largMarcador,coresBasicas[1]);
+        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(xMarc,yMarc,altMarcador-(margemBaixo+margemCima),largMarcador-(margemEsq+margemDir),coresBasicas[1]);
 
         DesenhaLabel();
 

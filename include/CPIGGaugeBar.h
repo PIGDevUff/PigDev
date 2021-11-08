@@ -6,7 +6,6 @@
 class CPIGGaugeBar: public CPIGGauge{
 
 private:
-    int margemEsq,margemDir,margemCima,margemBaixo;
 
     inline void IniciaCoresBasicas(){
         coresBasicas[0] = BRANCO;
@@ -117,7 +116,6 @@ public:
     CPIGGaugeBar(int idComponente,int px, int py,int altura,int largura,std::string imgMoldura,std::string imgMarcador,int retiraFundoTrilha=1,int retiraFundoMarcador=1,int janela=0):
         CPIGGauge(idComponente,px,py,altura,largura,imgMoldura,altura,largura,imgMarcador,retiraFundoTrilha,retiraFundoMarcador,janela){
         IniciaCoresBasicas();
-        margemEsq = margemDir = margemCima = margemBaixo = 0;
         if (imgMarcador!=""){
             marcador = new CPIGSprite(-1,imgMarcador,retiraFundoMarcador,NULL,janela);
             AtualizaMarcador();
@@ -126,7 +124,6 @@ public:
 
     CPIGGaugeBar(int idComponente,int px, int py,int altura,int largura,int janela=0):
         CPIGGauge(idComponente,px,py,altura,largura,janela){
-        margemEsq = margemDir = margemCima = margemBaixo = 0;
         IniciaCoresBasicas();
     }
 
@@ -177,12 +174,8 @@ public:
         return 0;
     }
 
-    void SetMargens(int mEsq,int mDir,int mCima,int mBaixo){
-        margemEsq = mEsq;
-        margemDir = mDir;
-        margemCima = mCima;
-        margemBaixo = mBaixo;
-        //printf("atualizando marc\n");
+    virtual void SetMargens(int mEsq,int mDir,int mCima,int mBaixo)override{
+        CPIGComponente::SetMargens(mEsq,mDir,mCima,mBaixo);
         AtualizaMarcador();
     }
 };

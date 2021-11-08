@@ -60,9 +60,7 @@ private:
     }
 
     void DesenhaItemDestaque(){
-        SDL_Rect rectAux = dest;
-        rectAux.h = altBaseLista;
-        SDL_RenderSetClipRect(renderer,&rectAux);
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea((int)pos.x,((int)pos.y)+alt-altBaseLista,altBaseLista,larg);
         if (text){//se tiver imagem de fundo
             dest.h=altBaseLista;
             CPIGSprite::Desenha();
@@ -75,24 +73,21 @@ private:
             itens[itemDestaque]->Desenha();         //desenha o item no cabeçalho
             itens[itemDestaque]->Move(pItem.x,pItem.y); //devolve o item para a posição normal (onde também deverá ser desenhado)
         }
-        SDL_RenderSetClipRect(renderer,NULL);
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
     }
 
     void DesenhaListaItens(){
-        SDL_Rect r = dest;
-
-        SDL_RenderSetClipRect(renderer,&r);
-        dest.h = (itens.size()+1)*altBaseLista;
-        //printf("dim %.0f, h: %d\n",pos.y,dest.h);
-        frameAtual=0;
-        if (text)
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea((int)pos.x,((int)pos.y)-altBaseLista,(itens.size()+1)*altBaseLista,larg);
+        if (text){
+            frameAtual=0;
+            dest.h = (itens.size()+1)*altBaseLista;
             CPIGSprite::Desenha();
-        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,(itens.size()+1)*altBaseLista,larg,coresBasicas[corAtual]);
+        }else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y-altBaseLista,(itens.size()+1)*altBaseLista,larg,coresBasicas[corAtual]);
 
         for (PIGItemComponente i: itens)
             i->Desenha();
 
-        SDL_RenderSetClipRect(renderer,NULL);
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
     }
 
 public:

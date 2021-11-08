@@ -83,9 +83,7 @@ public:
 
         DesenhaLabel();
 
-        SDL_Rect r = {(int)pos.x,*altJanela-((int)pos.y)-alt,larg,alt};
-        SDL_RenderSetClipRect(renderer,&r);
-
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x,pos.y,alt,larg);
         if (text)//se tiver imagem de fundo
             CPIGSprite::Desenha();
         else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[corAtual]);
@@ -93,7 +91,7 @@ public:
         for (PIGItemComponente i: itens)
             i->Desenha();
 
-        SDL_RenderSetClipRect(renderer,NULL);
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
 
         return 1;
     }

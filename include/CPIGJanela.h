@@ -377,6 +377,21 @@ PIG_Cor GetPixel(int x,int y) {
     return resp;
 }
 
+void BloqueiaArea(int x, int y, int alt, int larg){
+    SDL_Rect rect;
+    rect.x = x;
+    rect.y = altura-(y+alt);
+    rect.h = alt;
+    rect.w = larg;
+
+    GetCamera()->ConverteCoordenadaWorldScreen(rect.x,rect.y,rect.x,rect.y);
+    SDL_RenderSetClipRect(renderer,&rect);
+}
+
+void DesbloqueiaArea(){
+    SDL_RenderSetClipRect(renderer,NULL);
+}
+
 };
 
 typedef CPIGJanela *PIGJanela;

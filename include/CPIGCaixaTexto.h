@@ -14,11 +14,11 @@ private:
 
 protected:
 
-    //checa se o ponteiro do mouse est· sobre o componente
+    //checa se o ponteiro do mouse est√° sobre o componente
     int ChecaMouseOver(SDL_Point pMouse) override{
         if (visivel==false) return -1;
 
-        SDL_Rect r = {(int)pos.x + margemHorEsq,((int)pos.y) + margemVertBaixo,larg - (margemHorDir + margemHorEsq),alt - (margemVertBaixo + margemVertCima)};
+        SDL_Rect r = {(int)pos.x + margemEsq,((int)pos.y) + margemBaixo,larg - (margemDir + margemEsq),alt - (margemBaixo + margemCima)};
 
         SetMouseOver(SDL_PointInRect(&pMouse,&r));
         return mouseOver;
@@ -37,7 +37,7 @@ protected:
         }
     }
 
-    //trata teclas de movimentaÁ„o do cursor
+    //trata teclas de movimenta√ßƒÉo do cursor
     virtual int TrataTeclasEspeciais(PIG_Evento evento){
         switch (evento.teclado.tecla){
             case PIG_TECLA_BACKSPACE:
@@ -81,7 +81,6 @@ protected:
     int fonteTexto;
     int posCursor;
     int xTexto,yTexto,xCursor,yCursor;
-    int margemHorEsq,margemHorDir,margemVertCima,margemVertBaixo;
     int altLetra;
 
     virtual void AjustaPosicaoTextoCursor(){}//pure virtual, porque cada classe derivada vai fazer ajustes diferentes
@@ -94,17 +93,17 @@ protected:
 
     virtual std::string GetTextoVisivel() =0;//pure virtual, porque cada classe derivada vai retornar um texto de forma diferente
 
-    //posiciona o cursor uma posiÁ„o ‡ frente
+    //posiciona o cursor uma posi√ßƒÉo ≈ï frente
     int AvancaCursor(){
-        if (posCursor>=texto.size()) return 0;//n„o tem caracter na frente do cursor
+        if (posCursor>=texto.size()) return 0;//nƒÉo tem caracter na frente do cursor
         posCursor++;
         AjustaPosicaoTextoCursor();
         return 1;
     }
 
-    //posiciona o cursor uma posiÁ„o atr·s
+    //posiciona o cursor uma posi√ßƒÉo atr√°s
     int VoltaCursor(){
-        if (posCursor==0) return 0;//n„o tem caractere atrÈs do cursor
+        if (posCursor==0) return 0;//nƒÉo tem caractere atr√©s do cursor
         posCursor--;
         AjustaPosicaoTextoCursor();
         return 1;
@@ -112,9 +111,9 @@ protected:
 
     //reira um caracter com a tecla backspace
     int RetiraTextoBackSpace(){
-        if (texto.size()==0||posCursor==0) return 0;//n„o tem caractere atrÈs do cursor
+        if (texto.size()==0||posCursor==0) return 0;//nƒÉo tem caractere atr√©s do cursor
 
-        texto.erase(posCursor-1,1);//retira o caracter imediatamente atr·s do cursor e retrocede com ele
+        texto.erase(posCursor-1,1);//retira o caracter imediatamente atr√°s do cursor e retrocede com ele
         VoltaCursor();
 
         if (audioComponente>=0) CPIGGerenciadorAudios::Play(audioComponente);
@@ -123,7 +122,7 @@ protected:
 
     //retira um caracter com a tecla delete
     int RetiraTextoDelete(){
-        if (texto.size()==0||posCursor>=texto.size()) return 0;//n„o tem caracter na frente do cursor
+        if (texto.size()==0||posCursor>=texto.size()) return 0;//nƒÉo tem caracter na frente do cursor
 
         texto.erase(posCursor,1);//retira o caracter imediatamente a frente do cursor
 
@@ -131,10 +130,10 @@ protected:
         return 1;
     }
 
-    //adiciona um texto (caracter ou string) na posiÁ„o indicada pelo cursor (se possÌvel)
+    //adiciona um texto (caracter ou string) na posi√ßƒÉo indicada pelo cursor (se poss√≠vel)
     virtual int AdicionaTexto(std::string frase){
-        if (texto.size()+frase.size()>maxCaracteres) return 0;//ultrapassa o limite m·ximo de carcteres
-        if (somenteNumeros&&!PIGSomenteNumeros(frase)) return 0;//n„o È n˙mero
+        if (texto.size()+frase.size()>maxCaracteres) return 0;//ultrapassa o limite m√°ximo de carcteres
+        if (somenteNumeros&&!PIGSomenteNumeros(frase)) return 0;//nƒÉo √© n√∫mero
 
         texto.insert(posCursor,frase);
 
@@ -183,11 +182,23 @@ protected:
         return linha.size();
     }
 
-    //o botao esquerdo faz com que a ediÁ„o do trexto comece ou que o cursor seja reposicionado
+    //o botao esquerdo faz com que a edi√ßƒÉo do trexto comece ou que o cursor seja reposicionado
     virtual int TrataMouseBotaoEsquerdo(SDL_Point p,int inicioLinha = 0){
         posCursor = CalculaPosicaoCursor(GetTextoVisivel(),p.x);
         AjustaPosicaoTextoCursor();
         return PIG_SELECIONADO_TRATADO;
+    }
+
+    void IniciaBase(int maxCars, bool apenasNum){
+        margemEsq = margemDir = margemCima = margemBaixo = 5;
+        posLabel = PIG_COMPONENTE_ESQ_BAIXO;//posi√ßƒÉo padrƒÉo do label
+        posCursor = 0;//cursor no in√≠cio do texto
+        cursorExibido = true;
+        timer = new CPIGTimer(false);//o timer do cursor que s√≥ ser√° exibido quando estiver editando
+        SetFonteTexto(0);
+        maxCaracteres = maxCars;
+        somenteNumeros = apenasNum;
+        AjustaPosicaoTextoCursor();
     }
 
 
@@ -195,28 +206,12 @@ public:
 
     CPIGCaixaTexto(int idComponente,int px, int py, int altura,int largura,std::string nomeArq,int maxCars = 200,bool apenasNumeros=false,int retiraFundo=1,int janela=0):
         CPIGComponente(idComponente,px,py,altura,largura,nomeArq,retiraFundo,janela){
-        margemHorEsq = margemHorDir = margemVertCima = margemVertBaixo = 5;
-        posLabel = PIG_COMPONENTE_ESQ_BAIXO;//posiÁ„o padr„o do label
-        posCursor = 0;//cursor no inÌcio do texto
-        cursorExibido = true;
-        timer = new CPIGTimer(false);//o timer do cursor que sÛ ser· exibido quando estiver editando
-        SetFonteTexto(0);
-        maxCaracteres = maxCars;
-        somenteNumeros = apenasNumeros;
-        AjustaPosicaoTextoCursor();
+            IniciaBase(maxCars,apenasNumeros);
     }
 
     CPIGCaixaTexto(int idComponente,int px, int py, int altura,int largura,int maxCars = 200,bool apenasNumeros=false,int janela=0):
         CPIGComponente(idComponente,px,py,altura,largura,janela){
-        margemHorEsq = margemHorDir = margemVertCima = margemVertBaixo = 5;
-        posLabel = PIG_COMPONENTE_ESQ_BAIXO;//posiÁ„o padr„o do label
-        posCursor = 0;//cursor no inÌcio do texto
-        cursorExibido = true;
-        timer = new CPIGTimer(false);//o timer do cursor que sÛ ser· exibido quando estiver editando
-        SetFonteTexto(0);
-        maxCaracteres = maxCars;
-        somenteNumeros = apenasNumeros;
-        AjustaPosicaoTextoCursor();
+            IniciaBase(maxCars,apenasNumeros);
     }
 
     virtual ~CPIGCaixaTexto(){
@@ -231,6 +226,7 @@ public:
         return 1;
     }
 
+    //deifne a fonte de texto
     virtual void SetFonteTexto(int fonte){
         fonteTexto = fonte;
         altLetra = CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetTamanhoBaseFonte()+CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetFonteDescent();
@@ -247,6 +243,7 @@ public:
         coresBasicas[1] = cor;
     }
 
+    //define se o componente est√° em foco ou n√£o
     void SetFoco(bool valor) override{
         temFoco = valor;
         if (temFoco) SDL_StartTextInput();
@@ -264,12 +261,9 @@ public:
         yTexto += dy;
     }
 
-        //define as margens do componente
-    void SetMargens(int horEsq,int horDir, int vertBaixo,int vertCima){
-        margemVertCima = vertCima;
-        margemVertBaixo = vertBaixo;
-        margemHorDir = horDir;
-        margemHorEsq = horEsq;
+    //define as margens do componente
+    virtual void SetMargens(int mEsq,int mDir, int mBaixo,int mCima)override{
+        CPIGComponente::SetMargens(mEsq,mDir,mCima,mBaixo);
         AjustaPosicaoTextoCursor();
     }
 
