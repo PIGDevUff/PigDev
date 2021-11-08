@@ -345,13 +345,14 @@ public:
 
     }
 
-    void SetPosPadraoComponenteNaTela(PIG_Ancora ancora){
+    //ainda nao funcionando
+    /*void SetPosPadraoComponenteNaTela(PIG_Ancora ancora){
         int largJanela,altJanela;
 
         largJanela = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetLargura();
         //altJanela = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
 
-        /*switch(ancora){
+        switch(ancora){
         case PIG_ANCORA_SUL:
             Move((largJanela - larg)/2,0);
             break;
@@ -381,9 +382,9 @@ public:
             break;
         }
 
-        */
 
-    }
+
+    }*/
 
     void SetCorBasica(int indice, PIG_Cor cor){
         if (indice<0||indice>=10) return;

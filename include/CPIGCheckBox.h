@@ -55,12 +55,12 @@ protected:
 
 public:
 
-    CPIGCheckBox(int idComponente, int posX, int posY, int larguraTotal,int alturaLinha,std::string imgIcone, int alturaIcone, int larguraIcone,std::string imgFundo, int retiraFundo=1,int janela = 0):
+    CPIGCheckBox(int idComponente, int posX, int posY, int larguraTotal, int alturaLinha, string imgIcone, int alturaIcone, int larguraIcone, string imgFundo, int retiraFundo=1, int janela = 0):
         CPIGListaItemComponente(idComponente,posX,posY,larguraTotal,alturaLinha,imgFundo,retiraFundo,janela){
             arqImagemIcone = imgIcone;
         }
 
-    CPIGCheckBox(int idComponente, int posX, int posY, int larguraTotal,int alturaLinha,std::string imgIcone, int alturaIcone, int larguraIcone,int janela = 0):
+    CPIGCheckBox(int idComponente, int posX, int posY, int larguraTotal, int alturaLinha, string imgIcone, int alturaIcone, int larguraIcone, int janela = 0):
         CPIGListaItemComponente(idComponente,posX,posY,larguraTotal,alturaLinha,janela){
             arqImagemIcone = imgIcone;
         }
@@ -69,7 +69,7 @@ public:
 
     virtual ~CPIGCheckBox(){}
 
-    void CriaItem(std::string itemLabel, std::string arqImagemFundoItem="", bool itemMarcado = false, bool itemHabilitado = true, std::string hintMsg="", int retiraFundo=1){
+    void CriaItem(string itemLabel, string arqImagemFundoItem="", bool itemMarcado = false, bool itemHabilitado = true, string hintMsg="", int retiraFundo=1){
         int yItem = pos.y+alt-(altBaseLista)*(itens.size()+1);
         CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,itemMarcado,itemHabilitado,hintMsg,retiraFundo);
         itens[itens.size()-1]->DefineFuncaoAjusteFrame(AjustaFrame);
@@ -135,7 +135,7 @@ public:
         return 1;
     }
 
-    std::vector <int> GetItensMarcados(){
+    vector <int> GetItensMarcados(){
         std::vector <int> resp;
         for(int i=0;i<itens.size();i++)
             if(itens[i]->GetAcionado())resp.push_back(i);

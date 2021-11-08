@@ -54,21 +54,21 @@ protected:
 
 public:
 
-    CPIGRadioBox(int idComponente, int posX, int posY, int larguraTotal,int alturaLinha, std::string imgIcone, int alturaIcone, int larguraIcone,std::string imgFundo, int retiraFundo=1,int janela = 0):
+    CPIGRadioBox(int idComponente, int posX, int posY, int larguraTotal, int alturaLinha, string imgIcone, int alturaIcone, int larguraIcone, string imgFundo, int retiraFundo=1, int janela = 0):
         CPIGListaItemComponente(idComponente,posX,posY,larguraTotal,alturaLinha,imgFundo,retiraFundo,janela){
             arqImagemIcone = imgIcone;
         }
 
-    CPIGRadioBox(int idComponente, int posX, int posY, int larguraTotal,int alturaLinha, std::string imgIcone, int alturaIcone, int larguraIcone,int janela = 0):
+    CPIGRadioBox(int idComponente, int posX, int posY, int larguraTotal, int alturaLinha, string imgIcone, int alturaIcone, int larguraIcone, int janela = 0):
         CPIGListaItemComponente(idComponente,posX,posY,larguraTotal,alturaLinha,janela){
             arqImagemIcone = imgIcone;
         }
 
-    CPIGRadioBox(int idComponente,std::string nomeArqParam):CPIGRadioBox(LeParametros(idComponente,nomeArqParam)){}
+    CPIGRadioBox(int idComponente,string parametros):CPIGRadioBox(LeParametros(idComponente,parametros)){}
 
     virtual ~CPIGRadioBox(){}
 
-    void CriaItem(std::string itemLabel, std::string arqImagemFundoItem="",bool itemHabilitado = true, std::string hintMsg="", int retiraFundo=1){
+    void CriaItem(string itemLabel, string arqImagemFundoItem="",bool itemHabilitado = true, string hintMsg="", int retiraFundo=1){
         int yItem = pos.y+alt-(altBaseLista)*(itens.size()+1);
         CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,false,itemHabilitado,hintMsg,retiraFundo);
         itens[itens.size()-1]->DefineFuncaoAjusteFrame(AjustaFrame);

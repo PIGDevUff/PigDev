@@ -15,7 +15,7 @@ private:
         coresBasicas[1] = PRETO;
     }
 
-    static CPIGCampoTextoESenha LeParametros(int idComponente,std::string parametros){
+    static CPIGCampoTextoESenha LeParametros(int idComponente,string parametros){
         CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
 
         if (atrib.GetString("nomeArq","")!=""){
@@ -34,14 +34,14 @@ private:
     }
 
     //retorna o texto com a quantidade de símbolos (máscara) igual ao tamanho da string com textobase
-    std::string GetTextoMask(){
-        std::string resp;
+    string GetTextoMask(){
+        string resp;
         resp.assign(texto.size(),mascara);
         return resp;
     }
 
     //recupera a string com o texto visível (com máscara de senha ou năo)
-    inline std::string GetTextoVisivel(){
+    inline string GetTextoVisivel(){
         return (this->*GetTextoVisivelPtr)();
     }
 
@@ -52,12 +52,12 @@ private:
 
     //ajusta o alinhamento do cursor
     void AjustaPosicaoTextoCursor()override{
-        std::string textoBase = GetTextoVisivel();
+        string textoBase = GetTextoVisivel();
         int largTextoTotal = CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetLarguraPixelsString(textoBase); //largura total do texto todo (em pixels)
 
         IniciaPosicaoTexto();
 
-        std::string aux;
+        string aux;
         aux.assign(textoBase,0,posCursor); //pega a string apenas do início até onde o cursor está
         int largTextoAteCursor = CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetLarguraPixelsString(aux); //largura (em pixels) até o ponto do cursor
 
@@ -122,7 +122,7 @@ public:
             IniciaBase(campoSenha);
     }
 
-    CPIGCampoTextoESenha(int idComponente,std::string parametros):CPIGCampoTextoESenha(LeParametros(idComponente,parametros)){}
+    CPIGCampoTextoESenha(int idComponente,string parametros):CPIGCampoTextoESenha(LeParametros(idComponente,parametros)){}
 
     virtual ~CPIGCampoTextoESenha(){}
 
@@ -159,10 +159,6 @@ public:
         }
 
         return PIG_NAO_SELECIONADO;
-    }
-
-    int TrataEventoTeclado(PIG_Evento evento){
-        return CPIGCaixaTexto::TrataEventoTeclado(evento);
     }
 
 };

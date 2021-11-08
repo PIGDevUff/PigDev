@@ -70,7 +70,7 @@ public:
             IniciaCoresBasicas();
         }
 
-    CPIGBotaoOnOff(int idComponente,std::string nomeArqParam):CPIGBotaoOnOff(LeParametros(idComponente,nomeArqParam)){}
+    CPIGBotaoOnOff(int idComponente,string parametros):CPIGBotaoOnOff(LeParametros(idComponente,parametros)){}
 
     int TrataEventoTeclado(PIG_Evento evento){
         if (evento.teclado.acao==PIG_TECLA_PRESSIONADA && evento.teclado.tecla==tecla){

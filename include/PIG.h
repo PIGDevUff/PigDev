@@ -5330,7 +5330,7 @@ void PIG_DestroiForm(int idForm){
 /*******COMPONENTES*********/
 
 int PIG_CriaComponentePorParametro(int idForm,PIGTiposComponentes componente,char* parametros){
-    return CPIGGerenciadorForms::GetForm(idForm)->CriaComponentePorParametro(componente,parametros);//CPIGGerenciadorForms::CriaComponentePorArquivo(idForm,componente,nomeArquivo);
+    return CPIGGerenciadorForms::GetForm(idForm)->CriaComponentePorParametro(componente,parametros);
 }
 
 void PIG_Componentes_DefineAcao(int idComponente,PIG_FuncaoSimples funcao,void *parametro){
@@ -5393,9 +5393,9 @@ void PIG_Componentes_SetPosPadraoExternaComponente(int idComponente,PIG_PosicaoC
     CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetPosPadraoExternaComponente(pos,componenteAssociado);
 }
 
-void PIG_Componentes_SetPosPadraoComponenteNaTela(int idComponente,PIG_Ancora pos){
+/*void PIG_Componentes_SetPosPadraoComponenteNaTela(int idComponente,PIG_Ancora pos){
     CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetPosPadraoComponenteNaTela(pos);
-}
+}*/
 
 void PIG_Componentes_SetHabilitado(int idComponente,int valor){
     CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetHabilitado(valor);

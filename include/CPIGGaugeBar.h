@@ -13,7 +13,7 @@ private:
         coresBasicas[2] = VERMELHO;
     }
 
-    CPIGGaugeBar LeParametros(int idComponente,string parametros){
+    CPIGGaugeBar LeParametros(int idComponente, string parametros){
         CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
 
         if (atrib.GetString("nomeArq","")!=""){
@@ -113,7 +113,7 @@ private:
 
 public:
 
-    CPIGGaugeBar(int idComponente,int px, int py,int altura,int largura,std::string imgMoldura,std::string imgMarcador,int retiraFundoTrilha=1,int retiraFundoMarcador=1,int janela=0):
+    CPIGGaugeBar(int idComponente, int px, int py, int altura, int largura, string imgMoldura, string imgMarcador, int retiraFundoTrilha=1, int retiraFundoMarcador=1, int janela=0):
         CPIGGauge(idComponente,px,py,altura,largura,imgMoldura,altura,largura,imgMarcador,retiraFundoTrilha,retiraFundoMarcador,janela){
         IniciaCoresBasicas();
         if (imgMarcador!=""){
@@ -122,7 +122,7 @@ public:
         }
     }
 
-    CPIGGaugeBar(int idComponente,int px, int py,int altura,int largura,int janela=0):
+    CPIGGaugeBar(int idComponente, int px, int py, int altura, int largura, int janela=0):
         CPIGGauge(idComponente,px,py,altura,largura,janela){
         IniciaCoresBasicas();
     }
@@ -131,7 +131,7 @@ public:
         if (marcador) delete marcador;
     }
 
-    CPIGGaugeBar(int idComponente,string parametros):CPIGGaugeBar(LeParametros(idComponente,parametros)){}
+    CPIGGaugeBar(int idComponente, string parametros):CPIGGaugeBar(LeParametros(idComponente,parametros)){}
 
     int Desenha(){
 
@@ -178,6 +178,7 @@ public:
         CPIGComponente::SetMargens(mEsq,mDir,mCima,mBaixo);
         AtualizaMarcador();
     }
+
 };
 typedef CPIGGaugeBar *PIGGaugeBar;
 #endif // _CPIGGAUGE_

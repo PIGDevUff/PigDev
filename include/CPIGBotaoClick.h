@@ -85,7 +85,7 @@ public:
             timer = new CPIGTimer(false);
         }
 
-    CPIGBotaoClick(int idComponente,std::string nomeArqParam):CPIGBotaoClick(LeParametros(idComponente,nomeArqParam)){}
+    CPIGBotaoClick(int idComponente,string parametros):CPIGBotaoClick(LeParametros(idComponente,parametros)){}
 
     virtual ~CPIGBotaoClick(){
         delete timer;

@@ -77,7 +77,7 @@ protected:
         return 0;
     }
 
-    std::string texto;
+    string texto;
     int fonteTexto;
     int posCursor;
     int xTexto,yTexto,xCursor,yCursor;
@@ -91,7 +91,7 @@ protected:
 
     virtual int PulaLinha() = 0;
 
-    virtual std::string GetTextoVisivel() =0;//pure virtual, porque cada classe derivada vai retornar um texto de forma diferente
+    virtual string GetTextoVisivel() =0;//pure virtual, porque cada classe derivada vai retornar um texto de forma diferente
 
     //posiciona o cursor uma posiçăo ŕ frente
     int AvancaCursor(){
@@ -131,7 +131,7 @@ protected:
     }
 
     //adiciona um texto (caracter ou string) na posiçăo indicada pelo cursor (se possível)
-    virtual int AdicionaTexto(std::string frase){
+    virtual int AdicionaTexto(string frase){
         if (texto.size()+frase.size()>maxCaracteres) return 0;//ultrapassa o limite máximo de carcteres
         if (somenteNumeros&&!PIGSomenteNumeros(frase)) return 0;//năo é número
 
@@ -159,8 +159,8 @@ protected:
         int delta = xMouse-xTexto;
         int largParcial = 0, largUltimaLetra = 0;
 
-        for (int i=0;i<linha.size();i++){
-            std::string aux;
+        for (unsigned int i=0;i<linha.size();i++){
+            string aux;
 
             aux.assign(linha,0,i+1);
 

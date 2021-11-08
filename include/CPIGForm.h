@@ -91,7 +91,7 @@ private:
 
 public:
 
-    CPIGForm(int idForm,int xForm, int yForm, int altForm, int largForm,int janela = 0){
+    CPIGForm(int idForm, int xForm, int yForm, int altForm, int largForm, int janela = 0){
         IniciaBase(idForm,xForm,yForm,altForm,largForm,janela);
     }
 

@@ -92,7 +92,7 @@ private:
 
 public:
 
-    CPIGDropDown(int idComponente,int px, int py,int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0,std::string nomeArqFundo="",int retiraFundo=1,int janela=0):
+    CPIGDropDown(int idComponente,int px, int py,int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0,string nomeArqFundo="",int retiraFundo=1,int janela=0):
         CPIGListaItemComponente(idComponente,px,py,larguraTotal,alturaLinha,nomeArqFundo,retiraFundo,janela){
             SetRecolhida(true);
     }
@@ -104,7 +104,7 @@ public:
 
     CPIGDropDown(int idComponente,string parametros):CPIGDropDown(LeParametros(idComponente,parametros)){}
 
-    void CriaItem(std::string itemLabel, std::string arqImagemIcone="",std::string arqImagemFundoItem="", bool itemHabilitado = true, std::string hintMsg="", int retiraFundo=1){
+    void CriaItem(string itemLabel, string arqImagemIcone="",string arqImagemFundoItem="", bool itemHabilitado = true, string hintMsg="", int retiraFundo=1){
         int yItem = pos.y+alt-(altBaseLista)*(itens.size()+2);
         CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,false,itemHabilitado,hintMsg,retiraFundo);
     }

@@ -18,7 +18,7 @@ private:
         coresBasicas[2] = VERMELHO;
     }
 
-    CPIGGaugeCircular LeParametros(int idComponente,string parametros){
+    CPIGGaugeCircular LeParametros(int idComponente, string parametros){
         CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
 
         CPIGGaugeCircular resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
@@ -78,7 +78,7 @@ private:
 
 public:
 
-    CPIGGaugeCircular(int idComponente,int px, int py,int altura,int largura,int raioInterior,int janela=0):
+    CPIGGaugeCircular(int idComponente, int px, int py, int altura, int largura, int raioInterior, int janela=0):
         CPIGGauge(idComponente,px,py,altura,largura,janela){
 
         angBase = 0;
@@ -96,7 +96,7 @@ public:
         AtualizaMarcador();
     }
 
-    CPIGGaugeCircular(int idComponente,string parametros):CPIGGaugeCircular(LeParametros(idComponente,parametros)){}
+    CPIGGaugeCircular(int idComponente, string parametros):CPIGGaugeCircular(LeParametros(idComponente,parametros)){}
 
     virtual ~CPIGGaugeCircular(){
         delete off;

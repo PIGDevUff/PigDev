@@ -11,8 +11,8 @@ private:
     int largMax;
     int espacoEntreLinhas;
     bool linhasPauta;
-    PIGSlideBar slideVertical,slideHorizontal;
-    bool slideVerticalAtivado,slideHorizontalAtivado;
+    PIGSlideBar slideVertical;
+    bool slideVerticalAtivado;
     std::vector<std::string> linhas;
 
     inline void IniciaCoresBasicas(){
@@ -146,6 +146,7 @@ private:
         if (linhas.size()>0)
             posCursor += CalculaPosicaoCursor(linhas[linha],xLinha);
         //printf("posCursor %d\n",posCursor);
+
         AjustaPosicaoTextoCursor();
         AjustaSlideVerticalPeloCursor();
         return PIG_SELECIONADO_TRATADO;
@@ -254,8 +255,8 @@ private:
         espacoEntreLinhas = 0;
         largMax = larg;
         linhasPauta = false;
-        slideHorizontalAtivado = slideVerticalAtivado = false;
-        slideHorizontal = new CPIGSlideBar(id+1,(int)pos.x,(int)pos.y,20,larg,20,20,idJanela);
+        slideVerticalAtivado = false;
+        //slideHorizontal = new CPIGSlideBar(id+1,(int)pos.x,(int)pos.y,20,larg,20,20,idJanela);
 
         slideVertical = new CPIGSlideBar(id+2,((int)pos.x)+larg-20,(int)pos.y,alt,20,20,20,idJanela);
         slideVertical->SetOrientacao(PIG_GAUGE_CIMA_BAIXO);
@@ -280,7 +281,7 @@ public:
     virtual ~CPIGAreaDeTexto(){
         linhas.clear();
         delete slideVertical;
-        delete slideHorizontal;
+        //delete slideHorizontal;
     }
 
     void Move(double nx,double ny)override{
@@ -288,7 +289,7 @@ public:
         int dx = nx-pos.x;
         int dy = ny-pos.y;
         slideVertical->Desloca(dx,dy);
-        slideHorizontal->Desloca(dx,dy);
+        //slideHorizontal->Desloca(dx,dy);
     }
 
     void SetDimensoes(int altura,int largura)override{
@@ -320,7 +321,7 @@ public:
 
         if(slideVerticalAtivado) slideVertical->Desenha();
 
-        if(slideHorizontalAtivado) slideHorizontal->Desenha();
+        //if(slideHorizontalAtivado) slideHorizontal->Desenha();
 
         DesenhaLabel();
 
@@ -348,16 +349,20 @@ public:
         AjustaSlideVerticalPeloCursor();
     }
 
-    int TrataEventoMouse(PIG_Evento evento){
+    int TrataEventoMouse(PIG_Evento evento)override{
         SDL_Point p = GetPosicaoMouse();
         ChecaMouseOver(p);
 
         if(slideVerticalAtivado){
             int resp = slideVertical->TrataEventoMouse(evento);
             if (resp==PIG_SELECIONADO_TRATADO){
-                //printf("cliquei vert\n");
                 AjustaPosicaoTextoCursor();
                 return resp;
+            }else if (evento.tipoEvento==PIG_EVENTO_MOUSE&&evento.mouse.acao==PIG_MOUSE_RODINHA){
+                if (evento.mouse.relY>0)
+                    SobeCursor();
+                else if (evento.mouse.relY<0)
+                    DesceCursor();
             }
         }
 

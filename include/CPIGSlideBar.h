@@ -100,7 +100,7 @@ class CPIGSlideBar : public CPIGGauge{
 
 public:
 
-    CPIGSlideBar(int idComponente,int px, int py,int altTrilha, int largTrilha, std::string imgTrilha, int altMarcador, int largMarcador, std::string imgMarcador,int retiraFundoTrilha=1, int retiraFundoMarcador=1,int janela=0):
+    CPIGSlideBar(int idComponente, int px, int py, int altTrilha, int largTrilha, string imgTrilha, int altMarcador, int largMarcador, string imgMarcador,int retiraFundoTrilha=1, int retiraFundoMarcador=1, int janela=0):
         CPIGGauge(idComponente,px,py,altTrilha,largTrilha,imgTrilha,altMarcador,largMarcador,imgMarcador,retiraFundoTrilha,retiraFundoMarcador,janela){
             deltaTeclado = deltaRodinha = 10;
             marcador = new CPIGSprite(-1,imgMarcador,retiraFundoMarcador,NULL,janela);
@@ -108,7 +108,7 @@ public:
             AtualizaMarcador();
     }
 
-    CPIGSlideBar(int idComponente,int px, int py,int altTrilha, int largTrilha, int alturaMarcador, int larguraMarcador,int janela=0):
+    CPIGSlideBar(int idComponente, int px, int py, int altTrilha, int largTrilha, int alturaMarcador, int larguraMarcador,int janela=0):
         CPIGGauge(idComponente,px,py,altTrilha,largTrilha,janela){
             deltaTeclado = deltaRodinha = 10;
             altMarcador = alturaMarcador;
@@ -128,10 +128,12 @@ public:
         ChecaMouseOver(p);
 
         if (mouseOver){
-            if(evento.mouse.acao == PIG_MOUSE_RODINHA) return TrataRodinha(evento);
-            if(evento.mouse.acao == PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO ){
+            if(evento.mouse.acao == PIG_MOUSE_RODINHA)
+                return TrataRodinha(evento);
+
+            if(evento.mouse.acao == PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO)
                 return TrataClickTrilha(p.x,p.y);
-            }
+
             return PIG_SELECIONADO_MOUSEOVER;
         }
         return PIG_NAO_SELECIONADO;

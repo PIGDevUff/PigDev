@@ -29,8 +29,7 @@ protected:
         temFoco = valor;
     }
 
-    void SetAcionado(bool valor){
-    }
+    void SetAcionado(bool valor){}
 
     void SetMouseOver(bool valor){
         mouseOver = valor;
@@ -54,7 +53,7 @@ private:
 
 public:
 
-    CPIGListBox(int idComponente,int px, int py,int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0,std::string nomeArqFundo="",int retiraFundo=1,int janela=0):
+    CPIGListBox(int idComponente,int px, int py,int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0,string nomeArqFundo="",int retiraFundo=1,int janela=0):
         CPIGListaItemComponente(idComponente,px,py,larguraTotal,alturaLinha,nomeArqFundo,retiraFundo,janela){
     }
 
@@ -62,7 +61,7 @@ public:
         CPIGListaItemComponente(idComponente,px,py,larguraTotal,alturaLinha,janela){
     }
 
-    CPIGListBox(int idComponente,std::string parametros):CPIGListBox(LeParametros(idComponente,parametros)){}
+    CPIGListBox(int idComponente,string parametros):CPIGListBox(LeParametros(idComponente,parametros)){}
 
     virtual ~CPIGListBox(){}
 
@@ -108,7 +107,7 @@ public:
         return resp>=0?PIG_SELECIONADO_TRATADO:PIG_NAO_SELECIONADO;
     }
 
-    void CriaItem(std::string itemLabel, std::string arqImagemIcone="", std::string arqImagemFundoItem="",bool itemMarcado = false, bool itemHabilitado = true, std::string hintMsg="", int retiraFundo=1){
+    void CriaItem(string itemLabel, string arqImagemIcone="", string arqImagemFundoItem="",bool itemMarcado = false, bool itemHabilitado = true, string hintMsg="", int retiraFundo=1){
         int yItem = pos.y+alt-(altBaseLista)*(itens.size()+1);
         CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,itemMarcado,itemHabilitado,hintMsg,retiraFundo);
     }
