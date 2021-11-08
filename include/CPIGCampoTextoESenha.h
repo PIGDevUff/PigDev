@@ -10,7 +10,7 @@ private:
     char mascara;//símbolo usado quando o campo for de senha
     std::string (CPIGCampoTextoESenha::*GetTextoVisivelPtr)();//ponteiro para a funçăo que vai retornar o texto visivel
 
-    void IniciaCoresBasicas(){
+    inline void IniciaCoresBasicas(){
         coresBasicas[0] = CINZA;
         coresBasicas[1] = PRETO;
     }
@@ -18,11 +18,18 @@ private:
     static CPIGCampoTextoESenha LeParametros(int idComponente,std::string parametros){
         CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
 
-        CPIGCampoTextoESenha resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+        if (atrib.GetString("nomeArq","")!=""){
+            CPIGCampoTextoESenha resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                         atrib.GetString("nomeArq",""),atrib.GetInt("maxCaracters",200),atrib.GetInt("apenasNumeros",0),atrib.GetInt("campoSenha",0),
                         atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
 
-        return resp;
+            return resp;
+        }else{
+            CPIGCampoTextoESenha resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+                        atrib.GetInt("maxCaracters",200),atrib.GetInt("apenasNumeros",0),atrib.GetInt("campoSenha",0),atrib.GetInt("janela",0));
+
+            return resp;
+        }
 
     }
 
@@ -93,28 +100,26 @@ private:
         else SDL_StopTextInput();
     }
 
+    void IniciaBase(bool campoSenha){
+        mascara = '*';
+        if(campoSenha){
+            GetTextoVisivelPtr = &CPIGCampoTextoESenha::CPIGCampoTextoESenha::GetTextoMask;
+        }else{
+            GetTextoVisivelPtr = &CPIGCampoTextoESenha::GetTexto;
+        }
+        IniciaCoresBasicas();
+    }
+
 public:
 
     CPIGCampoTextoESenha(int idComponente,int px, int py, int altura,int largura,std::string nomeArq,int maxCars = 200, bool apenasNumeros=false, bool campoSenha = false, int retiraFundo=1,int janela=0):
         CPIGCaixaTexto(idComponente,px,py,altura,largura,nomeArq,maxCars,apenasNumeros,retiraFundo,janela){
-            mascara = '*';
-            if(campoSenha){
-                GetTextoVisivelPtr = &CPIGCampoTextoESenha::CPIGCampoTextoESenha::GetTextoMask;
-            }else{
-                GetTextoVisivelPtr = &CPIGCampoTextoESenha::GetTexto;
-            }
-            IniciaCoresBasicas();
+            IniciaBase(campoSenha);
     }
 
     CPIGCampoTextoESenha(int idComponente,int px, int py, int altura,int largura,int maxCars = 200, bool apenasNumeros=false, bool campoSenha = false, int janela=0):
         CPIGCaixaTexto(idComponente,px,py,altura,largura,maxCars,apenasNumeros,janela){
-            mascara = '*';
-            if(campoSenha){
-                GetTextoVisivelPtr = &CPIGCampoTextoESenha::CPIGCampoTextoESenha::GetTextoMask;
-            }else{
-                GetTextoVisivelPtr = &CPIGCampoTextoESenha::GetTexto;
-            }
-            IniciaCoresBasicas();
+            IniciaBase(campoSenha);
     }
 
     CPIGCampoTextoESenha(int idComponente,std::string parametros):CPIGCampoTextoESenha(LeParametros(idComponente,parametros)){}
@@ -161,8 +166,7 @@ public:
     }
 
     int TrataEventoTeclado(PIG_Evento evento){
-        int resp = CPIGCaixaTexto::TrataEventoTeclado(evento);
-        return resp;
+        return CPIGCaixaTexto::TrataEventoTeclado(evento);
     }
 
 };

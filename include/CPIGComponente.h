@@ -22,6 +22,7 @@ protected:
     PIG_FuncaoSimples acao;
     PIG_Cor coresBasicas[10];
     int corAtual;
+    int offX, offY;
     void *param;
 
     //inicializa o componente com valores padrão
@@ -33,6 +34,7 @@ protected:
         audioComponente = -1;
         pos.x = px;
         pos.y = py;
+        offX = offY = 2;
         mouseOver = acionado = temFoco = false;
         habilitado = visivel = true;
         param = NULL;
@@ -381,6 +383,11 @@ public:
 
         */
 
+    }
+
+    void SetCorBasica(int indice, PIG_Cor cor){
+        if (indice<0||indice>=10) return;
+        coresBasicas[indice] = cor;
     }
 
     void Move(double nx, double ny)override{

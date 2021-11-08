@@ -15,7 +15,7 @@ private:
     bool slideVerticalAtivado,slideHorizontalAtivado;
     std::vector<std::string> linhas;
 
-    void IniciaCoresBasicas(){
+    inline void IniciaCoresBasicas(){
         coresBasicas[0] = CINZA;
         coresBasicas[1] = PRETO;
         coresBasicas[2] = AZUL;
@@ -24,11 +24,18 @@ private:
     CPIGAreaDeTexto LeParametros(int idComponente,string parametros){
         CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
 
-        CPIGAreaDeTexto resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+        if (atrib.GetString("nomeArq","")!=""){
+            CPIGAreaDeTexto resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                         atrib.GetString("nomeArq",""),atrib.GetInt("maxCaracters",200),
                         atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
 
-        return resp;
+            return resp;
+        }else{
+            CPIGAreaDeTexto resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+                        atrib.GetInt("maxCaracters",200),atrib.GetInt("janela",0));
+
+            return resp;
+        }
     }
 
     void SetHabilitado(bool valor){
@@ -243,34 +250,29 @@ private:
         return 1;
     };
 
+    void IniciaBase(){
+        espacoEntreLinhas = 0;
+        largMax = larg;
+        linhasPauta = false;
+        slideHorizontalAtivado = slideVerticalAtivado = false;
+        slideHorizontal = new CPIGSlideBar(id+1,(int)pos.x,(int)pos.y,20,larg,20,20,idJanela);
+
+        slideVertical = new CPIGSlideBar(id+2,((int)pos.x)+larg-20,(int)pos.y,alt,20,20,20,idJanela);
+        slideVertical->SetOrientacao(PIG_GAUGE_CIMA_BAIXO);
+        AjustaPosicaoTextoCursor();
+        IniciaCoresBasicas();
+    }
+
 public:
 
     CPIGAreaDeTexto(int idComponente,int px, int py, int altura,int largura,std::string nomeArq,int maxCars = 200,int retiraFundo=1,int janela=0):
         CPIGCaixaTexto(idComponente,px,py,altura,largura,nomeArq,maxCars,false,retiraFundo,janela){ // A altura é um vetor, mas eu preciso dela, entao eu acabei colocando como o tamanho da fonte, qualquer coisa só mudar aqui
-            espacoEntreLinhas = 0;
-            largMax = largura;
-            linhasPauta = false;
-            slideHorizontalAtivado = slideVerticalAtivado = false;
-            slideHorizontal = new CPIGSlideBar(idComponente+1,px,py,20,largura,20,20,janela);
-
-            slideVertical = new CPIGSlideBar(idComponente+2,px+largura-20,py,altura,20,20,20,janela);
-            slideVertical->SetOrientacao(PIG_GAUGE_CIMA_BAIXO);
-            AjustaPosicaoTextoCursor();
-            IniciaCoresBasicas();
+            IniciaBase();
         }
 
     CPIGAreaDeTexto(int idComponente,int px, int py, int altura,int largura,int maxCars = 200,int janela=0):
         CPIGCaixaTexto(idComponente,px,py,altura,largura,maxCars,false,janela){ // A altura é um vetor, mas eu preciso dela, entao eu acabei colocando como o tamanho da fonte, qualquer coisa só mudar aqui
-            espacoEntreLinhas = 0;
-            largMax = largura;
-            linhasPauta = false;
-            slideHorizontalAtivado = slideVerticalAtivado = false;
-            slideHorizontal = new CPIGSlideBar(idComponente+1,px,py,20,largura,20,20,janela);
-
-            slideVertical = new CPIGSlideBar(idComponente+2,px+largura-20,py,altura,20,20,20,janela);
-            slideVertical->SetOrientacao(PIG_GAUGE_CIMA_BAIXO);
-            AjustaPosicaoTextoCursor();
-            IniciaCoresBasicas();
+            IniciaBase();
         }
 
     CPIGAreaDeTexto(int idComponente,string parametros):CPIGAreaDeTexto(LeParametros(idComponente,parametros)){}

@@ -5334,111 +5334,115 @@ int PIG_CriaComponentePorParametro(int idForm,PIGTiposComponentes componente,cha
 }
 
 void PIG_Componentes_DefineAcao(int idComponente,PIG_FuncaoSimples funcao,void *parametro){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->DefineAcao(funcao,parametro);
+    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->DefineAcao(funcao,parametro);
 }
 
 void PIG_Componentes_SetLabel(int idComponente,char* novoLabel){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetLabel(novoLabel);
+    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetLabel(novoLabel);
 }
 
 void PIG_Componentes_SetFonteLabel(int idComponente,int fonte){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetFonteLabel(fonte);
+    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetFonteLabel(fonte);
 }
 
 void PIG_Componentes_SetCorLabel(int idComponente,PIG_Cor cor){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetCorLabel(cor);
+    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetCorLabel(cor);
 }
 
 void PIG_Componentes_SetFonteHint(int idComponente,int fonte){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetFonteHint(fonte);
+    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetFonteHint(fonte);
 }
 
 void PIG_Componentes_SetCorHint(int idComponente,PIG_Cor cor){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetCorHint(cor);
+    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetCorHint(cor);
+}
+
+void PIG_Componentes_SetCorBasica(int idComponente,int indice, PIG_Cor cor){
+    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetCorBasica(indice,cor);
 }
 
 void PIG_Componentes_SetAudio(int idComponente,int idAudio){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetAudio(idAudio);
+    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetAudio(idAudio);
 }
 
 void PIG_Componentes_GetLabel(int idComponente,char *label){
-    strcpy(label,(char*)(CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->GetLabel()).c_str());
+    strcpy(label,(char*)(CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetLabel()).c_str());
 }
 
 void PIG_Componentes_SetHint(int idComponente,char *hint){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetHint(hint);
+    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetHint(hint);
 }
 
 void PIG_Componentes_Move(int idComponente,int x,int y){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->Move(x,y);
+    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->Move(x,y);
 }
 
 void PIG_Componentes_SetDimensoes(int idComponente,int altura,int largura){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetDimensoes(altura,largura);
+    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetDimensoes(altura,largura);
 }
 
 void PIG_Componentes_SetPosicaoPadraoLabel(int idComponente,PIG_PosicaoComponente pos){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetPosicaoPadraoLabel(pos);
+    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetPosicaoPadraoLabel(pos);
 }
 
 void PIG_Componentes_SetPosicaoPersonalizadaLabel(int idComponente,int x,int y){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetPosicaoPersonalizadaLabel(x,y);
+    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetPosicaoPersonalizadaLabel(x,y);
 }
 
 void PIG_Componentes_SetPosPadraoExternaComponente(int idComponente,PIG_PosicaoComponente pos,CPIGComponente *componenteAssociado){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetPosPadraoExternaComponente(pos,componenteAssociado);
+    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetPosPadraoExternaComponente(pos,componenteAssociado);
 }
 
 void PIG_Componentes_SetPosPadraoComponenteNaTela(int idComponente,PIG_Ancora pos){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetPosPadraoComponenteNaTela(pos);
+    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetPosPadraoComponenteNaTela(pos);
 }
 
 void PIG_Componentes_SetHabilitado(int idComponente,int valor){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetHabilitado(valor);
+    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetHabilitado(valor);
 }
 
 void PIG_Componentes_SetVisivel(int idComponente,int valor){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetVisivel(valor);
+    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetVisivel(valor);
 }
 
 PIG_Cor PIG_Componentes_GetCorLabel(int idComponente){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->GetCorLabel();
+    return CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetCorLabel();
 }
 
 void PIG_Componentes_GetHint(int idComponente,char* hint){
-    strcpy(hint,(char*)(CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->GetHint()).c_str());
+    strcpy(hint,(char*)(CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetHint()).c_str());
 }
 
 int PIG_Componentes_GetFonteHint(int idComponente){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->GetFonteHint();
+    return CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetFonteHint();
 }
 
 int PIG_Componentes_GetVisivel(int idComponente){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->GetVisivel();
+    return CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetVisivel();
 }
 
 int PIG_Componentes_GetHabilitado(int idComponente){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->GetHabilitado();
+    return CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetHabilitado();
 }
 
 int PIG_Componentes_GetAcionado(int idComponente){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->GetAcionado();
+    return CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetAcionado();
 }
 
 int PIG_Componentes_GetMouseOver(int idComponente){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->GetMouseOver();
+    return CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetMouseOver();
 }
 
 PIG_PosicaoComponente PIG_Componentes_GetPosComponente(int idComponente){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->GetPosComponente();
+    return CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetPosComponente();
 }
 
 void PIG_Componentes_GetDimensoes(int idComponente,int &altura, int &largura){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->GetDimensoes(altura,largura);
+    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetDimensoes(altura,largura);
 }
 
 void PIG_Componentes_GetDimensoesOriginais(int idComponente,int &altura, int &largura){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->GetDimensoesOriginais(altura,largura);
+    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetDimensoesOriginais(altura,largura);
 }
 
 /*******BOTAOCLICK*********/
@@ -5452,15 +5456,15 @@ int PIG_CriaBotaoClick(int idForm,int x,int y,int alt,int larg){
 }
 
 void PIG_BotaoClick_DefineAtalho(int idComponente,int teclaAtalho){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGBotaoClick>(idComponente)->DefineAtalho(teclaAtalho);
+    CPIGGerenciadorForms::GetComponente<PIGBotaoClick>(idComponente)->DefineAtalho(teclaAtalho);
 }
 
 void PIG_BotaoClick_DefineTempoRepeticao(int idComponente,double segundos){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGBotaoClick>(idComponente)->DefineTempoRepeticao(segundos);
+    CPIGGerenciadorForms::GetComponente<PIGBotaoClick>(idComponente)->DefineTempoRepeticao(segundos);
 }
 
 void PIG_BotaoClick_DefineBotaoRepeticao(int idComponente,bool repeticao){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGBotaoClick>(idComponente)->DefineBotaoRepeticao(repeticao);
+    CPIGGerenciadorForms::GetComponente<PIGBotaoClick>(idComponente)->DefineBotaoRepeticao(repeticao);
 }
 
 /*******BOTAOONOFF*********/
@@ -5474,7 +5478,7 @@ int PIG_CriaBotaoOnOff(int idForm,int x,int y,int alt,int larg){
 }
 
 void PIG_BotaoOnOff_DefineAtalho(int idComponente,int teclaAtalho){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGBotaoOnOff>(idComponente)->DefineAtalho(teclaAtalho);
+    CPIGGerenciadorForms::GetComponente<PIGBotaoOnOff>(idComponente)->DefineAtalho(teclaAtalho);
 }
 
 
@@ -5489,39 +5493,39 @@ int PIG_CriaAreaDeTexto(int idForm,int x, int y, int altura,int largura,int maxC
 }
 
 void PIG_AreaDeTexto_SetFonteTexto(int idComponente,int fonte){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->SetFonteTexto(fonte);
+    CPIGGerenciadorForms::GetComponente<PIGAreaDeTexto>(idComponente)->SetFonteTexto(fonte);
 }
 
 void PIG_AreaDeTexto_SetLinhasAbaixoTexto(int idComponente,bool visivel,PIG_Cor cor = PRETO){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->SetLinhasAbaixoTexto(visivel,cor);
+    CPIGGerenciadorForms::GetComponente<PIGAreaDeTexto>(idComponente)->SetLinhasAbaixoTexto(visivel,cor);
 }
 
 void PIG_AreaDeTexto_SetLargMaxTexto(int idComponente,int largMaxTexto){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->SetLargMaxTexto(largMaxTexto);
+    CPIGGerenciadorForms::GetComponente<PIGAreaDeTexto>(idComponente)->SetLargMaxTexto(largMaxTexto);
 }
 
 void PIG_AreaDeTexto_SetEspacoEntreAsLinhas(int idComponente,int espaco){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->SetEspacoEntreAsLinhas(espaco);
+    CPIGGerenciadorForms::GetComponente<PIGAreaDeTexto>(idComponente)->SetEspacoEntreAsLinhas(espaco);
 }
 
 void PIG_AreaDeTexto_SetTexto(int idComponente,char* frase){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->SetTexto(frase);
+    CPIGGerenciadorForms::GetComponente<PIGAreaDeTexto>(idComponente)->SetTexto(frase);
 }
 
 void PIG_AreaDeTexto_SetMargens(int idComponente,int horEsq,int horDir, int vertBaixo,int vertCima){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->SetMargens(horEsq,horDir,vertBaixo,vertCima);
+    CPIGGerenciadorForms::GetComponente<PIGAreaDeTexto>(idComponente)->SetMargens(horEsq,horDir,vertBaixo,vertCima);
 }
 
 void PIG_AreaDeTexto_SetCorCursor(int idComponente,PIG_Cor cor){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->SetCorCursor(cor);
+    CPIGGerenciadorForms::GetComponente<PIGAreaDeTexto>(idComponente)->SetCorCursor(cor);
 }
 
 vector<string> PIG_AreaDeTexto_GetLinhasTexto(int idComponente){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->GetLinhasTexto();
+    return CPIGGerenciadorForms::GetComponente<PIGAreaDeTexto>(idComponente)->GetLinhasTexto();
 }
 
 void PIG_AreaDeTexto_GetTexto(int idComponente,char* texto){
-    strcpy(texto,(char*)(CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGAreaDeTexto>(idComponente)->GetTexto()).c_str());
+    strcpy(texto,(char*)(CPIGGerenciadorForms::GetComponente<PIGAreaDeTexto>(idComponente)->GetTexto()).c_str());
 }
 
 /**********CAMPOTEXTO**************/
@@ -5535,23 +5539,23 @@ int PIG_CriaCampoTexto(int idForm,int x, int y, int altura,int largura,int maxCa
 }
 
 void PIG_CampoTexto_SetMargens(int idComponente,int horEsq,int horDir, int vertBaixo,int vertCima){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCampoTextoESenha>(idComponente)->SetMargens(horEsq,horDir,vertBaixo,vertCima);
+    CPIGGerenciadorForms::GetComponente<PIGCampoTextoESenha>(idComponente)->SetMargens(horEsq,horDir,vertBaixo,vertCima);
 }
 
 void PIG_CampoTexto_SetTexto(int idComponente,char* frase){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCampoTextoESenha>(idComponente)->SetTexto(frase);
+    CPIGGerenciadorForms::GetComponente<PIGCampoTextoESenha>(idComponente)->SetTexto(frase);
 }
 
 void PIG_CampoTexto_SetFonteTexto(int idComponente,int fonte){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCampoTextoESenha>(idComponente)->SetFonteTexto(fonte);
+    CPIGGerenciadorForms::GetComponente<PIGCampoTextoESenha>(idComponente)->SetFonteTexto(fonte);
 }
 
 void PIG_CampoTexto_SetCorCursor(int idComponente,PIG_Cor cor){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCampoTextoESenha>(idComponente)->SetCorCursor(cor);
+    CPIGGerenciadorForms::GetComponente<PIGCampoTextoESenha>(idComponente)->SetCorCursor(cor);
 }
 
 void PIG_CampoTexto_GetTexto(int idComponente,char* texto){
-    strcpy(texto,(char*)(CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCampoTextoESenha>(idComponente)->GetTexto()).c_str());
+    strcpy(texto,(char*)(CPIGGerenciadorForms::GetComponente<PIGCampoTextoESenha>(idComponente)->GetTexto()).c_str());
 }
 
 /**********CAMPOSENHA**************/
@@ -5565,19 +5569,19 @@ int PIG_CriaCampoSenha(int idForm,int x, int y, int altura,int largura,int maxCa
 }
 
 void PIG_CampoSenha_SetMargens(int idComponente,int horEsq,int horDir, int vertBaixo,int vertCima){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCampoTextoESenha>(idComponente)->SetMargens(horEsq,horDir,vertBaixo,vertCima);
+    CPIGGerenciadorForms::GetComponente<PIGCampoTextoESenha>(idComponente)->SetMargens(horEsq,horDir,vertBaixo,vertCima);
 }
 
 void PIG_CampoSenha_SetTexto(int idComponente,char* frase){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCampoTextoESenha>(idComponente)->SetTexto(frase);
+    CPIGGerenciadorForms::GetComponente<PIGCampoTextoESenha>(idComponente)->SetTexto(frase);
 }
 
 void PIG_CampoSenha_SetFonteTexto(int idComponente,int fonte){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCampoTextoESenha>(idComponente)->SetFonteTexto(fonte);
+    CPIGGerenciadorForms::GetComponente<PIGCampoTextoESenha>(idComponente)->SetFonteTexto(fonte);
 }
 
 void PIG_CampoSenha_SetCorCursor(int idComponente,PIG_Cor cor){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCampoTextoESenha>(idComponente)->SetCorCursor(cor);
+    CPIGGerenciadorForms::GetComponente<PIGCampoTextoESenha>(idComponente)->SetCorCursor(cor);
 }
 
 /**********LISTA**************/
@@ -5591,67 +5595,67 @@ int PIG_CriaListBox(int idForm,int x, int y,int larguraTotal,int alturaLinha,int
 }
 
 void PIG_ListBox_CriaItem(int idComponente,char* texto,char* imagemIcone = "",char *imagemFundo="",char* hintMsg="",bool itemHabilitado = true, int retiraFundoImg = 1){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->CriaItem(texto,imagemIcone,imagemFundo,false,itemHabilitado,hintMsg,retiraFundoImg);
+    CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->CriaItem(texto,imagemIcone,imagemFundo,false,itemHabilitado,hintMsg,retiraFundoImg);
 }
 
 int PIG_ListBox_SetAcionado(int idComponente,int indice, int marcado){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->SetAcionado(indice,marcado);
+    return CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->SetAcionado(indice,marcado);
 }
 
 void PIG_ListBox_DefineDimensaoIconeItem(int idComponente,int alturaImagemIcone, int larguraImagemIcone){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->DefineDimensaoIconeItem(alturaImagemIcone,larguraImagemIcone);
+    CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->DefineDimensaoIconeItem(alturaImagemIcone,larguraImagemIcone);
 }
 
 void PIG_ListBox_AlinhaLabelDireita(int idComponente){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->AlinhaLabelDireita();
+    CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->AlinhaLabelDireita();
 }
 
 void PIG_ListBox_AlinhaLabelEsquerda(int idComponente){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->AlinhaLabelEsquerda();
+    CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->AlinhaLabelEsquerda();
 }
 
 void PIG_ListBox_AlinhaLabelCentro(int idComponente){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->AlinhaLabelCentro();
+    CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->AlinhaLabelCentro();
 }
 
 void PIG_ListBox_AlinhaIconeDireita(int idComponente){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->AlinhaIconeDireita();
+    CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->AlinhaIconeDireita();
 }
 
 void PIG_ListBox_AlinhaIconeEsquerda(int idComponente){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->AlinhaIconeEsquerda();
+    CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->AlinhaIconeEsquerda();
 }
 
 void PIG_ListBox_SetFonteItem(int idComponente,int fonte,int item=-1){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->SetFonteItem(fonte,item);
+    CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->SetFonteItem(fonte,item);
 }
 
 int PIG_ListBox_GetAcionadoItem(int idComponente,int item){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->GetAcionadoItem(item);
+    return CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->GetAcionadoItem(item);
 }
 
 void PIG_ListBox_SetAudioItem(int idComponente,int audio, int item=-1){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->SetAudioItem(item,audio);
+    CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->SetAudioItem(item,audio);
 }
 
 int PIG_ListBox_GetHabilitadoItem(int idComponente,int item){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->GetHabilitadoItem(item);
+    return CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->GetHabilitadoItem(item);
 }
 
 int PIG_ListBox_SetHabilitadoItem(int idComponente,int item,int valor){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->SetHabilitadoItem(item,valor);
+    return CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->SetHabilitadoItem(item,valor);
 }
 
 int PIG_ListBox_GetItemDestaque(int idComponente){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->GetItemDestaque();
+    return CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->GetItemDestaque();
 }
 
 int PIG_ListBox_SetAcionadoItem(int idComponente,int indice,int marcado){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->SetAcionadoItem(indice,marcado);
+    return CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->SetAcionadoItem(indice,marcado);
 }
 
 void PIG_ListBox_SetCorLabelItem(int idComponente,PIG_Cor cor, int item=-1){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGListBox>(idComponente)->SetCorLabelItem(cor,item);
+    CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->SetCorLabelItem(cor,item);
 }
 
 /**********DROPDOWN**************/
@@ -5665,63 +5669,63 @@ int PIG_CriaDropDown(int idForm,int x, int y, int larguraTotal,int alturaLinha,i
 }
 
 void PIG_DropDown_CriaItem(int idComponente,char* texto,char* imagemIcone = "",char *imagemFundo="", char* hintMsg="",bool itemHabilitado = true, int retiraFundoImg = 1){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->CriaItem(texto,imagemIcone,imagemFundo,itemHabilitado,hintMsg,retiraFundoImg);
+    CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->CriaItem(texto,imagemIcone,imagemFundo,itemHabilitado,hintMsg,retiraFundoImg);
 }
 
 void PIG_DropDown_DefineDimensaoIconeItem(int idComponente,int alturaImagemIcone, int larguraImagemIcone){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->DefineDimensaoIconeItem(alturaImagemIcone,larguraImagemIcone);
+    CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->DefineDimensaoIconeItem(alturaImagemIcone,larguraImagemIcone);
 }
 
 void PIG_DropDown_AlinhaLabelDireita(int idComponente){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->AlinhaLabelDireita();
+    CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->AlinhaLabelDireita();
 }
 
 void PIG_DropDown_AlinhaLabelEsquerda(int idComponente){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->AlinhaLabelEsquerda();
+    CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->AlinhaLabelEsquerda();
 }
 
 void PIG_DropDown_AlinhaLabelCentro(int idComponente){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->AlinhaLabelCentro();
+    CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->AlinhaLabelCentro();
 }
 
 void PIG_DropDown_AlinhaIconeDireita(int idComponente){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->AlinhaIconeDireita();
+    CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->AlinhaIconeDireita();
 }
 
 void PIG_DropDown_AlinhaIconeEsquerda(int idComponente){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->AlinhaIconeEsquerda();
+    CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->AlinhaIconeEsquerda();
 }
 
 void PIG_DropDown_SetFonteItem(int idComponente,int fonte, int item=-1){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->SetFonteItem(fonte,item);
+    CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->SetFonteItem(fonte,item);
 }
 
 int PIG_DropDown_GetAcionadoItem(int idComponente,int item){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->GetAcionadoItem(item);
+    return CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->GetAcionadoItem(item);
 }
 
 void PIG_DropDown_SetAudioItem(int idComponente,int audio, int item=-1){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->SetAudioItem(item,audio);
+    CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->SetAudioItem(item,audio);
 }
 
 int PIG_DropDown_GetHabilitadoItem(int idComponente,int item){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->GetHabilitadoItem(item);
+    return CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->GetHabilitadoItem(item);
 }
 
 int PIG_DropDown_SetHabilitadoItem(int idComponente,int item,int valor){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->SetHabilitadoItem(item,valor);
+    return CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->SetHabilitadoItem(item,valor);
 }
 
 int PIG_DropDown_GetItemDestaque(int idComponente){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->GetItemDestaque();
+    return CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->GetItemDestaque();
 }
 
 int PIG_DropDown_SetAcionadoItem(int idComponente,int indice,int marcado){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->SetAcionadoItem(indice,marcado);
+    return CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->SetAcionadoItem(indice,marcado);
 }
 
 void PIG_DropDown_SetCorLabelItem(int idComponente,PIG_Cor cor, int item=-1){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGDropDown>(idComponente)->SetCorLabelItem(cor,item);
+    CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->SetCorLabelItem(cor,item);
 }
 
 
@@ -5736,43 +5740,43 @@ int PIG_CriaRadioBox(int idForm,int x, int y,int larguraTotal,int alturaLinha, c
 }
 
 void PIG_RadioBox_CriaItem(int idComponente,char* itemLabel, char *imagemFundo="", char* hintMsg="", bool itemHabilitado = true, int retiraFundo=1){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGRadioBox>(idComponente)->CriaItem(itemLabel,imagemFundo,itemHabilitado,hintMsg,retiraFundo);
+    CPIGGerenciadorForms::GetComponente<PIGRadioBox>(idComponente)->CriaItem(itemLabel,imagemFundo,itemHabilitado,hintMsg,retiraFundo);
 }
 
 int PIG_RadioBox_GetItemDestaque(int idComponente){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGRadioBox>(idComponente)->GetItemDestaque();
+    return CPIGGerenciadorForms::GetComponente<PIGRadioBox>(idComponente)->GetItemDestaque();
 }
 
 int PIG_RadioBox_SetItemMarcado(int idComponente,int item, bool marcado){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGRadioBox>(idComponente)->SetAcionadoItem(item,marcado);
+    return CPIGGerenciadorForms::GetComponente<PIGRadioBox>(idComponente)->SetAcionadoItem(item,marcado);
 }
 
 int PIG_RadioBox_GetEstadoMarcadoItem(int idComponente,int item){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGRadioBox>(idComponente)->GetAcionadoItem(item);
+    return CPIGGerenciadorForms::GetComponente<PIGRadioBox>(idComponente)->GetAcionadoItem(item);
 }
 
 void PIG_RadioBox_SetAudioItem(int idComponente,int item,int audio){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGRadioBox>(idComponente)->SetAudioItem(item,audio);
+    CPIGGerenciadorForms::GetComponente<PIGRadioBox>(idComponente)->SetAudioItem(item,audio);
 }
 
 int PIG_RadioBox_GetEstadoHabilitadoItem(int idComponente,int item){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGRadioBox>(idComponente)->GetHabilitadoItem(item);
+    return CPIGGerenciadorForms::GetComponente<PIGRadioBox>(idComponente)->GetHabilitadoItem(item);
 }
 
 int PIG_RadioBox_SetEstadoHabilitadoItem(int idComponente,int item,bool habilitado){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGRadioBox>(idComponente)->SetHabilitadoItem(item,habilitado);
+    return CPIGGerenciadorForms::GetComponente<PIGRadioBox>(idComponente)->SetHabilitadoItem(item,habilitado);
 }
 
 void PIG_RadioBox_SetEstadoHabilitadoItens(int idComponente,bool habilitado){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGRadioBox>(idComponente)->SetHabilitado(habilitado);
+    return CPIGGerenciadorForms::GetComponente<PIGRadioBox>(idComponente)->SetHabilitado(habilitado);
 }
 
 void PIG_RadioBox_SetFonteItem(int idComponente,int fonte, int item=-1){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGRadioBox>(idComponente)->SetFonteItem(fonte,item);
+    CPIGGerenciadorForms::GetComponente<PIGRadioBox>(idComponente)->SetFonteItem(fonte,item);
 }
 
 void PIG_RadioBox_SetCorLabelItem(int idComponente,PIG_Cor cor, int item=-1){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGRadioBox>(idComponente)->SetCorLabelItem(cor,item);
+    CPIGGerenciadorForms::GetComponente<PIGRadioBox>(idComponente)->SetCorLabelItem(cor,item);
 }
 
 /**********CHECKBOX**************/
@@ -5786,47 +5790,47 @@ int PIG_CriaCheckBox(int idForm,int x, int y,int larguraTotal,int alturaLinha, c
 }
 
 void PIG_CheckBox_CriaItem(int idComponente,char* itemLabel,char *imagemFundo="",char* hintMsg="",bool itemMarcado = false, bool itemHabilitado = true, int retiraFundo=1){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCheckBox>(idComponente)->CriaItem(itemLabel,imagemFundo,itemMarcado,itemHabilitado,hintMsg,retiraFundo);
+    CPIGGerenciadorForms::GetComponente<PIGCheckBox>(idComponente)->CriaItem(itemLabel,imagemFundo,itemMarcado,itemHabilitado,hintMsg,retiraFundo);
 }
 
 void PIG_CheckBox_SetMarcadoTodos(int idComponente,bool marcado){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCheckBox>(idComponente)->SetAcionadoTodos(marcado);
+    CPIGGerenciadorForms::GetComponente<PIGCheckBox>(idComponente)->SetAcionadoTodos(marcado);
 }
 
 int PIG_CheckBox_SetMarcadoItem(int idComponente,int indice,bool marcado){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCheckBox>(idComponente)->SetAcionadoItem(indice,marcado);
+    return CPIGGerenciadorForms::GetComponente<PIGCheckBox>(idComponente)->SetAcionadoItem(indice,marcado);
 }
 
 std::vector <int> PIG_CheckBox_GetItensMarcados(int idComponente){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCheckBox>(idComponente)->GetItensMarcados();
+    return CPIGGerenciadorForms::GetComponente<PIGCheckBox>(idComponente)->GetItensMarcados();
 }
 
 int PIG_CheckBox_GetMarcadoItem(int idComponente,int item){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCheckBox>(idComponente)->GetAcionadoItem(item);
+    return CPIGGerenciadorForms::GetComponente<PIGCheckBox>(idComponente)->GetAcionadoItem(item);
 }
 
 void PIG_CheckBox_SetAudioItem(int idComponente,int item,int audio){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCheckBox>(idComponente)->SetAudioItem(item,audio);
+    CPIGGerenciadorForms::GetComponente<PIGCheckBox>(idComponente)->SetAudioItem(item,audio);
 }
 
 int PIG_CheckBox_GetHabilitadoItem(int idComponente,int item){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCheckBox>(idComponente)->GetHabilitadoItem(item);
+    return CPIGGerenciadorForms::GetComponente<PIGCheckBox>(idComponente)->GetHabilitadoItem(item);
 }
 
 int PIG_CheckBox_SetHabilitadoItem(int idComponente,int item,bool habilitado){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCheckBox>(idComponente)->SetHabilitadoItem(item,habilitado);
+    return CPIGGerenciadorForms::GetComponente<PIGCheckBox>(idComponente)->SetHabilitadoItem(item,habilitado);
 }
 
 void PIG_CheckBox_SetHabilitado(int idComponente,bool habilitado){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCheckBox>(idComponente)->SetHabilitado(habilitado);
+    return CPIGGerenciadorForms::GetComponente<PIGCheckBox>(idComponente)->SetHabilitado(habilitado);
 }
 
 void PIG_CheckBox_SetFonteItem(int idComponente,int fonte, int item=-1){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCheckBox>(idComponente)->SetFonteItem(fonte,item);
+    CPIGGerenciadorForms::GetComponente<PIGCheckBox>(idComponente)->SetFonteItem(fonte,item);
 }
 
 void PIG_CheckBox_SetCorLabelItem(int idComponente,PIG_Cor cor, int item=-1){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGCheckBox>(idComponente)->SetCorLabelItem(cor,item);
+    CPIGGerenciadorForms::GetComponente<PIGCheckBox>(idComponente)->SetCorLabelItem(cor,item);
 }
 
 
@@ -5845,59 +5849,79 @@ void PIG_GaugeBar_SetDelta(int idComponente,float valor){
 }
 
 void PIG_GaugeBar_AvancaDelta(int idComponente){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeBar>(idComponente)->AvancaDelta();
+    CPIGGerenciadorForms::GetComponente<PIGGaugeBar>(idComponente)->AvancaDelta();
 }
 
 float PIG_GaugeBar_GetPorcentagemConcluida(int idComponente){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeBar>(idComponente)->GetPorcentagemConcluida();
+    return CPIGGerenciadorForms::GetComponente<PIGGaugeBar>(idComponente)->GetPorcentagemConcluida();
 }
 
 void PIG_GaugeBar_MinimizaValor(int idComponente){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeBar>(idComponente)->MinimizaValorAtual();
+    CPIGGerenciadorForms::GetComponente<PIGGaugeBar>(idComponente)->MinimizaValorAtual();
 }
 
 void PIG_GaugeBar_MaximizaValor(int idComponente){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeBar>(idComponente)->MaximizaValorAtual();
+    CPIGGerenciadorForms::GetComponente<PIGGaugeBar>(idComponente)->MaximizaValorAtual();
 }
 
 void PIG_GaugeBar_SetValorMin(int idComponente,double minimo){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeBar>(idComponente)->SetValorMin(minimo);
+    CPIGGerenciadorForms::GetComponente<PIGGaugeBar>(idComponente)->SetValorMin(minimo);
 }
 
 void PIG_GaugeBar_SetValorMax(int idComponente,double maximo){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeBar>(idComponente)->SetValorMax(maximo);
+    CPIGGerenciadorForms::GetComponente<PIGGaugeBar>(idComponente)->SetValorMax(maximo);
 }
 
 void PIG_GaugeBar_AvancaBarra(int idComponente,double valor){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeBar>(idComponente)->AvancaMarcador(valor);
+    CPIGGerenciadorForms::GetComponente<PIGGaugeBar>(idComponente)->AvancaMarcador(valor);
 }
 
 void PIG_GaugeBar_SetMargens(int idComponente,int margemEsq,int margemDir,int margemCima, int margemBaixo){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeBar>(idComponente)->SetMargens(margemEsq,margemDir,margemCima,margemBaixo);
+    CPIGGerenciadorForms::GetComponente<PIGGaugeBar>(idComponente)->SetMargens(margemEsq,margemDir,margemCima,margemBaixo);
 }
 
 void PIG_GaugeBar_SetPorcentagemConcluida(int idComponente,double porcentagem){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeBar>(idComponente)->SetPorcentagemConcluida(porcentagem);
+    CPIGGerenciadorForms::GetComponente<PIGGaugeBar>(idComponente)->SetPorcentagemConcluida(porcentagem);
 }
 
 void PIG_GaugeBar_SetOrientacao(int idComponente,PIG_GaugeCrescimento orientacao){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeBar>(idComponente)->SetOrientacao(orientacao);
+    CPIGGerenciadorForms::GetComponente<PIGGaugeBar>(idComponente)->SetOrientacao(orientacao);
 }
 
 float PIG_GaugeBar_GetValorMarcadorAtual(int idComponente){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeBar>(idComponente)->GetValorAtual();
+    return CPIGGerenciadorForms::GetComponente<PIGGaugeBar>(idComponente)->GetValorAtual();
 }
 
 void PIG_GaugeBar_SetValorMarcadorAtual(int idComponente,double valor){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeBar>(idComponente)->SetValorAtual(valor);
+    CPIGGerenciadorForms::GetComponente<PIGGaugeBar>(idComponente)->SetValorAtual(valor);
 }
 
 void PIG_GaugeBar_SetCorInicial(int idComponente,PIG_Cor cor){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeBar>(idComponente)->SetCorInicial(cor);
+    CPIGGerenciadorForms::GetComponente<PIGGaugeBar>(idComponente)->SetCorInicial(cor);
 }
 
 void PIG_GaugeBar_SetCorFinal(int idComponente,PIG_Cor cor){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeBar>(idComponente)->SetCorFinal(cor);
+    CPIGGerenciadorForms::GetComponente<PIGGaugeBar>(idComponente)->SetCorFinal(cor);
+}
+
+int PIG_GaugeBar_GetValor(int idComponente){
+    return CPIGGerenciadorForms::GetComponente<PIGGaugeBar>(idComponente)->GetValorAtual();
+}
+
+void PIG_GaugeBar_GetValorString(int idComponente,char* valor){
+    strcpy(valor,(char*)(CPIGGerenciadorForms::GetComponente<PIGGaugeBar>(idComponente)->GetStringValorMarcador()).c_str());
+}
+
+int PIG_GaugeBar_GetValorMax(int idComponente){
+    return CPIGGerenciadorForms::GetComponente<PIGGaugeBar>(idComponente)->GetValorMax();
+}
+
+int PIG_GaugeBar_GetValorMin(int idComponente){
+    return CPIGGerenciadorForms::GetComponente<PIGGaugeBar>(idComponente)->GetValorMin();
+}
+
+void PIG_GaugeBar_AtualizaMarcador(int idComponente,int novoValor){
+    CPIGGerenciadorForms::GetComponente<PIGGaugeBar>(idComponente)->SetValorAtual(novoValor);
 }
 
 /**********GAUGECIRCULAR**************/
@@ -5907,139 +5931,155 @@ int PIG_CriaGaugeCircular(int idForm,int x, int y,int altura,int largura,int rai
 }
 
 void PIG_GaugeCircular_SetDelta(int idComponente,float valor){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->SetDelta(valor);
+    CPIGGerenciadorForms::GetComponente<PIGGaugeCircular>(idComponente)->SetDelta(valor);
 }
 
 void PIG_GaugeCircular_AvancaDelta(int idComponente){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->AvancaDelta();
+    CPIGGerenciadorForms::GetComponente<PIGGaugeCircular>(idComponente)->AvancaDelta();
 }
 
 float PIG_GaugeCircular_GetPorcentagemConcluida(int idComponente){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->GetPorcentagemConcluida();
+    return CPIGGerenciadorForms::GetComponente<PIGGaugeCircular>(idComponente)->GetPorcentagemConcluida();
 }
 
 void PIG_GaugeCircular_SetRaioInterno(int idComponente,int valorRaio){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->SetRaioInterno(valorRaio);
+    CPIGGerenciadorForms::GetComponente<PIGGaugeCircular>(idComponente)->SetRaioInterno(valorRaio);
 }
 
 void PIG_GaugeCircular_SetAnguloBase(int idComponente,double novoAng){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->SetAnguloBase(novoAng);
+    CPIGGerenciadorForms::GetComponente<PIGGaugeCircular>(idComponente)->SetAnguloBase(novoAng);
 }
 
 void PIG_GaugeCircular_SetDeltaAngulo(int idComponente,double novoDelta){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->SetDeltaAngulo(novoDelta);
+    CPIGGerenciadorForms::GetComponente<PIGGaugeCircular>(idComponente)->SetDeltaAngulo(novoDelta);
 }
 
 void PIG_GaugeCircular_IncrementaValor(int idComponente,double delta){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->AvancaMarcador(delta);
+    CPIGGerenciadorForms::GetComponente<PIGGaugeCircular>(idComponente)->AvancaMarcador(delta);
 }
 
 void PIG_GaugeCircular_MinimizaValor(int idComponente){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->MinimizaValorAtual();
+    CPIGGerenciadorForms::GetComponente<PIGGaugeCircular>(idComponente)->MinimizaValorAtual();
 }
 
 void PIG_GaugeCircular_MaximizaValor(int idComponente){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->MaximizaValorAtual();
+    CPIGGerenciadorForms::GetComponente<PIGGaugeCircular>(idComponente)->MaximizaValorAtual();
 }
 
 void PIG_GaugeCircular_SetValorMax(int idComponente,double novoValor){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->SetValorMax(novoValor);
+    CPIGGerenciadorForms::GetComponente<PIGGaugeCircular>(idComponente)->SetValorMax(novoValor);
 }
 
 void PIG_GaugeCircular_SetValorMin(int idComponente,double novoValor){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->SetValorMin(novoValor);
+    CPIGGerenciadorForms::GetComponente<PIGGaugeCircular>(idComponente)->SetValorMin(novoValor);
 }
 
 void PIG_GaugeCircular_SetCorInicial(int idComponente,PIG_Cor cor){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->SetCorInicial(cor);
+    CPIGGerenciadorForms::GetComponente<PIGGaugeCircular>(idComponente)->SetCorInicial(cor);
 }
 
 void PIG_GaugeCircular_SetCorFinal(int idComponente,PIG_Cor cor){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->SetCorFinal(cor);
+    CPIGGerenciadorForms::GetComponente<PIGGaugeCircular>(idComponente)->SetCorFinal(cor);
 }
 
 void PIG_GaugeCircular_SetCorInterna(int idComponente,PIG_Cor cor){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->SetCorInterna(cor);
+    CPIGGerenciadorForms::GetComponente<PIGGaugeCircular>(idComponente)->SetCorInterna(cor);
 }
 
 int PIG_GaugeCircular_GetValor(int idComponente){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->GetValorAtual();
+    return CPIGGerenciadorForms::GetComponente<PIGGaugeCircular>(idComponente)->GetValorAtual();
 }
 
 void PIG_GaugeCircular_GetValorString(int idComponente,char* valor){
-    strcpy(valor,(char*)(CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->GetStringValorMarcador()).c_str());
+    strcpy(valor,(char*)(CPIGGerenciadorForms::GetComponente<PIGGaugeCircular>(idComponente)->GetStringValorMarcador()).c_str());
 }
 
 int PIG_GaugeCircular_GetValorMax(int idComponente){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->GetValorMax();
+    return CPIGGerenciadorForms::GetComponente<PIGGaugeCircular>(idComponente)->GetValorMax();
 }
 
 int PIG_GaugeCircular_GetValorMin(int idComponente){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->GetValorMin();
+    return CPIGGerenciadorForms::GetComponente<PIGGaugeCircular>(idComponente)->GetValorMin();
 }
 
 void PIG_GaugeCircular_AtualizaMarcador(int idComponente,int novoValor){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGGaugeCircular>(idComponente)->SetValorAtual(novoValor);
+    CPIGGerenciadorForms::GetComponente<PIGGaugeCircular>(idComponente)->SetValorAtual(novoValor);
 }
 
 /**********SLIDEBAR**************/
 
-int PIG_CriaSlideBar(int idForm, int px, int py, int altura, int largura, string imgTrilha, int alturaMarcador, int larguraMarcador, string imgMarcador, int retiraFundoTrilha=1, int retiraFundoMarcador=1,int idJanela=0){
-    return CPIGGerenciadorForms::GetForm(idForm)->CriaSlideBar(px,py,altura,largura,imgTrilha,alturaMarcador,larguraMarcador,imgMarcador,retiraFundoTrilha,retiraFundoMarcador,idJanela);
+int PIG_CriaSlideBar(int idForm, int x, int y, int altura, int largura, string imgTrilha, int alturaMarcador, int larguraMarcador, string imgMarcador, int retiraFundoTrilha=1, int retiraFundoMarcador=1,int idJanela=0){
+    return CPIGGerenciadorForms::GetForm(idForm)->CriaSlideBar(x,y,altura,largura,imgTrilha,alturaMarcador,larguraMarcador,imgMarcador,retiraFundoTrilha,retiraFundoMarcador,idJanela);
 }
 
-int PIG_CriaSlideBar(int idForm, int px, int py, int altura, int largura, int alturaMarcador, int larguraMarcador, int idJanela=0){
-    return CPIGGerenciadorForms::GetForm(idForm)->CriaSlideBar(px,py,altura,largura,alturaMarcador,larguraMarcador,idJanela);
+int PIG_CriaSlideBar(int idForm, int x, int y, int altura, int largura, int alturaMarcador, int larguraMarcador, int idJanela=0){
+    return CPIGGerenciadorForms::GetForm(idForm)->CriaSlideBar(x,y,altura,largura,alturaMarcador,larguraMarcador,idJanela);
 }
 
 void PIG_SlideBar_SetDelta(int idComponente,float valor){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGSlideBar>(idComponente)->SetDelta(valor);
+    CPIGGerenciadorForms::GetComponente<PIGSlideBar>(idComponente)->SetDelta(valor);
 }
 
 void PIG_SlideBar_AvancaDelta(int idComponente){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGSlideBar>(idComponente)->AvancaDelta();
+    CPIGGerenciadorForms::GetComponente<PIGSlideBar>(idComponente)->AvancaDelta();
 }
 
 float PIG_SlideBar_GetPorcentagemConcluida(int idComponente){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGSlideBar>(idComponente)->GetPorcentagemConcluida();
+    return CPIGGerenciadorForms::GetComponente<PIGSlideBar>(idComponente)->GetPorcentagemConcluida();
 }
 
 void PIG_SlideBar_MinimizaValor(int idComponente){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGSlideBar>(idComponente)->MinimizaValorAtual();
+    CPIGGerenciadorForms::GetComponente<PIGSlideBar>(idComponente)->MinimizaValorAtual();
 }
 
 void PIG_SlideBar_MaximizaValor(int idComponente){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGSlideBar>(idComponente)->MaximizaValorAtual();
+    CPIGGerenciadorForms::GetComponente<PIGSlideBar>(idComponente)->MaximizaValorAtual();
 }
 
 void PIG_SlideBar_SetValorMin(int idComponente,double minimo){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGSlideBar>(idComponente)->SetValorMin(minimo);
+    CPIGGerenciadorForms::GetComponente<PIGSlideBar>(idComponente)->SetValorMin(minimo);
 }
 
 void PIG_SlideBar_SetValorMax(int idComponente,double maximo){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGSlideBar>(idComponente)->SetValorMax(maximo);
+    CPIGGerenciadorForms::GetComponente<PIGSlideBar>(idComponente)->SetValorMax(maximo);
 }
 
 void PIG_SlideBar_AvancaBarra(int idComponente,double valor){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGSlideBar>(idComponente)->AvancaMarcador(valor);
+    CPIGGerenciadorForms::GetComponente<PIGSlideBar>(idComponente)->AvancaMarcador(valor);
 }
 
 void PIG_SlideBar_SetPorcentagemConcluida(int idComponente,double porcentagem){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGSlideBar>(idComponente)->SetPorcentagemConcluida(porcentagem);
+    CPIGGerenciadorForms::GetComponente<PIGSlideBar>(idComponente)->SetPorcentagemConcluida(porcentagem);
 }
 
 void PIG_SlideBar_SetOrientacao(int idComponente,PIG_GaugeCrescimento orientacao){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGSlideBar>(idComponente)->SetOrientacao(orientacao);
+    CPIGGerenciadorForms::GetComponente<PIGSlideBar>(idComponente)->SetOrientacao(orientacao);
 }
 
 float PIG_SlideBar_GetValorMarcadorAtual(int idComponente){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGSlideBar>(idComponente)->GetValorAtual();
+    return CPIGGerenciadorForms::GetComponente<PIGSlideBar>(idComponente)->GetValorAtual();
 }
 
 void PIG_SlideBar_SetValorMarcadorAtual(int idComponente,double valor){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGSlideBar>(idComponente)->SetValorAtual(valor);
+    CPIGGerenciadorForms::GetComponente<PIGSlideBar>(idComponente)->SetValorAtual(valor);
 }
 
 void PIG_SlideBar_SetDeltas(int idComponente,int deltaPadrao, int deltaRodinha, int deltaTeclado){
-    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente<PIGSlideBar>(idComponente)->SetDeltas(deltaPadrao,deltaRodinha,deltaTeclado);
+    CPIGGerenciadorForms::GetComponente<PIGSlideBar>(idComponente)->SetDeltas(deltaPadrao,deltaRodinha,deltaTeclado);
+}
+
+void PIG_SlideBar_GetValorString(int idComponente,char* valor){
+    strcpy(valor,(char*)(CPIGGerenciadorForms::GetComponente<PIGSlideBar>(idComponente)->GetStringValorMarcador()).c_str());
+}
+
+int PIG_SlideBar_GetValorMax(int idComponente){
+    return CPIGGerenciadorForms::GetComponente<PIGSlideBar>(idComponente)->GetValorMax();
+}
+
+int PIG_SlideBar_GetValorMin(int idComponente){
+    return CPIGGerenciadorForms::GetComponente<PIGSlideBar>(idComponente)->GetValorMin();
+}
+
+void PIG_SlideBar_AtualizaMarcador(int idComponente,int novoValor){
+    CPIGGerenciadorForms::GetComponente<PIGSlideBar>(idComponente)->SetValorAtual(novoValor);
 }

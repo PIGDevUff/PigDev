@@ -10,12 +10,19 @@ protected:
     CPIGListBox LeParametros(int idComponente,string parametros){
         CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
 
-        CPIGListBox resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),
+        if (atrib.GetString("nomeArq","")!=""){
+            CPIGListBox resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),
                           atrib.GetInt("alturaLinha",0),
                           atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),
                           atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
 
-        return resp;
+            return resp;
+        }else{
+            CPIGListBox resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
+                          atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),atrib.GetInt("janela",0));
+
+            return resp;
+        }
     }
 
     void SetFoco(bool valor){
@@ -57,9 +64,7 @@ public:
 
     CPIGListBox(int idComponente,std::string parametros):CPIGListBox(LeParametros(idComponente,parametros)){}
 
-    ~CPIGListBox(){
-        for (PIGItemComponente x: itens) delete x;
-    }
+    virtual ~CPIGListBox(){}
 
     int TrataEventoTeclado(PIG_Evento evento)override{
         if(!temFoco||!habilitado||!visivel) return 0;

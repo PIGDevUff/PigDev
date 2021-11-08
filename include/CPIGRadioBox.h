@@ -11,12 +11,19 @@ protected:
     CPIGRadioBox LeParametros(int idComponente,string parametros){
         CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
 
-        CPIGRadioBox resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),
+        if (atrib.GetString("nomeArq","")!=""){
+            CPIGRadioBox resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),
                           atrib.GetInt("alturaLinha",0),
                           atrib.GetString("nomeArqItem",0),atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),
                           atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
 
-        return resp;
+            return resp;
+        }else{
+            CPIGRadioBox resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
+                          atrib.GetString("nomeArqItem",0),atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),atrib.GetInt("janela",0));
+
+            return resp;
+        }
     }
 
     void SetFoco(bool valor){
@@ -59,6 +66,8 @@ public:
 
     CPIGRadioBox(int idComponente,std::string nomeArqParam):CPIGRadioBox(LeParametros(idComponente,nomeArqParam)){}
 
+    virtual ~CPIGRadioBox(){}
+
     void CriaItem(std::string itemLabel, std::string arqImagemFundoItem="",bool itemHabilitado = true, std::string hintMsg="", int retiraFundo=1){
         int yItem = pos.y+alt-(altBaseLista)*(itens.size()+1);
         CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,false,itemHabilitado,hintMsg,retiraFundo);
@@ -74,7 +83,7 @@ public:
         DesenhaLabel();
 
         SDL_Rect r = {(int)pos.x,*altJanela-((int)pos.y)-alt,larg,alt};
-        //SDL_RenderSetClipRect(renderer,&r);
+        SDL_RenderSetClipRect(renderer,&r);
 
         if (text)//se tiver imagem de fundo
             CPIGSprite::Desenha();
@@ -83,7 +92,7 @@ public:
         for (PIGItemComponente i: itens)
             i->Desenha();
 
-        //SDL_RenderSetClipRect(renderer,NULL);
+        SDL_RenderSetClipRect(renderer,NULL);
 
         return 1;
     }

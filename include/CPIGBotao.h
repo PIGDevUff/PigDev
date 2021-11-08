@@ -14,6 +14,10 @@ protected:
     }
 
     void SetAcionado(bool valor){
+        if (acionado&&!valor)
+            Desloca(-offX,+offY);
+        else if (!acionado&&valor)
+            Desloca(offX,-offY);
         acionado = valor;
         AjustaFrame();
     }
@@ -33,7 +37,6 @@ protected:
 
     CPIGBotao(int idComponente,int px, int py, int alt,int larg,int janela=0):
         CPIGComponente(idComponente,px,py,alt,larg,janela){
-            printf("passou botao\n");
             tecla = PIG_TECLA_ENTER;//sem tecla de atalho
             SetPosicaoPadraoLabel(PIG_COMPONENTE_CENTRO_CENTRO);
         }

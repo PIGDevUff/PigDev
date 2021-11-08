@@ -12,7 +12,7 @@ private:
     bool crescimentoHorario;
     PIGOffscreenRenderer off;
 
-    void IniciaCoresBasicas(){
+    inline void IniciaCoresBasicas(){
         coresBasicas[0] = BRANCO;
         coresBasicas[1] = VERMELHO;
         coresBasicas[2] = VERMELHO;

@@ -76,6 +76,10 @@ public:
     }
 
     void SetAcionado(bool valor){
+        if (acionado&&!valor)
+            Desloca(-offX,+offY);
+        else if (!acionado&&valor)
+            Desloca(offX,-offY);
         acionado = valor;
         if (AjustaFrame) AjustaFrame(this);
     }

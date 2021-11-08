@@ -22,9 +22,15 @@ protected:
     static CPIGBotaoClick LeParametros(int idComponente,string parametros){
         CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
 
-        CPIGBotaoClick resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+        if (atrib.GetString("nomeArq","")!=""){
+            CPIGBotaoClick resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                        atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
-        return resp;
+            return resp;
+        }else{
+            CPIGBotaoClick resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+                       atrib.GetInt("janela",0));
+            return resp;
+        }
     }
 
     void AjustaFrame(){

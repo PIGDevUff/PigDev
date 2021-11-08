@@ -12,12 +12,19 @@ private:
     CPIGDropDown LeParametros(int idComponente,string parametros){
         CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
 
-        CPIGDropDown resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),
+        if (atrib.GetString("nomeArq","")!=""){
+            CPIGDropDown resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),
                           atrib.GetInt("alturaLinha",0),
                           atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),
                           atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
 
-        return resp;
+            return resp;
+        }else{
+            CPIGDropDown resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
+                          atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),atrib.GetInt("janela",0));
+
+            return resp;
+        }
     }
 
     void SetFoco(bool valor)override{
@@ -55,7 +62,7 @@ private:
     void DesenhaItemDestaque(){
         SDL_Rect rectAux = dest;
         rectAux.h = altBaseLista;
-        //SDL_RenderSetClipRect(renderer,&rectAux);
+        SDL_RenderSetClipRect(renderer,&rectAux);
         if (text){//se tiver imagem de fundo
             dest.h=altBaseLista;
             CPIGSprite::Desenha();
@@ -68,7 +75,7 @@ private:
             itens[itemDestaque]->Desenha();         //desenha o item no cabeçalho
             itens[itemDestaque]->Move(pItem.x,pItem.y); //devolve o item para a posição normal (onde também deverá ser desenhado)
         }
-        //SDL_RenderSetClipRect(renderer,NULL);
+        SDL_RenderSetClipRect(renderer,NULL);
     }
 
     void DesenhaListaItens(){
@@ -103,9 +110,7 @@ public:
     CPIGDropDown(int idComponente,string parametros):CPIGDropDown(LeParametros(idComponente,parametros)){}
 
     void CriaItem(std::string itemLabel, std::string arqImagemIcone="",std::string arqImagemFundoItem="", bool itemHabilitado = true, std::string hintMsg="", int retiraFundo=1){
-        //int yItem=pos.y-(itens.size()+1)*altBaseLista;
         int yItem = pos.y+alt-(altBaseLista)*(itens.size()+2);
-        //printf("item criado em %d\n",yItem);
         CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,false,itemHabilitado,hintMsg,retiraFundo);
     }
 

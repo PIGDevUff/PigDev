@@ -8,7 +8,7 @@ class CPIGSlideBar : public CPIGGauge{
     int deltaRodinha,deltaTeclado;
     int altMarcador,largMarcador,xMarc,yMarc;
 
-    void IniciaCoresBasicas(){
+    inline void IniciaCoresBasicas(){
         coresBasicas[0] = BRANCO;
         coresBasicas[1] = CINZA;
     }
@@ -16,34 +16,39 @@ class CPIGSlideBar : public CPIGGauge{
     CPIGSlideBar LeParametros(int idComponente,string parametros){
         CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
 
-        CPIGSlideBar resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+        if (atrib.GetString("nomeArq","")!=""){
+            CPIGSlideBar resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                           atrib.GetString("nomeArq",""),atrib.GetInt("alturaMarcador",0),atrib.GetInt("larguraMarcador",0),atrib.GetString("nomeArqMarcador",""),
                           atrib.GetInt("retiraFundo",1),atrib.GetInt("retiraFundoMarcador",1),atrib.GetInt("janela",0));
 
-        return resp;
+            return resp;
+        }else{
+            CPIGSlideBar resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+                          atrib.GetInt("alturaMarcador",0),atrib.GetInt("larguraMarcador",0),atrib.GetInt("janela",0));
+
+            return resp;
+        }
     }
 
     void AtualizaMarcador()override{
         OnAction();
 
-        //marcador->GetDimensoes(altMarcador,largMarcador);
-
         switch (orientacaoCrescimento){
         case PIG_GAUGE_ESQ_DIR:
-                xMarc = pos.x+(int)(porcentagemConcluida*(larg-largMarcador));
-                yMarc = pos.y;
+                xMarc = pos.x+(int)(porcentagemConcluida*(larg-largMarcador))+offX;
+                yMarc = pos.y+offY;
                 break;
         case PIG_GAUGE_DIR_ESQ:
-                xMarc = pos.x+(int)((1-porcentagemConcluida)*(larg-largMarcador));
-                yMarc = pos.y;
+                xMarc = pos.x+(int)((1-porcentagemConcluida)*(larg-largMarcador))+offX;
+                yMarc = pos.y+offY;
                 break;
         case PIG_GAUGE_BAIXO_CIMA:
-                xMarc = pos.x;
-                yMarc = pos.y+(int)(porcentagemConcluida*(alt-altMarcador));
+                xMarc = pos.x+offX;
+                yMarc = pos.y+(int)(porcentagemConcluida*(alt-altMarcador))+offY;
                 break;
         case PIG_GAUGE_CIMA_BAIXO:
-                xMarc = pos.x;
-                yMarc = pos.y+(int)((1-porcentagemConcluida)*(alt-altMarcador));
+                xMarc = pos.x+offX;
+                yMarc = pos.y+(int)((1-porcentagemConcluida)*(alt-altMarcador))+offY;
                 break;
         }
 

@@ -8,7 +8,7 @@ class CPIGGaugeBar: public CPIGGauge{
 private:
     int margemEsq,margemDir,margemCima,margemBaixo;
 
-    void IniciaCoresBasicas(){
+    inline void IniciaCoresBasicas(){
         coresBasicas[0] = BRANCO;
         coresBasicas[1] = VERMELHO;
         coresBasicas[2] = VERMELHO;
@@ -17,11 +17,18 @@ private:
     CPIGGaugeBar LeParametros(int idComponente,string parametros){
         CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
 
-        CPIGGaugeBar resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+        if (atrib.GetString("nomeArq","")!=""){
+            CPIGGaugeBar resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                           atrib.GetString("nomeArq",""),atrib.GetString("nomeArqMarcador",""),
                           atrib.GetInt("retiraFundo",1),atrib.GetInt("retiraFundoMarcador",1),atrib.GetInt("janela",0));
 
-        return resp;
+            return resp;
+        }else{
+            CPIGGaugeBar resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+                          atrib.GetInt("janela",0));
+
+            return resp;
+        }
     }
 
     void DesenhaBarraCor(){
