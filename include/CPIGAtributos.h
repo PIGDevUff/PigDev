@@ -6,18 +6,15 @@ class CPIGAtributos{
 private:
 
 std::map<int, int> valoresIntInt;
-std::map<std::string, int> valoresStringInt;
+std::map<string, int> valoresStringInt;
 std::map<int, float> valoresIntFloat;
-std::map<std::string, float> valoresStringFloat;
-std::map<int, std::string> valoresIntString;
-std::map<std::string, std::string> valoresStringString;
+std::map<string, float> valoresStringFloat;
+std::map<int, string> valoresIntString;
+std::map<string, string> valoresStringString;
 
 public:
 
-
-CPIGAtributos(){
-
-}
+CPIGAtributos(){}
 
 CPIGAtributos(CPIGAtributos *outro){
     if (outro){
@@ -30,10 +27,7 @@ CPIGAtributos(CPIGAtributos *outro){
     }
 }
 
-
-~CPIGAtributos(){
-
-}
+virtual ~CPIGAtributos(){}
 
 void LimpaAtributos(){
     valoresIntInt.clear();
@@ -48,7 +42,7 @@ void SetValorInt(int chave, int valor){
     valoresIntInt[chave] = valor;
 }
 
-void SetValorInt(std::string chave, int valor){
+void SetValorInt(string chave, int valor){
     valoresStringInt[chave] = valor;
 }
 
@@ -56,15 +50,15 @@ void SetValorFloat(int chave, float valor){
     valoresIntFloat[chave] = valor;
 }
 
-void SetValorFloat(std::string chave, float valor){
+void SetValorFloat(string chave, float valor){
     valoresStringFloat[chave] = valor;
 }
 
-void SetValorString(int chave, std::string valor){
+void SetValorString(int chave, string valor){
     valoresIntString[chave] = valor;
 }
 
-void SetValorString(std::string chave, std::string valor){
+void SetValorString(string chave, string valor){
     valoresStringString[chave] = valor;
 }
 
@@ -78,7 +72,7 @@ bool GetValorInt(int chave, int &valor){
 }
 
 bool GetValorInt(std::string chave, int &valor){
-    std::map<std::string, int>::iterator it;
+    std::map<string, int>::iterator it;
     it = valoresStringInt.find(chave);
     if (it == valoresStringInt.end())
         return false;
@@ -96,7 +90,7 @@ bool GetValorFloat(int chave, float &valor){
 }
 
 bool GetValorFloat(std::string chave, float &valor){
-    std::map<std::string, float>::iterator it;
+    std::map<string, float>::iterator it;
     it = valoresStringFloat.find(chave);
     if (it == valoresStringFloat.end())
         return false;
@@ -105,7 +99,7 @@ bool GetValorFloat(std::string chave, float &valor){
 }
 
 bool GetValorString(int chave, std::string &valor){
-    std::map<int, std::string>::iterator it;
+    std::map<int, string>::iterator it;
     it = valoresIntString.find(chave);
     if (it == valoresIntString.end())
         return false;
@@ -114,7 +108,7 @@ bool GetValorString(int chave, std::string &valor){
 }
 
 bool GetValorString(std::string chave, std::string &valor){
-    std::map<std::string, std::string>::iterator it;
+    std::map<string, string>::iterator it;
     it = valoresStringString.find(chave);
     if (it == valoresStringString.end())
         return false;
@@ -123,7 +117,7 @@ bool GetValorString(std::string chave, std::string &valor){
 }
 
 float GetFloat(string chave, float retNegativo){
-    std::map<std::string, float>::iterator it;
+    std::map<string, float>::iterator it;
     it = valoresStringFloat.find(chave);
     if (it == valoresStringFloat.end())
         return retNegativo;
@@ -131,7 +125,7 @@ float GetFloat(string chave, float retNegativo){
 }
 
 string GetString(string chave, string retNegativo){
-    std::map<std::string, string>::iterator it;
+    std::map<string, string>::iterator it;
     it = valoresStringString.find(chave);
     if (it == valoresStringString.end())
         return retNegativo;
@@ -139,14 +133,35 @@ string GetString(string chave, string retNegativo){
 }
 
 int GetInt(string chave, int retNegativo){
-    std::map<std::string, int>::iterator it;
+    std::map<string, int>::iterator it;
     it = valoresStringInt.find(chave);
     if (it == valoresStringInt.end())
         return retNegativo;
     return it->second;
 }
 
+void dump(){
+    printf("starting dump...\n");
+    for (std::map<string, int>::iterator it= valoresStringInt.begin(); it!=valoresStringInt.end(); it++){
+        printf("%s: %d\n",it->first.c_str(),it->second);
+    }
+    for (std::map<string, string>::iterator it= valoresStringString.begin(); it!=valoresStringString.end(); it++){
+        printf("%s: %s\n",it->first.c_str(),it->second.c_str());
+    }
+    for (std::map<string, float>::iterator it= valoresStringFloat.begin(); it!=valoresStringFloat.end(); it++){
+        printf("%s: %f\n",it->first.c_str(),it->second);
+    }
+    for (std::map<int, int>::iterator it= valoresIntInt.begin(); it!=valoresIntInt.end(); it++){
+        printf("%s: %d\n",it->first,it->second);
+    }
+    for (std::map<int, string>::iterator it= valoresIntString.begin(); it!=valoresIntString.end(); it++){
+        printf("%d: %s\n",it->first,it->second.c_str());
+    }
+    for (std::map<int, float>::iterator it= valoresIntFloat.begin(); it!=valoresIntFloat.end(); it++){
+        printf("%s: %f\n",it->first,it->second);
+    }
 
+}
 };
 typedef CPIGAtributos *PIGAtributos;
 

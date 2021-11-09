@@ -113,10 +113,10 @@ public:
             CPIGSprite::Desenha();
         else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[corAtual]);
 
+        DesenhaLabel();
+
         if (icone)
             icone->Desenha();
-
-        DesenhaLabel();
 
         if (SDL_RenderIsClipEnabled(renderer)){
             SDL_Rect r;

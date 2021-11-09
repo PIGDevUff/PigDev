@@ -1208,7 +1208,7 @@ idJanela (entrada, passagem por valor năo-obrigatório): indica qual janela vai
 retono:
 inteiro que representa a ideintificaçăo única da fonte. Futuras referęncia a esta fonte devem idenitificá-las pelo número.
 ********************************/
-int CriaFonteNormal(char *nome,int tamanho,PIG_Cor corLetra=PIG_FONTE_PADRAO_COR,PIG_Estilo estilo=PIG_ESTILO_NORMAL,int idJanela=0){
+int CriaFonteNormal(char *nome,int tamanho,PIG_Cor corLetra={255,255,255,255},PIG_Estilo estilo=PIG_ESTILO_NORMAL,int idJanela=0){
     return CPIGGerenciadorFontes::CriaFonteNormal(nome,tamanho,estilo,corLetra,idJanela);
 }
 
@@ -1290,7 +1290,7 @@ PIG_ESTILO_CORTADO, para uma linha horizontal ŕ meia-altura. Caso nenhum estilo
 retono:
 inteiro que representa a ideintificaçăo única da fonte. Futuras referęncia a esta fonte devem idenitificá-las pelo número.
 ********************************/
-int CriaFonteNormalOffscreen(char *nome,int tamanho,PIG_Cor corLetra=PIG_FONTE_PADRAO_COR,PIG_Estilo estilo=PIG_ESTILO_NORMAL){
+int CriaFonteNormalOffscreen(char *nome,int tamanho,PIG_Cor corLetra={255,255,255,255},PIG_Estilo estilo=PIG_ESTILO_NORMAL){
     return CPIGGerenciadorFontes::CriaFonteNormalOffScreen(nome,tamanho,estilo,jogo->GetOffScreenRender(),corLetra,0);
 }
 
@@ -1349,7 +1349,7 @@ cor (entrada, passagem por valor): cor a ser aplicada ŕ fonte no momento da esc
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário năo deseje uma fonte especial, será utilizada a fonte padrăo (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotaçăo da string.
 ********************************/
-void EscreverDireita(char *str,int posicaoX,int posicaoY,PIG_Cor cor=BRANCO,int numFonte=0,float angulo=0){
+void EscreverDireita(char *str,int posicaoX,int posicaoY,PIG_Cor cor={255,255,255,255},int numFonte=0,float angulo=0){
     CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str,posicaoX,posicaoY,cor,PIG_TEXTO_DIREITA,angulo);
 }
 
@@ -1363,7 +1363,7 @@ cor (entrada, passagem por valor): cor a ser aplicada ŕ fonte no momento da esc
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário năo deseje uma fonte especial, será utilizada a fonte padrăo (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotaçăo da string.
 ********************************/
-void EscreverEsquerda(char *str,int posicaoX,int posicaoY,PIG_Cor cor=BRANCO,int numFonte=0,float angulo=0){
+void EscreverEsquerda(char *str,int posicaoX,int posicaoY,PIG_Cor cor={255,255,255,255},int numFonte=0,float angulo=0){
     CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str,posicaoX,posicaoY,cor,PIG_TEXTO_ESQUERDA,angulo);
 }
 
@@ -1377,7 +1377,7 @@ cor (entrada, passagem por valor): cor a ser aplicada ŕ fonte no momento da esc
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário năo deseje uma fonte especial, será utilizada a fonte padrăo (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotaçăo da string.
 ********************************/
-void EscreverCentralizada(char *str,int posicaoX,int posicaoY,PIG_Cor cor=BRANCO,int numFonte=0,float angulo=0){
+void EscreverCentralizada(char *str,int posicaoX,int posicaoY,PIG_Cor cor={255,255,255,255},int numFonte=0,float angulo=0){
     CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str,posicaoX,posicaoY,cor,PIG_TEXTO_CENTRO,angulo);
 }
 
@@ -1395,7 +1395,7 @@ cor (entrada, passagem por valor): cor a ser aplicada ŕ fonte no momento da esc
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário năo deseje uma fonte especial, será utilizada a fonte padrăo (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotaçăo das strings.
 ********************************/
-void EscreverLongaEsquerda(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,PIG_Cor cor=BRANCO,int numFonte=0,float angulo=0){
+void EscreverLongaEsquerda(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,PIG_Cor cor={255,255,255,255},int numFonte=0,float angulo=0){
     CPIGGerenciadorFontes::GetFonte(numFonte)->EscreveLonga(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,cor,PIG_TEXTO_ESQUERDA,angulo);
 }
 
@@ -1413,7 +1413,7 @@ cor (entrada, passagem por valor): cor a ser aplicada ŕ fonte no momento da esc
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário năo deseje uma fonte especial, será utilizada a fonte padrăo (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotaçăo das strings.
 ********************************/
-void EscreverLongaDireita(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,PIG_Cor cor=BRANCO,int numFonte=0,float angulo=0){
+void EscreverLongaDireita(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,PIG_Cor cor={255,255,255,255},int numFonte=0,float angulo=0){
     CPIGGerenciadorFontes::GetFonte(numFonte)->EscreveLonga(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,cor,PIG_TEXTO_DIREITA,angulo);
 }
 
@@ -1431,7 +1431,7 @@ cor (entrada, passagem por valor): cor a ser aplicada ŕ fonte no momento da esc
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário năo deseje uma fonte especial, será utilizada a fonte padrăo (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotaçăo das strings.
 ********************************/
-void EscreverLongaCentralizada(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,PIG_Cor cor=BRANCO,int numFonte=0,float angulo=0){
+void EscreverLongaCentralizada(char *str,int posicaoX,int posicaoY,int largMax,int espacoEntreLinhas,PIG_Cor cor={255,255,255,255},int numFonte=0,float angulo=0){
     CPIGGerenciadorFontes::GetFonte(numFonte)->EscreveLonga(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,cor,PIG_TEXTO_CENTRO,angulo);
 }
 
@@ -1445,7 +1445,7 @@ cor (entrada, passagem por valor): cor a ser aplicada ŕ fonte no momento da esc
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário năo deseje uma fonte especial, será utilizada a fonte padrăo (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotaçăo do número inteiro.
 ********************************/
-void EscreveInteiroEsquerda(int valor, int x, int y,PIG_Cor cor=BRANCO, int numFonte=0,float angulo=0){
+void EscreveInteiroEsquerda(int valor, int x, int y,PIG_Cor cor={255,255,255,255}, int numFonte=0,float angulo=0){
     std::stringstream str;
     str<<valor;
     CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str.str(),x,y,cor,PIG_TEXTO_ESQUERDA,angulo);
@@ -1461,7 +1461,7 @@ cor (entrada, passagem por valor): cor a ser aplicada ŕ fonte no momento da esc
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário năo deseje uma fonte especial, será utilizada a fonte padrăo (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotaçăo do número inteiro.
 ********************************/
-void EscreveInteiroDireita(int valor, int x, int y,PIG_Cor cor=BRANCO, int numFonte=0,float angulo=0){
+void EscreveInteiroDireita(int valor, int x, int y,PIG_Cor cor={255,255,255,255}, int numFonte=0,float angulo=0){
     std::stringstream str;
     str<<valor;
     CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str.str(),x,y,cor,PIG_TEXTO_DIREITA,angulo);
@@ -1477,7 +1477,7 @@ cor (entrada, passagem por valor): cor a ser aplicada ŕ fonte no momento da esc
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário năo deseje uma fonte especial, será utilizada a fonte padrăo (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotaçăo do número inteiro.
 ********************************/
-void EscreveInteiroCentralizado(int valor, int x, int y,PIG_Cor cor=BRANCO, int numFonte=0,float angulo=0){
+void EscreveInteiroCentralizado(int valor, int x, int y,PIG_Cor cor={255,255,255,255}, int numFonte=0,float angulo=0){
     std::stringstream str;
     str<<valor;
     CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str.str(),x,y,cor,PIG_TEXTO_CENTRO,angulo);
@@ -1494,7 +1494,7 @@ cor (entrada, passagem por valor): cor a ser aplicada ŕ fonte no momento da esc
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário năo deseje uma fonte especial, será utilizada a fonte padrăo (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotaçăo do número real.
 ********************************/
-void EscreveDoubleEsquerda(double valor, int casas, int x, int y,PIG_Cor cor=BRANCO, int numFonte=0,float angulo=0){
+void EscreveDoubleEsquerda(double valor, int casas, int x, int y,PIG_Cor cor={255,255,255,255}, int numFonte=0,float angulo=0){
     std::stringstream str;
     str.setf(std::ios_base::fixed, std::ios_base::floatfield);
     str<<std::setprecision(casas)<<valor;
@@ -1512,7 +1512,7 @@ cor (entrada, passagem por valor): cor a ser aplicada ŕ fonte no momento da esc
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário năo deseje uma fonte especial, será utilizada a fonte padrăo (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotaçăo do número real.
 ********************************/
-void EscreveDoubleDireita(double valor, int casas, int x, int y,PIG_Cor cor=BRANCO, int numFonte=0,float angulo=0){
+void EscreveDoubleDireita(double valor, int casas, int x, int y,PIG_Cor cor={255,255,255,255}, int numFonte=0,float angulo=0){
     std::stringstream str;
     str.setf(std::ios_base::fixed, std::ios_base::floatfield);
     str<<std::setprecision(casas)<<valor;
@@ -1530,7 +1530,7 @@ cor (entrada, passagem por valor): cor a ser aplicada ŕ fonte no momento da esc
 numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o usuário năo deseje uma fonte especial, será utilizada a fonte padrăo (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotaçăo do número real.
 ********************************/
-void EscreveDoubleCentralizado(double valor, int casas, int x, int y,PIG_Cor cor=BRANCO, int numFonte=0,float angulo=0){
+void EscreveDoubleCentralizado(double valor, int casas, int x, int y,PIG_Cor cor={255,255,255,255}, int numFonte=0,float angulo=0){
     std::stringstream str;
     str.setf(std::ios_base::fixed, std::ios_base::floatfield);
     str<<std::setprecision(casas)<<valor;
@@ -5338,7 +5338,7 @@ void PIG_Componentes_DefineAcao(int idComponente,PIG_FuncaoSimples funcao,void *
 }
 
 void PIG_Componentes_SetLabel(int idComponente,char* novoLabel){
-    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetLabel(novoLabel);
+    CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetLabel(novoLabel);
 }
 
 void PIG_Componentes_SetFonteLabel(int idComponente,int fonte){
@@ -5500,7 +5500,7 @@ void PIG_AreaDeTexto_SetFonteTexto(int idComponente,int fonte){
     CPIGGerenciadorForms::GetComponente<PIGAreaDeTexto>(idComponente)->SetFonteTexto(fonte);
 }
 
-void PIG_AreaDeTexto_SetLinhasAbaixoTexto(int idComponente,bool visivel,PIG_Cor cor = PRETO){
+void PIG_AreaDeTexto_SetLinhasAbaixoTexto(int idComponente,bool visivel,PIG_Cor cor = {255,255,255,255}){
     CPIGGerenciadorForms::GetComponente<PIGAreaDeTexto>(idComponente)->SetLinhasAbaixoTexto(visivel,cor);
 }
 

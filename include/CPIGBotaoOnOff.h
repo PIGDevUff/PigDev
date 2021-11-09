@@ -21,13 +21,11 @@ protected:
         CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
 
         if (atrib.GetString("nomeArq","")!=""){
-            CPIGBotaoOnOff resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            return CPIGBotaoOnOff(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                        atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
-            return resp;
         }else{
-            CPIGBotaoOnOff resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            return CPIGBotaoOnOff(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                        atrib.GetInt("janela",0));
-            return resp;
         }
     }
 
@@ -59,7 +57,7 @@ protected:
 
 public:
 
-    CPIGBotaoOnOff(int idComponente,int px, int py, int alt,int larg,std::string nomeArq, int retiraFundo=1,int janela=0):
+    CPIGBotaoOnOff(int idComponente, int px, int py, int alt, int larg, string nomeArq, int retiraFundo=1, int janela=0):
         CPIGBotao(idComponente,px,py,alt,larg,nomeArq,retiraFundo,janela){
             CriaFramesAutomaticosPorLinha(1,2,3);
             MudaFrameAtual(1); //frame de estado normal do botao

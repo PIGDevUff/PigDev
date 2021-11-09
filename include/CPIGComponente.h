@@ -162,12 +162,18 @@ public:
             if(variavel == "py") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
             if(variavel == "altura") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
             if(variavel == "largura") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "alturaLinha") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "alturaItem") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "larguraItem") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "alturaMarcador") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "larguraMarcador") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
             if(variavel == "nomeArq") {ss >> valorString; resp.SetValorString(variavel,valorString);}
             if(variavel == "nomeArqMarcador") {ss >> valorString; resp.SetValorString(variavel,valorString);}
             if(variavel == "nomeArqItem") {ss >> valorString; resp.SetValorString(variavel,valorString);}
             if(variavel == "label") {ss >> valorString; resp.SetValorString(variavel,valorString);}
             if(variavel == "retiraFundo") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
             if(variavel == "retiraFundoMarcador") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "raioInterno") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
             if(variavel == "label") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
             if(variavel == "janela") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
         }
@@ -200,7 +206,7 @@ public:
 
     //define a cor do label
     virtual void SetCorLabel(PIG_Cor corLabel){
-        lab->SetColoracao(corLabel);
+        lab->SetCor(corLabel);
     }
 
     //recupera a cor do label
@@ -220,7 +226,7 @@ public:
 
     //define a cor do hint
     virtual void SetCorHint(PIG_Cor cor){
-        hint->SetColoracao(cor);
+        hint->SetCor(cor);
     }
 
     //recupera o hint

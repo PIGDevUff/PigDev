@@ -20,10 +20,12 @@
 #include <stdint.h>
 #include <limits.h>
 
+using namespace std;
+
 //separa uma string em palavras, usando os delimitadores indicados
-std::vector<std::string> PIGSeparaPalavras(std::string texto,std::string delim){
-    std::vector<std::string> resp;
-    std::string strAtual = "";
+vector<string> PIGSeparaPalavras(string texto,string delim){
+    vector<string> resp;
+    string strAtual = "";
 
     for (unsigned int i=0;i<texto.size();i++){
 
@@ -46,14 +48,14 @@ std::vector<std::string> PIGSeparaPalavras(std::string texto,std::string delim){
 }
 
 //verifica se uma string possui apenas digitos de 0 a 9
-bool PIGSomenteNumeros(std::string frase){
+bool PIGSomenteNumeros(string frase){
     for (unsigned int i=0;i<frase.size();i++)
         if (frase[i]<'0'||frase[i]>'9')
             return false;
     return true;
 }
 
-//verifica se duas cores são iguais
+//verifica se duas cores sï¿½o iguais
 inline bool PIGCoresIguais(PIG_Cor cor1, PIG_Cor cor2){
     return cor1.r==cor2.r&&cor1.g==cor2.g&&cor1.b==cor2.b&&cor1.a==cor2.a;
 }
@@ -84,12 +86,12 @@ PIG_Cor PIGCriaCor(char *stringHexa){
     return cor;
 }
 
-//troca a posição dos bytes de uma word(16bits)
+//troca a posiï¿½ï¿½o dos bytes de uma word(16bits)
 uint16_t PIGTroca2Bytes(uint16_t valor){
     return (valor/256)+((valor%256)*256);
 }
 
-//mistura duas cores com uma proporção entre elas
+//mistura duas cores com uma proporï¿½ï¿½o entre elas
 PIG_Cor PIGMixCor(PIG_Cor iniCor, PIG_Cor fimCor, double porc){
     PIG_Cor resp;
     resp.r = fimCor.r*porc + (iniCor.r)*(1-porc);
@@ -99,11 +101,11 @@ PIG_Cor PIGMixCor(PIG_Cor iniCor, PIG_Cor fimCor, double porc){
     return resp;
 }
 
-//retorna o diretorio onde está o executável
-std::string PIGGetDiretorioAtual(){
+//retorna o diretorio onde estï¿½ o executï¿½vel
+string PIGGetDiretorioAtual(){
     char *dir = SDL_GetBasePath();
     if (dir){
-        std::string resp(dir);
+        string resp(dir);
         CHDIR(dir);
         free(dir);
         return resp;
@@ -112,20 +114,20 @@ std::string PIGGetDiretorioAtual(){
 
 //retorna "valor" limitado entre [vMin, vMax]
 int PIGLimitaValor(int valor, int minimo,int maximo){
-    if (valor<minimo) return minimo; //valor não pode ficar menor que o mínimo informado
-    else if (valor>maximo) return maximo;//valor não pode ficar maior que o máximo informado
+    if (valor<minimo) return minimo; //valor nï¿½o pode ficar menor que o mï¿½nimo informado
+    else if (valor>maximo) return maximo;//valor nï¿½o pode ficar maior que o mï¿½ximo informado
     else return valor;
 }
 
 double PIGLimitaValor(double valor, double minimo,double maximo){
-    if (valor<minimo) return minimo; //valor não pode ficar menor que o mínimo informado
-    else if (valor>maximo) return maximo;//valor não pode ficar maior que o máximo informado
+    if (valor<minimo) return minimo; //valor nï¿½o pode ficar menor que o mï¿½nimo informado
+    else if (valor>maximo) return maximo;//valor nï¿½o pode ficar maior que o mï¿½ximo informado
     else return valor;
 }
 
-//cria uma lista de strings contendo o nome do arquivos de um diretório
-std::vector<std::string> PIGListaArquivosDiretorio(std::string path) {
-   std::vector<std::string> resp;
+//cria uma lista de strings contendo o nome do arquivos de um diretï¿½rio
+vector<string> PIGListaArquivosDiretorio(string path) {
+   vector<string> resp;
    struct dirent *entry;
    DIR *dir = opendir(path.c_str());
 
@@ -197,8 +199,6 @@ inline double PIGMaxVetor(double  vetor[], int tamVetor) {
             maior = vetor[i];
     return maior;
 }
-
-
 
 inline double PIGDistancia(PIGPonto2D a, PIGPonto2D b) {
     double deltaX = (b.x - a.x);

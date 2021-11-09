@@ -18,13 +18,11 @@ private:
         coresBasicas[2] = VERMELHO;
     }
 
-    CPIGGaugeCircular LeParametros(int idComponente, string parametros){
+    static CPIGGaugeCircular LeParametros(int idComponente, string parametros){
         CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
 
-        CPIGGaugeCircular resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
-                          atrib.GetInt("raioInterior",0),atrib.GetInt("janela",0));
-
-        return resp;
+        return CPIGGaugeCircular(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+                          atrib.GetInt("raioInterno",0),atrib.GetInt("janela",0));
     }
 
     virtual void AtualizaMarcador()override{

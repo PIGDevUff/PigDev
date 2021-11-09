@@ -23,13 +23,11 @@ protected:
         CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
 
         if (atrib.GetString("nomeArq","")!=""){
-            CPIGBotaoClick resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            return CPIGBotaoClick(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                        atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
-            return resp;
         }else{
-            CPIGBotaoClick resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            return CPIGBotaoClick(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                        atrib.GetInt("janela",0));
-            return resp;
         }
     }
 

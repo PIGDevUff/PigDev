@@ -13,7 +13,7 @@ private:
     PIGTimer timerFPS;
     int estado;
     int rodando;
-    std::string diretorioAtual;
+    string diretorioAtual;
     PIGOffscreenRenderer offRenderer;
 
 public:

@@ -19,16 +19,12 @@ private:
         CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
 
         if (atrib.GetString("nomeArq","")!=""){
-            CPIGCampoTextoESenha resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            return CPIGCampoTextoESenha(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                         atrib.GetString("nomeArq",""),atrib.GetInt("maxCaracters",200),atrib.GetInt("apenasNumeros",0),atrib.GetInt("campoSenha",0),
                         atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
-
-            return resp;
         }else{
-            CPIGCampoTextoESenha resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            return CPIGCampoTextoESenha(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                         atrib.GetInt("maxCaracters",200),atrib.GetInt("apenasNumeros",0),atrib.GetInt("campoSenha",0),atrib.GetInt("janela",0));
-
-            return resp;
         }
 
     }

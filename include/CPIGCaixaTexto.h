@@ -142,8 +142,8 @@ protected:
     }
 
     //converte caracteres especiais, como acentos por exemplo
-    std::string ConverteString(char *str){
-        std::string resp(str);
+    string ConverteString(char *str){
+        string resp(str);
         if (strlen(str)>1){
             if ((uint8_t)str[0]==195){
                 resp = str[1]+64;
@@ -219,7 +219,7 @@ public:
     }
 
     //define o texto a ser mostrado no componente
-    virtual int SetTexto(std::string frase){
+    virtual int SetTexto(string frase){
         texto = frase;
         posCursor=0;
         AjustaPosicaoTextoCursor();
@@ -234,7 +234,7 @@ public:
     }
 
     //recupera o texto armazenado no componente
-    std::string GetTexto(){
+    string GetTexto(){
         return texto;
     }
 

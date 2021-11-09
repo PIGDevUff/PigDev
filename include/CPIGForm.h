@@ -157,7 +157,9 @@ public:
     }
 
     PIGComponente GetComponente(int idComponente){
+        //printf("vou tentar pegar o compo %d\n",idComponente);
         if (componentes[idComponente % PIG_MAX_COMPONENTES]==NULL) throw CPIGErroIndice(idComponente,"componentes");
+        //printf("devolvendo %d\n",idComponente);
         return componentes[idComponente % PIG_MAX_COMPONENTES];
     }
 
@@ -206,7 +208,7 @@ public:
 
     int CriaCampoTextoESenha(int px, int py, int altura,int largura,std::string nomeArq,int maxCars = 200, bool apenasNumeros=false, int retiraFundo=1,bool campoSenha = false){
         int idComponente = GetIdComponente(totalComponentes);
-        componentes[totalComponentes++] = new CPIGCampoTextoESenha(idComponente,px,py,altura,largura,nomeArq,maxCars,apenasNumeros,retiraFundo,idJanela,campoSenha);
+        componentes[totalComponentes++] = new CPIGCampoTextoESenha(idComponente,px,py,altura,largura,nomeArq,maxCars,apenasNumeros,campoSenha,retiraFundo,idJanela);
         return idComponente;
     }
 
@@ -296,6 +298,7 @@ public:
 
     int CriaComponentePorParametro(PIGTiposComponentes componente,string parametros){
         int idComponente = GetIdComponente(totalComponentes);
+        //printf("parametros: %s\n",parametros.c_str());
         switch(componente){
             case PIG_BOTAOCLICK: componentes[totalComponentes++] = new CPIGBotaoClick(idComponente,parametros);break;
             case PIG_BOTAOONOFF: componentes[totalComponentes++] = new CPIGBotaoOnOff(idComponente,parametros);break;
@@ -309,6 +312,7 @@ public:
             case PIG_SLIDEBAR: componentes[totalComponentes++] = new CPIGSlideBar(idComponente,parametros);break;
             case PIG_GAUGECIRCULAR: componentes[totalComponentes++] = new CPIGGaugeCircular(idComponente,parametros);break;
         }
+        //printf("id comp %d %d\n",idComponente,totalComponentes);
         return idComponente;
     }
 

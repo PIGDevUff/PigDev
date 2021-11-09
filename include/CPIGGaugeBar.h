@@ -13,20 +13,16 @@ private:
         coresBasicas[2] = VERMELHO;
     }
 
-    CPIGGaugeBar LeParametros(int idComponente, string parametros){
+    static CPIGGaugeBar LeParametros(int idComponente, string parametros){
         CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
 
         if (atrib.GetString("nomeArq","")!=""){
-            CPIGGaugeBar resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            return CPIGGaugeBar(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                           atrib.GetString("nomeArq",""),atrib.GetString("nomeArqMarcador",""),
                           atrib.GetInt("retiraFundo",1),atrib.GetInt("retiraFundoMarcador",1),atrib.GetInt("janela",0));
-
-            return resp;
         }else{
-            CPIGGaugeBar resp(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            return CPIGGaugeBar(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                           atrib.GetInt("janela",0));
-
-            return resp;
         }
     }
 
