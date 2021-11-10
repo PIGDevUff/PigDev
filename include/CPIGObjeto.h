@@ -3,7 +3,7 @@
 
 #include "CPIGAtributos.h"
 
-typedef enum {PIG_COLISAO_NENHUMA, PIG_COLISAO_OOBB, PIG_COLISAO_POLIGONO, PIG_COLISAO_CIRCULAR} PIG_ModoColisao;
+typedef enum {PIG_COLISAO_NENHUMA, PIG_COLISAO_OOBB, PIG_COLISAO_POLIGONO, PIG_COLISAO_CIRCULAR} PIGModoColisao;
 
 class CPIGObjeto: public CPIGSprite, public CPIGAtributos {
 
@@ -11,10 +11,10 @@ protected:
 
 PIGPonto2D bb[4];
 int raio;
-PIG_ModoColisao modo;
+PIGModoColisao modo;
 
-std::vector<PIGPonto2D> vertices;
-std::vector<PIGPonto2D> verticesOriginais;
+vector<PIGPonto2D> vertices;
+vector<PIGPonto2D> verticesOriginais;
 bool bbAlterado;
 
 void DesenhaBB(){
@@ -23,7 +23,7 @@ void DesenhaBB(){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado(pos.x,pos.y,alt,larg,VERMELHO);
 }
 
-void DesenhaPoligono(PIG_Cor cor) {
+void DesenhaPoligono(PIGCor cor) {
     int qtdVertices = vertices.size();
     for (int i=0;i<qtdVertices;i++){
         CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(vertices[i].x,vertices[i].y,10,10,cor);
@@ -31,7 +31,7 @@ void DesenhaPoligono(PIG_Cor cor) {
     }
 }
 
-void DesenhaCircular(PIG_Cor cor) {
+void DesenhaCircular(PIGCor cor) {
     SDL_SetRenderDrawColor(renderer, cor.r, cor.g, cor.b, 255);
 
     SDL_RenderDrawLine(
@@ -90,7 +90,7 @@ void AtualizaVertices() {
 
     PIGPonto2D pivo = {pivoAbs.x + pos.x, -pivoAbs.y + pos.y + alt};
 
-    for (int i = 0; i < vertices.size(); i++) {
+    for (unsigned int i = 0; i < vertices.size(); i++) {
         vertices[i] = {verticesOriginais[i].x + pos.x, verticesOriginais[i].y + pos.y};
 
         int deltaX = vertices[i].x - pivo.x;
@@ -109,7 +109,7 @@ void Atualiza(){
     }
 }
 
-bool ColisaoCirculoPoligono(std::vector<PIGPonto2D> vertices) {
+bool ColisaoCirculoPoligono(vector<PIGPonto2D> vertices) {
     for(auto vertice : vertices) {
         if(PIGDistancia({pos.x + pivoAbs.x, pos.y + pivoAbs.y}, vertice) <= raio) {
             return true;
@@ -146,19 +146,19 @@ bool ColisaoCirculoPoligono(std::vector<PIGPonto2D> vertices) {
 
 public:
 
-CPIGObjeto(int idObjeto,std::string nomeArquivo, int retiraFundo = 1, PIG_Cor *corFundo = NULL, int janela = 0)
+CPIGObjeto(int idObjeto, string nomeArquivo, int retiraFundo = 1, PIGCor *corFundo = NULL, int janela = 0)
 :CPIGSprite(idObjeto,nomeArquivo, retiraFundo, corFundo, janela),CPIGAtributos(){
     modo = PIG_COLISAO_OOBB;
     bbAlterado = true;
 }
 
-CPIGObjeto(int idObjeto,PIGOffscreenRenderer offRender, int retiraFundo = 1, PIG_Cor *corFundo = NULL, int janela = 0)
+CPIGObjeto(int idObjeto, PIGOffscreenRenderer offRender, int retiraFundo = 1, PIGCor *corFundo = NULL, int janela = 0)
 :CPIGSprite(idObjeto,offRender, retiraFundo, corFundo, janela),CPIGAtributos(){
     modo = PIG_COLISAO_OOBB;
     bbAlterado = true;
 }
 
-CPIGObjeto(int idObjeto,CPIGObjeto *objBase, int retiraFundo = 1, PIG_Cor *corFundo = NULL, int janela = 0)
+CPIGObjeto(int idObjeto, CPIGObjeto *objBase, int retiraFundo = 1, PIGCor *corFundo = NULL, int janela = 0)
 :CPIGSprite(idObjeto,objBase, retiraFundo, corFundo, janela),CPIGAtributos(){
     SetModoColisao(objBase->modo);
     SetRaioColisaoCircular(objBase->raio);
@@ -173,7 +173,7 @@ CPIGObjeto(int idObjeto,CPIGObjeto *objBase, int retiraFundo = 1, PIG_Cor *corFu
 
 virtual ~CPIGObjeto(){}
 
-void SetVertices(std::vector<PIGPonto2D> verts) {
+void SetVertices(vector<PIGPonto2D> verts) {
     vertices = verts;
     verticesOriginais = verts;
 }
@@ -187,7 +187,7 @@ void SetRaioColisaoCircular(int raio) {
     this->raio = raio;
 }
 
-void SetModoColisao(PIG_ModoColisao valor) {
+void SetModoColisao(PIGModoColisao valor) {
     modo = valor;
 }
 
@@ -195,7 +195,7 @@ PIGPonto2D GetBB(int i) {
     return bb[i];
 }
 
-std::vector<PIGPonto2D> GetVertices() {
+vector<PIGPonto2D> GetVertices() {
     return vertices;
 }
 
@@ -203,7 +203,7 @@ int GetRaio() {
     return raio;
 }
 
-PIG_ModoColisao GetModoColisao() {
+PIGModoColisao GetModoColisao() {
     return modo;
 }
 
@@ -239,7 +239,7 @@ virtual bool Colisao(CPIGObjeto *outro){
     Atualiza();
     outro->Atualiza();
 
-    PIG_ModoColisao modoOutro = outro->GetModoColisao();
+    PIGModoColisao modoOutro = outro->GetModoColisao();
 
     if(modo == PIG_COLISAO_OOBB) {
         if(modoOutro == PIG_COLISAO_OOBB) {
@@ -261,7 +261,7 @@ virtual bool Colisao(CPIGObjeto *outro){
             }
         } else if(modoOutro == PIG_COLISAO_OOBB) {
             if(ColisaoOOBB(outro) && outro->ColisaoOOBB(this)) {
-                std::vector<PIGPonto2D> verticesOutro = {outro->GetBB(0), outro->GetBB(1), outro->GetBB(2), outro->GetBB(3)};
+                vector<PIGPonto2D> verticesOutro = {outro->GetBB(0), outro->GetBB(1), outro->GetBB(2), outro->GetBB(3)};
                 return ColisaoPoligono(verticesOutro) || outro->ColisaoPoligono(vertices);
             }
         } else if(modoOutro == PIG_COLISAO_CIRCULAR) {
@@ -273,7 +273,7 @@ virtual bool Colisao(CPIGObjeto *outro){
         } else if(modoOutro == PIG_COLISAO_POLIGONO) {
             return ColisaoCirculoPoligono(outro->GetVertices());
         } else if(modoOutro == PIG_COLISAO_OOBB) {
-            std::vector<PIGPonto2D> verticesOutro = {outro->GetBB(0), outro->GetBB(1), outro->GetBB(2), outro->GetBB(3)};
+            vector<PIGPonto2D> verticesOutro = {outro->GetBB(0), outro->GetBB(1), outro->GetBB(2), outro->GetBB(3)};
             return ColisaoCirculoPoligono(verticesOutro);
         }
     }
@@ -284,7 +284,7 @@ bool PontoDentro(PIGPonto2D p) {
     int i = 0;
     int quant_intersecoes = 0;
 
-    std::vector<PIGPonto2D> verticesAux;
+    vector<PIGPonto2D> verticesAux;
 
     if(this->modo == PIG_COLISAO_OOBB) {
         verticesAux = {bb[0], bb[1], bb[2], bb[3]};
@@ -345,8 +345,8 @@ bool ColisaoOOBB(CPIGObjeto *outro) {
     //vector<string> vet;
     if (bb[1].y == bb[0].y) {
         for (int i = 1; i < 4; i++) {
-            std::swap(bb[i].x, bb[0].x);
-            std::swap(bb[i].y, bb[0].y);
+            swap(bb[i].x, bb[0].x);
+            swap(bb[i].y, bb[0].y);
             //swapei = true;
         }
     }else{
@@ -420,7 +420,7 @@ bool ColisaoOOBB(CPIGObjeto *outro) {
     return (menorA < maiorB && maiorA > menorB);
 }
 
-bool ColisaoPoligono(std::vector<PIGPonto2D> vertices) {
+bool ColisaoPoligono(vector<PIGPonto2D> vertices) {
     for (auto vertice : vertices) {
         if (PontoDentro(vertice)) return true;
     }

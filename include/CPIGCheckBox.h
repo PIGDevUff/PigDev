@@ -6,7 +6,7 @@
 class CPIGCheckBox: public CPIGListaItemComponente{
 
 protected:
-    std::string arqImagemIcone;
+    string arqImagemIcone;
 
     static CPIGCheckBox LeParametros(int idComponente,CPIGAtributos atrib){
         CPIGCheckBox *resp;
@@ -95,14 +95,14 @@ public:
         return 1;
     }
 
- int TrataEventoMouse(PIG_Evento evento){
+ int TrataEventoMouse(PIGEvento evento){
         int resp = 0;
         bool mouseOverAntes = mouseOver;
 
         SDL_Point p = GetPosicaoMouse();
 
         if (ChecaMouseOver(p)>0){
-            for (int i=0;i<itens.size();i++){
+            for (unsigned int i=0;i<itens.size();i++){
                 if (itens[i]->TrataEventoMouse(evento) == PIG_SELECIONADO_TRATADO){
                     resp = 1;
                     OnAction();
@@ -111,14 +111,14 @@ public:
             if (resp) return PIG_SELECIONADO_TRATADO;
             else return PIG_SELECIONADO_MOUSEOVER;
         }else if (mouseOverAntes){               //mouse estava antes, mas saiu
-            for (int i=0;i<itens.size();i++){
+            for (unsigned int i=0;i<itens.size();i++){
                 itens[i]->SetMouseOver(false);
             }
         }
         return PIG_NAO_SELECIONADO;
     }
 
-    int TrataEventoTeclado(PIG_Evento evento){
+    int TrataEventoTeclado(PIGEvento evento){
         return 0;
     }
 
@@ -135,14 +135,14 @@ public:
     }
 
     vector <int> GetItensMarcados(){
-        std::vector <int> resp;
-        for(int i=0;i<itens.size();i++)
+        vector <int> resp;
+        for(unsigned int i=0;i<itens.size();i++)
             if(itens[i]->GetAcionado())resp.push_back(i);
 
         return resp;
     }
 
-    void SetDimensoes(int altura,int largura)override{
+    void SetDimensoes(int altura, int largura)override{
         CPIGComponente::SetDimensoes(itens.size()*altBaseLista,largura);
 
         for(PIGItemComponente i : itens){

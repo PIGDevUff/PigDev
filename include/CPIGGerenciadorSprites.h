@@ -39,47 +39,47 @@ public:
         delete animacoes;
     }
 
-    static int CriaSprite(std::string nomeArquivoBMP,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
+    static int CriaSprite(std::string nomeArquivoBMP,int retiraFundo=1,PIGCor *corFundo=NULL,int idJanela=0){
         int id = sprites->ProxID();
         return sprites->Insere(new CPIGSprite(id,nomeArquivoBMP,retiraFundo,corFundo,idJanela));
     }
 
-    static int CriaSprite(int idSpriteBase,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
+    static int CriaSprite(int idSpriteBase,int retiraFundo=1,PIGCor *corFundo=NULL,int idJanela=0){
         int id = sprites->ProxID();
         return sprites->Insere(new CPIGSprite(id,GetSprite(idSpriteBase),retiraFundo,corFundo,idJanela));
     }
 
-    static int CriaSpriteOffScreen(PIGOffscreenRenderer offRenderer,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
+    static int CriaSpriteOffScreen(PIGOffscreenRenderer offRenderer,int retiraFundo=1,PIGCor *corFundo=NULL,int idJanela=0){
         int id = sprites->ProxID();
         return sprites->Insere(new CPIGSprite(id,offRenderer,retiraFundo,corFundo,idJanela));
     }
 
-    static int CriaObjeto(std::string nomeArquivoBMP,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
+    static int CriaObjeto(std::string nomeArquivoBMP,int retiraFundo=1,PIGCor *corFundo=NULL,int idJanela=0){
         int id = objetos->ProxID();
         return objetos->Insere(new CPIGObjeto(id,nomeArquivoBMP,retiraFundo,corFundo,idJanela));
     }
 
-    static int CriaObjeto(int idObjetoBase,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
+    static int CriaObjeto(int idObjetoBase,int retiraFundo=1,PIGCor *corFundo=NULL,int idJanela=0){
         int id = objetos->ProxID();
         return objetos->Insere(new CPIGObjeto(id,GetObjeto(idObjetoBase),retiraFundo,corFundo,idJanela));
     }
 
-    static int CriaObjetoOffScreen(PIGOffscreenRenderer offRenderer,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
+    static int CriaObjetoOffScreen(PIGOffscreenRenderer offRenderer,int retiraFundo=1,PIGCor *corFundo=NULL,int idJanela=0){
         int id = objetos->ProxID();
         return objetos->Insere(new CPIGObjeto(id,offRenderer,retiraFundo,corFundo,idJanela));
     }
 
-    static int CriaAnimacao(std::string nomeArquivoBMP,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
+    static int CriaAnimacao(string nomeArquivoBMP,int retiraFundo=1,PIGCor *corFundo=NULL,int idJanela=0){
         int id = animacoes->ProxID();
         return animacoes->Insere(new CPIGAnimacao(id,nomeArquivoBMP,retiraFundo,corFundo,idJanela));
     }
 
-    static int CriaAnimacao(PIGAnimacao animaBase,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
+    static int CriaAnimacao(PIGAnimacao animaBase,int retiraFundo=1,PIGCor *corFundo=NULL,int idJanela=0){
         int id = animacoes->ProxID();
         return animacoes->Insere(new CPIGAnimacao(id,animaBase,retiraFundo,corFundo,idJanela));
     }
 
-    static int CriaAnimacao(PIGObjeto objetoBase,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0){
+    static int CriaAnimacao(PIGObjeto objetoBase,int retiraFundo=1,PIGCor *corFundo=NULL,int idJanela=0){
         int id = animacoes->ProxID();
         return animacoes->Insere(new CPIGAnimacao(id,objetoBase,retiraFundo,corFundo,idJanela));
     }
@@ -120,9 +120,9 @@ public:
         animacoes->Remove(idAnimacao);
     }
 
-    static void DesenhaSprite(std::string nomeArq,int x,int y,int retiraFundo=1, int idJanela=0){
+    static void DesenhaSprite(string nomeArq,int x,int y,int retiraFundo=1, int idJanela=0){
         int id;
-        std::unordered_map<std::string, int>::iterator it = spritesSimples.find(nomeArq);
+        unordered_map<string, int>::iterator it = spritesSimples.find(nomeArq);
         if (it == spritesSimples.end()){//não achou
             int next = sprites->ProxID();
             id = sprites->Insere(new CPIGSprite(next,nomeArq,retiraFundo,NULL,idJanela));
@@ -138,7 +138,7 @@ public:
     }
 
 };
-std::unordered_map<std::string,int> CPIGGerenciadorSprites::spritesSimples;
+unordered_map<string,int> CPIGGerenciadorSprites::spritesSimples;
 CPIGRepositorio<PIGSprite> *CPIGGerenciadorSprites::sprites;
 CPIGRepositorio<PIGObjeto> *CPIGGerenciadorSprites::objetos;
 CPIGRepositorio<PIGAnimacao> *CPIGGerenciadorSprites::animacoes;

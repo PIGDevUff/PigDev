@@ -219,7 +219,7 @@ public:
         }
     }
 
-    int TrataEventoMouse(PIG_Evento evento)override{
+    int TrataEventoMouse(PIGEvento evento)override{
         SDL_Point p;
         if (CPIGGerenciadorJanelas::GetJanela(idJanela)->GetUsandoCameraFixa())
             p = CPIGMouse::PegaXYTela();
@@ -239,7 +239,7 @@ public:
         return PIG_NAO_SELECIONADO;
     }
 
-    int TrataEventoTeclado(PIG_Evento evento){
+    int TrataEventoTeclado(PIGEvento evento){
         return 0;
     }
 

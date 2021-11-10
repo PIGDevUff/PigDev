@@ -146,7 +146,7 @@ public:
         return 1;
     }
 
-    int TrataEventoMouse(PIG_Evento evento){
+    int TrataEventoMouse(PIGEvento evento){
         SDL_Point p = GetPosicaoMouse();
         ChecaMouseOver(p);
 

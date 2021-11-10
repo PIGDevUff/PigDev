@@ -9,7 +9,7 @@ protected:
 
     int altBaseLista;                     //espaço vertical entre os itens
     PIGPosicaoComponente posIcones,posLabels;
-    std::vector <PIGItemComponente> itens;
+    vector <PIGItemComponente> itens;
     int itemDestaque;
     int altIcone,largIcone;                           //altura e largura das imagens dos itens
 
@@ -27,7 +27,7 @@ protected:
         IniciaCoresBasicas();
     }
 
-    void CriaItem(int yItem,std::string itemLabel, std::string arqImagemIcone="",std::string arqImagemFundo="",bool itemMarcado = false, bool itemHabilitado = true, std::string hintMsg="", int retiraFundo=1){
+    void CriaItem(int yItem, string itemLabel, string arqImagemIcone="", string arqImagemFundo="", bool itemMarcado = false, bool itemHabilitado = true, string hintMsg="", int retiraFundo=1){
         PIGItemComponente item;
         if (arqImagemFundo==""){
             if (arqImagemIcone==""){
@@ -60,12 +60,12 @@ protected:
 
 public:
 
-    CPIGListaItemComponente(int idComponente, int posX, int posY, int larguraTotal, int alturaLinha,std::string nomeArqFundoLista, int retiraFundo=1,int janela = 0):
+    CPIGListaItemComponente(int idComponente, int posX, int posY, int larguraTotal, int alturaLinha, string nomeArqFundoLista, int retiraFundo=1, int janela = 0):
         CPIGComponente(idComponente,posX,posY,0,larguraTotal,nomeArqFundoLista,retiraFundo,janela){
         IniciaBase(alturaLinha);
     }
 
-    CPIGListaItemComponente(int idComponente, int posX, int posY, int larguraTotal, int alturaLinha,int janela = 0):
+    CPIGListaItemComponente(int idComponente, int posX, int posY, int larguraTotal, int alturaLinha, int janela = 0):
         CPIGComponente(idComponente,posX,posY,0,larguraTotal,janela){
         IniciaBase(alturaLinha);
     }
@@ -79,7 +79,7 @@ public:
     void DefineDimensaoIconeItem(int alturaImagemIcone, int larguraImagemIcone){
         altIcone = alturaImagemIcone;
         largIcone = larguraImagemIcone;
-        for (int i=0;i<itens.size();i++){
+        for (unsigned int i=0;i<itens.size();i++){
             itens[i]->SetDimensoesIcone(altIcone,largIcone);
         }
     }
@@ -139,7 +139,7 @@ public:
         }
     }
 
-    void SetCorLabelItem(PIG_Cor cor, int idItem=-1){
+    void SetCorLabelItem(PIGCor cor, int idItem=-1){
         if (idItem==-1){
             for(PIGItemComponente item :itens) item->SetCorLabel(cor);
         }else if (idItem>=0&&idItem<itens.size()){
@@ -204,14 +204,14 @@ public:
         return 1;
     }
 
-    void Move(double nx,double ny){
+    void Move(double nx, double ny){
         double dx = nx-pos.x;
         double dy = ny-pos.y;
 
         CPIGSprite::Desloca(dx,dy);
         PosicionaLabel();
 
-        for(int i=0;i<itens.size();i++)
+        for(unsigned int i=0;i<itens.size();i++)
             itens[i]->Desloca(dx, dy);
 
         AlinhaLabelEsquerda();

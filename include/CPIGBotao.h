@@ -50,7 +50,7 @@ protected:
 
 public:
 
-    int TrataEventoMouse(PIG_Evento evento){
+    int TrataEventoMouse(PIGEvento evento){
         SDL_Point p = GetPosicaoMouse();
 
         //printf("mouse %d,%d\n",p.x,p.y);
@@ -67,7 +67,7 @@ public:
         return PIG_NAO_SELECIONADO;
     }
 
-    virtual int TrataEventoTeclado(PIG_Evento evento)=0;
+    virtual int TrataEventoTeclado(PIGEvento evento)=0;
 
     void DefineAtalho(int teclaAtalho){
         tecla = teclaAtalho;

@@ -5,14 +5,14 @@ template <class T>
 class CPIGRepositorio{
 
 protected:
-std::string tipoElementos;
-std::vector<int> posLivres;
-std::unordered_map<int,T> elementos;
-typename std::unordered_map<int,T>::iterator it;
+string tipoElementos;
+vector<int> posLivres;
+unordered_map<int,T> elementos;
+typename unordered_map<int,T>::iterator it;
 
 public:
 
-    CPIGRepositorio(int qtdElementos,std::string tipoDeElementos){
+    CPIGRepositorio(int qtdElementos, string tipoDeElementos){
         for (int i=qtdElementos-1;i>=0;i--)
             posLivres.push_back(i);
         tipoElementos = tipoDeElementos;

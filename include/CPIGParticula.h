@@ -21,7 +21,7 @@ double ModificaHP(double valor){
 public:
     bool viva;
 
-    CPIGParticula(int idParticula,PIGAnimacao base,int vida,int retiraFundo=1,PIG_Cor *corFundo=NULL,int idJanela=0):
+    CPIGParticula(int idParticula,PIGAnimacao base,int vida,int retiraFundo=1,PIGCor *corFundo=NULL,int idJanela=0):
         CPIGAnimacao(idParticula,base,retiraFundo,corFundo,idJanela){
         hp = vida;
         espacoVida = {INT_MIN,INT_MIN,INT_MAX,INT_MAX};
@@ -35,7 +35,7 @@ public:
         tempoVida = tempoMax;
     }
 
-    ~CPIGParticula(){
+    virtual ~CPIGParticula(){
         CPIGGerenciadorTimers::DestroiTimer(timer);
     }
 

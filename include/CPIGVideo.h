@@ -94,7 +94,7 @@ SDL_Thread *hParseThread;
 SDL_Thread *hVideoThread;
 int quit;
 bool janelaToda;
-PIG_StatusVideo estado;
+PIGStatusVideo estado;
 int64_t pausa;
 bool decodeEncerrado;
 double tempoFrame;
@@ -780,7 +780,7 @@ int CriaVideoState(){
     //av_dump_format(is->pFormatCtx, 0, filename, 0);
 
     //printf("Marcando Streams\n");
-    for (int s = 0; s < is->pFormatCtx->nb_streams; ++s){
+    for (unsigned int s = 0; s < is->pFormatCtx->nb_streams; ++s){
         if (is->pFormatCtx->streams[s]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO && is->audioStream < 0){
             is->audioStream = s;
         }else if (is->pFormatCtx->streams[s]->codecpar->codec_type == AVMEDIA_TYPE_VIDEO && is->videoStream < 0){
@@ -935,7 +935,7 @@ CPIGVideo(std::string nomeArq,int idJanela=0):
     */
 }
 
-~CPIGVideo(){
+virtual ~CPIGVideo(){
     nomeArquivo = "";
     Stop();//caso seja chamado o destrutor sem o video já ter sido parado
 

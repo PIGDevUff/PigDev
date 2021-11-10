@@ -31,7 +31,7 @@ private:
     }
 
     void DesenhaBarraCor(){
-        PIG_Cor cor = PIGMixCor(coresBasicas[1],coresBasicas[2],porcentagemConcluida);
+        PIGCor cor = PIGMixCor(coresBasicas[1],coresBasicas[2],porcentagemConcluida);
         double perc = porcentagemConcluida;
         int largBarra = larg-margemDir-margemEsq;
         int altBarra = alt-margemBaixo-margemCima;
@@ -154,23 +154,23 @@ public:
         return 1;
     }
 
-    void SetCorFinal(PIG_Cor cor){
+    void SetCorFinal(PIGCor cor){
         coresBasicas[2] = cor;
     }
 
-    void SetCorInicial(PIG_Cor cor){
+    void SetCorInicial(PIGCor cor){
         coresBasicas[1] = cor;
     }
 
-    void SetCorTrilha(PIG_Cor cor){
+    void SetCorTrilha(PIGCor cor){
         coresBasicas[0] = cor;
     }
 
-    int TrataEventoMouse(PIG_Evento evento){
+    int TrataEventoMouse(PIGEvento evento){
         return 0;
     }
 
-    int TrataEventoTeclado(PIG_Evento evento){
+    int TrataEventoTeclado(PIGEvento evento){
         return 0;
     }
 

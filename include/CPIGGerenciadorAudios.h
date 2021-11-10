@@ -2,6 +2,7 @@
 #define _CPIGGERENCIADORAUDIOS_
 
 #include "CPIGAudio.h"
+
 class CPIGGerenciadorAudios{
 
 private:
@@ -11,7 +12,7 @@ static CPIGRepositorio<PIGAudio> *audios;
 static int audioIds[PIG_QTD_CANAIS_PADRAO];
 static Mix_Music *background;
 static int volumeBackground;
-static PIG_StatusAudio statusBackground;
+static PIGStatusAudio statusBackground;
 
 inline static void TrataParadaAudio(int canal){
     SDL_Event eventoAudio;
@@ -64,7 +65,7 @@ inline static PIGAudio GetAudio(int idAudio){
     return audios->GetElemento(idAudio);
 }
 
-static void CarregaBackground(std::string nomeArquivo){
+static void CarregaBackground(string nomeArquivo){
     if (background)
         Mix_FreeMusic(background);
     background = Mix_LoadMUS(nomeArquivo.c_str());
@@ -98,7 +99,7 @@ static void ResumeBackground(){
     }
 }
 
-static PIG_StatusAudio GetStatusBackground(){
+static PIGStatusAudio GetStatusBackground(){
     return statusBackground;
 }
 
@@ -111,7 +112,7 @@ static int GetVolumeBackground(){
     return volumeBackground;
 }
 
-static int CriaAudio(std::string nomeArquivo,int nLoops,int tempoExecucao=-1){
+static int CriaAudio(string nomeArquivo, int nLoops, int tempoExecucao=-1){
     return audios->Insere(new CPIGAudio(nomeArquivo,nLoops,tempoExecucao));
 }
 
@@ -143,7 +144,6 @@ inline static void StopTudo(){
         audio->Stop();
         audio = audios->GetProximoElemento();
     }
-
 }
 
 inline static void PauseTudo(){
@@ -173,5 +173,5 @@ CPIGRepositorio<PIGAudio> *CPIGGerenciadorAudios::audios;
 int CPIGGerenciadorAudios::audioIds[PIG_QTD_CANAIS_PADRAO];
 Mix_Music *CPIGGerenciadorAudios::background;
 int CPIGGerenciadorAudios::volumeBackground;
-PIG_StatusAudio CPIGGerenciadorAudios::statusBackground;
+PIGStatusAudio CPIGGerenciadorAudios::statusBackground;
 #endif // _CPIGGERENCIADORAUDIOS_

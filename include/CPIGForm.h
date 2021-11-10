@@ -14,20 +14,15 @@
 #include "CPIGGaugeBar.h"
 #include "CPIGGaugeCircular.h"
 
-typedef enum{PIG_BOTAOCLICK,PIG_BOTAOONOFF,PIG_AREADETEXTO,PIG_CAMPOTEXTOSENHA,PIG_RADIOBOX,PIG_CHECKBOX,PIG_LISTBOX,PIG_DROPDOWN,PIG_GAUGEBAR,PIG_GAUGECIRCULAR,PIG_SLIDEBAR}PIGTiposComponentes;
-
-class CPIGForm{
+class CPIGForm: public CPIGComponente{
 
 private:
 
-    int idJanela,id;
-    SDL_Point pos;
-    int alt,larg;
     int totalComponentes;
     int componenteComFoco,componenteMouseOver;
     PIGComponente componentes[PIG_MAX_COMPONENTES];
 
-    int TrataMouseComponentes(PIG_Evento evento){
+    int TrataEventoMouse(PIGEvento evento){
         componenteMouseOver = -1;
         for(int i=0;i<totalComponentes;i++){
             int aux = componentes[i]->TrataEventoMouse(evento);
@@ -50,7 +45,7 @@ private:
         return 0;
     }
 
-    int TrataTecladoComponentes(PIG_Evento evento){
+    int TrataEventoTeclado(PIGEvento evento){
         if(componenteComFoco!=-1){
             return componentes[componenteComFoco]->TrataEventoTeclado(evento);
         }
@@ -60,12 +55,11 @@ private:
         return PIG_NAO_SELECIONADO;
     }
 
-    void IniciaBase(int idForm, int px, int py, int altura, int largura,int janela){
-        id = idForm;
-        pos = {px,py};
-        alt = altura;
-        larg = largura;
-        idJanela = janela;
+    void IniciaCoresBasicas(){
+        coresBasicas[0] = {0,0,0,255};
+    }
+
+    void IniciaBase(){
         totalComponentes = 0;
         componenteComFoco = componenteMouseOver = -1;
         for(int i=0;i<PIG_MAX_COMPONENTES;i++)
@@ -89,14 +83,8 @@ private:
         return (PIGTiposComponentes)-1;
     }
 
-public:
-
-    CPIGForm(int idForm, int xForm, int yForm, int altForm, int largForm, int janela = 0){
-        IniciaBase(idForm,xForm,yForm,altForm,largForm,janela);
-    }
-
-    CPIGForm(int idForm, string nomeArqTexto){
-        IniciaBase(idForm,0,0,0,0,0);
+    static CPIGForm LeArquivo(int idForm, string nomeArqTexto){
+        CPIGForm *resp = NULL;
 
         ifstream arq(nomeArqTexto);
         string linha;
@@ -105,24 +93,43 @@ public:
         else{
             getline(arq,linha);
 
-            CPIGAtributos atribForm = CPIGComponente::GetAtributos(linha);
-            pos.x = atribForm.GetInt("px",0);
-            pos.y = atribForm.GetInt("py",0);
-            alt = atribForm.GetInt("altura",0);
-            larg = atribForm.GetInt("largura",0);
-            idJanela = atribForm.GetInt("janela",0);
-            //printf("processada primeira linha %d,%d %d,%d %d\n",(int)pos.x,(int)pos.y,alt,larg,idJanela);
+            CPIGAtributos atrib = CPIGComponente::GetAtributos(linha);
+            if (atrib.GetString("nomeArq","")!=""){
+                resp = new CPIGForm(idForm,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+                                        atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
+            }else{
+                resp = new CPIGForm(idForm,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+                                        atrib.GetInt("janela",0));
+            }
 
             while (arq.eof()==false){
                 getline(arq,linha);
-                CriaComponentePorParametro(linha);
+                resp->CriaComponentePorParametro(linha);
             }
 
             arq.close();
         }
+
+        return *resp;
     }
 
-    ~CPIGForm(){
+
+public:
+
+    CPIGForm(int idForm, int xForm, int yForm, int altForm, int largForm, int janela = 0):
+        CPIGComponente(idForm,xForm,yForm,altForm,largForm,janela){
+            IniciaBase();
+    }
+
+    CPIGForm(int idForm, int xForm, int yForm, int altForm, int largForm, string nomeArq, int retiraFundo=1, int janela = 0):
+        CPIGComponente(idForm,xForm,yForm,altForm,largForm,nomeArq,retiraFundo,janela){
+            IniciaBase();
+    }
+
+    CPIGForm(int idForm, string nomeArqTexto):CPIGForm(LeArquivo(idForm,nomeArqTexto)){}
+
+
+    virtual ~CPIGForm(){
         for(int i=0;i<totalComponentes;i++){
             delete componentes[i];
         }
@@ -133,6 +140,12 @@ public:
     }
 
     int Desenha(){
+        if (visivel==false) return 0;
+
+        if (text)
+            CPIGSprite::Desenha();
+        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
+
         //desenha primeiro os componentes fora do mouse
         for(int i=0;i<totalComponentes;i++){
             if (i!=componenteMouseOver)
@@ -145,12 +158,9 @@ public:
         return 1;
     }
 
-    int TrataEvento(PIG_Evento evento){
-
-        if(evento.tipoEvento == PIG_EVENTO_MOUSE) return TrataMouseComponentes(evento);
-
-        if(evento.tipoEvento == PIG_EVENTO_TECLADO) return TrataTecladoComponentes(evento);
-
+    int TrataEvento(PIGEvento evento){
+        if(evento.tipoEvento == PIG_EVENTO_MOUSE) return TrataEventoMouse(evento);
+        if(evento.tipoEvento == PIG_EVENTO_TECLADO) return TrataEventoTeclado(evento);
         return 0;
     }
 
@@ -292,6 +302,22 @@ public:
         int idComponente = GetIdComponente(totalComponentes);
         componentes[totalComponentes++] = new CPIGSlideBar(idComponente,px,py,altura,largura,alturaMarcador,larguraMarcador,idJanela);
         return idComponente;
+    }
+
+    void SetFoco(bool valor){
+        temFoco = valor;
+    }
+
+    void SetAcionado(bool valor){
+        acionado = valor;
+    }
+
+    void SetMouseOver(bool valor){
+        mouseOver = valor;
+    }
+
+    void SetHabilitado(bool valor){
+        habilitado = valor;
     }
 
     int CriaComponentePorParametro(string parametros){

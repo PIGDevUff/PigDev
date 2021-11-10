@@ -152,13 +152,13 @@ void dump(){
         printf("%s: %f\n",it->first.c_str(),it->second);
     }
     for (std::map<int, int>::iterator it= valoresIntInt.begin(); it!=valoresIntInt.end(); it++){
-        printf("%s: %d\n",it->first,it->second);
+        printf("%d: %d\n",it->first,it->second);
     }
     for (std::map<int, string>::iterator it= valoresIntString.begin(); it!=valoresIntString.end(); it++){
         printf("%d: %s\n",it->first,it->second.c_str());
     }
     for (std::map<int, float>::iterator it= valoresIntFloat.begin(); it!=valoresIntFloat.end(); it++){
-        printf("%s: %f\n",it->first,it->second);
+        printf("%d: %f\n",it->first,it->second);
     }
 
 }

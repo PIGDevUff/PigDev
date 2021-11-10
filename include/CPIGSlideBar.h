@@ -87,7 +87,7 @@ class CPIGSlideBar : public CPIGGauge{
         return PIG_SELECIONADO_TRATADO;
     }
 
-    int TrataRodinha(PIG_Evento evento){
+    int TrataRodinha(PIGEvento evento){
         if(evento.mouse.relY > 0){
             AvancaMarcador(deltaRodinha);
             return PIG_SELECIONADO_TRATADO;
@@ -123,7 +123,7 @@ public:
         if (marcador) delete marcador;
     }
 
-    int TrataEventoMouse(PIG_Evento evento){
+    int TrataEventoMouse(PIGEvento evento){
         SDL_Point p = GetPosicaoMouse();
         ChecaMouseOver(p);
 
@@ -139,7 +139,7 @@ public:
         return PIG_NAO_SELECIONADO;
     }
 
-    int TrataEventoTeclado(PIG_Evento evento){
+    int TrataEventoTeclado(PIGEvento evento){
         if (!temFoco) return 0;
         if(evento.teclado.acao == PIG_TECLA_PRESSIONADA){
             switch(orientacaoCrescimento){

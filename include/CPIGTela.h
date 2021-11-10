@@ -11,12 +11,12 @@ double tempoSaida;
 int timerSaida;
 int spriteFundo;
 void *dados;
-PIG_FuncaoSimples acaoCarrega,acaoDescarrega,acaoAtualiza,acaoDesenha,acaoDestroi;
-PIG_FuncaoEvento acaoTrataEvento;
+PIGFuncaoSimples acaoCarrega,acaoDescarrega,acaoAtualiza,acaoDesenha,acaoDestroi;
+PIGFuncaoEvento acaoTrataEvento;
 
 public:
 
-CPIGTela(int idTela, void *dadosEspecificos, PIG_FuncaoSimples cria, string imgFundo="", double tempoTotalSaida=0.5, int idJanela=0){
+CPIGTela(int idTela, void *dadosEspecificos, PIGFuncaoSimples cria, string imgFundo="", double tempoTotalSaida=0.5, int idJanela=0){
     id = idTela;
     acaoAtualiza = acaoCarrega = acaoDescarrega = acaoDesenha = acaoDestroi = NULL;
     acaoTrataEvento = NULL;
@@ -45,6 +45,7 @@ int CarregaTela(){
     CPIGGerenciadorTimers::GetTimer(timerSaida)->Reinicia(true);
     if (acaoCarrega!=NULL)
         acaoCarrega(id,dados);
+    return 1;
 }
 
 int DescarregaTela(){
@@ -53,7 +54,7 @@ int DescarregaTela(){
     return 0;
 }
 
-int TrataEvento(PIG_Evento evento){
+int TrataEvento(PIGEvento evento){
     if (acaoTrataEvento!=NULL)
         return acaoTrataEvento(id,evento,dados);
     return PIG_NAO_SELECIONADO;
@@ -80,27 +81,27 @@ int Desenha(){
     return 0;
 }
 
-void DefineAcaoCarrega(PIG_FuncaoSimples acao){
+void DefineAcaoCarrega(PIGFuncaoSimples acao){
     acaoCarrega = acao;
 }
 
-void DefineAcaoDescarrega(PIG_FuncaoSimples acao){
+void DefineAcaoDescarrega(PIGFuncaoSimples acao){
     acaoDescarrega = acao;
 }
 
-void DefineAcaoAtualiza(PIG_FuncaoSimples acao){
+void DefineAcaoAtualiza(PIGFuncaoSimples acao){
     acaoAtualiza = acao;
 }
 
-void DefineAcaoDesenha(PIG_FuncaoSimples acao){
+void DefineAcaoDesenha(PIGFuncaoSimples acao){
     acaoDesenha = acao;
 }
 
-void DefineAcaoTrataEvento(PIG_FuncaoEvento acao){
+void DefineAcaoTrataEvento(PIGFuncaoEvento acao){
     acaoTrataEvento = acao;
 }
 
-void DefineAcaoDestroi(PIG_FuncaoSimples acao){
+void DefineAcaoDestroi(PIGFuncaoSimples acao){
     acaoDestroi = acao;
 }
 

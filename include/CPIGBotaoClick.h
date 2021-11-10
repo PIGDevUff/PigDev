@@ -93,7 +93,7 @@ public:
         delete timer;
     }
 
-    int TrataEventoTeclado(PIG_Evento evento){
+    int TrataEventoTeclado(PIGEvento evento){
         if (evento.teclado.acao==PIG_TECLA_PRESSIONADA && evento.teclado.tecla==tecla){
             if (!habilitado) return PIG_SELECIONADO_DESABILITADO;
             if (!visivel) return PIG_SELECIONADO_INVISIVEL;

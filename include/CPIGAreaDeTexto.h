@@ -175,12 +175,12 @@ private:
     }
 
     //retorna a posição da string texto, na qual uma linha inicia
-    int GetPosInicialDeUmaLinha(int linha){
+    int GetPosInicialDeUmaLinha(unsigned int linha){
         if (linhas.size()==0) return 0;
         if (linha>=linhas.size()) return texto.size();
 
         int resp = 0;
-        for(int i=0;i<linha;i++){
+        for(unsigned int i=0;i<linha;i++){
             resp += linhas[i].size();
         }
 
@@ -192,7 +192,7 @@ private:
         if (linhas.size()==0) return 0;
         int qntPosicoes = 0;
 
-        for(int i=0;i<linhas.size();i++){
+        for(unsigned int i=0;i<linhas.size();i++){
             qntPosicoes+=linhas[i].size();
 
             if(qntPosicoes >= pos){
@@ -337,7 +337,7 @@ public:
     }
 
     //define a cor da linhas horizontais
-    void SetLinhasAbaixoTexto(bool visivel,PIG_Cor cor = PRETO){
+    void SetLinhasAbaixoTexto(bool visivel,PIGCor cor = PRETO){
         coresBasicas[2] = cor;
         linhasPauta = visivel;
     }
@@ -349,7 +349,7 @@ public:
         AjustaSlideVerticalPeloCursor();
     }
 
-    int TrataEventoMouse(PIG_Evento evento)override{
+    int TrataEventoMouse(PIGEvento evento)override{
         SDL_Point p = GetPosicaoMouse();
         ChecaMouseOver(p);
 
@@ -390,12 +390,14 @@ public:
         CPIGCaixaTexto::SetTexto(frase);
         AjustaPosicaoTextoCursor();
         AjustaSlideVerticalPeloCursor();
+        return texto.size();
     }
 
     int AdicionaTexto(string frase)override{
         CPIGCaixaTexto::AdicionaTexto(frase);
         AjustaSlideVerticalPeloCursor();
         AjustaPosicaoTextoCursor();
+        return texto.size();
     }
 
     //recupera o texto separado em linhas

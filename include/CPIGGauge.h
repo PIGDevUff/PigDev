@@ -3,7 +3,7 @@
 
 #include "CPIGComponente.h"
 
-typedef enum {PIG_GAUGE_CIMA_BAIXO,PIG_GAUGE_BAIXO_CIMA,PIG_GAUGE_ESQ_DIR,PIG_GAUGE_DIR_ESQ} PIG_GaugeCrescimento;
+typedef enum {PIG_GAUGE_CIMA_BAIXO,PIG_GAUGE_BAIXO_CIMA,PIG_GAUGE_ESQ_DIR,PIG_GAUGE_DIR_ESQ} PIGGaugeCrescimento;
 
 class CPIGGauge: public CPIGComponente{
 
@@ -13,7 +13,7 @@ protected:
     double delta,porcentagemConcluida;
     double valorMax,valorMin,valorAtual;
 
-    PIG_GaugeCrescimento orientacaoCrescimento;
+    PIGGaugeCrescimento orientacaoCrescimento;
 
     virtual void AtualizaMarcador(){}
 
@@ -87,7 +87,7 @@ public:
         delta = valor;
     }
 
-    void SetOrientacao(PIG_GaugeCrescimento orientacao){
+    void SetOrientacao(PIGGaugeCrescimento orientacao){
         orientacaoCrescimento = orientacao;
         AtualizaMarcador();
     }

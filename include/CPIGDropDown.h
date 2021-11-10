@@ -9,7 +9,7 @@ private:
 
     bool recolhida;
 
-    static CPIGDropDown LeParametros(int idComponente,CPIGAtributos atrib){
+    static CPIGDropDown LeParametros(int idComponente, CPIGAtributos atrib){
         CPIGDropDown *resp;
 
         if (atrib.GetString("nomeArq","")!=""){
@@ -91,7 +91,7 @@ private:
 
 public:
 
-    CPIGDropDown(int idComponente,int px, int py,int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0,string nomeArqFundo="",int retiraFundo=1,int janela=0):
+    CPIGDropDown(int idComponente,int px, int py,int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, string nomeArqFundo="", int retiraFundo=1, int janela=0):
         CPIGListaItemComponente(idComponente,px,py,larguraTotal,alturaLinha,nomeArqFundo,retiraFundo,janela){
             SetRecolhida(true);
     }
@@ -122,7 +122,7 @@ public:
         return 1;
     }
 
-    int TrataEventoMouse(PIG_Evento evento){
+    int TrataEventoMouse(PIGEvento evento){
         int resp = -1;
         bool mouseOverAntes = mouseOver;
         SDL_Point p = GetPosicaoMouse();
@@ -133,7 +133,7 @@ public:
             if (!visivel) return PIG_SELECIONADO_INVISIVEL;
 
             if (!recolhida){        //se o dropdown está exibindo os itens, é preciso tratá-los individualmente
-                for (int i=0;i<itens.size();i++){
+                for (unsigned int i=0;i<itens.size();i++){
                     if(itens[i]->TrataEventoMouse(evento) == PIG_SELECIONADO_TRATADO){
                         if (itens[i]->GetAcionado()){
                             resp = i;
@@ -155,7 +155,7 @@ public:
                 return PIG_SELECIONADO_TRATADO;
             }
         }else if (mouseOverAntes){               //mouse estava antes, mas saiu
-            for (int i=0;i<itens.size();i++){
+            for (unsigned int i=0;i<itens.size();i++){
                 itens[i]->SetMouseOver(false);
             }
         }
@@ -163,15 +163,15 @@ public:
         return PIG_NAO_SELECIONADO;
     }
 
-    int TrataEventoTeclado(PIG_Evento evento){
+    int TrataEventoTeclado(PIGEvento evento){
         return 0;
     }
 
-    void Move(double nx,double ny){
+    void Move(double nx, double ny){
         CPIGSprite::Move(nx,ny);
         SetPosicaoPadraoLabel(posLabel);
 
-        for(int i=0;i<itens.size();i++){
+        for(unsigned int i=0;i<itens.size();i++){
             int posY = pos.y - altBaseLista*(i+1);
             itens[i]->Move(pos.x,posY);
         }

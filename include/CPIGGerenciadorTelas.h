@@ -34,7 +34,7 @@ static int DefineTelaInicial(int idTela){
     return 1;
 }
 
-static int CriaTela(int idTela,void *dados,PIG_FuncaoSimples acaoCria,string imgFundo="",double tempoSaida=0.5,int idJanela=-1){
+static int CriaTela(int idTela, void *dados, PIGFuncaoSimples acaoCria, string imgFundo="", double tempoSaida=0.5, int idJanela=-1){
     if (idTela>=0&&idTela<PIG_MAX_TELAS){
         if (telas[idTela]!=NULL){
             printf("Tela %d criada novamente\n",idTela);
@@ -46,7 +46,7 @@ static int CriaTela(int idTela,void *dados,PIG_FuncaoSimples acaoCria,string img
     return -1;
 }
 
-static int TrataEvento(PIG_Evento evento){
+static int TrataEvento(PIGEvento evento){
     return GetTela(telaAtual)->TrataEvento(evento);
 }
 

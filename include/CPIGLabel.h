@@ -8,7 +8,7 @@ class CPIGLabel:public CPIGSprite{
 private:
 std::string frase;
 int fonte;
-PIG_Cor cor;
+PIGCor cor;
 
 void AtualizaTextura(){
     PIGMapaCaracteres mapa = CPIGGerenciadorFontes::GetFonte(fonte);
@@ -26,7 +26,7 @@ void AtualizaTextura(){
 
 public:
 
-CPIGLabel(std::string texto,int numFonte,PIG_Cor corFonte=BRANCO,int idJanela=0):CPIGSprite(idJanela){
+CPIGLabel(std::string texto,int numFonte,PIGCor corFonte=BRANCO,int idJanela=0):CPIGSprite(idJanela){
     fonte = numFonte;
     text = NULL;
     cor = corFonte;
@@ -44,7 +44,7 @@ void SetFonte(int numFonte){
     AtualizaTextura();
 }
 
-void SetCor(PIG_Cor novaCor){
+void SetCor(PIGCor novaCor){
     cor = novaCor;
     AtualizaTextura();
 }
@@ -57,7 +57,7 @@ int GetLargura(){
     return larg;
 }
 
-std::string GetTexto(){
+string GetTexto(){
     return frase;
 }
 
@@ -65,7 +65,7 @@ int GetFonte(){
     return fonte;
 }
 
-PIG_Cor GetCor(){
+PIGCor GetCor(){
     return cor;
 }
 

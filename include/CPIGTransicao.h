@@ -4,13 +4,13 @@
 typedef struct {
     int x,y,alt,larg;
     double ang;
-    PIG_Cor cor;
+    PIGCor cor;
     int opacidade;
     double personalizada[10];
-} PIG_EstadoTransicao;
+} PIGEstadoTransicao;
 
-PIG_EstadoTransicao operator+(PIG_EstadoTransicao a, PIG_EstadoTransicao b){
-    PIG_EstadoTransicao c;
+PIGEstadoTransicao operator+(PIGEstadoTransicao a, PIGEstadoTransicao b){
+    PIGEstadoTransicao c;
     c.x = a.x+b.x;
     c.y = a.y+b.y;
     c.alt = a.alt+b.alt;
@@ -24,13 +24,13 @@ PIG_EstadoTransicao operator+(PIG_EstadoTransicao a, PIG_EstadoTransicao b){
 class CPIGTransicao{
 
 private:
-PIG_EstadoTransicao ini,fim,delta;
+PIGEstadoTransicao ini,fim,delta;
 double tempoAtual,tempoTotal,sobraAnterior; //sobraAnterior é um tempo excedido na transição anterior a ser descontado nesta transição
 PIGTimer timer;
 
 public:
 
-CPIGTransicao(double tempoTransicao,PIG_EstadoTransicao modificacao){
+CPIGTransicao(double tempoTransicao, PIGEstadoTransicao modificacao){
     tempoTotal = tempoTransicao;
     timer = new CPIGTimer(true);
     delta = modificacao;
@@ -45,14 +45,13 @@ CPIGTransicao(CPIGTransicao *outro){
 }
 
 CPIGTransicao(string str){
-
 }
 
-~CPIGTransicao(){
+virtual ~CPIGTransicao(){
     delete timer;
 }
 
-void IniciaTransicao(PIG_EstadoTransicao inicio,double sobra=0){
+void IniciaTransicao(PIGEstadoTransicao inicio, double sobra=0){
     ini = inicio;
     fim = ini+delta;
     timer->Reinicia(false);
@@ -89,7 +88,7 @@ void InsereTransicaoLargura(int valorIni, int valorFim){
     fim.larg = valorFim;
 }
 
-void InsereTransicaoCor(PIG_Cor valorIni, PIG_Cor valorFim){
+void InsereTransicaoCor(PIGCor valorIni, PIGCor valorFim){
     ini.cor = valorIni;
     fim.cor = valorFim;
 }
@@ -104,7 +103,7 @@ void InsereTransicaoAngulo(double valorIni, double valorFim){
     fim.ang = valorFim;
 }
 
-void InsereTransicaoPersonalizada(int indice,double valorIni, double valorFim){
+void InsereTransicaoPersonalizada(int indice, double valorIni, double valorFim){
     ini.personalizada[indice] = valorIni;
     fim.personalizada[indice] = valorFim;
 }
@@ -125,7 +124,7 @@ int GetLargura(){
     return fim.larg*(tempoAtual) + ini.larg*(1-tempoAtual);
 }
 
-PIG_Cor GetCor(){
+PIGCor GetCor(){
     return PIGMixCor(ini.cor,fim.cor,tempoAtual);
 }
 
@@ -141,8 +140,8 @@ double GetPersonalizada(int indice){
     return fim.personalizada[indice]*(tempoAtual) + ini.personalizada[indice]*(1-tempoAtual);
 }
 
-PIG_EstadoTransicao GetEstado(){
-    PIG_EstadoTransicao atual;
+PIGEstadoTransicao GetEstado(){
+    PIGEstadoTransicao atual;
     //atual.tempoAtual = tempoAtual;
     atual.x = fim.x*(tempoAtual) + ini.x*(1-tempoAtual);
     atual.y = fim.y*(tempoAtual) + ini.y*(1-tempoAtual);
@@ -155,7 +154,7 @@ PIG_EstadoTransicao GetEstado(){
     return atual;
 }
 
-PIG_EstadoTransicao GetFim(){
+PIGEstadoTransicao GetFim(){
     return fim;
 }
 
@@ -168,7 +167,7 @@ void Inverte(){
     delta.opacidade *= -1;
 }
 
-CPIGTransicao *PreparaApos(double tempo, PIG_EstadoTransicao estado){
+CPIGTransicao *PreparaApos(double tempo, PIGEstadoTransicao estado){
     return new CPIGTransicao(tempo,estado);
 }
 

@@ -9,8 +9,8 @@ private:
 
 SDL_Thread *thread;
 
-void CriaEventoMensagem(PIG_TipoMensagemRede tipoMensagem, const void *buffer, int tamanhoDados){
-    PIG_InfoEventoRede *infoRede = (PIG_InfoEventoRede*) malloc(sizeof(PIG_InfoEventoRede));
+void CriaEventoMensagem(PIGTipoMensagemRede tipoMensagem, const void *buffer, int tamanhoDados){
+    PIGInfoEventoRede *infoRede = (PIGInfoEventoRede*) malloc(sizeof(PIGInfoEventoRede));
     infoRede->tipoMensagem = tipoMensagem;
     infoRede->idSocket = id;
     infoRede->idSecundario = -1;
@@ -26,7 +26,7 @@ void CriaEventoMensagem(PIG_TipoMensagemRede tipoMensagem, const void *buffer, i
 
 public:
 
-CPIGClienteTCP(int idSocket,std::string host, int porta, int maxBytesPacote):CPIGSocketTCP(idSocket,host,porta,maxBytesPacote){
+CPIGClienteTCP(int idSocket, string host, int porta, int maxBytesPacote):CPIGSocketTCP(idSocket,host,porta,maxBytesPacote){
     if (!ativo){
         printf("Erro: Cliente TCP nao esta ativo\n");
         return;
@@ -42,7 +42,7 @@ CPIGClienteTCP(int idSocket,std::string host, int porta, int maxBytesPacote):CPI
     }
 }
 
-~CPIGClienteTCP(){
+virtual ~CPIGClienteTCP(){
     ativo = false;
     SDL_Delay(20);//esperar a thread encerrar
 }

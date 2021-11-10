@@ -1,5 +1,5 @@
 /********************************
-Principais defini��es utilizadas pela PIG
+Principais definições utilizadas pela PIG
 ********************************/
 
 #define PIG_ALT_TELA                    600
@@ -90,9 +90,11 @@ typedef struct{
 
 
 /********************************
-O tipo PIG_Cor � um struct formado por 4 campos: r,g,b,a correspondendo aos valores de vermelho, verde, azul e alfa (transpar�ncia) do pixel
+O tipo PIGCor é um struct formado por 4 campos: r,g,b,a correspondendo aos valores de vermelho, verde, azul e alfa (transparência) do pixel
 ********************************/
-#define PIG_Cor         SDL_Color
+typedef __declspec(deprecated("PIG_Cor nao deve mais ser usado. Utilize PIGCor.")) SDL_Color PIG_Cor;
+typedef SDL_Color PIGCor;
+
 #define BRANCO          ((SDL_Color){255,255,255,255})
 #define PRETO           ((SDL_Color){0,0,0,255})
 #define AZUL            ((SDL_Color){0,0,255,255})
@@ -105,17 +107,17 @@ O tipo PIG_Cor � um struct formado por 4 campos: r,g,b,a correspondendo aos va
 #define CINZA           ((SDL_Color){128,128,128,255})
 
 /********************************
-O PIG_TipoEvento � uma enumera��o que cont�m os seguintes poss�veis valores:
-EVENTO_NULO: indica que n�o houve evento desde a �ltima chamada da fun��o Pega_Evento()
-EVENTO_GERAL: (n�o implementado)
-EVENTO_JANELA: indica algum poss�vel evento relacionado � janela de jogo (redimensionamento, movimento, perda ou ganho de foco etc)
-EVENTO_TECLADO: indica algum poss�vel evento relacionado ao teclado do computador (tecla pressionada ou liberada, texto digitado ou editado etc)
-EVENTO_MOUSE: indica algum poss�vel evento relacionado ao mouse do compuatdor (bot�o pressionado ou liberado, movimenta��o, uso da rodinha etc)
-EVENTO_AUDIO: indica o final da execu��o de algum tipo de audio (efeito ou background)
-EVENTO_CONTROLADOR: indica algum poss�vel evento relacionado aos bot�es ou eixos do controlador
-EVENTO_USUARIO: (n�o implementado)
+O PIG_TipoEvento é uma enumeração que contém os seguintes possíveis valores:
+PIG_EVENTO_NULO: indica que não houve evento desde a última chamada da função GetEvento()
+PIG_EVENTO_GERAL: (não implementado)
+PIG_EVENTO_JANELA: indica algum possível evento relacionado à janela de jogo (redimensionamento, movimento, perda ou ganho de foco etc)
+PIG_EVENTO_TECLADO: indica algum possível evento relacionado ao teclado do computador (tecla pressionada ou liberada, texto digitado ou editado etc)
+PIG_EVENTO_MOUSE: indica algum posspivel evento relacionado ao mouse do compuatdor (botão pressionado ou liberado, movimentação, uso da rodinha etc)
+PIG_EVENTO_AUDIO: indica o final da execução de algum tipo de audio (efeito ou background)
+PIG_EVENTO_CONTROLADOR: indica algum possível evento relacionado aos botões ou eixos do controlador
+PIG_EVENTO_USUARIO: (não implementado)
 ********************************/
-typedef enum PIG_TipoEvento{PIG_EVENTO_NULO,
+typedef enum PIGTipoEvento{PIG_EVENTO_NULO,
                             PIG_EVENTO_GERAL,
                             PIG_EVENTO_JANELA,
                             PIG_EVENTO_TECLADO,
@@ -125,21 +127,21 @@ typedef enum PIG_TipoEvento{PIG_EVENTO_NULO,
                             PIG_EVENTO_VIDEO,
                             PIG_EVENTO_REDE,
                             PIG_EVENTO_USUARIO}
-                PIG_TipoEvento;
+                PIGTipoEvento;
 
 /********************************
-O InfoEventoMouse � um struct contendo informa��es espec�ficas sobre o evento de mouse:
-acao: c�digo que representa o evento espec�fico (os poss�veis valores podem ser vistos abaixo do struct)
-posX: a posi��o no eixo X (nas coordeandas da tela) do ponteiro do mouse no momento de ocorr�ncia do evento
-posY: a posi��o no eixo Y (nas coordeandas do tela) do ponteiro do mouse no momento de ocorr�ncia do evento
-worldX: a posi��o no eixo X (nas coordeandas do mundo) do ponteiro do mouse no momento de ocorr�ncia do evento
-worldY: a posi��o no eixo Y (nas coordeandas do mundo) do ponteiro do mouse no momento de ocorr�ncia do evento
-botao: indica qual dos poss�veis tr�s bot�es foi pressionado ou liberado
+O PIGInfoEventoMouse é um struct contendo informações específicas sobre o evento de mouse:
+acao: código que representa o evento específico (os possíveis valores podem ser vistos abaixo do struct)
+posX: a posição no eixo X (nas coordenadas da tela) do ponteiro do mouse no momento de ocorrência do evento
+posY: a posição no eixo Y (nas coordenadas do tela) do ponteiro do mouse no momento de ocorrência do evento
+worldX: a posição no eixo X (nas coordenadas do mundo) do ponteiro do mouse no momento de ocorrência do evento
+worldY: a posição no eixo Y (nas coordenadas do mundo) do ponteiro do mouse no momento de ocorrência do evento
+botao: indica qual dos poss�veis três botões foi pressionado ou liberado
 cliques: indica a quantidade de cliques a que se refere o evento (1=clique simples, 2=clique duplo, ...)
-relX: indica o deslocamento no eixo X quando h� uma movimenta��o de mouse; adicionalmente, representa o deslocamento da rodinha no eixo X (n�o usado)
-relX: indica o deslocamento no eixo Y quando h� uma movimenta��o de mouse; adicionalmente, representa o deslocamento da rodinha no eixo Y
+relX: indica o deslocamento no eixo X quando há uma movimentação de mouse; adicionalmente, representa o deslocamento da rodinha no eixo X (não usado)
+relX: indica o deslocamento no eixo Y quando há uma movimentação de mouse; adicionalmente, representa o deslocamento da rodinha no eixo Y
 ********************************/
-typedef struct PIG_InfoEventoMouse{
+typedef struct PIGInfoEventoMouse{
     int acao;
     int posX,posY;
     int worldX,worldY;
@@ -147,7 +149,7 @@ typedef struct PIG_InfoEventoMouse{
     int cliques;
     int relX,relY;
     int numeroJanela;
-}PIG_InfoEventoMouse;
+}PIGInfoEventoMouse;
 #define PIG_MOUSE_PRESSIONADO       SDL_MOUSEBUTTONDOWN
 #define PIG_MOUSE_LIBERADO          SDL_MOUSEBUTTONUP
 #define PIG_MOUSE_MOVIDO            SDL_MOUSEMOTION
@@ -157,16 +159,16 @@ typedef struct PIG_InfoEventoMouse{
 #define PIG_MOUSE_CENTRAL           SDL_BUTTON_MIDDLE
 
 /********************************
-O InfoEventoJanela � um struct contendo informa��es espec�ficas sobre o evento de janela:
-acao: c�digo que representa o evento espec�fico (os poss�veis valores podem ser vistos abaixo do struct)
-dado1,dado2: indicam em conjunto a informa��o espec�fica do evento, podendo representar o ponto (X,Y), em rela��o ao monitor,
-para o qual a janela foi movida ou o novo tamanho da janela ap�s um altera��o de dimens�es na mesma
+O PIGInfoEventoJanela é um struct contendo informações específicas sobre o evento de janela:
+acao: código que representa o evento específico (os possíveis valores podem ser vistos abaixo do struct)
+dado1,dado2: indicam em conjunto a informação específica do evento, podendo representar o ponto (X,Y), em relação ao monitor,
+para o qual a janela foi movida ou o novo tamanho da janela após uma alteração de dimensões na mesma
 ********************************/
-typedef struct PIG_InfoEventoJanela{
+typedef struct PIGInfoEventoJanela{
     int acao;
     int numeroJanela;
     int dado1,dado2;
-}PIG_InfoEventoJanela;
+}PIGInfoEventoJanela;
 #define PIG_JANELA_EXIBIDA          SDL_WINDOWEVENT_SHOWN
 #define PIG_JANELA_OCULTA           SDL_WINDOWEVENT_HIDDEN
 #define PIG_JANELA_EXPOSTA          SDL_WINDOWEVENT_EXPOSED
@@ -183,70 +185,73 @@ typedef struct PIG_InfoEventoJanela{
 #define PIG_JANELA_FECHADA          SDL_WINDOWEVENT_CLOSE
 
 /********************************
-O InfoEventoTeclado � um struct contendo informa��es espec�ficas sobre o evento de teclado:
-acao: c�digo que representa o evento espec�fico (os poss�veis valores podem ser vistos abaixo do struct)
-tecla: c�digo que representa a tecla pressionada ou liberada. Os poss�veis valores pdoem ser vistos nofinal deste arquivo.
-repeticao: indica se est� havendo repeti��o no acionamento desta tecla ou n�o
-texto: indica o que est� sendo inserido
-inicio: indica a posi��o virtual da parte selecionada do texto a ser editado
-tamanhoSelecao: indica o tamanho (quantidade de caracteres) da sele��o do texto a ser editado
+O PIGInfoEventoTeclado é um struct contendo informações específicas sobre o evento de teclado:
+acao: código que representa o evento específico (os poss�veis valores podem ser vistos abaixo do struct)
+tecla: código que representa a tecla pressionada ou liberada. Os possíveis valores pdoem ser vistos no final deste arquivo.
+repeticao: indica se está havendo repetição no acionamento desta tecla ou não
+texto: indica o que está sendo inserido
+inicio: indica a posição virtual da parte selecionada do texto a ser editado
+tamanhoSelecao: indica o tamanho (quantidade de caracteres) da seleção do texto a ser editado
 ********************************/
-typedef struct PIG_InfoEventoTeclado{
+typedef struct PIGInfoEventoTeclado{
     int acao;
     int tecla;
     int repeticao;
     char texto[32];
     int inicio,tamanhoSelecao;
-}PIG_InfoEventoTeclado;
+}PIGInfoEventoTeclado;
 #define PIG_TECLA_PRESSIONADA       SDL_KEYDOWN
 #define PIG_TECLA_LIBERADA          SDL_KEYUP
 #define PIG_TECLA_EDICAO            SDL_TEXTEDITING
 #define PIG_TECLA_INPUT             SDL_TEXTINPUT
 
 /********************************
-O InfoEventoAudio � um struct contendo informa��es espec�ficas sobre o evento de audio (encerramento de audio):
+O PIGInfoEventoAudio é um struct contendo informações específicas sobre o evento de audio (encerramento de audio):
 audioId: Id do audio que se encerrou (se o valor for igual a ID_BACKGROUND, indica que o audio de background se encerrou)
 ********************************/
-typedef struct PIG_InfoEventoAudio{
+typedef struct PIGInfoEventoAudio{
     int audioId;
-}PIG_InfoEventoAudio;
+}PIGInfoEventoAudio;
 
 /********************************
-O PIG_StatusAudio � uma enumera��o que cont�m os seguintes poss�veis valores:
-AUDIO_PARADO: indica que o audio n�o est� tocando nem pausado
-AUDIO_TOCANDO: indica que o audio est� tocando
-AUDIO_PAUSADO: indica que o audio est� pausado
+O PIGStatusAudio é uma enumeração que contém os seguintes possíveis valores:
+PIG_AUDIO_PARADO: indica que o audio não está tocando nem pausado
+PIG_AUDIO_TOCANDO: indica que o audio está tocando
+PIG_AUDIO_PAUSADO: indica que o audio está pausado
 ********************************/
-typedef enum PIG_StatusAudio{PIG_AUDIO_PARADO,
+typedef enum PIGStatusAudio{PIG_AUDIO_PARADO,
                             PIG_AUDIO_TOCANDO,
                             PIG_AUDIO_PAUSADO}
-                PIG_StatusAudio;
+                PIGStatusAudio;
 
 /********************************
-O PIG_StatusVideo � uma enumera��o que cont�m os seguintes poss�veis valores:
-VIDEO_PARADO: indica que o video n�o est� tocando nem pausado
-VIDEO_TOCANDO: indica que o video est� tocando
-VIDEO_PAUSADO: indica que o video est� pausado
+O PIGStatusVideo é uma enumeração que contém os seguintes possíveis valores:
+PIG_VIDEO_PARADO: indica que o video não está tocando nem pausado
+PIG_VIDEO_TOCANDO: indica que o video está tocando
+PIG_VIDEO_PAUSADO: indica que o video está pausado
 ********************************/
-typedef enum PIG_StatusVideo{PIG_VIDEO_PARADO,
+typedef enum PIGStatusVideo{PIG_VIDEO_PARADO,
                             PIG_VIDEO_TOCANDO,
                             PIG_VIDEO_PAUSADO}
-                PIG_StatusVideo;
+                PIGStatusVideo;
 
 /********************************
-O InfoEventoJanela � um struct contendo informa��es espec�ficas sobre o evento de janela:
-acao: c�digo que representa o evento espec�fico (os poss�veis valores podem ser vistos abaixo do struct)
-dado1,dado2: indicam em conjunto a informa��o espec�fica do evento, podendo representar o ponto (X,Y), em rela��o ao monitor,
-para o qual a janela foi movida ou o novo tamanho da janela ap�s um altera��o de dimens�es na mesma
+O PIGInfoEventoControlador é um struct contendo informações específicas sobre o evento de controlador (joystick):
+acao: código que representa o evento específico (os possíveis valores podem ser vistos abaixo do struct)
+eixo: qual dos eixos digital ou analágico, vertical ou horizontal) foi acionado
+valor:
+botao: qual dos botões digitais foi acionado
+pecentualEixo: qual o valor percentual do eixo acionado
+idControlador: qual dos controladores gerou o evento
 ********************************/
-typedef struct PIG_InfoEventoControlador{
+typedef struct PIGInfoEventoControlador{
     int acao;
     int eixo;
     int valor;
     int botao;
     float percentualEixo;
     int idControlador;
-}PIG_InfoEventoControlador;
+}PIGInfoEventoControlador;
 #define PIG_CONTROLADOR_EIXO_MOVIDO         SDL_CONTROLLERAXISMOTION
 #define PIG_CONTROLADOR_BOTAO_PRESSIONADO   SDL_CONTROLLERBUTTONDOWN
 #define PIG_CONTROLADOR_BOTAO_LIBERADO      SDL_CONTROLLERBUTTONUP
@@ -263,53 +268,64 @@ typedef struct PIG_InfoEventoControlador{
 #define PIG_DELAY_CHECK_TCP_SERVIDOR        1
 #define PIG_DELAY_CHECK_TCP_CLIENTE         1
 #define PIG_DELAY_CHECK_UDP                 1
-typedef enum PIG_TipoMensagemRede{PIG_REDE_CONEXAO,
+typedef enum PIGTipoMensagemRede{PIG_REDE_CONEXAO,
                             PIG_REDE_MENSAGEM_TCP,
                             PIG_REDE_MENSAGEM_UDP,
                             PIG_REDE_DESCONEXAO}
-                PIG_TipoMensagemRede;
+                PIGTipoMensagemRede;
 
-typedef struct PIG_InfoEventoRede{
+typedef struct PIGInfoEventoRede{
     uint8_t mensagem[PIG_MAX_MENSAGEM_REDE_TCP];
     int idSocket;
     int idSecundario;
     char host[PIG_TAMANHO_MAXIMO_HOSTNAME];
     int32_t porta;
-    PIG_TipoMensagemRede tipoMensagem;
-}PIG_InfoEventoRede;
+    PIGTipoMensagemRede tipoMensagem;
+}PIGInfoEventoRede;
 
-typedef struct PIG_InfoEventoVideo{
+typedef struct PIGInfoEventoVideo{
     int acao;
-}PIG_InfoEventoVideo;
+}PIGInfoEventoVideo;
 
-typedef struct PIG_Evento{
-    PIG_TipoEvento tipoEvento;
-    PIG_InfoEventoMouse mouse;
-    PIG_InfoEventoJanela janela;
-    PIG_InfoEventoAudio audio;
-    PIG_InfoEventoTeclado teclado;
-    PIG_InfoEventoControlador controlador;
+typedef struct PIGEvento{
+    PIGTipoEvento tipoEvento;
+    PIGInfoEventoMouse mouse;
+    PIGInfoEventoJanela janela;
+    PIGInfoEventoAudio audio;
+    PIGInfoEventoTeclado teclado;
+    PIGInfoEventoControlador controlador;
     //InfoEventoVideo video;
-    PIG_InfoEventoRede rede;
-} PIG_Evento;
+    PIGInfoEventoRede rede;
+}PIGEvento;
+typedef __declspec(deprecated("PIG_Evento nao deve mais ser usado. Utilize PIGEvento.")) PIGEvento PIG_Evento;
 
-//Tipo de callback gen�rica utilizada em diversos locais
-typedef int (*PIG_FuncaoSimples)(int,void*);
-typedef int (*PIG_FuncaoEvento)(int,PIG_Evento,void*);
-typedef int (*PIG_FuncaoBackground)(void*);
 
-#define PIG_Teclado                 const Uint8*
+//Tipo de callback genérica utilizada em diversos locais
+typedef int (*PIGFuncaoSimples)(int, void*);
+typedef int (*PIGFuncaoEvento)(int, PIGEvento, void*);
+typedef int (*PIGFuncaoBackground)(void*);
+typedef PIGCor (*PIGFuncaoPintarArea)(int, int, int, int, PIGCor, PIGCor);
 
-//Se��o de flips de objetos
-#define PIG_Flip                    SDL_RendererFlip
+//#define PIG_Teclado                 const Uint8*
+typedef const Uint8* PIGTeclado;
+typedef __declspec(deprecated("PIG_Teclado nao deve mais ser usado. Utilize PIGTeclado.")) PIGTeclado PIG_Teclado;
+
+
+//Seção de flips de objetos
+//#define PIG_Flip                    SDL_RendererFlip
+typedef SDL_RendererFlip PIGFlip;
+typedef __declspec(deprecated("PIG_Flip nao deve mais ser usado. Utilize PIGFlip.")) PIGFlip PIG_Flip;
+
 #define PIG_FLIP_NENHUM             SDL_FLIP_NONE
 #define PIG_FLIP_HORIZONTAL         SDL_FLIP_HORIZONTAL
 #define PIG_FLIP_VERTICAL           SDL_FLIP_VERTICAL
 #define PIG_FLIP_HORIZ_VERT         (PIG_Flip)(PIG_FLIP_HORIZONTAL|PIG_FLIP_VERTICAL)
 
-//Se��o de estilos
+//Seção de estilos
 
-#define PIG_Estilo                  int
+//#define PIG_Estilo                  int
+typedef __declspec(deprecated("PIG_Estilo nao deve mais ser usado. Utilize PIGEvento.")) int PIG_Estilo;
+typedef int PIGEstilo;
 #define PIG_TOTALESTILOS            16
 #define PIG_FONTE_PADRAO_NOME       "..//fontes//arial.ttf"
 #define PIG_FONTE_PADRAO_TAM        36
@@ -326,16 +342,16 @@ typedef int (*PIG_FuncaoBackground)(void*);
 #define PIG_SIMBOLO_SUBLINHADO      '_'
 #define PIG_SIMBOLO_CORTADO         '#'
 
-typedef struct PIG_Metricas_Fonte{
+typedef struct PIGMetricas_Fonte{
     int ascent;         //quantidade de pixels acima da linha horizontal de base da letra (sempre positivo)
     int descent;        //quantidade de pixels abaixo da linha horizontal de base da letra (sempre positivo)
     int altura;         //total de pixels na altura (soma dos dois campos anteriores)
     int recuo;          //quantidade pixels entre a linha vertical de base e o primeiro pixel do eixo X da letra (pode ser negativo)
     int avanco;         //quantidade de pixels entre a linha vertical de base e o �ltimo pixel do eixo X da letra (sempre positivo)
     int largura;        //total de pixels na largura (diferen�a dos dois anteriores)
-}PIG_Metricas_Fonte;
+}PIGMetricas_Fonte;
 
-//Se��o de teclas
+//Seção de teclas
 
 #define PIG_TECLA_UNKNOWN           0
 

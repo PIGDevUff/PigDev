@@ -37,6 +37,16 @@ public:
         return forms->Insere(new CPIGForm(resp,x,y,altura,largura,janela));
     }
 
+    static int CriaForm(int x,int y,int altura,int largura,string nomeArq,int retiraFundo=1, int janela = 0){
+        int resp = forms->ProxID();
+        return forms->Insere(new CPIGForm(resp,x,y,altura,largura,nomeArq,retiraFundo,janela));
+    }
+
+    static int CriaForm(string nomeArqTexto){
+        int resp = forms->ProxID();
+        return forms->Insere(new CPIGForm(resp,nomeArqTexto));
+    }
+
     static void DestroiForm(int idForm){
         forms->Remove(idForm);
     }

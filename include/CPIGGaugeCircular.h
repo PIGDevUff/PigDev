@@ -28,9 +28,9 @@ private:
     }
 
     virtual void AtualizaMarcador()override{
-        PIG_Cor corBarra = PIGMixCor(coresBasicas[1],coresBasicas[2],porcentagemConcluida);//cor da barra mizada entre a cor inicial e a final
-        PIG_Cor opcoes[4] = {VERDE,AZUL,ROXO,LARANJA}; //4 cores quaisquer
-        PIG_Cor croma1, croma2; //cores usada como cromakey para transparencias (não podem ser nem a cor da barra, nem a cor do fundo)
+        PIGCor corBarra = PIGMixCor(coresBasicas[1],coresBasicas[2],porcentagemConcluida);//cor da barra mizada entre a cor inicial e a final
+        PIGCor opcoes[4] = {VERDE,AZUL,ROXO,LARANJA}; //4 cores quaisquer
+        PIGCor croma1, croma2; //cores usada como cromakey para transparencias (não podem ser nem a cor da barra, nem a cor do fundo)
 
         //escolha das cores
         int i=0;
@@ -130,26 +130,26 @@ public:
         AtualizaMarcador();
     }
 
-    void SetCorInicial(PIG_Cor cor){
+    void SetCorInicial(PIGCor cor){
         coresBasicas[1] = cor;
         AtualizaMarcador();
     }
 
-    void SetCorFinal(PIG_Cor cor){
+    void SetCorFinal(PIGCor cor){
         coresBasicas[2] = cor;
         AtualizaMarcador();
     }
 
-    void SetCorInterna(PIG_Cor cor){
+    void SetCorInterna(PIGCor cor){
         coresBasicas[0] = cor;
         AtualizaMarcador();
     }
 
-    int TrataEventoMouse(PIG_Evento evento){
+    int TrataEventoMouse(PIGEvento evento){
         return 0;
     }
 
-    int TrataEventoTeclado(PIG_Evento evento){
+    int TrataEventoTeclado(PIGEvento evento){
         return 0;
     }
 };

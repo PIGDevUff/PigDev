@@ -34,7 +34,7 @@ public:
         TTF_Quit();
     }
 
-    static int CriaFonteFundo(char *nome,int tamanho,int estilo,char *arquivoFundo,int contorno,PIG_Cor corContorno,int idJanela=0){
+    static int CriaFonteFundo(char *nome,int tamanho,int estilo,char *arquivoFundo,int contorno,PIGCor corContorno,int idJanela=0){
         return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,arquivoFundo,contorno,corContorno,idJanela,NULL));
     }
 
@@ -42,15 +42,15 @@ public:
         return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,arquivoFundo,idJanela,NULL));
     }
 
-    static int CriaFonteNormal(char *nome,int tamanho,int estilo,PIG_Cor corLetra,int contorno,PIG_Cor corContorno,int idJanela=0){
+    static int CriaFonteNormal(char *nome,int tamanho,int estilo,PIGCor corLetra,int contorno,PIGCor corContorno,int idJanela=0){
         return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,corLetra,contorno,corContorno,idJanela,NULL));
     }
 
-    static int CriaFonteNormal(char *nome,int tamanho,int estilo,PIG_Cor corLetra=PIG_FONTE_PADRAO_COR,int idJanela=0){
+    static int CriaFonteNormal(char *nome,int tamanho,int estilo,PIGCor corLetra=PIG_FONTE_PADRAO_COR,int idJanela=0){
         return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,corLetra,idJanela,NULL));
     }
 
-    static int CriaFonteFundoOffScreen(char *nome,int tamanho,int estilo,char *arquivoFundo,int contorno,PIG_Cor corContorno,PIGOffscreenRenderer off,int layer=0){
+    static int CriaFonteFundoOffScreen(char *nome,int tamanho,int estilo,char *arquivoFundo,int contorno,PIGCor corContorno,PIGOffscreenRenderer off,int layer=0){
         return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,arquivoFundo,contorno,corContorno,-1,off->GetLayer(layer)->render));
     }
 
@@ -58,11 +58,11 @@ public:
         return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,arquivoFundo,-1,off->GetLayer(layer)->render));
     }
 
-    static int CriaFonteNormalOffScreen(char *nome,int tamanho,int estilo,PIG_Cor corLetra,int contorno,PIG_Cor corContorno,PIGOffscreenRenderer off,int layer=0){
+    static int CriaFonteNormalOffScreen(char *nome,int tamanho,int estilo,PIGCor corLetra,int contorno,PIGCor corContorno,PIGOffscreenRenderer off,int layer=0){
         return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,corLetra,contorno,corContorno,-1,off->GetLayer(layer)->render));
     }
 
-    static int CriaFonteNormalOffScreen(char *nome,int tamanho,int estilo,PIGOffscreenRenderer off,PIG_Cor corLetra=PIG_FONTE_PADRAO_COR,int layer=0){
+    static int CriaFonteNormalOffScreen(char *nome,int tamanho,int estilo,PIGOffscreenRenderer off,PIGCor corLetra=PIG_FONTE_PADRAO_COR,int layer=0){
         return fontes->Insere(new CPIGMapaCaracteres(nome,tamanho,estilo,corLetra,-1,off->GetLayer(layer)->render));
     }
 
@@ -74,9 +74,9 @@ public:
         fontes->Remove(idFonte);
     }
 
-    static SDL_Surface *GetSurface(char *str, PIG_Cor cor,int idFonte=0){
+    //static SDL_Surface *GetSurface(char *str, PIGCor cor,int idFonte=0){
         //return fontes->GetElemento(idFonte)->GetSurface(str,cor);
-    }
+    //}
 
 };
 

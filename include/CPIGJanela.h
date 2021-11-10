@@ -10,7 +10,7 @@ private:
 SDL_Window *window;
 SDL_Renderer *renderer;
 SDL_Texture *textFundo;
-PIG_Cor corFundo;
+PIGCor corFundo;
 int altura,largura;
 SDL_Point pos;
 int id;
@@ -200,11 +200,11 @@ void SetTitulo(std::string novoTitulo){
     SDL_SetWindowTitle(window,titulo.c_str());
 }
 
-PIG_Cor GetCorFundo(){
+PIGCor GetCorFundo(){
     return corFundo;
 }
 
-void SetCorFundo(PIG_Cor cor){
+void SetCorFundo(PIGCor cor){
     corFundo = cor;
 }
 
@@ -250,7 +250,7 @@ void SetTamanho(int alt, int larg){
     cameraFixa->AjustaTela(altura,largura);
 }
 
-void DesenhaRetangulo(int x, int y, int alturaRet, int larguraRet, PIG_Cor cor){
+void DesenhaRetangulo(int x, int y, int alturaRet, int larguraRet, PIGCor cor){
     SDL_Rect rect;
     rect.x = x;
     rect.y = altura-(y+alturaRet);
@@ -265,7 +265,7 @@ void DesenhaRetangulo(int x, int y, int alturaRet, int larguraRet, PIG_Cor cor){
     SDL_RenderFillRect(renderer,&rect);
 }
 
-void DesenhaRetanguloVazado(int x, int y, int alturaRet, int larguraRet, PIG_Cor cor){
+void DesenhaRetanguloVazado(int x, int y, int alturaRet, int larguraRet, PIGCor cor){
     SDL_Rect rect;
     rect.x = x;
     rect.y = altura-(y+alturaRet);
@@ -278,7 +278,7 @@ void DesenhaRetanguloVazado(int x, int y, int alturaRet, int larguraRet, PIG_Cor
     SDL_RenderDrawRect(renderer,&rect);
 }
 
-void DesenhaLinhaSimples(int x1,int y1,int x2,int y2,PIG_Cor cor){
+void DesenhaLinhaSimples(int x1,int y1,int x2,int y2,PIGCor cor){
     SDL_SetRenderDrawColor(renderer,cor.r,cor.g,cor.b,255);
     int camX1,camY1,camX2,camY2;
     GetCamera()->ConverteCoordenadaWorldScreen(x1,altura-y1-1,camX1,camY1);
@@ -287,7 +287,7 @@ void DesenhaLinhaSimples(int x1,int y1,int x2,int y2,PIG_Cor cor){
     //SDL_RenderDrawLine(renderer,x1-camera->GetX(),altura-y1-1+camera->GetY(),x2-camera->GetX(),altura-y2-1+camera->GetY());
 }
 
-void DesenhaLinhasDisjuntas(int x[],int y[],int qtd,PIG_Cor cor){
+void DesenhaLinhasDisjuntas(int x[],int y[],int qtd,PIGCor cor){
     SDL_SetRenderDrawColor(renderer,cor.r,cor.g,cor.b,255);
     int camX1,camY1,camX2,camY2;
     for (int k=0;k<qtd;k+=2){
@@ -298,7 +298,7 @@ void DesenhaLinhasDisjuntas(int x[],int y[],int qtd,PIG_Cor cor){
     }
 }
 
-void DesenhaLinhasSequencia(int x[],int y[],int qtd,PIG_Cor cor){
+void DesenhaLinhasSequencia(int x[],int y[],int qtd,PIGCor cor){
     SDL_SetRenderDrawColor(renderer,cor.r,cor.g,cor.b,255);
     int camX1,camY1,camX2,camY2;
     for (int k=0;k<qtd-1;k++){
@@ -309,7 +309,7 @@ void DesenhaLinhasSequencia(int x[],int y[],int qtd,PIG_Cor cor){
     }
 }
 
-void DesenhaPoligono(int px[],int py[],int lados,PIG_Cor cor){
+void DesenhaPoligono(int px[],int py[],int lados,PIGCor cor){
     int minX=INT_MAX,maxX=-1,minY=INT_MAX,maxY=-1;
     int cx=0,cy=0;
 
@@ -358,9 +358,9 @@ void DesenhaPoligono(int px[],int py[],int lados,PIG_Cor cor){
     delete off;
 }
 
-PIG_Cor GetPixel(int x,int y) {
+PIGCor GetPixel(int x,int y) {
     if (x<0 || x>=largura  ||y<0 ||y>=altura) return PRETO;
-    PIG_Cor resp;
+    PIGCor resp;
     SDL_Surface* infoSurface = SDL_GetWindowSurface(window);
     if (infoSurface != NULL) {
         unsigned char * pixels = new unsigned char[infoSurface->w * infoSurface->h * infoSurface->format->BytesPerPixel];

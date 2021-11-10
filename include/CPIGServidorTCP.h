@@ -13,12 +13,12 @@ bool ativo;
 int portaLocal;
 SDL_Thread *threadAccept,*threadReceive;
 
-std::vector<int> posLivres;
-std::unordered_map<int,PIGSocketTCP> clientesTCP;
-std::unordered_map<int,PIGSocketTCP>::iterator it;
+vector<int> posLivres;
+unordered_map<int,PIGSocketTCP> clientesTCP;
+unordered_map<int,PIGSocketTCP>::iterator it;
 
-void CriaEventoMensagem(PIG_TipoMensagemRede tipoMensagem, const void *buffer, int tamanhoDados, int indiceSlot){
-    PIG_InfoEventoRede *infoRede = (PIG_InfoEventoRede*) malloc(sizeof(PIG_InfoEventoRede));
+void CriaEventoMensagem(PIGTipoMensagemRede tipoMensagem, const void *buffer, int tamanhoDados, int indiceSlot){
+    PIGInfoEventoRede *infoRede = (PIGInfoEventoRede*) malloc(sizeof(PIGInfoEventoRede));
     infoRede->tipoMensagem = tipoMensagem;
     infoRede->idSocket = id;
     infoRede->idSecundario = indiceSlot;
@@ -111,7 +111,7 @@ CPIGServidorTCP(int idSocket, int maximoConexoes, int porta, int maxBytesPacote)
     }
 }
 
-~CPIGServidorTCP(){
+virtual ~CPIGServidorTCP(){
     ativo = false;
     SDL_Delay(20);//espera pelo encerramento das threads
 
@@ -121,7 +121,6 @@ CPIGServidorTCP(int idSocket, int maximoConexoes, int porta, int maxBytesPacote)
 
     if (clienteSet)
         SDLNet_FreeSocketSet(clienteSet);
-
 }
 
 int GetPortaLocal(){
@@ -136,7 +135,7 @@ int GetQuantidadeConexoes(){
     return clientesTCP.size();
 }
 
-int EnviaDados(const void *buffer,int tamanhoBuffer,int indiceSlot){
+int EnviaDados(const void *buffer, int tamanhoBuffer, int indiceSlot){
     //if (!clientesTCP) return -1;
     //if (!clientesTCP[indiceSlot]) return -2;
     it = clientesTCP.find(indiceSlot);
@@ -144,8 +143,6 @@ int EnviaDados(const void *buffer,int tamanhoBuffer,int indiceSlot){
     return it->second->EnviaDados(buffer,tamanhoBuffer);
     //return clientesTCP[indiceSlot]->EnviaDados(buffer,tamanhoBuffer);
 }
-
-
 
 static int accept_code(void *data){
     CPIGServidorTCP *servidor = (CPIGServidorTCP*)data;

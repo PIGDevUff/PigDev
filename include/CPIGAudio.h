@@ -8,14 +8,14 @@ private:
 Mix_Chunk *chunk;
 int volume;
 int tempoExecucao;
-PIG_StatusAudio status;
+PIGStatusAudio status;
 int loops;
-std::string nomeArq;
+string nomeArq;
 int canal;
 
 public:
 
-CPIGAudio(std::string nomeArquivo,int nLoops,int tempoPlay=-1){
+CPIGAudio(string nomeArquivo, int nLoops, int tempoPlay=-1){
     nomeArq = nomeArquivo;
     #ifdef PIG_SHARE_AUDIO
         chunk = CPIGAssetLoader::LoadAudio(nomeArq);
@@ -62,7 +62,7 @@ int GetTempoPlay(){
     return tempoExecucao;
 }
 
-PIG_StatusAudio GetStatus(){
+PIGStatusAudio GetStatus(){
     return status;
 }
 

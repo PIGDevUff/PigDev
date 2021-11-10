@@ -47,7 +47,7 @@ public:
         return pTela;
     }
 
-    static int ProcessaEvento(PIG_Evento &evento){
+    static int ProcessaEvento(PIGEvento &evento){
         if (evento.tipoEvento!=PIG_EVENTO_MOUSE) return 0;
         if (evento.mouse.acao==PIG_MOUSE_PRESSIONADO||evento.mouse.acao==PIG_MOUSE_LIBERADO){
             switch(evento.mouse.botao){

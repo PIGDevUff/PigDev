@@ -38,7 +38,7 @@ protected:
     }
 
     //trata teclas de movimentaçăo do cursor
-    virtual int TrataTeclasEspeciais(PIG_Evento evento){
+    virtual int TrataTeclasEspeciais(PIGEvento evento){
         switch (evento.teclado.tecla){
             case PIG_TECLA_BACKSPACE:
                 RetiraTextoBackSpace();break;
@@ -59,7 +59,7 @@ protected:
     }
 
     //trata os diversos tipos de eventos de teclado que podem ocorrer
-    int TrataEventoTeclado(PIG_Evento evento){
+    int TrataEventoTeclado(PIGEvento evento){
         if(!temFoco) return 0;
 
         if (evento.teclado.acao==PIG_TECLA_EDICAO) return 1;
@@ -239,7 +239,7 @@ public:
     }
 
     //define a cor do cursor
-    void SetCorCursor(PIG_Cor cor){
+    void SetCorCursor(PIGCor cor){
         coresBasicas[1] = cor;
     }
 

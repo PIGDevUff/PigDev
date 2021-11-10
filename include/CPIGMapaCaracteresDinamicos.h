@@ -8,16 +8,16 @@ class CPIGMapaCaracteresDinamicos:public CPIGMapaCaracteres{
 private:
 
     //processa uma string para transformá-la em StringFormatada
-    CPIGStringFormatada Processa(std::string textoOrig){
+    CPIGStringFormatada Processa(string textoOrig){
         CPIGStringFormatada resp;
-        PIG_Cor cor = BRANCO;
-        PIG_Estilo estilo = PIG_ESTILO_NORMAL;
+        PIGCor cor = BRANCO;
+        PIGEstilo estilo = PIG_ESTILO_NORMAL;
         int larguraTotal = 0;
         int estado = 0;//estado atual da máquinda de estados
-        int i = 0;
+        unsigned int i = 0;
 
-        std::vector<PIG_Cor> pilhaCor;
-        std::vector<PIG_Estilo> pilhaEstilo;
+        vector<PIGCor> pilhaCor;
+        vector<PIGEstilo> pilhaEstilo;
         pilhaCor.push_back(cor);
         pilhaEstilo.push_back(estilo);
 
@@ -133,7 +133,7 @@ public:
     }
 
     //escreve uma string já formatada, alinhada com o ponto x,y e o parâmetro pos
-    void Escreve(CPIGStringFormatada formatada,int x,int y,PIG_PosTexto pos=PIG_TEXTO_ESQUERDA,float ang=0,int alvoTextura=0){
+    void Escreve(CPIGStringFormatada formatada, int x, int y, PIGPosTexto pos=PIG_TEXTO_ESQUERDA, float ang=0, int alvoTextura=0){
         int delta = 0;
         switch(pos){
         case PIG_TEXTO_ESQUERDA:
@@ -150,8 +150,8 @@ public:
         rectDestino.x = x;
         int *altJanela = CPIGGerenciadorJanelas::GetJanela(janela)->GetAltura();
         //rectDestino.y = CGerenciadorJanelas::GetJanela(janela)->GetAltura()-y-tamFonte;
-        PIG_Cor corAtual = BRANCO;
-        PIG_Estilo estiloAtual = PIG_ESTILO_NORMAL;
+        PIGCor corAtual = BRANCO;
+        PIGEstilo estiloAtual = PIG_ESTILO_NORMAL;
         SDL_Point ponto = {delta,tamFonte};
 
         for (int i=0;i<formatada.size();i++){
@@ -179,13 +179,13 @@ public:
     }
 
     //escreve ums string normal, alinha com o ponto x,y e o parâmetro pos
-    void Escreve(std::string texto,int x,int y,PIG_Cor cor=BRANCO,PIG_PosTexto pos=PIG_TEXTO_ESQUERDA,float ang=0,int alvoTextura=0)override{
+    void Escreve(string texto, int x, int y, PIGCor cor=BRANCO, PIGPosTexto pos=PIG_TEXTO_ESQUERDA, float ang=0, int alvoTextura=0)override{
         if (texto=="") return;
         CPIGStringFormatada formatada = Processa(texto);
         Escreve(formatada,x,y,pos,ang,alvoTextura);
     }
 
-    void Escreve(std::string texto,SDL_Texture *textura,PIG_Cor cor){
+    void Escreve(string texto, SDL_Texture *textura, PIGCor cor){
         SDL_SetRenderTarget(render,textura);
         SDL_SetRenderDrawColor(render,0,0,0,0);
         int *altJanela = CPIGGerenciadorJanelas::GetJanela(janela)->GetAltura();
@@ -199,27 +199,27 @@ public:
     }
 
     //escreve uma string longa (múltiplas linhas), incluindo formatação interna, alinhada de acordo com o ponto x,y e o parâmetro pos
-    void EscreveLonga(std::string texto,int x,int y,int largMax,int espacoEntreLinhas,PIG_Cor corFonte=BRANCO,PIG_PosTexto pos=PIG_TEXTO_ESQUERDA,float angulo=0) override{
+    void EscreveLonga(string texto, int x, int y, int largMax, int espacoEntreLinhas, PIGCor corFonte=BRANCO, PIGPosTexto pos=PIG_TEXTO_ESQUERDA, float angulo=0) override{
         if (texto=="") return;
         CPIGStringFormatada formatada = Processa(texto);
         //formatada.Print();
-        std::vector<CPIGStringFormatada> linhas = formatada.ExtraiLinhas(largMax,delimitadores);
+        vector<CPIGStringFormatada> linhas = formatada.ExtraiLinhas(largMax,delimitadores);
         EscreveLonga(linhas,x,y,espacoEntreLinhas,pos,angulo);
         linhas.clear();
         formatada.Clear();
     }
 
     //escreve uma string longa (múltiplas linhas), com formatação já processada e fornecida, alinhada de acordo com o ponto x,y e o parâmetro pos
-    void EscreveLonga(std::vector<CPIGStringFormatada> linhas, int x, int y, int espacoEntreLinhas,PIG_PosTexto pos=PIG_TEXTO_ESQUERDA,float angulo=0){
+    void EscreveLonga(vector<CPIGStringFormatada> linhas, int x, int y, int espacoEntreLinhas, PIGPosTexto pos=PIG_TEXTO_ESQUERDA, float angulo=0){
         int yTotal=y;
-        for (int k=0;k<linhas.size();k++){
+        for (unsigned int k=0;k<linhas.size();k++){
             Escreve(linhas[k],x,yTotal,pos,angulo);
             yTotal -= espacoEntreLinhas;
         }
     }
 
     //retorna a largura em pixels da string fornecida (faz a formatação internamente)
-    int GetLarguraPixelsString(std::string texto) override{
+    int GetLarguraPixelsString(string texto) override{
         if (texto=="") return 0;
         CPIGStringFormatada formatada = Processa(texto);
         int resp = formatada.LargTotalPixels();
@@ -228,14 +228,13 @@ public:
     }
 
     //retorna as linhas já formatadas e organizadas pela largura máxima fornecida
-    std::vector<CPIGStringFormatada> ExtraiLinhas(std::string texto, int largMax){
+    vector<CPIGStringFormatada> ExtraiLinhas(string texto, int largMax){
         CPIGStringFormatada formatada = Processa(texto);
-        std::vector<CPIGStringFormatada> linhas = formatada.ExtraiLinhas(largMax,delimitadores);
+        vector<CPIGStringFormatada> linhas = formatada.ExtraiLinhas(largMax,delimitadores);
         formatada.Clear();
         return linhas;
     }
 };
 
 typedef CPIGMapaCaracteresDinamicos* PIGMapaCaracteresDinamicos;
-
 #endif //_CPIGMAPACARACTERESDINAMICOS_

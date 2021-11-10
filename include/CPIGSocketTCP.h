@@ -8,8 +8,8 @@ protected:
 int id;
 TCPsocket socket;
 SDLNet_SocketSet socketSet;
-std::string hostRemoto;
-std::string hostLocal;
+string hostRemoto;
+string hostLocal;
 int portaRemota;
 int tamPacote;
 long tempoPacoteRecebido;
@@ -35,7 +35,7 @@ void RegistraBytesEnviados(int qtdBytes){
     qtdBytesEnviados += qtdBytes;
 }
 
-void InicializaValoresBasicos(int valorId,int maxBytesPacote){
+void InicializaValoresBasicos(int valorId, int maxBytesPacote){
     qtdPacotesRecebidos = 0;
     qtdBytesRecebidos = 0;
     qtdPacotesEnviados = 0;
@@ -49,7 +49,7 @@ void InicializaValoresBasicos(int valorId,int maxBytesPacote){
 
 public:
 
-CPIGSocketTCP(int id,std::string host,int porta,int maxBytesPacote){
+CPIGSocketTCP(int id, string host, int porta, int maxBytesPacote){
     IPaddress ipAux;
 
     SDLNet_ResolveHost(&ipAux,getenv("COMPUTERNAME"),porta);
@@ -75,7 +75,7 @@ CPIGSocketTCP(int id,std::string host,int porta,int maxBytesPacote){
     }
 }
 
-CPIGSocketTCP(int id,TCPsocket serverSocket,int maxBytesPacote,SDLNet_SocketSet socketSetClientes){//TCPsocket server,int maxBytesPacote,){
+CPIGSocketTCP(int id, TCPsocket serverSocket, int maxBytesPacote, SDLNet_SocketSet socketSetClientes){//TCPsocket server,int maxBytesPacote,){
     IPaddress ipAux;
 
     InicializaValoresBasicos(id,maxBytesPacote);
@@ -94,7 +94,7 @@ CPIGSocketTCP(int id,TCPsocket serverSocket,int maxBytesPacote,SDLNet_SocketSet 
     }
 }
 
-~CPIGSocketTCP(){
+virtual ~CPIGSocketTCP(){
     if (socketSet){
         SDLNet_TCP_DelSocket(socketSet,socket);
         if (liberaSocketSet)
@@ -113,11 +113,11 @@ bool GetAtivo(){
     return ativo;
 }
 
-std::string GetHostRemoto(){
+string GetHostRemoto(){
     return hostRemoto;
 }
 
-std::string GetHostLocal(){
+string GetHostLocal(){
     return hostLocal;
 }
 

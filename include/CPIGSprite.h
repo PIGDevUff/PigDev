@@ -15,22 +15,22 @@ bool usaPivoRelativo;
 double angulo;
 SDL_Rect dest;
 int frameAtual;
-std::unordered_map<int,SDL_Rect> frames;
+unordered_map<int,SDL_Rect> frames;
 SDL_Texture* text;
 SDL_Renderer* renderer;
 SDL_RendererFlip flip;
 SDL_Surface* bitmap;
-PIG_Cor coloracao;
-PIG_Cor **pixels;
+PIGCor coloracao;
+PIGCor **pixels;
 int opacidade;
-std::string nomeArquivo;
+string nomeArquivo;
 PIGAutomacao automacao;
 int tipoFixo;
 vector<CPIGSprite*> filhos;
 
 private:
 
-void CarregaImagem(std::string nomeArq){
+void CarregaImagem(string nomeArq){
     nomeArquivo = nomeArq;
 
     #ifdef PIG_SHARE_BITMAP
@@ -41,7 +41,7 @@ void CarregaImagem(std::string nomeArq){
     if (!bitmap) throw CPIGErroArquivo(nomeArquivo);
 }
 
-void IniciaBase(int altura,int largura,int janela){
+void IniciaBase(int altura, int largura, int janela){
     frameAtual = 0;
     automacao = NULL;
     tipoFixo = 0;
@@ -53,9 +53,9 @@ void IniciaBase(int altura,int largura,int janela){
 
 void ExtraiPixels() {
 
-    pixels = (PIG_Cor **)malloc(sizeof(PIG_Cor *) * bitmap->h);
+    pixels = (PIGCor **)malloc(sizeof(PIGCor *) * bitmap->h);
     for (int i = 0; i < bitmap->h; i++) {
-        pixels[i] = (PIG_Cor *)calloc(sizeof(PIG_Cor), bitmap->w);
+        pixels[i] = (PIGCor *)calloc(sizeof(PIGCor), bitmap->w);
     }
 
     Uint32 *pix32 = (Uint32 *)bitmap->pixels;
@@ -111,7 +111,7 @@ void IniciaOrientacao(){
 
 protected:
 
-void AplicaTransicao(PIG_EstadoTransicao estado){
+void AplicaTransicao(PIGEstadoTransicao estado){
     Move(estado.x,estado.y);
     if (estado.alt!=alt||estado.larg!=larg) SetDimensoes(estado.alt,estado.larg);
     if (!(estado.cor==BRANCO)) SetColoracao(estado.cor);
@@ -126,7 +126,7 @@ int GetID(){
 }
 
 //Construtor para arquivos de vídeo ou Componentes
-CPIGSprite(int idSprite,int altura,int largura,std::string nomeArq,int janela=0){
+CPIGSprite(int idSprite, int altura, int largura, string nomeArq, int janela=0){
     id = idSprite;
     nomeArquivo = nomeArq;
     bitmap = NULL;
@@ -135,7 +135,7 @@ CPIGSprite(int idSprite,int altura,int largura,std::string nomeArq,int janela=0)
 }
 
 //Construtor básico para leitura de imagens digitais
-CPIGSprite(int idSprite,std::string nomeArq,int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
+CPIGSprite(int idSprite, string nomeArq, int retiraFundo=1, PIGCor *corFundo=NULL, int janela=0){
     id = idSprite;
     nomeArquivo = nomeArq;
 
@@ -147,7 +147,7 @@ CPIGSprite(int idSprite,std::string nomeArq,int retiraFundo=1,PIG_Cor *corFundo=
 }
 
 //Construtor para imagens provenientes do renderizador offscreen
-CPIGSprite(int idSprite,PIGOffscreenRenderer offRender, int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
+CPIGSprite(int idSprite, PIGOffscreenRenderer offRender, int retiraFundo=1, PIGCor *corFundo=NULL, int janela=0){
     id = idSprite;
     nomeArquivo = "";
 
@@ -161,7 +161,7 @@ CPIGSprite(int idSprite,PIGOffscreenRenderer offRender, int retiraFundo=1,PIG_Co
 }
 
 //Construtor para Sprite "copiado" de outro Sprite
-CPIGSprite(int idSprite,CPIGSprite *spriteBase,int retiraFundo=1,PIG_Cor *corFundo=NULL,int janela=0){
+CPIGSprite(int idSprite, CPIGSprite *spriteBase, int retiraFundo=1, PIGCor *corFundo=NULL, int janela=0){
     id = idSprite;
 
     CarregaImagem(spriteBase->nomeArquivo);
@@ -216,7 +216,7 @@ CPIGSprite(int janela){
     renderer = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetRenderer();
 }
 
-void PreparaTextura(int retiraFundo, PIG_Cor *corFundo=NULL){
+void PreparaTextura(int retiraFundo, PIGCor *corFundo=NULL){
     if (!bitmap) return;
     if (retiraFundo){
         Uint8 red, green, blue, alpha;
@@ -243,7 +243,7 @@ int RecebeFilho(CPIGSprite *filho, int fixo){
 }
 
 int Retirafilho(CPIGSprite *filho){
-    for (int i=0;i<filhos.size();i++)
+    for (unsigned int i=0;i<filhos.size();i++)
         if (filhos[i] == filho){
             filhos.erase(filhos.begin()+i);
             return 1;
@@ -251,24 +251,24 @@ int Retirafilho(CPIGSprite *filho){
     return 0;
 }
 
-void InsereTransicao(PIGTransicao t,PIGAutomacao *automaExt=NULL){
+void InsereTransicao(PIGTransicao t, PIGAutomacao *automaExt=NULL){
     if (automaExt==NULL) automaExt=&automacao;
     if (*automaExt==NULL)
         *automaExt = new CPIGAutomacao(id);
     (*automaExt)->InsereTransicao(t);
 }
 
-void InsereTransicao(double tempo, PIG_EstadoTransicao estado,PIGAutomacao *automaExt=NULL){
+void InsereTransicao(double tempo, PIGEstadoTransicao estado, PIGAutomacao *automaExt=NULL){
     if (automaExt==NULL) automaExt=&automacao;
     if (*automaExt==NULL)
         *automaExt = new CPIGAutomacao(id);
     (*automaExt)->InsereTransicao(new CPIGTransicao(tempo,estado));
 }
 
-void LeTransicoes(string nomeArq,PIGAutomacao *automaExt=NULL){
+void LeTransicoes(string nomeArq, PIGAutomacao *automaExt=NULL){
     int dx=0,dy=0,dAlt=0,dLarg=0,dOpa=0;
     double dAng=0,tempo=0;
-    PIG_Cor dCor=BRANCO;
+    PIGCor dCor=BRANCO;
 
     if (automaExt==NULL) automaExt=&automacao;
     if (*automaExt==NULL){
@@ -323,7 +323,7 @@ void DespausaAutomacao(PIGAutomacao *automaExt=NULL){
     }
 }
 
-void InsereAcao(double tempo, double repeticao, PIG_FuncaoSimples acao, void *param,PIGAutomacao *automaExt=NULL){
+void InsereAcao(double tempo, double repeticao, PIGFuncaoSimples acao, void *param, PIGAutomacao *automaExt=NULL){
     if (automaExt==NULL) automaExt=&automacao;
     if (*automaExt==NULL)
         *automaExt = new CPIGAutomacao(id);
@@ -336,7 +336,7 @@ void LimpaAcoes(PIGAutomacao *automaExt=NULL){
     if (*automaExt) (*automaExt)->LimpaAcoes();
 }
 
-void DefineTipoTransicao(PIG_TipoTransicao tipo,PIGAutomacao *automaExt=NULL){
+void DefineTipoTransicao(PIGTipoTransicao tipo, PIGAutomacao *automaExt=NULL){
     if (automaExt==NULL) automaExt=&automacao;
     if (*automaExt) (*automaExt)->SetTipoTransicao(tipo);
 }
@@ -368,7 +368,7 @@ int GetIdJanela(){
     return idJanela;
 }
 
-void DefineFrame(int idFrame,SDL_Rect r){
+void DefineFrame(int idFrame, SDL_Rect r){
     frames[idFrame] = r;
 }
 
@@ -376,16 +376,16 @@ PIGPonto2D GetXY(){
     return pos;
 }
 
-void SetColoracao(PIG_Cor cor){
+void SetColoracao(PIGCor cor){
     coloracao = cor;
     SDL_SetTextureColorMod(text,cor.r,cor.g,cor.b);
 }
 
-PIG_Cor GetColoracao(){
+PIGCor GetColoracao(){
     return coloracao;
 }
 
-void Rotaciona(double px,double py, double graus){
+void Rotaciona(double px, double py, double graus){
     double cosseno = cos(graus*M_PI/180.0);
     double seno = sin(graus*M_PI/180.0);
 
@@ -405,7 +405,7 @@ virtual void SetAngulo(double a){
     double pivoRealX = pos.x+pivoAbs.x;
     double pivoRealY = pos.y+(alt-pivoAbs.y);
 
-    for (int i=0;i<filhos.size();i++){
+    for (unsigned int i=0;i<filhos.size();i++){
         if (filhos[i]->tipoFixo==0) continue;
         if (filhos[i]->tipoFixo==1){
             filhos[i]->Rotaciona(pivoRealX,pivoRealY,delta);
@@ -423,11 +423,11 @@ double GetAngulo(){
     return angulo;
 }
 
-void SetFlip(PIG_Flip valor){
+void SetFlip(PIGFlip valor){
     flip = valor;
 }
 
-PIG_Flip GetFlip(){
+PIGFlip GetFlip(){
     return flip;
 }
 
@@ -453,7 +453,7 @@ PIGPonto2D GetPivo(){
     return pivoAbs;
 }
 
-inline virtual void Move(double nx,double ny){
+inline virtual void Move(double nx, double ny){
     Desloca(nx-pos.x,ny-pos.y);
 }
 
@@ -462,13 +462,13 @@ virtual void Desloca(double dx, double dy){
     pos.y += dy;
     dest.x = pos.x;
     dest.y = *altJanela-alt-pos.y;
-    for (int i=0;i<filhos.size();i++){
+    for (unsigned int i=0;i<filhos.size();i++){
         if (filhos[i]->tipoFixo!=0)
             filhos[i]->Desloca(dx,dy);
     }
 }
 
-virtual void SetDimensoes(int altura,int largura){
+virtual void SetDimensoes(int altura, int largura){
     dest.h = alt = altura;
     dest.w = larg = largura;
     dest.x = pos.x;
@@ -515,7 +515,7 @@ int GetFrameAtual(){
     return frameAtual;
 }
 
-void CarregaArquivoFrames(std::string nomeArq){
+void CarregaArquivoFrames(string nomeArq){
     int idFrame,xBitmap,yBitmap,altFrame,largFrame;
     FILE *arq = fopen(nomeArq.c_str(),"r");
     while (fscanf(arq,"%d %d %d %d %d\n",&idFrame,&xBitmap,&yBitmap,&altFrame,&largFrame) == 5){
@@ -524,7 +524,7 @@ void CarregaArquivoFrames(std::string nomeArq){
     fclose(arq);
 }
 
-void CriaFramesAutomaticosPorLinha(int idFrameInicial,int qtdLinhas, int qtdColunas){
+void CriaFramesAutomaticosPorLinha(int idFrameInicial, int qtdLinhas, int qtdColunas){
     if (qtdLinhas<=0||qtdColunas<=0) return;
     int largFrame = largOriginal/qtdColunas;
     int altFrame = altOriginal/qtdLinhas;
@@ -535,7 +535,7 @@ void CriaFramesAutomaticosPorLinha(int idFrameInicial,int qtdLinhas, int qtdColu
     }
 }
 
-void CriaFramesAutomaticosPorColuna(int idFrameInicial,int qtdLinhas, int qtdColunas){
+void CriaFramesAutomaticosPorColuna(int idFrameInicial, int qtdLinhas, int qtdColunas){
     if (qtdLinhas<=0||qtdColunas<=0) return;
     int largFrame = largOriginal/qtdColunas;
     int altFrame = altOriginal/qtdLinhas;
@@ -555,7 +555,7 @@ virtual int Desenha(){
     //printf("%d,%d,%d,%d\n",enquadrado.x,enquadrado.y,enquadrado.w,enquadrado.h);
     SDL_RenderCopyEx(renderer, text, &frames[frameAtual], &enquadrado, -angulo, &pivoInteiro, flip);
     //printf("%d %d\n",pivoInteiro.x,pivoInteiro.y);
-    for (int i=0;i<filhos.size();i++){
+    for (unsigned int i=0;i<filhos.size();i++){
         filhos[i]->Desenha();
     }
     return 0;
@@ -567,7 +567,7 @@ void DesenhaOffScreen(PIGOffscreenRenderer offRender){
     rectAux.y = offRender->GetAltura() - alt - pos.y;
     SDL_RenderCopyEx(offRender->GetRenderer(), textAux, &frames[frameAtual], &rectAux, -angulo, &pivoInteiro, flip);
     SDL_DestroyTexture(textAux);
-    for (int i=0;i<filhos.size();i++)
+    for (unsigned int i=0;i<filhos.size();i++)
         filhos[i]->DesenhaOffScreen(offRender);
 }
 
@@ -586,11 +586,11 @@ void AtualizaPixels(int retiraFundo = 1, int opacidadeObj = 255) {
     PreparaTextura(retiraFundo);
 }
 
-PIG_Cor **GetPixels() {
+PIGCor **GetPixels() {
     return pixels;
 }
 
-std::string GetNomeArquivo(){
+string GetNomeArquivo(){
     return nomeArquivo;
 }
 

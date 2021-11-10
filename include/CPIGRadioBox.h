@@ -67,7 +67,7 @@ public:
 
     virtual ~CPIGRadioBox(){}
 
-    void CriaItem(string itemLabel, string arqImagemFundoItem="",bool itemHabilitado = true, string hintMsg="", int retiraFundo=1){
+    void CriaItem(string itemLabel, string arqImagemFundoItem="", bool itemHabilitado = true, string hintMsg="", int retiraFundo=1){
         int yItem = pos.y+alt-(altBaseLista)*(itens.size()+1);
         CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,false,itemHabilitado,hintMsg,retiraFundo);
         itens[itens.size()-1]->DefineFuncaoAjusteFrame(AjustaFrame);
@@ -95,14 +95,14 @@ public:
         return 1;
     }
 
-    int TrataEventoMouse(PIG_Evento evento){
+    int TrataEventoMouse(PIGEvento evento){
         int resp = -1;
         bool mouseOverAntes = mouseOver;
 
         SDL_Point p = GetPosicaoMouse();
 
         if (ChecaMouseOver(p)>0){
-            for (int i=0;i<itens.size();i++){
+            for (unsigned int i=0;i<itens.size();i++){
                 if (itens[i]->TrataEventoMouse(evento) == PIG_SELECIONADO_TRATADO){
                     if (itens[i]->GetAcionado())
                         resp = i;
@@ -114,7 +114,7 @@ public:
                 return PIG_SELECIONADO_TRATADO;
             else return PIG_SELECIONADO_MOUSEOVER;
         }else if (mouseOverAntes){               //mouse estava antes, mas saiu
-            for (int i=0;i<itens.size();i++){
+            for (unsigned int i=0;i<itens.size();i++){
                 itens[i]->SetMouseOver(false);
             }
         }
@@ -122,11 +122,11 @@ public:
         return PIG_NAO_SELECIONADO;
     }
 
-    int TrataEventoTeclado(PIG_Evento evento){
+    int TrataEventoTeclado(PIGEvento evento){
         return 0;
     }
 
-    void SetDimensoes(int altura,int largura)override{
+    void SetDimensoes(int altura, int largura)override{
         CPIGComponente::SetDimensoes(itens.size()*altBaseLista,largura);
 
         for(PIGItemComponente i : itens){

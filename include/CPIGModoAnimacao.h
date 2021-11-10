@@ -16,7 +16,7 @@ private:
 int frameAtual;                         //número do frame atual
 bool loop;                              //se o modo tem loop ou não
 bool encerrou;                          //indica se o modo terminou de eibir todos os frames
-std::vector<EstagioAnimacao> estagios;  //informações dos estágios (frames) que compõem o modo
+vector<EstagioAnimacao> estagios;  //informações dos estágios (frames) que compõem o modo
 
 public:
 

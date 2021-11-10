@@ -5,7 +5,7 @@ class CPIGStringFormatada{
 
     char *ExtraiString(){
         char *resp = (char*)malloc(sizeof(letras.size()+1));
-        int i=0;
+        unsigned int i=0;
         while (i<letras.size()){
             resp[i] = letras[i];
             i++;
@@ -14,10 +14,10 @@ class CPIGStringFormatada{
         return resp;
     }
 
-    std::string letras;
-    std::vector<int> largAcumulada;
-    std::vector<PIG_Cor> cores;
-    std::vector<PIG_Estilo> estilos;
+    string letras;
+    vector<int> largAcumulada;
+    vector<PIGCor> cores;
+    vector<PIGEstilo> estilos;
 
 public:
 
@@ -29,11 +29,11 @@ public:
         return letras[indice];
     }
 
-    PIG_Cor GetCor(int indice){
+    PIGCor GetCor(int indice){
         return cores[indice];
     }
 
-    PIG_Estilo GetEstilo(int indice){
+    PIGEstilo GetEstilo(int indice){
         return estilos[indice];
     }
 
@@ -44,7 +44,7 @@ public:
         estilos.clear();
     }
 
-    void Adiciona(char letra,int larguraAcumulada,PIG_Cor cor,PIG_Estilo estilo){
+    void Adiciona(char letra, int larguraAcumulada, PIGCor cor, PIGEstilo estilo){
         letras += letra;
         largAcumulada.push_back(larguraAcumulada);
         cores.push_back(cor);
@@ -66,13 +66,13 @@ public:
         return letras.size();
     }
 
-    std::vector<CPIGStringFormatada> SeparaPalavras(std::string delim){
-        std::vector<CPIGStringFormatada> resp;
+    vector<CPIGStringFormatada> SeparaPalavras(string delim){
+        vector<CPIGStringFormatada> resp;
         if (letras.size()==0) return resp;
-        int indice;
+        unsigned int indice;
         int largBase=0;
         CPIGStringFormatada strAtual;
-        for (int i=0;i<letras.size();i++){
+        for (unsigned int i=0;i<letras.size();i++){
 
             indice = delim.find(letras[i]);
             if (indice != std::string::npos){//achou delimitadores
@@ -95,14 +95,14 @@ public:
         return resp;
     }
 
-    std::vector<CPIGStringFormatada> ExtraiLinhas(int largMax, std::string delim){
-        std::vector<CPIGStringFormatada> resp;
+    vector<CPIGStringFormatada> ExtraiLinhas(int largMax, string delim){
+        vector<CPIGStringFormatada> resp;
         if (letras.size()==0) return resp;
-        std::vector<CPIGStringFormatada> palavras = SeparaPalavras(delim);
+        vector<CPIGStringFormatada> palavras = SeparaPalavras(delim);
 
         CPIGStringFormatada linhaAtual = palavras[0];   //linha atual (que está sendo montada) contém pelo menos a primeira palavra
 
-        for (int i=1;i<palavras.size();i++){
+        for (unsigned int i=1;i<palavras.size();i++){
             CPIGStringFormatada palavra = palavras[i];   //pega a próxima palavra
 
             if (linhaAtual.LargTotalPixels() + palavra.LargTotalPixels() > largMax){//a palavra estouraria a largura máxima se fosse agregada                if (ttttt==0){
@@ -132,7 +132,7 @@ public:
 
     CPIGStringFormatada operator +=(CPIGStringFormatada outra){
         int largAtual = LargTotalPixels();
-        for (int i=0;i<outra.letras.size();i++){
+        for (unsigned int i=0;i<outra.letras.size();i++){
             Adiciona(outra.letras[i],outra.largAcumulada[i]+largAtual,outra.cores[i],outra.estilos[i]);
         }
         return *this;

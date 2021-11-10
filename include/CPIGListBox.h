@@ -7,7 +7,7 @@ class CPIGListBox: public CPIGListaItemComponente{
 
 protected:
 
-    static CPIGListBox LeParametros(int idComponente,CPIGAtributos atrib){
+    static CPIGListBox LeParametros(int idComponente, CPIGAtributos atrib){
         CPIGListBox *resp;
 
         if (atrib.GetString("nomeArq","")!=""){
@@ -36,7 +36,7 @@ protected:
 
     void SetHabilitado(bool valor){
         habilitado = valor;
-        for(int i=0;i<itens.size();i++){
+        for(unsigned int i=0;i<itens.size();i++){
             itens[i]->SetHabilitado(valor);
         }
     }
@@ -52,11 +52,11 @@ private:
 
 public:
 
-    CPIGListBox(int idComponente,int px, int py,int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0,string nomeArqFundo="",int retiraFundo=1,int janela=0):
+    CPIGListBox(int idComponente,int px, int py,int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, string nomeArqFundo="", int retiraFundo=1, int janela=0):
         CPIGListaItemComponente(idComponente,px,py,larguraTotal,alturaLinha,nomeArqFundo,retiraFundo,janela){
     }
 
-    CPIGListBox(int idComponente,int px, int py,int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0,int janela=0):
+    CPIGListBox(int idComponente,int px, int py,int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, int janela=0):
         CPIGListaItemComponente(idComponente,px,py,larguraTotal,alturaLinha,janela){
     }
 
@@ -64,7 +64,7 @@ public:
 
     virtual ~CPIGListBox(){}
 
-    int TrataEventoTeclado(PIG_Evento evento)override{
+    int TrataEventoTeclado(PIGEvento evento)override{
         if(!temFoco||!habilitado||!visivel) return 0;
 
         if(evento.teclado.acao == PIG_TECLA_PRESSIONADA){
@@ -79,14 +79,14 @@ public:
         return 1;
     }
 
-    int TrataEventoMouse(PIG_Evento evento){
+    int TrataEventoMouse(PIGEvento evento){
         int resp = -1;
         bool mouseOverAntes = mouseOver;
 
         SDL_Point p = GetPosicaoMouse();
 
         if (ChecaMouseOver(p)>0){
-            for (int i=0;i<itens.size();i++){
+            for (unsigned int i=0;i<itens.size();i++){
                 int aux = itens[i]->TrataEventoMouse(evento);
                 if(aux == PIG_SELECIONADO_TRATADO){
                     if (itens[i]->GetAcionado())
@@ -98,7 +98,7 @@ public:
             }
             SetAcionado(resp,resp!=-1);
         }else if (mouseOverAntes){               //mouse estava antes, mas saiu
-            for (int i=0;i<itens.size();i++){
+            for (unsigned int i=0;i<itens.size();i++){
                 itens[i]->SetMouseOver(false);
             }
         }

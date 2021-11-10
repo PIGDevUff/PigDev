@@ -1,13 +1,13 @@
 #ifndef _CMAPACARACTERES_
 #define _CMAPACARACTERES_
 
-typedef enum {PIG_TEXTO_ESQUERDA,PIG_TEXTO_DIREITA,PIG_TEXTO_CENTRO} PIG_PosTexto;
+typedef enum {PIG_TEXTO_ESQUERDA,PIG_TEXTO_DIREITA,PIG_TEXTO_CENTRO} PIGPosTexto;
 
 class CPIGMapaCaracteres{
 
 protected:
 
-    static std::string delimitadores;
+    static string delimitadores;
 
     int **alturaExtra;
     int **larguraLetra;
@@ -19,11 +19,11 @@ protected:
     SDL_Texture ***glyphsT;
     TTF_Font *font;
 
-    std::string nome;
+    string nome;
     int tamFonte;
 
     //cria o conjunto de glifos das letras com as características fornecidas
-    void CriaLetrasSurface(PIG_Estilo estilo, int nivelOutline, PIG_Cor corOutline, SDL_Surface *fundo,  PIG_Cor corFonte=BRANCO){
+    void CriaLetrasSurface(PIGEstilo estilo, int nivelOutline, PIGCor corOutline, SDL_Surface *fundo,  PIGCor corFonte=BRANCO){
         TTF_SetFontStyle(font,estilo);
 
         glyphsT[estilo] = (SDL_Texture**) malloc(sizeof(SDL_Texture*)*(PIG_ULTIMO_CAR-PIG_PRIMEIRO_CAR));
@@ -57,7 +57,7 @@ protected:
     }
 
     //inicia os atributos da classe
-    void IniciaBase(char *nomeFonte,int tamanhoFonte,int idJanela,PIG_Estilo estilo,SDL_Renderer *renderer){
+    void IniciaBase(const char *nomeFonte, int tamanhoFonte, int idJanela, PIGEstilo estilo, SDL_Renderer *renderer){
         nome.assign(nomeFonte);
         tamFonte = tamanhoFonte;
         janela = idJanela;
@@ -84,7 +84,7 @@ protected:
 
 public:
 
-    CPIGMapaCaracteres(char *nomeFonte,int tamanhoFonte,int estilo, char *nomeFundo, int idJanela,SDL_Renderer *renderer=NULL){
+    CPIGMapaCaracteres(const char *nomeFonte, int tamanhoFonte, int estilo, char *nomeFundo, int idJanela, SDL_Renderer *renderer=NULL){
         IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo, renderer);
 
         SDL_Surface *fundo = IMG_Load(nomeFundo);//carrega a imagem de fundo
@@ -93,7 +93,7 @@ public:
         SDL_FreeSurface(fundo);
     }
 
-    CPIGMapaCaracteres(char *nomeFonte,int tamanhoFonte,int estilo, char *nomeFundo,int outline,PIG_Cor corOutline, int idJanela,SDL_Renderer *renderer=NULL){
+    CPIGMapaCaracteres(const char *nomeFonte, int tamanhoFonte,int estilo, char *nomeFundo, int outline, PIGCor corOutline, int idJanela, SDL_Renderer *renderer=NULL){
         IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo, renderer);
 
         SDL_Surface *fundo = IMG_Load(nomeFundo);//carrega a imagem de fundo
@@ -101,7 +101,7 @@ public:
         CriaLetrasSurface(estilo, outline, corOutline, fundo);
     }
 
-    CPIGMapaCaracteres(char *nomeFonte,int tamanhoFonte,int estilo, PIG_Cor corFonte,int outline,PIG_Cor corOutline, int idJanela,SDL_Renderer *renderer=NULL){
+    CPIGMapaCaracteres(const char *nomeFonte,int tamanhoFonte,int estilo, PIGCor corFonte, int outline, PIGCor corOutline, int idJanela, SDL_Renderer *renderer=NULL){
         IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo, renderer);
 
         CriaLetrasSurface(estilo, outline, corOutline, NULL);//, corFonte);
@@ -109,7 +109,7 @@ public:
         SDL_SetRenderTarget(render, NULL);
     }
 
-    CPIGMapaCaracteres(char *nomeFonte,int tamanhoFonte,int estilo, PIG_Cor corFonte, int idJanela,SDL_Renderer *renderer=NULL){
+    CPIGMapaCaracteres(const char *nomeFonte, int tamanhoFonte, int estilo, PIGCor corFonte, int idJanela, SDL_Renderer *renderer=NULL){
         IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo, renderer);
 
         CriaLetrasSurface(estilo, 0, BRANCO, NULL);//, corFonte);
@@ -134,7 +134,7 @@ public:
         free(alturaExtra);
     }
 
-    void SubstituiGlyph(std::string nomeArq,uint16_t glyph, int largNova, int x, int y, int alt, int larg){
+    void SubstituiGlyph(string nomeArq, uint16_t glyph, int largNova, int x, int y, int alt, int larg){
         glyph = glyph%256;
         if (glyph<PIG_PRIMEIRO_CAR||glyph>=PIG_ULTIMO_CAR) throw CPIGErroIndice(glyph,"caracter");//se o indice do glyph antigo não existe
 
@@ -175,8 +175,8 @@ public:
         return TTF_FontAscent(font); //quantidade base de pixels acima da linha base da letra (não inclui acento de vogais maiúsculas)
     }
 
-    PIG_Metricas_Fonte GetMetricasLetra(Uint16 letra, int estilo=0){
-        PIG_Metricas_Fonte metrica;
+    PIGMetricas_Fonte GetMetricasLetra(Uint16 letra, int estilo=0){
+        PIGMetricas_Fonte metrica;
         int xMin,xMax,yMin,yMax,adv;
         if(estiloFixo>=0)
             estilo = estiloFixo;
@@ -210,15 +210,15 @@ public:
         return larguraLetra[estilo][aux-PIG_PRIMEIRO_CAR];
     }
 
-    std::vector<std::string> ExtraiLinhas(std::string texto, int largMax, std::string delim=delimitadores){
-        std::vector<std::string> resp;
+    vector<string> ExtraiLinhas(string texto, int largMax, string delim=delimitadores){
+        vector<string> resp;
         if (texto=="") return resp;
 
-        std::vector<std::string> palavras = PIGSeparaPalavras(texto,delim);
-        std::string linhaAtual = "";   //linha atual (que está sendo montada) contém pelo menos a primeira palavra
+        vector<string> palavras = PIGSeparaPalavras(texto,delim);
+        string linhaAtual = "";   //linha atual (que está sendo montada) contém pelo menos a primeira palavra
         int tamanhoAtual = 0;
 
-        for (std::string palavra : palavras){
+        for (string palavra : palavras){
             int largPalavra = GetLarguraPixelsString(palavra);
 
             if (palavra[0]=='\n'){//se existe uma quebra de linha forçada
@@ -245,11 +245,11 @@ public:
         return resp;
     }
 
-    virtual int GetLarguraPixelsString(std::string texto){
+    virtual int GetLarguraPixelsString(string texto){
         int resp=0;
         Uint16 aux;
 
-        for (int i=0;i<texto.size();i++){
+        for (unsigned int i=0;i<texto.size();i++){
             aux = texto[i];
             aux = aux % 256;
             if(texto[i] != '\n')
@@ -265,7 +265,7 @@ public:
             aux = aux % 256;//UTF16 string, retirando só o byte que interessa
     }*/
 
-    virtual void Escreve(std::string texto,int x,int y,PIG_Cor corFonte=BRANCO,PIG_PosTexto pos=PIG_TEXTO_ESQUERDA,float ang=0,int alvoTextura=0){
+    virtual void Escreve(string texto, int x, int y, PIGCor corFonte=BRANCO, PIGPosTexto pos=PIG_TEXTO_ESQUERDA, float ang=0, int alvoTextura=0){
         int w,h;
         if (texto=="") return;
         int larguraPixels = GetLarguraPixelsString(texto);
@@ -293,7 +293,7 @@ public:
         SDL_Point ponto = {delta,tamFonte};
         Uint16 aux;
 
-        for (int i=0;i<texto.size();i++){
+        for (unsigned int i=0;i<texto.size();i++){
             aux = texto[i];
             if (aux==65475) continue;
             //if (aux>6500) aux+=64;
@@ -325,17 +325,17 @@ public:
 
     }
 
-    virtual void EscreveLonga(std::string texto,int x,int y,int largMax,int espacoEntreLinhas,PIG_Cor corFonte=BRANCO,PIG_PosTexto pos=PIG_TEXTO_ESQUERDA,float angulo=0){
+    virtual void EscreveLonga(string texto, int x, int y, int largMax, int espacoEntreLinhas, PIGCor corFonte=BRANCO, PIGPosTexto pos=PIG_TEXTO_ESQUERDA, float angulo=0){
         if (texto=="") return;
-        std::vector<std::string> linhas = ExtraiLinhas(texto,largMax);
+        vector<string> linhas = ExtraiLinhas(texto,largMax);
         int yTotal=y;
-        for (int k=0;k<linhas.size();k++){
+        for (unsigned int k=0;k<linhas.size();k++){
             Escreve(linhas[k],x,yTotal,corFonte,pos,angulo);
             yTotal -= espacoEntreLinhas;
         }
     }
 
-    virtual void Escreve(std::string texto,SDL_Texture *textura,PIG_Cor cor){
+    virtual void Escreve(string texto, SDL_Texture *textura, PIGCor cor){
         int w,h;
         SDL_SetRenderTarget(render,textura);
         SDL_SetRenderDrawColor(render,0,0,0,0);
@@ -355,12 +355,12 @@ public:
     }
 
 
-    SDL_Surface *GetGlyph(Uint16 *emoji, PIG_Cor cor=BRANCO){
+    SDL_Surface *GetGlyph(Uint16 *emoji, PIGCor cor=BRANCO){
         return TTF_RenderUNICODE_Blended(font,emoji,cor);
     }
 };
 
 typedef CPIGMapaCaracteres* PIGMapaCaracteres;
-std::string CPIGMapaCaracteres::delimitadores = " \n";
+string CPIGMapaCaracteres::delimitadores = " \n";
 
 #endif // _CMAPACARACTERES_

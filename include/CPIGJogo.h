@@ -7,8 +7,8 @@ class CPIGJogo: public CPIGAtributos{
 
 private:
 
-    PIG_Evento ultimoEvento;
-    PIG_Teclado teclado;
+    PIGEvento ultimoEvento;
+    PIGTeclado teclado;
     int contFPS,lastFPS;
     PIGTimer timerFPS;
     int estado;
@@ -51,7 +51,7 @@ public:
         CPIGGerenciadorJanelas::Encerra();
     }
 
-    PIG_Evento PegaEvento(){
+    PIGEvento PegaEvento(){
         SDL_Event event;
         int resp;
         //if (despausa)
@@ -79,7 +79,7 @@ public:
                     ultimoEvento.audio.audioId = *((int*)event.user.data1);
                 }else if (event.user.code==PIG_EVENTO_REDE){
                     ultimoEvento.tipoEvento = PIG_EVENTO_REDE;
-                    ultimoEvento.rede = *((PIG_InfoEventoRede*)event.user.data1);
+                    ultimoEvento.rede = *((PIGInfoEventoRede*)event.user.data1);
                 }
                 free(event.user.data1);
                 break;
@@ -180,7 +180,7 @@ public:
         return ultimoEvento;
     }
 
-    inline PIG_Teclado PegaTeclado(){
+    inline PIGTeclado PegaTeclado(){
         return teclado;
     }
 

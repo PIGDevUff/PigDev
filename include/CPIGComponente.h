@@ -9,6 +9,7 @@ typedef enum{PIG_COMPONENTE_CIMA_CENTRO,PIG_COMPONENTE_CIMA_ESQ,PIG_COMPONENTE_C
              PIG_COMPONENTE_CENTRO_CENTRO,PIG_COMPONENTE_PERSONALIZADA} PIGPosicaoComponente;
 typedef enum{PIG_ANCORA_NORTE,PIG_ANCORA_SUL,PIG_ANCORA_LESTE,PIG_ANCORA_OESTE,PIG_ANCORA_NORDESTE,PIG_ANCORA_NOROESTE,PIG_ANCORA_SUDESTE,PIG_ANCORA_SUDOESTE,PIG_ANCORA_CENTRO}PIGAncora;
 typedef enum{PIG_NAO_SELECIONADO,PIG_SELECIONADO_MOUSEOVER,PIG_SELECIONADO_INVISIVEL,PIG_SELECIONADO_DESABILITADO,PIG_SELECIONADO_TRATADO}PIGEstadosEventos;
+typedef enum{PIG_FORM,PIG_BOTAOCLICK,PIG_BOTAOONOFF,PIG_AREADETEXTO,PIG_CAMPOTEXTOSENHA,PIG_RADIOBOX,PIG_CHECKBOX,PIG_LISTBOX,PIG_DROPDOWN,PIG_GAUGEBAR,PIG_GAUGECIRCULAR,PIG_SLIDEBAR}PIGTiposComponentes;
 
 class CPIGComponente: public CPIGSprite{
 
@@ -16,11 +17,11 @@ protected:
 
     bool temFoco,visivel,habilitado,mouseOver,acionado;
     int audioComponente;
-    int id;
+    //int id;
     PIGPosicaoComponente posLabel,posComponente;
     PIGLabel lab,hint;
-    PIG_FuncaoSimples acao;
-    PIG_Cor coresBasicas[10];
+    PIGFuncaoSimples acao;
+    PIGCor coresBasicas[10];
     int corAtual;
     int margemEsq,margemDir,margemCima,margemBaixo;
     void *param;
@@ -185,12 +186,12 @@ protected:
 
 public:
 
-    CPIGComponente(int idComponente,int px,int py, int altura, int largura, int janela=0)
+    CPIGComponente(int idComponente, int px, int py, int altura, int largura, int janela=0)
     :CPIGSprite(idComponente,altura, largura, "",janela){
         IniciaBase(idComponente,px,py);
     }
 
-    CPIGComponente(int idComponente,int px,int py, int altura, int largura, std::string nomeArq,int retiraFundo=1,int janela=0)
+    CPIGComponente(int idComponente, int px, int py, int altura, int largura, string nomeArq, int retiraFundo=1, int janela=0)
     :CPIGSprite(idComponente,nomeArq,retiraFundo,NULL,janela){
         IniciaBase(idComponente,px,py);
         CPIGSprite::SetDimensoes(altura,largura);
@@ -201,7 +202,7 @@ public:
         if (hint) delete hint;
     }
 
-    void DefineAcao(PIG_FuncaoSimples funcao,void *parametro){
+    void DefineAcao(PIGFuncaoSimples funcao, void *parametro){
         acao = funcao;
         param = parametro;
     }
@@ -255,9 +256,9 @@ public:
     //desenha o componente, cada subclasse precisa implementar como fazer isso
     virtual int Desenha()=0;
 
-    virtual int TrataEventoMouse(PIG_Evento evento)=0;
+    virtual int TrataEventoMouse(PIGEvento evento)=0;
 
-    virtual int TrataEventoTeclado(PIG_Evento evento)=0;
+    virtual int TrataEventoTeclado(PIGEvento evento)=0;
 
     //define a mensagem de hint do componente
     void SetHint(string novoHint){
@@ -271,12 +272,12 @@ public:
     }
 
     //define a cor do label
-    virtual void SetCorLabel(PIG_Cor corLabel){
+    virtual void SetCorLabel(PIGCor corLabel){
         lab->SetCor(corLabel);
     }
 
     //recupera a cor do label
-    virtual PIG_Cor GetCorLabel(){
+    virtual PIGCor GetCorLabel(){
         return lab->GetColoracao();
     }
 
@@ -291,7 +292,7 @@ public:
     }
 
     //define a cor do hint
-    virtual void SetCorHint(PIG_Cor cor){
+    virtual void SetCorHint(PIGCor cor){
         hint->SetCor(cor);
     }
 
@@ -312,7 +313,7 @@ public:
     }
 
     //recupera o label
-    std::string GetLabel(){
+    string GetLabel(){
         return lab->GetTexto();
     }
 
@@ -365,7 +366,7 @@ public:
         return posComponente;
     }
 
-    void SetPosPadraoExternaComponente(PIGPosicaoComponente pos,CPIGComponente *componenteAssociado){
+    void SetPosPadraoExternaComponente(PIGPosicaoComponente pos, CPIGComponente *componenteAssociado){
         int altComponente,largComponente;
         PIGPonto2D p = componenteAssociado->GetXY();
 
@@ -455,7 +456,7 @@ public:
 
     }*/
 
-    void SetCorBasica(int indice, PIG_Cor cor){
+    void SetCorBasica(int indice, PIGCor cor){
         if (indice<0||indice>=10) return;
         coresBasicas[indice] = cor;
     }
@@ -465,7 +466,7 @@ public:
         PosicionaLabel();
     }
 
-    void SetDimensoes(int altura,int largura)override{
+    void SetDimensoes(int altura, int largura)override{
         CPIGSprite::SetDimensoes(altura,largura);
         PosicionaLabel();
     }
@@ -476,7 +477,7 @@ public:
         else return CPIGMouse::PegaXYWorld();
     }
 
-    virtual void SetMargens(int mEsq,int mDir,int mCima,int mBaixo){
+    virtual void SetMargens(int mEsq, int mDir, int mCima, int mBaixo){
         margemEsq = mEsq;
         margemDir = mDir;
         margemCima = mCima;

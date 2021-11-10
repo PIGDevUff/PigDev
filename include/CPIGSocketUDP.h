@@ -19,8 +19,8 @@ UDPsocket socket;
 UDPpacket *pacoteEnvio, *pacoteRecebimento;
 SDL_Thread *thread;
 
-void CriaEventoMensagem(PIG_TipoMensagemRede tipoMensagem, UDPpacket *pacoteRecebido){
-    PIG_InfoEventoRede *infoRede = (PIG_InfoEventoRede*) malloc(sizeof(PIG_InfoEventoRede));
+void CriaEventoMensagem(PIGTipoMensagemRede tipoMensagem, UDPpacket *pacoteRecebido){
+    PIGInfoEventoRede *infoRede = (PIGInfoEventoRede*) malloc(sizeof(PIGInfoEventoRede));
     infoRede->tipoMensagem = tipoMensagem;
     infoRede->idSocket = id;
     infoRede->idSecundario = -1;
@@ -72,7 +72,7 @@ CPIGSocketUDP(int idSocket,int porta){
     }else thread = SDL_CreateThread(thread_code,"",this);
 }
 
-~CPIGSocketUDP(){
+virtual ~CPIGSocketUDP(){
     if (thread) SDL_DetachThread(thread);
     if (pacoteEnvio) free(pacoteEnvio);
     if (pacoteRecebimento) free(pacoteRecebimento);
@@ -120,7 +120,7 @@ int GetPortaLocal(){
     return portaLocal;
 }
 
-std::string GetHostLocal(){
+string GetHostLocal(){
     return hostLocal;
 }
 
