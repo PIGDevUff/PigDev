@@ -73,8 +73,8 @@ inline PIG_Cor operator +(PIG_Cor cor1,PIG_Cor cor2){
 }
 
 //cria uma cor a partir de uma string com um valor hexadecimal de 8 algarismos RRGGBBAA. Ex: 0xFF0000FF (vermelho)
-PIG_Cor PIGCriaCor(char *stringHexa){
-    unsigned long total = strtoul(stringHexa,0,16);//transforma a string em um inteiro (decimal)
+PIG_Cor PIGCriaCorHexa(string stringHexa){
+    unsigned long total = strtoul(stringHexa.c_str(),0,16);//transforma a string em um inteiro (decimal)
     PIG_Cor cor;
     cor.a = total %256;
     total /= 256;
@@ -83,6 +83,20 @@ PIG_Cor PIGCriaCor(char *stringHexa){
     cor.g = total %256;
     total /= 256;
     cor.r = total %256;
+    return cor;
+}
+
+//cria uma cor a partir de uma string com um valor hexadecimal de 8 algarismos RRGGBBAA. Ex: 0xFF0000FF (vermelho)
+PIG_Cor PIGCriaCorString(string str){
+    PIG_Cor cor;
+    char *p = strtok((char*)str.c_str(),",");
+    cor.r = stoi(p);
+    p = strtok(NULL,",");
+    cor.g = stoi(p);
+    p = strtok(NULL,",");
+    cor.b = stoi(p);
+    p = strtok(NULL,",");
+    cor.a = stoi(p);
     return cor;
 }
 

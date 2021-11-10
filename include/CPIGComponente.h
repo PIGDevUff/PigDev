@@ -6,9 +6,9 @@
 
 typedef enum{PIG_COMPONENTE_CIMA_CENTRO,PIG_COMPONENTE_CIMA_ESQ,PIG_COMPONENTE_CIMA_DIR,PIG_COMPONENTE_BAIXO_CENTRO,PIG_COMPONENTE_BAIXO_DIR,PIG_COMPONENTE_BAIXO_ESQ,
              PIG_COMPONENTE_DIR_CIMA,PIG_COMPONENTE_DIR_BAIXO,PIG_COMPONENTE_DIR_CENTRO,PIG_COMPONENTE_ESQ_BAIXO,PIG_COMPONENTE_ESQ_CENTRO,PIG_COMPONENTE_ESQ_CIMA,
-             PIG_COMPONENTE_CENTRO_CENTRO,PIG_COMPONENTE_PERSONALIZADA} PIG_PosicaoComponente;
-typedef enum{PIG_ANCORA_NORTE,PIG_ANCORA_SUL,PIG_ANCORA_LESTE,PIG_ANCORA_OESTE,PIG_ANCORA_NORDESTE,PIG_ANCORA_NOROESTE,PIG_ANCORA_SUDESTE,PIG_ANCORA_SUDOESTE,PIG_ANCORA_CENTRO}PIG_Ancora;
-typedef enum{PIG_NAO_SELECIONADO,PIG_SELECIONADO_MOUSEOVER,PIG_SELECIONADO_INVISIVEL,PIG_SELECIONADO_DESABILITADO,PIG_SELECIONADO_TRATADO}PIG_EstadosEventos;
+             PIG_COMPONENTE_CENTRO_CENTRO,PIG_COMPONENTE_PERSONALIZADA} PIGPosicaoComponente;
+typedef enum{PIG_ANCORA_NORTE,PIG_ANCORA_SUL,PIG_ANCORA_LESTE,PIG_ANCORA_OESTE,PIG_ANCORA_NORDESTE,PIG_ANCORA_NOROESTE,PIG_ANCORA_SUDESTE,PIG_ANCORA_SUDOESTE,PIG_ANCORA_CENTRO}PIGAncora;
+typedef enum{PIG_NAO_SELECIONADO,PIG_SELECIONADO_MOUSEOVER,PIG_SELECIONADO_INVISIVEL,PIG_SELECIONADO_DESABILITADO,PIG_SELECIONADO_TRATADO}PIGEstadosEventos;
 
 class CPIGComponente: public CPIGSprite{
 
@@ -17,7 +17,7 @@ protected:
     bool temFoco,visivel,habilitado,mouseOver,acionado;
     int audioComponente;
     int id;
-    PIG_PosicaoComponente posLabel,posComponente;
+    PIGPosicaoComponente posLabel,posComponente;
     PIGLabel lab,hint;
     PIG_FuncaoSimples acao;
     PIG_Cor coresBasicas[10];
@@ -48,7 +48,7 @@ protected:
             if (CPIGGerenciadorJanelas::GetJanela(idJanela)->GetUsandoCameraFixa())
                 p = CPIGMouse::PegaXYTela();
             else p = CPIGMouse::PegaXYWorld();
-            hint->Move(p.x+16,p.y+5);
+            hint->Move(p.x+5,p.y+5);
             hint->Desenha();
         }
     }
@@ -61,6 +61,24 @@ protected:
         SDL_Rect r={(int)pos.x,(int)pos.y,larg,alt};
         SetMouseOver(SDL_PointInRect(&pMouse,&r));
         return mouseOver;
+    }
+
+    static PIGPosicaoComponente ConverteStringPosicao(string str){
+        transform(str.begin(), str.end(), str.begin(), ::toupper);
+        if (str=="CIMA_CENTRO") return PIG_COMPONENTE_CIMA_CENTRO;
+        if (str=="CIMA_ESQ") return PIG_COMPONENTE_CIMA_ESQ;
+        if (str=="CIMA_DIR") return PIG_COMPONENTE_CIMA_DIR;
+        if (str=="BAIXO_CENTRO") return PIG_COMPONENTE_BAIXO_CENTRO;
+        if (str=="BAIXO_DIR") return PIG_COMPONENTE_BAIXO_DIR;
+        if (str=="BAIXO_ESQ") return PIG_COMPONENTE_BAIXO_ESQ;
+        if (str=="DIR_CIMA") return PIG_COMPONENTE_DIR_CIMA;
+        if (str=="DIR_BAIXO") return PIG_COMPONENTE_DIR_BAIXO;
+        if (str=="DIR_CENTRO") return PIG_COMPONENTE_DIR_CENTRO;
+        if (str=="ESQ_BAIXO") return PIG_COMPONENTE_ESQ_BAIXO;
+        if (str=="ESQ_CENTRO") return PIG_COMPONENTE_ESQ_CENTRO;
+        if (str=="ESQ_CIMA") return PIG_COMPONENTE_ESQ_CIMA;
+        if (str=="CENTRO_CENTRO") return PIG_COMPONENTE_CENTRO_CENTRO;
+        return PIG_COMPONENTE_PERSONALIZADA;
     }
 
     //move o label de acordo com a posição
@@ -127,6 +145,44 @@ protected:
         return PIG_SELECIONADO_TRATADO;
     }
 
+    void ProcessaAtributosGerais(CPIGAtributos atrib){
+        int valorInt;
+        string valorStr;
+
+        valorStr = atrib.GetString("label","");
+        if (valorStr != "") SetLabel(atrib.GetString("label",""));
+
+        valorStr = atrib.GetString("hint","");
+        if (valorStr != "") SetHint(valorStr);
+
+        valorInt = atrib.GetInt("audio",-1);
+        if (valorInt != -1) SetAudio(valorInt);
+
+        valorInt = atrib.GetInt("fonteLabel",0);
+        if (valorInt != 0) SetFonteLabel(valorInt);
+
+        valorInt = atrib.GetInt("fonteHint",0);
+        if (valorInt != 0) SetFonteHint(valorInt);
+
+        valorInt = atrib.GetInt("acionado",0);
+        if (valorInt) SetAcionado(valorInt);
+
+        valorInt = atrib.GetInt("habilitado",1);
+        if (valorInt) SetHabilitado(1);
+
+        valorInt = atrib.GetInt("visivel",1);
+        if (valorInt) SetVisivel(1);
+
+        valorStr = atrib.GetString("corLabel","");
+        if (valorStr != "") SetCorLabel(PIGCriaCorString(valorStr));
+
+        valorStr  = atrib.GetString("corHint","");
+        if (valorStr != "") SetCorHint(PIGCriaCorString(valorStr));
+
+        valorStr = atrib.GetString("posicaoLabel","");
+        if (valorStr != "") SetPosicaoPadraoLabel(ConverteStringPosicao(valorStr));
+    }
+
 public:
 
     CPIGComponente(int idComponente,int px,int py, int altura, int largura, int janela=0)
@@ -157,6 +213,7 @@ public:
         int valorInteiro;
 
         while(ss >> variavel){
+            if(variavel == "tipo") {ss >> valorString; resp.SetValorString(variavel,valorString);}
             if(variavel == "idComponente") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
             if(variavel == "px") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
             if(variavel == "py") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
@@ -170,12 +227,21 @@ public:
             if(variavel == "nomeArq") {ss >> valorString; resp.SetValorString(variavel,valorString);}
             if(variavel == "nomeArqMarcador") {ss >> valorString; resp.SetValorString(variavel,valorString);}
             if(variavel == "nomeArqItem") {ss >> valorString; resp.SetValorString(variavel,valorString);}
-            if(variavel == "label") {ss >> valorString; resp.SetValorString(variavel,valorString);}
             if(variavel == "retiraFundo") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
             if(variavel == "retiraFundoMarcador") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
             if(variavel == "raioInterno") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
-            if(variavel == "label") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
             if(variavel == "janela") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "label") {ss >> valorString; resp.SetValorString(variavel,valorString);}
+            if(variavel == "hint") {ss >> valorString; resp.SetValorString(variavel,valorString);}
+            if(variavel == "corLabel") {ss >> valorString; resp.SetValorString(variavel,valorString);}
+            if(variavel == "corHint") {ss >> valorString; resp.SetValorString(variavel,valorString);}
+            if(variavel == "audio") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "fonteLabel") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "fonteHint") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "acionado") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "habilitado") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "visivel") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
+            if(variavel == "posicaoLabel") {ss >> valorString; resp.SetValorString(variavel,valorString);}
         }
 
         return resp;
@@ -194,12 +260,12 @@ public:
     virtual int TrataEventoTeclado(PIG_Evento evento)=0;
 
     //define a mensagem de hint do componente
-    void SetHint(std::string novoHint){
+    void SetHint(string novoHint){
         hint->SetTexto(novoHint);
     }
 
     //define o label do componente
-    virtual void SetLabel(std::string novoLabel){
+    virtual void SetLabel(string novoLabel){
         lab->SetTexto(novoLabel);
         PosicionaLabel();
     }
@@ -230,7 +296,7 @@ public:
     }
 
     //recupera o hint
-    std::string GetHint(){
+    string GetHint(){
         return hint->GetTexto();
     }
 
@@ -251,7 +317,7 @@ public:
     }
 
     //define a posição do label (dentre posições pré-estabelecidas)
-    virtual void SetPosicaoPadraoLabel(PIG_PosicaoComponente pos){
+    virtual void SetPosicaoPadraoLabel(PIGPosicaoComponente pos){
         posLabel = pos;
         PosicionaLabel();
     }
@@ -295,17 +361,16 @@ public:
         return mouseOver;
     }
 
-    PIG_PosicaoComponente GetPosComponente(){
+    PIGPosicaoComponente GetPosComponente(){
         return posComponente;
     }
 
-    void SetPosPadraoExternaComponente(PIG_PosicaoComponente pos,CPIGComponente *componenteAssociado){
+    void SetPosPadraoExternaComponente(PIGPosicaoComponente pos,CPIGComponente *componenteAssociado){
         int altComponente,largComponente;
         PIGPonto2D p = componenteAssociado->GetXY();
 
         posComponente = pos;
         componenteAssociado->GetDimensoes(altComponente,largComponente);
-
 
         switch(pos){
         case PIG_COMPONENTE_CIMA_CENTRO:
@@ -387,8 +452,6 @@ public:
             Move(largJanela - larg,(*altJanela - alt)/2);
             break;
         }
-
-
 
     }*/
 

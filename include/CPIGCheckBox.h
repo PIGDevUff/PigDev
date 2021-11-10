@@ -8,17 +8,21 @@ class CPIGCheckBox: public CPIGListaItemComponente{
 protected:
     std::string arqImagemIcone;
 
-    static CPIGCheckBox LeParametros(int idComponente,string parametros){
-        CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
+    static CPIGCheckBox LeParametros(int idComponente,CPIGAtributos atrib){
+        CPIGCheckBox *resp;
 
         if (atrib.GetString("nomeArq","")!=""){
-            return CPIGCheckBox(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
+            resp = new CPIGCheckBox(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
                           atrib.GetString("nomeArqItem",""),atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),
                           atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
         }else{
-            return CPIGCheckBox(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
+            resp = new CPIGCheckBox(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
                           atrib.GetString("nomeArqItem",""),atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),atrib.GetInt("janela",0));
         }
+
+        resp->ProcessaAtributosGerais(atrib);
+
+        return *resp;
     }
 
     void SetFoco(bool valor){
@@ -60,7 +64,7 @@ public:
             arqImagemIcone = imgIcone;
         }
 
-    CPIGCheckBox(int idComponente,string parametros):CPIGCheckBox(LeParametros(idComponente,parametros)){}
+    CPIGCheckBox(int idComponente,CPIGAtributos atrib):CPIGCheckBox(LeParametros(idComponente,atrib)){}
 
     virtual ~CPIGCheckBox(){}
 

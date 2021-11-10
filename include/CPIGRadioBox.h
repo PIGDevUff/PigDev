@@ -8,17 +8,21 @@ class CPIGRadioBox: public CPIGListaItemComponente{
 protected:
     string arqImagemIcone;
 
-    static CPIGRadioBox LeParametros(int idComponente,string parametros){
-        CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
+    static CPIGRadioBox LeParametros(int idComponente,CPIGAtributos atrib){
+        CPIGRadioBox *resp;
 
         if (atrib.GetString("nomeArq","")!=""){
-            return CPIGRadioBox(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
+            resp = new CPIGRadioBox(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
                           atrib.GetString("nomeArqItem",""),atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),
                           atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
         }else{
-            return CPIGRadioBox(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
+            resp = new CPIGRadioBox(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
                           atrib.GetString("nomeArqItem",""),atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),atrib.GetInt("janela",0));
         }
+
+        resp->ProcessaAtributosGerais(atrib);
+
+        return *resp;
     }
 
     void SetFoco(bool valor){
@@ -59,7 +63,7 @@ public:
             arqImagemIcone = imgIcone;
         }
 
-    CPIGRadioBox(int idComponente,string parametros):CPIGRadioBox(LeParametros(idComponente,parametros)){}
+    CPIGRadioBox(int idComponente,CPIGAtributos atrib):CPIGRadioBox(LeParametros(idComponente,atrib)){}
 
     virtual ~CPIGRadioBox(){}
 

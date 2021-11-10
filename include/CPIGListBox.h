@@ -7,17 +7,21 @@ class CPIGListBox: public CPIGListaItemComponente{
 
 protected:
 
-    static CPIGListBox LeParametros(int idComponente,string parametros){
-        CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
+    static CPIGListBox LeParametros(int idComponente,CPIGAtributos atrib){
+        CPIGListBox *resp;
 
         if (atrib.GetString("nomeArq","")!=""){
-            return CPIGListBox(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
+            resp = new CPIGListBox(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
                           atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),
                           atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
         }else{
-            return CPIGListBox(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
+            resp = new CPIGListBox(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
                           atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),atrib.GetInt("janela",0));
         }
+
+        resp->ProcessaAtributosGerais(atrib);
+
+        return *resp;
     }
 
     void SetFoco(bool valor){
@@ -56,7 +60,7 @@ public:
         CPIGListaItemComponente(idComponente,px,py,larguraTotal,alturaLinha,janela){
     }
 
-    CPIGListBox(int idComponente,string parametros):CPIGListBox(LeParametros(idComponente,parametros)){}
+    CPIGListBox(int idComponente,CPIGAtributos atrib):CPIGListBox(LeParametros(idComponente,atrib)){}
 
     virtual ~CPIGListBox(){}
 

@@ -15,18 +15,21 @@ private:
         coresBasicas[1] = PRETO;
     }
 
-    static CPIGCampoTextoESenha LeParametros(int idComponente,string parametros){
-        CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
+    static CPIGCampoTextoESenha LeParametros(int idComponente,CPIGAtributos atrib){
+        CPIGCampoTextoESenha *resp;
 
         if (atrib.GetString("nomeArq","")!=""){
-            return CPIGCampoTextoESenha(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            resp = new CPIGCampoTextoESenha(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                         atrib.GetString("nomeArq",""),atrib.GetInt("maxCaracters",200),atrib.GetInt("apenasNumeros",0),atrib.GetInt("campoSenha",0),
                         atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
         }else{
-            return CPIGCampoTextoESenha(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            resp = new CPIGCampoTextoESenha(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                         atrib.GetInt("maxCaracters",200),atrib.GetInt("apenasNumeros",0),atrib.GetInt("campoSenha",0),atrib.GetInt("janela",0));
         }
 
+        resp->ProcessaAtributosGerais(atrib);
+
+        return *resp;
     }
 
     //retorna o texto com a quantidade de símbolos (máscara) igual ao tamanho da string com textobase
@@ -118,7 +121,7 @@ public:
             IniciaBase(campoSenha);
     }
 
-    CPIGCampoTextoESenha(int idComponente,string parametros):CPIGCampoTextoESenha(LeParametros(idComponente,parametros)){}
+    CPIGCampoTextoESenha(int idComponente,CPIGAtributos atrib):CPIGCampoTextoESenha(LeParametros(idComponente,atrib)){}
 
     virtual ~CPIGCampoTextoESenha(){}
 

@@ -77,7 +77,7 @@ private:
         if (tipo=="BOTAOCLICK") return PIG_BOTAOCLICK;
         if (tipo=="BOTAOONOFF") return PIG_BOTAOONOFF;
         if (tipo=="CAMPOTEXTOSENHA") return PIG_CAMPOTEXTOSENHA;
-        if (tipo=="AREATEXTO") return PIG_AREADETEXTO;
+        if (tipo=="AREADETEXTO") return PIG_AREADETEXTO;
         if (tipo=="CHECKBOX") return PIG_CHECKBOX;
         if (tipo=="RADIOBOX") return PIG_RADIOBOX;
         if (tipo=="LISTBOX") return PIG_LISTBOX;
@@ -85,7 +85,7 @@ private:
         if (tipo=="GAUGEBAR") return PIG_GAUGEBAR;
         if (tipo=="GAUGECIRCULAR") return PIG_GAUGECIRCULAR;
         if (tipo=="SLIDEBAR") return PIG_SLIDEBAR;
-        printf("componente <%s> invalido lido da linha da parametros!!!\n");
+        printf("componente <%s> invalido lido da linha da parametros!!!\n",tipo.c_str());
         return (PIGTiposComponentes)-1;
     }
 
@@ -99,7 +99,7 @@ public:
         IniciaBase(idForm,0,0,0,0,0);
 
         ifstream arq(nomeArqTexto);
-        string linha,variavel;
+        string linha;
         if (!arq.is_open())
             printf("Erro abrir arquivo <%s> para construir form\n",nomeArqTexto.c_str());
         else{
@@ -114,10 +114,8 @@ public:
             //printf("processada primeira linha %d,%d %d,%d %d\n",(int)pos.x,(int)pos.y,alt,larg,idJanela);
 
             while (arq.eof()==false){
-                arq >> variavel;
                 getline(arq,linha);
-
-                CriaComponentePorParametro(GetTipoComponente(variavel),linha);
+                CriaComponentePorParametro(linha);
             }
 
             arq.close();
@@ -296,21 +294,24 @@ public:
         return idComponente;
     }
 
-    int CriaComponentePorParametro(PIGTiposComponentes componente,string parametros){
+    int CriaComponentePorParametro(string parametros){
         int idComponente = GetIdComponente(totalComponentes);
         //printf("parametros: %s\n",parametros.c_str());
+        CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
+        int componente = GetTipoComponente(atrib.GetString("tipo",""));
+
         switch(componente){
-            case PIG_BOTAOCLICK: componentes[totalComponentes++] = new CPIGBotaoClick(idComponente,parametros);break;
-            case PIG_BOTAOONOFF: componentes[totalComponentes++] = new CPIGBotaoOnOff(idComponente,parametros);break;
-            case PIG_AREADETEXTO: componentes[totalComponentes++] = new CPIGAreaDeTexto(idComponente,parametros);break;
-            case PIG_CAMPOTEXTOSENHA: componentes[totalComponentes++] = new CPIGCampoTextoESenha(idComponente,parametros);break;
-            case PIG_RADIOBOX: componentes[totalComponentes++] = new CPIGRadioBox(idComponente,parametros);break;
-            case PIG_CHECKBOX: componentes[totalComponentes++] = new CPIGCheckBox(idComponente,parametros);break;
-            case PIG_LISTBOX: componentes[totalComponentes++] = new CPIGListBox(idComponente,parametros);break;
-            case PIG_DROPDOWN: componentes[totalComponentes++] = new CPIGDropDown(idComponente,parametros);break;
-            case PIG_GAUGEBAR: componentes[totalComponentes++] = new CPIGGaugeBar(idComponente,parametros);break;
-            case PIG_SLIDEBAR: componentes[totalComponentes++] = new CPIGSlideBar(idComponente,parametros);break;
-            case PIG_GAUGECIRCULAR: componentes[totalComponentes++] = new CPIGGaugeCircular(idComponente,parametros);break;
+            case PIG_BOTAOCLICK: componentes[totalComponentes++] = new CPIGBotaoClick(idComponente,atrib);break;
+            case PIG_BOTAOONOFF: componentes[totalComponentes++] = new CPIGBotaoOnOff(idComponente,atrib);break;
+            case PIG_AREADETEXTO: componentes[totalComponentes++] = new CPIGAreaDeTexto(idComponente,atrib);break;
+            case PIG_CAMPOTEXTOSENHA: componentes[totalComponentes++] = new CPIGCampoTextoESenha(idComponente,atrib);break;
+            case PIG_RADIOBOX: componentes[totalComponentes++] = new CPIGRadioBox(idComponente,atrib);break;
+            case PIG_CHECKBOX: componentes[totalComponentes++] = new CPIGCheckBox(idComponente,atrib);break;
+            case PIG_LISTBOX: componentes[totalComponentes++] = new CPIGListBox(idComponente,atrib);break;
+            case PIG_DROPDOWN: componentes[totalComponentes++] = new CPIGDropDown(idComponente,atrib);break;
+            case PIG_GAUGEBAR: componentes[totalComponentes++] = new CPIGGaugeBar(idComponente,atrib);break;
+            case PIG_SLIDEBAR: componentes[totalComponentes++] = new CPIGSlideBar(idComponente,atrib);break;
+            case PIG_GAUGECIRCULAR: componentes[totalComponentes++] = new CPIGGaugeCircular(idComponente,atrib);break;
         }
         //printf("id comp %d %d\n",idComponente,totalComponentes);
         return idComponente;

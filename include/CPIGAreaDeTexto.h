@@ -13,7 +13,7 @@ private:
     bool linhasPauta;
     PIGSlideBar slideVertical;
     bool slideVerticalAtivado;
-    std::vector<std::string> linhas;
+    vector<string> linhas;
 
     inline void IniciaCoresBasicas(){
         coresBasicas[0] = CINZA;
@@ -21,17 +21,21 @@ private:
         coresBasicas[2] = AZUL;
     }
 
-    CPIGAreaDeTexto LeParametros(int idComponente,string parametros){
-        CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
+    static CPIGAreaDeTexto LeParametros(int idComponente,CPIGAtributos atrib){
+        CPIGAreaDeTexto *resp;
 
         if (atrib.GetString("nomeArq","")!=""){
-            return CPIGAreaDeTexto(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            resp = new CPIGAreaDeTexto(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                         atrib.GetString("nomeArq",""),atrib.GetInt("maxCaracters",200),
                         atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
         }else{
-            return CPIGAreaDeTexto(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            resp = new CPIGAreaDeTexto(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                         atrib.GetInt("maxCaracters",200),atrib.GetInt("janela",0));
         }
+
+        resp->ProcessaAtributosGerais(atrib);
+
+        return *resp;
     }
 
     void SetHabilitado(bool valor){
@@ -53,14 +57,14 @@ private:
     }
 
     //Recupera todo o texto da área
-    inline std::string GetTextoVisivel(){
+    inline string GetTextoVisivel(){
         return GetTexto();
     }
 
     int GetLarguraLinhaMaior(){
         int tamMaior = 0;
         int temp = 0;
-        for(std::string linha : linhas){
+        for(string linha : linhas){
             temp = CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetLarguraPixelsString(linha);
             tamMaior = (temp > tamMaior) ? (temp):(tamMaior);
         }
@@ -108,8 +112,8 @@ private:
 
     //Ajusta o alinhamento do texto quando ocorre alguma modificaçăo
     void AjustaPosicaoTextoCursor()override{
-        std::string textoBase = GetTextoVisivel();
-        std::string aux;
+        string textoBase = GetTextoVisivel();
+        string aux;
 
         linhas = CPIGGerenciadorFontes::GetFonte(fonteTexto)->ExtraiLinhas(textoBase,largMax);
 
@@ -232,8 +236,8 @@ private:
 
     //PulaLinha com Enter
     int PulaLinha(){
-        std::string aux = "";
-        std::string auxB = "";
+        string aux = "";
+        string auxB = "";
 
         aux.assign(texto,0,posCursor);
         auxB += aux;
@@ -262,7 +266,7 @@ private:
 
 public:
 
-    CPIGAreaDeTexto(int idComponente,int px, int py, int altura,int largura,std::string nomeArq,int maxCars = 200,int retiraFundo=1,int janela=0):
+    CPIGAreaDeTexto(int idComponente,int px, int py, int altura,int largura,string nomeArq,int maxCars = 200,int retiraFundo=1,int janela=0):
         CPIGCaixaTexto(idComponente,px,py,altura,largura,nomeArq,maxCars,false,retiraFundo,janela){ // A altura é um vetor, mas eu preciso dela, entao eu acabei colocando como o tamanho da fonte, qualquer coisa só mudar aqui
             IniciaBase();
         }
@@ -272,7 +276,7 @@ public:
             IniciaBase();
         }
 
-    CPIGAreaDeTexto(int idComponente,string parametros):CPIGAreaDeTexto(LeParametros(idComponente,parametros)){}
+    CPIGAreaDeTexto(int idComponente,CPIGAtributos atrib):CPIGAreaDeTexto(LeParametros(idComponente,atrib)){}
 
     virtual ~CPIGAreaDeTexto(){
         linhas.clear();
@@ -382,7 +386,7 @@ public:
         AjustaSlideVerticalPeloCursor();
     }
 
-    int SetTexto(std::string frase)override{
+    int SetTexto(string frase)override{
         CPIGCaixaTexto::SetTexto(frase);
         AjustaPosicaoTextoCursor();
         AjustaSlideVerticalPeloCursor();
@@ -395,7 +399,7 @@ public:
     }
 
     //recupera o texto separado em linhas
-    std::vector<std::string> GetLinhasTexto(){
+    vector<string> GetLinhasTexto(){
         return linhas;
     }
 

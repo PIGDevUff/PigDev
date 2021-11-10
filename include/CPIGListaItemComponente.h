@@ -8,7 +8,7 @@ class CPIGListaItemComponente: public CPIGComponente{
 protected:
 
     int altBaseLista;                     //espaço vertical entre os itens
-    PIG_PosicaoComponente posIcones,posLabels;
+    PIGPosicaoComponente posIcones,posLabels;
     std::vector <PIGItemComponente> itens;
     int itemDestaque;
     int altIcone,largIcone;                           //altura e largura das imagens dos itens

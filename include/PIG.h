@@ -5329,8 +5329,8 @@ void PIG_DestroiForm(int idForm){
 
 /*******COMPONENTES*********/
 
-int PIG_CriaComponentePorParametro(int idForm,PIGTiposComponentes componente,char* parametros){
-    return CPIGGerenciadorForms::GetForm(idForm)->CriaComponentePorParametro(componente,parametros);
+int PIG_CriaComponentePorParametro(int idForm,char* parametros){
+    return CPIGGerenciadorForms::GetForm(idForm)->CriaComponentePorParametro(parametros);
 }
 
 void PIG_Componentes_DefineAcao(int idComponente,PIG_FuncaoSimples funcao,void *parametro){
@@ -5381,7 +5381,7 @@ void PIG_Componentes_SetDimensoes(int idComponente,int altura,int largura){
     CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetDimensoes(altura,largura);
 }
 
-void PIG_Componentes_SetPosicaoPadraoLabel(int idComponente,PIG_PosicaoComponente pos){
+void PIG_Componentes_SetPosicaoPadraoLabel(int idComponente,PIGPosicaoComponente pos){
     CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetPosicaoPadraoLabel(pos);
 }
 
@@ -5389,7 +5389,7 @@ void PIG_Componentes_SetPosicaoPersonalizadaLabel(int idComponente,int x,int y){
     CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetPosicaoPersonalizadaLabel(x,y);
 }
 
-void PIG_Componentes_SetPosPadraoExternaComponente(int idComponente,PIG_PosicaoComponente pos,CPIGComponente *componenteAssociado){
+void PIG_Componentes_SetPosPadraoExternaComponente(int idComponente,PIGPosicaoComponente pos,CPIGComponente *componenteAssociado){
     CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetPosPadraoExternaComponente(pos,componenteAssociado);
 }
 
@@ -5433,7 +5433,7 @@ int PIG_Componentes_GetMouseOver(int idComponente){
     return CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetMouseOver();
 }
 
-PIG_PosicaoComponente PIG_Componentes_GetPosComponente(int idComponente){
+PIGPosicaoComponente PIG_Componentes_GetPosComponente(int idComponente){
     return CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetPosComponente();
 }
 

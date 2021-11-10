@@ -13,17 +13,21 @@ class CPIGSlideBar : public CPIGGauge{
         coresBasicas[1] = CINZA;
     }
 
-    static CPIGSlideBar LeParametros(int idComponente,string parametros){
-        CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
+    static CPIGSlideBar LeParametros(int idComponente,CPIGAtributos atrib){
+        CPIGSlideBar *resp;
 
         if (atrib.GetString("nomeArq","")!=""){
-            return CPIGSlideBar(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            resp = new CPIGSlideBar(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                           atrib.GetString("nomeArq",""),atrib.GetInt("alturaMarcador",0),atrib.GetInt("larguraMarcador",0),atrib.GetString("nomeArqMarcador",""),
                           atrib.GetInt("retiraFundo",1),atrib.GetInt("retiraFundoMarcador",1),atrib.GetInt("janela",0));
         }else{
-            return CPIGSlideBar(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            resp = new CPIGSlideBar(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                           atrib.GetInt("alturaMarcador",0),atrib.GetInt("larguraMarcador",0),atrib.GetInt("janela",0));
         }
+
+        resp->ProcessaAtributosGerais(atrib);
+
+        return *resp;
     }
 
     void AtualizaMarcador()override{
@@ -113,7 +117,7 @@ public:
             IniciaCoresBasicas();
     }
 
-    CPIGSlideBar(int idComponente,string parametros):CPIGSlideBar(LeParametros(idComponente,parametros)){}
+    CPIGSlideBar(int idComponente,CPIGAtributos atrib):CPIGSlideBar(LeParametros(idComponente,atrib)){}
 
     virtual ~CPIGSlideBar(){
         if (marcador) delete marcador;

@@ -18,7 +18,7 @@ private:
 
     void (*AjustaFrame)(CPIGItemComponente*);       //ponteiro para função que será chamada sempre que algum estado do item mudar
     PIGSprite icone;
-    PIG_PosicaoComponente posIcone,posRelativaLabel;
+    PIGPosicaoComponente posIcone,posRelativaLabel;
 
     int OnMouseClick(){
         SetAcionado(!GetAcionado());
@@ -208,7 +208,7 @@ public:
     }
 
     //define a posição do label (dentre posições pré-estabelecidas)
-    void SetPosicaoPadraoLabel(PIG_PosicaoComponente pos)override{
+    void SetPosicaoPadraoLabel(PIGPosicaoComponente pos)override{
         posLabel = pos;
         if (posRelativaLabel == PIG_COMPONENTE_ESQ_CENTRO){
             AlinhaLabelEsquerda();

@@ -17,16 +17,20 @@ protected:
         corAtual = 1;
     }
 
-    static CPIGBotaoOnOff LeParametros(int idComponente,string parametros){
-        CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
+    static CPIGBotaoOnOff LeParametros(int idComponente,CPIGAtributos atrib){
+        CPIGBotaoOnOff *resp;
 
         if (atrib.GetString("nomeArq","")!=""){
-            return CPIGBotaoOnOff(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            resp = new CPIGBotaoOnOff(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                        atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
         }else{
-            return CPIGBotaoOnOff(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            resp = new CPIGBotaoOnOff(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                        atrib.GetInt("janela",0));
         }
+
+        resp->ProcessaAtributosGerais(atrib);
+
+        return *resp;
     }
 
     void AjustaFrame(){
@@ -68,7 +72,7 @@ public:
             IniciaCoresBasicas();
         }
 
-    CPIGBotaoOnOff(int idComponente,string parametros):CPIGBotaoOnOff(LeParametros(idComponente,parametros)){}
+    CPIGBotaoOnOff(int idComponente,CPIGAtributos atrib):CPIGBotaoOnOff(LeParametros(idComponente,atrib)){}
 
     int TrataEventoTeclado(PIG_Evento evento){
         if (evento.teclado.acao==PIG_TECLA_PRESSIONADA && evento.teclado.tecla==tecla){

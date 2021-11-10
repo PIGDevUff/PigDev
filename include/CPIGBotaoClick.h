@@ -19,16 +19,20 @@ protected:
         corAtual = 1;
     }
 
-    static CPIGBotaoClick LeParametros(int idComponente,string parametros){
-        CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
+    static CPIGBotaoClick LeParametros(int idComponente,CPIGAtributos atrib){
+        CPIGBotaoClick *resp;
 
         if (atrib.GetString("nomeArq","")!=""){
-            return CPIGBotaoClick(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            resp = new CPIGBotaoClick(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                        atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
         }else{
-            return CPIGBotaoClick(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            resp = new CPIGBotaoClick(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                        atrib.GetInt("janela",0));
         }
+
+        resp->ProcessaAtributosGerais(atrib);
+
+        return *resp;
     }
 
     void AjustaFrame(){
@@ -83,7 +87,7 @@ public:
             timer = new CPIGTimer(false);
         }
 
-    CPIGBotaoClick(int idComponente,string parametros):CPIGBotaoClick(LeParametros(idComponente,parametros)){}
+    CPIGBotaoClick(int idComponente,CPIGAtributos atrib):CPIGBotaoClick(LeParametros(idComponente,atrib)){}
 
     virtual ~CPIGBotaoClick(){
         delete timer;

@@ -9,17 +9,21 @@ private:
 
     bool recolhida;
 
-    static CPIGDropDown LeParametros(int idComponente,string parametros){
-        CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
+    static CPIGDropDown LeParametros(int idComponente,CPIGAtributos atrib){
+        CPIGDropDown *resp;
 
         if (atrib.GetString("nomeArq","")!=""){
-            return CPIGDropDown(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
+            resp = new CPIGDropDown(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
                           atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),
                           atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
         }else{
-            return CPIGDropDown(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
+            resp = new CPIGDropDown(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
                           atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),atrib.GetInt("janela",0));
         }
+
+        resp->ProcessaAtributosGerais(atrib);
+
+        return *resp;
     }
 
     void SetFoco(bool valor)override{
@@ -97,9 +101,9 @@ public:
             SetRecolhida(true);
     }
 
-    CPIGDropDown(int idComponente,string parametros):CPIGDropDown(LeParametros(idComponente,parametros)){}
+    CPIGDropDown(int idComponente,CPIGAtributos atrib):CPIGDropDown(LeParametros(idComponente,atrib)){}
 
-    void CriaItem(string itemLabel, string arqImagemIcone="",string arqImagemFundoItem="", bool itemHabilitado = true, string hintMsg="", int retiraFundo=1){
+    void CriaItem(string itemLabel, string arqImagemIcone="", string arqImagemFundoItem="", bool itemHabilitado = true, string hintMsg="", int retiraFundo=1){
         int yItem = pos.y+alt-(altBaseLista)*(itens.size()+2);
         CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,false,itemHabilitado,hintMsg,retiraFundo);
     }

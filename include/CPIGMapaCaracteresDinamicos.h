@@ -76,7 +76,7 @@ private:
                 stringCor[10]='\0';
 
                 i+=9;//avança os outros 9 caracteres
-                cor = PIGCriaCor(stringCor);//converte para cor
+                cor = PIGCriaCorHexa(stringCor);//converte para cor
                 pilhaCor.push_back(cor);
                 estado = 0;
                 break;

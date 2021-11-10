@@ -13,17 +13,21 @@ private:
         coresBasicas[2] = VERMELHO;
     }
 
-    static CPIGGaugeBar LeParametros(int idComponente, string parametros){
-        CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
+    static CPIGGaugeBar LeParametros(int idComponente, CPIGAtributos atrib){
+        CPIGGaugeBar *resp;
 
         if (atrib.GetString("nomeArq","")!=""){
-            return CPIGGaugeBar(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            resp = new CPIGGaugeBar(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                           atrib.GetString("nomeArq",""),atrib.GetString("nomeArqMarcador",""),
                           atrib.GetInt("retiraFundo",1),atrib.GetInt("retiraFundoMarcador",1),atrib.GetInt("janela",0));
         }else{
-            return CPIGGaugeBar(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            resp = new CPIGGaugeBar(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                           atrib.GetInt("janela",0));
         }
+
+        resp->ProcessaAtributosGerais(atrib);
+
+        return *resp;
     }
 
     void DesenhaBarraCor(){
@@ -127,7 +131,7 @@ public:
         if (marcador) delete marcador;
     }
 
-    CPIGGaugeBar(int idComponente, string parametros):CPIGGaugeBar(LeParametros(idComponente,parametros)){}
+    CPIGGaugeBar(int idComponente, CPIGAtributos atrib):CPIGGaugeBar(LeParametros(idComponente,atrib)){}
 
     int Desenha(){
 
