@@ -44,25 +44,25 @@ private:
 public:
 
     //item com icone e com fundo
-    CPIGItemComponente(int idComponente,int px, int py, int alturaIcone,int larguraIcone,std::string arqImagemIcone, std::string arqImagemFundo,std::string labelItem,int larguraLista,int alturaItemLista,int retiraFundo=1,int janela=0):
+    CPIGItemComponente(int idComponente, int px, int py, int alturaIcone,int larguraIcone, string arqImagemIcone, string arqImagemFundo, string labelItem, int larguraLista, int alturaItemLista, int retiraFundo=1, int janela=0):
         CPIGComponente(idComponente,px,py,alturaItemLista,larguraLista,arqImagemFundo,retiraFundo,janela){
         IniciaBase(labelItem,arqImagemIcone,alturaIcone,larguraIcone);//,larguraLista,alturaItemLista);
     }
 
     //item com icone e sem fundo
-    CPIGItemComponente(int idComponente,int px, int py, int alturaIcone,int larguraIcone,std::string arqImagemIcone,std::string labelItem,int larguraLista,int alturaItemLista,int retiraFundo=1,int janela=0):
+    CPIGItemComponente(int idComponente, int px, int py, int alturaIcone,int larguraIcone, string arqImagemIcone, string labelItem, int larguraLista, int alturaItemLista, int retiraFundo=1, int janela=0):
         CPIGComponente(idComponente,px,py,alturaItemLista,larguraLista,janela){
         IniciaBase(labelItem,arqImagemIcone,alturaIcone,larguraIcone);//,larguraLista,alturaItemLista);
     }
 
     //item sem icone e com fundo
-    CPIGItemComponente(int idComponente,int px, int py, std::string arqImagemFundo,std::string labelItem,int larguraLista,int alturaItemLista,int retiraFundo=1,int janela=0):
+    CPIGItemComponente(int idComponente, int px, int py, string arqImagemFundo, string labelItem, int larguraLista, int alturaItemLista, int retiraFundo=1, int janela=0):
         CPIGComponente(idComponente,px,py,alturaItemLista,larguraLista,arqImagemFundo,retiraFundo,janela){
         IniciaBase(labelItem,"",0,0);//,larguraLista,alturaItemLista);
     }
 
     //item sem icone e sem fundo
-    CPIGItemComponente(int idComponente,int px, int py,std::string labelItem,int larguraLista,int alturaItemLista,int retiraFundo=1,int janela=0):
+    CPIGItemComponente(int idComponente, int px, int py, string labelItem, int larguraLista, int alturaItemLista, int retiraFundo=1, int janela=0):
         CPIGComponente(idComponente,px,py,alturaItemLista,larguraLista,janela){
         IniciaBase(labelItem,"",0,0);//,larguraLista,alturaItemLista);
     }
@@ -107,6 +107,7 @@ public:
     }
 
     int Desenha()override{
+        if (!visivel) return -1;
 
         //fundo
         if (text)
@@ -131,8 +132,16 @@ public:
         return 1;
     }
 
-    void SetDimensoesIcone(int alturaIcone,int largIcone){
+    void SetAlturaIcone(int alturaIcone){
+        int altIcone,largIcone;
+        icone->GetDimensoes(altIcone,largIcone);
         icone->SetDimensoes(alturaIcone,largIcone);
+    }
+
+    void SetLarguraIcone(int larguraIcone){
+        int altIcone,largIcone;
+        icone->GetDimensoes(altIcone,largIcone);
+        icone->SetDimensoes(altIcone,larguraIcone);
     }
 
     void AlinhaLabelDireita(){
@@ -257,6 +266,10 @@ public:
 
     PIGSprite GetIcone(){
         return icone;
+    }
+
+    void SetCorFundo(PIGCor cor){
+        coresBasicas[0] = cor;
     }
 
 };

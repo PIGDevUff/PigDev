@@ -6,7 +6,12 @@
 class CPIGCheckBox: public CPIGListaItemComponente{
 
 protected:
+
     string arqImagemIcone;
+
+    virtual void ProcessaAtributos(CPIGAtributos atrib)override{
+        CPIGComponente::ProcessaAtributos(atrib);
+    }
 
     static CPIGCheckBox LeParametros(int idComponente,CPIGAtributos atrib){
         CPIGCheckBox *resp;
@@ -20,7 +25,7 @@ protected:
                           atrib.GetString("nomeArqItem",""),atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),atrib.GetInt("janela",0));
         }
 
-        resp->ProcessaAtributosGerais(atrib);
+        resp->ProcessaAtributos(atrib);
 
         return *resp;
     }
@@ -78,7 +83,7 @@ public:
     }
 
     int Desenha(){
-        if (visivel==false) return 0;
+        if (visivel==false) return -1;
 
         DesenhaLabel();
 
@@ -95,7 +100,7 @@ public:
         return 1;
     }
 
- int TrataEventoMouse(PIGEvento evento){
+    int TrataEventoMouse(PIGEvento evento){
         int resp = 0;
         bool mouseOverAntes = mouseOver;
 

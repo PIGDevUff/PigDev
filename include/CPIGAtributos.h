@@ -5,12 +5,8 @@ class CPIGAtributos{
 
 private:
 
-std::map<int, int> valoresIntInt;
-std::map<string, int> valoresStringInt;
-std::map<int, float> valoresIntFloat;
-std::map<string, float> valoresStringFloat;
-std::map<int, string> valoresIntString;
-std::map<string, string> valoresStringString;
+map<int, string> valoresInt;
+map<string, string> valoresString;
 
 public:
 
@@ -18,152 +14,145 @@ CPIGAtributos(){}
 
 CPIGAtributos(CPIGAtributos *outro){
     if (outro){
-        valoresIntInt = outro->valoresIntInt;
-        valoresStringInt = outro->valoresStringInt;
-        valoresIntFloat = outro->valoresIntFloat;
-        valoresStringFloat = outro->valoresStringFloat;
-        valoresIntString = outro->valoresIntString;
-        valoresStringString = outro->valoresStringString;
+        valoresInt = outro->valoresInt;
+        valoresString = outro->valoresString;
     }
 }
 
 virtual ~CPIGAtributos(){}
 
 void LimpaAtributos(){
-    valoresIntInt.clear();
-    valoresStringInt.clear();
-    valoresIntFloat.clear();
-    valoresStringFloat.clear();
-    valoresIntString.clear();
-    valoresStringString.clear();
+    valoresInt.clear();
+    valoresString.clear();
 }
 
 void SetValorInt(int chave, int valor){
-    valoresIntInt[chave] = valor;
+    valoresInt[chave] = std::to_string(valor);
 }
 
 void SetValorInt(string chave, int valor){
-    valoresStringInt[chave] = valor;
+    std::transform(chave.begin(), chave.end(),chave.begin(), ::toupper);
+    valoresString[chave] = std::to_string(valor);
 }
 
 void SetValorFloat(int chave, float valor){
-    valoresIntFloat[chave] = valor;
+    valoresInt[chave] = std::to_string(valor);
 }
 
 void SetValorFloat(string chave, float valor){
-    valoresStringFloat[chave] = valor;
+    std::transform(chave.begin(), chave.end(),chave.begin(), ::toupper);
+    valoresString[chave] = std::to_string(valor);
 }
 
 void SetValorString(int chave, string valor){
-    valoresIntString[chave] = valor;
+    valoresInt[chave] = valor;
 }
 
 void SetValorString(string chave, string valor){
-    valoresStringString[chave] = valor;
+    std::transform(chave.begin(), chave.end(),chave.begin(), ::toupper);
+    valoresString[chave] = valor;
 }
 
 bool GetValorInt(int chave, int &valor){
-    std::map<int, int>::iterator it;
-    it = valoresIntInt.find(chave);
-    if (it == valoresIntInt.end())
+    map<int, string>::iterator it = valoresInt.find(chave);
+    if (it == valoresInt.end())
         return false;
-    valor = it->second;
+    valor = stoi(it->second);
     return true;
 }
 
-bool GetValorInt(std::string chave, int &valor){
-    std::map<string, int>::iterator it;
-    it = valoresStringInt.find(chave);
-    if (it == valoresStringInt.end())
+bool GetValorInt(string chave, int &valor){
+    std::transform(chave.begin(), chave.end(),chave.begin(), ::toupper);
+    map<string, string>::iterator it = valoresString.find(chave);
+    if (it == valoresString.end())
         return false;
-    valor = it->second;
+    valor = stoi(it->second);
     return true;
 }
 
 bool GetValorFloat(int chave, float &valor){
-    std::map<int, float>::iterator it;
-    it = valoresIntFloat.find(chave);
-    if (it == valoresIntFloat.end())
+    map<int, string>::iterator it = valoresInt.find(chave);
+    if (it == valoresInt.end())
+        return false;
+    valor = stof(it->second);
+    return true;
+}
+
+bool GetValorFloat(string chave, float &valor){
+    std::transform(chave.begin(), chave.end(),chave.begin(), ::toupper);
+    map<string, string>::iterator it = valoresString.find(chave);
+    if (it == valoresString.end())
+        return false;
+    valor = stof(it->second);
+    return true;
+}
+
+bool GetValorString(int chave, string &valor){
+    map<int, string>::iterator it = valoresInt.find(chave);
+    if (it == valoresInt.end())
         return false;
     valor = it->second;
     return true;
 }
 
-bool GetValorFloat(std::string chave, float &valor){
-    std::map<string, float>::iterator it;
-    it = valoresStringFloat.find(chave);
-    if (it == valoresStringFloat.end())
-        return false;
-    valor = it->second;
-    return true;
-}
-
-bool GetValorString(int chave, std::string &valor){
-    std::map<int, string>::iterator it;
-    it = valoresIntString.find(chave);
-    if (it == valoresIntString.end())
-        return false;
-    valor = it->second;
-    return true;
-}
-
-bool GetValorString(std::string chave, std::string &valor){
-    std::map<string, string>::iterator it;
-    it = valoresStringString.find(chave);
-    if (it == valoresStringString.end())
+bool GetValorString(string chave, string &valor){
+    std::transform(chave.begin(), chave.end(),chave.begin(), ::toupper);
+    map<string, string>::iterator it = valoresString.find(chave);
+    if (it == valoresString.end())
         return false;
     valor = it->second;
     return true;
 }
 
 float GetFloat(string chave, float retNegativo){
-    std::map<string, float>::iterator it;
-    it = valoresStringFloat.find(chave);
-    if (it == valoresStringFloat.end())
+    std::transform(chave.begin(), chave.end(),chave.begin(), ::toupper);
+    map<string, string>::iterator it = valoresString.find(chave);
+    if (it == valoresString.end())
         return retNegativo;
-    return it->second;
+    return stof(it->second);
 }
 
 string GetString(string chave, string retNegativo){
-    std::map<string, string>::iterator it;
-    it = valoresStringString.find(chave);
-    if (it == valoresStringString.end())
+    std::transform(chave.begin(), chave.end(),chave.begin(), ::toupper);
+    map<string, string>::iterator it = valoresString.find(chave);
+    if (it == valoresString.end())
         return retNegativo;
     return it->second;
 }
 
 int GetInt(string chave, int retNegativo){
-    std::map<string, int>::iterator it;
-    it = valoresStringInt.find(chave);
-    if (it == valoresStringInt.end())
+    std::transform(chave.begin(), chave.end(),chave.begin(), ::toupper);
+    map<string, string>::iterator it = valoresString.find(chave);
+    if (it == valoresString.end())
         return retNegativo;
-    return it->second;
+    return stoi(it->second);
 }
 
 void dump(){
     printf("starting dump...\n");
-    for (std::map<string, int>::iterator it= valoresStringInt.begin(); it!=valoresStringInt.end(); it++){
-        printf("%s: %d\n",it->first.c_str(),it->second);
-    }
-    for (std::map<string, string>::iterator it= valoresStringString.begin(); it!=valoresStringString.end(); it++){
+
+    for (map<string, string>::iterator it= valoresString.begin(); it!=valoresString.end(); it++){
         printf("%s: %s\n",it->first.c_str(),it->second.c_str());
     }
-    for (std::map<string, float>::iterator it= valoresStringFloat.begin(); it!=valoresStringFloat.end(); it++){
-        printf("%s: %f\n",it->first.c_str(),it->second);
-    }
-    for (std::map<int, int>::iterator it= valoresIntInt.begin(); it!=valoresIntInt.end(); it++){
-        printf("%d: %d\n",it->first,it->second);
-    }
-    for (std::map<int, string>::iterator it= valoresIntString.begin(); it!=valoresIntString.end(); it++){
+
+    for (map<int, string>::iterator it= valoresInt.begin(); it!=valoresInt.end(); it++){
         printf("%d: %s\n",it->first,it->second.c_str());
     }
-    for (std::map<int, float>::iterator it= valoresIntFloat.begin(); it!=valoresIntFloat.end(); it++){
-        printf("%d: %f\n",it->first,it->second);
+}
+
+static CPIGAtributos GetAtributos(string parametros){
+    CPIGAtributos resp;
+    stringstream ss(parametros);
+    string variavel,valorString;
+
+    while(ss >> variavel){
+        ss >> valorString;
+        resp.SetValorString(variavel,valorString);
     }
 
+    return resp;
 }
+
 };
 typedef CPIGAtributos *PIGAtributos;
-
-
 #endif //_CPIGATRIBUTOS_

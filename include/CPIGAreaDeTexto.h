@@ -15,10 +15,20 @@ private:
     bool slideVerticalAtivado;
     vector<string> linhas;
 
-    inline void IniciaCoresBasicas(){
-        coresBasicas[0] = CINZA;
-        coresBasicas[1] = PRETO;
-        coresBasicas[2] = AZUL;
+    void ProcessaAtributos(CPIGAtributos atrib)override{
+        CPIGCaixaTexto::ProcessaAtributos(atrib);
+
+        int valorInt = atrib.GetInt("largMax",0);
+        if (valorInt > 0) SetLargMaxTexto(valorInt);
+
+        valorInt = atrib.GetInt("espacoEntreLinhas",0);
+        if (valorInt > 0) SetEspacoEntreAsLinhas(valorInt);
+
+        valorInt = atrib.GetInt("linhasVisiveis",0);
+        if (valorInt != 0) SetLinhasAbaixoTexto(valorInt);
+
+        string valorStr = atrib.GetString("corLinhas","");
+        if (valorStr != "") SetCorLinhas(PIGCriaCorString(valorStr));
     }
 
     static CPIGAreaDeTexto LeParametros(int idComponente,CPIGAtributos atrib){
@@ -33,7 +43,7 @@ private:
                         atrib.GetInt("maxCaracters",200),atrib.GetInt("janela",0));
         }
 
-        resp->ProcessaAtributosGerais(atrib);
+        resp->ProcessaAtributos(atrib);
 
         return *resp;
     }
@@ -261,7 +271,7 @@ private:
         slideVertical = new CPIGSlideBar(id+2,((int)pos.x)+larg-20,(int)pos.y,alt,20,20,20,idJanela);
         slideVertical->SetOrientacao(PIG_GAUGE_CIMA_BAIXO);
         AjustaPosicaoTextoCursor();
-        IniciaCoresBasicas();
+        coresBasicas[3] = AZUL;
     }
 
 public:
@@ -299,8 +309,8 @@ public:
         AjustaSlideVerticalPeloCursor();
     }
 
-
     int Desenha() override{
+        if (!visivel) return -1;
 
         CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x,pos.y,alt,larg);
 
@@ -312,7 +322,7 @@ public:
         //DesenhaMarcacaoMargem();
 
         DesenhaCursor();//desenha o cursor (se estiver em ediçăo)
-        CPIGGerenciadorFontes::GetFonte(fonteTexto)->EscreveLonga(texto,xTexto,yTexto,largMax,(espacoEntreLinhas + altLetra),BRANCO,PIG_TEXTO_ESQUERDA);
+        CPIGGerenciadorFontes::GetFonte(fonteTexto)->EscreveLonga(texto,xTexto,yTexto,largMax,(espacoEntreLinhas + altLetra),coresBasicas[1],PIG_TEXTO_ESQUERDA);
 
         //desbloqueia o desenho fora da area do componente
         CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
@@ -336,10 +346,14 @@ public:
         AjustaSlideVerticalPeloCursor();
     }
 
-    //define a cor da linhas horizontais
-    void SetLinhasAbaixoTexto(bool visivel,PIGCor cor = PRETO){
-        coresBasicas[2] = cor;
+    //define se as linhas horizontais serao visiveis
+    void SetLinhasAbaixoTexto(bool visivel){
         linhasPauta = visivel;
+    }
+
+    //define a cor da linhas horizontais
+    void SetCorLinhas(PIGCor cor){
+        coresBasicas[3] = cor;
     }
 
     //define a largura máxima do texto
@@ -408,5 +422,4 @@ public:
 };
 
 typedef CPIGAreaDeTexto *PIGAreaDeTexto;
-
 #endif // _CPIGAREADETEXTO_

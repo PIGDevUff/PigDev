@@ -14,6 +14,31 @@ private:
 
 protected:
 
+    inline void IniciaCoresBasicas(){
+        coresBasicas[0] = CINZA;
+        coresBasicas[1] = BRANCO;
+        coresBasicas[2] = PRETO;
+    }
+
+    virtual void ProcessaAtributos(CPIGAtributos atrib)override{
+        CPIGComponente::ProcessaAtributos(atrib);
+
+        int valorInt = atrib.GetInt("fonte",-1);
+        if (valorInt >= 0) SetFonteTexto(valorInt);
+
+        string valorStr = atrib.GetString("texto","");
+        if (valorStr != "") SetTexto(valorStr);
+
+        valorStr = atrib.GetString("corFundo","");
+        if (valorStr != "") SetCorFundo(PIGCriaCorString(valorStr));
+
+        valorStr = atrib.GetString("corFonte","");
+        if (valorStr != "") SetCorFonte(PIGCriaCorString(valorStr));
+
+        valorStr = atrib.GetString("corCursor","");
+        if (valorStr != "") SetCorCursor(PIGCriaCorString(valorStr));
+    }
+
     //checa se o ponteiro do mouse está sobre o componente
     int ChecaMouseOver(SDL_Point pMouse) override{
         if (visivel==false) return -1;
@@ -28,7 +53,7 @@ protected:
     void DesenhaCursor(){
         if (temFoco){
             if (cursorExibido){
-                CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(xCursor,yCursor,xCursor,yCursor+altLetra,coresBasicas[1]);
+                CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(xCursor,yCursor,xCursor,yCursor+altLetra,coresBasicas[2]);
             }
             if (timer&&timer->GetTempoDecorrido()>1){
                 cursorExibido = !cursorExibido;
@@ -198,6 +223,7 @@ protected:
         SetFonteTexto(0);
         maxCaracteres = maxCars;
         somenteNumeros = apenasNum;
+        IniciaCoresBasicas();
         AjustaPosicaoTextoCursor();
     }
 
@@ -238,9 +264,19 @@ public:
         return texto;
     }
 
+    //define a cor do fundo
+    void SetCorFundo(PIGCor cor){
+        coresBasicas[0] = cor;
+    }
+
+    //define a cor da fonte
+    void SetCorFonte(PIGCor cor){
+        coresBasicas[1] = cor;
+    }
+
     //define a cor do cursor
     void SetCorCursor(PIGCor cor){
-        coresBasicas[1] = cor;
+        coresBasicas[2] = cor;
     }
 
     //define se o componente está em foco ou não
@@ -262,7 +298,7 @@ public:
     }
 
     //define as margens do componente
-    virtual void SetMargens(int mEsq,int mDir, int mBaixo,int mCima)override{
+    virtual void SetMargens(int mEsq, int mDir, int mBaixo, int mCima)override{
         CPIGComponente::SetMargens(mEsq,mDir,mCima,mBaixo);
         AjustaPosicaoTextoCursor();
     }

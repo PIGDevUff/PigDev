@@ -17,6 +17,28 @@ protected:
         corAtual = 1;
     }
 
+    virtual void ProcessaAtributos(CPIGAtributos atrib)override{
+        CPIGBotao::ProcessaAtributos(atrib);
+
+        string valorStr = atrib.GetString("corNormalOff","");
+        if (valorStr != "") SetCorNormalOff(PIGCriaCorString(valorStr));
+
+        valorStr = atrib.GetString("corMouseSobreOff","");
+        if (valorStr != "") SetCorMouseSobreOff(PIGCriaCorString(valorStr));
+
+        valorStr = atrib.GetString("corDesabilitadoOff","");
+        if (valorStr != "") SetCorDesabilitadoOff(PIGCriaCorString(valorStr));
+
+        valorStr = atrib.GetString("corNormalOn","");
+        if (valorStr != "") SetCorNormalOn(PIGCriaCorString(valorStr));
+
+        valorStr = atrib.GetString("corMouseSobreOn","");
+        if (valorStr != "") SetCorMouseSobreOn(PIGCriaCorString(valorStr));
+
+        valorStr = atrib.GetString("corDesabilitadoOn","");
+        if (valorStr != "") SetCorDesabilitadoOn(PIGCriaCorString(valorStr));
+    }
+
     static CPIGBotaoOnOff LeParametros(int idComponente,CPIGAtributos atrib){
         CPIGBotaoOnOff *resp;
 
@@ -28,7 +50,7 @@ protected:
                        atrib.GetInt("janela",0));
         }
 
-        resp->ProcessaAtributosGerais(atrib);
+        resp->ProcessaAtributos(atrib);
 
         return *resp;
     }
@@ -81,6 +103,30 @@ public:
             return OnAction();
         }
         return 0;
+    }
+
+    inline void SetCorNormalOff(PIGCor cor){
+        coresBasicas[1] = cor;
+    }
+
+    inline void SetCorMouseSobreOff(PIGCor cor){
+        coresBasicas[2] = cor;
+    }
+
+    inline void SetCorDesabilitadoOff(PIGCor cor){
+        coresBasicas[3] = cor;
+    }
+
+    inline void SetCorNormalOn(PIGCor cor){
+        coresBasicas[4] = cor;
+    }
+
+    inline void SetCorMouseSobreOn(PIGCor cor){
+        coresBasicas[5] = cor;
+    }
+
+    inline void SetCorDesabilitadoOn(PIGCor cor){
+        coresBasicas[6] = cor;
     }
 
 };

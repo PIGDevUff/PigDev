@@ -8,11 +8,13 @@ class CPIGCampoTextoESenha: public CPIGCaixaTexto{
 private:
 
     char mascara;//símbolo usado quando o campo for de senha
-    std::string (CPIGCampoTextoESenha::*GetTextoVisivelPtr)();//ponteiro para a funçăo que vai retornar o texto visivel
+    string (CPIGCampoTextoESenha::*GetTextoVisivelPtr)();//ponteiro para a funçăo que vai retornar o texto visivel
 
-    inline void IniciaCoresBasicas(){
-        coresBasicas[0] = CINZA;
-        coresBasicas[1] = PRETO;
+    void ProcessaAtributos(CPIGAtributos atrib)override{
+        CPIGCaixaTexto::ProcessaAtributos(atrib);
+
+        string valorStr = atrib.GetString("mascara","");
+        if (valorStr != "") SetMascara(valorStr[0]);
     }
 
     static CPIGCampoTextoESenha LeParametros(int idComponente,CPIGAtributos atrib){
@@ -27,7 +29,7 @@ private:
                         atrib.GetInt("maxCaracters",200),atrib.GetInt("apenasNumeros",0),atrib.GetInt("campoSenha",0),atrib.GetInt("janela",0));
         }
 
-        resp->ProcessaAtributosGerais(atrib);
+        resp->ProcessaAtributos(atrib);
 
         return *resp;
     }
@@ -127,6 +129,7 @@ public:
 
     //desenha o componente completo
     int Desenha() override{
+        if (!visivel) return -1;
 
         CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x,pos.y,alt,larg);
 
@@ -135,14 +138,16 @@ public:
             CPIGSprite::Desenha();
         else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
 
-        CPIGGerenciadorFontes::GetFonte(fonteTexto)->Escreve(GetTextoVisivel(),xTexto,yTexto,BRANCO,PIG_TEXTO_ESQUERDA);
+        CPIGGerenciadorFontes::GetFonte(fonteTexto)->Escreve(GetTextoVisivel(),xTexto,yTexto,coresBasicas[1],PIG_TEXTO_ESQUERDA);
         DesenhaCursor();//desenha o cursor (se estiver em ediçăo)
 
         //desbloqueia o desenho fora da area do componente
         CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
 
         DesenhaLabel();
+
         EscreveHint();
+
         return 1;
     }
 
@@ -158,6 +163,10 @@ public:
         }
 
         return PIG_NAO_SELECIONADO;
+    }
+
+    void SetMascara(char c){
+        mascara = c;
     }
 
 };

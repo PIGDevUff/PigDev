@@ -6,7 +6,12 @@
 class CPIGRadioBox: public CPIGListaItemComponente{
 
 protected:
+
     string arqImagemIcone;
+
+    virtual void ProcessaAtributos(CPIGAtributos atrib)override{
+        CPIGListaItemComponente::ProcessaAtributos(atrib);
+    }
 
     static CPIGRadioBox LeParametros(int idComponente,CPIGAtributos atrib){
         CPIGRadioBox *resp;
@@ -20,7 +25,7 @@ protected:
                           atrib.GetString("nomeArqItem",""),atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),atrib.GetInt("janela",0));
         }
 
-        resp->ProcessaAtributosGerais(atrib);
+        resp->ProcessaAtributos(atrib);
 
         return *resp;
     }

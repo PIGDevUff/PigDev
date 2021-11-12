@@ -8,9 +8,8 @@ class CPIGSlideBar : public CPIGGauge{
     int deltaRodinha,deltaTeclado;
     int altMarcador,largMarcador,xMarc,yMarc;
 
-    inline void IniciaCoresBasicas(){
-        coresBasicas[0] = BRANCO;
-        coresBasicas[1] = CINZA;
+    void ProcessaAtributos(CPIGAtributos atrib)override{
+        CPIGGauge::ProcessaAtributos(atrib);
     }
 
     static CPIGSlideBar LeParametros(int idComponente,CPIGAtributos atrib){
@@ -25,13 +24,14 @@ class CPIGSlideBar : public CPIGGauge{
                           atrib.GetInt("alturaMarcador",0),atrib.GetInt("larguraMarcador",0),atrib.GetInt("janela",0));
         }
 
-        resp->ProcessaAtributosGerais(atrib);
+        resp->ProcessaAtributos(atrib);
 
         return *resp;
     }
 
     void AtualizaMarcador()override{
-        OnAction();
+        CPIGGauge::AtualizaMarcador();
+        //OnAction();
 
         switch (orientacaoCrescimento){
         case PIG_GAUGE_ESQ_DIR:
@@ -58,12 +58,10 @@ class CPIGSlideBar : public CPIGGauge{
             marcador->Move(xMarc,yMarc);
             marcador->SetDimensoes(altMarcador-(margemBaixo+margemCima),largMarcador-(margemEsq+margemDir));
         }
-
     }
 
     int TrataClickTrilha(int px,int py){
         double perc;
-
         px = PIGLimitaValor(px,(int)pos.x+largMarcador/2,(int)pos.x+larg-largMarcador/2);
         py = PIGLimitaValor(py,(int)pos.y+altMarcador/2,(int)pos.y+alt-altMarcador/2);
 
@@ -173,6 +171,8 @@ public:
 
     int Desenha(){
         if(visivel==false) return -1;
+
+        if (!marcadorAtualizado) AtualizaMarcador();
 
         if (text)
             CPIGSprite::Desenha();

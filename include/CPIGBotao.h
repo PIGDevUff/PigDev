@@ -9,6 +9,10 @@ protected:
 
     int tecla;
 
+    virtual void ProcessaAtributos(CPIGAtributos atrib)override{
+        CPIGComponente::ProcessaAtributos(atrib);
+    }
+
     void SetFoco(bool valor){
         temFoco = valor;
     }
@@ -43,8 +47,6 @@ protected:
             tecla = PIG_TECLA_ENTER;//sem tecla de atalho
             SetPosicaoPadraoLabel(PIG_COMPONENTE_CENTRO_CENTRO);
         }
-
-    //CPIGBotao(int idComponente,std::string nomeArqParam):CPIGBotao(LeParametros(idComponente,nomeArqParam)){}
 
     virtual ~CPIGBotao(){}
 

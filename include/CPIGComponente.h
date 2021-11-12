@@ -17,7 +17,6 @@ protected:
 
     bool temFoco,visivel,habilitado,mouseOver,acionado;
     int audioComponente;
-    //int id;
     PIGPosicaoComponente posLabel,posComponente;
     PIGLabel lab,hint;
     PIGFuncaoSimples acao;
@@ -27,14 +26,11 @@ protected:
     void *param;
 
     //inicializa o componente com valores padrão
-    void IniciaBase(int idComponente, int px, int py){
-        id = idComponente;
+    void IniciaBase(){
         lab = new CPIGLabel("",0,BRANCO,idJanela);
         hint = new CPIGLabel("",0,BRANCO,idJanela);
         SetPosicaoPadraoLabel(PIG_COMPONENTE_CENTRO_CENTRO);
         audioComponente = -1;
-        pos.x = px;
-        pos.y = py;
         margemEsq = margemDir = margemCima = margemBaixo = 0;
         mouseOver = acionado = temFoco = false;
         habilitado = visivel = true;
@@ -146,7 +142,7 @@ protected:
         return PIG_SELECIONADO_TRATADO;
     }
 
-    void ProcessaAtributosGerais(CPIGAtributos atrib){
+    virtual void ProcessaAtributos(CPIGAtributos atrib){
         int valorInt;
         string valorStr;
 
@@ -188,12 +184,14 @@ public:
 
     CPIGComponente(int idComponente, int px, int py, int altura, int largura, int janela=0)
     :CPIGSprite(idComponente,altura, largura, "",janela){
-        IniciaBase(idComponente,px,py);
+        IniciaBase();
+        CPIGSprite::Move(px,py);
     }
 
     CPIGComponente(int idComponente, int px, int py, int altura, int largura, string nomeArq, int retiraFundo=1, int janela=0)
     :CPIGSprite(idComponente,nomeArq,retiraFundo,NULL,janela){
-        IniciaBase(idComponente,px,py);
+        IniciaBase();
+        CPIGSprite::Move(px,py);
         CPIGSprite::SetDimensoes(altura,largura);
     }
 
@@ -205,47 +203,6 @@ public:
     void DefineAcao(PIGFuncaoSimples funcao, void *parametro){
         acao = funcao;
         param = parametro;
-    }
-
-    static CPIGAtributos GetAtributos(string parametros){
-        CPIGAtributos resp;
-        stringstream ss(parametros);
-        string variavel,valorString;
-        int valorInteiro;
-
-        while(ss >> variavel){
-            if(variavel == "tipo") {ss >> valorString; resp.SetValorString(variavel,valorString);}
-            if(variavel == "idComponente") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
-            if(variavel == "px") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
-            if(variavel == "py") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
-            if(variavel == "altura") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
-            if(variavel == "largura") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
-            if(variavel == "alturaLinha") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
-            if(variavel == "alturaItem") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
-            if(variavel == "larguraItem") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
-            if(variavel == "alturaMarcador") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
-            if(variavel == "larguraMarcador") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
-            if(variavel == "nomeArq") {ss >> valorString; resp.SetValorString(variavel,valorString);}
-            if(variavel == "nomeArqMarcador") {ss >> valorString; resp.SetValorString(variavel,valorString);}
-            if(variavel == "nomeArqItem") {ss >> valorString; resp.SetValorString(variavel,valorString);}
-            if(variavel == "retiraFundo") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
-            if(variavel == "retiraFundoMarcador") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
-            if(variavel == "raioInterno") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
-            if(variavel == "janela") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
-            if(variavel == "label") {ss >> valorString; resp.SetValorString(variavel,valorString);}
-            if(variavel == "hint") {ss >> valorString; resp.SetValorString(variavel,valorString);}
-            if(variavel == "corLabel") {ss >> valorString; resp.SetValorString(variavel,valorString);}
-            if(variavel == "corHint") {ss >> valorString; resp.SetValorString(variavel,valorString);}
-            if(variavel == "audio") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
-            if(variavel == "fonteLabel") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
-            if(variavel == "fonteHint") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
-            if(variavel == "acionado") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
-            if(variavel == "habilitado") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
-            if(variavel == "visivel") {ss >> valorInteiro; resp.SetValorInt(variavel,valorInteiro);}
-            if(variavel == "posicaoLabel") {ss >> valorString; resp.SetValorString(variavel,valorString);}
-        }
-
-        return resp;
     }
 
     //recupera o id do componente
@@ -455,11 +412,6 @@ public:
         }
 
     }*/
-
-    void SetCorBasica(int indice, PIGCor cor){
-        if (indice<0||indice>=10) return;
-        coresBasicas[indice] = cor;
-    }
 
     void Move(double nx, double ny)override{
         CPIGSprite::Desloca(nx-pos.x,ny-pos.y);

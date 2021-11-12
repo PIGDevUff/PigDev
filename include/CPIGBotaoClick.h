@@ -19,6 +19,28 @@ protected:
         corAtual = 1;
     }
 
+    virtual void ProcessaAtributos(CPIGAtributos atrib)override{
+        CPIGBotao::ProcessaAtributos(atrib);
+
+        int valorInt = atrib.GetInt("repeticao",0);
+        if (valorInt == true) DefineBotaoRepeticao(true);
+
+        float valorFloat = atrib.GetFloat("tempoRepeticao",-1);
+        if (valorFloat > 0) DefineTempoRepeticao(valorFloat);
+
+        string valorStr = atrib.GetString("corNormal","");
+        if (valorStr != "") SetCorNormal(PIGCriaCorString(valorStr));
+
+        valorStr = atrib.GetString("corMouseSobre","");
+        if (valorStr != "") SetCorMouseSobre(PIGCriaCorString(valorStr));
+
+        valorStr = atrib.GetString("corAcionado","");
+        if (valorStr != "") SetCorAcionado(PIGCriaCorString(valorStr));
+
+        valorStr = atrib.GetString("corDesabilitado","");
+        if (valorStr != "") SetCorDesabilitado(PIGCriaCorString(valorStr));
+    }
+
     static CPIGBotaoClick LeParametros(int idComponente,CPIGAtributos atrib){
         CPIGBotaoClick *resp;
 
@@ -30,7 +52,7 @@ protected:
                        atrib.GetInt("janela",0));
         }
 
-        resp->ProcessaAtributosGerais(atrib);
+        resp->ProcessaAtributos(atrib);
 
         return *resp;
     }
@@ -103,17 +125,33 @@ public:
         return 0;
     }
 
-    void DefineTempoRepeticao(double segundos){
+    inline void DefineTempoRepeticao(double segundos){
         tempoRepeticao = segundos;
     }
 
-    void DefineBotaoRepeticao(bool repeticao){
+    inline void DefineBotaoRepeticao(bool repeticao){
         botaoRepeticao = repeticao;
     }
 
     int Desenha(){
         TrataTimer();
         return CPIGBotao::Desenha();
+    }
+
+    inline void SetCorNormal(PIGCor cor){
+        coresBasicas[1] = cor;
+    }
+
+    inline void SetCorMouseSobre(PIGCor cor){
+        coresBasicas[2] = cor;
+    }
+
+    inline void SetCorAcionado(PIGCor cor){
+        coresBasicas[3] = cor;
+    }
+
+    inline void SetCorDesabilitado(PIGCor cor){
+        coresBasicas[4] = cor;
     }
 
 };

@@ -18,6 +18,16 @@ protected:
         corAtual = 0;
     }
 
+    virtual void ProcessaAtributos(CPIGAtributos atrib)override{
+        CPIGComponente::ProcessaAtributos(atrib);
+
+        int valorInt = atrib.GetInt("larguraIcone",-1);
+        if (valorInt > -1) DefineLarguraIconeItem(valorInt);
+
+        valorInt = atrib.GetInt("alturaIcone",-1);
+        if (valorInt > -1) DefineAlturaIconeItem(valorInt);
+    }
+
     void IniciaBase(int alturaLinha){
         SetPosicaoPadraoLabel(PIG_COMPONENTE_CIMA_CENTRO);//posição padrão do label
         altBaseLista = alturaLinha;
@@ -76,11 +86,17 @@ public:
         itens.clear();
     }
 
-    void DefineDimensaoIconeItem(int alturaImagemIcone, int larguraImagemIcone){
+    void DefineAlturaIconeItem(int alturaImagemIcone){
         altIcone = alturaImagemIcone;
+        for (unsigned int i=0;i<itens.size();i++){
+            itens[i]->SetAlturaIcone(altIcone);
+        }
+    }
+
+    void DefineLarguraIconeItem(int larguraImagemIcone){
         largIcone = larguraImagemIcone;
         for (unsigned int i=0;i<itens.size();i++){
-            itens[i]->SetDimensoesIcone(altIcone,largIcone);
+            itens[i]->SetLarguraIcone(largIcone);
         }
     }
 
@@ -144,6 +160,14 @@ public:
             for(PIGItemComponente item :itens) item->SetCorLabel(cor);
         }else if (idItem>=0&&idItem<itens.size()){
             itens[idItem]->SetCorLabel(cor);
+        }
+    }
+
+    void SetCorFundoItem(PIGCor cor, int idItem=-1){
+        if (idItem==-1){
+            for(PIGItemComponente item :itens) item->SetCorFundo(cor);
+        }else if (idItem>=0&&idItem<itens.size()){
+            itens[idItem]->SetCorFundo(cor);
         }
     }
 

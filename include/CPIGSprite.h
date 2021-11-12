@@ -69,21 +69,21 @@ void ExtraiPixels() {
 }
 
 //Atributos relativos à coloração e textura do Sprite
-void IniciaCor(){
+inline void IniciaCor(){
     coloracao = BRANCO;
     opacidade = 255; //totalmente opaco
     text = NULL;
 }
 
 //Atributos relativos à janela do Sprite
-void IniciaJanela(int janela){
+inline void IniciaJanela(int janela){
     idJanela = janela;
     altJanela = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
     renderer = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetRenderer();
 }
 
 //Atributos relativos ao tamanho do Sprite
-void IniciaDimensoes(int altura,int largura){
+inline void IniciaDimensoes(int altura,int largura){
     altOriginal = alt = altura;
     largOriginal = larg = largura;
 }
@@ -364,24 +364,24 @@ virtual ~CPIGSprite(){
     }
 }
 
-int GetIdJanela(){
+inline int GetIdJanela(){
     return idJanela;
 }
 
-void DefineFrame(int idFrame, SDL_Rect r){
+inline void DefineFrame(int idFrame, SDL_Rect r){
     frames[idFrame] = r;
 }
 
-PIGPonto2D GetXY(){
+inline PIGPonto2D GetXY(){
     return pos;
 }
 
-void SetColoracao(PIGCor cor){
+inline void SetColoracao(PIGCor cor){
     coloracao = cor;
     SDL_SetTextureColorMod(text,cor.r,cor.g,cor.b);
 }
 
-PIGCor GetColoracao(){
+inline PIGCor GetColoracao(){
     return coloracao;
 }
 
@@ -419,15 +419,15 @@ virtual void SetAngulo(double a){
     }
 }
 
-double GetAngulo(){
+inline double GetAngulo(){
     return angulo;
 }
 
-void SetFlip(PIGFlip valor){
+inline void SetFlip(PIGFlip valor){
     flip = valor;
 }
 
-PIGFlip GetFlip(){
+inline PIGFlip GetFlip(){
     return flip;
 }
 
@@ -449,7 +449,7 @@ void SetPivoProporcional(PIGPonto2D pivo){
 }
 
 //recupera o ponto pivô
-PIGPonto2D GetPivo(){
+inline PIGPonto2D GetPivo(){
     return pivoAbs;
 }
 
@@ -481,26 +481,26 @@ virtual void SetDimensoes(int altura, int largura){
     }
 }
 
-virtual void GetDimensoes(int &altura, int &largura){
+inline virtual void GetDimensoes(int &altura, int &largura){
     altura = alt;
     largura = larg;
 }
 
-void GetDimensoesOriginais(int &altura,int &largura){
+inline void GetDimensoesOriginais(int &altura,int &largura){
     altura = altOriginal;
     largura = largOriginal;
 }
 
-void SetOpacidade(int valor){
+inline void SetOpacidade(int valor){
     opacidade = valor;
     SDL_SetTextureAlphaMod(text,valor);
 }
 
-void RestauraDimensoesOriginais(){
+inline void RestauraDimensoesOriginais(){
     SetDimensoes(altOriginal,largOriginal);
 }
 
-int GetOpacidade(){
+inline int GetOpacidade(){
     return opacidade;
 }
 
@@ -511,7 +511,7 @@ int MudaFrameAtual(int novoFrame){
     return 1;
 }
 
-int GetFrameAtual(){
+inline int GetFrameAtual(){
     return frameAtual;
 }
 
@@ -586,11 +586,11 @@ void AtualizaPixels(int retiraFundo = 1, int opacidadeObj = 255) {
     PreparaTextura(retiraFundo);
 }
 
-PIGCor **GetPixels() {
+inline PIGCor **GetPixels() {
     return pixels;
 }
 
-string GetNomeArquivo(){
+inline string GetNomeArquivo(){
     return nomeArquivo;
 }
 

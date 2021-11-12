@@ -12,10 +12,47 @@ protected:
     PIGSprite marcador;
     double delta,porcentagemConcluida;
     double valorMax,valorMin,valorAtual;
-
+    bool marcadorAtualizado;
     PIGGaugeCrescimento orientacaoCrescimento;
 
-    virtual void AtualizaMarcador(){}
+    virtual void AtualizaMarcador(){
+        coresBasicas[3] = PIGMixCor(coresBasicas[1],coresBasicas[2],porcentagemConcluida);
+        marcadorAtualizado = true;
+    }
+
+    inline void IniciaCoresBasicas(){
+        coresBasicas[0] = BRANCO;
+        coresBasicas[1] = CINZA;
+        coresBasicas[2] = CINZA;
+    }
+
+    void ProcessaAtributos(CPIGAtributos atrib)override{
+        CPIGComponente::ProcessaAtributos(atrib);
+
+        int valorInt = atrib.GetInt("valorMin",INT_MAX);
+        if (valorInt != INT_MAX) SetValorMin(valorInt);
+
+        valorInt = atrib.GetInt("valorMax",INT_MIN);
+        if (valorInt != INT_MIN) SetValorMax(valorInt);
+
+        valorInt = atrib.GetInt("valorAtual",INT_MIN);
+        if (valorInt != INT_MIN) SetValorAtual(valorInt);
+
+        valorInt = atrib.GetInt("delta",0);
+        if (valorInt != 0) SetDelta(valorInt);
+
+        float valorFloat = atrib.GetFloat("porcentagem",0);
+        if (valorFloat != 0) SetPorcentagemConcluida(valorFloat);
+
+        string valorStr = atrib.GetString("corTrilha","");
+        if (valorStr != "") SetCorTrilha(PIGCriaCorString(valorStr));
+
+        valorStr = atrib.GetString("corInicial","");
+        if (valorStr != "") SetCorInicial(PIGCriaCorString(valorStr));
+
+        valorStr = atrib.GetString("corFinal","");
+        if (valorStr != "") SetCorFinal(PIGCriaCorString(valorStr));
+    }
 
     void SetFoco(bool valor){
         temFoco = valor;
@@ -40,6 +77,7 @@ protected:
         orientacaoCrescimento = PIG_GAUGE_ESQ_DIR;
         delta = 1;
         marcador = NULL;
+        IniciaCoresBasicas();
     }
 
     CPIGGauge(int idComponente,int px, int py,int altura,int largura,std::string imgTrilha,int altMarcador, int largMarcador, std::string imgMarcador,int retiraFundoTrilha=1, int retiraFundoMarcador=1,int janela=0):
@@ -59,7 +97,7 @@ public:
     virtual int SetValorMin(double minimo){
         if(minimo <= valorMax){
             valorMin = minimo;
-            AvancaMarcador(0);
+            marcadorAtualizado = false;
             return 1;
         }
         return 0;
@@ -68,7 +106,7 @@ public:
     virtual int SetValorMax(double maximo){
         if(valorMin <= maximo){
             valorMax = maximo;
-            AvancaMarcador(0);
+            marcadorAtualizado = false;
             return 1;
         }
         return 0;
@@ -77,7 +115,7 @@ public:
     virtual int SetValorAtual(double valor){
         if(valor>=valorMin && valor<=valorMax){
             valorAtual = valor;
-            AvancaMarcador(0);
+            marcadorAtualizado = false;
             return 1;
         }
         return 0;
@@ -89,13 +127,13 @@ public:
 
     void SetOrientacao(PIGGaugeCrescimento orientacao){
         orientacaoCrescimento = orientacao;
-        AtualizaMarcador();
+        marcadorAtualizado = false;
     }
 
     void SetPorcentagemConcluida(double porcentagem){
         porcentagemConcluida = PIGLimitaValor(porcentagem,0.0,1.0);
         valorAtual = valorMin + (valorMax - valorMin)*porcentagemConcluida;
-        AtualizaMarcador();
+        marcadorAtualizado = false;
     }
 
     double GetValorAtual(){
@@ -110,8 +148,8 @@ public:
         return valorMin;
     }
 
-    std::string GetStringValorMarcador(){
-        std::stringstream ss;
+    string GetStringValorMarcador(){
+        stringstream ss;
         ss <<valorAtual;
         return ss.str();
     }
@@ -126,7 +164,10 @@ public:
         valorAtual = PIGLimitaValor(valorAtual,valorMin,valorMax);
         porcentagemConcluida = (valorAtual - valorMin)/(valorMax - valorMin);
 
-        AtualizaMarcador();
+        marcadorAtualizado = false;
+
+        if (valor!=0)
+            OnAction();
     }
 
     void AvancaDelta(){
@@ -135,12 +176,27 @@ public:
 
     void MinimizaValorAtual(){
         valorAtual = valorMin;
-        AvancaMarcador(0);
+        marcadorAtualizado = false;
     }
 
     void MaximizaValorAtual(){
         valorAtual = valorMax;
-        AvancaMarcador(0);
+        marcadorAtualizado = false;
+    }
+
+    void SetCorInicial(PIGCor cor){
+        coresBasicas[1] = cor;
+        marcadorAtualizado = false;
+    }
+
+    void SetCorFinal(PIGCor cor){
+        coresBasicas[2] = cor;
+        marcadorAtualizado = false;
+    }
+
+    void SetCorTrilha(PIGCor cor){
+        coresBasicas[0] = cor;
+        marcadorAtualizado = false;
     }
 
     virtual void Desloca(double dx, double dy)override{

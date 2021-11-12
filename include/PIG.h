@@ -5366,10 +5366,6 @@ void PIGComponentesSetCorHint(int idComponente, PIGCor cor){
     CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetCorHint(cor);
 }
 
-void PIGComponentesSetCorBasica(int idComponente, int indice, PIGCor cor){
-    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetCorBasica(indice,cor);
-}
-
 void PIGComponentesSetAudio(int idComponente, int idAudio){
     CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetAudio(idAudio);
 }
@@ -5509,8 +5505,8 @@ void PIGAreaDeTextoSetFonteTexto(int idComponente, int fonte){
     CPIGGerenciadorForms::GetComponente<PIGAreaDeTexto>(idComponente)->SetFonteTexto(fonte);
 }
 
-void PIGAreaDeTextoSetLinhasAbaixoTexto(int idComponente, bool visivel, PIGCor cor = BRANCO){
-    CPIGGerenciadorForms::GetComponente<PIGAreaDeTexto>(idComponente)->SetLinhasAbaixoTexto(visivel,cor);
+void PIGAreaDeTextoSetLinhasAbaixoTexto(int idComponente, bool visivel){
+    CPIGGerenciadorForms::GetComponente<PIGAreaDeTexto>(idComponente)->SetLinhasAbaixoTexto(visivel);
 }
 
 void PIGAreaDeTextoSetLargMaxTexto(int idComponente, int largMaxTexto){
@@ -5604,7 +5600,8 @@ int PIGListBoxSetAcionado(int idComponente, int indice, int marcado){
 }
 
 void PIGListBoxDefineDimensaoIconeItem(int idComponente, int alturaImagemIcone, int larguraImagemIcone){
-    CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->DefineDimensaoIconeItem(alturaImagemIcone,larguraImagemIcone);
+    CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->DefineAlturaIconeItem(alturaImagemIcone);
+    CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->DefineLarguraIconeItem(larguraImagemIcone);
 }
 
 void PIGListBoxAlinhaLabelDireita(int idComponente){
@@ -5674,7 +5671,8 @@ void PIGDropDownCriaItem(int idComponente, char* texto, char* imagemIcone = "", 
 }
 
 void PIGDropDownDefineDimensaoIconeItem(int idComponente, int alturaImagemIcone, int larguraImagemIcone){
-    CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->DefineDimensaoIconeItem(alturaImagemIcone,larguraImagemIcone);
+    CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->DefineAlturaIconeItem(alturaImagemIcone);
+    CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->DefineLarguraIconeItem(larguraImagemIcone);
 }
 
 void PIGDropDownAlinhaLabelDireita(int idComponente){
@@ -5980,7 +5978,7 @@ void PIGGaugeCircularSetCorFinal(int idComponente, PIGCor cor){
 }
 
 void PIGGaugeCircularSetCorInterna(int idComponente, PIGCor cor){
-    CPIGGerenciadorForms::GetComponente<PIGGaugeCircular>(idComponente)->SetCorInterna(cor);
+    CPIGGerenciadorForms::GetComponente<PIGGaugeCircular>(idComponente)->SetCorTrilha(cor);
 }
 
 int PIGGaugeCircularGetValor(int idComponente){

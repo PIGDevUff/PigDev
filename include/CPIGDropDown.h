@@ -9,6 +9,10 @@ private:
 
     bool recolhida;
 
+    void ProcessaAtributos(CPIGAtributos atrib)override{
+        CPIGListaItemComponente::ProcessaAtributos(atrib);
+    }
+
     static CPIGDropDown LeParametros(int idComponente, CPIGAtributos atrib){
         CPIGDropDown *resp;
 
@@ -21,7 +25,7 @@ private:
                           atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),atrib.GetInt("janela",0));
         }
 
-        resp->ProcessaAtributosGerais(atrib);
+        resp->ProcessaAtributos(atrib);
 
         return *resp;
     }
@@ -109,7 +113,7 @@ public:
     }
 
     int Desenha(){
-        if (visivel==false) return 0;
+        if (visivel==false) return -1;
 
         DesenhaLabel();
 

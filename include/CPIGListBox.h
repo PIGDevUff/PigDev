@@ -7,6 +7,10 @@ class CPIGListBox: public CPIGListaItemComponente{
 
 protected:
 
+    virtual void ProcessaAtributos(CPIGAtributos atrib)override{
+        CPIGListaItemComponente::ProcessaAtributos(atrib);
+    }
+
     static CPIGListBox LeParametros(int idComponente, CPIGAtributos atrib){
         CPIGListBox *resp;
 
@@ -19,7 +23,7 @@ protected:
                           atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),atrib.GetInt("janela",0));
         }
 
-        resp->ProcessaAtributosGerais(atrib);
+        resp->ProcessaAtributos(atrib);
 
         return *resp;
     }

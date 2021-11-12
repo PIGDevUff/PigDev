@@ -93,7 +93,7 @@ private:
         else{
             getline(arq,linha);
 
-            CPIGAtributos atrib = CPIGComponente::GetAtributos(linha);
+            CPIGAtributos atrib = CPIGAtributos::GetAtributos(linha);
             if (atrib.GetString("nomeArq","")!=""){
                 resp = new CPIGForm(idForm,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                                         atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
@@ -323,7 +323,7 @@ public:
     int CriaComponentePorParametro(string parametros){
         int idComponente = GetIdComponente(totalComponentes);
         //printf("parametros: %s\n",parametros.c_str());
-        CPIGAtributos atrib = CPIGComponente::GetAtributos(parametros);
+        CPIGAtributos atrib = CPIGAtributos::GetAtributos(parametros);
         int componente = GetTipoComponente(atrib.GetString("tipo",""));
 
         switch(componente){

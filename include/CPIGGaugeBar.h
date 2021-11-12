@@ -7,10 +7,8 @@ class CPIGGaugeBar: public CPIGGauge{
 
 private:
 
-    inline void IniciaCoresBasicas(){
-        coresBasicas[0] = BRANCO;
-        coresBasicas[1] = VERMELHO;
-        coresBasicas[2] = VERMELHO;
+    void ProcessaAtributos(CPIGAtributos atrib)override{
+        CPIGGauge::ProcessaAtributos(atrib);
     }
 
     static CPIGGaugeBar LeParametros(int idComponente, CPIGAtributos atrib){
@@ -25,34 +23,34 @@ private:
                           atrib.GetInt("janela",0));
         }
 
-        resp->ProcessaAtributosGerais(atrib);
+        resp->ProcessaAtributos(atrib);
 
         return *resp;
     }
 
     void DesenhaBarraCor(){
-        PIGCor cor = PIGMixCor(coresBasicas[1],coresBasicas[2],porcentagemConcluida);
         double perc = porcentagemConcluida;
         int largBarra = larg-margemDir-margemEsq;
         int altBarra = alt-margemBaixo-margemCima;
 
         switch(orientacaoCrescimento){
         case PIG_GAUGE_ESQ_DIR:
-            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(((int)pos.x)+margemEsq,((int)pos.y)+margemBaixo,altBarra,((int)largBarra*perc),cor);
+            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(((int)pos.x)+margemEsq,((int)pos.y)+margemBaixo,altBarra,((int)largBarra*perc),coresBasicas[3]);
             break;
         case PIG_GAUGE_DIR_ESQ:
-            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(pos.x+larg-margemDir-largBarra*perc,pos.y+margemBaixo,altBarra,largBarra*perc,cor);
+            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(pos.x+larg-margemDir-largBarra*perc,pos.y+margemBaixo,altBarra,largBarra*perc,coresBasicas[3]);
             break;
         case PIG_GAUGE_BAIXO_CIMA:
-            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(pos.x+margemEsq,pos.y+margemBaixo,altBarra*perc,largBarra,cor);
+            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(pos.x+margemEsq,pos.y+margemBaixo,altBarra*perc,largBarra,coresBasicas[3]);
             break;
         case PIG_GAUGE_CIMA_BAIXO:
-            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(pos.x+margemEsq,pos.y+alt-margemCima-altBarra*perc,altBarra*perc,largBarra,cor);
+            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(pos.x+margemEsq,pos.y+alt-margemCima-altBarra*perc,altBarra*perc,largBarra,coresBasicas[3]);
             break;
         }
     }
 
     virtual void AtualizaMarcador()override{
+        CPIGGauge::AtualizaMarcador();
         OnAction();
         if (marcador==NULL) return;
 
@@ -134,6 +132,9 @@ public:
     CPIGGaugeBar(int idComponente, CPIGAtributos atrib):CPIGGaugeBar(LeParametros(idComponente,atrib)){}
 
     int Desenha(){
+        if(visivel==false) return -1;
+
+        if (!marcadorAtualizado) AtualizaMarcador();
 
         //moldura
         if (text)
@@ -154,18 +155,6 @@ public:
         return 1;
     }
 
-    void SetCorFinal(PIGCor cor){
-        coresBasicas[2] = cor;
-    }
-
-    void SetCorInicial(PIGCor cor){
-        coresBasicas[1] = cor;
-    }
-
-    void SetCorTrilha(PIGCor cor){
-        coresBasicas[0] = cor;
-    }
-
     int TrataEventoMouse(PIGEvento evento){
         return 0;
     }
@@ -174,9 +163,9 @@ public:
         return 0;
     }
 
-    virtual void SetMargens(int mEsq,int mDir,int mCima,int mBaixo)override{
+    virtual void SetMargens(int mEsq, int mDir, int mCima, int mBaixo)override{
         CPIGComponente::SetMargens(mEsq,mDir,mCima,mBaixo);
-        AtualizaMarcador();
+        marcadorAtualizado = false;
     }
 
 };
