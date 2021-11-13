@@ -15,7 +15,6 @@ protected:
 
     void IniciaCoresBasicas(){
         coresBasicas[0] = CINZA;
-        corAtual = 0;
     }
 
     virtual void ProcessaAtributos(CPIGAtributos atrib)override{

@@ -2,6 +2,7 @@
 #define _CPIGGerenciadorJanelas_
 
 #include "CPIGJanela.h"
+
 class CPIGGerenciadorJanelas{
 
 private:
@@ -11,7 +12,7 @@ static PIGJanela janelas[PIG_MAX_JANELAS];
 
 public:
 
-static void Inicia(std::string nome,int altura=PIG_ALT_TELA,int largura=PIG_LARG_TELA){
+static void Inicia(string nome, int altura=PIG_ALT_TELA, int largura=PIG_LARG_TELA){
     qtdJanelas = 0;
     for (int i=0;i<PIG_MAX_JANELAS;i++)
         janelas[i] = NULL;
@@ -31,7 +32,7 @@ static int GetQtdJanelas(){
     return resp;
 }
 
-static int CriaJanela(std::string nome,int altura=PIG_ALT_TELA,int largura=PIG_LARG_TELA){
+static int CriaJanela(string nome, int altura=PIG_ALT_TELA, int largura=PIG_LARG_TELA){
     if (qtdJanelas==PIG_MAX_JANELAS) return -1;
     janelas[qtdJanelas++] = new CPIGJanela(nome,qtdJanelas,altura,largura);
     return qtdJanelas-1;//foi incrmentada log acima
@@ -61,7 +62,6 @@ static void EncerraDesenho(int idJanela=-1){
         }
     }
 }
-
 
 };
 

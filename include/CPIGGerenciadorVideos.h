@@ -24,7 +24,7 @@ static void Encerra(){
     avformat_network_deinit();
 }
 
-static int CriaVideo(std::string nomeArquivo,int idJanela=0){
+static int CriaVideo(string nomeArquivo, int idJanela=0){
     return videos->Insere(new CPIGVideo(nomeArquivo,idJanela));
 }
 

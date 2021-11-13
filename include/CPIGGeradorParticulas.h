@@ -32,13 +32,11 @@ void IniciaBase(int maximoParticulas, int audioCriacao,int audioEncerramento, PI
 void AtualizaParticulas(){
     unsigned int i=0;
     while (i<parts.size()){
-        parts[i]->ChecaLimites();
         //printf("viva %d %d %d\n",i,parts[i]->viva,parts[i]->GetID());
-        if (parts[i]->viva==false){
-            //delete parts[i];
+        if (parts[i]->ChecaViva()==false){;
             //printf("antes del %d (%f)\n",parts[i]->GetID(),maxTempo);
             CPIGGerenciadorSprites::DestroiAnimacao(parts[i]->GetID());
-            //parts[i] = NULL;
+
             if (audioFim>=0)
                 CPIGGerenciadorAudios::Play(audioFim);
 
@@ -53,17 +51,17 @@ void AtualizaParticulas(){
 
 public:
 
-    CPIGGeradorParticulas(int idGerador,int maximoParticulas,PIGObjeto objBase, int audioCriacao,int audioEncerramento, bool retiraFundo, PIGCor *corFundo, int idJanela)
+    CPIGGeradorParticulas(int idGerador, int maximoParticulas, PIGObjeto objBase, int audioCriacao, int audioEncerramento, bool retiraFundo, PIGCor *corFundo, int idJanela)
         :CPIGAnimacao(idGerador,objBase,retiraFundo,corFundo,idJanela){
         IniciaBase(maximoParticulas,audioCriacao,audioEncerramento,corFundo,retiraFundo);
     }
 
-    CPIGGeradorParticulas(int idGerador,int maximoParticulas,PIGAnimacao animaBase, int audioCriacao,int audioEncerramento, bool retiraFundo, PIGCor *corFundo, int idJanela)
+    CPIGGeradorParticulas(int idGerador, int maximoParticulas, PIGAnimacao animaBase, int audioCriacao, int audioEncerramento, bool retiraFundo, PIGCor *corFundo, int idJanela)
         :CPIGAnimacao(idGerador,animaBase,retiraFundo,corFundo,idJanela){
         IniciaBase(maximoParticulas,audioCriacao,audioEncerramento,corFundo,retiraFundo);
     }
 
-    CPIGGeradorParticulas(int idGerador,int maximoParticulas,string nomeArqImagem,int audioCriacao,int audioEncerramento, bool retiraFundo, PIGCor *corFundo, int idJanela)
+    CPIGGeradorParticulas(int idGerador, int maximoParticulas, string nomeArqImagem, int audioCriacao, int audioEncerramento, bool retiraFundo, PIGCor *corFundo, int idJanela)
         :CPIGAnimacao(idGerador,nomeArqImagem,retiraFundo,corFundo,idJanela){
         IniciaBase(maximoParticulas,audioCriacao,audioEncerramento,corFundo,retiraFundo);
     }
@@ -134,41 +132,41 @@ public:
         return parts.size();
     }
 
-void InsereTransicaoGDP(PIGTransicao t){
-    CPIGSprite::InsereTransicao(t,&automacaoGDP);
-}
+    inline void InsereTransicaoGDP(PIGTransicao t){
+        CPIGSprite::InsereTransicao(t,&automacaoGDP);
+    }
 
-void InsereTransicaoGDP(double tempo, PIGEstadoTransicao estado){
-    CPIGSprite::InsereTransicao(tempo,estado,&automacaoGDP);
-}
+    inline void InsereTransicaoGDP(double tempo, PIGEstadoTransicao estado){
+        CPIGSprite::InsereTransicao(tempo,estado,&automacaoGDP);
+    }
 
-void LeTransicoesGDP(string nomeArq){
-    CPIGSprite::LeTransicoes(nomeArq,&automacaoGDP);
-}
+    inline void LeTransicoesGDP(string nomeArq){
+        CPIGSprite::LeTransicoes(nomeArq,&automacaoGDP);
+    }
 
-void IniciaAutomacaoGDP(){
-    CPIGSprite::IniciaAutomacao(&automacaoGDP);
-}
+    inline void IniciaAutomacaoGDP(){
+        CPIGSprite::IniciaAutomacao(&automacaoGDP);
+    }
 
-void LimpaTransicoesGDP(){
-    CPIGSprite::LimpaTransicoes(&automacaoGDP);
-}
+    inline void LimpaTransicoesGDP(){
+        CPIGSprite::LimpaTransicoes(&automacaoGDP);
+    }
 
-bool ExecutandoTransicaoGDP(){
-    return CPIGSprite::ExecutandoTransicao(&automacaoGDP);
-}
+    inline bool ExecutandoTransicaoGDP(){
+        return CPIGSprite::ExecutandoTransicao(&automacaoGDP);
+    }
 
-void TrataAutomacaoGDP(){
-    CPIGSprite::TrataAutomacao(&automacaoGDP);
-}
+    inline void TrataAutomacaoGDP(){
+        CPIGSprite::TrataAutomacao(&automacaoGDP);
+    }
 
-void InsereAcaoGDP(double tempo, double repeticao, PIGFuncaoSimples acao, void *param){
-    CPIGSprite::InsereAcao(tempo,repeticao,acao,param,&automacaoGDP);
-}
+    inline void InsereAcaoGDP(double tempo, double repeticao, PIGFuncaoSimples acao, void *param){
+        CPIGSprite::InsereAcao(tempo,repeticao,acao,param,&automacaoGDP);
+    }
 
-void DefineTipoTransicaoGDP(PIGTipoTransicao tipo){
-    CPIGSprite::DefineTipoTransicao(tipo,&automacaoGDP);
-}
+    inline void DefineTipoTransicaoGDP(PIGTipoTransicao tipo){
+        CPIGSprite::DefineTipoTransicao(tipo,&automacaoGDP);
+    }
 
 };
 

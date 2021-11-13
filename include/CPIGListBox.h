@@ -110,7 +110,7 @@ public:
         return resp>=0?PIG_SELECIONADO_TRATADO:PIG_NAO_SELECIONADO;
     }
 
-    void CriaItem(string itemLabel, string arqImagemIcone="", string arqImagemFundoItem="",bool itemMarcado = false, bool itemHabilitado = true, string hintMsg="", int retiraFundo=1){
+    void CriaItem(string itemLabel, string arqImagemIcone="", string arqImagemFundoItem="", bool itemMarcado = false, bool itemHabilitado = true, string hintMsg="", int retiraFundo=1){
         int yItem = pos.y+alt-(altBaseLista)*(itens.size()+1);
         CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,itemMarcado,itemHabilitado,hintMsg,retiraFundo);
     }
@@ -124,7 +124,7 @@ public:
 
         if (text)//se tiver imagem de fundo
             CPIGSprite::Desenha();
-        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[corAtual]);
+        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
 
         DesenhaRetanguloMarcacao();
 

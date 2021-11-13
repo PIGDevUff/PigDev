@@ -115,7 +115,6 @@ public:
             if (palavra.letras[palavra.letras.size()-1]=='\n'){//se existe uma quebra de linha forçada
                 resp.push_back(linhaAtual);
 
-                //i++;
                 if (++i<palavras.size()){
                     linhaAtual = palavras[i]; //começa uma nova linha com a p´roxima palavra
                 }else linhaAtual.letras = "";

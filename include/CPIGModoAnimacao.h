@@ -7,7 +7,7 @@ typedef struct{
     double tempo;   //tempo de exibição do frame
     int audio;      //audio a ser tocado quando o frame for exibido
     int altura,largura;
-}EstagioAnimacao;
+}PIGEstagioAnimacao;
 
 class CPIGModoAnimacao{
 
@@ -16,7 +16,7 @@ private:
 int frameAtual;                         //número do frame atual
 bool loop;                              //se o modo tem loop ou não
 bool encerrou;                          //indica se o modo terminou de eibir todos os frames
-vector<EstagioAnimacao> estagios;  //informações dos estágios (frames) que compõem o modo
+vector<PIGEstagioAnimacao> estagios;  //informações dos estágios (frames) que compõem o modo
 
 public:
 
@@ -40,70 +40,70 @@ public:
     }
 
     //cria um novo estágio (frame)
-    int InsereEstagio(int idFrame, double tempo, int idAudio, int altura, int largura){
-        EstagioAnimacao estagio={idFrame,tempo,idAudio,altura,largura};
+    inline int InsereEstagio(int idFrame, double tempo, int idAudio, int altura, int largura){
+        PIGEstagioAnimacao estagio={idFrame,tempo,idAudio,altura,largura};
         estagios.push_back(estagio);
         return estagios.size()-1;
     }
 
     //define o tempo de um estágio (frame) já criado
-    void SetTempo(int idEstagio, double novoTempo){
+    inline void SetTempo(int idEstagio, double novoTempo){
         estagios[idEstagio].tempo = novoTempo;
     }
 
     //define o audio de um estágio (frame) já criado
-    void SetAudio(int idEstagio, int idAudio){
+    inline void SetAudio(int idEstagio, int idAudio){
         estagios[idEstagio].audio = idAudio;
     }
 
     //define se o modo estraáem loop ou não
-    void SetLoop(bool emLoop){
+    inline void SetLoop(bool emLoop){
         loop = emLoop;
     }
 
     //retorna se o modo está em loop ou não
-    bool GetLoop(){
+    inline bool GetLoop(){
         return loop;
     }
 
     //muda arbitrariamente o índice (posição da sequência de frames) do frame a ser exibido
-    void SetIndiceFrameAtual(int indice){
+    inline void SetIndiceFrameAtual(int indice){
         if (indice<frameAtual)
             encerrou = false;
         frameAtual = indice;
     }
 
     //retorna o índice (posiçãod o vetor) do frame atual
-    int GetIndiceFrameAtual(){
+    inline int GetIndiceFrameAtual(){
         return frameAtual;
     }
 
     //retorna o número do frame atual
-    int GetFrameAtual(){
+    inline int GetFrameAtual(){
         return estagios[frameAtual].frame;
     }
 
     //retorna o audio do frame atual
-    int GetAudioAtual(){
+    inline int GetAudioAtual(){
         return estagios[frameAtual].audio;
     }
 
     //retorna o tempo de exibição do frame atual
-    double GetTempoAtual(){
+    inline double GetTempoAtual(){
         return estagios[frameAtual].tempo;
     }
 
     //retorna o audio de um frame já criado (pelo seu índice no vetor)
-    int GetAudioFrame(int indiceFrame){
+    inline int GetAudioFrame(int indiceFrame){
         return estagios[indiceFrame].audio;
     }
 
     //retorna o tempo de um frame já criado (pelo seu índice no vetor)
-    double GetTempoFrame(int indiceFrame){
+    inline double GetTempoFrame(int indiceFrame){
         return estagios[indiceFrame].tempo;
     }
 
-    void GetDimensoesAtual(int &altura, int &largura){
+    inline void GetDimensoesAtual(int &altura, int &largura){
         //if (estagios[frameAtual].altura < 0) return false;
         altura = estagios[frameAtual].altura;
         largura = estagios[frameAtual].largura;
@@ -128,7 +128,7 @@ public:
     }
 
     //retorna se o modo já exibiu todos os frames (apenas se não estiver em loop)
-    bool GetEncerrou(){
+    inline bool GetEncerrou(){
         return encerrou;
     }
 

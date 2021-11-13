@@ -6,12 +6,14 @@ class CPIGHashNodeImagem{
 public:
     int cont;
     SDL_Surface *imagem;
-    CPIGHashNodeImagem(std::string nomeArq){
+
+    CPIGHashNodeImagem(string nomeArq){
         cont = 1;
         SDL_Surface *aux = IMG_Load(nomeArq.c_str());
         imagem = SDL_ConvertSurfaceFormat(aux,SDL_PIXELFORMAT_RGBA32,0);
         SDL_FreeSurface(aux);
     }
+
     ~CPIGHashNodeImagem(){
         SDL_FreeSurface(imagem);
     }
@@ -24,10 +26,12 @@ class CPIGHashNodeAudio{
 public:
     int cont;
     Mix_Chunk *chunk;
-    CPIGHashNodeAudio(std::string nomeArq){
+
+    CPIGHashNodeAudio(string nomeArq){
         cont = 1;
         chunk = Mix_LoadWAV(nomeArq.c_str());
     }
+
     ~CPIGHashNodeAudio(){
         Mix_FreeChunk(chunk);
     }
@@ -40,8 +44,8 @@ private:
 
     static int totalBitmaps;
     static int totalAudios;
-    static std::unordered_map<std::string,PIGHashNodeImagem> mapImagens;
-    static std::unordered_map<std::string,PIGHashNodeAudio> mapAudios;
+    static unordered_map<string,PIGHashNodeImagem> mapImagens;
+    static unordered_map<string,PIGHashNodeAudio> mapAudios;
 
 public:
 
@@ -51,16 +55,16 @@ public:
     }
 
     static void Encerra(){
-        for(std::unordered_map<std::string,PIGHashNodeImagem>::iterator it = mapImagens.begin(); it != mapImagens.end(); ++it) {
+        for(unordered_map<string,PIGHashNodeImagem>::iterator it = mapImagens.begin(); it != mapImagens.end(); ++it) {
             delete it->second;
         }
-        for(std::unordered_map<std::string,PIGHashNodeAudio>::iterator it = mapAudios.begin(); it != mapAudios.end(); ++it) {
+        for(unordered_map<string,PIGHashNodeAudio>::iterator it = mapAudios.begin(); it != mapAudios.end(); ++it) {
             delete it->second;
         }
     }
 
-    static SDL_Surface *LoadImage(std::string nomeArq){
-        std::unordered_map<std::string, PIGHashNodeImagem>::iterator it = mapImagens.find(nomeArq);
+    static SDL_Surface *LoadImage(string nomeArq){
+        unordered_map<string, PIGHashNodeImagem>::iterator it = mapImagens.find(nomeArq);
         if (it == mapImagens.end()){//não achou
             PIGHashNodeImagem imagem = new CPIGHashNodeImagem(nomeArq);
             mapImagens[nomeArq]=imagem;
@@ -73,8 +77,8 @@ public:
 
     }
 
-    static void FreeImage(std::string nomeArq){
-        std::unordered_map<std::string, PIGHashNodeImagem>::iterator it = mapImagens.find(nomeArq);
+    static void FreeImage(string nomeArq){
+        unordered_map<string, PIGHashNodeImagem>::iterator it = mapImagens.find(nomeArq);
         if (it == mapImagens.end()){//não achou
             printf("Nao existe asset carregado: %s\n",nomeArq.c_str());
         }else{
@@ -86,8 +90,8 @@ public:
         }
     }
 
-    static Mix_Chunk *LoadAudio(std::string nomeArq){
-        std::unordered_map<std::string, PIGHashNodeAudio>::iterator it = mapAudios.find(nomeArq);
+    static Mix_Chunk *LoadAudio(string nomeArq){
+        unordered_map<string, PIGHashNodeAudio>::iterator it = mapAudios.find(nomeArq);
         if (it == mapAudios.end()){//não achou
             PIGHashNodeAudio audio = new CPIGHashNodeAudio(nomeArq);
             mapAudios[nomeArq] = audio;
@@ -99,8 +103,8 @@ public:
         }
     }
 
-    static void FreeAudio(std::string nomeArq){
-        std::unordered_map<std::string, PIGHashNodeAudio>::iterator it = mapAudios.find(nomeArq);
+    static void FreeAudio(string nomeArq){
+        unordered_map<string, PIGHashNodeAudio>::iterator it = mapAudios.find(nomeArq);
         if (it == mapAudios.end()){//não achou
             printf("Nao existe asset carregado: %s\n",nomeArq.c_str());
         }else{
@@ -115,7 +119,7 @@ public:
 };
 
 int CPIGAssetLoader::totalBitmaps;
-std::unordered_map<std::string,PIGHashNodeImagem> CPIGAssetLoader::mapImagens;
+unordered_map<string,PIGHashNodeImagem> CPIGAssetLoader::mapImagens;
 int CPIGAssetLoader::totalAudios;
-std::unordered_map<std::string,PIGHashNodeAudio> CPIGAssetLoader::mapAudios;
+unordered_map<string,PIGHashNodeAudio> CPIGAssetLoader::mapAudios;
 #endif // _CPIGASSETLOADER_

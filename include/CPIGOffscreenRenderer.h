@@ -1,8 +1,6 @@
 #ifndef _COFFSCREENRENDERER_
 #define _COFFSCREENRENDERER_
 
-#include "CPIGPilhaCoordenada.h"
-
 typedef struct{
     SDL_Surface *surf;
     SDL_Renderer *render;
@@ -23,36 +21,36 @@ PIGFuncaoPintarArea userFunctionPintarArea;
 
 public:
 
-    SDL_Renderer *GetRenderer(int layer=0){
+    inline SDL_Renderer *GetRenderer(int layer=0){
         return layers[layer].render;
     }
 
-    SDL_Surface *GetSurface(int layer=0){
+    inline SDL_Surface *GetSurface(int layer=0){
         return layers[layer].surf;
     }
 
-    int GetAltura(){
+    inline int GetAltura(){
         return alt;
     }
 
-    int GetLargura(){
+    inline int GetLargura(){
         return larg;
     }
 
-    int GetDepth(){
+    inline int GetDepth(){
         return depth;
     }
 
-    void SetCorTransparente(int layer, bool transparencia, PIGCor cor){
+    inline void SetCorTransparente(int layer, bool transparencia, PIGCor cor){
         SDL_SetColorKey(layers[layer].surf,transparencia,SDL_MapRGBA(layers[layer].surf->format,cor.r,cor.g,cor.b,cor.a));
     }
 
-    void MergeSurface(int layerSuperior, int layerInferior, SDL_BlendMode modo){
+    inline void MergeSurface(int layerSuperior, int layerInferior, SDL_BlendMode modo){
         SDL_SetSurfaceBlendMode(layers[layerInferior].surf,modo);
         SDL_BlitSurface(layers[layerSuperior].surf,NULL,layers[layerInferior].surf,NULL);
     }
 
-    PIGLayer CriaLayer(){
+    inline PIGLayer CriaLayer(){
         PIGLayer l;
         l.surf = SDL_CreateRGBSurfaceWithFormat(0, larg, alt, depth, SDL_PIXELFORMAT_RGBA32);
         l.render = SDL_CreateSoftwareRenderer(l.surf);
@@ -61,18 +59,17 @@ public:
         return l;
     }
 
-    void LimpaLayer(int layer, PIGCor cor){
+    inline void LimpaLayer(int layer, PIGCor cor){
         SDL_SetRenderDrawColor(layers[layer].render,cor.r,cor.g,cor.b,cor.a);
-        //SDL_RenderDrawRect(layers[layer].render,NULL);
         SDL_RenderClear(layers[layer].render);
     }
 
-    CPIGOffscreenRenderer(int altura,int largura,int qtdMaxCamadas=10){
+    CPIGOffscreenRenderer(int altura, int largura, int qtdMaxCamadas=10){
         alt = altura;
         larg=largura;
         depth = 32; //32 bits por pixel
         maxLayers = qtdMaxCamadas;
-        qtdLayers=0;
+        qtdLayers = 0;
         for (int i=0;i<maxLayers;i++)
             layers[i] = CriaLayer();
 
@@ -83,7 +80,7 @@ public:
         corAtual = BRANCO;
     }
 
-    void DesenhaCirculoFinal(int raio, PIGCor corFundo, PIGCor corCirculo, double angInicial,double angFinal,int layer=0){
+    void DesenhaCirculoFinal(int raio, PIGCor corFundo, PIGCor corCirculo, double angInicial, double angFinal, int layer=0){
         int xm = larg/2;
         int ym = alt/2;
         SDL_Point p1,p2;
@@ -93,15 +90,15 @@ public:
             SDL_RenderDrawLine(layers[layer].render,p1.x,p1.y,xm,ym);
             SDL_RenderDrawLine(layers[layer].render,p2.x,p2.y,xm,ym);
         }
-        PintarArea(0,0,corFundo,NULL,layer);
+        PintarArea(0,0,corFundo,layer);
     }
 
-    void DesenhaCirculoFatia(int centroX,int centroY,int raio, PIGCor cor, double angInicial, double angFinal,SDL_Point &iniP,SDL_Point &fimP,int layer=0){
+    void DesenhaCirculoFatia(int centroX, int centroY, int raio, PIGCor cor, double angInicial, double angFinal, SDL_Point &iniP, SDL_Point &fimP, int layer=0){
         if (angFinal==0) return;
         int ra = raio;
         int x = -raio, y = 0, err = 2-2*raio; /* II. Quadrant */
-        std::vector<SDL_Point> q1,q2,q3,q4;
-        std::vector<double> ang1,ang2,ang3,ang4;
+        vector<SDL_Point> q1,q2,q3,q4;
+        vector<double> ang1,ang2,ang3,ang4;
         iniP.x = -1;
 
         SDL_SetRenderDrawColor(layers[layer].render,cor.r,cor.g,cor.b,cor.a);
@@ -181,12 +178,12 @@ public:
 
    }
 
-    void PintarFundo(PIGCor cor,int layer=0){
+    inline void PintarFundo(PIGCor cor, int layer=0){
         SDL_SetRenderDrawColor(layers[layer].render,cor.r,cor.g,cor.b,cor.a);
         SDL_RenderClear( layers[layer].render );
     }
 
-    void PintarArea(int px,int py,PIGCor cor,void *ponteiro,int layer=0){
+    void PintarArea(int px, int py, PIGCor cor, int layer=0){
         if (!(px>=0&&py>=0&&px<larg&&py<alt)) return;
         SDL_Surface *surface = layers[layer].surf;
         SDL_LockSurface(surface);
@@ -197,43 +194,45 @@ public:
         Uint32 color = SDL_MapRGBA((const SDL_PixelFormat*) &surface->format->format,cor.r,cor.g,cor.b,cor.a);
         if (color==corBase) return;
 
-        CPilhaCoordenada *pilha = new CPilhaCoordenada();
-        pilha->Empilha(px,py);
-        int x,y;
+        SDL_Point elemento;
+        vector<SDL_Point> pilha;
+        pilha.push_back({px,py});
         Uint32 *p;
-        while (pilha->Desempilha(x,y)){
-            if (x>=0&&y>=0&&x<larg&&y<alt){
+
+        while (pilha.size()>0){
+            elemento = pilha.back();
+            pilha.pop_back();
+            if (elemento.x>=0&&elemento.y>=0&&elemento.x<larg&&elemento.y<alt){
                 p = (Uint32*) surface->pixels;
-                p += (x+(alt-y-1)*larg);
+                p += (elemento.x+(alt-elemento.y-1)*larg);
 
                 if ( (*p)==corBase){
 
                     if (userFunctionPintarArea){
                         PIGCor corAtual;
                         SDL_GetRGBA(corBase,(const SDL_PixelFormat*) &surface->format->format,&(corAtual.r),&(corAtual.g),&(corAtual.b),&(corAtual.a));
-                        cor = userFunctionPintarArea(x,y,alt,larg,corAtual,cor);
+                        cor = userFunctionPintarArea(elemento.x,elemento.y,alt,larg,corAtual,cor);
                         color = SDL_MapRGBA((const SDL_PixelFormat*) &surface->format->format,cor.r,cor.g,cor.b,cor.a);
                     }
 
                     *p = color;     //muda efetivamente a cor
-                    pilha->Empilha(x+1,y+0);
-                    pilha->Empilha(x+0,y+1);
-                    pilha->Empilha(x-1,y+0);
-                    pilha->Empilha(x+0,y-1);
+                    pilha.push_back({elemento.x+1,elemento.y+0});
+                    pilha.push_back({elemento.x+0,elemento.y+1});
+                    pilha.push_back({elemento.x-1,elemento.y+0});
+                    pilha.push_back({elemento.x+0,elemento.y-1});
                 }
             }
         }
 
-        delete pilha;
         SDL_UnlockSurface(surface);
     }
 
-    void DesenharLinha(int x1,int y1,int x2,int y2,PIGCor cor,int layer=0){
+    inline void DesenharLinha(int x1, int y1, int x2, int y2, PIGCor cor, int layer=0){
         SDL_SetRenderDrawColor(layers[layer].render,cor.r,cor.g,cor.b,cor.a);
         SDL_RenderDrawLine(layers[layer].render,x1,alt-y1-1,x2,alt-y2-1);
     }
 
-    void DesenhaLinhasDisjuntas(int x[],int y[],int qtd,PIGCor cor,int layer=0){
+    void DesenhaLinhasDisjuntas(int x[], int y[], int qtd, PIGCor cor, int layer=0){
         SDL_SetRenderDrawColor(layers[layer].render,cor.r,cor.g,cor.b,255);
         for (int k=0;k<qtd;k+=2){
             SDL_RenderDrawLine(layers[layer].render,x[k],alt-y[k],x[k+1],alt-y[k+1]);
@@ -241,7 +240,7 @@ public:
         }
     }
 
-    void DesenhaLinhasSequencia(int x[],int y[],int qtd,PIGCor cor,int layer=0){
+    void DesenhaLinhasSequencia(int x[], int y[], int qtd, PIGCor cor, int layer=0){
         SDL_SetRenderDrawColor(layers[layer].render,cor.r,cor.g,cor.b,255);
         for (int k=0;k<qtd-1;k++){
             SDL_RenderDrawLine(layers[layer].render,x[k],alt-y[k],x[k+1],alt-y[k+1]);
@@ -249,61 +248,58 @@ public:
         }
     }
 
-    ///escrever
-
-
-    void DesenharRetangulo(int x,int y,int altura,int largura,PIGCor cor,int layer=0){
+    void DesenharRetangulo(int x, int y, int altura, int largura, PIGCor cor, int layer=0){
         SDL_Rect r={x,alt-y-altura-1,largura,altura};
 
         SDL_SetRenderDrawColor(layers[layer].render,cor.r,cor.g,cor.b,cor.a);
         SDL_RenderFillRect(layers[layer].render,&r);
     }
 
-    void DesenharRetanguloVazado(int x,int y,int altura,int largura,PIGCor cor,int layer=0){
+    void DesenharRetanguloVazado(int x, int y, int altura, int largura, PIGCor cor, int layer=0){
         SDL_Rect r={x,alt-y-altura-1,largura,altura};
 
         SDL_SetRenderDrawColor(layers[layer].render,cor.r,cor.g,cor.b,cor.a);
         SDL_RenderDrawRect(layers[layer].render,&r);
     }
 
-    void CarregaPixelsSurface(int layer=0){
+    inline void CarregaPixelsSurface(int layer=0){
         SDL_RenderReadPixels(layers[layer].render, NULL, SDL_PIXELFORMAT_ARGB8888, layers[layer].surf->pixels, layers[layer].surf->pitch);
     }
 
-    void SalvarImagemBMP(char *nomearq,int layer=0){
+    inline void SalvarImagemBMP(char *nomearq, int layer=0){
         SDL_SaveBMP(layers[layer].surf, nomearq);
     }
 
-    void SalvarImagemPNG(char *nomearq,int layer=0){
+    inline void SalvarImagemPNG(char *nomearq, int layer=0){
         IMG_SavePNG(layers[layer].surf, nomearq);
     }
 
-    void DefineFuncaoPintarArea(PIGCor (*funcao)(int, int, int, int, PIGCor, PIGCor)){
+    inline void DefineFuncaoPintarArea(PIGFuncaoPintarArea funcao){
         userFunctionPintarArea = funcao;
     }
 
-    void MoveCanetaPara(double nx,double ny){
+    inline void MoveCanetaPara(double nx,double ny){
         px = nx;
         py = ny;
     }
 
-    void GiraCanetaHorario(double angulo){
+    inline void GiraCanetaHorario(double angulo){
         ang -= angulo;
     }
 
-    void GiraCanetaAntiHorario(double angulo){
+    inline void GiraCanetaAntiHorario(double angulo){
         ang += angulo;
     }
 
-    void GiraAnguloFixo(double angulo){
+    inline void GiraAnguloFixo(double angulo){
         ang = angulo;
     }
 
-    double GetAngAtual(){
+    inline double GetAngAtual(){
         return ang;
     }
 
-    void AvancaCaneta(double distancia,int layer=0){
+    inline void AvancaCaneta(double distancia, int layer=0){
         double nx = px + cos(ang*M_PI/180.0)*distancia;
         double ny = py + sin(ang*M_PI/180.0)*distancia;
         DesenharLinha(px,py,nx,ny,corAtual,layer);
@@ -311,19 +307,19 @@ public:
         py = ny;
     }
 
-    void MudaCorAtualCaneta(PIGCor novaCor){
+    inline void MudaCorAtualCaneta(PIGCor novaCor){
         corAtual = novaCor;
     }
 
-    double GetXCaneta(){
+    inline double GetXCaneta(){
         return px;
     }
 
-    double GetYCaneta(){
+    inline double GetYCaneta(){
         return py;
     }
 
-    PIGLayer *GetLayer(int indice){
+    inline  PIGLayer *GetLayer(int indice){
         if (indice<qtdLayers){
             return &layers[indice];
         }else throw CPIGErroIndice(indice,"layer do renderizador offscreen");

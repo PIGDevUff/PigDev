@@ -8,7 +8,6 @@ class CPIGGerenciadorAudios{
 private:
 
 static CPIGRepositorio<PIGAudio> *audios;
-
 static int audioIds[PIG_QTD_CANAIS_PADRAO];
 static Mix_Music *background;
 static int volumeBackground;
@@ -29,7 +28,7 @@ inline static void TrataParadaBackground(){
     eventoAudio.type = SDL_USEREVENT;
     eventoAudio.user.code = PIG_EVENTO_AUDIO;
     eventoAudio.user.data1 = (int*)malloc(sizeof(int)*1);
-    *((int*)eventoAudio.user.data1) = PIG_ID_BACKGROUND;
+    *((int*)eventoAudio.user.data1) = PIG_AUDIO_BACKGROUND;
     SDL_PushEvent(&eventoAudio);
 }
 
@@ -99,24 +98,24 @@ static void ResumeBackground(){
     }
 }
 
-static PIGStatusAudio GetStatusBackground(){
+inline static PIGStatusAudio GetStatusBackground(){
     return statusBackground;
 }
 
-static void SetVolumeBackground(int valor){
+inline static void SetVolumeBackground(int valor){
     volumeBackground = valor;
     Mix_VolumeMusic(volumeBackground);
 }
 
-static int GetVolumeBackground(){
+inline static int GetVolumeBackground(){
     return volumeBackground;
 }
 
-static int CriaAudio(string nomeArquivo, int nLoops, int tempoExecucao=-1){
+inline static int CriaAudio(string nomeArquivo, int nLoops, int tempoExecucao=-1){
     return audios->Insere(new CPIGAudio(nomeArquivo,nLoops,tempoExecucao));
 }
 
-static void DestroiAudio(int idAudio){
+inline static void DestroiAudio(int idAudio){
     audios->Remove(idAudio);
 }
 
@@ -168,8 +167,8 @@ inline static void ResumeTudo(){
 }
 
 };
-CPIGRepositorio<PIGAudio> *CPIGGerenciadorAudios::audios;
 
+CPIGRepositorio<PIGAudio> *CPIGGerenciadorAudios::audios;
 int CPIGGerenciadorAudios::audioIds[PIG_QTD_CANAIS_PADRAO];
 Mix_Music *CPIGGerenciadorAudios::background;
 int CPIGGerenciadorAudios::volumeBackground;

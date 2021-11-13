@@ -90,7 +90,7 @@ public:
 
         if (text)//se tiver imagem de fundo
             CPIGSprite::Desenha();
-        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[corAtual]);
+        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
 
         for (PIGItemComponente i: itens)
             i->Desenha();

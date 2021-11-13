@@ -123,7 +123,7 @@ private:
 public:
 
     //construtor com o nome do arquivo da fonte, o tamanha e a janela
-    CPIGMapaCaracteresDinamicos(char *nomeFonte, int tamanhoFonte, int idJanela):CPIGMapaCaracteres(nomeFonte,tamanhoFonte,PIG_ESTILO_NORMAL,BRANCO,idJanela){
+    CPIGMapaCaracteresDinamicos(string nomeFonte, int tamanhoFonte, int idJanela):CPIGMapaCaracteres(nomeFonte,tamanhoFonte,PIG_ESTILO_NORMAL,BRANCO,idJanela){
         //IniciaBase(nomeFonte,tamanhoFonte,idJanela, -1);
 
         for (int estilo=1;estilo<PIG_TOTALESTILOS;estilo++)

@@ -21,7 +21,6 @@ protected:
     PIGLabel lab,hint;
     PIGFuncaoSimples acao;
     PIGCor coresBasicas[10];
-    int corAtual;
     int margemEsq,margemDir,margemCima,margemBaixo;
     void *param;
 

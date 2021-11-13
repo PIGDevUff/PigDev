@@ -13,7 +13,7 @@ protected:
         CPIGComponente::ProcessaAtributos(atrib);
     }
 
-    static CPIGCheckBox LeParametros(int idComponente,CPIGAtributos atrib){
+    static CPIGCheckBox LeParametros(int idComponente, CPIGAtributos atrib){
         CPIGCheckBox *resp;
 
         if (atrib.GetString("nomeArq","")!=""){
@@ -90,7 +90,7 @@ public:
         CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x,pos.y,alt,larg);
         if (text)//se tiver imagem de fundo
             CPIGSprite::Desenha();
-        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[corAtual]);
+        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
 
         for (PIGItemComponente i: itens)
             i->Desenha();

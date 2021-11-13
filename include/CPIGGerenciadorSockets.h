@@ -27,7 +27,7 @@ static void Encerra(){
     delete socketsUDP;
 }
 
-static int CriaCliente(std::string hostname, int porta, int maxBytesPacote=PIG_MAX_MENSAGEM_REDE_TCP){
+static int CriaCliente(string hostname, int porta, int maxBytesPacote=PIG_MAX_MENSAGEM_REDE_TCP){
     int resp = clientes->ProxID();
     PIGClienteTCP cliente = new CPIGClienteTCP(resp,hostname,porta,maxBytesPacote);
     if (cliente->GetAtivo()){
@@ -85,7 +85,6 @@ inline static PIGClienteTCP GetCliente(int idSocket){
 inline static PIGServidorTCP GetServidor(int idSocket){
     return servidores->GetElemento(idSocket);
 }
-
 
 inline static PIGSocketUDP GetSocketUDP(int idSocket){
     return socketsUDP->GetElemento(idSocket);

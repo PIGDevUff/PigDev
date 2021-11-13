@@ -11,6 +11,7 @@ SDL_Rect espacoVida;
 double hp;
 double tempoVida;
 int timer;
+bool viva;
 
 double ModificaHP(double valor){
     hp += valor;
@@ -19,7 +20,6 @@ double ModificaHP(double valor){
 }
 
 public:
-    bool viva;
 
     CPIGParticula(int idParticula,PIGAnimacao base,int vida,int retiraFundo=1,PIGCor *corFundo=NULL,int idJanela=0):
         CPIGAnimacao(idParticula,base,retiraFundo,corFundo,idJanela){
@@ -30,7 +30,7 @@ public:
         timer = CPIGGerenciadorTimers::CriaTimer();
     }
 
-    void DefineLimites(SDL_Rect espacoMax, double tempoMax){
+    inline void DefineLimites(SDL_Rect espacoMax, double tempoMax){
         espacoVida = espacoMax;
         tempoVida = tempoMax;
     }
@@ -39,7 +39,7 @@ public:
         CPIGGerenciadorTimers::DestroiTimer(timer);
     }
 
-    inline void ChecaLimites(){
+    inline bool ChecaViva(){
         viva = viva &&CPIGGerenciadorTimers::GetTimer(timer)->GetTempoDecorrido()<=tempoVida
                     &&(pos.x>espacoVida.x)&&(pos.x<espacoVida.w)&&(pos.y>espacoVida.y)&&(pos.y<espacoVida.h);
         //if (!viva) printf("%d morri por tempo\n",id);

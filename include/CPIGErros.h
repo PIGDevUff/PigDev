@@ -12,15 +12,15 @@ public:
         codErro = 1;
     }
 
-    string GetMensagem(){
+    inline string GetMensagem(){
         return mensagem;
     }
 
-    int GetCodigoErro(){
+    inline int GetCodigoErro(){
         return codErro;
     }
 
-    void PrintErro(){
+    inline void PrintErro(){
         cout <<" Erro " <<codErro<<": "<<mensagem<<endl;
     }
 };
@@ -30,6 +30,7 @@ public:
 class CPIGErroArquivo: public CPIGErro{
 
 protected:
+
     string nomeArquivo;
 
 public:
@@ -41,7 +42,7 @@ public:
         PrintErro();
     }
 
-    string GetNomeArquivo(){
+    inline string GetNomeArquivo(){
         return nomeArquivo;
     }
 
@@ -52,6 +53,7 @@ public:
 class CPIGErroParametro: public CPIGErro{
 
 protected:
+
     string nomeParam;
     string nomeArq;
 
@@ -65,11 +67,11 @@ public:
         PrintErro();
     }
 
-    string GetNomeParam(){
+    inline string GetNomeParam(){
         return nomeParam;
     }
 
-    string GetNomeArquivo(){
+    inline string GetNomeArquivo(){
         return nomeArq;
     }
 
@@ -79,6 +81,7 @@ public:
 class CPIGErroIndice: public CPIGErro{
 
 protected:
+
     string tipoDado;
     int indice;
 
@@ -92,11 +95,11 @@ public:
         PrintErro();
     }
 
-    string GetTipoDado(){
+    inline string GetTipoDado(){
         return tipoDado;
     }
 
-    int GetIndice(){
+    inline int GetIndice(){
         return indice;
     }
 
@@ -106,6 +109,7 @@ public:
 class CPIGErroPonteiro: public CPIGErro{
 
 protected:
+
     string tipoDado;
     int indice;
 
@@ -119,13 +123,12 @@ public:
         PrintErro();
     }
 
-    string GetTipoDado(){
+    inline string GetTipoDado(){
         return tipoDado;
     }
 
-    int GetIndice(){
+    inline int GetIndice(){
         return indice;
     }
 
 };
-

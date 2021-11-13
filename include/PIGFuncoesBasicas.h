@@ -23,7 +23,7 @@
 using namespace std;
 
 //separa uma string em palavras, usando os delimitadores indicados
-vector<string> PIGSeparaPalavras(string texto,string delim){
+vector<string> PIGSeparaPalavras(string texto, string delim){
     vector<string> resp;
     string strAtual = "";
 
@@ -48,19 +48,19 @@ vector<string> PIGSeparaPalavras(string texto,string delim){
 }
 
 //verifica se uma string possui apenas digitos de 0 a 9
-bool PIGSomenteNumeros(string frase){
+inline bool PIGSomenteNumeros(string frase){
     for (unsigned int i=0;i<frase.size();i++)
         if (frase[i]<'0'||frase[i]>'9')
             return false;
     return true;
 }
 
-//verifica se duas cores s�o iguais
+//verifica se duas cores são iguais
 inline bool PIGCoresIguais(PIGCor cor1, PIGCor cor2){
     return cor1.r==cor2.r&&cor1.g==cor2.g&&cor1.b==cor2.b&&cor1.a==cor2.a;
 }
 
-bool operator ==(PIGCor cor1, PIGCor cor2){
+inline bool operator ==(PIGCor cor1, PIGCor cor2){
     return cor1.r==cor2.r&&cor1.g==cor2.g&&cor1.b==cor2.b&&cor1.a==cor2.a;
 }
 
@@ -73,7 +73,7 @@ inline PIGCor operator +(PIGCor cor1,PIGCor cor2){
 }
 
 //cria uma cor a partir de uma string com um valor hexadecimal de 8 algarismos RRGGBBAA. Ex: 0xFF0000FF (vermelho)
-PIGCor PIGCriaCorHexa(string stringHexa){
+inline PIGCor PIGCriaCorHexa(string stringHexa){
     unsigned long total = strtoul(stringHexa.c_str(),0,16);//transforma a string em um inteiro (decimal)
     PIGCor cor;
     cor.a = total %256;
@@ -87,7 +87,7 @@ PIGCor PIGCriaCorHexa(string stringHexa){
 }
 
 //cria uma cor a partir de uma string com um valor hexadecimal de 8 algarismos RRGGBBAA. Ex: 0xFF0000FF (vermelho)
-PIGCor PIGCriaCorString(string str){
+inline PIGCor PIGCriaCorString(string str){
     PIGCor cor;
     char *p = strtok((char*)str.c_str(),",");
     cor.r = stoi(p);
@@ -100,13 +100,13 @@ PIGCor PIGCriaCorString(string str){
     return cor;
 }
 
-//troca a posi��o dos bytes de uma word(16bits)
-uint16_t PIGTroca2Bytes(uint16_t valor){
+//troca a posição dos bytes de uma word(16bits)
+inline uint16_t PIGTroca2Bytes(uint16_t valor){
     return (valor/256)+((valor%256)*256);
 }
 
-//mistura duas cores com uma propor��o entre elas
-PIGCor PIGMixCor(PIGCor iniCor, PIGCor fimCor, double porc){
+//mistura duas cores com uma proporção entre elas
+inline PIGCor PIGMixCor(PIGCor iniCor, PIGCor fimCor, double porc){
     PIGCor resp;
     resp.r = fimCor.r*porc + (iniCor.r)*(1-porc);
     resp.g = fimCor.g*porc + (iniCor.g)*(1-porc);
@@ -115,7 +115,7 @@ PIGCor PIGMixCor(PIGCor iniCor, PIGCor fimCor, double porc){
     return resp;
 }
 
-//retorna o diretorio onde est� o execut�vel
+//retorna o diretorio onde está o executável
 string PIGGetDiretorioAtual(){
     char *dir = SDL_GetBasePath();
     if (dir){
@@ -127,15 +127,16 @@ string PIGGetDiretorioAtual(){
 }
 
 //retorna "valor" limitado entre [vMin, vMax]
-int PIGLimitaValor(int valor, int minimo,int maximo){
-    if (valor<minimo) return minimo; //valor n�o pode ficar menor que o m�nimo informado
-    else if (valor>maximo) return maximo;//valor n�o pode ficar maior que o m�ximo informado
+inline int PIGLimitaValor(int valor, int minimo, int maximo){
+    if (valor<minimo) return minimo; //valor não pode ficar menor que o mínimo informado
+    else if (valor>maximo) return maximo;//valor não pode ficar maior que o máximo informado
     else return valor;
 }
 
-double PIGLimitaValor(double valor, double minimo,double maximo){
-    if (valor<minimo) return minimo; //valor n�o pode ficar menor que o m�nimo informado
-    else if (valor>maximo) return maximo;//valor n�o pode ficar maior que o m�ximo informado
+//retorna "valor" limitado entre [vMin, vMax]
+inline double PIGLimitaValor(double valor, double minimo, double maximo){
+    if (valor<minimo) return minimo; //valor não pode ficar menor que o mínimo informado
+    else if (valor>maximo) return maximo;//valor não pode ficar maior que o máximo informado
     else return valor;
 }
 
@@ -154,7 +155,7 @@ vector<string> PIGListaArquivosDiretorio(string path) {
    return resp;
 }
 
-void PIGCalculaBoundingBox(int px[],int py[],int lados,int *altura,int *largura,int *centroX,int *centroY){
+void PIGCalculaBoundingBox(int px[], int py[], int lados, int *altura, int *largura, int *centroX, int *centroY){
     int minX=INT_MAX,maxX=-1,minY=INT_MAX,maxY=-1;
     *centroX=0,*centroY=0;
 
@@ -187,7 +188,7 @@ inline double PIGProjecaoY(double coefAngular, PIGPonto2D p) {
     return coefAngular * (-p.x) + p.y;
 }
 
-inline double PIGProjecaoX(double coefAngular, PIGPonto2D p){//, bool swapei,std::vector<std::string> &vet) {
+inline double PIGProjecaoX(double coefAngular, PIGPonto2D p){
     if (std::isinf(coefAngular))
         return (double)p.x;
     /*if (!swapei){

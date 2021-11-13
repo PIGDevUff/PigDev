@@ -9,8 +9,7 @@ protected:
 
     static string delimitadores;
 
-    int **alturaExtra;
-    int **larguraLetra;
+    int **alturaExtra,**larguraLetra;
     int janela;
     int fontDescent;
     int estiloFixo;
@@ -57,7 +56,7 @@ protected:
     }
 
     //inicia os atributos da classe
-    void IniciaBase(const char *nomeFonte, int tamanhoFonte, int idJanela, PIGEstilo estilo, SDL_Renderer *renderer){
+    void IniciaBase(string nomeFonte, int tamanhoFonte, int idJanela, PIGEstilo estilo, SDL_Renderer *renderer){
         nome.assign(nomeFonte);
         tamFonte = tamanhoFonte;
         janela = idJanela;
@@ -84,24 +83,24 @@ protected:
 
 public:
 
-    CPIGMapaCaracteres(const char *nomeFonte, int tamanhoFonte, int estilo, char *nomeFundo, int idJanela, SDL_Renderer *renderer=NULL){
+    CPIGMapaCaracteres(string nomeFonte, int tamanhoFonte, int estilo, string nomeFundo, int idJanela, SDL_Renderer *renderer=NULL){
         IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo, renderer);
 
-        SDL_Surface *fundo = IMG_Load(nomeFundo);//carrega a imagem de fundo
+        SDL_Surface *fundo = IMG_Load(nomeFundo.c_str());//carrega a imagem de fundo
         SDL_SetSurfaceBlendMode(fundo,SDL_BLENDMODE_MOD);
         CriaLetrasSurface(estilo, 0,BRANCO, fundo);
         SDL_FreeSurface(fundo);
     }
 
-    CPIGMapaCaracteres(const char *nomeFonte, int tamanhoFonte,int estilo, char *nomeFundo, int outline, PIGCor corOutline, int idJanela, SDL_Renderer *renderer=NULL){
+    CPIGMapaCaracteres(string nomeFonte, int tamanhoFonte,int estilo, string nomeFundo, int outline, PIGCor corOutline, int idJanela, SDL_Renderer *renderer=NULL){
         IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo, renderer);
 
-        SDL_Surface *fundo = IMG_Load(nomeFundo);//carrega a imagem de fundo
+        SDL_Surface *fundo = IMG_Load(nomeFundo.c_str());//carrega a imagem de fundo
         SDL_SetSurfaceBlendMode(fundo,SDL_BLENDMODE_MOD);
         CriaLetrasSurface(estilo, outline, corOutline, fundo);
     }
 
-    CPIGMapaCaracteres(const char *nomeFonte,int tamanhoFonte,int estilo, PIGCor corFonte, int outline, PIGCor corOutline, int idJanela, SDL_Renderer *renderer=NULL){
+    CPIGMapaCaracteres(string nomeFonte,int tamanhoFonte,int estilo, PIGCor corFonte, int outline, PIGCor corOutline, int idJanela, SDL_Renderer *renderer=NULL){
         IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo, renderer);
 
         CriaLetrasSurface(estilo, outline, corOutline, NULL);//, corFonte);
@@ -109,7 +108,7 @@ public:
         SDL_SetRenderTarget(render, NULL);
     }
 
-    CPIGMapaCaracteres(const char *nomeFonte, int tamanhoFonte, int estilo, PIGCor corFonte, int idJanela, SDL_Renderer *renderer=NULL){
+    CPIGMapaCaracteres(string nomeFonte, int tamanhoFonte, int estilo, PIGCor corFonte, int idJanela, SDL_Renderer *renderer=NULL){
         IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo, renderer);
 
         CriaLetrasSurface(estilo, 0, BRANCO, NULL);//, corFonte);

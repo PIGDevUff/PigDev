@@ -12,11 +12,10 @@ protected:
     double tempoRepeticao;
 
     void IniciaCoresBasicas(){
-        coresBasicas[1] = AZUL;
+        coresBasicas[0] = coresBasicas[1] = AZUL;
         coresBasicas[2] = {100,100,255,255};
         coresBasicas[3] = AMARELO;
         coresBasicas[4] = CINZA;
-        corAtual = 1;
     }
 
     virtual void ProcessaAtributos(CPIGAtributos atrib)override{
@@ -59,7 +58,7 @@ protected:
 
     void AjustaFrame(){
         if (visivel==false) return;
-        corAtual = 1;
+        int corAtual = 1;
         if (habilitado==false){
             corAtual=4;
         }else{
@@ -70,6 +69,7 @@ protected:
             }
         }
 
+        coresBasicas[0] = coresBasicas[corAtual];
         if (text)
             MudaFrameAtual(corAtual);
     }

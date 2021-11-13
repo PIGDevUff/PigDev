@@ -56,7 +56,7 @@ private:
     }
 
     void IniciaCoresBasicas(){
-        coresBasicas[0] = {0,0,0,255};
+        coresBasicas[0] = PRETO;
     }
 
     void IniciaBase(){
@@ -178,121 +178,121 @@ public:
         return comp;
     }
 
-    int CriaBotaoClick(int px, int py, int altura,int largura,std::string nomeArq,int retiraFundo = 1){
+    int CriaBotaoClick(int px, int py, int altura, int largura, string nomeArq, int retiraFundo=1){
         int idComponente = GetIdComponente(totalComponentes);
         componentes[totalComponentes++] = new CPIGBotaoClick(idComponente,px,py,altura,largura,nomeArq,retiraFundo,idJanela);
         return idComponente;
     }
 
-    int CriaBotaoClick(int px, int py, int altura,int largura){
+    int CriaBotaoClick(int px, int py, int altura, int largura){
         int idComponente = GetIdComponente(totalComponentes);
         componentes[totalComponentes++] = new CPIGBotaoClick(idComponente,px,py,altura,largura,idJanela);
         return idComponente;
     }
 
-    int CriaBotaoOnOff(int px, int py, int altura,int largura,std::string nomeArq,int retiraFundo = 1){
+    int CriaBotaoOnOff(int px, int py, int altura, int largura, string nomeArq, int retiraFundo=1){
         int idComponente = GetIdComponente(totalComponentes);
         componentes[totalComponentes++] = new CPIGBotaoOnOff(idComponente,px,py,altura,largura,nomeArq,retiraFundo,idJanela);
         return idComponente;
     }
 
-    int CriaBotaoOnOff(int px, int py, int altura,int largura){
+    int CriaBotaoOnOff(int px, int py, int altura, int largura){
         int idComponente = GetIdComponente(totalComponentes);
         componentes[totalComponentes++] = new CPIGBotaoOnOff(idComponente,px,py,altura,largura,idJanela);
         return idComponente;
     }
 
-    int CriaAreaDeTexto(int px, int py, int altura,int largura,std::string nomeArq,int maxCars = 200,int retiraFundo=1){
+    int CriaAreaDeTexto(int px, int py, int altura, int largura, string nomeArq, int maxCars=200, int retiraFundo=1){
         int idComponente = GetIdComponente(totalComponentes);
         componentes[totalComponentes++] = new CPIGAreaDeTexto(idComponente,px,py,altura,largura,nomeArq,maxCars,retiraFundo,idJanela);
         return idComponente;
     }
 
-    int CriaAreaDeTexto(int px, int py, int altura,int largura,int maxCars = 200){
+    int CriaAreaDeTexto(int px, int py, int altura, int largura, int maxCars=200){
         int idComponente = GetIdComponente(totalComponentes);
         componentes[totalComponentes++] = new CPIGAreaDeTexto(idComponente,px,py,altura,largura,maxCars,idJanela);
         return idComponente;
     }
 
-    int CriaCampoTextoESenha(int px, int py, int altura,int largura,std::string nomeArq,int maxCars = 200, bool apenasNumeros=false, int retiraFundo=1,bool campoSenha = false){
+    int CriaCampoTextoESenha(int px, int py, int altura, int largura, string nomeArq, int maxCars=200, bool apenasNumeros=false, int retiraFundo=1, bool campoSenha=false){
         int idComponente = GetIdComponente(totalComponentes);
         componentes[totalComponentes++] = new CPIGCampoTextoESenha(idComponente,px,py,altura,largura,nomeArq,maxCars,apenasNumeros,campoSenha,retiraFundo,idJanela);
         return idComponente;
     }
 
-    int CriaCampoTextoESenha(int px, int py, int altura,int largura,int maxCars = 200, bool apenasNumeros=false, bool campoSenha = false){
+    int CriaCampoTextoESenha(int px, int py, int altura, int largura, int maxCars=200, bool apenasNumeros=false, bool campoSenha=false){
         int idComponente = GetIdComponente(totalComponentes);
         componentes[totalComponentes++] = new CPIGCampoTextoESenha(idComponente,px,py,altura,largura,maxCars,apenasNumeros,campoSenha,idJanela);
         return idComponente;
     }
 
-    int CriaListBox(int px, int py,int larguraTotal, int alturaLinha, int altItem, int largItem,std::string nomeArq,int retiraFundo=1){
+    int CriaListBox(int px, int py, int larguraTotal, int alturaLinha, int altItem, int largItem, string nomeArq, int retiraFundo=1){
         int idComponente = GetIdComponente(totalComponentes);
         componentes[totalComponentes++] = new CPIGListBox(idComponente,px,py,larguraTotal,alturaLinha,altItem,largItem,nomeArq,retiraFundo,idJanela);
         return idComponente;
     }
 
-    int CriaListBox(int px, int py,int larguraTotal, int alturaLinha, int altItem, int largItem){
+    int CriaListBox(int px, int py, int larguraTotal, int alturaLinha, int altItem, int largItem){
         int idComponente = GetIdComponente(totalComponentes);
         componentes[totalComponentes++] = new CPIGListBox(idComponente,px,py,larguraTotal,alturaLinha,altItem,largItem,idJanela);
         return idComponente;
     }
 
-    int CriaDropDown(int px, int py, int larguraTotal,int alturaLinha, int altItem, int largItem, std::string nomeArq,int retiraFundo=1){
+    int CriaDropDown(int px, int py, int larguraTotal, int alturaLinha, int altItem, int largItem, string nomeArq, int retiraFundo=1){
         int idComponente = GetIdComponente(totalComponentes);
         componentes[totalComponentes++] = new CPIGDropDown(idComponente,px,py,larguraTotal,alturaLinha,altItem,largItem,nomeArq,retiraFundo,idJanela);
         return idComponente;
     }
 
-    int CriaDropDown(int px, int py, int larguraTotal,int alturaLinha, int altItem, int largItem){
+    int CriaDropDown(int px, int py, int larguraTotal, int alturaLinha, int altItem, int largItem){
         int idComponente = GetIdComponente(totalComponentes);
         componentes[totalComponentes++] = new CPIGDropDown(idComponente,px,py,larguraTotal,alturaLinha,altItem,largItem,idJanela);
         return idComponente;
     }
 
-    int CriaGaugeBar(int px, int py,int altura,int largura,std::string imgMoldura,std::string imgMarcador="",int retiraFundoMoldura=1,int retiraFundoMarcador=1){
+    int CriaGaugeBar(int px, int py, int altura, int largura, string imgMoldura, string imgMarcador="", int retiraFundoMoldura=1, int retiraFundoMarcador=1){
         int idComponente = GetIdComponente(totalComponentes);
         componentes[totalComponentes++] = new CPIGGaugeBar(idComponente,px,py,altura,largura,imgMoldura,imgMarcador,retiraFundoMoldura,retiraFundoMarcador,idJanela);
         return idComponente;
     }
 
-    int CriaGaugeBar(int px, int py,int altura,int largura){
+    int CriaGaugeBar(int px, int py, int altura, int largura){
         int idComponente = GetIdComponente(totalComponentes);
         componentes[totalComponentes++] = new CPIGGaugeBar(idComponente,px,py,altura,largura,idJanela);
         return idComponente;
     }
 
-    int CriaRadioBox(int px, int py, int larguraTotal,int alturaLinha, std::string imagemItem, int alturaItem,int larguraItem, std::string imagemFundo, int retiraFundo=1){
+    int CriaRadioBox(int px, int py, int larguraTotal, int alturaLinha, string imagemItem, int alturaItem, int larguraItem, string imagemFundo, int retiraFundo=1){
         int idComponente = GetIdComponente(totalComponentes);
         componentes[totalComponentes++] = new CPIGRadioBox(idComponente,px,py,larguraTotal,alturaLinha,imagemItem,alturaItem,larguraItem,imagemFundo,retiraFundo,idJanela);
         return idComponente;
     }
 
-    int CriaRadioBox(int px, int py, int larguraTotal,int alturaLinha, std::string imagemItem, int alturaItem,int larguraItem){
+    int CriaRadioBox(int px, int py, int larguraTotal, int alturaLinha, string imagemItem, int alturaItem, int larguraItem){
         int idComponente = GetIdComponente(totalComponentes);
         componentes[totalComponentes++] = new CPIGRadioBox(idComponente,px,py,larguraTotal,alturaLinha,imagemItem,alturaItem,larguraItem,idJanela);
         return idComponente;
     }
 
-    int CriaCheckBox(int px, int py, int larguraTotal,int alturaLinha, std::string imagemItem, int alturaItem, int larguraItem, std::string imagemFundo, int retiraFundo=1){
+    int CriaCheckBox(int px, int py, int larguraTotal, int alturaLinha, string imagemItem, int alturaItem, int larguraItem, string imagemFundo, int retiraFundo=1){
         int idComponente = GetIdComponente(totalComponentes);
         componentes[totalComponentes++] = new CPIGCheckBox(idComponente,px,py,larguraTotal,alturaLinha,imagemItem,alturaItem,larguraItem,imagemFundo,retiraFundo,idJanela);
         return idComponente;
     }
 
-    int CriaCheckBox(int px, int py, int larguraTotal,int alturaLinha, std::string imagemItem, int alturaItem, int larguraItem){
+    int CriaCheckBox(int px, int py, int larguraTotal, int alturaLinha, string imagemItem, int alturaItem, int larguraItem){
         int idComponente = GetIdComponente(totalComponentes);
         componentes[totalComponentes++] = new CPIGCheckBox(idComponente,px,py,larguraTotal,alturaLinha,imagemItem,alturaItem,larguraItem,idJanela);
         return idComponente;
     }
 
-    int CriaGaugeCircular(int px, int py,int altura,int largura,int raioInterior,int idJanela=0){
+    int CriaGaugeCircular(int px, int py, int altura, int largura, int raioInterior, int idJanela=0){
         int idComponente = GetIdComponente(totalComponentes);
         componentes[totalComponentes++] = new CPIGGaugeCircular(idComponente,px,py,altura,largura,raioInterior,idJanela);
         return idComponente;
     }
 
-    int CriaSlideBar(int px, int py, int altura, int largura, string imgTrilha, int alturaMarcador, int larguraMarcador, string imgMarcador,int retiraFundoTrilha=1, int retiraFundoMarcador=1,int idJanela=0){
+    int CriaSlideBar(int px, int py, int altura, int largura, string imgTrilha, int alturaMarcador, int larguraMarcador, string imgMarcador, int retiraFundoTrilha=1, int retiraFundoMarcador=1, int idJanela=0){
         int idComponente = GetIdComponente(totalComponentes);
         componentes[totalComponentes++] = new CPIGSlideBar(idComponente,px,py,altura,largura,imgTrilha,alturaMarcador,larguraMarcador,imgMarcador,retiraFundoTrilha,retiraFundoMarcador,idJanela);
         return idComponente;

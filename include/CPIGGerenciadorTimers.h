@@ -2,6 +2,7 @@
 #define _CPIGGERENCIADORTIMERS_
 
 #include "CPIGTimer.h"
+
 class CPIGGerenciadorTimers{
 
 private:
@@ -57,7 +58,7 @@ public:
     static int DesassociaTimerGrupo(int idTimer, int idGrupo){
         if (idGrupo<0||idGrupo>=PIG_MAX_GRUPOS_TIMERS) return 0;
         PIGTimer t = timers->GetElemento(idTimer);
-        std::vector<int>::iterator it = find(grupos[idGrupo].begin(), grupos[idGrupo].end(), idTimer);
+        vector<int>::iterator it = find(grupos[idGrupo].begin(), grupos[idGrupo].end(), idTimer);
         if (it!=grupos[idGrupo].end()){
             grupos[idGrupo].erase(it);
             return 1;

@@ -40,7 +40,7 @@ Principais definições utilizadas pela PIG
 #define PIG_FREQ_AUDIO_PADRAO           22050
 #define PIG_QTD_CANAIS_PADRAO           128
 #define PIG_TAMANHO_CHUNK               4096
-#define PIG_ID_BACKGROUND               -1
+#define PIG_AUDIO_BACKGROUND            -1
 #define PIG_MAX_AUDIOS                  2000
 #define PIG_VOLUME_PADRAO               64
 
@@ -107,7 +107,7 @@ typedef SDL_Color PIGCor;
 #define CINZA           ((SDL_Color){128,128,128,255})
 
 /********************************
-O PIG_TipoEvento é uma enumeração que contém os seguintes possíveis valores:
+O PIGTipoEvento é uma enumeração que contém os seguintes possíveis valores:
 PIG_EVENTO_NULO: indica que não houve evento desde a última chamada da função GetEvento()
 PIG_EVENTO_GERAL: (não implementado)
 PIG_EVENTO_JANELA: indica algum possível evento relacionado à janela de jogo (redimensionamento, movimento, perda ou ganho de foco etc)
@@ -136,7 +136,7 @@ posX: a posição no eixo X (nas coordenadas da tela) do ponteiro do mouse no mo
 posY: a posição no eixo Y (nas coordenadas do tela) do ponteiro do mouse no momento de ocorrência do evento
 worldX: a posição no eixo X (nas coordenadas do mundo) do ponteiro do mouse no momento de ocorrência do evento
 worldY: a posição no eixo Y (nas coordenadas do mundo) do ponteiro do mouse no momento de ocorrência do evento
-botao: indica qual dos poss�veis três botões foi pressionado ou liberado
+botao: indica qual dos possíveis três botões foi pressionado ou liberado
 cliques: indica a quantidade de cliques a que se refere o evento (1=clique simples, 2=clique duplo, ...)
 relX: indica o deslocamento no eixo X quando há uma movimentação de mouse; adicionalmente, representa o deslocamento da rodinha no eixo X (não usado)
 relX: indica o deslocamento no eixo Y quando há uma movimentação de mouse; adicionalmente, representa o deslocamento da rodinha no eixo Y
@@ -186,7 +186,7 @@ typedef struct PIGInfoEventoJanela{
 
 /********************************
 O PIGInfoEventoTeclado é um struct contendo informações específicas sobre o evento de teclado:
-acao: código que representa o evento específico (os poss�veis valores podem ser vistos abaixo do struct)
+acao: código que representa o evento específico (os possíveis valores podem ser vistos abaixo do struct)
 tecla: código que representa a tecla pressionada ou liberada. Os possíveis valores pdoem ser vistos no final deste arquivo.
 repeticao: indica se está havendo repetição no acionamento desta tecla ou não
 texto: indica o que está sendo inserido
@@ -207,7 +207,7 @@ typedef struct PIGInfoEventoTeclado{
 
 /********************************
 O PIGInfoEventoAudio é um struct contendo informações específicas sobre o evento de audio (encerramento de audio):
-audioId: Id do audio que se encerrou (se o valor for igual a ID_BACKGROUND, indica que o audio de background se encerrou)
+audioId: id do audio que se encerrou (se o valor for igual a PIG_AUDIO_BACKGROUND, indica que o audio de background se encerrou)
 ********************************/
 typedef struct PIGInfoEventoAudio{
     int audioId;
@@ -347,8 +347,8 @@ typedef struct PIGMetricas_Fonte{
     int descent;        //quantidade de pixels abaixo da linha horizontal de base da letra (sempre positivo)
     int altura;         //total de pixels na altura (soma dos dois campos anteriores)
     int recuo;          //quantidade pixels entre a linha vertical de base e o primeiro pixel do eixo X da letra (pode ser negativo)
-    int avanco;         //quantidade de pixels entre a linha vertical de base e o �ltimo pixel do eixo X da letra (sempre positivo)
-    int largura;        //total de pixels na largura (diferen�a dos dois anteriores)
+    int avanco;         //quantidade de pixels entre a linha vertical de base e o último pixel do eixo X da letra (sempre positivo)
+    int largura;        //total de pixels na largura (diferença dos dois anteriores)
 }PIGMetricas_Fonte;
 
 //Seção de teclas

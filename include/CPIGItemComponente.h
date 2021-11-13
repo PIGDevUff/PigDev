@@ -3,7 +3,7 @@ A classe CPIGItemComponente descreve o código dos items que compõem certos compo
 Todos esses componentes se caracterizam por possuir diversos itens e por se poder marcar/selecionar um ou mais desses itens.
 Os elementos principais da classe CPIGItemComponente são: o texto do item (label, obrigatório), a imagem de fundo (textura básica do componente, opcional) e um ícone (imagem extra, opcional).
 Além disso, os objetos da classe possuem um ponteiro para função que permite que o frame do ícone seja alterado externamente.
-O ícone pode ser alterado para representar a marcação ou não do item dentro de um cehckbox ou radiobox.
+O ícone pode ser alterado para representar a marcação ou não do item dentro de um checkbox ou radiobox.
 O label é posicionado sempre internamente, mas pode estar alinhado à direita (com ou sem a presença do ícone), à esquerda (com ou sem a presença do ícone) ou centralizado (com ou sem a presença do ícone).
 **************************************************/
 
@@ -38,7 +38,6 @@ private:
         SetPosicaoPadraoLabel(PIG_COMPONENTE_CENTRO_CENTRO);
         AjustaFrame = NULL;
         coresBasicas[0] = {0,0,0,0};
-        corAtual = 0;
     }
 
 public:
@@ -112,7 +111,7 @@ public:
         //fundo
         if (text)
             CPIGSprite::Desenha();
-        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[corAtual]);
+        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
 
         DesenhaLabel();
 

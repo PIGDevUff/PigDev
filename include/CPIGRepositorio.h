@@ -43,7 +43,7 @@ public:
         return it->second;
     }
 
-    int ProxID(){
+    inline int ProxID(){
         return posLivres.back();
     }
 

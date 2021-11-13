@@ -2,6 +2,7 @@
 #define _CPIGJOGO_
 
 #include "CPIGAtributos.h"
+#include "CPIGGerenciadorJanelas.h"
 
 class CPIGJogo: public CPIGAtributos{
 
@@ -18,7 +19,7 @@ private:
 
 public:
 
-    CPIGJogo(const char *nome,int cursor=0,int altura=PIG_ALT_TELA,int largura=PIG_LARG_TELA):CPIGAtributos(){
+    CPIGJogo(string nome, int cursor=0, int altura=PIG_ALT_TELA, int largura=PIG_LARG_TELA):CPIGAtributos(){
         rodando = true;
         teclado = SDL_GetKeyboardState(NULL);
         estado = 0;
@@ -272,7 +273,7 @@ public:
         return lastFPS/PIG_INTERVALO_FPS;
     }
 
-    void PreparaOffScreenRenderer(int altura,int largura){
+    void PreparaOffScreenRenderer(int altura, int largura){
         if (offRenderer) delete offRenderer;
         offRenderer = new CPIGOffscreenRenderer(altura,largura);
     }

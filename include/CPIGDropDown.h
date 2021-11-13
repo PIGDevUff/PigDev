@@ -37,8 +37,7 @@ private:
         }
     }
 
-    void SetAcionado(bool valor){
-    }
+    void SetAcionado(bool valor){}
 
     void SetMouseOver(bool valor){
         mouseOver = valor;
@@ -67,7 +66,7 @@ private:
         if (text){//se tiver imagem de fundo
             dest.h=altBaseLista;
             CPIGSprite::Desenha();
-        }else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,((int)pos.y)+alt-altBaseLista,altBaseLista,larg,coresBasicas[corAtual]);
+        }else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,((int)pos.y)+alt-altBaseLista,altBaseLista,larg,coresBasicas[0]);
 
         if (itemDestaque>=0){                       //desenha o item no cabeçalho do dropdown
             PIGPonto2D pItem = itens[itemDestaque]->GetXY();
@@ -85,7 +84,7 @@ private:
             frameAtual=0;
             dest.h = (itens.size()+1)*altBaseLista;
             CPIGSprite::Desenha();
-        }else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y-altBaseLista,(itens.size()+1)*altBaseLista,larg,coresBasicas[corAtual]);
+        }else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y-altBaseLista,(itens.size()+1)*altBaseLista,larg,coresBasicas[0]);
 
         for (PIGItemComponente i: itens)
             i->Desenha();
@@ -171,7 +170,7 @@ public:
         return 0;
     }
 
-    void Move(double nx, double ny){
+    /*void Move(double nx, double ny)override{
         CPIGSprite::Move(nx,ny);
         SetPosicaoPadraoLabel(posLabel);
 
@@ -179,7 +178,7 @@ public:
             int posY = pos.y - altBaseLista*(i+1);
             itens[i]->Move(pos.x,posY);
         }
-    }
+    }*/
 
 };
 

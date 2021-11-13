@@ -8,13 +8,12 @@ class CPIGBotaoOnOff: public CPIGBotao{
 protected:
 
     void IniciaCoresBasicas(){
-        coresBasicas[1] = VERDE;
+        coresBasicas[0] = coresBasicas[1] = VERDE;
         coresBasicas[2] = {100,255,100,255};
         coresBasicas[3] = CINZA;
         coresBasicas[4] = VERMELHO;
         coresBasicas[5] = {255,100,100,255};
         coresBasicas[6] = {160,160,160,255};
-        corAtual = 1;
     }
 
     virtual void ProcessaAtributos(CPIGAtributos atrib)override{
@@ -56,6 +55,7 @@ protected:
     }
 
     void AjustaFrame(){
+        int corAtual;
         if (acionado){
             if (habilitado==false){
                 corAtual = 6;
@@ -72,6 +72,7 @@ protected:
             }else corAtual = 1;
         }
 
+        coresBasicas[0] = coresBasicas[corAtual];
         if (text)
             MudaFrameAtual(corAtual);
     }

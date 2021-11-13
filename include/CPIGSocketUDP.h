@@ -78,7 +78,7 @@ virtual ~CPIGSocketUDP(){
     if (pacoteRecebimento) free(pacoteRecebimento);
 }
 
-bool EnviaDados(const void *buffer, int tamanhoBuffer, std::string host, int porta){
+bool EnviaDados(const void *buffer, int tamanhoBuffer, string host, int porta){
     if (!ativo) return false;
     if (tamanhoBuffer>PIG_TAMANHO_PACOTE_UDP) return false;
 

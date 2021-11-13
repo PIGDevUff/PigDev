@@ -15,7 +15,6 @@ SDL_Thread *threadAccept,*threadReceive;
 
 vector<int> posLivres;
 unordered_map<int,PIGSocketTCP> clientesTCP;
-unordered_map<int,PIGSocketTCP>::iterator it;
 
 void CriaEventoMensagem(PIGTipoMensagemRede tipoMensagem, const void *buffer, int tamanhoDados, int indiceSlot){
     PIGInfoEventoRede *infoRede = (PIGInfoEventoRede*) malloc(sizeof(PIGInfoEventoRede));
@@ -59,7 +58,7 @@ void InicializaValoresBasicos(int valorId,int maxBytesPacote){
 }
 
 PIGSocketTCP GetCliente(int indice){
-    it = clientesTCP.find(indice);
+    unordered_map<int,PIGSocketTCP>::iterator it = clientesTCP.find(indice);
     if (it==clientesTCP.end()) throw CPIGErroIndice(indice,"ClienteTCPdoServidor");
     return it->second;
 }
@@ -115,7 +114,7 @@ virtual ~CPIGServidorTCP(){
     ativo = false;
     SDL_Delay(20);//espera pelo encerramento das threads
 
-    for(it = clientesTCP.begin(); it != clientesTCP.end(); ++it) {
+    for(unordered_map<int,PIGSocketTCP>::iterator it = clientesTCP.begin(); it != clientesTCP.end(); ++it) {
         delete it->second;
     }
 
@@ -138,7 +137,7 @@ int GetQuantidadeConexoes(){
 int EnviaDados(const void *buffer, int tamanhoBuffer, int indiceSlot){
     //if (!clientesTCP) return -1;
     //if (!clientesTCP[indiceSlot]) return -2;
-    it = clientesTCP.find(indiceSlot);
+    unordered_map<int,PIGSocketTCP>::iterator it = clientesTCP.find(indiceSlot);
     if (it==clientesTCP.end()) return -2;//throw CPIGErroIndice(indiceSlot,"socketServidor");
     return it->second->EnviaDados(buffer,tamanhoBuffer);
     //return clientesTCP[indiceSlot]->EnviaDados(buffer,tamanhoBuffer);
