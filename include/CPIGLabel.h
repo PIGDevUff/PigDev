@@ -6,7 +6,7 @@
 class CPIGLabel:public CPIGSprite{
 
 private:
-std::string frase;
+string frase;
 int fonte;
 PIGCor cor;
 
@@ -34,38 +34,38 @@ CPIGLabel(std::string texto,int numFonte,PIGCor corFonte=BRANCO,int idJanela=0):
     AtualizaTextura();
 }
 
-void SetTexto(std::string texto){
+inline void SetTexto(std::string texto){
     frase = texto;
     AtualizaTextura();
 }
 
-void SetFonte(int numFonte){
+inline void SetFonte(int numFonte){
     fonte = numFonte;
     AtualizaTextura();
 }
 
-void SetCor(PIGCor novaCor){
+inline void SetCor(PIGCor novaCor){
     cor = novaCor;
     AtualizaTextura();
 }
 
-int GetAltura(){
+inline int GetAltura(){
     return alt;
 }
 
-int GetLargura(){
+inline int GetLargura(){
     return larg;
 }
 
-string GetTexto(){
+inline string GetTexto(){
     return frase;
 }
 
-int GetFonte(){
+inline int GetFonte(){
     return fonte;
 }
 
-PIGCor GetCor(){
+inline PIGCor GetCor(){
     return cor;
 }
 

@@ -31,7 +31,7 @@ private:
         if (valorStr != "") SetCorLinhas(PIGCriaCorString(valorStr));
     }
 
-    static CPIGAreaDeTexto LeParametros(int idComponente,CPIGAtributos atrib){
+    static CPIGAreaDeTexto LeParametros(int idComponente, CPIGAtributos atrib){
         CPIGAreaDeTexto *resp;
 
         if (atrib.GetString("nomeArq","")!=""){
@@ -163,7 +163,7 @@ private:
     }
 
     //trata o evento do botao esquerdo
-    int TrataMouseBotaoEsquerdo(SDL_Point p,int inicioLinha = 0)override{
+    int TrataMouseBotaoEsquerdo(SDL_Point p, int inicioLinha=0)override{
         //printf("viu tratar esq\n");
         int linha = GetLinhaPonto(p);
         //printf("linha %d\n",linha);
@@ -276,13 +276,13 @@ private:
 
 public:
 
-    CPIGAreaDeTexto(int idComponente,int px, int py, int altura,int largura,string nomeArq,int maxCars = 200,int retiraFundo=1,int janela=0):
-        CPIGCaixaTexto(idComponente,px,py,altura,largura,nomeArq,maxCars,false,retiraFundo,janela){ // A altura é um vetor, mas eu preciso dela, entao eu acabei colocando como o tamanho da fonte, qualquer coisa só mudar aqui
+    CPIGAreaDeTexto(int idComponente, int px, int py, int altura,int largura, string nomeArq, int maxCars=PIG_MAX_CARS_CAIXATEXTO, int retiraFundo=1, int janela=0):
+        CPIGCaixaTexto(idComponente,px,py,altura,largura,nomeArq,maxCars,retiraFundo,janela){ // A altura é um vetor, mas eu preciso dela, entao eu acabei colocando como o tamanho da fonte, qualquer coisa só mudar aqui
             IniciaBase();
         }
 
-    CPIGAreaDeTexto(int idComponente,int px, int py, int altura,int largura,int maxCars = 200,int janela=0):
-        CPIGCaixaTexto(idComponente,px,py,altura,largura,maxCars,false,janela){ // A altura é um vetor, mas eu preciso dela, entao eu acabei colocando como o tamanho da fonte, qualquer coisa só mudar aqui
+    CPIGAreaDeTexto(int idComponente, int px, int py, int altura, int largura, int maxCars=PIG_MAX_CARS_CAIXATEXTO, int janela=0):
+        CPIGCaixaTexto(idComponente,px,py,altura,largura,maxCars,janela){ // A altura é um vetor, mas eu preciso dela, entao eu acabei colocando como o tamanho da fonte, qualquer coisa só mudar aqui
             IniciaBase();
         }
 

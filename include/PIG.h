@@ -29,27 +29,27 @@
 
 
 /********************************
-/ Vari√°veis Globais
+/ Vari·veis Globais
 /********************************/
 PIGJogo jogo=NULL;
 
 /********************************
-A fun√ß√£o CriaJogo() √© respons√°vel pela cria√ß√£o da janela do jogo e pelos componentes audio-visuais.
-Ela deve ser chamada antes de qualquer outra fun√ß√£o da biblioteca PIG.h. N√£o √© poss√≠vel criar dois
-jogos no mesmo progama. Logo, somente a primeira chamada ter√° efeito. A janela padr√£o da aplica√ß√£o ter√° o tamanho definido pelas constantes PIG_ALT_TELA e PIG_LARG_TELA
+A funÁ„o CriaJogo() È respons·vel pela criaÁ„o da janela do jogo e pelos componentes audio-visuais.
+Ela deve ser chamada antes de qualquer outra funÁ„o da biblioteca PIG.h. N„o È possÌvel criar dois
+jogos no mesmo progama. Logo, somente a primeira chamada ter· efeito. A janela padr„o da aplicaÁ„o ter· o tamanho definido pelas constantes PIG_ALT_TELA e PIG_LARG_TELA
 definidas no arquivo PIGTipos.h, exceto se forem passados outros valores.
-Par√¢metros:
-nomeJanela (entrada, passagem por refer√™ncia*): indica o nome que a janela do jogo mostrar√° no seu t√≠tulo.
-√â utilizado o operador * apenas por se tratar de um par√¢metro string. O valor do par√¢metro n√£o √© alterado dentro da fun√ß√£o.
-cursorProprio (entrada, passagem por valor): indica se o jogo utilizar√° cursores (ponteiros) pr√≥prios para o mouse ou utilizar√° o cursor padr√£o.
-altura (entrada, passagem por valor n√£o-obrigat√≥rio): indica a altura em pixels da janela principal do jogo.
-largura (entrada, passagem por valor n√£o-obrigat√≥rio): indica a largura em pixels da janela principal do jogo.
+Par‚metros:
+nomeJanela (entrada, passagem por referÍncia*): indica o nome que a janela do jogo mostrar· no seu tÌtulo.
+… utilizado o operador * apenas por se tratar de um par‚metro string. O valor do par‚metro n„o È alterado dentro da funÁ„o.
+cursorProprio (entrada, passagem por valor): indica se o jogo utilizar· cursores (ponteiros) prÛprios para o mouse ou utilizar· o cursor padr„o.
+altura (entrada, passagem por valor n„o-obrigatÛrio): indica a altura em pixels da janela principal do jogo.
+largura (entrada, passagem por valor n„o-obrigatÛrio): indica a largura em pixels da janela principal do jogo.
 ********************************/
 /**
  *  \brief Cria o jogo.
  *
- *  \param nomeJanela   T√≠tulo da janela do jogo.
- *  \param cursorProrio Se diferente de zero, indica que o usu√°rio definir√° cursores
+ *  \param nomeJanela   TÌtulo da janela do jogo.
+ *  \param cursorProrio Se diferente de zero, indica que o usu·rio definir· cursores
  *  \param altura       Altura da tela do jogo
  *  \param largura      Largura da tela do jogo
  *
@@ -78,9 +78,9 @@ void CriaJogo(const char *nomeJanela, int cursorProprio=0, int altura=PIG_ALT_TE
 
 
 /********************************
-A fun√ß√£o SetValorIntJogo() √© respons√°vel incorporar ao jogo um atributo inteiro.
-Par√¢metros:
-indice (entrada, passagem por valor): relaciona um n√∫mero inteiro ao atributo.
+A funÁ„o SetValorIntJogo() È respons·vel incorporar ao jogo um atributo inteiro.
+Par‚metros:
+indice (entrada, passagem por valor): relaciona um n˙mero inteiro ao atributo.
 valor (entrada, passagem por valor): valor do atributo inteiro a ser associado ao jogo.
 ********************************/
 void SetValorIntJogo(int indice, int valor){
@@ -88,9 +88,9 @@ void SetValorIntJogo(int indice, int valor){
 }
 
 /********************************
-A fun√ß√£o SetValorFloatJogo() √© respons√°vel incorporar ao jogo um atributo float.
-Par√¢metros:
-indice (entrada, passagem por valor): relaciona um n√∫mero inteiro ao atributo.
+A funÁ„o SetValorFloatJogo() È respons·vel incorporar ao jogo um atributo float.
+Par‚metros:
+indice (entrada, passagem por valor): relaciona um n˙mero inteiro ao atributo.
 valor (entrada, passagem por valor): valor do atributo float a ser associado ao jogo.
 ********************************/
 void SetValorFloatJogo(int indice, float valor){
@@ -98,19 +98,19 @@ void SetValorFloatJogo(int indice, float valor){
 }
 
 /********************************
-A fun√ß√£o SetValorIntJogo() √© respons√°vel incorporar ao jogo um atributo inteiro.
-Par√¢metros:
-indice (entrada, passagem por valor): relaciona um n√∫mero inteiro ao atributo.
-valor (entrada, passagem por refer√™ncia): valor do atributo string a ser associado ao jogo.
+A funÁ„o SetValorIntJogo() È respons·vel incorporar ao jogo um atributo inteiro.
+Par‚metros:
+indice (entrada, passagem por valor): relaciona um n˙mero inteiro ao atributo.
+valor (entrada, passagem por referÍncia): valor do atributo string a ser associado ao jogo.
 ********************************/
 void SetValorStringJogo(int indice, char *valor){
     jogo->SetValorString(indice,valor);
 }
 
 /********************************
-A fun√ß√£o SetValorIntJogo() √© respons√°vel incorporar ao jogo um atributo inteiro.
-Par√¢metros:
-indice (entrada, passagem por refer√™ncia): relaciona uma string ao atributo.
+A funÁ„o SetValorIntJogo() È respons·vel incorporar ao jogo um atributo inteiro.
+Par‚metros:
+indice (entrada, passagem por referÍncia): relaciona uma string ao atributo.
 valor (entrada, passagem por valor): valor do atributo inteiro a ser associado ao jogo.
 ********************************/
 void SetValorIntJogo(char *indice, int valor){
@@ -118,9 +118,9 @@ void SetValorIntJogo(char *indice, int valor){
 }
 
 /********************************
-A fun√ß√£o SetValorFloatJogo() √© respons√°vel incorporar ao jogo um atributo float.
-Par√¢metros:
-indice (entrada, passagem por refer√™ncia): relaciona uma string ao atributo.
+A funÁ„o SetValorFloatJogo() È respons·vel incorporar ao jogo um atributo float.
+Par‚metros:
+indice (entrada, passagem por referÍncia): relaciona uma string ao atributo.
 valor (entrada, passagem por valor): valor do atributo float a ser associado ao jogo.
 ********************************/
 void SetValorFloatJogo(char *indice, float valor){
@@ -128,46 +128,46 @@ void SetValorFloatJogo(char *indice, float valor){
 }
 
 /********************************
-A fun√ß√£o SetValorIntJogo() √© respons√°vel incorporar ao jogo um atributo inteiro.
-Par√¢metros:
-indice (entrada, passagem por refer√™ncia): relaciona uma string ao atributo.
-valor (entrada, passagem por refer√™ncia): valor do atributo string a ser associado ao jogo.
+A funÁ„o SetValorIntJogo() È respons·vel incorporar ao jogo um atributo inteiro.
+Par‚metros:
+indice (entrada, passagem por referÍncia): relaciona uma string ao atributo.
+valor (entrada, passagem por referÍncia): valor do atributo string a ser associado ao jogo.
 ********************************/
 void SetValorStringJogo(char *indice, char *valor){
     jogo->SetValorString(indice,valor);
 }
 
 /********************************
-A fun√ß√£o GetValorIntJogo() √© respons√°vel recuperar o valor de um atributo inteiro relacionado ao jogo.
-Par√¢metros:
-indice (entrada, passagem por valor): indica o n√∫mero do atributo que se deseja recuperar.
-valor (sa√≠da, passagem por refer√™ncia): indica o valor do atributo, se a fun√ß√£o retornar um resultado diferente de zero.
+A funÁ„o GetValorIntJogo() È respons·vel recuperar o valor de um atributo inteiro relacionado ao jogo.
+Par‚metros:
+indice (entrada, passagem por valor): indica o n˙mero do atributo que se deseja recuperar.
+valor (saÌda, passagem por referÍncia): indica o valor do atributo, se a funÁ„o retornar um resultado diferente de zero.
 Retorno:
-Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n√£o existir, a fun√ß√£o retorna o valor 0 (zero).
+Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n„o existir, a funÁ„o retorna o valor 0 (zero).
 ********************************/
 int GetValorIntJogo(int indice, int *valor){
     return jogo->GetValorInt(indice,*valor);
 }
 
 /********************************
-A fun√ß√£o GetValorFloatJogo() √© respons√°vel recuperar o valor de um atributo float relacionado ao jogo.
-Par√¢metros:
-indice (entrada, passagem por valor): indica o n√∫mero do atributo que se deseja recuperar.
-valor (sa√≠da, passagem por refer√™ncia): indica o valor do atributo, se a fun√ß√£o retornar um resultado diferente de zero.
+A funÁ„o GetValorFloatJogo() È respons·vel recuperar o valor de um atributo float relacionado ao jogo.
+Par‚metros:
+indice (entrada, passagem por valor): indica o n˙mero do atributo que se deseja recuperar.
+valor (saÌda, passagem por referÍncia): indica o valor do atributo, se a funÁ„o retornar um resultado diferente de zero.
 Retorno:
-Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n√£o existir, a fun√ß√£o retorna o valor 0 (zero).
+Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n„o existir, a funÁ„o retorna o valor 0 (zero).
 ********************************/
 int GetValorFloatJogo(int indice, float *valor){
     return jogo->GetValorFloat(indice,*valor);
 }
 
 /********************************
-A fun√ß√£o GetValorStringJogo() √© respons√°vel recuperar o valor de um atributo string relacionado ao jogo.
-Par√¢metros:
-indice (entrada, passagem por valor): indica o n√∫mero do atributo que se deseja recuperar.
-valor (sa√≠da, passagem por refer√™ncia): indica o valor do atributo, se a fun√ß√£o retornar um resultado diferente de zero.
+A funÁ„o GetValorStringJogo() È respons·vel recuperar o valor de um atributo string relacionado ao jogo.
+Par‚metros:
+indice (entrada, passagem por valor): indica o n˙mero do atributo que se deseja recuperar.
+valor (saÌda, passagem por referÍncia): indica o valor do atributo, se a funÁ„o retornar um resultado diferente de zero.
 Retorno:
-Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n√£o existir, a fun√ß√£o retorna o valor 0 (zero).
+Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n„o existir, a funÁ„o retorna o valor 0 (zero).
 ********************************/
 int GetValorStringJogo(int indice, char *valor){
     string str;
@@ -177,36 +177,36 @@ int GetValorStringJogo(int indice, char *valor){
 }
 
 /********************************
-A fun√ß√£o GetValorIntJogo() √© respons√°vel recuperar o valor de um atributo inteiro relacionado ao jogo.
-Par√¢metros:
-indice (entrada, passagem por refer√™ncia): indica o nome do atributo que se deseja recuperar.
-valor (sa√≠da, passagem por refer√™ncia): indica o valor do atributo, se a fun√ß√£o retornar um resultado diferente de zero.
+A funÁ„o GetValorIntJogo() È respons·vel recuperar o valor de um atributo inteiro relacionado ao jogo.
+Par‚metros:
+indice (entrada, passagem por referÍncia): indica o nome do atributo que se deseja recuperar.
+valor (saÌda, passagem por referÍncia): indica o valor do atributo, se a funÁ„o retornar um resultado diferente de zero.
 Retorno:
-Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n√£o existir, a fun√ß√£o retorna o valor 0 (zero).
+Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n„o existir, a funÁ„o retorna o valor 0 (zero).
 ********************************/
 int GetValorIntJogo(char *indice, int *valor){
     return jogo->GetValorInt(indice,*valor);
 }
 
 /********************************
-A fun√ß√£o GetValorFloatJogo() √© respons√°vel recuperar o valor de um atributo float relacionado ao jogo.
-Par√¢metros:
+A funÁ„o GetValorFloatJogo() È respons·vel recuperar o valor de um atributo float relacionado ao jogo.
+Par‚metros:
 indice (entrada, passagem por valor): indica o nome do atributo que se deseja recuperar.
-valor (sa√≠da, passagem por refer√™ncia): indica o valor do atributo, se a fun√ß√£o retornar um resultado diferente de zero.
+valor (saÌda, passagem por referÍncia): indica o valor do atributo, se a funÁ„o retornar um resultado diferente de zero.
 Retorno:
-Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n√£o existir, a fun√ß√£o retorna o valor 0 (zero).
+Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n„o existir, a funÁ„o retorna o valor 0 (zero).
 ********************************/
 int GetValorFloatJogo(char *indice, float *valor){
     return jogo->GetValorFloat(indice,*valor);
 }
 
 /********************************
-A fun√ß√£o GetValorStringJogo() √© respons√°vel recuperar o valor de um atributo string relacionado ao jogo.
-Par√¢metros:
+A funÁ„o GetValorStringJogo() È respons·vel recuperar o valor de um atributo string relacionado ao jogo.
+Par‚metros:
 indice (entrada, passagem por valor): indica o nome do atributo que se deseja recuperar.
-valor (sa√≠da, passagem por refer√™ncia): indica o valor do atributo, se a fun√ß√£o retornar um resultado diferente de zero.
+valor (saÌda, passagem por referÍncia): indica o valor do atributo, se a funÁ„o retornar um resultado diferente de zero.
 Retorno:
-Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n√£o existir, a fun√ß√£o retorna o valor 0 (zero).
+Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n„o existir, a funÁ„o retorna o valor 0 (zero).
 ********************************/
 int GetValorStringJogo(char *indice, char *valor){
     string str;
@@ -216,7 +216,7 @@ int GetValorStringJogo(char *indice, char *valor){
 }
 
 /********************************
-A fun√ß√£o GetEstadoJogo() indica o estado do jogo. Este estado √© apenas um valor inteiro
+A funÁ„o GetEstadoJogo() indica o estado do jogo. Este estado È apenas um valor inteiro
 que pode ser usado para indicar uma fase do jogo, ou a vez de algum jogador por exemplo.
 Retorno:
 inteiro indicando o valor do estado do jogo.
@@ -226,9 +226,9 @@ inteiro indicando o valor do estado do jogo.
 //}
 
 /********************************
-A fun√ß√£o SetEstadoJogo() atribui um novo valor ao estado do jogo. Este estado √© apenas um valor inteiro
+A funÁ„o SetEstadoJogo() atribui um novo valor ao estado do jogo. Este estado È apenas um valor inteiro
 que pode ser usado para indicar uma fase do jogo, ou a vez de algum jogador por exemplo.
-Par√¢metro:
+Par‚metro:
 estado (entrada, passagem por valor): indica o novo estado do jogo;
 ********************************/
 //void SetEstadoJogo(int estado){
@@ -236,55 +236,55 @@ estado (entrada, passagem por valor): indica o novo estado do jogo;
 //}
 
 /********************************
-A fun√ß√£o DefineFundoJanela() permite escolher um arquivo de imagem como fundo (background) de uma janela que ser√° automaticamente desenhado a cada nova etapa de desenho na tela.
-Par√¢metros:
-nomeArquivoImagem (entrada, passagem por refer√™ncia*): indica o caminho relativo ou absoluto do arquivo de imagem que ser√° utilizado como fundo do jogo.
-√â utilizado o operador * apenas por se tratar de um par√¢metro string. O valor do par√¢metro n√£o √© alterado dentro da fun√ß√£o.
-idJanela (entrada, passagem por valor n√£o-obrigatorio): indica de qual janela √© a imagem.
+A funÁ„o DefineFundoJanela() permite escolher um arquivo de imagem como fundo (background) de uma janela que ser· automaticamente desenhado a cada nova etapa de desenho na tela.
+Par‚metros:
+nomeArquivoImagem (entrada, passagem por referÍncia*): indica o caminho relativo ou absoluto do arquivo de imagem que ser· utilizado como fundo do jogo.
+… utilizado o operador * apenas por se tratar de um par‚metro string. O valor do par‚metro n„o È alterado dentro da funÁ„o.
+idJanela (entrada, passagem por valor n„o-obrigatorio): indica de qual janela È a imagem.
 ********************************/
 void DefineFundo(char *nomeArquivoImagem, int idJanela=0){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->DefineFundo(nomeArquivoImagem);
 }
 
 /********************************
-A fun√ß√£o GetTeclado() faz um mapeamento entre o teclado f√≠sico a uma vari√°vel do tipo PIG_Teclado que funciona como um vetor de vari√°veis l√≥gicas,
-sendo cada posi√ß√£o do vetor relativo a uma tecla f√≠sica.
-Uma lista das poss√≠veis teclas e seus c√≥digo pode ser vista no arquivo Tipos_PIG.h.
+A funÁ„o GetTeclado() faz um mapeamento entre o teclado fÌsico a uma vari·vel do tipo PIG_Teclado que funciona como um vetor de vari·veis lÛgicas,
+sendo cada posiÁ„o do vetor relativo a uma tecla fÌsica.
+Uma lista das possÌveis teclas e seus cÛdigo pode ser vista no arquivo Tipos_PIG.h.
 Retorno:
-O valor de retorno da fun√ß√£o √© um vetor de n√∫meros inteiros que indicam se uma determinada tecla (√≠ndice do vetor) foi
-pressionada (valor diferente de 0,zero) ou n√£o (valor igual a zero).
+O valor de retorno da funÁ„o È um vetor de n˙meros inteiros que indicam se uma determinada tecla (Ìndice do vetor) foi
+pressionada (valor diferente de 0,zero) ou n„o (valor igual a zero).
 ********************************/
 PIGTeclado GetTeclado(){
     return jogo->PegaTeclado();
 }
 
 /********************************
-A fun√ß√£o GetEvento() indica se houve algum tipo de evento desde a √∫ltima vez que a fun√ß√£o foi chamada.
-Um evento pode ser uma tecla pressionada, um clique do mouse ou outra coisa relacionada √† tela do jogo.
-Maiores informa√ß√µe podem ser vistas no arquivo PIGTipos.h
+A funÁ„o GetEvento() indica se houve algum tipo de evento desde a ˙ltima vez que a funÁ„o foi chamada.
+Um evento pode ser uma tecla pressionada, um clique do mouse ou outra coisa relacionada ‡ tela do jogo.
+Maiores informaÁıe podem ser vistas no arquivo PIGTipos.h
 Retorno:
-O valor de retorno √© um struct contendo o tipo de evento ocorrido e v√°rios outros structs com informa√ß√µes espec√≠ficas.
+O valor de retorno È um struct contendo o tipo de evento ocorrido e v·rios outros structs com informaÁıes especÌficas.
 ********************************/
 PIGEvento GetEvento(){
     return jogo->PegaEvento();
 }
 
 /********************************
-A fun√ß√£o IniciaDesenho() √© respons√°vel por preparar a janela do jogo para que os objetos gr√°ficos
-possam ser mostrados, al√©m de desenhar a imagem de fundo do jogo, caso tenha sido definida.
+A funÁ„o IniciaDesenho() È respons·vel por preparar a janela do jogo para que os objetos gr·ficos
+possam ser mostrados, alÈm de desenhar a imagem de fundo do jogo, caso tenha sido definida.
 Deve ser chamada repetidamente a cada novo quadro (frame) a ser desenhado.
-Par√¢metros:
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica qual janela deve preparar a renderiza√ß√£o. O valor (-1) indica que todas as janelas devem ser preparadas.
+Par‚metros:
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica qual janela deve preparar a renderizaÁ„o. O valor (-1) indica que todas as janelas devem ser preparadas.
 ********************************/
 void IniciaDesenho(int idJanela=-1){
     jogo->IniciaDesenho(idJanela);
 }
 
 /********************************
-A fun√ß√£o EncerraDesenho() √© respons√°vel por encerrar o desenho que foi criado, mostrando na janela do jogo.
+A funÁ„o EncerraDesenho() È respons·vel por encerrar o desenho que foi criado, mostrando na janela do jogo.
 Deve ser chamado sempre ao final do loop principal do jogo.
-Par√¢metros:
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica qual janela deve preparar a renderiza√ß√£o. O valor (-1) indica que todas as janelas devem ser exibidas.
+Par‚metros:
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica qual janela deve preparar a renderizaÁ„o. O valor (-1) indica que todas as janelas devem ser exibidas.
 ********************************/
 void EncerraDesenho(int idJanela=-1){
     CPIGMouse::Desenha();
@@ -292,38 +292,38 @@ void EncerraDesenho(int idJanela=-1){
 }
 
 /********************************
-A fun√ß√£o SalvaTela() √© respons√°vel por criar um arquivo Bitmap, contendo uma c√≥pia de uma janela do jogo naquele momento.
-Par√¢metros:
-nomeArquivoBMP (entrada, passagem por refer√™ncia*): indica o nome do arquivo Bitmap que ser√° salvo. O valor do par√¢metro deve conter a extens√£o ".bmp".
-√â utilizado o operador * apenas por se tratar de um par√¢metro string. O valor do par√¢metro n√£o √© alterado dentro da fun√ß√£o.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica qual janela deve ter a imagem salva.
+A funÁ„o SalvaTela() È respons·vel por criar um arquivo Bitmap, contendo uma cÛpia de uma janela do jogo naquele momento.
+Par‚metros:
+nomeArquivoBMP (entrada, passagem por referÍncia*): indica o nome do arquivo Bitmap que ser· salvo. O valor do par‚metro deve conter a extens„o ".bmp".
+… utilizado o operador * apenas por se tratar de um par‚metro string. O valor do par‚metro n„o È alterado dentro da funÁ„o.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica qual janela deve ter a imagem salva.
 ********************************/
 void SalvaTela(char *nomeArquivoBMP, int idJanela=0){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->SaveScreenshot(nomeArquivoBMP,true);
 }
 
 /********************************
-A fun√ß√£o JogoRodando() √© repons√°vel por retornar se o jogo ainda est√° ativo ou n√£o.
-O jogo ser√° encerrado se a janela do jogo for fechada, por exemplo.
+A funÁ„o JogoRodando() È repons·vel por retornar se o jogo ainda est· ativo ou n„o.
+O jogo ser· encerrado se a janela do jogo for fechada, por exemplo.
 Retorno:
-inteiro que indica se o jogo ainda est√° sendo executado (valor diferente de zero) ou n√£o (valor igual a 0, zero).
+inteiro que indica se o jogo ainda est· sendo executado (valor diferente de zero) ou n„o (valor igual a 0, zero).
 ********************************/
 int JogoRodando(){
     return jogo->GetRodando();
 }
 
 /********************************
-A fun√ß√£o Espera() "congela" a tela do jogo por alguns milissegundos, impedindo que qualquer outro comando seja executado enquanto isso.
-Par√¢metros:
-tempo (entrada, passagem por valor): indica a quantidade de milissegundos durante a qual o jogo ser√° pausado.
+A funÁ„o Espera() "congela" a tela do jogo por alguns milissegundos, impedindo que qualquer outro comando seja executado enquanto isso.
+Par‚metros:
+tempo (entrada, passagem por valor): indica a quantidade de milissegundos durante a qual o jogo ser· pausado.
 ********************************/
 void Espera(int tempo){
     SDL_Delay(tempo);
 }
 
 /********************************
-A fun√ß√£o FinalizaJogo() √© respons√°vel por encerrar com a PIG. Ap√≥s tudo o jogo ser executado
-a fun√ß√£o deve ser chamada e ela ir√° realizar a libera√ß√£o de mem√≥ria dos elementos criados pela PIG.
+A funÁ„o FinalizaJogo() È respons·vel por encerrar com a PIG. ApÛs tudo o jogo ser executado
+a funÁ„o deve ser chamada e ela ir· realizar a liberaÁ„o de memÛria dos elementos criados pela PIG.
 ********************************/
 void FinalizaJogo(){
     CPIGGerenciadorControles::Encerra();
@@ -344,33 +344,33 @@ void FinalizaJogo(){
 }
 
 /********************************
-A fun√ß√£o GetFPS() √© respons√°vel por calcular o valor do Frames Per Seconds (FPS), que representa a quantidade de
+A funÁ„o GetFPS() È respons·vel por calcular o valor do Frames Per Seconds (FPS), que representa a quantidade de
 frames (quadros) desenhados por segundo pela PIG.
 Retorno:
-float que indica a m√©dia de quadros desenhados por segundo.
+float que indica a mÈdia de quadros desenhados por segundo.
 ********************************/
 float GetFPS(){
     return jogo->GetFPS();
 }
 
 /********************************
-A fun√ß√£o CarregaCursor() √© respons√°vel por armazenar um novo cursor para o mouse, dado pelo arquivo de imagem indicado.
+A funÁ„o CarregaCursor() È respons·vel por armazenar um novo cursor para o mouse, dado pelo arquivo de imagem indicado.
 O arquivo deve ser uma imagem com 32 pixels de altura orbigatoriamente.
-Par√¢metro:
-nomeArquivoCursor (entrada, passagem por refer√™ncia*): indica o nome do arquivo de imagem que ser√° utilziado como cursor do mouse.
-√â utilizado o operador * apenas por se tratar de um par√¢metro string. O valor do par√¢metro n√£o √© alterado dentro da fun√ß√£o.
+Par‚metro:
+nomeArquivoCursor (entrada, passagem por referÍncia*): indica o nome do arquivo de imagem que ser· utilziado como cursor do mouse.
+… utilizado o operador * apenas por se tratar de um par‚metro string. O valor do par‚metro n„o È alterado dentro da funÁ„o.
 ********************************/
 void CarregaCursor(char *nomeArquivoCursor, int idJanela=0){
     CPIGMouse::CarregaCursor(nomeArquivoCursor,idJanela);
 }
 
 /********************************
-A fun√ß√£o CriaFrameCursor() √© respons√°vel por delimitar a √°rea do arquivo de imagem para um cursor espec√≠fico.
-Idealmente, a altura e largura informadas devem ter tamanho igual a 32 pixels (para n√£o haver perda de qualidade na exibi√ß√£o do cursor).
-Par√¢metro:
-idFrame (entrada, passagem por valor): n√∫mero inteiro associado ao cursor (√°rea do arquivo de imagem) em quest√£o.
-xBitmap (entrada, passagem por valor): indica a posi√ß√£o de eixo X onde come√ßa o frame.
-yBitmap (entrada, passagem por valor): indica a posi√ß√£o de eixo Y onde come√ßa o frame. Neste caso, o eixo Y aumenta para baixo.
+A funÁ„o CriaFrameCursor() È respons·vel por delimitar a ·rea do arquivo de imagem para um cursor especÌfico.
+Idealmente, a altura e largura informadas devem ter tamanho igual a 32 pixels (para n„o haver perda de qualidade na exibiÁ„o do cursor).
+Par‚metro:
+idFrame (entrada, passagem por valor): n˙mero inteiro associado ao cursor (·rea do arquivo de imagem) em quest„o.
+xBitmap (entrada, passagem por valor): indica a posiÁ„o de eixo X onde comeÁa o frame.
+yBitmap (entrada, passagem por valor): indica a posiÁ„o de eixo Y onde comeÁa o frame. Neste caso, o eixo Y aumenta para baixo.
 altura (entrada, passagem por valor): altura em pixels do frame.
 largura (entrada, passagem por valor): largura em pixels do frame.
 ********************************/
@@ -379,39 +379,39 @@ void CriaFrameCursor(int idFrame, int xBitmap, int yBitmap, int altura, int larg
 }
 
 /********************************
-A fun√ß√£o CarregaFramesPorLinhaCursor() √© respons√°vel por subdividir o arquivo de imagem em linhas (de mesmo tamanho) e colunas (de mesmo tamanho).
-Cada subdivis√£o representar√° um frame que ser√° automaticamente criado para o cursor do mouse, com numera√ß√£o incremental a partir do par√¢metro "frameInicial".
-Ao final das "qtdColunas" da primeira linha, a defini√ß√£o dos frames continua na linha inferior.
-A fun√ß√£o pode ser utilizada em spritesheets regulares.
-Par√¢metros:
-frameInicial (entrada, passagem por valor): numera√ß√£o do primeiro frame a ser criado pela fun√ß√£o. Os demais frames ter√£o numera√ß√£o consecutiva.
-qtdLinhas (entrada, passagem por valor): quantidade de linhas na qual o arquivo de imagem ser√° dividido.
-qtdColunas (entrada, passagem por valor): quantidade de colunas na qual o arquivo de imagem ser√° dividido.
+A funÁ„o CarregaFramesPorLinhaCursor() È respons·vel por subdividir o arquivo de imagem em linhas (de mesmo tamanho) e colunas (de mesmo tamanho).
+Cada subdivis„o representar· um frame que ser· automaticamente criado para o cursor do mouse, com numeraÁ„o incremental a partir do par‚metro "frameInicial".
+Ao final das "qtdColunas" da primeira linha, a definiÁ„o dos frames continua na linha inferior.
+A funÁ„o pode ser utilizada em spritesheets regulares.
+Par‚metros:
+frameInicial (entrada, passagem por valor): numeraÁ„o do primeiro frame a ser criado pela funÁ„o. Os demais frames ter„o numeraÁ„o consecutiva.
+qtdLinhas (entrada, passagem por valor): quantidade de linhas na qual o arquivo de imagem ser· dividido.
+qtdColunas (entrada, passagem por valor): quantidade de colunas na qual o arquivo de imagem ser· dividido.
 ********************************/
 void CarregaFramesPorLinhaCursor(int frameInicial, int qtdLinhas, int qtdColunas){
     CPIGMouse::CarregaFramesPorLinha(frameInicial,qtdLinhas,qtdColunas);
 }
 
 /********************************
-A fun√ß√£o CarregaFramesPorColunaCursor() √© respons√°vel por subdividir o arquivo de imagem em linhas (de mesmo tamanho) e colunas (de mesmo tamanho).
-Cada subdivis√£o representar√° um frame que ser√° automaticamente criado para o cursor do mouse, com numera√ß√£o incremental a partir do par√¢metro "frameInicial".
-Ao final das "qtdLinhas" da primeira coluna, a defini√ß√£o dos frames continua na coluna seguinte.
-A fun√ß√£o pode ser utilizada em spritesheets regulares.
-Par√¢metros:
-frameInicial (entrada, passagem por valor): numera√ß√£o do primeiro frame a ser criado pela fun√ß√£o. Os demais frames ter√£o numera√ß√£o consecutiva.
-qtdLinhas (entrada, passagem por valor): quantidade de linhas na qual o arquivo de imagem ser√° dividido.
-qtdColunas (entrada, passagem por valor): quantidade de colunas na qual o arquivo de imagem ser√° dividido.
+A funÁ„o CarregaFramesPorColunaCursor() È respons·vel por subdividir o arquivo de imagem em linhas (de mesmo tamanho) e colunas (de mesmo tamanho).
+Cada subdivis„o representar· um frame que ser· automaticamente criado para o cursor do mouse, com numeraÁ„o incremental a partir do par‚metro "frameInicial".
+Ao final das "qtdLinhas" da primeira coluna, a definiÁ„o dos frames continua na coluna seguinte.
+A funÁ„o pode ser utilizada em spritesheets regulares.
+Par‚metros:
+frameInicial (entrada, passagem por valor): numeraÁ„o do primeiro frame a ser criado pela funÁ„o. Os demais frames ter„o numeraÁ„o consecutiva.
+qtdLinhas (entrada, passagem por valor): quantidade de linhas na qual o arquivo de imagem ser· dividido.
+qtdColunas (entrada, passagem por valor): quantidade de colunas na qual o arquivo de imagem ser· dividido.
 ********************************/
 void CarregaFramesPorColunaCursor(int frameInicial, int qtdLinhas, int qtdColunas){
     CPIGMouse::CarregaFramesPorColuna(frameInicial,qtdLinhas,qtdColunas);
 }
 
 /********************************
-A fun√ß√£o MudaCursor() √© respons√°vel por alterar o cursor atual do mouse por outro j√° definido (fun√ß√£o DefineFrameCursor).
-Par√¢metro:
-idFrame (entrada, passagem por valor): informa o identificador de um cursor (frame) j√° criado.
+A funÁ„o MudaCursor() È respons·vel por alterar o cursor atual do mouse por outro j· definido (funÁ„o DefineFrameCursor).
+Par‚metro:
+idFrame (entrada, passagem por valor): informa o identificador de um cursor (frame) j· criado.
 Retorno:
-Se o identifador informado n√£o corresponder a um frame j√° criado, o valor de retorno √© igual a 0. Caso contr√°rio, √© igual a 1.
+Se o identifador informado n„o corresponder a um frame j· criado, o valor de retorno È igual a 0. Caso contr·rio, È igual a 1.
 ********************************/
 int MudaCursor(int idFrame){
     return CPIGMouse::MudaCursor(idFrame);
@@ -419,20 +419,20 @@ int MudaCursor(int idFrame){
 
 
 /********************************
-A fun√ß√£o GetEstadoBotaoMouse() √© respons√°vel por recuperar o eatado atual de um dos botoes (PIG_MOUSE_DIREITO, PIG_MOUSE_CENTRAL ou PIG_MOUSE_RODINHA) do mouse.
+A funÁ„o GetEstadoBotaoMouse() È respons·vel por recuperar o eatado atual de um dos botoes (PIG_MOUSE_DIREITO, PIG_MOUSE_CENTRAL ou PIG_MOUSE_RODINHA) do mouse.
 O valor retornado pode ser PIG_MOUSE_PRESSIONADO ou PIG_MOUSE_LIBERADO.
 Retorno:
-inteiro que indica a o estado atual do bot√£o do mouse solicitado.
+inteiro que indica a o estado atual do bot„o do mouse solicitado.
 ********************************/
 int GetEstadoBotaoMouse(int botao){
     return CPIGMouse::GetEstadoBotao(botao);
 }
 
 /********************************
-A fun√ß√£o ExecutaBackground() √© respons√°vel por executar uma fun√ß√£o em bckground, ou seja, fora do fluxo principal de execu√ß√£o do programa.
-Essa execu√ß√£o √© feita por outra Thread, com suporte do Sistema Operacional
-Par√¢metros:
-dados (entrada, passagem por refer√™ncia): ponteiro gen√©rico para qualquer tipo de dado a ser utilizado na fun√ß√£o.
+A funÁ„o ExecutaBackground() È respons·vel por executar uma funÁ„o em bckground, ou seja, fora do fluxo principal de execuÁ„o do programa.
+Essa execuÁ„o È feita por outra Thread, com suporte do Sistema Operacional
+Par‚metros:
+dados (entrada, passagem por referÍncia): ponteiro genÈrico para qualquer tipo de dado a ser utilizado na funÁ„o.
 ********************************/
 void ExecutaBackground(PIGFuncaoBackground funcao, void *dados){
     SDL_CreateThread(funcao,"",dados);
@@ -440,80 +440,80 @@ void ExecutaBackground(PIGFuncaoBackground funcao, void *dados){
 
 
 /********************************
-Se√ß√£o de tratamento de janelas
+SeÁ„o de tratamento de janelas
 ********************************/
 
 /********************************
-A fun√ß√£o GetQtdJanela() √© respons√°vel por calcular quantas janelas est√£o criadas pelo jogo, incluindo as que est√£o minimizadas ou escondidas.
+A funÁ„o GetQtdJanela() È respons·vel por calcular quantas janelas est„o criadas pelo jogo, incluindo as que est„o minimizadas ou escondidas.
 Retono:
-inteiro que representa a quantidade de janelas ainda abertas pelo jogo, incluindo as que est√£o minimizadas ou escondidas.
+inteiro que representa a quantidade de janelas ainda abertas pelo jogo, incluindo as que est„o minimizadas ou escondidas.
 ********************************/
 int GetQtdJanelas(){
     return CPIGGerenciadorJanelas::GetQtdJanelas();
 }
 
 /********************************
-A fun√ß√£o CriaJanela() √© respons√°vel por criar e exibir uma nova janela para a aplica√ß√£o. O identificador num√©rico da nova janela √© retornado como par√¢metro.
-Se n√£o foi poss√≠vel criar a janela, o valor de retorno ser√° -1. Existe um limite m√°ximo de janela que podem ser criadas. Esse limite √© dado pelo par√¢metro MAX_JANELAS configurado na Tipos_PIG.h.
-O valor da janela original (padr√£o) √© sempre igual a 0 (zero). Para se desenhar qualquer coisa nas janelas adicionais, √© preciso criar objetos, anima√ß√µes, geradores de part√≠culas e fontes
-especificando-se a janela na qual estes elementos ser√£o renderizados. Ao utilizar-se janelas adicionais, tamb√©m √© poss√≠vel estipular individualmente quais janelas ser√£o preparadas e mostradas, utilizando o
-n√∫mero da janela nas chamadas das fun√ß√µes IniciaDesenho e EncerraDesenho. Caso n√£o seja especificado o n√∫mero, todas as janelas s√£o preparadas e mostradas, respectivamente.
-Par√¢metros:
-nomeJanela (entrada, passagem por refer√™ncia*): indica o nome que a nova janela mostrar√° no seu t√≠tulo.
-√â utilizado o operador * apenas por se tratar de um par√¢metro string. O valor do par√¢metro n√£o √© alterado dentro da fun√ß√£o.
-altura (entrada, passagem por valor n√£o-obrigat√≥rio): indica a altura em pixels da janela a ser criada.
-largura (entrada, passagem por valor n√£o-obrigat√≥rio): indica a largura em pixels da janela a ser criada.
+A funÁ„o CriaJanela() È respons·vel por criar e exibir uma nova janela para a aplicaÁ„o. O identificador numÈrico da nova janela È retornado como par‚metro.
+Se n„o foi possÌvel criar a janela, o valor de retorno ser· -1. Existe um limite m·ximo de janela que podem ser criadas. Esse limite È dado pelo par‚metro MAX_JANELAS configurado na Tipos_PIG.h.
+O valor da janela original (padr„o) È sempre igual a 0 (zero). Para se desenhar qualquer coisa nas janelas adicionais, È preciso criar objetos, animaÁıes, geradores de partÌculas e fontes
+especificando-se a janela na qual estes elementos ser„o renderizados. Ao utilizar-se janelas adicionais, tambÈm È possÌvel estipular individualmente quais janelas ser„o preparadas e mostradas, utilizando o
+n˙mero da janela nas chamadas das funÁıes IniciaDesenho e EncerraDesenho. Caso n„o seja especificado o n˙mero, todas as janelas s„o preparadas e mostradas, respectivamente.
+Par‚metros:
+nomeJanela (entrada, passagem por referÍncia*): indica o nome que a nova janela mostrar· no seu tÌtulo.
+… utilizado o operador * apenas por se tratar de um par‚metro string. O valor do par‚metro n„o È alterado dentro da funÁ„o.
+altura (entrada, passagem por valor n„o-obrigatÛrio): indica a altura em pixels da janela a ser criada.
+largura (entrada, passagem por valor n„o-obrigatÛrio): indica a largura em pixels da janela a ser criada.
 Retorno
-inteiro que representa o n√∫mero de identifica√ß√£o dessa janela. esse n√∫mero deve ser utilizado sempre que um comando deva ser executado para uma janela espec√≠fica.
-A janela padr√£o da aplica√ß√£o possui sempre o n√∫mero 0 (zero).
+inteiro que representa o n˙mero de identificaÁ„o dessa janela. esse n˙mero deve ser utilizado sempre que um comando deva ser executado para uma janela especÌfica.
+A janela padr„o da aplicaÁ„o possui sempre o n˙mero 0 (zero).
 ********************************/
 int CriaJanela(char *nomeJanela, int altura=PIG_ALT_TELA, int largura=PIG_LARG_TELA){
     return CPIGGerenciadorJanelas::CriaJanela(nomeJanela,altura,largura);
 }
 
 /********************************
-A fun√ß√£o FechaJanela() √© respons√°vel por fechar uma janela. As renderiza√ß√µes nessa janela que ocorrerem posteriormente n√£o ter√£o qualquer efeito.
-A janela fechada vai deixar de gerar eventos, mas n√£o poderpa ser reaberta. O efeito de reabrir um janela pode ser obtido com os comandos EscondeJanela() e ExibeJanela().
-Par√¢metros:
-idJanela (entrada, passagem por valor): indica o n√∫mero da janela a ser fechada.
+A funÁ„o FechaJanela() È respons·vel por fechar uma janela. As renderizaÁıes nessa janela que ocorrerem posteriormente n„o ter„o qualquer efeito.
+A janela fechada vai deixar de gerar eventos, mas n„o poderpa ser reaberta. O efeito de reabrir um janela pode ser obtido com os comandos EscondeJanela() e ExibeJanela().
+Par‚metros:
+idJanela (entrada, passagem por valor): indica o n˙mero da janela a ser fechada.
 ********************************/
 void FechaJanela(int idJanela){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->Fecha();
 }
 
 /********************************
-A fun√ß√£o EscondeJanela() √© respons√°vel por fazer a janela deixar de ser vis√≠vel, mas n√£o a fecha de forma definitiva.
-A janela poder√° ser reaberta com a fun√ß√£o ExibeJanela().
-Par√¢metros:
-idJanela (entrada, passagem por valor): indica o n√∫mero da janela a ser oculta.
+A funÁ„o EscondeJanela() È respons·vel por fazer a janela deixar de ser visÌvel, mas n„o a fecha de forma definitiva.
+A janela poder· ser reaberta com a funÁ„o ExibeJanela().
+Par‚metros:
+idJanela (entrada, passagem por valor): indica o n˙mero da janela a ser oculta.
 ********************************/
 void EscondeJanela(int idJanela){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->Esconde();
 }
 
 /********************************
-A fun√ß√£o ExibeJanela() √© respons√°vel por fazer a janela voltar a ser vis√≠vel, mas n√£o faz automaticamente a janela ter o foco para gerar eventos.
-A janela poder√° ser reaberta com foca por meio da fun√ß√£o GanhaFocoJanela().
-Par√¢metros:
-idJanela (entrada, passagem por valor): indica o n√∫mero da janela a ser reexibida sem foco.
+A funÁ„o ExibeJanela() È respons·vel por fazer a janela voltar a ser visÌvel, mas n„o faz automaticamente a janela ter o foco para gerar eventos.
+A janela poder· ser reaberta com foca por meio da funÁ„o GanhaFocoJanela().
+Par‚metros:
+idJanela (entrada, passagem por valor): indica o n˙mero da janela a ser reexibida sem foco.
 ********************************/
 void ExibeJanela(int idJanela){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->Exibe();
 }
 
 /********************************
-A fun√ß√£o GanhaFocoJanela() √© respons√°vel por fazer a janela voltar a ser vis√≠vel e automaticamente voltar a ter o foco para gerar eventos.
-Par√¢metros:
-idJanela (entrada, passagem por valor): indica o n√∫mero da janela a ser reexibida com foco.
+A funÁ„o GanhaFocoJanela() È respons·vel por fazer a janela voltar a ser visÌvel e automaticamente voltar a ter o foco para gerar eventos.
+Par‚metros:
+idJanela (entrada, passagem por valor): indica o n˙mero da janela a ser reexibida com foco.
 ********************************/
 void GanhaFocoJanela(int idJanela){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->GanhaFoco();
 }
 
 /********************************
-A fun√ß√£o GetAlturaJanela() √© respons√°vel por recuperar a altura da janela em pixels.
-Par√¢metros:
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela a ser consultada.
+A funÁ„o GetAlturaJanela() È respons·vel por recuperar a altura da janela em pixels.
+Par‚metros:
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela a ser consultada.
 Retorno:
 inteiro que representa a altura da janela em pixels.
 ********************************/
@@ -522,9 +522,9 @@ int *GetAlturaJanela(int idJanela=0){
 }
 
 /********************************
-A fun√ß√£o GetLarguraJanela() √© respons√°vel por recuperar a largura da janela em pixels.
-Par√¢metros:
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela a ser consultada.
+A funÁ„o GetLarguraJanela() È respons·vel por recuperar a largura da janela em pixels.
+Par‚metros:
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela a ser consultada.
 Retorno:
 inteiro que representa a largura da janela em pixels.
 ********************************/
@@ -534,72 +534,72 @@ int GetLarguraJanela(int idJanela=0){
 
 
 /********************************
-A fun√ß√£o SetTamanhoJanela() √© respons√°vel por definir o tamanho para a janela.
-Par√¢metros:
+A funÁ„o SetTamanhoJanela() È respons·vel por definir o tamanho para a janela.
+Par‚metros:
 altura (entrada, passagem por valor): indica a quantidade de linhas da janela (em pixels).
 largura (entrada, passagem por valor): indica a quantidade de colunas da janela (em pixels).
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela a ser alterada.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela a ser alterada.
 ********************************/
 void SetTamanhoJanela(int altura, int largura,int idJanela=0){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->SetTamanho(altura,largura);
 }
 
 /********************************
-A fun√ß√£o SetAfastamentoCamera() √© respons√°vel por afastar ou aproximar a c√¢mera dos objetos da tela, em um eixo perpendicular.
+A funÁ„o SetAfastamentoCamera() È respons·vel por afastar ou aproximar a c‚mera dos objetos da tela, em um eixo perpendicular.
 O valor de afastamento deve variar entre PIG_AFASTAMENTO_MINIMO (0.1) e PIG_AFASTAMENTO_MAXIMO (100).
-Quanto maior for o valor, mais "afastada" estar√° a c√¢mera dos objetos. O valor padr√£o √© 1.0.
-Par√¢metros:
-afastamento (entrada, passagem por valor): indica o afastamento da c√¢mera em rela√ß√£o ao plano representado pela tela.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela a ser alterada.
+Quanto maior for o valor, mais "afastada" estar· a c‚mera dos objetos. O valor padr„o È 1.0.
+Par‚metros:
+afastamento (entrada, passagem por valor): indica o afastamento da c‚mera em relaÁ„o ao plano representado pela tela.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela a ser alterada.
 Retorno:
-O valor retornado √© igual ao afastamento ap√≥s a execu√ß√£o da fun√ß√£o.
+O valor retornado È igual ao afastamento apÛs a execuÁ„o da funÁ„o.
 ********************************/
 double SetAfastamentoCamera(double afastamento, int idJanela=0){
     return CPIGGerenciadorJanelas::GetJanela(idJanela)->SetAfastamento(afastamento);
 }
 
 /********************************
-A fun√ß√£o GetAfastamentoCamera() recupera o valor atual de afastamento da c√¢mera.
+A funÁ„o GetAfastamentoCamera() recupera o valor atual de afastamento da c‚mera.
 O valor de afastamento deve variar entre PIG_AFASTAMENTO_MINIMO (0.1) e PIG_AFASTAMENTO_MAXIMO (100).
-Quanto maior for o valor, mais "afastada" estar√° a c√¢mera dos objetos. O valor padr√£o √© 1.0.
-Par√¢metros:
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela a ser alterada.
+Quanto maior for o valor, mais "afastada" estar· a c‚mera dos objetos. O valor padr„o È 1.0.
+Par‚metros:
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela a ser alterada.
 Retorno:
-O valor retornado √© igual ao afastamento atual da c√¢mera.
+O valor retornado È igual ao afastamento atual da c‚mera.
 ********************************/
 double GetAfastamentoCamera(int idJanela=0){
     return CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAfastamento();
 }
 
 /********************************
-A fun√ß√£o MoveCamera() √© respons√°vel por reposicionar a c√¢mera no cen√°rio. O ponto de refer√™ncia √© o canto inferior esquerdo da tela.
-Todos os objetos ser√£o automaticamente recolocados na tela conforme a posi√ß√£o da c√¢mera.
-Par√¢metros:
-posicaoX (entrada, passagem por valor): indica a posi√ß√£o no eixo X onde a c√¢mera ficar√°.
-posicaoY (entrada, passagem por valor): indica a posi√ß√£o no eixo Y onde a c√¢mera ficar√°.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela a ser alterada.
+A funÁ„o MoveCamera() È respons·vel por reposicionar a c‚mera no cen·rio. O ponto de referÍncia È o canto inferior esquerdo da tela.
+Todos os objetos ser„o automaticamente recolocados na tela conforme a posiÁ„o da c‚mera.
+Par‚metros:
+posicaoX (entrada, passagem por valor): indica a posiÁ„o no eixo X onde a c‚mera ficar·.
+posicaoY (entrada, passagem por valor): indica a posiÁ„o no eixo Y onde a c‚mera ficar·.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela a ser alterada.
 ********************************/
 void MoveCamera(int posicaoX, int posicaoY, int idJanela=0){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->MoveCamera(posicaoX,posicaoY);
 }
 
 /********************************
-A fun√ß√£o DeslocaCamera() √© respons√°vel por deslocar a c√¢mera em rela√ß√£o √† sua posi√ß√£o atual.
-Par√¢metros:
-deltaX (entrada, passagem por valor): valor a ser somado ou subtra√≠do na componente X da posi√ß√£o da c√¢mera.
-deltaY (entrada, passagem por valor): valor a ser somado ou subtra√≠do na componente Y da posi√ß√£o da c√¢mera.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela a ser alterada.
+A funÁ„o DeslocaCamera() È respons·vel por deslocar a c‚mera em relaÁ„o ‡ sua posiÁ„o atual.
+Par‚metros:
+deltaX (entrada, passagem por valor): valor a ser somado ou subtraÌdo na componente X da posiÁ„o da c‚mera.
+deltaY (entrada, passagem por valor): valor a ser somado ou subtraÌdo na componente Y da posiÁ„o da c‚mera.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela a ser alterada.
 ********************************/
 void DeslocaCamera(int deltaX, int deltaY, int idJanela=0){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->DeslocaCamera(deltaX,deltaY);
 }
 
 /********************************
-A fun√ß√£o GetXYCamera() √© respons√°vel recuperar o valor da posi√ß√£o (X,Y) da c√¢mera de acordo com o sistema de coordenadas do jogo.
-Par√¢metros:
-posicaoX (sa√≠da, passagem por referencia): indica a posicao no eixo X da c√¢mera.
-posicaoY (sa√≠da, passagem por referencia): indica a posicao no eixo Y da c√¢mera.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela.
+A funÁ„o GetXYCamera() È respons·vel recuperar o valor da posiÁ„o (X,Y) da c‚mera de acordo com o sistema de coordenadas do jogo.
+Par‚metros:
+posicaoX (saÌda, passagem por referencia): indica a posicao no eixo X da c‚mera.
+posicaoY (saÌda, passagem por referencia): indica a posicao no eixo Y da c‚mera.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela.
 ********************************/
 void GetXYCamera(int *posicaoX, int *posicaoY, int idJanela=0){
     SDL_Point p = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetPosicaoCamera();
@@ -608,76 +608,76 @@ void GetXYCamera(int *posicaoX, int *posicaoY, int idJanela=0){
 }
 
 /********************************
-A fun√ß√£o PreparaCameraMovel() √© respons√°vel utilizar a c√¢mera movel relativa √† janela em quest√£o.
-A c√¢mera m√≥vel est√° sujeita √† movimenta√ß√µes e ajuste de zoom (afastamento). Todas as renderiza√ß√µes posteriores estar√£o sujeitas a essas transforma√ß√µes.
-Par√¢metros:
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela.
+A funÁ„o PreparaCameraMovel() È respons·vel utilizar a c‚mera movel relativa ‡ janela em quest„o.
+A c‚mera mÛvel est· sujeita ‡ movimentaÁıes e ajuste de zoom (afastamento). Todas as renderizaÁıes posteriores estar„o sujeitas a essas transformaÁıes.
+Par‚metros:
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela.
 ********************************/
 void PreparaCameraMovel(int idJanela=0){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->PreparaCameraMovel();
 }
 
 /********************************
-A fun√ß√£o PreparaCameraFixa() √© respons√°vel utilizar a c√¢mera fixa relativa √† janela em quest√£o.
-A c√¢mera fixa n√£o est√° sujeita √† movimenta√ß√µes e ajuste de zoom (afastamento). Todas as renderiza√ß√µes posteriores ser√£o feitas utilizando o sistema de coordenadas da tela.
-Par√¢metros:
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela.
+A funÁ„o PreparaCameraFixa() È respons·vel utilizar a c‚mera fixa relativa ‡ janela em quest„o.
+A c‚mera fixa n„o est· sujeita ‡ movimentaÁıes e ajuste de zoom (afastamento). Todas as renderizaÁıes posteriores ser„o feitas utilizando o sistema de coordenadas da tela.
+Par‚metros:
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela.
 ********************************/
 void PreparaCameraFixa(int idJanela=0){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->PreparaCameraFixa();
 }
 
 /********************************
-A fun√ß√£o ConverteCoordenadaDaTelaParaMundo() transforma uma coordenada da tela para uma coordenada do cen√°rio, de acordo com o afastamento e a posi√ß√£o da c√¢mera e do sistema de coordenadas do jogo.
-Par√¢metros:
-telaX (entrada, passagem por valor): indica a componente X da coordenada da tela em quest√£o.
-telaY (entrada, passagem por valor): indica a componente Y da coordenada da tela em quest√£o.
-mundoX (sa√≠da, passagem por referencia): indica a componente X da coordenada do cen√°rio.
-mundoY (sa√≠da, passagem por referencia): indica a componente Y da coordenada do cen√°rio.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela.
+A funÁ„o ConverteCoordenadaDaTelaParaMundo() transforma uma coordenada da tela para uma coordenada do cen·rio, de acordo com o afastamento e a posiÁ„o da c‚mera e do sistema de coordenadas do jogo.
+Par‚metros:
+telaX (entrada, passagem por valor): indica a componente X da coordenada da tela em quest„o.
+telaY (entrada, passagem por valor): indica a componente Y da coordenada da tela em quest„o.
+mundoX (saÌda, passagem por referencia): indica a componente X da coordenada do cen·rio.
+mundoY (saÌda, passagem por referencia): indica a componente Y da coordenada do cen·rio.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela.
 ********************************/
 void ConverteCoordenadaDaTelaParaMundo(int telaX, int telaY, int *mundoX, int *mundoY, int idJanela=0){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaScreenWorld(telaX, telaY, *mundoX, *mundoY);
 }
 
 /********************************
-A fun√ß√£o ConverteCoordenadaDoMundoParaTela() transforma uma coordenada do cen√°rio para uma coordenada da tela, de acordo com o afastamento e a posi√ß√£o da c√¢mera e do sistema de coordenadas do jogo.
-Par√¢metros:
-mundoX (entrada, passagem por valor): indica a componente X da coordenada do cen√°rio em quest√£o.
-mundoY (entrada, passagem por valor): indica a componente Y da coordenada do cen√°rio em quest√£o.
-telaX (sa√≠da, passagem por referencia): indica a componente X da coordenada da tela.
-telaY (sa√≠da, passagem por referencia): indica a componente Y da coordenada da tela.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela.
+A funÁ„o ConverteCoordenadaDoMundoParaTela() transforma uma coordenada do cen·rio para uma coordenada da tela, de acordo com o afastamento e a posiÁ„o da c‚mera e do sistema de coordenadas do jogo.
+Par‚metros:
+mundoX (entrada, passagem por valor): indica a componente X da coordenada do cen·rio em quest„o.
+mundoY (entrada, passagem por valor): indica a componente Y da coordenada do cen·rio em quest„o.
+telaX (saÌda, passagem por referencia): indica a componente X da coordenada da tela.
+telaY (saÌda, passagem por referencia): indica a componente Y da coordenada da tela.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela.
 ********************************/
 void ConverteCoordenadaDoMundoParaTela(int mundoX, int mundoY, int *telaX, int *telaY, int idJanela=0){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaWorldScreen(mundoX, mundoY, *telaX, *telaY);
 }
 
 /********************************
-A fun√ß√£o GetTituloJanela() √© respons√°vel por recuperar o t√≠tulo (caption) atual da janela.
-Par√¢metros:
-tituloJanela (sa√≠da, passagem por refer√™ncia): armazena o t√≠tulo da janela que foi recuperado.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela a ser consultada.
+A funÁ„o GetTituloJanela() È respons·vel por recuperar o tÌtulo (caption) atual da janela.
+Par‚metros:
+tituloJanela (saÌda, passagem por referÍncia): armazena o tÌtulo da janela que foi recuperado.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela a ser consultada.
 ********************************/
 void GetTituloJanela(char *tituloJanela, int idJanela=0){
     strcpy(tituloJanela,CPIGGerenciadorJanelas::GetJanela(idJanela)->GetTitulo().c_str());
 }
 
 /********************************
-A fun√ß√£o SetTituloJanela() √© respons√°vel por definir um novo t√≠tulo (caption) para a janela.
-Par√¢metros:
-novoTitulo (entrada, passagem por refer√™ncia*): indica o novo t√≠tulo para a janela.
-√â utilizado o operador * apenas por se tratar de um par√¢metro string. O valor do par√¢metro n√£o √© alterada dentro da fun√ß√£o.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela a ser alterada.
+A funÁ„o SetTituloJanela() È respons·vel por definir um novo tÌtulo (caption) para a janela.
+Par‚metros:
+novoTitulo (entrada, passagem por referÍncia*): indica o novo tÌtulo para a janela.
+… utilizado o operador * apenas por se tratar de um par‚metro string. O valor do par‚metro n„o È alterada dentro da funÁ„o.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela a ser alterada.
 ********************************/
 void SetTituloJanela(char *novoTitulo, int idJanela=0){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->SetTitulo(novoTitulo);
 }
 
 /********************************
-A fun√ß√£o GetCorFundoJanela() √© respons√°vel por recuperar uma cor de fundo para a janela indicada. A cor de fundo ser√° utilizada como background autom√°tico quando a janela for preparada para renderiza√ß√µes.
-Par√¢metros:
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela a ser alterada.
+A funÁ„o GetCorFundoJanela() È respons·vel por recuperar uma cor de fundo para a janela indicada. A cor de fundo ser· utilizada como background autom·tico quando a janela for preparada para renderizaÁıes.
+Par‚metros:
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela a ser alterada.
 Retorno
 cor contendo os componentes RGBA da cor utilizada para pintar automaticamente o fundo da janela.
 ********************************/
@@ -686,53 +686,53 @@ PIGCor GetCorFundoJanela(int idJanela=0){
 }
 
 /********************************
-A fun√ß√£o SetCorFundoJanela() √© respons√°vel por definir uma cor de fundo para a janela indicada. A cor de fundo ser√° utilizada como background autom√°tico quando a janela for preparada para renderiza√ß√µes.
-Par√¢metros:
+A funÁ„o SetCorFundoJanela() È respons·vel por definir uma cor de fundo para a janela indicada. A cor de fundo ser· utilizada como background autom·tico quando a janela for preparada para renderizaÁıes.
+Par‚metros:
 cor (entrada, passagem por valor): indica a cor para o fundo da janela.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela a ser alterada.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela a ser alterada.
 ********************************/
 void SetCorFundoJanela(PIGCor cor, int idJanela=0){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->SetCorFundo(cor);
 }
 
 /********************************
-A fun√ß√£o GetOpacidadeJanela() √© respons√°vel por recuperar o n√≠vel de opacidade de uma janela. A opacidade pode variar entre 1.0 (totalmente opaca) e 0 (totalmente transparente).
-Par√¢metros:
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela a ser alterada.
+A funÁ„o GetOpacidadeJanela() È respons·vel por recuperar o nÌvel de opacidade de uma janela. A opacidade pode variar entre 1.0 (totalmente opaca) e 0 (totalmente transparente).
+Par‚metros:
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela a ser alterada.
 Retorno:
-n√∫mero real que indica o n√≠vel de opacidade da janela, variando entre 1.0 e 0.
+n˙mero real que indica o nÌvel de opacidade da janela, variando entre 1.0 e 0.
 ********************************/
 float GetOpacidadeJanela(int idJanela=0){
     return CPIGGerenciadorJanelas::GetJanela(idJanela)->GetOpacidade();
 }
 
 /********************************
-A fun√ß√£o SetOpacidadeJanela() √© respons√°vel por definir o n√≠vel de opacidade de uma janela. A opacidade pode variar entre 1.0 (totalmente opaca) e 0 (totalmente transparente).
-Par√¢metros:
-nivelOpacidade (entrada, passagem por valor): indica o n√≠vel de opacidade da janela, variando entre 1.0 e 0.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela a ser alterada.
+A funÁ„o SetOpacidadeJanela() È respons·vel por definir o nÌvel de opacidade de uma janela. A opacidade pode variar entre 1.0 (totalmente opaca) e 0 (totalmente transparente).
+Par‚metros:
+nivelOpacidade (entrada, passagem por valor): indica o nÌvel de opacidade da janela, variando entre 1.0 e 0.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela a ser alterada.
 ********************************/
 void SetOpacidadeJanela(float nivelOpacidade, int idJanela=0){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->SetOpacidade(nivelOpacidade);
 }
 
 /********************************
-A fun√ß√£o SetPosicaoJanela() √© respons√°vel por definir a posi√ß√£o de um janela na tela correspondente. A tela normalmente utiliza um sistema de coordenadas, cujo ponto (0,0) √© o canto superior esquerdo.
-Par√¢metros:
+A funÁ„o SetPosicaoJanela() È respons·vel por definir a posiÁ„o de um janela na tela correspondente. A tela normalmente utiliza um sistema de coordenadas, cujo ponto (0,0) È o canto superior esquerdo.
+Par‚metros:
 posicaoX (entrada, passagem por valor): indica o valor no eixo X (horizontal) da esquerda para direita.
 posicaoY (entrada, passagem por valor): indica o valor no eixo Y (vertical), normalmente de cima para baixo.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela a ser reposicionada.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela a ser reposicionada.
 ********************************/
 void SetPosicaoJanela(int posicaoX, int posicaoY, int idJanela=0){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->SetPosicao(posicaoX,posicaoY);
 }
 
 /********************************
-A fun√ß√£o SetPosicaoJanela() √© respons√°vel por recuperar a posi√ß√£o de um janela na tela correspondente. A tela normalmente utiliza um sistema de coordenadas, cujo ponto (0,0) √© o canto superior esquerdo.
-Par√¢metros:
-posicaoX (sa√≠da, passagem por refer√™ncia): indica o valor no eixo X (horizontal) da esquerda para direita.
-posicaoY (saida, passagem por refer√™ncia): indica o valor no eixo Y (vertical), normalmente de cima para baixo.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela a ser reposicionada.
+A funÁ„o SetPosicaoJanela() È respons·vel por recuperar a posiÁ„o de um janela na tela correspondente. A tela normalmente utiliza um sistema de coordenadas, cujo ponto (0,0) È o canto superior esquerdo.
+Par‚metros:
+posicaoX (saÌda, passagem por referÍncia): indica o valor no eixo X (horizontal) da esquerda para direita.
+posicaoY (saida, passagem por referÍncia): indica o valor no eixo Y (vertical), normalmente de cima para baixo.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela a ser reposicionada.
 ********************************/
 void GetPosicaoJanela(int *posicaoX, int *posicaoY, int idJanela=0){
     SDL_Point p = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetXY();
@@ -741,35 +741,35 @@ void GetPosicaoJanela(int *posicaoX, int *posicaoY, int idJanela=0){
 }
 
 /********************************
-A fun√ß√£o SetBordaJanela() √© respons√°vel por definir se uma janela possuir√° ou n√£o bordas vis√≠veis. O valor de 0 (zero) indica aus√™ncia de borda, enquanto valores diferentes de zero indicam presen√ßa de borda.
-Par√¢metros:
-valor (entrada, passagem por valor): indica se a janela possui borda (valor diferente de zero) ou n√£o (valor igual a zero).
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela a ser reposicionada.
+A funÁ„o SetBordaJanela() È respons·vel por definir se uma janela possuir· ou n„o bordas visÌveis. O valor de 0 (zero) indica ausÍncia de borda, enquanto valores diferentes de zero indicam presenÁa de borda.
+Par‚metros:
+valor (entrada, passagem por valor): indica se a janela possui borda (valor diferente de zero) ou n„o (valor igual a zero).
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela a ser reposicionada.
 ********************************/
 void SetBordaJanela(int valor, int idJanela=0){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->SetBorda(valor);
 }
 
 /********************************
-A fun√ß√£o SetModoJanela() √© respons√°vel por definir o modo de exibi√ß√£o de uma janela. A janela pode ser exibida em tr√™s diferentes modos: PIG_JANELA_NORMAL, que √© o modo padr√£o onde a janela ocupa o espa√ßo da tela definido por sua altura e largura atual;
-PIG_JANELA_TELACHEIA_DISPLAY, que √© o modo no qual a janela fica em tela cheia com a resolu√ß√£o id√™ntica √† da tela; PIG_JANELA_TELACHEIA, que √© o modo onde a janela fica em tela cheia, mas com a resolu√ß√£o atual mantida.
-A tela cheia n√£o √© acionada automaticamente com a combin√ß√£o ALT+ENTER, √© preciso executar o comando espec√≠fico.
-Par√¢metros:
-modo (entrada, passagem por valor): indica qual dos tr√™s modos (PIG_JANELA_NORMAL, PIG_JANELA_TELACHEIA, PIG_JANELA_TELACHEIA_DISPLAY) deve ser usado para exibir a janela.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela a ser reposicionada.
+A funÁ„o SetModoJanela() È respons·vel por definir o modo de exibiÁ„o de uma janela. A janela pode ser exibida em trÍs diferentes modos: PIG_JANELA_NORMAL, que È o modo padr„o onde a janela ocupa o espaÁo da tela definido por sua altura e largura atual;
+PIG_JANELA_TELACHEIA_DISPLAY, que È o modo no qual a janela fica em tela cheia com a resoluÁ„o idÍntica ‡ da tela; PIG_JANELA_TELACHEIA, que È o modo onde a janela fica em tela cheia, mas com a resoluÁ„o atual mantida.
+A tela cheia n„o È acionada automaticamente com a combinÁ„o ALT+ENTER, È preciso executar o comando especÌfico.
+Par‚metros:
+modo (entrada, passagem por valor): indica qual dos trÍs modos (PIG_JANELA_NORMAL, PIG_JANELA_TELACHEIA, PIG_JANELA_TELACHEIA_DISPLAY) deve ser usado para exibir a janela.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela a ser reposicionada.
 ********************************/
 void SetModoJanela(int modo, int idJanela=0){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->SetModo(modo);
 }
 
 /********************************
-A fun√ß√£o GetModoJanela() √© respons√°vel por recuperar o modo de exibi√ß√£o de uma janela. A janela pode ser exibida em tr√™s diferentes modos: PIG_JANELA_NORMAL, que √© o modo padr√£o onde a janela ocupa o espa√ßo da tela definido por sua altura e largura atual;
-PIG_JANELA_TELACHEIA_DISPLAY, que √© o modo no qual a janela fica em tela cheia com a resolu√ß√£o id√™ntica √† da tela; PIG_JANELA_TELACHEIA, que √© o modo onde a janela fica em tela cheia, mas com a resolu√ß√£o atual mantida.
-A tela cheia n√£o √© acionada automaticamente com a combina√ß√£o ALT+ENTER, √© preciso executar o comando espec√≠fico.
-Par√¢metros:
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela a ser reposicionada.
+A funÁ„o GetModoJanela() È respons·vel por recuperar o modo de exibiÁ„o de uma janela. A janela pode ser exibida em trÍs diferentes modos: PIG_JANELA_NORMAL, que È o modo padr„o onde a janela ocupa o espaÁo da tela definido por sua altura e largura atual;
+PIG_JANELA_TELACHEIA_DISPLAY, que È o modo no qual a janela fica em tela cheia com a resoluÁ„o idÍntica ‡ da tela; PIG_JANELA_TELACHEIA, que È o modo onde a janela fica em tela cheia, mas com a resoluÁ„o atual mantida.
+A tela cheia n„o È acionada automaticamente com a combinaÁ„o ALT+ENTER, È preciso executar o comando especÌfico.
+Par‚metros:
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela a ser reposicionada.
 Retorno:
-inteiro que indica qual dos tr√™s modos (PIG_JANELA_NORMAL, PIG_JANELA_TELACHEIA, PIG_JANELA_TELACHEIA_DISPLAY) est√° sendo usado para exibir a janela.
+inteiro que indica qual dos trÍs modos (PIG_JANELA_NORMAL, PIG_JANELA_TELACHEIA, PIG_JANELA_TELACHEIA_DISPLAY) est· sendo usado para exibir a janela.
 ********************************/
 int GetModoJanela(int idJanela=0){
     return CPIGGerenciadorJanelas::GetJanela(idJanela)->GetModo();
@@ -777,51 +777,51 @@ int GetModoJanela(int idJanela=0){
 
 
 /********************************
-Se√ß√£o de controle de jogo
+SeÁ„o de controle de jogo
 ********************************/
 
 /********************************
-A fun√ß√£o BotaoPressionadoControle() √© respons√°vel por verificar se um determinado bot√£o do controle est√° ou n√£o pressionado.
-Par√¢metros:
-idControle (entrada, passagem por valor): indica qual controle est√° sendo verificado.
-botao (entrada, passagem por valor): indica qual botao est√° sendo verificado.
+A funÁ„o BotaoPressionadoControle() È respons·vel por verificar se um determinado bot„o do controle est· ou n„o pressionado.
+Par‚metros:
+idControle (entrada, passagem por valor): indica qual controle est· sendo verificado.
+botao (entrada, passagem por valor): indica qual botao est· sendo verificado.
 retono:
-inteiro que representa se o bot√£o est√° pressionado (valor diferente de zero) ou est√° livre (valor igual a zero).
+inteiro que representa se o bot„o est· pressionado (valor diferente de zero) ou est· livre (valor igual a zero).
 ********************************/
 int BotaoPressionadoControle(int idControle, int botao){
     return CPIGGerenciadorControles::GetControle(idControle)->BotaoPressionado(botao);
 }
 
 /********************************
-A fun√ß√£o EixoAcionadoControle() √© respons√°vel por verificar o n√≠vel de acionamento de um eixo do controle. Essa fun√ß√£o pode ser utilizada
-tanto para eixos anal√≥gicos, cujos valores s√£o de -32768 a 32767, ou gatilhos, cujos valores s√£o de 0 a 32767.
-Par√¢metros:
-idControle (entrada, passagem por valor): indica qual controle est√° sendo verificado.
-eixo (entrada, passagem por valor): indica qual eixo est√° sendo verificado.
+A funÁ„o EixoAcionadoControle() È respons·vel por verificar o nÌvel de acionamento de um eixo do controle. Essa funÁ„o pode ser utilizada
+tanto para eixos analÛgicos, cujos valores s„o de -32768 a 32767, ou gatilhos, cujos valores s„o de 0 a 32767.
+Par‚metros:
+idControle (entrada, passagem por valor): indica qual controle est· sendo verificado.
+eixo (entrada, passagem por valor): indica qual eixo est· sendo verificado.
 retono:
-inteiro que representa o n√≠vel de acionamento do eixo. Pode ser um valor negativo (eixos anal√≥gicos) ou valores positivos (eixos anal√≥gicos e gatilhos).
+inteiro que representa o nÌvel de acionamento do eixo. Pode ser um valor negativo (eixos analÛgicos) ou valores positivos (eixos analÛgicos e gatilhos).
 ********************************/
 int EixoAcionadoControle(int idControle, int eixo){
     return CPIGGerenciadorControles::GetControle(idControle)->EixoAcionado(eixo);
 }
 
 /********************************
-A fun√ß√£o EixoAcionadoPercentualControle() √© respons√°vel por verificar o n√≠vel percentual de acionamento de um eixo do controle. Essa fun√ß√£o pode ser utilizada
-tanto para eixos anal√≥gicos, cujos valores s√£o de -1.0 a 1.0, ou gatilhos, cujos valores s√£o de 0 a 1.0.
-Par√¢metros:
-idControle (entrada, passagem por valor): indica qual controle est√° sendo verificado.
-eixo (entrada, passagem por valor): indica qual eixo est√° sendo verificado.
+A funÁ„o EixoAcionadoPercentualControle() È respons·vel por verificar o nÌvel percentual de acionamento de um eixo do controle. Essa funÁ„o pode ser utilizada
+tanto para eixos analÛgicos, cujos valores s„o de -1.0 a 1.0, ou gatilhos, cujos valores s„o de 0 a 1.0.
+Par‚metros:
+idControle (entrada, passagem por valor): indica qual controle est· sendo verificado.
+eixo (entrada, passagem por valor): indica qual eixo est· sendo verificado.
 retono:
-n√∫mero real que representa o n√≠vel percentual de acionamento do eixo. Pode ser um valor negativo (eixos anal√≥gicos) ou valores positivos (eixos anal√≥gicos e gatilhos).
+n˙mero real que representa o nÌvel percentual de acionamento do eixo. Pode ser um valor negativo (eixos analÛgicos) ou valores positivos (eixos analÛgicos e gatilhos).
 ********************************/
 float EixoAcionadoPercentualControle(int idControle, int eixo){
     return CPIGGerenciadorControles::GetControle(idControle)->EixoAcionadoPercentual(eixo);
 }
 
 /********************************
-A fun√ß√£o GetQtdEixosControle() √© respons√°vel por calcular quantos eixos e gatilhos est√£o dispon√≠veis no controle.
-Par√¢metros:
-idControle (entrada, passagem por valor): indica qual controle est√° sendo verificado.
+A funÁ„o GetQtdEixosControle() È respons·vel por calcular quantos eixos e gatilhos est„o disponÌveis no controle.
+Par‚metros:
+idControle (entrada, passagem por valor): indica qual controle est· sendo verificado.
 retono:
 inteiro que representa a quantidade de eixos e gatilhos.
 ********************************/
@@ -830,21 +830,21 @@ int GetQtdEixosControle(int idControle){
 }
 
 /********************************
-A fun√ß√£o GetQtdBotoesControle() √© respons√°vel por calcular quantos bot√µes digitais (incluindo os direcionais) est√£o dispon√≠veis no controle.
-Par√¢metros:
-idControle (entrada, passagem por valor): indica qual controle est√° sendo verificado.
+A funÁ„o GetQtdBotoesControle() È respons·vel por calcular quantos botıes digitais (incluindo os direcionais) est„o disponÌveis no controle.
+Par‚metros:
+idControle (entrada, passagem por valor): indica qual controle est· sendo verificado.
 retono:
-inteiro que representa a quantidade de bot√µes digitais (incluindo os direcionais).
+inteiro que representa a quantidade de botıes digitais (incluindo os direcionais).
 ********************************/
 int GetQtdBotoesControle(int idControle){
     return CPIGGerenciadorControles::GetControle(idControle)->GetQtdBotoes();
 }
 
 /********************************
-A fun√ß√£o GetNomeControle() √© respons√°vel recuperar o nome com o qual o controle foi registrado no sistema.
-Par√¢metros:
-idControle (entrada, passagem por valor): indica qual controle est√° sendo verificado.
-nomeControle (sa√≠da, passagem por refer√™ncia): armazena a string contendo o nome que foi recuperada para o controle.
+A funÁ„o GetNomeControle() È respons·vel recuperar o nome com o qual o controle foi registrado no sistema.
+Par‚metros:
+idControle (entrada, passagem por valor): indica qual controle est· sendo verificado.
+nomeControle (saÌda, passagem por referÍncia): armazena a string contendo o nome que foi recuperada para o controle.
 ********************************/
 void GetNomeControle(int idControle, char *nomeControle){
     strcpy(nomeControle,CPIGGerenciadorControles::GetControle(idControle)->GetNome().c_str());
@@ -852,91 +852,91 @@ void GetNomeControle(int idControle, char *nomeControle){
 
 
 /********************************
-Se√ß√£o de elementos geom√©tricos
+SeÁ„o de elementos geomÈtricos
 ********************************/
 
 /********************************
-A fun√ß√£o DesenhaLinhasSimples() √© respons√°vel por desenhar uma √∫nica linha, cujo in√≠cio √© o ponto (x1,y1) e o fim √© o ponto (x2,y2).
-Par√¢metros:
-pontoX1 (entrada, passagem por valor): inteiro que indica o in√≠cio da linha no eixo X.
-pontoY1 (entrada, passagem por valor): inteiro que indica o in√≠cio da linha no eixo Y.
+A funÁ„o DesenhaLinhasSimples() È respons·vel por desenhar uma ˙nica linha, cujo inÌcio È o ponto (x1,y1) e o fim È o ponto (x2,y2).
+Par‚metros:
+pontoX1 (entrada, passagem por valor): inteiro que indica o inÌcio da linha no eixo X.
+pontoY1 (entrada, passagem por valor): inteiro que indica o inÌcio da linha no eixo Y.
 pontoX2 (entrada, passagem por valor): inteiro que indica o fim da linha no eixo X.
 pontoY2 (entrada, passagem por valor): inteiro que indica o fim da linha no eixo Y.
 cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho da linha.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela onde a linha ser√° desenhada.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela onde a linha ser· desenhada.
 ********************************/
 void DesenhaLinhaSimples(int pontoX1 ,int pontoY1, int pontoX2, int pontoY2, PIGCor cor, int idJanela=0){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(pontoX1,pontoY1,pontoX2,pontoY2,cor);
 }
 
 /********************************
-A fun√ß√£o DesenhaLinhasDisjuntas() √© respons√°vel por desenhar linhas separadamente, ou seja, os ponto iniciais de cada linha est√£o nas posi√ß√µes pares e
-os pontos finais est√£o nas posi√ß√µes √≠mpares. Assim, os vetores precisam ter tamanho qtdPontos*2.
-Par√¢metros:
-pontosX (entrada, passagem por refer√™ncia): vetor de inteiros, de tamanho qtdPontos*2, contendo os valores X (inicias e finais) de cada linha.
-pontosY (entrada, passagem por refer√™ncia): vetor de inteiros, de tamanho qtdPontos*2, contendo os valores Y (inicias e finais) de cada linha.
+A funÁ„o DesenhaLinhasDisjuntas() È respons·vel por desenhar linhas separadamente, ou seja, os ponto iniciais de cada linha est„o nas posiÁıes pares e
+os pontos finais est„o nas posiÁıes Ìmpares. Assim, os vetores precisam ter tamanho qtdPontos*2.
+Par‚metros:
+pontosX (entrada, passagem por referÍncia): vetor de inteiros, de tamanho qtdPontos*2, contendo os valores X (inicias e finais) de cada linha.
+pontosY (entrada, passagem por referÍncia): vetor de inteiros, de tamanho qtdPontos*2, contendo os valores Y (inicias e finais) de cada linha.
 qtdPontos (entrada, passagem por valor): quantidade de linhas a serem desenhadas.
 cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho das linhas.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela onde as linhas ser√£o desenhadas.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela onde as linhas ser„o desenhadas.
 ********************************/
 void DesenhaLinhasDisjuntas(int pontosX[], int pontosY[], int qtdPontos, PIGCor cor, int idJanela=0){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhasDisjuntas(pontosX,pontosY,qtdPontos,cor);
 }
 
 /********************************
-A fun√ß√£o DesenhaLinhasSequencia() √© respons√°vel por desenhar linhas em sequ√™ncia, ou seja, o ponto final da primeira linha
+A funÁ„o DesenhaLinhasSequencia() È respons·vel por desenhar linhas em sequÍncia, ou seja, o ponto final da primeira linha
 corresponde ao ponto inicial da segunda linha.
-Par√¢metros:
-pontosX (entrada, passagem por refer√™ncia): vetor de inteiros, de tamanho qtdPontos+1, contendo os valores X de cada linha da sequ√™ncia.
-pontosY (entrada, passagem por refer√™ncia): vetor de inteiros, de tamanho qtdPontos+1, contendo os valores Y de cada linha da sequ√™ncia.
+Par‚metros:
+pontosX (entrada, passagem por referÍncia): vetor de inteiros, de tamanho qtdPontos+1, contendo os valores X de cada linha da sequÍncia.
+pontosY (entrada, passagem por referÍncia): vetor de inteiros, de tamanho qtdPontos+1, contendo os valores Y de cada linha da sequÍncia.
 qtdPontos (entrada, passagem por valor): quantidade de linhas a serem desenhadas.
 cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho das linhas.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela onde as linhas ser√£o desenhadas.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela onde as linhas ser„o desenhadas.
 ********************************/
 void DesenhaLinhasSequencia(int pontosX[], int pontosY[], int qtdPontos, PIGCor cor, int idJanela=0){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhasSequencia(pontosX,pontosY,qtdPontos,cor);
 }
 
 /********************************
-A fun√ß√£o DesenhaRetangulo() √© respons√°vel por desenhar um ret√¢ngulo com preenchimento s√≥lido na tela em uma posi√ß√£o desejada pelo usu√°rio.
-O mesmo pode ser colocado em qualquer lugar do campo de vis√£o da tela.
-Par√¢metros:
-posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu√°rio deseja colocar o ret√¢ngulo.
-posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu√°rio deseja colocar o ret√¢ngulo.
-altura (entrada, passagem por valor): Valor onde o usu√°rio ir√° fornecer o n√∫mero correspondente em pixels √† altura desse ret√¢ngulo.
-largura (entrada, passagem por valor): Valor onde o usu√°rio ir√° fornecer o n√∫mero correspondente em pixels √† largura desse ret√¢ngulo.
-cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho do ret√¢ngulo.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela onde o ret√¢ngulo ser√° desenhado.
+A funÁ„o DesenhaRetangulo() È respons·vel por desenhar um ret‚ngulo com preenchimento sÛlido na tela em uma posiÁ„o desejada pelo usu·rio.
+O mesmo pode ser colocado em qualquer lugar do campo de vis„o da tela.
+Par‚metros:
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu·rio deseja colocar o ret‚ngulo.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu·rio deseja colocar o ret‚ngulo.
+altura (entrada, passagem por valor): Valor onde o usu·rio ir· fornecer o n˙mero correspondente em pixels ‡ altura desse ret‚ngulo.
+largura (entrada, passagem por valor): Valor onde o usu·rio ir· fornecer o n˙mero correspondente em pixels ‡ largura desse ret‚ngulo.
+cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho do ret‚ngulo.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela onde o ret‚ngulo ser· desenhado.
 ********************************/
 void DesenhaRetangulo(int posicaoX, int posicaoY, int altura, int largura, PIGCor cor, int idJanela=0){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(posicaoX,posicaoY,altura,largura,cor);
 }
 
 /********************************
-A fun√ß√£o DesenhaRetanguloVazado() √© respons√°vel por desenhar um ret√¢ngulo sem preenchimento na tela em uma posi√ß√£o desejada pelo usu√°rio.
-O mesmo pode ser colocado em qualquer lugar do campo de vis√£o da tela.
-Par√¢metros:
-posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu√°rio deseja colocar o ret√¢ngulo.
-posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu√°rio deseja colocar o ret√¢ngulo.
-altura (entrada, passagem por valor): Valor onde o usu√°rio ir√° fornecer o n√∫mero correspondente em pixels √† altura desse ret√¢ngulo.
-largura (entrada, passagem por valor): Valor onde o usu√°rio ir√° fornecer o n√∫mero correspondente em pixels √† largura desse ret√¢ngulo.
-cor (entrada, passagem por valor): indica a cor no sistema RGB para a borda do ret√¢ngulo.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela onde o ret√¢ngulo ser√° desenhado.
+A funÁ„o DesenhaRetanguloVazado() È respons·vel por desenhar um ret‚ngulo sem preenchimento na tela em uma posiÁ„o desejada pelo usu·rio.
+O mesmo pode ser colocado em qualquer lugar do campo de vis„o da tela.
+Par‚metros:
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu·rio deseja colocar o ret‚ngulo.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu·rio deseja colocar o ret‚ngulo.
+altura (entrada, passagem por valor): Valor onde o usu·rio ir· fornecer o n˙mero correspondente em pixels ‡ altura desse ret‚ngulo.
+largura (entrada, passagem por valor): Valor onde o usu·rio ir· fornecer o n˙mero correspondente em pixels ‡ largura desse ret‚ngulo.
+cor (entrada, passagem por valor): indica a cor no sistema RGB para a borda do ret‚ngulo.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela onde o ret‚ngulo ser· desenhado.
 ********************************/
 void DesenhaRetanguloVazado(int posicaoX, int posicaoY, int altura, int largura, PIGCor cor, int idJanela=0){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado(posicaoX,posicaoY,altura,largura,cor);
 }
 
 /********************************
-A fun√ß√£o DesenhaPoligono() √© respons√°vel por desenhar na janela um pol√≠gono de preenchimento s√≥lido com o n√∫mero de lados indicados. Os dois primeiros par√¢metros indicam as coordenadas
-de cada um dos v√©rtices do pol√≠gono.
-AVISO: essa fun√ß√£o utiliza o renderizador offscreen para gerar o pol√≠gono e posteriormente o renderiza na janela em quest√£o; isto pode fazer o FPS da aplica√ß√£o diminuir consideravelmente.
-Par√¢metros:
-pontosX (entrada, passagem por refer√™ncia): vetor de inteiros, de tamanho qtdPontos, contendo as coordenadas X de cada v√©rtice do pol√≠gono.
-pontosY (entrada, passagem por refer√™ncia): vetor de inteiros, de tamanho qtdPontos, contendo as coordenadas Y de cada v√©rtice do pol√≠gono.
-qtdPontos (entrada, passagem por valor): quantidade de lados do pol√≠gono.
-cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho do pol√≠gono.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica o n√∫mero da janela onde o pol√≠gono ser√° desenhado.
+A funÁ„o DesenhaPoligono() È respons·vel por desenhar na janela um polÌgono de preenchimento sÛlido com o n˙mero de lados indicados. Os dois primeiros par‚metros indicam as coordenadas
+de cada um dos vÈrtices do polÌgono.
+AVISO: essa funÁ„o utiliza o renderizador offscreen para gerar o polÌgono e posteriormente o renderiza na janela em quest„o; isto pode fazer o FPS da aplicaÁ„o diminuir consideravelmente.
+Par‚metros:
+pontosX (entrada, passagem por referÍncia): vetor de inteiros, de tamanho qtdPontos, contendo as coordenadas X de cada vÈrtice do polÌgono.
+pontosY (entrada, passagem por referÍncia): vetor de inteiros, de tamanho qtdPontos, contendo as coordenadas Y de cada vÈrtice do polÌgono.
+qtdPontos (entrada, passagem por valor): quantidade de lados do polÌgono.
+cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho do polÌgono.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica o n˙mero da janela onde o polÌgono ser· desenhado.
 ********************************/
 void DesenhaPoligono(int pontosX[], int pontosY[], int qtdPontos, PIGCor cor, int idJanela=0){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaPoligono(pontosX,pontosY,qtdPontos,cor);
@@ -944,13 +944,13 @@ void DesenhaPoligono(int pontosX[], int pontosY[], int qtdPontos, PIGCor cor, in
 
 
 /********************************
-Se√ß√£o de desenho Offscreen
+SeÁ„o de desenho Offscreen
 ********************************/
 
 /********************************
-A fun√ß√£o PreparaOffScreenRenderer() serve para criar um novo bitmap offscreen que servir√° de √°rea
-de desenho para outras fun√ß√µes que utilizem este bitmap.
-Par√¢metros:
+A funÁ„o PreparaOffScreenRenderer() serve para criar um novo bitmap offscreen que servir· de ·rea
+de desenho para outras funÁıes que utilizem este bitmap.
+Par‚metros:
 altura (entrada, passagem por valor): indica a altura em pixels do novo bitmap.
 largura (entrada, passagem por valor): indica a largura em pixels do novo bitmap.
 ********************************/
@@ -959,78 +959,78 @@ void PreparaOffScreenRenderer(int altura, int largura){
 }
 
 /********************************
-A fun√ß√£o SalvaOffScreenBMP() serve para efetivamente salvar a imagem offscreen como um arquivo do sistema operacional.
-A imagem offscreen continuar√° existindo em mem√≥ria e a√ß√µes subsequentes ainda poder√£o ser feitas. Para "limpar" a imagem
-deve-se utilizar a fun√ß√£o PintaFundoOffScreen().
-Par√¢metros:
-nomeArquivoBMP (entrada, passagem por refer√™ncia*): indica com que nome a imagem offscreen ser√° salva. O valor do par√¢metro deve conter a extens√£o ".bmp".
-√â utilizado o operador * apenas por se tratar de um par√¢metro string. O valor do par√¢metro n√£o √© alterado dentro da fun√ß√£o.
+A funÁ„o SalvaOffScreenBMP() serve para efetivamente salvar a imagem offscreen como um arquivo do sistema operacional.
+A imagem offscreen continuar· existindo em memÛria e aÁıes subsequentes ainda poder„o ser feitas. Para "limpar" a imagem
+deve-se utilizar a funÁ„o PintaFundoOffScreen().
+Par‚metros:
+nomeArquivoBMP (entrada, passagem por referÍncia*): indica com que nome a imagem offscreen ser· salva. O valor do par‚metro deve conter a extens„o ".bmp".
+… utilizado o operador * apenas por se tratar de um par‚metro string. O valor do par‚metro n„o È alterado dentro da funÁ„o.
 ********************************/
 void SalvaOffScreenBMP(char *nomeArquivoBMP){
     jogo->GetOffScreenRender()->SalvarImagemBMP(nomeArquivoBMP);
 }
 
 /********************************
-A fun√ß√£o SalvaOffScreenPNG() serve para efetivamente salvar a imagem offscreen como um arquivo do sistema operacional.
-A imagem offscreen continuar√° existindo em mem√≥ria e a√ß√µes subsequentes ainda poder√£o ser feitas. Para "limpar" a imagem
-deve-se utilizar a fun√ß√£o PintaFundoOffScreen().
-Par√¢metros:
-nomeArquivoPNG (entrada, passagem por refer√™ncia*): indica com que nome a imagem offscreen ser√° salva. O valor do par√¢metro deve conter a extens√£o ".png".
-√â utilizado o operador * apenas por se tratar de um par√¢metro string. O valor do par√¢metro n√£o √© alterado dentro da fun√ß√£o.
+A funÁ„o SalvaOffScreenPNG() serve para efetivamente salvar a imagem offscreen como um arquivo do sistema operacional.
+A imagem offscreen continuar· existindo em memÛria e aÁıes subsequentes ainda poder„o ser feitas. Para "limpar" a imagem
+deve-se utilizar a funÁ„o PintaFundoOffScreen().
+Par‚metros:
+nomeArquivoPNG (entrada, passagem por referÍncia*): indica com que nome a imagem offscreen ser· salva. O valor do par‚metro deve conter a extens„o ".png".
+… utilizado o operador * apenas por se tratar de um par‚metro string. O valor do par‚metro n„o È alterado dentro da funÁ„o.
 ********************************/
 void SalvaOffScreenPNG(char *nomeArquivoPNG){
     jogo->GetOffScreenRender()->SalvarImagemPNG(nomeArquivoPNG);
 }
 
 /********************************
-A fun√ß√£o PintaAreaOffScreen() serve para mudar a cor de uma √°rea cont√≠gua de pixels da mesma cor.
-A funcionalidade √© semelhante √† ferramenta "balde" dos editores de imagem. A √°rea ser√° pintada a partir do
-ponto (posicaoX,posicaoY) de acordo com o sistema de coordenadas da PIG. A fun√ß√£o de pintura padr√£o pode ser
-substitu√≠da por outra fun√ß√£o customizada qualquer com o comando DefineFuncaoPintarAreaOffscreen().
-Par√¢metros:
-posicaoX (entrada, passagem por valor): indica o ponto no eixo X para come√ßar a pintar a √°rea cont√≠gua de pixels.
-posicaoY (entrada, passagem por valor): indica o ponto no eixo Y para come√ßar a pintar a √°rea cont√≠gua de pixels.
-cor (entrada, passagem por valor): indica a cor que deve ser usada durante a pintura da √°rea cont√≠gua de pixels.
+A funÁ„o PintaAreaOffScreen() serve para mudar a cor de uma ·rea contÌgua de pixels da mesma cor.
+A funcionalidade È semelhante ‡ ferramenta "balde" dos editores de imagem. A ·rea ser· pintada a partir do
+ponto (posicaoX,posicaoY) de acordo com o sistema de coordenadas da PIG. A funÁ„o de pintura padr„o pode ser
+substituÌda por outra funÁ„o customizada qualquer com o comando DefineFuncaoPintarAreaOffscreen().
+Par‚metros:
+posicaoX (entrada, passagem por valor): indica o ponto no eixo X para comeÁar a pintar a ·rea contÌgua de pixels.
+posicaoY (entrada, passagem por valor): indica o ponto no eixo Y para comeÁar a pintar a ·rea contÌgua de pixels.
+cor (entrada, passagem por valor): indica a cor que deve ser usada durante a pintura da ·rea contÌgua de pixels.
 ********************************/
 void PintaAreaOffScreen(int posicaoX, int posicaoY, PIGCor cor){
     jogo->GetOffScreenRender()->PintarArea(posicaoX,posicaoY,cor);
 }
 
 /********************************
-A fun√ß√£o DefineFuncaoPintarAreaOffScreen() permite substituir a fun√ß√£o padr√£o de pintura por outra fun√ß√£o customizada que deve ser passada como par√¢metro.
-A fun√ß√£o de pintura deve ser definida de forma que receba 4 par√¢metros inteiros (respectivamente, a posi√ß√£o x e y do pixel que deve ser pintado e as
-dimens√µes - altura e largura - da imagem offscreen) e 2 cores (a cor atual do pixel e a cor que deveria ser usada para pint√°-lo). A fun√ß√£o deve tamb√©m retornar
-o valor de uma cor, que ser√° a cor efetivamente utilizada para pintar o pixel em quest√£o. A fun√ß√£o, portanto, deve definir para cada ponto solicitado qual a cor
+A funÁ„o DefineFuncaoPintarAreaOffScreen() permite substituir a funÁ„o padr„o de pintura por outra funÁ„o customizada que deve ser passada como par‚metro.
+A funÁ„o de pintura deve ser definida de forma que receba 4 par‚metros inteiros (respectivamente, a posiÁ„o x e y do pixel que deve ser pintado e as
+dimensıes - altura e largura - da imagem offscreen) e 2 cores (a cor atual do pixel e a cor que deveria ser usada para pint·-lo). A funÁ„o deve tambÈm retornar
+o valor de uma cor, que ser· a cor efetivamente utilizada para pintar o pixel em quest„o. A funÁ„o, portanto, deve definir para cada ponto solicitado qual a cor
 final daquele ponto.
-Par√¢metros:
-funcao (entrada, passagem por refer√™ncia): nome da fun√ß√£o customizada para pintar uma √°rea no renderizador offscreen.
+Par‚metros:
+funcao (entrada, passagem por referÍncia): nome da funÁ„o customizada para pintar uma ·rea no renderizador offscreen.
 ********************************/
 void DefineFuncaoPintarAreaOffscreen(PIGFuncaoPintarArea funcao){
     jogo->GetOffScreenRender()->DefineFuncaoPintarArea(funcao);
 }
 
 /********************************
-A fun√ß√£o MoveCanetaOffScreen() reposiciona a caneta do renderizador offscreen em algum outro ponto da imagem.
-Par√¢metros:
-novoX (entrada, passagem por valor): nova posi√ß√£o no eixo X na qual a caneta ser√° reposicionada. O tipo de par√¢metro √© double mas ser√° convertido para int, dentro da fun√ß√£o.
-novoY (entrada, passagem por valor): nova posi√ß√£o no eixo Y na qual a caneta ser√° reposicionada. O tipo de par√¢metro √© double mas ser√° convertido para int, dentro da fun√ß√£o.
+A funÁ„o MoveCanetaOffScreen() reposiciona a caneta do renderizador offscreen em algum outro ponto da imagem.
+Par‚metros:
+novoX (entrada, passagem por valor): nova posiÁ„o no eixo X na qual a caneta ser· reposicionada. O tipo de par‚metro È double mas ser· convertido para int, dentro da funÁ„o.
+novoY (entrada, passagem por valor): nova posiÁ„o no eixo Y na qual a caneta ser· reposicionada. O tipo de par‚metro È double mas ser· convertido para int, dentro da funÁ„o.
 ********************************/
 void MoveCanetaOffscreen(double novoX, double novoY){
     jogo->GetOffScreenRender()->MoveCanetaPara(novoX,novoY);
 }
 
 /********************************
-A fun√ß√£o AvancaCanetaOffScreen() cria uma linha no renderizador offscreen na dire√ß√£o e sentido nos quais a caneta est√° orientada.
-Par√¢metros:
-distancia (entrada, passagem por valor): dist√¢ncia a ser percorrida pela caneta. O tipo de par√¢metro √© double para permitir que o c√°lculo da dist√¢ncia seja feito livremente.
+A funÁ„o AvancaCanetaOffScreen() cria uma linha no renderizador offscreen na direÁ„o e sentido nos quais a caneta est· orientada.
+Par‚metros:
+distancia (entrada, passagem por valor): dist‚ncia a ser percorrida pela caneta. O tipo de par‚metro È double para permitir que o c·lculo da dist‚ncia seja feito livremente.
 ********************************/
 void AvancaCanetaOffscreen(double distancia){
     jogo->GetOffScreenRender()->AvancaCaneta(distancia);
 }
 
 /********************************
-A fun√ß√£o MudaCorCanetaOffScreen() modifica a cor a ser utilizada pela caneta do renderizador offscreen daqui por diante. Desenhos feitos anteriormente permancem com a cor com a qual foram feitos.
-Par√¢metros:
+A funÁ„o MudaCorCanetaOffScreen() modifica a cor a ser utilizada pela caneta do renderizador offscreen daqui por diante. Desenhos feitos anteriormente permancem com a cor com a qual foram feitos.
+Par‚metros:
 novaCor (entrada, passagem por valor): valor da nova cor a ser utilizada pela caneta do renderizador offscreen.
 ********************************/
 void MudaCorCanetaOffscreen(PIGCor novaCor){
@@ -1038,65 +1038,65 @@ void MudaCorCanetaOffscreen(PIGCor novaCor){
 }
 
 /********************************
-A fun√ß√£o GiraCanetaHorarioOffScreen() gira a caneta do renderizador offscreen. A caneta passa a ter uma nova dire√ß√£o e sentido. Se o comando AvancaCanetaOffscreen() for executado posteriormente,
-esses novos valores de dire√ß√£o e sentido ser√£o utilizados para que o ponto final do tra√ßo seja calculado.
-Par√¢metros:
-angulo (entrada, passagem por valor): valor do √¢ngulo (sentido hor√°rio, em radianos) pelo qual a caneta ser√° redirecionada.
+A funÁ„o GiraCanetaHorarioOffScreen() gira a caneta do renderizador offscreen. A caneta passa a ter uma nova direÁ„o e sentido. Se o comando AvancaCanetaOffscreen() for executado posteriormente,
+esses novos valores de direÁ„o e sentido ser„o utilizados para que o ponto final do traÁo seja calculado.
+Par‚metros:
+angulo (entrada, passagem por valor): valor do ‚ngulo (sentido hor·rio, em radianos) pelo qual a caneta ser· redirecionada.
 ********************************/
 void GiraCanetaHorarioOffscreen(double angulo){
     jogo->GetOffScreenRender()->GiraCanetaHorario(angulo);
 }
 
 /********************************
-A fun√ß√£o GiraCanetaAntiHorarioOffScreen() gira a caneta do renderizador offscreen. A caneta passa a ter uma nova dire√ß√£o e sentido. Se o comando AvancaCanetaOffscreen() for executado posteriormente,
-esses novos valores de dire√ß√£o e sentido ser√£o utilizados para que o ponto final do tra√ßo seja calculado.
-Par√¢metros:
-angulo (entrada, passagem por valor): valor do √¢ngulo (sentido anti-hor√°rio, em radianos) pelo qual a caneta ser√° redirecionada.
+A funÁ„o GiraCanetaAntiHorarioOffScreen() gira a caneta do renderizador offscreen. A caneta passa a ter uma nova direÁ„o e sentido. Se o comando AvancaCanetaOffscreen() for executado posteriormente,
+esses novos valores de direÁ„o e sentido ser„o utilizados para que o ponto final do traÁo seja calculado.
+Par‚metros:
+angulo (entrada, passagem por valor): valor do ‚ngulo (sentido anti-hor·rio, em radianos) pelo qual a caneta ser· redirecionada.
 ********************************/
 void GiraCanetaAntiHorarioOffscreen(double angulo){
     jogo->GetOffScreenRender()->GiraCanetaAntiHorario(angulo);
 }
 
 /********************************
-A fun√ß√£o GiraCanetaAnguloFixoOffScreen() gira a caneta do renderizador offscreen. A caneta passa a ter uma nova dire√ß√£o e sentido. Se o comando AvancaCanetaOffscreen() for executado posteriormente,
-esses novos valores de dire√ß√£o e sentido ser√£o utilizados para que o ponto final do tra√ßo seja calculado.
-Par√¢metros:
-angulo (entrada, passagem por valor): valor do √¢ngulo usando como refer√™ncia o √¢ngulo 0 do c√≠rculo trigonom√©trico.
+A funÁ„o GiraCanetaAnguloFixoOffScreen() gira a caneta do renderizador offscreen. A caneta passa a ter uma nova direÁ„o e sentido. Se o comando AvancaCanetaOffscreen() for executado posteriormente,
+esses novos valores de direÁ„o e sentido ser„o utilizados para que o ponto final do traÁo seja calculado.
+Par‚metros:
+angulo (entrada, passagem por valor): valor do ‚ngulo usando como referÍncia o ‚ngulo 0 do cÌrculo trigonomÈtrico.
 ********************************/
 void GiraCanetaAnguloFixoOffscreen(double angulo){
     jogo->GetOffScreenRender()->GiraAnguloFixo(angulo);
 }
 
 /********************************
-A fun√ß√£o GetAnguloAtualOffScreen() recupera o √¢ngulo atual que est√° sendo usado pela caneta do renderizador offscreen.
+A funÁ„o GetAnguloAtualOffScreen() recupera o ‚ngulo atual que est· sendo usado pela caneta do renderizador offscreen.
 Retorno:
-n√∫mero real que representa o valor do √¢ngulo atual, tendo como refer√™ncia o √¢ngulo 0 do c√≠rculo trigonom√©trico.
+n˙mero real que representa o valor do ‚ngulo atual, tendo como referÍncia o ‚ngulo 0 do cÌrculo trigonomÈtrico.
 ********************************/
 double GetAnguloAtualOffscreen(){
     return jogo->GetOffScreenRender()->GetAngAtual();
 }
 
 /********************************
-A fun√ß√£o GetXCanetaOffScreen() recupera a posi√ß√£o no eixo X na qual est√° posicionada atualmente a caneta do renderizador offscreen.
+A funÁ„o GetXCanetaOffScreen() recupera a posiÁ„o no eixo X na qual est· posicionada atualmente a caneta do renderizador offscreen.
 Retorno:
-inteiro que representa a posi√ß√£o atual da caneta no eixo X.
+inteiro que representa a posiÁ„o atual da caneta no eixo X.
 ********************************/
 int GetXCanetaOffscreen(){
     return jogo->GetOffScreenRender()->GetXCaneta();
 }
 
 /********************************
-A fun√ß√£o GetYCanetaOffScreen() recupera a posi√ß√£o no eixo Y na qual est√° posicionada atualmente a caneta do renderizador offscreen.
+A funÁ„o GetYCanetaOffScreen() recupera a posiÁ„o no eixo Y na qual est· posicionada atualmente a caneta do renderizador offscreen.
 Retorno:
-inteiro que representa a posi√ß√£o atual da caneta no eixo Y.
+inteiro que representa a posiÁ„o atual da caneta no eixo Y.
 ********************************/
 int GetYCanetaOffscreen(){
     return jogo->GetOffScreenRender()->GetYCaneta();
 }
 
 /********************************
-A fun√ß√£o PintaFundoOffScreen() serve para "limpar" o bitmap offscreen, mudando completamente para cor indicada.
-Par√¢metros:
+A funÁ„o PintaFundoOffScreen() serve para "limpar" o bitmap offscreen, mudando completamente para cor indicada.
+Par‚metros:
 cor (entrada, passagem por valor): indica a cor que deve ser usada durante a pintura completa do bitmap offscreen.
 ********************************/
 void PintaFundoOffScreen(PIGCor cor){
@@ -1104,38 +1104,38 @@ void PintaFundoOffScreen(PIGCor cor){
 }
 
 /********************************
-A fun√ß√£o DesenhaRetanguloOffScreen() √© respons√°vel por desenhar um ret√¢ngulo cem preenchimento s√≥lido no bitmap offscreen em uma posi√ß√£o desejada pelo usu√°rio.
-O sistema de coordenadas √© o mesmo da tela, com o eixo Y aumentando para cima.
-Par√¢metros:
-posicaoX (entrada, passagem por valor): Valor da coordenada X onde o usu√°rio deseja colocar o ret√¢ngulo.
-posicaoY (entrada, passagem por valor): Valor da coordenada Y onde o usu√°rio deseja colocar o ret√¢ngulo.
-altura (entrada, passagem por valor): Valor onde o usu√°rio ir√° fornecer o n√∫mero correspondente em pixels √† altura desse ret√¢ngulo.
-largura (entrada, passagem por valor): Valor onde o usu√°rio ir√° fornecer o n√∫mero correspondente em pixels √† largura desse ret√¢ngulo.
-cor (entrada, passagem por valor): indica a cor no sistema RGB para o preenchimento do ret√¢ngulo.
+A funÁ„o DesenhaRetanguloOffScreen() È respons·vel por desenhar um ret‚ngulo cem preenchimento sÛlido no bitmap offscreen em uma posiÁ„o desejada pelo usu·rio.
+O sistema de coordenadas È o mesmo da tela, com o eixo Y aumentando para cima.
+Par‚metros:
+posicaoX (entrada, passagem por valor): Valor da coordenada X onde o usu·rio deseja colocar o ret‚ngulo.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y onde o usu·rio deseja colocar o ret‚ngulo.
+altura (entrada, passagem por valor): Valor onde o usu·rio ir· fornecer o n˙mero correspondente em pixels ‡ altura desse ret‚ngulo.
+largura (entrada, passagem por valor): Valor onde o usu·rio ir· fornecer o n˙mero correspondente em pixels ‡ largura desse ret‚ngulo.
+cor (entrada, passagem por valor): indica a cor no sistema RGB para o preenchimento do ret‚ngulo.
 ********************************/
 void DesenhaRetanguloOffScreen(int x1, int y1, int altura, int largura, PIGCor cor){
     jogo->GetOffScreenRender()->DesenharRetangulo(x1,y1,altura,largura,cor);
 }
 
 /********************************
-A fun√ß√£o DesenhaRetanguloVazadoOffScreen() √© respons√°vel por desenhar um ret√¢ngulo sem preenchimento no bitmap offscreen em uma posi√ß√£o desejada pelo usu√°rio.
-O sistema de coordenadas √© o mesmo da tela, com o eixo Y aumentando para cima.
-Par√¢metros:
-posicaoX (entrada, passagem por valor): Valor da coordenada X onde o usu√°rio deseja colocar o ret√¢ngulo.
-posicaoY (entrada, passagem por valor): Valor da coordenada Y onde o usu√°rio deseja colocar o ret√¢ngulo.
-altura (entrada, passagem por valor): Valor onde o usu√°rio ir√° fornecer o n√∫mero correspondente em pixels √† altura desse ret√¢ngulo.
-largura (entrada, passagem por valor): Valor onde o usu√°rio ir√° fornecer o n√∫mero correspondente em pixels √† largura desse ret√¢ngulo.
-cor (entrada, passagem por valor): indica a cor no sistema RGB para a borda do ret√¢ngulo.
+A funÁ„o DesenhaRetanguloVazadoOffScreen() È respons·vel por desenhar um ret‚ngulo sem preenchimento no bitmap offscreen em uma posiÁ„o desejada pelo usu·rio.
+O sistema de coordenadas È o mesmo da tela, com o eixo Y aumentando para cima.
+Par‚metros:
+posicaoX (entrada, passagem por valor): Valor da coordenada X onde o usu·rio deseja colocar o ret‚ngulo.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y onde o usu·rio deseja colocar o ret‚ngulo.
+altura (entrada, passagem por valor): Valor onde o usu·rio ir· fornecer o n˙mero correspondente em pixels ‡ altura desse ret‚ngulo.
+largura (entrada, passagem por valor): Valor onde o usu·rio ir· fornecer o n˙mero correspondente em pixels ‡ largura desse ret‚ngulo.
+cor (entrada, passagem por valor): indica a cor no sistema RGB para a borda do ret‚ngulo.
 ********************************/
 void DesenhaRetanguloVazadoOffScreen(int x1, int y1, int altura, int largura, PIGCor cor){
     jogo->GetOffScreenRender()->DesenharRetanguloVazado(x1,y1,altura,largura,cor);
 }
 
 /********************************
-A fun√ß√£o DesenhaLinhasSimplesOffScreen() √© respons√°vel por desenhar no bitmap offscreen uma √∫nica linha, cuja in√≠cio √© o ponto (x1,y1) e o fim √© o ponto (x2,y2).
-Par√¢metros:
-pontoX1 (entrada, passagem por valor): inteiro que indica o in√≠cio da linha no eixo X.
-pontoY1 (entrada, passagem por valor): inteiro que indica o in√≠cio da linha no eixo Y.
+A funÁ„o DesenhaLinhasSimplesOffScreen() È respons·vel por desenhar no bitmap offscreen uma ˙nica linha, cuja inÌcio È o ponto (x1,y1) e o fim È o ponto (x2,y2).
+Par‚metros:
+pontoX1 (entrada, passagem por valor): inteiro que indica o inÌcio da linha no eixo X.
+pontoY1 (entrada, passagem por valor): inteiro que indica o inÌcio da linha no eixo Y.
 pontoX2 (entrada, passagem por valor): inteiro que indica o fim da linha no eixo X.
 pontoY2 (entrada, passagem por valor): inteiro que indica o fim da linha no eixo Y.
 cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho das linhas.
@@ -1145,11 +1145,11 @@ void DesenhaLinhaSimplesOffScreen(int x1, int y1, int x2, int y2, PIGCor cor){
 }
 
 /********************************
-A fun√ß√£o DesenhaLinhasDisjuntasOffScreen() √© respons√°vel por desenhar no bitmap offscreen linhas separadamente, ou seja, os ponto iniciais de cada linha est√£o nas posi√ß√µes pares e
-os pontos finais est√£o nas posi√ß√µes √≠mpares. Assim, os vetores precisam ter tamanho qtdPontos*2.
-Par√¢metros:
-pontosX (entrada, passagem por refer√™ncia): vetor de inteiros, de tamanho qtdPontos*2, contendo os valores X (inicias e finais) de cada linha.
-pontosY (entrada, passagem por refer√™ncia): vetor de inteiros, de tamanho qtdPontos*2, contendo os valores Y (inicias e finais) de cada linha.
+A funÁ„o DesenhaLinhasDisjuntasOffScreen() È respons·vel por desenhar no bitmap offscreen linhas separadamente, ou seja, os ponto iniciais de cada linha est„o nas posiÁıes pares e
+os pontos finais est„o nas posiÁıes Ìmpares. Assim, os vetores precisam ter tamanho qtdPontos*2.
+Par‚metros:
+pontosX (entrada, passagem por referÍncia): vetor de inteiros, de tamanho qtdPontos*2, contendo os valores X (inicias e finais) de cada linha.
+pontosY (entrada, passagem por referÍncia): vetor de inteiros, de tamanho qtdPontos*2, contendo os valores Y (inicias e finais) de cada linha.
 qtdPontos (entrada, passagem por valor): quantidade de linhas a serem desenhadas.
 cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho das linhas.
 ********************************/
@@ -1158,11 +1158,11 @@ void DesenhaLinhasDisjuntasOffScreen(int pontosX[], int pontosY[], int qtdPontos
 }
 
 /********************************
-A fun√ß√£o DesenhaLinhasSequenciaOffScreen() √© respons√°vel por desenhar no bitmap offscreen linhas em sequ√™ncia, ou seja, o ponto final da primeira linha
+A funÁ„o DesenhaLinhasSequenciaOffScreen() È respons·vel por desenhar no bitmap offscreen linhas em sequÍncia, ou seja, o ponto final da primeira linha
 corresponde ao ponto inicial da segunda linha.
-Par√¢metros:
-pontosX (entrada, passagem por refer√™ncia): vetor de inteiros, de tamanho qtdPontos+1, contendo os valores X de cada linha da sequ√™ncia.
-pontosY (entrada, passagem por refer√™ncia): vetor de inteiros, de tamanho qtdPontos+1, contendo os valores Y de cada linha da sequ√™ncia.
+Par‚metros:
+pontosX (entrada, passagem por referÍncia): vetor de inteiros, de tamanho qtdPontos+1, contendo os valores X de cada linha da sequÍncia.
+pontosY (entrada, passagem por referÍncia): vetor de inteiros, de tamanho qtdPontos+1, contendo os valores Y de cada linha da sequÍncia.
 qtdPontos (entrada, passagem por valor): quantidade de linhas a serem desenhadas.
 cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho das linhas.
 ********************************/
@@ -1174,87 +1174,87 @@ void DesenhaLinhasSequenciaOffScreen(int pontosX[], int pontosY[], int qtdPontos
 ///escrever
 
 /********************************
-Se√ß√£o de fontes
+SeÁ„o de fontes
 ********************************/
 
 /********************************
-A fun√ß√£o CriaFonteNormal() √© respons√°vel por disponibilizar uma nova fonte com preenchimento s√≥lido.
-Par√¢metros:
-nome (entrada, passagem por refer√™ncia): nome do arquivo que cont√©m a fonte (normalmente com extens√£o ttf).
-tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura m√©dia (em pixels) dos caracteres da fonte.
+A funÁ„o CriaFonteNormal() È respons·vel por disponibilizar uma nova fonte com preenchimento sÛlido.
+Par‚metros:
+nome (entrada, passagem por referÍncia): nome do arquivo que contÈm a fonte (normalmente com extens„o ttf).
+tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura mÈdia (em pixels) dos caracteres da fonte.
 corLetra (entrada, passagem por valor): representa a cor de preenchimento da fonte.
-contorno (entrada, passagem por valor): representa a espessura do contorno que fonte ter√°. Caso n√£o seja desejado um contorno, basta utilizar um valor 0.
+contorno (entrada, passagem por valor): representa a espessura do contorno que fonte ter·. Caso n„o seja desejado um contorno, basta utilizar um valor 0.
 corContorno (entrada, passagem por valor): representa a cor do contorno da fonte.
-estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combina√ß√£o bin√°ria de: PIG_ESTILO_NEGRITO, para negrito; PIG_ESTILO_SUBLINHADO, para sublinhado; PIG_ESTILO_ITALICO, para it√°lico;
-PIG_ESTILO_CORTADO, para uma linha horizontal √† meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado PIG_ESTILO_NORMAL.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica qual janela vai receber a fonte. Uma fonte s√≥ pode ser usada na janela na qual foi criada.
+estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combinaÁ„o bin·ria de: PIG_ESTILO_NEGRITO, para negrito; PIG_ESTILO_SUBLINHADO, para sublinhado; PIG_ESTILO_ITALICO, para it·lico;
+PIG_ESTILO_CORTADO, para uma linha horizontal ‡ meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado PIG_ESTILO_NORMAL.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica qual janela vai receber a fonte. Uma fonte sÛ pode ser usada na janela na qual foi criada.
 retono:
-inteiro que representa a ideintifica√ß√£o √∫nica da fonte. Futuras refer√™ncia a esta fonte devem idenitific√°-las pelo n√∫mero.
+inteiro que representa a ideintificaÁ„o ˙nica da fonte. Futuras referÍncia a esta fonte devem idenitific·-las pelo n˙mero.
 ********************************/
 int CriaFonteNormal(char *nome, int tamanho, PIGCor corLetra, int contorno, PIGCor corContorno, PIGEstilo estilo=PIG_ESTILO_NORMAL, int idJanela=0){
     return CPIGGerenciadorFontes::CriaFonteNormal(nome,tamanho,estilo,corLetra,contorno,corContorno,idJanela);
 }
 
 /********************************
-A fun√ß√£o CriaFonteNormal() √© respons√°vel por disponibilizar uma nova fonte com preenchimento s√≥lido.
-Par√¢metros:
-nome (entrada, passagem por refer√™ncia): nome do arquivo que cont√©m a fonte (normalmente com extens√£o ttf).
-tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura m√©dia (em pixels) dos caracteres da fonte.
-corLetra (entrada, passagem por valor): representa a cor de preenchimento da fonte. Caso a cor n√£o seja informada, ser√° utilizada a cor padr√£o (BRANCO).
-estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combina√ß√£o bin√°ria de: PIG_ESTILO_NEGRITO, para negrito; PIG_ESTILO_SUBLINHADO, para sublinhado; PIG_ESTILO_ITALICO, para it√°lico;
-PIG_ESTILO_CORTADO, para uma linha horizontal √† meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado PIG_ESTILO_NORMAL.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica qual janela vai receber a fonte. Uma fonte s√≥ pode ser usada na janela na qual foi criada.
+A funÁ„o CriaFonteNormal() È respons·vel por disponibilizar uma nova fonte com preenchimento sÛlido.
+Par‚metros:
+nome (entrada, passagem por referÍncia): nome do arquivo que contÈm a fonte (normalmente com extens„o ttf).
+tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura mÈdia (em pixels) dos caracteres da fonte.
+corLetra (entrada, passagem por valor): representa a cor de preenchimento da fonte. Caso a cor n„o seja informada, ser· utilizada a cor padr„o (BRANCO).
+estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combinaÁ„o bin·ria de: PIG_ESTILO_NEGRITO, para negrito; PIG_ESTILO_SUBLINHADO, para sublinhado; PIG_ESTILO_ITALICO, para it·lico;
+PIG_ESTILO_CORTADO, para uma linha horizontal ‡ meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado PIG_ESTILO_NORMAL.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica qual janela vai receber a fonte. Uma fonte sÛ pode ser usada na janela na qual foi criada.
 retono:
-inteiro que representa a ideintifica√ß√£o √∫nica da fonte. Futuras refer√™ncia a esta fonte devem idenitific√°-las pelo n√∫mero.
+inteiro que representa a ideintificaÁ„o ˙nica da fonte. Futuras referÍncia a esta fonte devem idenitific·-las pelo n˙mero.
 ********************************/
 int CriaFonteNormal(char *nome, int tamanho, PIGCor corLetra=BRANCO, PIGEstilo estilo=PIG_ESTILO_NORMAL, int idJanela=0){
     return CPIGGerenciadorFontes::CriaFonteNormal(nome,tamanho,estilo,corLetra,idJanela);
 }
 
 /********************************
-A fun√ß√£o CriaFonteDinamica() √© respons√°vel por disponibilizar uma nova fonte din√¢mica com preenchimento s√≥lido. As fontes din√¢micas s√£o capazes
-de escrever strings com diferentes formata√ß√µes (negrito, it√°lico, sublinhado, cortado) e cores nas letras. A string a ser utilizada pela fonte
-pode conter ou n√£o os marcadores de formta√ß√£o. Caso n√£o contenham, ser√° utilizada uma letra branca, sem formata√ß√£o.
-Par√¢metros:
-nome (entrada, passagem por refer√™ncia): nome do arquivo que cont√©m a fonte (normalmente com extens√£o ttf).
-tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura m√©dia (em pixels) dos caracteres da fonte.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica qual janela vai receber a fonte. Uma fonte s√≥ pode ser usada na janela na qual foi criada.
+A funÁ„o CriaFonteDinamica() È respons·vel por disponibilizar uma nova fonte din‚mica com preenchimento sÛlido. As fontes din‚micas s„o capazes
+de escrever strings com diferentes formataÁıes (negrito, it·lico, sublinhado, cortado) e cores nas letras. A string a ser utilizada pela fonte
+pode conter ou n„o os marcadores de formtaÁ„o. Caso n„o contenham, ser· utilizada uma letra branca, sem formataÁ„o.
+Par‚metros:
+nome (entrada, passagem por referÍncia): nome do arquivo que contÈm a fonte (normalmente com extens„o ttf).
+tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura mÈdia (em pixels) dos caracteres da fonte.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica qual janela vai receber a fonte. Uma fonte sÛ pode ser usada na janela na qual foi criada.
 retono:
-inteiro que representa a ideintifica√ß√£o √∫nica da fonte. Futuras refer√™ncia a esta fonte devem idenitific√°-las pelo n√∫mero.
+inteiro que representa a ideintificaÁ„o ˙nica da fonte. Futuras referÍncia a esta fonte devem idenitific·-las pelo n˙mero.
 ********************************/
 int CriaFonteDinamica(char *nome, int tamanho, int idJanela=0){
     return CPIGGerenciadorFontes::CriaFonteDinamica(nome,tamanho,idJanela);
 }
 
 /********************************
-A fun√ß√£o CriaFonteFundo() √© respons√°vel por disponibilizar uma nova fonte com preenchimento de um bitmap espec√≠fico.
-Par√¢metros:
-nome (entrada, passagem por refer√™ncia): nome do arquivo que cont√©m a fonte (normalmente com extens√£o ttf).
-tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura m√©dia (em pixels) dos caracteres da fonte.
-arquivoFundo (entrada, passagem por refer√™ncia): indica o nome do arquivo de imagem que servir√° de fundo para a fonte.
-contorno (entrada, passagem por valor): representa a espessura do contorno que fonte ter√°. Caso n√£o seja desejado um contorno, basta utilizar um valor 0.
+A funÁ„o CriaFonteFundo() È respons·vel por disponibilizar uma nova fonte com preenchimento de um bitmap especÌfico.
+Par‚metros:
+nome (entrada, passagem por referÍncia): nome do arquivo que contÈm a fonte (normalmente com extens„o ttf).
+tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura mÈdia (em pixels) dos caracteres da fonte.
+arquivoFundo (entrada, passagem por referÍncia): indica o nome do arquivo de imagem que servir· de fundo para a fonte.
+contorno (entrada, passagem por valor): representa a espessura do contorno que fonte ter·. Caso n„o seja desejado um contorno, basta utilizar um valor 0.
 corContorno (entrada, passagem por valor): representa a cor do contorno da fonte.
-estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combina√ß√£o bin√°ria de: PIG_ESTILO_NEGRITO, para negrito; PIG_ESTILO_SUBLINHADO, para sublinhado; PIG_ESTILO_ITALICO, para it√°lico;
-PIG_ESTILO_CORTADO, para uma linha horizontal √† meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado PIG_ESTILO_NORMAL.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica qual janela vai receber a fonte. Uma fonte s√≥ pode ser usada na janela na qual foi criada.
+estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combinaÁ„o bin·ria de: PIG_ESTILO_NEGRITO, para negrito; PIG_ESTILO_SUBLINHADO, para sublinhado; PIG_ESTILO_ITALICO, para it·lico;
+PIG_ESTILO_CORTADO, para uma linha horizontal ‡ meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado PIG_ESTILO_NORMAL.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica qual janela vai receber a fonte. Uma fonte sÛ pode ser usada na janela na qual foi criada.
 retono:
-inteiro que representa a ideintifica√ß√£o √∫nica da fonte. Futuras refer√™ncia a esta fonte devem idenitific√°-las pelo n√∫mero.
+inteiro que representa a ideintificaÁ„o ˙nica da fonte. Futuras referÍncia a esta fonte devem idenitific·-las pelo n˙mero.
 ********************************/
 int CriaFonteFundo(char *nome, int tamanho, char *arquivoFundo, int contorno, PIGCor corContorno, PIGEstilo estilo=PIG_ESTILO_NORMAL, int idJanela=0){
     return CPIGGerenciadorFontes::CriaFonteFundo(nome,tamanho,estilo,arquivoFundo,contorno,corContorno,idJanela);
 }
 
 /********************************
-A fun√ß√£o CriaFonteFundo() √© respons√°vel por disponibilizar uma nova fonte com preenchimento de um bitmap espec√≠fico.
-Par√¢metros:
-nome (entrada, passagem por refer√™ncia): nome do arquivo que cont√©m a fonte (normalmente com extens√£o ttf).
-tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura m√©dia (em pixels) dos caracteres da fonte.
-arquivoFundo (entrada, passagem por refer√™ncia): indica o nome do arquivo de imagem que servir√° de fundo para a fonte.
-estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combina√ß√£o bin√°ria de: PIG_ESTILO_NEGRITO, para negrito; PIG_ESTILO_SUBLINHADO, para sublinhado; PIG_ESTILO_ITALICO, para it√°lico;
-PIG_ESTILO_CORTADO, para uma linha horizontal √† meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado PIG_ESTILO_NORMAL.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica qual janela vai receber a fonte. Uma fonte s√≥ pode ser usada na janela na qual foi criada.
+A funÁ„o CriaFonteFundo() È respons·vel por disponibilizar uma nova fonte com preenchimento de um bitmap especÌfico.
+Par‚metros:
+nome (entrada, passagem por referÍncia): nome do arquivo que contÈm a fonte (normalmente com extens„o ttf).
+tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura mÈdia (em pixels) dos caracteres da fonte.
+arquivoFundo (entrada, passagem por referÍncia): indica o nome do arquivo de imagem que servir· de fundo para a fonte.
+estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combinaÁ„o bin·ria de: PIG_ESTILO_NEGRITO, para negrito; PIG_ESTILO_SUBLINHADO, para sublinhado; PIG_ESTILO_ITALICO, para it·lico;
+PIG_ESTILO_CORTADO, para uma linha horizontal ‡ meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado PIG_ESTILO_NORMAL.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica qual janela vai receber a fonte. Uma fonte sÛ pode ser usada na janela na qual foi criada.
 retono:
-inteiro que representa a ideintifica√ß√£o √∫nica da fonte. Futuras refer√™ncia a esta fonte devem idenitific√°-las pelo n√∫mero.
+inteiro que representa a ideintificaÁ„o ˙nica da fonte. Futuras referÍncia a esta fonte devem idenitific·-las pelo n˙mero.
 ********************************/
 int CriaFonteFundo(char *nome, int tamanho, char *arquivoFundo, PIGEstilo estilo=PIG_ESTILO_NORMAL, int idJanela=0){
     return CPIGGerenciadorFontes::CriaFonteFundo(nome,tamanho,estilo,arquivoFundo,idJanela);
@@ -1262,32 +1262,32 @@ int CriaFonteFundo(char *nome, int tamanho, char *arquivoFundo, PIGEstilo estilo
 
 
 /********************************
-A fun√ß√£o CriaFonteNormalOffscreen() √© respons√°vel por disponibilizar uma nova fonte com preenchimento s√≥lido.
-Par√¢metros:
-nome (entrada, passagem por refer√™ncia): nome do arquivo que cont√©m a fonte (normalmente com extens√£o ttf).
-tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura m√©dia (em pixels) dos caracteres da fonte.
+A funÁ„o CriaFonteNormalOffscreen() È respons·vel por disponibilizar uma nova fonte com preenchimento sÛlido.
+Par‚metros:
+nome (entrada, passagem por referÍncia): nome do arquivo que contÈm a fonte (normalmente com extens„o ttf).
+tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura mÈdia (em pixels) dos caracteres da fonte.
 corLetra (entrada, passagem por valor): representa a cor de preenchimento da fonte.
-contorno (entrada, passagem por valor): representa a espessura do contorno que fonte ter√°. Caso n√£o seja desejado um contorno, basta utilizar um valor 0.
+contorno (entrada, passagem por valor): representa a espessura do contorno que fonte ter·. Caso n„o seja desejado um contorno, basta utilizar um valor 0.
 corContorno (entrada, passagem por valor): representa a cor do contorno da fonte.
-estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combina√ß√£o bin√°ria de: PIG_ESTILO_NEGRITO, para negrito; PIG_ESTILO_SUBLINHADO, para sublinhado; PIG_ESTILO_ITALICO, para it√°lico;
-PIG_ESTILO_CORTADO, para uma linha horizontal √† meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado PIG_ESTILO_NORMAL.
+estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combinaÁ„o bin·ria de: PIG_ESTILO_NEGRITO, para negrito; PIG_ESTILO_SUBLINHADO, para sublinhado; PIG_ESTILO_ITALICO, para it·lico;
+PIG_ESTILO_CORTADO, para uma linha horizontal ‡ meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado PIG_ESTILO_NORMAL.
 retono:
-inteiro que representa a ideintifica√ß√£o √∫nica da fonte. Futuras refer√™ncia a esta fonte devem idenitific√°-las pelo n√∫mero.
+inteiro que representa a ideintificaÁ„o ˙nica da fonte. Futuras referÍncia a esta fonte devem idenitific·-las pelo n˙mero.
 ********************************/
 int CriaFonteNormalOffscreen(char *nome, int tamanho, PIGCor corLetra, int contorno, PIGCor corContorno, PIGEstilo estilo=PIG_ESTILO_NORMAL){
     return CPIGGerenciadorFontes::CriaFonteNormalOffScreen(nome,tamanho,estilo,corLetra,contorno,corContorno,jogo->GetOffScreenRender(),0);
 }
 
 /********************************
-A fun√ß√£o CriaFonteNormalOffscreen() √© respons√°vel por disponibilizar uma nova fonte com preenchimento s√≥lido.
-Par√¢metros:
-nome (entrada, passagem por refer√™ncia): nome do arquivo que cont√©m a fonte (normalmente com extens√£o ttf).
-tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura m√©dia (em pixels) dos caracteres da fonte.
-corLetra (entrada, passagem por valor): representa a cor de preenchimento da fonte. Caso a cor n√£o seja informada, ser√° utilizada a cor padr√£o (BRANCO).
-estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combina√ß√£o bin√°ria de: PIG_ESTILO_NEGRITO, para negrito; PIG_ESTILO_SUBLINHADO, para sublinhado; PIG_ESTILO_ITALICO, para it√°lico;
-PIG_ESTILO_CORTADO, para uma linha horizontal √† meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado PIG_ESTILO_NORMAL.
+A funÁ„o CriaFonteNormalOffscreen() È respons·vel por disponibilizar uma nova fonte com preenchimento sÛlido.
+Par‚metros:
+nome (entrada, passagem por referÍncia): nome do arquivo que contÈm a fonte (normalmente com extens„o ttf).
+tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura mÈdia (em pixels) dos caracteres da fonte.
+corLetra (entrada, passagem por valor): representa a cor de preenchimento da fonte. Caso a cor n„o seja informada, ser· utilizada a cor padr„o (BRANCO).
+estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combinaÁ„o bin·ria de: PIG_ESTILO_NEGRITO, para negrito; PIG_ESTILO_SUBLINHADO, para sublinhado; PIG_ESTILO_ITALICO, para it·lico;
+PIG_ESTILO_CORTADO, para uma linha horizontal ‡ meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado PIG_ESTILO_NORMAL.
 retono:
-inteiro que representa a ideintifica√ß√£o √∫nica da fonte. Futuras refer√™ncia a esta fonte devem idenitific√°-las pelo n√∫mero.
+inteiro que representa a ideintificaÁ„o ˙nica da fonte. Futuras referÍncia a esta fonte devem idenitific·-las pelo n˙mero.
 ********************************/
 int CriaFonteNormalOffscreen(char *nome, int tamanho, PIGCor corLetra=BRANCO, PIGEstilo estilo=PIG_ESTILO_NORMAL){
     return CPIGGerenciadorFontes::CriaFonteNormalOffScreen(nome,tamanho,estilo,jogo->GetOffScreenRender(),corLetra,0);
@@ -1295,154 +1295,154 @@ int CriaFonteNormalOffscreen(char *nome, int tamanho, PIGCor corLetra=BRANCO, PI
 
 
 /********************************
-A fun√ß√£o CriaFonteFundoOffscreen() √© respons√°vel por disponibilizar uma nova fonte com preenchimento de um bitmap espec√≠fico.
-Par√¢metros:
-nome (entrada, passagem por refer√™ncia): nome do arquivo que cont√©m a fonte (normalmente com extens√£o ttf).
-tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura m√©dia (em pixels) dos caracteres da fonte.
-arquivoFundo (entrada, passagem por refer√™ncia): indica o nome do arquivo de imagem que servir√° de fundo para a fonte.
-contorno (entrada, passagem por valor): representa a espessura do contorno que fonte ter√°. Caso n√£o seja desejado um contorno, basta utilizar um valor 0.
+A funÁ„o CriaFonteFundoOffscreen() È respons·vel por disponibilizar uma nova fonte com preenchimento de um bitmap especÌfico.
+Par‚metros:
+nome (entrada, passagem por referÍncia): nome do arquivo que contÈm a fonte (normalmente com extens„o ttf).
+tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura mÈdia (em pixels) dos caracteres da fonte.
+arquivoFundo (entrada, passagem por referÍncia): indica o nome do arquivo de imagem que servir· de fundo para a fonte.
+contorno (entrada, passagem por valor): representa a espessura do contorno que fonte ter·. Caso n„o seja desejado um contorno, basta utilizar um valor 0.
 corContorno (entrada, passagem por valor): representa a cor do contorno da fonte.
-estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combina√ß√£o bin√°ria de: PIG_ESTILO_NEGRITO, para negrito; PIG_ESTILO_SUBLINHADO, para sublinhado; PIG_ESTILO_ITALICO, para it√°lico;
-PIG_ESTILO_CORTADO, para uma linha horizontal √† meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado PIG_ESTILO_NORMAL.
+estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combinaÁ„o bin·ria de: PIG_ESTILO_NEGRITO, para negrito; PIG_ESTILO_SUBLINHADO, para sublinhado; PIG_ESTILO_ITALICO, para it·lico;
+PIG_ESTILO_CORTADO, para uma linha horizontal ‡ meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado PIG_ESTILO_NORMAL.
 retono:
-inteiro que representa a ideintifica√ß√£o √∫nica da fonte. Futuras refer√™ncia a esta fonte devem idenitific√°-las pelo n√∫mero.
+inteiro que representa a ideintificaÁ„o ˙nica da fonte. Futuras referÍncia a esta fonte devem idenitific·-las pelo n˙mero.
 ********************************/
 int CriaFonteFundoOffscreen(char *nome, int tamanho, char *arquivoFundo, int contorno, PIGCor corContorno, PIGEstilo estilo=PIG_ESTILO_NORMAL){
     return CPIGGerenciadorFontes::CriaFonteFundoOffScreen(nome,tamanho,estilo,arquivoFundo,contorno,corContorno,jogo->GetOffScreenRender(),0);
 }
 
 /********************************
-A fun√ß√£o CriaFonteFundoOffscreen() √© respons√°vel por disponibilizar uma nova fonte com preenchimento de um bitmap espec√≠fico.
-Par√¢metros:
-nome (entrada, passagem por refer√™ncia): nome do arquivo que cont√©m a fonte (normalmente com extens√£o ttf).
-tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura m√©dia (em pixels) dos caracteres da fonte.
-arquivoFundo (entrada, passagem por refer√™ncia): indica o nome do arquivo de imagem que servir√° de fundo para a fonte.
-estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combina√ß√£o bin√°ria de: PIG_ESTILO_NEGRITO, para negrito; PIG_ESTILO_SUBLINHADO, para sublinhado; PIG_ESTILO_ITALICO, para it√°lico;
-PIG_ESTILO_CORTADO, para uma linha horizontal √† meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado PIG_ESTILO_NORMAL.
+A funÁ„o CriaFonteFundoOffscreen() È respons·vel por disponibilizar uma nova fonte com preenchimento de um bitmap especÌfico.
+Par‚metros:
+nome (entrada, passagem por referÍncia): nome do arquivo que contÈm a fonte (normalmente com extens„o ttf).
+tamanho (entrada, passagem por valor): tamanho da fonte, que normalmente representa a altura mÈdia (em pixels) dos caracteres da fonte.
+arquivoFundo (entrada, passagem por referÍncia): indica o nome do arquivo de imagem que servir· de fundo para a fonte.
+estilo (entrada, passagem por valor): representa o estilo da fonte. Pode ser uma combinaÁ„o bin·ria de: PIG_ESTILO_NEGRITO, para negrito; PIG_ESTILO_SUBLINHADO, para sublinhado; PIG_ESTILO_ITALICO, para it·lico;
+PIG_ESTILO_CORTADO, para uma linha horizontal ‡ meia-altura. Caso nenhum estilo seja desejado, pode ser omitido ou usado PIG_ESTILO_NORMAL.
 retono:
-inteiro que representa a ideintifica√ß√£o √∫nica da fonte. Futuras refer√™ncia a esta fonte devem idenitific√°-las pelo n√∫mero.
+inteiro que representa a ideintificaÁ„o ˙nica da fonte. Futuras referÍncia a esta fonte devem idenitific·-las pelo n˙mero.
 ********************************/
 int CriaFonteFundoOffscreen(char *nome, int tamanho, char *arquivoFundo, PIGEstilo estilo=PIG_ESTILO_NORMAL){
     return CPIGGerenciadorFontes::CriaFonteFundoOffScreen(nome,tamanho,estilo,arquivoFundo,jogo->GetOffScreenRender(),0);
 }
 
 /********************************
-A fun√ß√£o CalculaLarguraPixels() √© respons√°vel por realizar a soma das larguras de cada letra da string informada.
-Par√¢metros:
-str (entrada, passagem por refer√™ncia): string a ser escrita na tela.
-numFonte (entrada, passagem por valor): n√∫mero da fonte a ser utilizada. Caso o usu√°rio n√£o deseje uma fonte especial, ser√° utilizada a fonte padr√£o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+A funÁ„o CalculaLarguraPixels() È respons·vel por realizar a soma das larguras de cada letra da string informada.
+Par‚metros:
+str (entrada, passagem por referÍncia): string a ser escrita na tela.
+numFonte (entrada, passagem por valor): n˙mero da fonte a ser utilizada. Caso o usu·rio n„o deseje uma fonte especial, ser· utilizada a fonte padr„o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 retorno:
-inteiro que representa o total de pixels (no eixo x) necess√°rios para escrever a string.
+inteiro que representa o total de pixels (no eixo x) necess·rios para escrever a string.
 ********************************/
 int CalculaLarguraPixels(char *str, int numFonte=0){
     return CPIGGerenciadorFontes::GetFonte(numFonte)->GetLarguraPixelsString(str);
 }
 
 /********************************
-A fun√ß√£o EscreverDireita() √© respons√°vel por exibir uma string na tela de jogo, com alinhamento √† direita do valor de X.
-Par√¢metros:
-str (entrada, passagem por refer√™ncia): string a ser escrita na tela.
-posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu√°rio deseja come√ßar a escrever a string.
-posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu√°rio deseja come√ßar a escrever a string.
-cor (entrada, passagem por valor): cor a ser aplicada √† fonte no momento da escrita. Essa cor √© misturada √† cor original da fonte, se essa tiver sido informada na cria√ß√£o da fonte.
-numFonte (entrada, passagem por valor): n√∫mero da fonte a ser utilizada. Caso o usu√°rio n√£o deseje uma fonte especial, ser√° utilizada a fonte padr√£o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
-angulo (entrada, passagem por valor): √¢ngulo, em graus, para a rota√ß√£o da string.
+A funÁ„o EscreverDireita() È respons·vel por exibir uma string na tela de jogo, com alinhamento ‡ direita do valor de X.
+Par‚metros:
+str (entrada, passagem por referÍncia): string a ser escrita na tela.
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu·rio deseja comeÁar a escrever a string.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu·rio deseja comeÁar a escrever a string.
+cor (entrada, passagem por valor): cor a ser aplicada ‡ fonte no momento da escrita. Essa cor È misturada ‡ cor original da fonte, se essa tiver sido informada na criaÁ„o da fonte.
+numFonte (entrada, passagem por valor): n˙mero da fonte a ser utilizada. Caso o usu·rio n„o deseje uma fonte especial, ser· utilizada a fonte padr„o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+angulo (entrada, passagem por valor): ‚ngulo, em graus, para a rotaÁ„o da string.
 ********************************/
 void EscreverDireita(char *str,int posicaoX, int posicaoY, PIGCor cor=BRANCO, int numFonte=0, float angulo=0){
     CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str,posicaoX,posicaoY,cor,PIG_TEXTO_DIREITA,angulo);
 }
 
 /********************************
-A fun√ß√£o EscreverEsquerda() √© respons√°vel por exibir uma string na tela de jogo, com alinhamento √† esquerda do valor de X.
-Par√¢metros:
-str (entrada, passagem por refer√™ncia): string a ser escrita na tela.
-posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu√°rio deseja come√ßar a escrever a string.
-posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu√°rio deseja come√ßar a escrever a string.
-cor (entrada, passagem por valor): cor a ser aplicada √† fonte no momento da escrita. Essa cor √© misturada √† cor original da fonte, se essa tiver sido informada na cria√ß√£o da fonte.
-numFonte (entrada, passagem por valor): n√∫mero da fonte a ser utilizada. Caso o usu√°rio n√£o deseje uma fonte especial, ser√° utilizada a fonte padr√£o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
-angulo (entrada, passagem por valor): √¢ngulo, em graus, para a rota√ß√£o da string.
+A funÁ„o EscreverEsquerda() È respons·vel por exibir uma string na tela de jogo, com alinhamento ‡ esquerda do valor de X.
+Par‚metros:
+str (entrada, passagem por referÍncia): string a ser escrita na tela.
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu·rio deseja comeÁar a escrever a string.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu·rio deseja comeÁar a escrever a string.
+cor (entrada, passagem por valor): cor a ser aplicada ‡ fonte no momento da escrita. Essa cor È misturada ‡ cor original da fonte, se essa tiver sido informada na criaÁ„o da fonte.
+numFonte (entrada, passagem por valor): n˙mero da fonte a ser utilizada. Caso o usu·rio n„o deseje uma fonte especial, ser· utilizada a fonte padr„o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+angulo (entrada, passagem por valor): ‚ngulo, em graus, para a rotaÁ„o da string.
 ********************************/
 void EscreverEsquerda(char *str, int posicaoX, int posicaoY, PIGCor cor=BRANCO, int numFonte=0,float angulo=0){
     CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str,posicaoX,posicaoY,cor,PIG_TEXTO_ESQUERDA,angulo);
 }
 
 /********************************
-A fun√ß√£o EscreverCentralizada() √© respons√°vel por exibir uma string na tela de jogo, com alinhamento em rela√ß√£o ao valor de X.
-Par√¢metros:
-str (entrada, passagem por refer√™ncia): string a ser escrita na tela.
-posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu√°rio deseja come√ßar a escrever a string.
-posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu√°rio deseja come√ßar a escrever a string.
-cor (entrada, passagem por valor): cor a ser aplicada √† fonte no momento da escrita. Essa cor √© misturada √† cor original da fonte, se essa tiver sido informada na cria√ß√£o da fonte.
-numFonte (entrada, passagem por valor): n√∫mero da fonte a ser utilizada. Caso o usu√°rio n√£o deseje uma fonte especial, ser√° utilizada a fonte padr√£o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
-angulo (entrada, passagem por valor): √¢ngulo, em graus, para a rota√ß√£o da string.
+A funÁ„o EscreverCentralizada() È respons·vel por exibir uma string na tela de jogo, com alinhamento em relaÁ„o ao valor de X.
+Par‚metros:
+str (entrada, passagem por referÍncia): string a ser escrita na tela.
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu·rio deseja comeÁar a escrever a string.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu·rio deseja comeÁar a escrever a string.
+cor (entrada, passagem por valor): cor a ser aplicada ‡ fonte no momento da escrita. Essa cor È misturada ‡ cor original da fonte, se essa tiver sido informada na criaÁ„o da fonte.
+numFonte (entrada, passagem por valor): n˙mero da fonte a ser utilizada. Caso o usu·rio n„o deseje uma fonte especial, ser· utilizada a fonte padr„o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+angulo (entrada, passagem por valor): ‚ngulo, em graus, para a rotaÁ„o da string.
 ********************************/
 void EscreverCentralizada(char *str, int posicaoX, int posicaoY, PIGCor cor=BRANCO, int numFonte=0, float angulo=0){
     CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str,posicaoX,posicaoY,cor,PIG_TEXTO_CENTRO,angulo);
 }
 
 /********************************
-A fun√ß√£o EscreverLongaEsquerda() √© respons√°vel por exibir uma string longa na tela de jogo, com alinhamento √† esquerda do valor de X.
-A string se expande palavra por palavra at√© a largura m√°xima definida (maxLarg). Se ainda houver palavras, elas ser√£o escritas na linha abaixo,
-tendo um espa√ßamento entre as linhas (espacoEntreLinhas) tamb√©m definido por par√¢metro.
-Par√¢metros:
-str (entrada, passagem por refer√™ncia): string a ser escrita na tela.
-posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu√°rio deseja come√ßar a escrever a string.
-posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu√°rio deseja come√ßar a escrever a string.
-largMax (entrada, passagem por valor): largura m√°xima em pixels que pode ser utilizada para escrever as palavras em cada linha do texto. ao atingir esse limite, as palavras seguintes s√£o escritas na linha abaixo.
-espacoEntreLinhas (entrada, passagem por valor): dist√¢ncia em pixels entre o valor Y de uma linha e o valor Y da linha abaixo.
-cor (entrada, passagem por valor): cor a ser aplicada √† fonte no momento da escrita. Essa cor √© misturada √† cor original da fonte, se essa tiver sido informada na cria√ß√£o da fonte.
-numFonte (entrada, passagem por valor): n√∫mero da fonte a ser utilizada. Caso o usu√°rio n√£o deseje uma fonte especial, ser√° utilizada a fonte padr√£o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
-angulo (entrada, passagem por valor): √¢ngulo, em graus, para a rota√ß√£o das strings.
+A funÁ„o EscreverLongaEsquerda() È respons·vel por exibir uma string longa na tela de jogo, com alinhamento ‡ esquerda do valor de X.
+A string se expande palavra por palavra atÈ a largura m·xima definida (maxLarg). Se ainda houver palavras, elas ser„o escritas na linha abaixo,
+tendo um espaÁamento entre as linhas (espacoEntreLinhas) tambÈm definido por par‚metro.
+Par‚metros:
+str (entrada, passagem por referÍncia): string a ser escrita na tela.
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu·rio deseja comeÁar a escrever a string.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu·rio deseja comeÁar a escrever a string.
+largMax (entrada, passagem por valor): largura m·xima em pixels que pode ser utilizada para escrever as palavras em cada linha do texto. ao atingir esse limite, as palavras seguintes s„o escritas na linha abaixo.
+espacoEntreLinhas (entrada, passagem por valor): dist‚ncia em pixels entre o valor Y de uma linha e o valor Y da linha abaixo.
+cor (entrada, passagem por valor): cor a ser aplicada ‡ fonte no momento da escrita. Essa cor È misturada ‡ cor original da fonte, se essa tiver sido informada na criaÁ„o da fonte.
+numFonte (entrada, passagem por valor): n˙mero da fonte a ser utilizada. Caso o usu·rio n„o deseje uma fonte especial, ser· utilizada a fonte padr„o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+angulo (entrada, passagem por valor): ‚ngulo, em graus, para a rotaÁ„o das strings.
 ********************************/
 void EscreverLongaEsquerda(char *str, int posicaoX, int posicaoY, int largMax, int espacoEntreLinhas, PIGCor cor=BRANCO, int numFonte=0, float angulo=0){
     CPIGGerenciadorFontes::GetFonte(numFonte)->EscreveLonga(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,cor,PIG_TEXTO_ESQUERDA,angulo);
 }
 
 /********************************
-A fun√ß√£o EscreverLongaDireita() √© respons√°vel por exibir uma string longa na tela de jogo, com alinhamento √† direita do valor de X.
-A string se expande palavra por palavra at√© a largura m√°xima definida (maxLarg). Se ainda houver palavras, elas ser√£o escritas na linha abaixo,
-tendo um espa√ßamento entre as linhas (espacoEntreLinhas) tamb√©m definido por par√¢metro.
-Par√¢metros:
-str (entrada, passagem por refer√™ncia): string a ser escrita na tela.
-posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu√°rio deseja come√ßar a escrever a string.
-posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu√°rio deseja come√ßar a escrever a string.
-largMax (entrada, passagem por valor): largura m√°xima em pixels que pode ser utilizada para escrever as palavras em cada linha do texto. ao atingir esse limite, as palavras seguintes s√£o escritas na linha abaixo.
-espacoEntreLinhas (entrada, passagem por valor): dist√¢ncia em pixels entre o valor Y de uma linha e o valor Y da linha abaixo.
-cor (entrada, passagem por valor): cor a ser aplicada √† fonte no momento da escrita. Essa cor √© misturada √† cor original da fonte, se essa tiver sido informada na cria√ß√£o da fonte.
-numFonte (entrada, passagem por valor): n√∫mero da fonte a ser utilizada. Caso o usu√°rio n√£o deseje uma fonte especial, ser√° utilizada a fonte padr√£o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
-angulo (entrada, passagem por valor): √¢ngulo, em graus, para a rota√ß√£o das strings.
+A funÁ„o EscreverLongaDireita() È respons·vel por exibir uma string longa na tela de jogo, com alinhamento ‡ direita do valor de X.
+A string se expande palavra por palavra atÈ a largura m·xima definida (maxLarg). Se ainda houver palavras, elas ser„o escritas na linha abaixo,
+tendo um espaÁamento entre as linhas (espacoEntreLinhas) tambÈm definido por par‚metro.
+Par‚metros:
+str (entrada, passagem por referÍncia): string a ser escrita na tela.
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu·rio deseja comeÁar a escrever a string.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu·rio deseja comeÁar a escrever a string.
+largMax (entrada, passagem por valor): largura m·xima em pixels que pode ser utilizada para escrever as palavras em cada linha do texto. ao atingir esse limite, as palavras seguintes s„o escritas na linha abaixo.
+espacoEntreLinhas (entrada, passagem por valor): dist‚ncia em pixels entre o valor Y de uma linha e o valor Y da linha abaixo.
+cor (entrada, passagem por valor): cor a ser aplicada ‡ fonte no momento da escrita. Essa cor È misturada ‡ cor original da fonte, se essa tiver sido informada na criaÁ„o da fonte.
+numFonte (entrada, passagem por valor): n˙mero da fonte a ser utilizada. Caso o usu·rio n„o deseje uma fonte especial, ser· utilizada a fonte padr„o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+angulo (entrada, passagem por valor): ‚ngulo, em graus, para a rotaÁ„o das strings.
 ********************************/
 void EscreverLongaDireita(char *str, int posicaoX, int posicaoY, int largMax, int espacoEntreLinhas, PIGCor cor=BRANCO, int numFonte=0, float angulo=0){
     CPIGGerenciadorFontes::GetFonte(numFonte)->EscreveLonga(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,cor,PIG_TEXTO_DIREITA,angulo);
 }
 
 /********************************
-A fun√ß√£o EscreverLongaCentralizada() √© respons√°vel por exibir uma string longa na tela de jogo, com alinhamento em rela√ß√£o ao valor de X.
-A string se expande palavra por palavra at√© a largura m√°xima definida (maxLarg). Se ainda houver palavras, elas ser√£o escritas na linha abaixo,
-tendo um espa√ßamento entre as linhas (espacoEntreLinhas) tamb√©m definido por par√¢metro.
-Par√¢metros:
-str (entrada, passagem por refer√™ncia): string a ser escrita na tela.
-posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu√°rio deseja come√ßar a escrever a string.
-posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu√°rio deseja come√ßar a escrever a string.
-largMax (entrada, passagem por valor): largura m√°xima em pixels que pode ser utilizada para escrever as palavras em cada linha do texto. ao atingir esse limite, as palavras seguintes s√£o escritas na linha abaixo.
-espacoEntreLinhas (entrada, passagem por valor): dist√¢ncia em pixels entre o valor Y de uma linha e o valor Y da linha abaixo.
-cor (entrada, passagem por valor): cor a ser aplicada √† fonte no momento da escrita. Essa cor √© misturada √† cor original da fonte, se essa tiver sido informada na cria√ß√£o da fonte.
-numFonte (entrada, passagem por valor): n√∫mero da fonte a ser utilizada. Caso o usu√°rio n√£o deseje uma fonte especial, ser√° utilizada a fonte padr√£o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
-angulo (entrada, passagem por valor): √¢ngulo, em graus, para a rota√ß√£o das strings.
+A funÁ„o EscreverLongaCentralizada() È respons·vel por exibir uma string longa na tela de jogo, com alinhamento em relaÁ„o ao valor de X.
+A string se expande palavra por palavra atÈ a largura m·xima definida (maxLarg). Se ainda houver palavras, elas ser„o escritas na linha abaixo,
+tendo um espaÁamento entre as linhas (espacoEntreLinhas) tambÈm definido por par‚metro.
+Par‚metros:
+str (entrada, passagem por referÍncia): string a ser escrita na tela.
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu·rio deseja comeÁar a escrever a string.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu·rio deseja comeÁar a escrever a string.
+largMax (entrada, passagem por valor): largura m·xima em pixels que pode ser utilizada para escrever as palavras em cada linha do texto. ao atingir esse limite, as palavras seguintes s„o escritas na linha abaixo.
+espacoEntreLinhas (entrada, passagem por valor): dist‚ncia em pixels entre o valor Y de uma linha e o valor Y da linha abaixo.
+cor (entrada, passagem por valor): cor a ser aplicada ‡ fonte no momento da escrita. Essa cor È misturada ‡ cor original da fonte, se essa tiver sido informada na criaÁ„o da fonte.
+numFonte (entrada, passagem por valor): n˙mero da fonte a ser utilizada. Caso o usu·rio n„o deseje uma fonte especial, ser· utilizada a fonte padr„o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+angulo (entrada, passagem por valor): ‚ngulo, em graus, para a rotaÁ„o das strings.
 ********************************/
 void EscreverLongaCentralizada(char *str, int posicaoX, int posicaoY, int largMax, int espacoEntreLinhas, PIGCor cor=BRANCO, int numFonte=0, float angulo=0){
     CPIGGerenciadorFontes::GetFonte(numFonte)->EscreveLonga(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,cor,PIG_TEXTO_CENTRO,angulo);
 }
 
 /********************************
-A fun√ß√£o EscreverInteiroEsquerda() √© respons√°vel por exibir um n√∫mero inteiro na tela de jogo, com alinhamento √† esquerda em rela√ß√£o ao valor de X.
-Par√¢metros:
-valor (entrada, passagem por refer√™ncia): n√∫mero inteiro a ser escrito na tela.
-posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu√°rio deseja come√ßar a escrever o n√∫mero.
-posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu√°rio deseja come√ßar a escrever o n√∫mero.
-cor (entrada, passagem por valor): cor a ser aplicada √† fonte no momento da escrita. Essa cor √© misturada √† cor original da fonte, se essa tiver sido informada na cria√ß√£o da fonte.
-numFonte (entrada, passagem por valor): n√∫mero da fonte a ser utilizada. Caso o usu√°rio n√£o deseje uma fonte especial, ser√° utilizada a fonte padr√£o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
-angulo (entrada, passagem por valor): √¢ngulo, em graus, para a rota√ß√£o do n√∫mero inteiro.
+A funÁ„o EscreverInteiroEsquerda() È respons·vel por exibir um n˙mero inteiro na tela de jogo, com alinhamento ‡ esquerda em relaÁ„o ao valor de X.
+Par‚metros:
+valor (entrada, passagem por referÍncia): n˙mero inteiro a ser escrito na tela.
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu·rio deseja comeÁar a escrever o n˙mero.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu·rio deseja comeÁar a escrever o n˙mero.
+cor (entrada, passagem por valor): cor a ser aplicada ‡ fonte no momento da escrita. Essa cor È misturada ‡ cor original da fonte, se essa tiver sido informada na criaÁ„o da fonte.
+numFonte (entrada, passagem por valor): n˙mero da fonte a ser utilizada. Caso o usu·rio n„o deseje uma fonte especial, ser· utilizada a fonte padr„o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+angulo (entrada, passagem por valor): ‚ngulo, em graus, para a rotaÁ„o do n˙mero inteiro.
 ********************************/
 void EscreveInteiroEsquerda(int valor, int x, int y, PIGCor cor=BRANCO, int numFonte=0, float angulo=0){
     stringstream str;
@@ -1451,14 +1451,14 @@ void EscreveInteiroEsquerda(int valor, int x, int y, PIGCor cor=BRANCO, int numF
 }
 
 /********************************
-A fun√ß√£o EscreverInteiroDireita() √© respons√°vel por exibir um n√∫mero inteiro na tela de jogo, com alinhamento √† direita em rela√ß√£o ao valor de X.
-Par√¢metros:
-valor (entrada, passagem por refer√™ncia): n√∫mero inteiro a ser escrito na tela.
-posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu√°rio deseja come√ßar a escrever o n√∫mero.
-posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu√°rio deseja come√ßar a escrever o n√∫mero.
-cor (entrada, passagem por valor): cor a ser aplicada √† fonte no momento da escrita. Essa cor √© misturada √† cor original da fonte, se essa tiver sido informada na cria√ß√£o da fonte.
-numFonte (entrada, passagem por valor): n√∫mero da fonte a ser utilizada. Caso o usu√°rio n√£o deseje uma fonte especial, ser√° utilizada a fonte padr√£o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
-angulo (entrada, passagem por valor): √¢ngulo, em graus, para a rota√ß√£o do n√∫mero inteiro.
+A funÁ„o EscreverInteiroDireita() È respons·vel por exibir um n˙mero inteiro na tela de jogo, com alinhamento ‡ direita em relaÁ„o ao valor de X.
+Par‚metros:
+valor (entrada, passagem por referÍncia): n˙mero inteiro a ser escrito na tela.
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu·rio deseja comeÁar a escrever o n˙mero.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu·rio deseja comeÁar a escrever o n˙mero.
+cor (entrada, passagem por valor): cor a ser aplicada ‡ fonte no momento da escrita. Essa cor È misturada ‡ cor original da fonte, se essa tiver sido informada na criaÁ„o da fonte.
+numFonte (entrada, passagem por valor): n˙mero da fonte a ser utilizada. Caso o usu·rio n„o deseje uma fonte especial, ser· utilizada a fonte padr„o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+angulo (entrada, passagem por valor): ‚ngulo, em graus, para a rotaÁ„o do n˙mero inteiro.
 ********************************/
 void EscreveInteiroDireita(int valor, int x, int y, PIGCor cor=BRANCO, int numFonte=0, float angulo=0){
     stringstream str;
@@ -1467,14 +1467,14 @@ void EscreveInteiroDireita(int valor, int x, int y, PIGCor cor=BRANCO, int numFo
 }
 
 /********************************
-A fun√ß√£o EscreverInteiroCentralizado() √© respons√°vel por exibir um n√∫mero inteiro na tela de jogo, com alinhamento em rela√ß√£o ao valor de X.
-Par√¢metros:
-valor (entrada, passagem por refer√™ncia): n√∫mero inteiro a ser escrito na tela.
-posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu√°rio deseja come√ßar a escrever o n√∫mero.
-posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu√°rio deseja come√ßar a escrever o n√∫mero.
-cor (entrada, passagem por valor): cor a ser aplicada √† fonte no momento da escrita. Essa cor √© misturada √† cor original da fonte, se essa tiver sido informada na cria√ß√£o da fonte.
-numFonte (entrada, passagem por valor): n√∫mero da fonte a ser utilizada. Caso o usu√°rio n√£o deseje uma fonte especial, ser√° utilizada a fonte padr√£o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
-angulo (entrada, passagem por valor): √¢ngulo, em graus, para a rota√ß√£o do n√∫mero inteiro.
+A funÁ„o EscreverInteiroCentralizado() È respons·vel por exibir um n˙mero inteiro na tela de jogo, com alinhamento em relaÁ„o ao valor de X.
+Par‚metros:
+valor (entrada, passagem por referÍncia): n˙mero inteiro a ser escrito na tela.
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu·rio deseja comeÁar a escrever o n˙mero.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu·rio deseja comeÁar a escrever o n˙mero.
+cor (entrada, passagem por valor): cor a ser aplicada ‡ fonte no momento da escrita. Essa cor È misturada ‡ cor original da fonte, se essa tiver sido informada na criaÁ„o da fonte.
+numFonte (entrada, passagem por valor): n˙mero da fonte a ser utilizada. Caso o usu·rio n„o deseje uma fonte especial, ser· utilizada a fonte padr„o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+angulo (entrada, passagem por valor): ‚ngulo, em graus, para a rotaÁ„o do n˙mero inteiro.
 ********************************/
 void EscreveInteiroCentralizado(int valor, int x, int y, PIGCor cor=BRANCO, int numFonte=0, float angulo=0){
     stringstream str;
@@ -1483,15 +1483,15 @@ void EscreveInteiroCentralizado(int valor, int x, int y, PIGCor cor=BRANCO, int 
 }
 
 /********************************
-A fun√ß√£o EscreverDoubleEsquerda() √© respons√°vel por exibir um n√∫mero real na tela de jogo, com alinhamento √† esquerda em rela√ß√£o ao valor de X.
-Par√¢metros:
-valor (entrada, passagem por refer√™ncia): n√∫mero inteiro a ser escrito na tela.
-casas (entrada, passagem por refer√™ncia): n√∫mero de casas decimais a ser usado na escrita.
-posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu√°rio deseja come√ßar a escrever o n√∫mero.
-posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu√°rio deseja come√ßar a escrever o n√∫mero.
-cor (entrada, passagem por valor): cor a ser aplicada √† fonte no momento da escrita. Essa cor √© misturada √† cor original da fonte, se essa tiver sido informada na cria√ß√£o da fonte.
-numFonte (entrada, passagem por valor): n√∫mero da fonte a ser utilizada. Caso o usu√°rio n√£o deseje uma fonte especial, ser√° utilizada a fonte padr√£o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
-angulo (entrada, passagem por valor): √¢ngulo, em graus, para a rota√ß√£o do n√∫mero real.
+A funÁ„o EscreverDoubleEsquerda() È respons·vel por exibir um n˙mero real na tela de jogo, com alinhamento ‡ esquerda em relaÁ„o ao valor de X.
+Par‚metros:
+valor (entrada, passagem por referÍncia): n˙mero inteiro a ser escrito na tela.
+casas (entrada, passagem por referÍncia): n˙mero de casas decimais a ser usado na escrita.
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu·rio deseja comeÁar a escrever o n˙mero.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu·rio deseja comeÁar a escrever o n˙mero.
+cor (entrada, passagem por valor): cor a ser aplicada ‡ fonte no momento da escrita. Essa cor È misturada ‡ cor original da fonte, se essa tiver sido informada na criaÁ„o da fonte.
+numFonte (entrada, passagem por valor): n˙mero da fonte a ser utilizada. Caso o usu·rio n„o deseje uma fonte especial, ser· utilizada a fonte padr„o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+angulo (entrada, passagem por valor): ‚ngulo, em graus, para a rotaÁ„o do n˙mero real.
 ********************************/
 void EscreveDoubleEsquerda(double valor, int casas, int x, int y, PIGCor cor=BRANCO, int numFonte=0, float angulo=0){
     stringstream str;
@@ -1501,15 +1501,15 @@ void EscreveDoubleEsquerda(double valor, int casas, int x, int y, PIGCor cor=BRA
 }
 
 /********************************
-A fun√ß√£o EscreverDoubleDireita() √© respons√°vel por exibir um n√∫mero real na tela de jogo, com alinhamento √† direita em rela√ß√£o ao valor de X.
-Par√¢metros:
-valor (entrada, passagem por refer√™ncia): n√∫mero inteiro a ser escrito na tela.
-casas (entrada, passagem por refer√™ncia): n√∫mero de casas decimais a ser usado na escrita.
-posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu√°rio deseja come√ßar a escrever o n√∫mero.
-posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu√°rio deseja come√ßar a escrever o n√∫mero.
-cor (entrada, passagem por valor): cor a ser aplicada √† fonte no momento da escrita. Essa cor √© misturada √† cor original da fonte, se essa tiver sido informada na cria√ß√£o da fonte.
-numFonte (entrada, passagem por valor): n√∫mero da fonte a ser utilizada. Caso o usu√°rio n√£o deseje uma fonte especial, ser√° utilizada a fonte padr√£o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
-angulo (entrada, passagem por valor): √¢ngulo, em graus, para a rota√ß√£o do n√∫mero real.
+A funÁ„o EscreverDoubleDireita() È respons·vel por exibir um n˙mero real na tela de jogo, com alinhamento ‡ direita em relaÁ„o ao valor de X.
+Par‚metros:
+valor (entrada, passagem por referÍncia): n˙mero inteiro a ser escrito na tela.
+casas (entrada, passagem por referÍncia): n˙mero de casas decimais a ser usado na escrita.
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu·rio deseja comeÁar a escrever o n˙mero.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu·rio deseja comeÁar a escrever o n˙mero.
+cor (entrada, passagem por valor): cor a ser aplicada ‡ fonte no momento da escrita. Essa cor È misturada ‡ cor original da fonte, se essa tiver sido informada na criaÁ„o da fonte.
+numFonte (entrada, passagem por valor): n˙mero da fonte a ser utilizada. Caso o usu·rio n„o deseje uma fonte especial, ser· utilizada a fonte padr„o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+angulo (entrada, passagem por valor): ‚ngulo, em graus, para a rotaÁ„o do n˙mero real.
 ********************************/
 void EscreveDoubleDireita(double valor, int casas, int x, int y, PIGCor cor=BRANCO, int numFonte=0, float angulo=0){
     stringstream str;
@@ -1519,15 +1519,15 @@ void EscreveDoubleDireita(double valor, int casas, int x, int y, PIGCor cor=BRAN
 }
 
 /********************************
-A fun√ß√£o EscreverDoubleCentralizado() √© respons√°vel por exibir um n√∫mero real na tela de jogo, com alinhamento em rela√ß√£o ao valor de X.
-Par√¢metros:
-valor (entrada, passagem por refer√™ncia): n√∫mero inteiro a ser escrito na tela.
-casas (entrada, passagem por refer√™ncia): n√∫mero de casas decimais a ser usado na escrita.
-posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu√°rio deseja come√ßar a escrever o n√∫mero.
-posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu√°rio deseja come√ßar a escrever o n√∫mero.
-cor (entrada, passagem por valor): cor a ser aplicada √† fonte no momento da escrita. Essa cor √© misturada √† cor original da fonte, se essa tiver sido informada na cria√ß√£o da fonte.
-numFonte (entrada, passagem por valor): n√∫mero da fonte a ser utilizada. Caso o usu√°rio n√£o deseje uma fonte especial, ser√° utilizada a fonte padr√£o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
-angulo (entrada, passagem por valor): √¢ngulo, em graus, para a rota√ß√£o do n√∫mero real.
+A funÁ„o EscreverDoubleCentralizado() È respons·vel por exibir um n˙mero real na tela de jogo, com alinhamento em relaÁ„o ao valor de X.
+Par‚metros:
+valor (entrada, passagem por referÍncia): n˙mero inteiro a ser escrito na tela.
+casas (entrada, passagem por referÍncia): n˙mero de casas decimais a ser usado na escrita.
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu·rio deseja comeÁar a escrever o n˙mero.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu·rio deseja comeÁar a escrever o n˙mero.
+cor (entrada, passagem por valor): cor a ser aplicada ‡ fonte no momento da escrita. Essa cor È misturada ‡ cor original da fonte, se essa tiver sido informada na criaÁ„o da fonte.
+numFonte (entrada, passagem por valor): n˙mero da fonte a ser utilizada. Caso o usu·rio n„o deseje uma fonte especial, ser· utilizada a fonte padr„o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+angulo (entrada, passagem por valor): ‚ngulo, em graus, para a rotaÁ„o do n˙mero real.
 ********************************/
 void EscreveDoubleCentralizado(double valor, int casas, int x, int y, PIGCor cor=BRANCO, int numFonte=0, float angulo=0){
     stringstream str;
@@ -1537,50 +1537,50 @@ void EscreveDoubleCentralizado(double valor, int casas, int x, int y, PIGCor cor
 }
 
 /********************************
-A fun√ß√£o GetMetricas() recupera as principais m√©tricas de uma letra em um estilo espec√≠fico.
-As m√©tricas incluem as posi√ß√µes m√≠nimas e m√°ximas nos eixos X e Y, onde a letra √© desenhada.
-Se a fonte n√£o for din√¢mica, qualquer valor de estilo passado ser√° descartado e ser√° utilizado o estilo indicado na cria√ß√£o da fonte.
-Par√¢metros:
-letra (entrada, passagem por valor): caractere cuja largura ser√° calculada.
-estilo (entrada, passagem por valor): estilo desejado no c√°lculo da largura. O valor s√≥ ser√° utilizado em fontes din√¢micas. Em fontes n√£o-din√¢micas, o valor de estilo ser√° o mesmo do informado na cria√ß√£o da fonte.
-numFonte (entrada, passagem por valor): n√∫mero da fonte a ser utilizada. Caso o usu√°rio n√£o deseje uma fonte especial, ser√° utilizada a fonte padr√£o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+A funÁ„o GetMetricas() recupera as principais mÈtricas de uma letra em um estilo especÌfico.
+As mÈtricas incluem as posiÁıes mÌnimas e m·ximas nos eixos X e Y, onde a letra È desenhada.
+Se a fonte n„o for din‚mica, qualquer valor de estilo passado ser· descartado e ser· utilizado o estilo indicado na criaÁ„o da fonte.
+Par‚metros:
+letra (entrada, passagem por valor): caractere cuja largura ser· calculada.
+estilo (entrada, passagem por valor): estilo desejado no c·lculo da largura. O valor sÛ ser· utilizado em fontes din‚micas. Em fontes n„o-din‚micas, o valor de estilo ser· o mesmo do informado na criaÁ„o da fonte.
+numFonte (entrada, passagem por valor): n˙mero da fonte a ser utilizada. Caso o usu·rio n„o deseje uma fonte especial, ser· utilizada a fonte padr„o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 retorno:
-struct que representa as m√©tricas principais ao escrever a letra.
+struct que representa as mÈtricas principais ao escrever a letra.
 ********************************/
 PIGMetricas_Fonte GetMetricas(char letra, PIGEstilo estilo=PIG_ESTILO_NORMAL, int numFonte=0){
     return CPIGGerenciadorFontes::GetFonte(numFonte)->GetMetricasLetra(letra,estilo);
 }
 
 /********************************
-A fun√ß√£o CalculaLarguraLetra() √© respons√°vel por calcular a largura espec√≠fica de uma letra com um estilo.
-Se a fonte n√£o for din√¢mica, qualquer valor de estilo passado ser√° descartado e ser√° utilizado o estilo indicado na cria√ß√£o da fonte.
-Par√¢metros:
-letra (entrada, passagem por valor): caractere cuja largura ser√° calculada.
-estilo (entrada, passagem por valor): estilo desejado no c√°lculo da largura. O valor s√≥ ser√° utilizado em fontes din√¢micas. Em fontes n√£o-din√¢micas, o valor de estilo ser√° o mesmo do informado na cria√ß√£o da fonte.
-numFonte (entrada, passagem por valor): n√∫mero da fonte a ser utilizada. Caso o usu√°rio n√£o deseje uma fonte especial, ser√° utilizada a fonte padr√£o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+A funÁ„o CalculaLarguraLetra() È respons·vel por calcular a largura especÌfica de uma letra com um estilo.
+Se a fonte n„o for din‚mica, qualquer valor de estilo passado ser· descartado e ser· utilizado o estilo indicado na criaÁ„o da fonte.
+Par‚metros:
+letra (entrada, passagem por valor): caractere cuja largura ser· calculada.
+estilo (entrada, passagem por valor): estilo desejado no c·lculo da largura. O valor sÛ ser· utilizado em fontes din‚micas. Em fontes n„o-din‚micas, o valor de estilo ser· o mesmo do informado na criaÁ„o da fonte.
+numFonte (entrada, passagem por valor): n˙mero da fonte a ser utilizada. Caso o usu·rio n„o deseje uma fonte especial, ser· utilizada a fonte padr„o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 retorno:
-inteiro que representa o total de pixels (no eixo x) necess√°rios para escrever a letra.
+inteiro que representa o total de pixels (no eixo x) necess·rios para escrever a letra.
 ********************************/
 int GetLarguraLetra(char letra, PIGEstilo estilo=PIG_ESTILO_NORMAL, int numFonte=0){
     return CPIGGerenciadorFontes::GetFonte(numFonte)->GetLarguraLetra(letra,estilo);
 }
 
 /********************************
-A fun√ß√£o GetTamanhoBaseFonte() √© respons√°vel por recuperar o tamanho da fonte informado na cria√ß√£o da mesma.
-Par√¢metros:
-numFonte (entrada, passagem por valor): n√∫mero da fonte a ser utilizada. Caso o usu√°rio n√£o deseje uma fonte especial, ser√° utilizada a fonte padr√£o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+A funÁ„o GetTamanhoBaseFonte() È respons·vel por recuperar o tamanho da fonte informado na criaÁ„o da mesma.
+Par‚metros:
+numFonte (entrada, passagem por valor): n˙mero da fonte a ser utilizada. Caso o usu·rio n„o deseje uma fonte especial, ser· utilizada a fonte padr„o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 retorno:
-inteiro que representa o tamanho base da fonte, ou seja, a quantidade de pixels no eixo Y para desenhar qualquer caractere da fonte (exceto vogais mai√∫suclas acentuadas: √Å, √â, √ç, √ì, √ö.
+inteiro que representa o tamanho base da fonte, ou seja, a quantidade de pixels no eixo Y para desenhar qualquer caractere da fonte (exceto vogais mai˙suclas acentuadas: ¡, …, Õ, ”, ⁄.
 ********************************/
 int GetTamanhoBaseFonte(int numFonte=0){
     return CPIGGerenciadorFontes::GetFonte(numFonte)->GetTamanhoBaseFonte();
 }
 
 /********************************
-A fun√ß√£o GetFonteDescent() calcula a quantidade de pixels que podem ser utilizados por partes de letras que fiquem abaixo da linha horizontal de base da fonte.
-Essa parte inferior √© usada para desenhar a cedilha, a parte inferior da letra 'g', 'q', 'y', por exemplo.
-Par√¢metros:
-numFonte (entrada, passagem por valor): n√∫mero da fonte a ser utilizada. Caso o usu√°rio n√£o deseje uma fonte especial, ser√° utilizada a fonte padr√£o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+A funÁ„o GetFonteDescent() calcula a quantidade de pixels que podem ser utilizados por partes de letras que fiquem abaixo da linha horizontal de base da fonte.
+Essa parte inferior È usada para desenhar a cedilha, a parte inferior da letra 'g', 'q', 'y', por exemplo.
+Par‚metros:
+numFonte (entrada, passagem por valor): n˙mero da fonte a ser utilizada. Caso o usu·rio n„o deseje uma fonte especial, ser· utilizada a fonte padr„o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 retorno:
 inteiro que representa o total de pixels abaixo da linha horizontal de base da fonte.
 ********************************/
@@ -1589,10 +1589,10 @@ int GetFonteDescent(int numFonte=0){
 }
 
 /********************************
-A fun√ß√£o GetFonteAscent() calcula a quantidade de pixels necess√°rios acima da linha horizontal de base da fonte. Essa medida exclui os pixels utilizados
-nas partes inferiores das letras 'g', 'q', 'y', por exemplo. Tamb√©m n√£o s√£o considerados acentos em vogais mai√∫sculas como '√Å', '√ì', '√â', por exemplo.
-Par√¢metros:
-numFonte (entrada, passagem por valor): n√∫mero da fonte a ser utilizada. Caso o usu√°rio n√£o deseje uma fonte especial, ser√° utilizada a fonte padr√£o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+A funÁ„o GetFonteAscent() calcula a quantidade de pixels necess·rios acima da linha horizontal de base da fonte. Essa medida exclui os pixels utilizados
+nas partes inferiores das letras 'g', 'q', 'y', por exemplo. TambÈm n„o s„o considerados acentos em vogais mai˙sculas como '¡', '”', '…', por exemplo.
+Par‚metros:
+numFonte (entrada, passagem por valor): n˙mero da fonte a ser utilizada. Caso o usu·rio n„o deseje uma fonte especial, ser· utilizada a fonte padr„o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 retorno:
 inteiro que representa o total de pixels acima da linha horizontal de base da fonte.
 ********************************/
@@ -1601,33 +1601,33 @@ int GetFonteAscent(int numFonte=0){
 }
 
 /********************************
-A fun√ß√£o GetFonteLineSkip() calcula a quantidade de pixels necess√°rios para um espa√ßamento vertical ideal, ou seja, para que duas frases possam
+A funÁ„o GetFonteLineSkip() calcula a quantidade de pixels necess·rios para um espaÁamento vertical ideal, ou seja, para que duas frases possam
 ser escritas sem se sobreporem verticalmente.
-Par√¢metros:
-numFonte (entrada, passagem por valor): n√∫mero da fonte a ser utilizada. Caso o usu√°rio n√£o deseje uma fonte especial, ser√° utilizada a fonte padr√£o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+Par‚metros:
+numFonte (entrada, passagem por valor): n˙mero da fonte a ser utilizada. Caso o usu·rio n„o deseje uma fonte especial, ser· utilizada a fonte padr„o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 retorno:
-inteiro que representa o espa√ßamento vertical ideal para que duas frases n√£o se sobreponham verticalmente.
+inteiro que representa o espaÁamento vertical ideal para que duas frases n„o se sobreponham verticalmente.
 ********************************/
 int GetFonteLineSkip(int numFonte=0){
     return CPIGGerenciadorFontes::GetFonte(numFonte)->GetLineSkip();
 }
 
 /********************************
-A fun√ß√£o SubstituiCaractere() substitui a imagem original de um caractere por um frame de um imagem personalizada de um arquivo de imagem. O frame √© definido
-pelos par√¢metros x, y, altura e largura, de acordo com o sistema de coordenadas dos arquivos de imagem digital (eixo Y crescendo para baixo). O frame especificado
-ser√° desenhado na tela toda vez que o caractere original for passado dentro de uma string. O frame ter√° a mesma altura padr√£o da fote original, mas pdoer√° ter uma largura
-personalizada por meio do par√¢metro largNova.
-Par√¢metros:
-caractere (entrada, passagem por valor): caractere (ou n√∫mero inteiro) que ser√° substitu√≠do e n√£o ser√° mais desenhado posteriormente.
-nomeArquivo (entrada, passagem por refer√™ncia): nome do arquivo contendo o frame desejado.
-largNova: (entrada, passagem por valor): largura nova a ser utilizada para desenhar o frame na tela. N√£o √© obrigatoriamente o mesmo valor do par√¢metro "larg".
-x (entrada, passagem por valor): coordenada X do arquivo de imagem, onde come√ßa o frame desejado.
-y (entrada, passagem por valor): coordenada Y do arquivo de imagem, onde come√ßa o frame desejado (sistema de coordenada com eixo Y crescendo para baixo).
+A funÁ„o SubstituiCaractere() substitui a imagem original de um caractere por um frame de um imagem personalizada de um arquivo de imagem. O frame È definido
+pelos par‚metros x, y, altura e largura, de acordo com o sistema de coordenadas dos arquivos de imagem digital (eixo Y crescendo para baixo). O frame especificado
+ser· desenhado na tela toda vez que o caractere original for passado dentro de uma string. O frame ter· a mesma altura padr„o da fote original, mas pdoer· ter uma largura
+personalizada por meio do par‚metro largNova.
+Par‚metros:
+caractere (entrada, passagem por valor): caractere (ou n˙mero inteiro) que ser· substituÌdo e n„o ser· mais desenhado posteriormente.
+nomeArquivo (entrada, passagem por referÍncia): nome do arquivo contendo o frame desejado.
+largNova: (entrada, passagem por valor): largura nova a ser utilizada para desenhar o frame na tela. N„o È obrigatoriamente o mesmo valor do par‚metro "larg".
+x (entrada, passagem por valor): coordenada X do arquivo de imagem, onde comeÁa o frame desejado.
+y (entrada, passagem por valor): coordenada Y do arquivo de imagem, onde comeÁa o frame desejado (sistema de coordenada com eixo Y crescendo para baixo).
 altura (entrada, passagem por valor): altura do frame desejado.
 largura (entrada, passagem por valor): largura do frame desejado.
-numFonte (entrada, passagem por valor): n√∫mero da fonte a ser utilizada. Caso o usu√°rio n√£o deseje uma fonte especial, ser√° utilizada a fonte padr√£o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
+numFonte (entrada, passagem por valor): n˙mero da fonte a ser utilizada. Caso o usu·rio n„o deseje uma fonte especial, ser· utilizada a fonte padr„o (numeroFonte=0, tipo=Arial, tamanho=36, cor = Branco).
 retorno:
-inteiro que representa o espa√ßamento vertical ideal para que duas frases n√£o se sobreponham verticalmente.
+inteiro que representa o espaÁamento vertical ideal para que duas frases n„o se sobreponham verticalmente.
 ********************************/
 void SubstituiCaractere(char caractere, char *nomeArquivo, int largNova, int x, int y, int altura, int largura, int numFonte=0){
     CPIGGerenciadorFontes::GetFonte(numFonte)->SubstituiGlyph(nomeArquivo,caractere,largNova,x,y,altura,largura);
@@ -1636,109 +1636,109 @@ void SubstituiCaractere(char caractere, char *nomeArquivo, int largNova, int x, 
 
 
 /********************************
-Se√ß√£o de sprites
+SeÁ„o de sprites
 ********************************/
 
 /********************************
-A fun√ß√£o CriaSprite() √© respons√°vel por criar um sprite. Qualquer sprite que for necess√°rio,
-pode ser criado atrav√©s dessa fun√ß√£o. O sprite ainda n√£o ser√° desenhado, apenas criado dentro do jogo.
-Par√¢metros:
-nomeArquivo (entrada, passagem por refer√™ncia): string que informa o nome do arquivo da imagem do sprite a ser criado.
-retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou n√£o ao ler o arquivo em quest√£o. O valor padr√£o √© 1, indicando que o fundo deve ser retirado.
-corFundo (entrada, passagem por refer√™ncia n√£o-obrigat√≥rio): indica se h√° uma cor espec√≠fica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o par√¢metro retiraFundo seja diferente de 0, o pixel (0,0) da imagem ser√° considerado como cor de fundo.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica qual janela vai receber o sprite.
+A funÁ„o CriaSprite() È respons·vel por criar um sprite. Qualquer sprite que for necess·rio,
+pode ser criado atravÈs dessa funÁ„o. O sprite ainda n„o ser· desenhado, apenas criado dentro do jogo.
+Par‚metros:
+nomeArquivo (entrada, passagem por referÍncia): string que informa o nome do arquivo da imagem do sprite a ser criado.
+retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou n„o ao ler o arquivo em quest„o. O valor padr„o È 1, indicando que o fundo deve ser retirado.
+corFundo (entrada, passagem por referÍncia n„o-obrigatÛrio): indica se h· uma cor especÌfica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o par‚metro retiraFundo seja diferente de 0, o pixel (0,0) da imagem ser· considerado como cor de fundo.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica qual janela vai receber o sprite.
 Retorno:
-inteiro que representa o identificador √∫nico do sprite. Todas as opera√ß√µes subsequentes com este sprite dever√£o receber este identificador como par√¢metro.
+inteiro que representa o identificador ˙nico do sprite. Todas as operaÁıes subsequentes com este sprite dever„o receber este identificador como par‚metro.
 ********************************/
 int CriaSprite(char* nomeArquivo, int retiraFundo=1, PIGCor *corFundo=NULL, int idJanela=0){
     return CPIGGerenciadorSprites::CriaSprite(nomeArquivo,retiraFundo,corFundo,idJanela);
 }
 
 /********************************
-A fun√ß√£o CriaSprite() √© respons√°vel por criar um sprite. Qualquer sprite que for necess√°rio,
-pode ser criado atrav√©s dessa fun√ß√£o. O sprite ainda n√£o ser√° desenhado, apenas criado dentro do jogo.
-Par√¢metros:
-idSprite(entrada, passagem por valor): identificador do sprite original que ser√° copiado.
-retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou n√£o ao ler o arquivo em quest√£o. O valor padr√£o √© 1, indicando que o fundo deve ser retirado.
-corFundo (entrada, passagem por refer√™ncia n√£o-obrigat√≥rio): indica se h√° uma cor espec√≠fica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o par√¢metro retiraFundo seja diferente de 0, o pixel (0,0) da imagem ser√° considerado como cor de fundo.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica qual janela vai receber o sprite.
+A funÁ„o CriaSprite() È respons·vel por criar um sprite. Qualquer sprite que for necess·rio,
+pode ser criado atravÈs dessa funÁ„o. O sprite ainda n„o ser· desenhado, apenas criado dentro do jogo.
+Par‚metros:
+idSprite(entrada, passagem por valor): identificador do sprite original que ser· copiado.
+retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou n„o ao ler o arquivo em quest„o. O valor padr„o È 1, indicando que o fundo deve ser retirado.
+corFundo (entrada, passagem por referÍncia n„o-obrigatÛrio): indica se h· uma cor especÌfica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o par‚metro retiraFundo seja diferente de 0, o pixel (0,0) da imagem ser· considerado como cor de fundo.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica qual janela vai receber o sprite.
 Retorno:
-inteiro que representa o identificador √∫nico do sprite. Todas as opera√ß√µes subsequentes com este sprite dever√£o receber este identificador como par√¢metro.
+inteiro que representa o identificador ˙nico do sprite. Todas as operaÁıes subsequentes com este sprite dever„o receber este identificador como par‚metro.
 ********************************/
 int CriaSprite(int idSprite, int retiraFundo=1, PIGCor *corFundo=NULL, int idJanela=0){
     return CPIGGerenciadorSprites::CriaSprite(idSprite,retiraFundo,corFundo,idJanela);
 }
 
 /********************************
-A fun√ß√£o CriaSpriteOffScreen() √© respons√°vel por criar um sprite a partir da imagem que est√° sendo montanda pelo
+A funÁ„o CriaSpriteOffScreen() È respons·vel por criar um sprite a partir da imagem que est· sendo montanda pelo
 renderizador Offscreen. O renderizador precisa ter sido preparado anteriormente.
-Par√¢metros:
-retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou n√£o ao ler o arquivo em quest√£o. O valor padr√£o √© 1, indicando que o fundo deve ser retirado.
-corFundo (entrada, passagem por refer√™ncia n√£o-obrigat√≥rio): indica se h√° uma cor espec√≠fica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o par√¢metro retiraFundo seja diferente de 0, o pixel (0,0) da imagem ser√° considerado como cor de fundo.
+Par‚metros:
+retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou n„o ao ler o arquivo em quest„o. O valor padr„o È 1, indicando que o fundo deve ser retirado.
+corFundo (entrada, passagem por referÍncia n„o-obrigatÛrio): indica se h· uma cor especÌfica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o par‚metro retiraFundo seja diferente de 0, o pixel (0,0) da imagem ser· considerado como cor de fundo.
 Retorno:
-inteiro que representa o identificador √∫nico do sprite. Todas as opera√ß√µes subsequentes com este sprite dever√£o receber este identificador como par√¢metro.
+inteiro que representa o identificador ˙nico do sprite. Todas as operaÁıes subsequentes com este sprite dever„o receber este identificador como par‚metro.
 ********************************/
 int CriaSpriteOffScreen(int retiraFundo=1, PIGCor *corFundo=NULL){
     return CPIGGerenciadorSprites::CriaSpriteOffScreen(jogo->GetOffScreenRender(),retiraFundo,corFundo);
 }
 
 /********************************
-A fun√ß√£o DestroiSprite() √© respons√°vel por eliminar o sprite em quest√£o do jogo.
-Par√¢metros:
-idSprite (entrada, passagem por valor): identificador do sprite a ser exclu√≠do.
+A funÁ„o DestroiSprite() È respons·vel por eliminar o sprite em quest„o do jogo.
+Par‚metros:
+idSprite (entrada, passagem por valor): identificador do sprite a ser excluÌdo.
 ********************************/
 void DestroiSprite(int idSprite){
     CPIGGerenciadorSprites::DestroiSprite(idSprite);
 }
 
 /********************************
-A fun√ß√£o CarregaArquivoFramesSprite() √© respons√°vel por ler de arquivo texto os frames de um sprite.
-Cada linha do arquivo texto deve conter 5 n√∫meros inteiros: o n√∫mero do frame, a posi√ß√£o do frame no eixo X do arquivo de imagem,
-a posi√ß√£o do frame no eixo Y do arquivo de imagem, a altura do frame e a largura do frame (todas as unidades em pixels).
-Par√¢metros:
+A funÁ„o CarregaArquivoFramesSprite() È respons·vel por ler de arquivo texto os frames de um sprite.
+Cada linha do arquivo texto deve conter 5 n˙meros inteiros: o n˙mero do frame, a posiÁ„o do frame no eixo X do arquivo de imagem,
+a posiÁ„o do frame no eixo Y do arquivo de imagem, a altura do frame e a largura do frame (todas as unidades em pixels).
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
-nomeArq (entrada, passagem por refer√™ncia): nome do arquivo texto contendo os frames.
+nomeArq (entrada, passagem por referÍncia): nome do arquivo texto contendo os frames.
 ********************************/
 void CarregaArquivoFramesSprite(int idSprite, char *nomeArq){
     CPIGGerenciadorSprites::GetSprite(idSprite)->CarregaArquivoFrames(nomeArq);
 }
 
 /********************************
-A fun√ß√£o CarregaFramesPorLinhaSprite() √© respons√°vel por subdividir o arquivo de imagem em linhas (de mesmo tamanho) e colunas (de mesmo tamanho).
-Cada subdivis√£o representar√° um frame que ser√° automaticamente criado para a anima√ß√£o, com numera√ß√£o incremental a partir do par√¢metro "frameInicial".
-Ao final das "qtdColunas" da primeira linha, a defini√ß√£o dos frames continua na linha inferior.
-A fun√ß√£o pode ser utilizada em spritesheets regulares.
-Par√¢metros:
+A funÁ„o CarregaFramesPorLinhaSprite() È respons·vel por subdividir o arquivo de imagem em linhas (de mesmo tamanho) e colunas (de mesmo tamanho).
+Cada subdivis„o representar· um frame que ser· automaticamente criado para a animaÁ„o, com numeraÁ„o incremental a partir do par‚metro "frameInicial".
+Ao final das "qtdColunas" da primeira linha, a definiÁ„o dos frames continua na linha inferior.
+A funÁ„o pode ser utilizada em spritesheets regulares.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
-frameInicial (entrada, passagem por valor): numera√ß√£o do primeiro frame a ser criado pela fun√ß√£o. Os demais frames ter√£o numera√ß√£o consecutiva.
-qtdLinhas (entrada, passagem por valor): quantidade de linhas na qual o arquivo de imagem ser√° dividido.
-qtdColunas (entrada, passagem por valor): quantidade de colunas na qual o arquivo de imagem ser√° dividido.
+frameInicial (entrada, passagem por valor): numeraÁ„o do primeiro frame a ser criado pela funÁ„o. Os demais frames ter„o numeraÁ„o consecutiva.
+qtdLinhas (entrada, passagem por valor): quantidade de linhas na qual o arquivo de imagem ser· dividido.
+qtdColunas (entrada, passagem por valor): quantidade de colunas na qual o arquivo de imagem ser· dividido.
 ********************************/
 void CarregaFramesPorLinhaSprite(int idSprite, int frameInicial, int qtdLinhas, int qtdColunas){
     CPIGGerenciadorSprites::GetSprite(idSprite)->CriaFramesAutomaticosPorLinha(frameInicial,qtdLinhas,qtdColunas);
 }
 
 /********************************
-A fun√ß√£o CarregaFramesPorColunaSprite() √© respons√°vel por subdividir o arquivo de imagem em linhas (de mesmo tamanho) e colunas (de mesmo tamanho).
-Cada subdivis√£o representar√° um frame que ser√° automaticamente criado para a anima√ß√£o, com numera√ß√£o incremental a partir do par√¢metro "frameInicial".
-Ao final das "qtdLinhas" da primeira coluna, a defini√ß√£o dos frames continua na coluna seguinte.
-A fun√ß√£o pode ser utilizada em spritesheets regulares.
-Par√¢metros:
+A funÁ„o CarregaFramesPorColunaSprite() È respons·vel por subdividir o arquivo de imagem em linhas (de mesmo tamanho) e colunas (de mesmo tamanho).
+Cada subdivis„o representar· um frame que ser· automaticamente criado para a animaÁ„o, com numeraÁ„o incremental a partir do par‚metro "frameInicial".
+Ao final das "qtdLinhas" da primeira coluna, a definiÁ„o dos frames continua na coluna seguinte.
+A funÁ„o pode ser utilizada em spritesheets regulares.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
-frameInicial (entrada, passagem por valor): numera√ß√£o do primeiro frame a ser criado pela fun√ß√£o. Os demais frames ter√£o numera√ß√£o consecutiva.
-qtdLinhas (entrada, passagem por valor): quantidade de linhas na qual o arquivo de imagem ser√° dividido.
-qtdColunas (entrada, passagem por valor): quantidade de colunas na qual o arquivo de imagem ser√° dividido.
+frameInicial (entrada, passagem por valor): numeraÁ„o do primeiro frame a ser criado pela funÁ„o. Os demais frames ter„o numeraÁ„o consecutiva.
+qtdLinhas (entrada, passagem por valor): quantidade de linhas na qual o arquivo de imagem ser· dividido.
+qtdColunas (entrada, passagem por valor): quantidade de colunas na qual o arquivo de imagem ser· dividido.
 ********************************/
 void CarregaFramesPorColunaSprite(int idSprite, int frameInicial, int qtdLinhas, int qtdColunas){
     CPIGGerenciadorSprites::GetSprite(idSprite)->CriaFramesAutomaticosPorColuna(frameInicial,qtdLinhas,qtdColunas);
 }
 
 /********************************
-A fun√ß√£o GetXYSprite() √© respons√°vel recuperar o valor da posi√ß√£o (X,Y) do sprite de acordo com o sistema de coordenadas do jogo.
-Par√¢metros:
+A funÁ„o GetXYSprite() È respons·vel recuperar o valor da posiÁ„o (X,Y) do sprite de acordo com o sistema de coordenadas do jogo.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
-posicaoX (sa√≠da, passagem por referencia): indica a posicao no eixo X do sprite.
-posicaoY (sa√≠da, passagem por referencia): indica a posicao no eixo Y do sprite.
+posicaoX (saÌda, passagem por referencia): indica a posicao no eixo X do sprite.
+posicaoY (saÌda, passagem por referencia): indica a posicao no eixo Y do sprite.
 ********************************/
 void GetXYSprite(int idSprite, int *posicaoX, int *posicaoY){
     PIGPonto2D p = CPIGGerenciadorSprites::GetSprite(idSprite)->GetXY();
@@ -1747,83 +1747,83 @@ void GetXYSprite(int idSprite, int *posicaoX, int *posicaoY){
 }
 
 /********************************
-A fun√ß√£o MoveSprite() √© respons√°vel por movimentar um determinado sprite para uma nova posi√ß√£o informada.
-Par√¢metros:
+A funÁ„o MoveSprite() È respons·vel por movimentar um determinado sprite para uma nova posiÁ„o informada.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite a ser movido.
-posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu√°rio deseja reposicionar o sprite.
-posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu√°rio deseja reposicionar o sprite.
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu·rio deseja reposicionar o sprite.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu·rio deseja reposicionar o sprite.
 ********************************/
 void MoveSprite(int idSprite, int posicaoX, int posicaoY){
     CPIGGerenciadorSprites::GetSprite(idSprite)->Move(posicaoX,posicaoY);
 }
 
 /********************************
-A fun√ß√£o DeslocaSprite() √© respons√°vel por deslocar um determinado sprite em rela√ß√£o √† sua posi√ß√£o atual.
-Par√¢metros:
+A funÁ„o DeslocaSprite() È respons·vel por deslocar um determinado sprite em relaÁ„o ‡ sua posiÁ„o atual.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite a ser movido.
-deltaX (entrada, passagem por valor): valor a ser somado ou subtra√≠do na componente X da posi√ß√£o do sprite.
-deltaY (entrada, passagem por valor): valor a ser somado ou subtra√≠do na componente Y da posi√ß√£o do sprite.
+deltaX (entrada, passagem por valor): valor a ser somado ou subtraÌdo na componente X da posiÁ„o do sprite.
+deltaY (entrada, passagem por valor): valor a ser somado ou subtraÌdo na componente Y da posiÁ„o do sprite.
 ********************************/
 void DeslocaSprite(int idSprite, int deltaX, int deltaY){
     CPIGGerenciadorSprites::GetSprite(idSprite)->Desloca(deltaX,deltaY);
 }
 
 /********************************
-A fun√ß√£o SetAnguloSprite() √© respons√°vel pela angula√ß√£o de determinado sprite. A angula√ß√£o √© calculada em sentido
-hor√°rio a partir do eixo X (0 graus). O sprite ser√° desenhado com a angula√ß√£o informada no pr√≥ximo comando
-DesenhaSprite(). A detec√ß√£o de colis√£o n√£o funciona com sprites fora da angula√ß√£o padr√£o (0 graus).
-Par√¢metros:
+A funÁ„o SetAnguloSprite() È respons·vel pela angulaÁ„o de determinado sprite. A angulaÁ„o È calculada em sentido
+hor·rio a partir do eixo X (0 graus). O sprite ser· desenhado com a angulaÁ„o informada no prÛximo comando
+DesenhaSprite(). A detecÁ„o de colis„o n„o funciona com sprites fora da angulaÁ„o padr„o (0 graus).
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
-angulo (entrada, passagem por valor): valor para indicar a angula√ß√£o do sprite em graus.
+angulo (entrada, passagem por valor): valor para indicar a angulaÁ„o do sprite em graus.
 ********************************/
 void SetAnguloSprite(int idSprite, float angulo){
     CPIGGerenciadorSprites::GetSprite(idSprite)->SetAngulo(angulo);
 }
 
 /********************************
-A fun√ß√£o GetAnguloSprite() √© respons√°vel por recuperar o √¢ngulo de rota√ß√£o de determinado sprite. A angula√ß√£o √© calculada em sentido
-hor√°rio a partir do eixo X (0 graus). O sprite ser√° desenhado com a angula√ß√£o informada no pr√≥ximo comando
-DesenhaSprite(). A detec√ß√£o de colis√£o n√£o funciona com sprites fora da angula√ß√£o padr√£o (0 graus).
-Par√¢metros:
+A funÁ„o GetAnguloSprite() È respons·vel por recuperar o ‚ngulo de rotaÁ„o de determinado sprite. A angulaÁ„o È calculada em sentido
+hor·rio a partir do eixo X (0 graus). O sprite ser· desenhado com a angulaÁ„o informada no prÛximo comando
+DesenhaSprite(). A detecÁ„o de colis„o n„o funciona com sprites fora da angulaÁ„o padr„o (0 graus).
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
 Retorno:
-Retorna o valor do √¢ngulo em graus.
+Retorna o valor do ‚ngulo em graus.
 ********************************/
 float GetAnguloSprite(int idSprite){
     return CPIGGerenciadorSprites::GetSprite(idSprite)->GetAngulo();
 }
 
 /********************************
-A fun√ß√£o SetPivoAbsolutoSprite() define um ponto (X,Y) em rela√ß√£o ao ponto (0,0) do sprite, sobre o qual o sprite ser√°
-rotacionado quando a fun√ß√£o SetAnguloSprite() for executada.
-Par√¢metros:
+A funÁ„o SetPivoAbsolutoSprite() define um ponto (X,Y) em relaÁ„o ao ponto (0,0) do sprite, sobre o qual o sprite ser·
+rotacionado quando a funÁ„o SetAnguloSprite() for executada.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
-posicaoX (entrada, passagem por valor): Valor da coordenada X do piv√¥ em rela√ß√£o ao ponto (0,0) do sprite.
-posicaoY (entrada, passagem por valor): Valor da coordenada Y do piv√¥ em rela√ß√£o ao ponto (0,0) do sprite.
+posicaoX (entrada, passagem por valor): Valor da coordenada X do pivÙ em relaÁ„o ao ponto (0,0) do sprite.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y do pivÙ em relaÁ„o ao ponto (0,0) do sprite.
 ********************************/
 void SetPivoAbsolutoSprite(int idSprite, int posicaoX, int posicaoY){
     CPIGGerenciadorSprites::GetSprite(idSprite)->SetPivoAbsoluto({(double)posicaoX,(double)posicaoY});
 }
 
 /********************************
-A fun√ß√£o SetPivoProporcionalSprite() define um ponto (X,Y) proporcional ao tamanho do sprite, sobre o qual o sprite ser√°
-rotacionado quando a fun√ß√£o SetAnguloSprite() for executada.
-Par√¢metros:
+A funÁ„o SetPivoProporcionalSprite() define um ponto (X,Y) proporcional ao tamanho do sprite, sobre o qual o sprite ser·
+rotacionado quando a funÁ„o SetAnguloSprite() for executada.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
-relX (entrada, passagem por valor): porcentagem da largura do sprite onde ficar√° o piv√¥.
-relY (entrada, passagem por valor): porcentagem da altura do sprite onde ficar√° o piv√¥.
+relX (entrada, passagem por valor): porcentagem da largura do sprite onde ficar· o pivÙ.
+relY (entrada, passagem por valor): porcentagem da altura do sprite onde ficar· o pivÙ.
 ********************************/
 void SetPivoProporcionalSprite(int idSprite, float relX, float relY){
     CPIGGerenciadorSprites::GetSprite(idSprite)->SetPivoProporcional({relX,relY});
 }
 
 /********************************
-A fun√ß√£o GetPivoSprite() define um ponto (X,Y) em rela√ß√£o ao ponto (0,0) do sprite, sobre o qual o sprite ser√°
-rotacionado quando a fun√ß√£o SetAnguloSprite() for executada.
-Par√¢metros:
+A funÁ„o GetPivoSprite() define um ponto (X,Y) em relaÁ„o ao ponto (0,0) do sprite, sobre o qual o sprite ser·
+rotacionado quando a funÁ„o SetAnguloSprite() for executada.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
-posicaoX (sa√≠da, passagem por refer√™ncia): Valor da coordenada X do piv√¥ em rela√ß√£o ao ponto (0,0) do sprite.
-posicaoY (sa√≠da, passagem por refer√™ncia): Valor da coordenada Y do piv√¥ em rela√ß√£o ao ponto (0,0) do sprite.
+posicaoX (saÌda, passagem por referÍncia): Valor da coordenada X do pivÙ em relaÁ„o ao ponto (0,0) do sprite.
+posicaoY (saÌda, passagem por referÍncia): Valor da coordenada Y do pivÙ em relaÁ„o ao ponto (0,0) do sprite.
 ********************************/
 void GetPivoSprite(int idSprite, int *posicaoX, int *posicaoY){
     PIGPonto2D p = CPIGGerenciadorSprites::GetSprite(idSprite)->GetPivo();
@@ -1832,11 +1832,11 @@ void GetPivoSprite(int idSprite, int *posicaoX, int *posicaoY){
 }
 
 /********************************
-A fun√ß√£o SetFlipSprite() √© respons√°vel por virar o sprite, invertendo-o em alguma dire√ß√£o. O sprite somente ser√°
-desenhado na nova orienta√ß√£o no pr√≥ximo comando DesenhaSprite().
-Par√¢metros:
+A funÁ„o SetFlipSprite() È respons·vel por virar o sprite, invertendo-o em alguma direÁ„o. O sprite somente ser·
+desenhado na nova orientaÁ„o no prÛximo comando DesenhaSprite().
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite a ser virado.
-valor (entrada, passagem por valor): valor do tipo de Flip. Pode ser FLIP_NENHUM (nenhum tipo de invers√£o),
+valor (entrada, passagem por valor): valor do tipo de Flip. Pode ser FLIP_NENHUM (nenhum tipo de invers„o),
 PIG_FLIP_HORIZONTAL (inverte da esquerda para a direita), PIG_FLIP_VERTICAL (inverte de cima para baixo),
 ou PIG_FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
 ********************************/
@@ -1845,11 +1845,11 @@ void SetFlipSprite(int idSprite, PIGFlip valor){
 }
 
 /********************************
-A fun√ß√£o GetFlipSprite() √© respons√°vel por recuperar o valor da manipula√ß√£o causada pela fun√ß√£o SetFlipSprite().
-Par√¢metros:
+A funÁ„o GetFlipSprite() È respons·vel por recuperar o valor da manipulaÁ„o causada pela funÁ„o SetFlipSprite().
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite a ser virado.
 Retorno:
-inteiro que indica o tipo de Flip. Pode ser PIG_FLIP_NENHUM (nenhum tipo de invers√£o),
+inteiro que indica o tipo de Flip. Pode ser PIG_FLIP_NENHUM (nenhum tipo de invers„o),
 PIG_FLIP_HORIZONTAL (inverte da esquerda para a direita), PIG_FLIP_VERTICAL (inverte de cima para baixo),
 ou PIG_FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
 ********************************/
@@ -1858,9 +1858,9 @@ PIGFlip GetFlipSprite(int idSprite){
 }
 
 /********************************
-A fun√ß√£o SetDimensoesSprite() √© respons√°vel por delimitar a altura e a largura do sprite que ser√° desenhado na tela,
+A funÁ„o SetDimensoesSprite() È respons·vel por delimitar a altura e a largura do sprite que ser· desenhado na tela,
 independentemente do tamanho original do arquivo de imagem.
-Par√¢metros:
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
 altura (entrada, passagem por valor): altura em pixels.
 largura (entrada, passagem por valor): largura em pixels.
@@ -1870,33 +1870,33 @@ void SetDimensoesSprite(int idSprite, int altura, int largura){
 }
 
 /********************************
-A fun√ß√£o GetDimensoesSprite() √© respons√°vel por recuperar a altura e a largura da √°rea a ser usada
+A funÁ„o GetDimensoesSprite() È respons·vel por recuperar a altura e a largura da ·rea a ser usada
 para desenhar o sprite na tela. Em outras palavras, representa o tamanho atual do sprite.
-Par√¢metros:
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
-altura (sa√≠da, passagem por refer√™ncia): altura atual em pixels do sprite.
-largura (sa√≠da, passagem por refer√™ncia): largura atual em pixels do sprite.
+altura (saÌda, passagem por referÍncia): altura atual em pixels do sprite.
+largura (saÌda, passagem por referÍncia): largura atual em pixels do sprite.
 ********************************/
 void GetDimensoesSprite(int idSprite, int *altura, int *largura){
     CPIGGerenciadorSprites::GetSprite(idSprite)->GetDimensoes(*altura,*largura);
 }
 
 /********************************
-A fun√ß√£o GetDimensoesOriginaisSprite() √© respons√°vel por recuperar a altura e a largura originais da imagem
-que foi usada para criar o sprite. Qualquer utiliza√ß√£o da fun√ß√£o SetDimensoesSprite() √© ignorada para
-o c√°lculo desta fun√ß√£o.
-Par√¢metros:
+A funÁ„o GetDimensoesOriginaisSprite() È respons·vel por recuperar a altura e a largura originais da imagem
+que foi usada para criar o sprite. Qualquer utilizaÁ„o da funÁ„o SetDimensoesSprite() È ignorada para
+o c·lculo desta funÁ„o.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
-altura (sa√≠da, passagem por refer√™ncia): altura original em pixels do sprite.
-largura (sa√≠da, passagem por refer√™ncia): largura original em pixels do sprite.
+altura (saÌda, passagem por referÍncia): altura original em pixels do sprite.
+largura (saÌda, passagem por referÍncia): largura original em pixels do sprite.
 ********************************/
 void GetDimensoesOriginaisSprite(int idSprite, int *altura, int *largura){
     CPIGGerenciadorSprites::GetSprite(idSprite)->GetDimensoesOriginais(*altura,*largura);
 }
 
 /********************************
-A fun√ß√£o RestauraDimensoesOriginaisSprite() √© respons√°vel por restaurar o sprite com o tamanho original da image.
-Par√¢metros:
+A funÁ„o RestauraDimensoesOriginaisSprite() È respons·vel por restaurar o sprite com o tamanho original da image.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
 ********************************/
 void RestauraDimensoesOriginaisSprite(int idSprite, int altura, int largura){
@@ -1904,14 +1904,14 @@ void RestauraDimensoesOriginaisSprite(int idSprite, int altura, int largura){
 }
 
 /********************************
-A fun√ß√£o CriaFrameSprite() √© respons√°vel por delimitar o posicionamento dos pixels do arquivo de imagem que ser√£o
-utilizados para representar o sprite na tela. Desta forma, nem toda a imagem ser√° automaticamente utilizada para
-representar o sprite. O sistema de coordenadas deve ser o padr√£o dos arquivos de imagem, com o eixo Y aumentando para baixo.
-Par√¢metros:
+A funÁ„o CriaFrameSprite() È respons·vel por delimitar o posicionamento dos pixels do arquivo de imagem que ser„o
+utilizados para representar o sprite na tela. Desta forma, nem toda a imagem ser· automaticamente utilizada para
+representar o sprite. O sistema de coordenadas deve ser o padr„o dos arquivos de imagem, com o eixo Y aumentando para baixo.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite a ser desenhado.
 idFrame (entrada, passagem por valor): identificador do frame a ser criado.
-xBitmap (entrada, passagem por valor): indica a posi√ß√£o de eixo X onde come√ßa o frame.
-yBitmap (entrada, passagem por valor): indica a posi√ß√£o de eixo Y onde come√ßa o frame. Neste caso, o eixo Y aumenta para baixo.
+xBitmap (entrada, passagem por valor): indica a posiÁ„o de eixo X onde comeÁa o frame.
+yBitmap (entrada, passagem por valor): indica a posiÁ„o de eixo Y onde comeÁa o frame. Neste caso, o eixo Y aumenta para baixo.
 altura (entrada, passagem por valor): altura em pixels do frame.
 largura (entrada, passagem por valor): largura em pixels do frame.
 ********************************/
@@ -1920,33 +1920,33 @@ void CriaFrameSprite(int idSprite, int idFrame, int xBitmap, int yBitmap, int al
 }
 
 /********************************
-A fun√ß√£o MudaFrameSprite() √© respons√°vel por modificar o frame (j√° definido pela fun√ß√£o DefineFrameSprite) de um sprite
-Par√¢metros:
+A funÁ„o MudaFrameSprite() È respons·vel por modificar o frame (j· definido pela funÁ„o DefineFrameSprite) de um sprite
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
-idFrame (entrada, passagem por valor): identificador do frame j√° criado.
+idFrame (entrada, passagem por valor): identificador do frame j· criado.
 Retorno:
-Se o identifador do frame informado n√£o corresponder a um frame j√° criado, o valor de retorno √© igual a 0. Caso contr√°rio, √© igual a 1.
+Se o identifador do frame informado n„o corresponder a um frame j· criado, o valor de retorno È igual a 0. Caso contr·rio, È igual a 1.
 ********************************/
 int MudaFrameSprite(int idSprite, int idFrame){
     return CPIGGerenciadorSprites::GetSprite(idSprite)->MudaFrameAtual(idFrame);
 }
 
 /********************************
-A fun√ß√£o GetFrameAtualSprite() recupera o valor do frame atual exibido no sprite.
-Par√¢metros:
+A funÁ„o GetFrameAtualSprite() recupera o valor do frame atual exibido no sprite.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
 Retorno:
-N√∫mero do frame atual do sprite.
+N˙mero do frame atual do sprite.
 ********************************/
 int GetFrameAtualSprite(int idSprite){
     return CPIGGerenciadorSprites::GetSprite(idSprite)->GetFrameAtual();
 }
 
 /********************************
-A fun√ß√£o SetColoracaoSprite() √© respons√°vel por mesclar uma determinada cor com os pixels do arquivo de imagem.
-Ap√≥s a modifica√ß√£o, todos os desenhos deste sprite ser√£o mostrados j√° com a mesclagem definida.
-Para voltar ao padr√£o original de pixels, deve-se chamar a fun√ß√£o, passando a cor branca (255,255,255,255).
-Par√¢metros:
+A funÁ„o SetColoracaoSprite() È respons·vel por mesclar uma determinada cor com os pixels do arquivo de imagem.
+ApÛs a modificaÁ„o, todos os desenhos deste sprite ser„o mostrados j· com a mesclagem definida.
+Para voltar ao padr„o original de pixels, deve-se chamar a funÁ„o, passando a cor branca (255,255,255,255).
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite a ser desenhado.
 cor (entrada,passagem por valor): cor do sistema RGB utilizada para mesclagem com o arquivo de imagem
 ********************************/
@@ -1955,32 +1955,32 @@ void SetColoracaoSprite(int idSprite, PIGCor cor){
 }
 
 /********************************
-A fun√ß√£o SetOpacidadeSprite() √© respons√°vel por modificar o n√≠vel de opacidade do sprite.
-O n√≠vel de opacidade varia de 0-255, sendo 0 totalmente transparente e 255 totalmente opaco.
-Par√¢metros:
+A funÁ„o SetOpacidadeSprite() È respons·vel por modificar o nÌvel de opacidade do sprite.
+O nÌvel de opacidade varia de 0-255, sendo 0 totalmente transparente e 255 totalmente opaco.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
-valor (entrada,passagem por valor): n√≠vel de opacidade do sprite na faixa 0-255.
+valor (entrada,passagem por valor): nÌvel de opacidade do sprite na faixa 0-255.
 ********************************/
 void SetOpacidadeSprite(int idSprite, int valor){
     CPIGGerenciadorSprites::GetSprite(idSprite)->SetOpacidade(valor);
 }
 
 /********************************
-A fun√ß√£o GetOpacidadeSprite() √© respons√°vel por recuperar o n√≠vel de opacidade de determinado sprite.
-O n√≠vel de opacidade varia de 0-255, sendo 0 totalmente transparente e 255 totalmente opaco.
-Par√¢metros:
+A funÁ„o GetOpacidadeSprite() È respons·vel por recuperar o nÌvel de opacidade de determinado sprite.
+O nÌvel de opacidade varia de 0-255, sendo 0 totalmente transparente e 255 totalmente opaco.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
 Retorno:
-Retorna o n√≠vel de opacidade do sprite na faixa 0-255.
+Retorna o nÌvel de opacidade do sprite na faixa 0-255.
 ********************************/
 int GetOpacidadeSprite(int idSprite){
     return CPIGGerenciadorSprites::GetSprite(idSprite)->GetOpacidade();
 }
 
 /********************************
-A fun√ß√£o DesenhaSprite() √© respons√°vel por desenhar um sprite na tela. O sprite ser√° desenhado de acordo com todas as defini√ß√µes
-de posi√ß√£o e √¢ngulo informado at√© o momento. Al√©m disso, se o sprite estiver virado (flipping), isso tamb√©m ser√° levado em considera√ß√£o.
-Par√¢metros:
+A funÁ„o DesenhaSprite() È respons·vel por desenhar um sprite na tela. O sprite ser· desenhado de acordo com todas as definiÁıes
+de posiÁ„o e ‚ngulo informado atÈ o momento. AlÈm disso, se o sprite estiver virado (flipping), isso tambÈm ser· levado em consideraÁ„o.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite a ser desenhado.
 ********************************/
 void DesenhaSprite(int idSprite){
@@ -1988,9 +1988,9 @@ void DesenhaSprite(int idSprite){
 }
 
 /********************************
-A fun√ß√£o DesenhaSpriteOffScreen() √© respons√°vel por desenhar um sprite no Renderizador Offscreen. O sprite ser√° desenhado de acordo com todas as defini√ß√µes
-de posi√ß√£o e √¢ngulo informado at√© o momento. Al√©m disso, se o sprite estiver virado (flipping), isso tamb√©m ser√° levado em considera√ß√£o.
-Par√¢metros:
+A funÁ„o DesenhaSpriteOffScreen() È respons·vel por desenhar um sprite no Renderizador Offscreen. O sprite ser· desenhado de acordo com todas as definiÁıes
+de posiÁ„o e ‚ngulo informado atÈ o momento. AlÈm disso, se o sprite estiver virado (flipping), isso tambÈm ser· levado em consideraÁ„o.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite a ser desenhado.
 ********************************/
 void DesenhaSpriteOffScreen(int idSprite){
@@ -1998,9 +1998,9 @@ void DesenhaSpriteOffScreen(int idSprite){
 }
 
 /********************************
-A fun√ß√£o DesenhaSprite() √© respons√°vel por desenhar um sprite na tela. O sprite ser√° desenhado contendo toda a imagem, na posi√ß√£o indica.
-N√£o ser√° aplicada nenhuma modifica√ß√£o, como √¢ngulo, colora√ß√£o, ou opacidade, por exemplo.
-Par√¢metros:
+A funÁ„o DesenhaSprite() È respons·vel por desenhar um sprite na tela. O sprite ser· desenhado contendo toda a imagem, na posiÁ„o indica.
+N„o ser· aplicada nenhuma modificaÁ„o, como ‚ngulo, coloraÁ„o, ou opacidade, por exemplo.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite a ser desenhado.
 ********************************/
 void DesenhaSpriteSimples(char *nomeArq, int x, int y, int retiraFundo=1, int idJanela=0){
@@ -2008,58 +2008,58 @@ void DesenhaSpriteSimples(char *nomeArq, int x, int y, int retiraFundo=1, int id
 }
 
 /********************************
-A fun√ß√£o InsereTransicaoSprite() √© respons√°vel por criar e inserir uma nova transi√ß√£o ao final de sequ√™ncia de transi√ß√µes do sprite.
-Par√¢metros:
+A funÁ„o InsereTransicaoSprite() È respons·vel por criar e inserir uma nova transiÁ„o ao final de sequÍncia de transiÁıes do sprite.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
-tempo (entrada, passagem por valor): duracao (em segundos) da transi√ß√£o.
-deltaX (entrada, passagem por valor): diferen√ßa da posi√ß√£o no eixo X em rela√ß√£o √† posi√ß√£o do sprite no in√≠cio da transi√ß√£o.
-deltaY (entrada, passagem por valor): diferen√ßa da posi√ß√£o no eixo Y em rela√ß√£o √† posi√ß√£o do sprite no in√≠cio da transi√ß√£o.
-deltaAltura (entrada, passagem por valor): diferen√ßa da altura do sprite em rela√ß√£o ao in√≠cio da transi√ß√£o.
-deltaLargura (entrada, passagem por valor): diferen√ßa da largura do sprite em rela√ß√£o ao in√≠cio da transi√ß√£o.
-deltaAngulo (entrada, passagem por valor): diferen√ßa de √¢ngulo (em graus) do sprite em rela√ß√£o ao in√≠cio da transi√ß√£o.
-corFinal (entrada, passagem por valor): colora√ß√£o do sprite ao final da transi√ß√£o.
-deltaOpacidade (entrada, passagem por valor): diferen√ßa do n√≠vel de opacidade do sprite em rela√ß√£o ao in√≠cio da transi√ß√£o.
+tempo (entrada, passagem por valor): duracao (em segundos) da transiÁ„o.
+deltaX (entrada, passagem por valor): diferenÁa da posiÁ„o no eixo X em relaÁ„o ‡ posiÁ„o do sprite no inÌcio da transiÁ„o.
+deltaY (entrada, passagem por valor): diferenÁa da posiÁ„o no eixo Y em relaÁ„o ‡ posiÁ„o do sprite no inÌcio da transiÁ„o.
+deltaAltura (entrada, passagem por valor): diferenÁa da altura do sprite em relaÁ„o ao inÌcio da transiÁ„o.
+deltaLargura (entrada, passagem por valor): diferenÁa da largura do sprite em relaÁ„o ao inÌcio da transiÁ„o.
+deltaAngulo (entrada, passagem por valor): diferenÁa de ‚ngulo (em graus) do sprite em relaÁ„o ao inÌcio da transiÁ„o.
+corFinal (entrada, passagem por valor): coloraÁ„o do sprite ao final da transiÁ„o.
+deltaOpacidade (entrada, passagem por valor): diferenÁa do nÌvel de opacidade do sprite em relaÁ„o ao inÌcio da transiÁ„o.
 ********************************/
 void InsereTransicaoSprite(int idSprite, double tempo, int deltaX, int deltaY, int deltaAltura, int deltaLargura, double deltaAngulo, PIGCor corFinal, int deltaOpacidade){
     CPIGGerenciadorSprites::GetSprite(idSprite)->InsereTransicao(tempo,{deltaX,deltaY,deltaAltura,deltaLargura,deltaAngulo,corFinal,deltaOpacidade});
 }
 
 /********************************
-A fun√ß√£o ExecutandoTransicaoSprite() retorna a informa√ß√£o sobre a execu√ß√£o (neste momento) de transi√ß√µes do sprite.
-Par√¢metros:
+A funÁ„o ExecutandoTransicaoSprite() retorna a informaÁ„o sobre a execuÁ„o (neste momento) de transiÁıes do sprite.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
 Retorno:
-inteiro que indica se o sprite est√° executando alguma transi√ß√£o no momento (valor diferente de 0) ou n√£o (valor igual a 0).
+inteiro que indica se o sprite est· executando alguma transiÁ„o no momento (valor diferente de 0) ou n„o (valor igual a 0).
 ********************************/
 int ExecutandoTransicaoSprite(int idSprite){
     return CPIGGerenciadorSprites::GetSprite(idSprite)->ExecutandoTransicao();
 }
 
 /********************************
-A fun√ß√£o LeArquivoTransicaoSprite() √© respons√°vel por ler, criar e inserir as transi√ß√µes para um sprite, provenientes de um arquivo texto.
-Cada linha do arquivo texto corresponde a uma transi√ß√£o (em ordem) e deve possuir 11 valores:
-1) um double representando a duracao (em segundos) da transi√ß√£o.
-2) um inteiro repreentando a diferen√ßa da posi√ß√£o no eixo X em rela√ß√£o √† posi√ß√£o do sprite no in√≠cio da transi√ß√£o.
-3) um inteiro repreentando a diferen√ßa da posi√ß√£o no eixo Y em rela√ß√£o √† posi√ß√£o do sprite no in√≠cio da transi√ß√£o.
-4) um inteiro repreentando a diferen√ßa da altura do sprite em rela√ß√£o ao in√≠cio da transi√ß√£o.
-5) um inteiro repreentando a diferen√ßa da largura do sprite em rela√ß√£o ao in√≠cio da transi√ß√£o.
-6) um double repreentando a diferen√ßa de √¢ngulo (em graus) do sprite em rela√ß√£o ao in√≠cio da transi√ß√£o.
-7) um inteiro repreentando a componente R (vermelho) da colora√ß√£o do sprite ao final da transi√ß√£o.
-8) um inteiro repreentando a componente G (verde) da colora√ß√£o do sprite ao final da transi√ß√£o.
-9) um inteiro repreentando a componente B (azul) da colora√ß√£o do sprite ao final da transi√ß√£o.
-10) um inteiro repreentando a componente A (canal alfa) da colora√ß√£o do sprite ao final da transi√ß√£o.
-11) um inteiro repreentando a diferen√ßa do n√≠vel de opacidade do sprite em rela√ß√£o ao in√≠cio da transi√ß√£o.
-Par√¢metros:
+A funÁ„o LeArquivoTransicaoSprite() È respons·vel por ler, criar e inserir as transiÁıes para um sprite, provenientes de um arquivo texto.
+Cada linha do arquivo texto corresponde a uma transiÁ„o (em ordem) e deve possuir 11 valores:
+1) um double representando a duracao (em segundos) da transiÁ„o.
+2) um inteiro repreentando a diferenÁa da posiÁ„o no eixo X em relaÁ„o ‡ posiÁ„o do sprite no inÌcio da transiÁ„o.
+3) um inteiro repreentando a diferenÁa da posiÁ„o no eixo Y em relaÁ„o ‡ posiÁ„o do sprite no inÌcio da transiÁ„o.
+4) um inteiro repreentando a diferenÁa da altura do sprite em relaÁ„o ao inÌcio da transiÁ„o.
+5) um inteiro repreentando a diferenÁa da largura do sprite em relaÁ„o ao inÌcio da transiÁ„o.
+6) um double repreentando a diferenÁa de ‚ngulo (em graus) do sprite em relaÁ„o ao inÌcio da transiÁ„o.
+7) um inteiro repreentando a componente R (vermelho) da coloraÁ„o do sprite ao final da transiÁ„o.
+8) um inteiro repreentando a componente G (verde) da coloraÁ„o do sprite ao final da transiÁ„o.
+9) um inteiro repreentando a componente B (azul) da coloraÁ„o do sprite ao final da transiÁ„o.
+10) um inteiro repreentando a componente A (canal alfa) da coloraÁ„o do sprite ao final da transiÁ„o.
+11) um inteiro repreentando a diferenÁa do nÌvel de opacidade do sprite em relaÁ„o ao inÌcio da transiÁ„o.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
-nomeArq (entrada, passagem por refer√™ncia): nome com extens√£o do arquivo texto contendo as transi√ß√µes.
+nomeArq (entrada, passagem por referÍncia): nome com extens„o do arquivo texto contendo as transiÁıes.
 ********************************/
 void LeArquivoTransicaoSprite(int idSprite, char *nomeArq){
     CPIGGerenciadorSprites::GetSprite(idSprite)->LeTransicoes(nomeArq);
 }
 
 /********************************
-A fun√ß√£o IniciaAutomacaoSprite() √© respons√°vel por iniciar as transi√ß√µes j√° inseridas no sprite, de acordo como o tipo de transi√ß√£o informada.
-Par√¢metros:
+A funÁ„o IniciaAutomacaoSprite() È respons·vel por iniciar as transiÁıes j· inseridas no sprite, de acordo como o tipo de transiÁ„o informada.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
 ********************************/
 void IniciaAutomacaoSprite(int idSprite){
@@ -2067,9 +2067,9 @@ void IniciaAutomacaoSprite(int idSprite){
 }
 
 /********************************
-A fun√ß√£o TrataAutomacaoSprite() √© respons√°vel por calcular o estado da transi√ß√£o corrente do sprite e aplicar essas modifica√ß√£o a ela.
-A fun√ß√£o deve ser chamada a cada frame, para ter resultados mais precisos.
-Par√¢metros:
+A funÁ„o TrataAutomacaoSprite() È respons·vel por calcular o estado da transiÁ„o corrente do sprite e aplicar essas modificaÁ„o a ela.
+A funÁ„o deve ser chamada a cada frame, para ter resultados mais precisos.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
 ********************************/
 void TrataAutomacaoSprite(int idSprite){
@@ -2077,8 +2077,8 @@ void TrataAutomacaoSprite(int idSprite){
 }
 
 /********************************
-A fun√ß√£o PausaAutomacaoSprite() √© respons√°vel por pausar as transi√ß√µes e a√ß√µes associadas a um sprite.
-Par√¢metros:
+A funÁ„o PausaAutomacaoSprite() È respons·vel por pausar as transiÁıes e aÁıes associadas a um sprite.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
 ********************************/
 void PausaAutomacaoSprite(int idSprite){
@@ -2086,8 +2086,8 @@ void PausaAutomacaoSprite(int idSprite){
 }
 
 /********************************
-A fun√ß√£o DespausaAutomacaoSprite() √© respons√°vel por despausar as transi√ß√µes e a√ß√µes associadas a um sprite.
-Par√¢metros:
+A funÁ„o DespausaAutomacaoSprite() È respons·vel por despausar as transiÁıes e aÁıes associadas a um sprite.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
 ********************************/
 void DespausaAutomacaoSprite(int idSprite){
@@ -2095,10 +2095,10 @@ void DespausaAutomacaoSprite(int idSprite){
 }
 
 /********************************
-A fun√ß√£o DefineTipoTransicaoSprite() √© respons√°vel por determinar como a sequ√™ncia de transi√ß√µes ser√° executada.
-√â poss√≠vel faz√™-la uma √∫nica vez (PIG_TRANSICAO_NORMAL), em loop (PIG_TRANSICAO_LOOP) ou indo at√© o final da sequ√™ncia e retornando, em vai-v√©m (PIG_TRANSICAO_VAIVEM).
-A fun√ß√£o deve ser chamada a cada frame, para ter resultados mais precisos.
-Par√¢metros:
+A funÁ„o DefineTipoTransicaoSprite() È respons·vel por determinar como a sequÍncia de transiÁıes ser· executada.
+… possÌvel fazÍ-la uma ˙nica vez (PIG_TRANSICAO_NORMAL), em loop (PIG_TRANSICAO_LOOP) ou indo atÈ o final da sequÍncia e retornando, em vai-vÈm (PIG_TRANSICAO_VAIVEM).
+A funÁ„o deve ser chamada a cada frame, para ter resultados mais precisos.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
 ********************************/
 void DefineTipoTransicaoSprite(int idSprite, PIGTipoTransicao valor){
@@ -2106,8 +2106,8 @@ void DefineTipoTransicaoSprite(int idSprite, PIGTipoTransicao valor){
 }
 
 /********************************
-A fun√ß√£o LimpaTransicoesSprite() √© respons√°vel por remover a sequ√™ncia de transi√ß√µes do sprite.
-Par√¢metros:
+A funÁ„o LimpaTransicoesSprite() È respons·vel por remover a sequÍncia de transiÁıes do sprite.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
 ********************************/
 void LimpaTransicoesSprite(int idSprite){
@@ -2115,22 +2115,22 @@ void LimpaTransicoesSprite(int idSprite){
 }
 
 /********************************
-A fun√ß√£o InsereAcaoSprite() √© respons√°vel por inserir na linha de tempo de automa√ß√£o do sprite uma a√ß√£o a ser executada.
-A a√ß√£o √© composta por uma fun√ß√£o "acao" que ser√° executada quando a linha de tempo atingir o par√¢metro "tempo" e ser√° repetida a cada "repeticao" segundos.
-A a√ß√£o pode armazenar um ponteiro gen√©rico "param" que ser√° utilizado na chamada da fun√ß√£o.
-Par√¢metros:
+A funÁ„o InsereAcaoSprite() È respons·vel por inserir na linha de tempo de automaÁ„o do sprite uma aÁ„o a ser executada.
+A aÁ„o È composta por uma funÁ„o "acao" que ser· executada quando a linha de tempo atingir o par‚metro "tempo" e ser· repetida a cada "repeticao" segundos.
+A aÁ„o pode armazenar um ponteiro genÈrico "param" que ser· utilizado na chamada da funÁ„o.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
-tempo (entrada, passagem por valor): tempo (em segundos) da primeira chamada da fun√ß√£o.
-repeticao (entrada, passagem por valor): tempo (em segundos) entre a chamada anterior e a pr√≥xima. O valor -1 indica que a fun√ß√£o n√£o ser√° repetida.
-param (entrada, passagem por refer√™ncia): ponteiro gen√©rico para um valor que ser√° utilizado na chamada da fun√ß√£o.
+tempo (entrada, passagem por valor): tempo (em segundos) da primeira chamada da funÁ„o.
+repeticao (entrada, passagem por valor): tempo (em segundos) entre a chamada anterior e a prÛxima. O valor -1 indica que a funÁ„o n„o ser· repetida.
+param (entrada, passagem por referÍncia): ponteiro genÈrico para um valor que ser· utilizado na chamada da funÁ„o.
 ********************************/
 void InsereAcaoSprite(int idSprite, double tempo, double repeticao, PIGFuncaoSimples acao, void *param){
     CPIGGerenciadorSprites::GetSprite(idSprite)->InsereAcao(tempo,repeticao,acao,param);
 }
 
 /********************************
-A fun√ß√£o LimpaAcoesSprite() √© respons√°vel por remover as a√ß√µes restantes associadas ao sprite.
-Par√¢metros:
+A funÁ„o LimpaAcoesSprite() È respons·vel por remover as aÁıes restantes associadas ao sprite.
+Par‚metros:
 idSprite (entrada, passagem por valor): identificador do sprite.
 ********************************/
 void LimpaAcoesSprite(int idSprite){
@@ -2139,77 +2139,77 @@ void LimpaAcoesSprite(int idSprite){
 
 
 /********************************
-Se√ß√£o de objetos
+SeÁ„o de objetos
 ********************************/
 
 /********************************
-A fun√ß√£o CriaObjeto() √© respons√°vel por criar um objeto. Qualquer objeto que for necess√°rio,
-pode ser criado atrav√©s dessa fun√ß√£o. O objeto ainda n√£o ser√° desenhado, apenas criado dentro do jogo.
-Par√¢metros:
-nomeArquivo (entrada, passagem por refer√™ncia): string que informa o nome do arquivo da imagem do objeto a ser criado.
-retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou n√£o ao ler o arquivo em quest√£o. O valor padr√£o √© 1, indicando que o fundo deve ser retirado.
-corFundo (entrada, passagem por refer√™ncia n√£o-obrigat√≥rio): indica se h√° uma cor espec√≠fica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o par√¢metro retiraFundo seja diferente de 0, o pixel (0,0) da imagem ser√° considerado como cor de fundo.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica qual janela vai receber o objeto.
+A funÁ„o CriaObjeto() È respons·vel por criar um objeto. Qualquer objeto que for necess·rio,
+pode ser criado atravÈs dessa funÁ„o. O objeto ainda n„o ser· desenhado, apenas criado dentro do jogo.
+Par‚metros:
+nomeArquivo (entrada, passagem por referÍncia): string que informa o nome do arquivo da imagem do objeto a ser criado.
+retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou n„o ao ler o arquivo em quest„o. O valor padr„o È 1, indicando que o fundo deve ser retirado.
+corFundo (entrada, passagem por referÍncia n„o-obrigatÛrio): indica se h· uma cor especÌfica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o par‚metro retiraFundo seja diferente de 0, o pixel (0,0) da imagem ser· considerado como cor de fundo.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica qual janela vai receber o objeto.
 Retorno:
-inteiro que representa o identificador √∫nico do objeto. Todas as opera√ß√µes subsequentes com este objeto dever√£o receber este identificador como par√¢metro.
+inteiro que representa o identificador ˙nico do objeto. Todas as operaÁıes subsequentes com este objeto dever„o receber este identificador como par‚metro.
 ********************************/
 int CriaObjeto(char* nomeArquivo, int retiraFundo=1, PIGCor *corFundo=NULL, int idJanela=0){
     return CPIGGerenciadorSprites::CriaObjeto(nomeArquivo,retiraFundo,corFundo,idJanela);
 }
 
 /********************************
-A fun√ß√£o CriaObjeto() √© respons√°vel por criar um objeto. Qualquer objeto que for necess√°rio,
-pode ser criado atrav√©s dessa fun√ß√£o. O objeto ainda n√£o ser√° desenhado, apenas criado dentro do jogo.
-Par√¢metros:
-idObjeto (entrada, passagem por valor): identificador do objeto original que ser√° copiado.
-retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou n√£o ao ler o arquivo em quest√£o. O valor padr√£o √© 1, indicando que o fundo deve ser retirado.
-corFundo (entrada, passagem por refer√™ncia n√£o-obrigat√≥rio): indica se h√° uma cor espec√≠fica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o par√¢metro retiraFundo seja diferente de 0, o pixel (0,0) da imagem ser√° considerado como cor de fundo.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica qual janela vai receber o objeto.
+A funÁ„o CriaObjeto() È respons·vel por criar um objeto. Qualquer objeto que for necess·rio,
+pode ser criado atravÈs dessa funÁ„o. O objeto ainda n„o ser· desenhado, apenas criado dentro do jogo.
+Par‚metros:
+idObjeto (entrada, passagem por valor): identificador do objeto original que ser· copiado.
+retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou n„o ao ler o arquivo em quest„o. O valor padr„o È 1, indicando que o fundo deve ser retirado.
+corFundo (entrada, passagem por referÍncia n„o-obrigatÛrio): indica se h· uma cor especÌfica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o par‚metro retiraFundo seja diferente de 0, o pixel (0,0) da imagem ser· considerado como cor de fundo.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica qual janela vai receber o objeto.
 Retorno:
-inteiro que representa o identificador √∫nico do objeto. Todas as opera√ß√µes subsequentes com este objeto dever√£o receber este identificador como par√¢metro.
+inteiro que representa o identificador ˙nico do objeto. Todas as operaÁıes subsequentes com este objeto dever„o receber este identificador como par‚metro.
 ********************************/
 int CriaObjeto(int idObjeto, int retiraFundo=1, PIGCor *corFundo=NULL, int idJanela=0){
     return CPIGGerenciadorSprites::CriaObjeto(idObjeto,retiraFundo,corFundo,idJanela);
 }
 
 /********************************
-A fun√ß√£o CriaObjetoOffScreen() √© respons√°vel por criar um objeto a partir da imagem que est√° sendo montanda pelo
+A funÁ„o CriaObjetoOffScreen() È respons·vel por criar um objeto a partir da imagem que est· sendo montanda pelo
 renderizador Offscreen. O renderizador precisa ter sido preparado anteriormente.
-Par√¢metros:
-retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou n√£o ao ler o arquivo em quest√£o. O valor padr√£o √© 1, indicando que o fundo deve ser retirado.
-corFundo (entrada, passagem por refer√™ncia n√£o-obrigat√≥rio): indica se h√° uma cor espec√≠fica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o par√¢metro retiraFundo seja diferente de 0, o pixel (0,0) da imagem ser√° considerado como cor de fundo.
+Par‚metros:
+retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou n„o ao ler o arquivo em quest„o. O valor padr„o È 1, indicando que o fundo deve ser retirado.
+corFundo (entrada, passagem por referÍncia n„o-obrigatÛrio): indica se h· uma cor especÌfica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o par‚metro retiraFundo seja diferente de 0, o pixel (0,0) da imagem ser· considerado como cor de fundo.
 Retorno:
-inteiro que representa o identificador √∫nico do objeto. Todas as opera√ß√µes subsequentes com este objeto dever√£o receber este identificador como par√¢metro.
+inteiro que representa o identificador ˙nico do objeto. Todas as operaÁıes subsequentes com este objeto dever„o receber este identificador como par‚metro.
 ********************************/
 int CriaObjetoOffScreen(int retiraFundo=1, PIGCor *corFundo=NULL, int idJanela=0){
     return CPIGGerenciadorSprites::CriaObjetoOffScreen(jogo->GetOffScreenRender(),retiraFundo,corFundo,idJanela);
 }
 
 /********************************
-A fun√ß√£o GetFrameAtualObjeto() recupera o valor do frame atual exibido no objeto.
-Par√¢metros:
+A funÁ„o GetFrameAtualObjeto() recupera o valor do frame atual exibido no objeto.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
 Retorno:
-N√∫mero do frame atual do objeto.
+N˙mero do frame atual do objeto.
 ********************************/
 int GetFrameAtualObjeto(int idObjeto){
     return CPIGGerenciadorSprites::GetObjeto(idObjeto)->GetFrameAtual();
 }
 
 /********************************
-A fun√ß√£o DestroiObjeto() √© respons√°vel por eliminar o objeto em quest√£o do jogo.
-Par√¢metros:
-idObjeto (entrada, passagem por valor): identificador do objeto a ser exclu√≠do.
+A funÁ„o DestroiObjeto() È respons·vel por eliminar o objeto em quest„o do jogo.
+Par‚metros:
+idObjeto (entrada, passagem por valor): identificador do objeto a ser excluÌdo.
 ********************************/
 void DestroiObjeto(int idObjeto){
     CPIGGerenciadorSprites::DestroiObjeto(idObjeto);
 }
 
 /********************************
-A fun√ß√£o SetValorIntObjeto() √© respons√°vel incorporar a um objeto um atributo inteiro.
-Par√¢metros:
+A funÁ„o SetValorIntObjeto() È respons·vel incorporar a um objeto um atributo inteiro.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-indice (entrada, passagem por valor): relaciona um n√∫mero inteiro ao atributo.
+indice (entrada, passagem por valor): relaciona um n˙mero inteiro ao atributo.
 valor (entrada, passagem por valor): valor do atributo inteiro a ser associado ao objeto.
 ********************************/
 void SetValorIntObjeto(int idObjeto, int indice, int valor){
@@ -2217,10 +2217,10 @@ void SetValorIntObjeto(int idObjeto, int indice, int valor){
 }
 
 /********************************
-A fun√ß√£o SetValorFloatObjeto() √© respons√°vel incorporar a um objeto um atributo float.
-Par√¢metros:
+A funÁ„o SetValorFloatObjeto() È respons·vel incorporar a um objeto um atributo float.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-indice (entrada, passagem por valor): relaciona um n√∫mero inteiro ao atributo.
+indice (entrada, passagem por valor): relaciona um n˙mero inteiro ao atributo.
 valor (entrada, passagem por valor): valor do atributo float a ser associado ao objeto.
 ********************************/
 void SetValorFloatObjeto(int idObjeto, int indice, float valor){
@@ -2228,21 +2228,21 @@ void SetValorFloatObjeto(int idObjeto, int indice, float valor){
 }
 
 /********************************
-A fun√ß√£o SetValorIntObjeto() √© respons√°vel incorporar a um objeto um atributo inteiro.
-Par√¢metros:
+A funÁ„o SetValorIntObjeto() È respons·vel incorporar a um objeto um atributo inteiro.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-indice (entrada, passagem por valor): relaciona um n√∫mero inteiro ao atributo.
-valor (entrada, passagem por refer√™ncia): valor do atributo string a ser associado ao objeto.
+indice (entrada, passagem por valor): relaciona um n˙mero inteiro ao atributo.
+valor (entrada, passagem por referÍncia): valor do atributo string a ser associado ao objeto.
 ********************************/
 void SetValorStringObjeto(int idObjeto, int indice, char *valor){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->SetValorString(indice,valor);
 }
 
 /********************************
-A fun√ß√£o SetValorIntObjeto() √© respons√°vel incorporar a um objeto um atributo inteiro.
-Par√¢metros:
+A funÁ„o SetValorIntObjeto() È respons·vel incorporar a um objeto um atributo inteiro.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-indice (entrada, passagem por refer√™ncia): relaciona uma string ao atributo.
+indice (entrada, passagem por referÍncia): relaciona uma string ao atributo.
 valor (entrada, passagem por valor): valor do atributo inteiro a ser associado ao objeto.
 ********************************/
 void SetValorIntObjeto(int idObjeto, char *indice, int valor){
@@ -2250,10 +2250,10 @@ void SetValorIntObjeto(int idObjeto, char *indice, int valor){
 }
 
 /********************************
-A fun√ß√£o SetValorFloatObjeto() √© respons√°vel incorporar a um objeto um atributo float.
-Par√¢metros:
+A funÁ„o SetValorFloatObjeto() È respons·vel incorporar a um objeto um atributo float.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-indice (entrada, passagem por refer√™ncia): relaciona uma string ao atributo.
+indice (entrada, passagem por referÍncia): relaciona uma string ao atributo.
 valor (entrada, passagem por valor): valor do atributo float a ser associado ao objeto.
 ********************************/
 void SetValorFloatObjeto(int idObjeto, char *indice, float valor){
@@ -2261,50 +2261,50 @@ void SetValorFloatObjeto(int idObjeto, char *indice, float valor){
 }
 
 /********************************
-A fun√ß√£o SetValorIntObjeto() √© respons√°vel incorporar a um objeto um atributo inteiro.
-Par√¢metros:
+A funÁ„o SetValorIntObjeto() È respons·vel incorporar a um objeto um atributo inteiro.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-indice (entrada, passagem por refer√™ncia): relaciona uma string ao atributo.
-valor (entrada, passagem por refer√™ncia): valor do atributo string a ser associado ao objeto.
+indice (entrada, passagem por referÍncia): relaciona uma string ao atributo.
+valor (entrada, passagem por referÍncia): valor do atributo string a ser associado ao objeto.
 ********************************/
 void SetValorStringObjeto(int idObjeto, char *indice, char *valor){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->SetValorString(indice,valor);
 }
 
 /********************************
-A fun√ß√£o GetValorIntObjeto() √© respons√°vel recuperar o valor de um atributo inteiro relacionado a um objeto.
-Par√¢metros:
+A funÁ„o GetValorIntObjeto() È respons·vel recuperar o valor de um atributo inteiro relacionado a um objeto.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-indice (entrada, passagem por valor): indica o n√∫mero do atributo que se deseja recuperar.
-valor (sa√≠da, passagem por refer√™ncia): indica o valor do atributo, se a fun√ß√£o retornar um resultado diferente de zero.
+indice (entrada, passagem por valor): indica o n˙mero do atributo que se deseja recuperar.
+valor (saÌda, passagem por referÍncia): indica o valor do atributo, se a funÁ„o retornar um resultado diferente de zero.
 Retorno:
-Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n√£o existir, a fun√ß√£o retorna o valor 0 (zero).
+Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n„o existir, a funÁ„o retorna o valor 0 (zero).
 ********************************/
 int GetValorIntObjeto(int idObjeto, int indice, int *valor){
     return CPIGGerenciadorSprites::GetObjeto(idObjeto)->GetValorInt(indice,*valor);
 }
 
 /********************************
-A fun√ß√£o GetValorFloatObjeto() √© respons√°vel recuperar o valor de um atributo float relacionado a um objeto.
-Par√¢metros:
+A funÁ„o GetValorFloatObjeto() È respons·vel recuperar o valor de um atributo float relacionado a um objeto.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-indice (entrada, passagem por valor): indica o n√∫mero do atributo que se deseja recuperar.
-valor (sa√≠da, passagem por refer√™ncia): indica o valor do atributo, se a fun√ß√£o retornar um resultado diferente de zero.
+indice (entrada, passagem por valor): indica o n˙mero do atributo que se deseja recuperar.
+valor (saÌda, passagem por referÍncia): indica o valor do atributo, se a funÁ„o retornar um resultado diferente de zero.
 Retorno:
-Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n√£o existir, a fun√ß√£o retorna o valor 0 (zero).
+Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n„o existir, a funÁ„o retorna o valor 0 (zero).
 ********************************/
 int GetValorFloatObjeto(int idObjeto, int indice, float *valor){
     return CPIGGerenciadorSprites::GetObjeto(idObjeto)->GetValorFloat(indice,*valor);
 }
 
 /********************************
-A fun√ß√£o GetValorStringObjeto() √© respons√°vel recuperar o valor de um atributo string relacionado a um objeto.
-Par√¢metros:
+A funÁ„o GetValorStringObjeto() È respons·vel recuperar o valor de um atributo string relacionado a um objeto.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-indice (entrada, passagem por valor): indica o n√∫mero do atributo que se deseja recuperar.
-valor (sa√≠da, passagem por refer√™ncia): indica o valor do atributo, se a fun√ß√£o retornar um resultado diferente de zero.
+indice (entrada, passagem por valor): indica o n˙mero do atributo que se deseja recuperar.
+valor (saÌda, passagem por referÍncia): indica o valor do atributo, se a funÁ„o retornar um resultado diferente de zero.
 Retorno:
-Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n√£o existir, a fun√ß√£o retorna o valor 0 (zero).
+Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n„o existir, a funÁ„o retorna o valor 0 (zero).
 ********************************/
 int GetValorStringObjeto(int idObjeto, int indice, char *valor){
     string str;
@@ -2314,39 +2314,39 @@ int GetValorStringObjeto(int idObjeto, int indice, char *valor){
 }
 
 /********************************
-A fun√ß√£o GetValorIntObjeto() √© respons√°vel recuperar o valor de um atributo inteiro relacionado a um objeto.
-Par√¢metros:
+A funÁ„o GetValorIntObjeto() È respons·vel recuperar o valor de um atributo inteiro relacionado a um objeto.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-indice (entrada, passagem por refer√™ncia): indica o nome do atributo que se deseja recuperar.
-valor (sa√≠da, passagem por refer√™ncia): indica o valor do atributo, se a fun√ß√£o retornar um resultado diferente de zero.
+indice (entrada, passagem por referÍncia): indica o nome do atributo que se deseja recuperar.
+valor (saÌda, passagem por referÍncia): indica o valor do atributo, se a funÁ„o retornar um resultado diferente de zero.
 Retorno:
-Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n√£o existir, a fun√ß√£o retorna o valor 0 (zero).
+Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n„o existir, a funÁ„o retorna o valor 0 (zero).
 ********************************/
 int GetValorIntObjeto(int idObjeto, char *indice, int *valor){
     return CPIGGerenciadorSprites::GetObjeto(idObjeto)->GetValorInt(indice,*valor);
 }
 
 /********************************
-A fun√ß√£o GetValorFloatObjeto() √© respons√°vel recuperar o valor de um atributo float relacionado a um objeto.
-Par√¢metros:
+A funÁ„o GetValorFloatObjeto() È respons·vel recuperar o valor de um atributo float relacionado a um objeto.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
 indice (entrada, passagem por valor): indica o nome do atributo que se deseja recuperar.
-valor (sa√≠da, passagem por refer√™ncia): indica o valor do atributo, se a fun√ß√£o retornar um resultado diferente de zero.
+valor (saÌda, passagem por referÍncia): indica o valor do atributo, se a funÁ„o retornar um resultado diferente de zero.
 Retorno:
-Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n√£o existir, a fun√ß√£o retorna o valor 0 (zero).
+Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n„o existir, a funÁ„o retorna o valor 0 (zero).
 ********************************/
 int GetValorFloatObjeto(int idObjeto, char *indice, float *valor){
     return CPIGGerenciadorSprites::GetObjeto(idObjeto)->GetValorFloat(indice,*valor);
 }
 
 /********************************
-A fun√ß√£o GetValorStringObjeto() √© respons√°vel recuperar o valor de um atributo string relacionado a um objeto.
-Par√¢metros:
+A funÁ„o GetValorStringObjeto() È respons·vel recuperar o valor de um atributo string relacionado a um objeto.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
 indice (entrada, passagem por valor): indica o nome do atributo que se deseja recuperar.
-valor (sa√≠da, passagem por refer√™ncia): indica o valor do atributo, se a fun√ß√£o retornar um resultado diferente de zero.
+valor (saÌda, passagem por referÍncia): indica o valor do atributo, se a funÁ„o retornar um resultado diferente de zero.
 Retorno:
-Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n√£o existir, a fun√ß√£o retorna o valor 0 (zero).
+Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n„o existir, a funÁ„o retorna o valor 0 (zero).
 ********************************/
 int GetValorStringObjeto(int idObjeto, char *indice, char *valor){
     string str;
@@ -2356,11 +2356,11 @@ int GetValorStringObjeto(int idObjeto, char *indice, char *valor){
 }
 
 /********************************
-A fun√ß√£o GetXYObjeto() √© respons√°vel recuperar o valor da posi√ß√£o (X,Y) do objeto de acordo com o sistema de coordenadas do jogo.
-Par√¢metros:
+A funÁ„o GetXYObjeto() È respons·vel recuperar o valor da posiÁ„o (X,Y) do objeto de acordo com o sistema de coordenadas do jogo.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-posicaoX (sa√≠da, passagem por referencia): indica a posicao no eixo X do objeto.
-posicaoY (sa√≠da, passagem por referencia): indica a posicao no eixo Y do objeto.
+posicaoX (saÌda, passagem por referencia): indica a posicao no eixo X do objeto.
+posicaoY (saÌda, passagem por referencia): indica a posicao no eixo Y do objeto.
 ********************************/
 void GetXYObjeto(int idObjeto, int *posicaoX, int *posicaoY){
     PIGPonto2D p = CPIGGerenciadorSprites::GetObjeto(idObjeto)->GetXY();
@@ -2369,83 +2369,83 @@ void GetXYObjeto(int idObjeto, int *posicaoX, int *posicaoY){
 }
 
 /********************************
-A fun√ß√£o MoveObjeto() √© respons√°vel por movimentar um determinado objeto para uma nova posi√ß√£o informada.
-Par√¢metros:
+A funÁ„o MoveObjeto() È respons·vel por movimentar um determinado objeto para uma nova posiÁ„o informada.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto a ser movido.
-posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu√°rio deseja reposicionar o objeto.
-posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu√°rio deseja reposicionar o objeto.
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu·rio deseja reposicionar o objeto.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu·rio deseja reposicionar o objeto.
 ********************************/
 void MoveObjeto(int idObjeto, int posicaoX, int posicaoY){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->Move(posicaoX,posicaoY);
 }
 
 /********************************
-A fun√ß√£o DeslocaObjeto() √© respons√°vel por deslocar um determinado objeto em rela√ß√£o √† sua posi√ß√£o atual.
-Par√¢metros:
+A funÁ„o DeslocaObjeto() È respons·vel por deslocar um determinado objeto em relaÁ„o ‡ sua posiÁ„o atual.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto a ser movido.
-deltaX (entrada, passagem por valor): valor a ser somado ou subtra√≠do na componente X da posi√ß√£o do objeto.
-deltaY (entrada, passagem por valor): valor a ser somado ou subtra√≠do na componente Y da posi√ß√£o do objeto.
+deltaX (entrada, passagem por valor): valor a ser somado ou subtraÌdo na componente X da posiÁ„o do objeto.
+deltaY (entrada, passagem por valor): valor a ser somado ou subtraÌdo na componente Y da posiÁ„o do objeto.
 ********************************/
 void DeslocaObjeto(int idObjeto, int deltaX, int deltaY){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->Desloca(deltaX,deltaY);
 }
 
 /********************************
-A fun√ß√£o SetAnguloObjeto() √© respons√°vel pela angula√ß√£o de determinado objeto. A angula√ß√£o √© calculada em sentido
-hor√°rio a partir do eixo X (0 graus). O objeto ser√° desenhado com a angula√ß√£o informada no pr√≥ximo comando
-DesenhaObjeto(). A detec√ß√£o de colis√£o n√£o funciona com objetos fora da angula√ß√£o padr√£o (0 graus).
-Par√¢metros:
+A funÁ„o SetAnguloObjeto() È respons·vel pela angulaÁ„o de determinado objeto. A angulaÁ„o È calculada em sentido
+hor·rio a partir do eixo X (0 graus). O objeto ser· desenhado com a angulaÁ„o informada no prÛximo comando
+DesenhaObjeto(). A detecÁ„o de colis„o n„o funciona com objetos fora da angulaÁ„o padr„o (0 graus).
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-angulo (entrada, passagem por valor): valor para indicar a angula√ß√£o do objeto em graus.
+angulo (entrada, passagem por valor): valor para indicar a angulaÁ„o do objeto em graus.
 ********************************/
 void SetAnguloObjeto(int idObjeto, float angulo){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->SetAngulo(angulo);
 }
 
 /********************************
-A fun√ß√£o GetAnguloObjeto() √© respons√°vel por recuperar o √¢ngulo de rota√ß√£o de determinado objeto. A angula√ß√£o √© calculada em sentido
-hor√°rio a partir do eixo X (0 graus). O objeto ser√° desenhado com a angula√ß√£o informada no pr√≥ximo comando
-DesenhaObjeto(). A detec√ß√£o de colis√£o n√£o funciona com objetos fora da angula√ß√£o padr√£o (0 graus).
-Par√¢metros:
+A funÁ„o GetAnguloObjeto() È respons·vel por recuperar o ‚ngulo de rotaÁ„o de determinado objeto. A angulaÁ„o È calculada em sentido
+hor·rio a partir do eixo X (0 graus). O objeto ser· desenhado com a angulaÁ„o informada no prÛximo comando
+DesenhaObjeto(). A detecÁ„o de colis„o n„o funciona com objetos fora da angulaÁ„o padr„o (0 graus).
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
 Retorno:
-Retorna o valor do √¢ngulo em graus.
+Retorna o valor do ‚ngulo em graus.
 ********************************/
 float GetAnguloObjeto(int idObjeto){
     return CPIGGerenciadorSprites::GetObjeto(idObjeto)->GetAngulo();
 }
 
 /********************************
-A fun√ß√£o SetPivoAbsolutoObjeto() define um ponto (X,Y) em rela√ß√£o ao ponto (0,0) do objeto, sobre o qual o objeto ser√°
-rotacionado quando a fun√ß√£o SetAnguloObjeto() for executada.
-Par√¢metros:
+A funÁ„o SetPivoAbsolutoObjeto() define um ponto (X,Y) em relaÁ„o ao ponto (0,0) do objeto, sobre o qual o objeto ser·
+rotacionado quando a funÁ„o SetAnguloObjeto() for executada.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-posicaoX (entrada, passagem por valor): Valor da coordenada X do piv√¥ em rela√ß√£o ao ponto (0,0) do objeto.
-posicaoY (entrada, passagem por valor): Valor da coordenada Y do piv√¥ em rela√ß√£o ao ponto (0,0) do objeto.
+posicaoX (entrada, passagem por valor): Valor da coordenada X do pivÙ em relaÁ„o ao ponto (0,0) do objeto.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y do pivÙ em relaÁ„o ao ponto (0,0) do objeto.
 ********************************/
 void SetPivoAbsolutoObjeto(int idObjeto, int posicaoX, int posicaoY){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->SetPivoAbsoluto({(double)posicaoX,(double)posicaoY});
 }
 
 /********************************
-A fun√ß√£o SetPivoProporcionalObjeto() define um ponto (X,Y) proporcional ao tamanho do objeto, sobre o qual o objeto ser√°
-rotacionado quando a fun√ß√£o SetAnguloObjeto() for executada.
-Par√¢metros:
+A funÁ„o SetPivoProporcionalObjeto() define um ponto (X,Y) proporcional ao tamanho do objeto, sobre o qual o objeto ser·
+rotacionado quando a funÁ„o SetAnguloObjeto() for executada.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-relX (entrada, passagem por valor): porcentagem da largura do objeto onde ficar√° o piv√¥.
-relY (entrada, passagem por valor): porcentagem da altura do objeto onde ficar√° o piv√¥.
+relX (entrada, passagem por valor): porcentagem da largura do objeto onde ficar· o pivÙ.
+relY (entrada, passagem por valor): porcentagem da altura do objeto onde ficar· o pivÙ.
 ********************************/
 void SetPivoProporcionalObjeto(int idObjeto, float relX, float relY){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->SetPivoProporcional({relX,relY});
 }
 
 /********************************
-A fun√ß√£o GetPivoObjeto() define um ponto (X,Y) em rela√ß√£o ao ponto (0,0) do objeto, sobre o qual o objeto ser√°
-rotacionado quando a fun√ß√£o SetAnguloObjeto() for executada.
-Par√¢metros:
+A funÁ„o GetPivoObjeto() define um ponto (X,Y) em relaÁ„o ao ponto (0,0) do objeto, sobre o qual o objeto ser·
+rotacionado quando a funÁ„o SetAnguloObjeto() for executada.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-posicaoX (sa√≠da, passagem por refer√™ncia): Valor da coordenada X do piv√¥ em rela√ß√£o ao ponto (0,0) do objeto.
-posicaoY (sa√≠da, passagem por refer√™ncia): Valor da coordenada Y do piv√¥ em rela√ß√£o ao ponto (0,0) do objeto.
+posicaoX (saÌda, passagem por referÍncia): Valor da coordenada X do pivÙ em relaÁ„o ao ponto (0,0) do objeto.
+posicaoY (saÌda, passagem por referÍncia): Valor da coordenada Y do pivÙ em relaÁ„o ao ponto (0,0) do objeto.
 ********************************/
 void GetPivoObjeto(int idObjeto, int *posicaoX, int *posicaoY){
     PIGPonto2D p = CPIGGerenciadorSprites::GetObjeto(idObjeto)->GetPivo();
@@ -2454,11 +2454,11 @@ void GetPivoObjeto(int idObjeto, int *posicaoX, int *posicaoY){
 }
 
 /********************************
-A fun√ß√£o SetFlipObjeto() √© respons√°vel por virar o objeto, invertendo-o em alguma dire√ß√£o. O objeto somente ser√°
-desenhado na nova orienta√ß√£o no pr√≥ximo comando DesenhaObjeto().
-Par√¢metros:
+A funÁ„o SetFlipObjeto() È respons·vel por virar o objeto, invertendo-o em alguma direÁ„o. O objeto somente ser·
+desenhado na nova orientaÁ„o no prÛximo comando DesenhaObjeto().
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto a ser virado.
-valor (entrada, passagem por valor): valor do tipo de Flip. Pode ser PIG_FLIP_NENHUM (nenhum tipo de invers√£o),
+valor (entrada, passagem por valor): valor do tipo de Flip. Pode ser PIG_FLIP_NENHUM (nenhum tipo de invers„o),
 PIG_FLIP_HORIZONTAL (inverte da esquerda para a direita), PIG_FLIP_VERTICAL (inverte de cima para baixo),
 ou PIG_FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
 ********************************/
@@ -2467,11 +2467,11 @@ void SetFlipObjeto(int idObjeto, PIGFlip valor){
 }
 
 /********************************
-A fun√ß√£o GetFlipObjeto() √© respons√°vel por recuperar o valor da manipula√ß√£o causada pela fun√ß√£o SetFlipObjeto().
-Par√¢metros:
+A funÁ„o GetFlipObjeto() È respons·vel por recuperar o valor da manipulaÁ„o causada pela funÁ„o SetFlipObjeto().
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto a ser virado.
 Retorno:
-inteiro que indica o tipo de Flip. Pode ser PIG_FLIP_NENHUM (nenhum tipo de invers√£o),
+inteiro que indica o tipo de Flip. Pode ser PIG_FLIP_NENHUM (nenhum tipo de invers„o),
 PIG_FLIP_HORIZONTAL (inverte da esquerda para a direita), PIG_FLIP_VERTICAL (inverte de cima para baixo),
 ou PIG_FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
 ********************************/
@@ -2480,9 +2480,9 @@ PIGFlip GetFlipObjeto(int idObjeto){
 }
 
 /********************************
-A fun√ß√£o SetDimensoesObjeto() √© respons√°vel por delimitar a altura e a largura do objeto que ser√° desenhado na tela,
+A funÁ„o SetDimensoesObjeto() È respons·vel por delimitar a altura e a largura do objeto que ser· desenhado na tela,
 independentemente do tamanho original do arquivo de imagem.
-Par√¢metros:
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
 altura (entrada, passagem por valor): altura em pixels.
 largura (entrada, passagem por valor): largura em pixels.
@@ -2492,33 +2492,33 @@ void SetDimensoesObjeto(int idObjeto, int altura, int largura){
 }
 
 /********************************
-A fun√ß√£o GetDimensoesObjeto() √© respons√°vel por recuperar a altura e a largura da √°rea a ser usada
+A funÁ„o GetDimensoesObjeto() È respons·vel por recuperar a altura e a largura da ·rea a ser usada
 para desenhar o objeto na tela. Em outras palavras, representa o tamanho atual do objeto.
-Par√¢metros:
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-altura (sa√≠da, passagem por refer√™ncia): altura atual em pixels do objeto.
-largura (sa√≠da, passagem por refer√™ncia): largura atual em pixels do objeto.
+altura (saÌda, passagem por referÍncia): altura atual em pixels do objeto.
+largura (saÌda, passagem por referÍncia): largura atual em pixels do objeto.
 ********************************/
 void GetDimensoesObjeto(int idObjeto, int *altura, int *largura){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->GetDimensoes(*altura,*largura);
 }
 
 /********************************
-A fun√ß√£o GetDimensoesOriginaisObjeto() √© respons√°vel por recuperar a altura e a largura originais da imagem
-que foi usada para criar o objeto. Qualquer utiliza√ß√£o da fun√ß√£o SetDimensoesObjeto() √© ignorada para
-o c√°lculo desta fun√ß√£o.
-Par√¢metros:
+A funÁ„o GetDimensoesOriginaisObjeto() È respons·vel por recuperar a altura e a largura originais da imagem
+que foi usada para criar o objeto. Qualquer utilizaÁ„o da funÁ„o SetDimensoesObjeto() È ignorada para
+o c·lculo desta funÁ„o.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-altura (sa√≠da, passagem por refer√™ncia): altura original em pixels do objeto.
-largura (sa√≠da, passagem por refer√™ncia): largura original em pixels do objeto.
+altura (saÌda, passagem por referÍncia): altura original em pixels do objeto.
+largura (saÌda, passagem por referÍncia): largura original em pixels do objeto.
 ********************************/
 void GetDimensoesOriginaisObjeto(int idObjeto, int *altura, int *largura){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->GetDimensoesOriginais(*altura,*largura);
 }
 
 /********************************
-A fun√ß√£o RestauraDimensoesOriginaisObjeto() √© respons√°vel por restaurar o objeto com o tamanho original da imagem.
-Par√¢metros:
+A funÁ„o RestauraDimensoesOriginaisObjeto() È respons·vel por restaurar o objeto com o tamanho original da imagem.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
 ********************************/
 void RestauraDimensoesOriginaisObjeto(int idObjeto, int altura, int largura){
@@ -2527,14 +2527,14 @@ void RestauraDimensoesOriginaisObjeto(int idObjeto, int altura, int largura){
 
 
 /********************************
-A fun√ß√£o CriaFrameObjeto() √© respons√°vel por delimitar o posicionamento dos pixels do arquivo de imagem que ser√£o
-utilizados para representar o objeto na tela. Desta forma, nem toda a imagem ser√° automaticamente utilizada para
-representar o objeto. O sistema de coordenadas deve ser o padr√£o dos arquivos de imagem, com o eixo Y aumentando para baixo.
-Par√¢metros:
+A funÁ„o CriaFrameObjeto() È respons·vel por delimitar o posicionamento dos pixels do arquivo de imagem que ser„o
+utilizados para representar o objeto na tela. Desta forma, nem toda a imagem ser· automaticamente utilizada para
+representar o objeto. O sistema de coordenadas deve ser o padr„o dos arquivos de imagem, com o eixo Y aumentando para baixo.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto a ser desenhado.
 idFrame (entrada, passagem por valor): identificador do frame a ser criado.
-xBitmap (entrada, passagem por valor): indica a posi√ß√£o de eixo X onde come√ßa o frame.
-yBitmap (entrada, passagem por valor): indica a posi√ß√£o de eixo Y onde come√ßa o frame. Neste caso, o eixo Y aumenta para baixo.
+xBitmap (entrada, passagem por valor): indica a posiÁ„o de eixo X onde comeÁa o frame.
+yBitmap (entrada, passagem por valor): indica a posiÁ„o de eixo Y onde comeÁa o frame. Neste caso, o eixo Y aumenta para baixo.
 altura (entrada, passagem por valor): altura em pixels do frame.
 largura (entrada, passagem por valor): largura em pixels do frame.
 ********************************/
@@ -2544,64 +2544,64 @@ void CriaFrameObjeto(int idObjeto, int idFrame, int xBitmap, int yBitmap, int al
 
 
 /********************************
-A fun√ß√£o CarregaArquivoFramesObjeto() √© respons√°vel por ler de arquivo texto os frames de um objeto.
-Cada linha do arquivo texto deve conter 5 n√∫meros inteiros: o n√∫mero do frame, a posi√ß√£o do frame no eixo X do arquivo de imagem,
-a posi√ß√£o do frame no eixo Y do arquivo de imagem, a altura do frame e a largura do frame (todas as unidades em pixels).
-Par√¢metros:
+A funÁ„o CarregaArquivoFramesObjeto() È respons·vel por ler de arquivo texto os frames de um objeto.
+Cada linha do arquivo texto deve conter 5 n˙meros inteiros: o n˙mero do frame, a posiÁ„o do frame no eixo X do arquivo de imagem,
+a posiÁ„o do frame no eixo Y do arquivo de imagem, a altura do frame e a largura do frame (todas as unidades em pixels).
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-nomeArq (entrada, passagem por refer√™ncia): nome do arquivo texto contendo os frames.
+nomeArq (entrada, passagem por referÍncia): nome do arquivo texto contendo os frames.
 ********************************/
 void CarregaArquivoFramesObjeto(int idObjeto, char *nomeArq){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->CarregaArquivoFrames(nomeArq);
 }
 
 /********************************
-A fun√ß√£o CarregaFramesPorLinhaObjeto() √© respons√°vel por subdividir o arquivo de imagem em linhas (de mesmo tamanho) e colunas (de mesmo tamanho).
-Cada subdivis√£o representar√° um frame que ser√° automaticamente criado para a anima√ß√£o, com numera√ß√£o incremental a partir do par√¢metro "frameInicial".
-Ao final das "qtdColunas" da primeira linha, a defini√ß√£o dos frames continua na linha inferior.
-A fun√ß√£o pode ser utilizada em spritesheets regulares.
-Par√¢metros:
+A funÁ„o CarregaFramesPorLinhaObjeto() È respons·vel por subdividir o arquivo de imagem em linhas (de mesmo tamanho) e colunas (de mesmo tamanho).
+Cada subdivis„o representar· um frame que ser· automaticamente criado para a animaÁ„o, com numeraÁ„o incremental a partir do par‚metro "frameInicial".
+Ao final das "qtdColunas" da primeira linha, a definiÁ„o dos frames continua na linha inferior.
+A funÁ„o pode ser utilizada em spritesheets regulares.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-frameInicial (entrada, passagem por valor): numera√ß√£o do primeiro frame a ser criado pela fun√ß√£o. Os demais frames ter√£o numera√ß√£o consecutiva.
-qtdLinhas (entrada, passagem por valor): quantidade de linhas na qual o arquivo de imagem ser√° dividido.
-qtdColunas (entrada, passagem por valor): quantidade de colunas na qual o arquivo de imagem ser√° dividido.
+frameInicial (entrada, passagem por valor): numeraÁ„o do primeiro frame a ser criado pela funÁ„o. Os demais frames ter„o numeraÁ„o consecutiva.
+qtdLinhas (entrada, passagem por valor): quantidade de linhas na qual o arquivo de imagem ser· dividido.
+qtdColunas (entrada, passagem por valor): quantidade de colunas na qual o arquivo de imagem ser· dividido.
 ********************************/
 void CarregaFramesPorLinhaObjeto(int idObjeto, int frameInicial, int qtdLinhas, int qtdColunas){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->CriaFramesAutomaticosPorLinha(frameInicial,qtdLinhas,qtdColunas);
 }
 
 /********************************
-A fun√ß√£o CarregaFramesPorColunaObjeto() √© respons√°vel por subdividir o arquivo de imagem em linhas (de mesmo tamanho) e colunas (de mesmo tamanho).
-Cada subdivis√£o representar√° um frame que ser√° automaticamente criado para a anima√ß√£o, com numera√ß√£o incremental a partir do par√¢metro "frameInicial".
-Ao final das "qtdLinhas" da primeira coluna, a defini√ß√£o dos frames continua na coluna seguinte.
-A fun√ß√£o pode ser utilizada em spritesheets regulares.
-Par√¢metros:
+A funÁ„o CarregaFramesPorColunaObjeto() È respons·vel por subdividir o arquivo de imagem em linhas (de mesmo tamanho) e colunas (de mesmo tamanho).
+Cada subdivis„o representar· um frame que ser· automaticamente criado para a animaÁ„o, com numeraÁ„o incremental a partir do par‚metro "frameInicial".
+Ao final das "qtdLinhas" da primeira coluna, a definiÁ„o dos frames continua na coluna seguinte.
+A funÁ„o pode ser utilizada em spritesheets regulares.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-frameInicial (entrada, passagem por valor): numera√ß√£o do primeiro frame a ser criado pela fun√ß√£o. Os demais frames ter√£o numera√ß√£o consecutiva.
-qtdLinhas (entrada, passagem por valor): quantidade de linhas na qual o arquivo de imagem ser√° dividido.
-qtdColunas (entrada, passagem por valor): quantidade de colunas na qual o arquivo de imagem ser√° dividido.
+frameInicial (entrada, passagem por valor): numeraÁ„o do primeiro frame a ser criado pela funÁ„o. Os demais frames ter„o numeraÁ„o consecutiva.
+qtdLinhas (entrada, passagem por valor): quantidade de linhas na qual o arquivo de imagem ser· dividido.
+qtdColunas (entrada, passagem por valor): quantidade de colunas na qual o arquivo de imagem ser· dividido.
 ********************************/
 void CarregaFramesPorColunaObjeto(int idObjeto, int frameInicial, int qtdLinhas, int qtdColunas){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->CriaFramesAutomaticosPorColuna(frameInicial,qtdLinhas,qtdColunas);
 }
 
 /********************************
-A fun√ß√£o MudaFrameObjeto() √© respons√°vel por modificar o frame (j√° definido pela fun√ß√£o DefineFrameObjeto) de um objeto
-Par√¢metros:
+A funÁ„o MudaFrameObjeto() È respons·vel por modificar o frame (j· definido pela funÁ„o DefineFrameObjeto) de um objeto
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-idFrame (entrada, passagem por valor): identificador do frame j√° criado.
+idFrame (entrada, passagem por valor): identificador do frame j· criado.
 Retorno:
-Se o identifador do frame informado n√£o corresponder a um frame j√° criado, o valor de retorno √© igual a 0. Caso contr√°rio, √© igual a 1.
+Se o identifador do frame informado n„o corresponder a um frame j· criado, o valor de retorno È igual a 0. Caso contr·rio, È igual a 1.
 ********************************/
 int MudaFrameObjeto(int idObjeto, int idFrame){
     return CPIGGerenciadorSprites::GetObjeto(idObjeto)->MudaFrameAtual(idFrame);
 }
 
 /********************************
-A fun√ß√£o SetColoracaoObjeto() √© respons√°vel por mesclar uma determinada cor com os pixels do arquivo de imagem.
-Ap√≥s a modifica√ß√£o, todos os desenhos deste objeto ser√£o mostrados j√° com a mesclagem definida.
-Para voltar ao padr√£o original de pixels, deve-se chamar a fun√ß√£o, passando a cor branca (255,255,255,255).
-Par√¢metros:
+A funÁ„o SetColoracaoObjeto() È respons·vel por mesclar uma determinada cor com os pixels do arquivo de imagem.
+ApÛs a modificaÁ„o, todos os desenhos deste objeto ser„o mostrados j· com a mesclagem definida.
+Para voltar ao padr„o original de pixels, deve-se chamar a funÁ„o, passando a cor branca (255,255,255,255).
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto a ser desenhado.
 cor (entrada,passagem por valor): cor do sistema RGB utilizada para mesclagem com o arquivo de imagem
 ********************************/
@@ -2610,32 +2610,32 @@ void SetColoracaoObjeto(int idObjeto, PIGCor cor){
 }
 
 /********************************
-A fun√ß√£o SetOpacidadeObjeto() √© respons√°vel por modificar o n√≠vel de opacidade do objeto.
-O n√≠vel de opacidade varia de 0-255, sendo 0 totalmente transparente e 255 totalmente opaco.
-Par√¢metros:
+A funÁ„o SetOpacidadeObjeto() È respons·vel por modificar o nÌvel de opacidade do objeto.
+O nÌvel de opacidade varia de 0-255, sendo 0 totalmente transparente e 255 totalmente opaco.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-valor (entrada,passagem por valor): n√≠vel de opacidade do objeto na faixa 0-255.
+valor (entrada,passagem por valor): nÌvel de opacidade do objeto na faixa 0-255.
 ********************************/
 void SetOpacidadeObjeto(int idObjeto,int valor){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->SetOpacidade(valor);
 }
 
 /********************************
-A fun√ß√£o GetOpacidadeObjeto() √© respons√°vel por recuperar o n√≠vel de opacidade de determinado objeto.
-O n√≠vel de opacidade varia de 0-255, sendo 0 totalmente transparente e 255 totalmente opaco.
-Par√¢metros:
+A funÁ„o GetOpacidadeObjeto() È respons·vel por recuperar o nÌvel de opacidade de determinado objeto.
+O nÌvel de opacidade varia de 0-255, sendo 0 totalmente transparente e 255 totalmente opaco.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
 Retorno:
-Retorna o n√≠vel de opacidade do objeto na faixa 0-255.
+Retorna o nÌvel de opacidade do objeto na faixa 0-255.
 ********************************/
 int GetOpacidadeObjeto(int idObjeto){
     return CPIGGerenciadorSprites::GetObjeto(idObjeto)->GetOpacidade();
 }
 
 /********************************
-A fun√ß√£o DesenhaObjeto() √© respons√°vel por desenhar um objeto na tela. O objeto ser√° desenhado de acordo com todas as defini√ß√µes
-de posi√ß√£o e √¢ngulo informado at√© o momento. Al√©m disso, se o objeto estiver virado (flipping), isso tamb√©m ser√° levado em considera√ß√£o.
-Par√¢metros:
+A funÁ„o DesenhaObjeto() È respons·vel por desenhar um objeto na tela. O objeto ser· desenhado de acordo com todas as definiÁıes
+de posiÁ„o e ‚ngulo informado atÈ o momento. AlÈm disso, se o objeto estiver virado (flipping), isso tambÈm ser· levado em consideraÁ„o.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto a ser desenhado.
 ********************************/
 void DesenhaObjeto(int idObjeto){
@@ -2643,9 +2643,9 @@ void DesenhaObjeto(int idObjeto){
 }
 
 /********************************
-A fun√ß√£o DesenhaObjetoOffScreen() √© respons√°vel por desenhar um objeto no Renderizador Offscreen. O objeto ser√° desenhado de acordo com todas as defini√ß√µes
-de posi√ß√£o e √¢ngulo informado at√© o momento. Al√©m disso, se o objeto estiver virado (flipping), isso tamb√©m ser√° levado em considera√ß√£o.
-Par√¢metros:
+A funÁ„o DesenhaObjetoOffScreen() È respons·vel por desenhar um objeto no Renderizador Offscreen. O objeto ser· desenhado de acordo com todas as definiÁıes
+de posiÁ„o e ‚ngulo informado atÈ o momento. AlÈm disso, se o objeto estiver virado (flipping), isso tambÈm ser· levado em consideraÁ„o.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto a ser desenhado.
 offScreen (entrada, passagem por valor): indica se o objeto deve ser desenhado no Renderizador Offscreen.
 ********************************/
@@ -2654,13 +2654,13 @@ void DesenhaObjetoOffScreen(int idObjeto){
 }
 
 /********************************
-A fun√ß√£o TestaColisaoObjetos() √© respons√°vel por testar se dois objetos se colidiram ou n√£o, ao passar
-os identificadores dos objetos por par√¢metro.
-Par√¢metros:
+A funÁ„o TestaColisaoObjetos() È respons·vel por testar se dois objetos se colidiram ou n„o, ao passar
+os identificadores dos objetos por par‚metro.
+Par‚metros:
 idObjeto1 (entrada, passagem por valor): identificador do primeiro objeto.
 idObjeto2 (entrada, passagem por valor): identificador do segundo objeto.
 Retorno:
-Inteiro indicando se houve colis√£o (valor diferente de zero) ou n√£o (valor igual a 0, zero).
+Inteiro indicando se houve colis„o (valor diferente de zero) ou n„o (valor igual a 0, zero).
 ********************************/
 int TestaColisaoObjetos(int idObjeto1, int idObjeto2){
     return CPIGGerenciadorSprites::GetObjeto(idObjeto1)->Colisao(CPIGGerenciadorSprites::GetObjeto(idObjeto2))
@@ -2668,13 +2668,13 @@ int TestaColisaoObjetos(int idObjeto1, int idObjeto2){
 }
 
 /********************************
-A fun√ß√£o DefineAreaColisaoObjeto() √© respons√°vel estabelecer um pol√≠gono que ser√° utilizado como √°rea de colis√£o do objeto com os demais.
+A funÁ„o DefineAreaColisaoObjeto() È respons·vel estabelecer um polÌgono que ser· utilizado como ·rea de colis„o do objeto com os demais.
 Os vetores X e Y deve ter pelo menos qtdPontos elementos.
-Par√¢metros:
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-pontosX (entrada, passagem por refer√™ncia): vetor de inteiros, de tamanho qtdPontos, contendo os valores X de cada ponto do pol√≠gono.
-pontosY (entrada, passagem por refer√™ncia): vetor de inteiros, de tamanho qtdPontos, contendo os valores Y de cada ponto do pol√≠gono.
-qtdPontos (entrada, passagem por valor): quantidade de pontos do pol√≠gono.
+pontosX (entrada, passagem por referÍncia): vetor de inteiros, de tamanho qtdPontos, contendo os valores X de cada ponto do polÌgono.
+pontosY (entrada, passagem por referÍncia): vetor de inteiros, de tamanho qtdPontos, contendo os valores Y de cada ponto do polÌgono.
+qtdPontos (entrada, passagem por valor): quantidade de pontos do polÌgono.
 ********************************/
 void DefineAreaColisaoObjeto(int idObjeto, int pontosX[], int pontosY[], int qtdPontos) {
     vector<PIGPonto2D> vertices;
@@ -2687,106 +2687,106 @@ void DefineAreaColisaoObjeto(int idObjeto, int pontosX[], int pontosY[], int qtd
 }
 
 /********************************
-A fun√ß√£o DefineRaioColisaoObjeto() √© respons√°vel por estabelecer um raio, em rela√ß√£o ao piv√¥ do objeto, que ser√° utilizado para teste de colis√£o circular deste objeto com os demais.
-A defini√ß√£o do raio s√≥ ser√° √∫til se o tipode colis√£o deste objeto for circular, definido pela fun√ß√£o DefineTipoColisaoObjeto().
-Par√¢metros:
+A funÁ„o DefineRaioColisaoObjeto() È respons·vel por estabelecer um raio, em relaÁ„o ao pivÙ do objeto, que ser· utilizado para teste de colis„o circular deste objeto com os demais.
+A definiÁ„o do raio sÛ ser· ˙til se o tipode colis„o deste objeto for circular, definido pela funÁ„o DefineTipoColisaoObjeto().
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-raio (entrada, passagem por valor): tamanho do raio que formar√° a √°rea de colis√£o deste objeto.
+raio (entrada, passagem por valor): tamanho do raio que formar· a ·rea de colis„o deste objeto.
 ********************************/
 void DefineRaioColisaoObjeto(int idObjeto, float raio){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->SetRaioColisaoCircular(raio);
 }
 
 /********************************
-A fun√ß√£o DefineTipoColisaoObjeto() √© respons√°vel por definir o tipod e colis√£o que ser√° utilizada por este objeto com os demais.
-√â poss√≠vel ter 3 tipos de colis√£o: por bouding-box (PIG_COLISAO_OOBB - √°rea de colis√£o delimitada pelo ponto X,Y do objeto, sua altura e largura e rota√ß√£o),
-por pol√≠gono (PIG_COLISAO_POLIGONO) √°rea de colis√£o formada por pontos gen√©ricos) e circular (PIG_COLISAO_CIRCULAR) √°rea de colis√£o em forma de c√≠rculo, com raio definido a partir do ponto piv√¥)
-Par√¢metros:
+A funÁ„o DefineTipoColisaoObjeto() È respons·vel por definir o tipod e colis„o que ser· utilizada por este objeto com os demais.
+… possÌvel ter 3 tipos de colis„o: por bouding-box (PIG_COLISAO_OOBB - ·rea de colis„o delimitada pelo ponto X,Y do objeto, sua altura e largura e rotaÁ„o),
+por polÌgono (PIG_COLISAO_POLIGONO) ·rea de colis„o formada por pontos genÈricos) e circular (PIG_COLISAO_CIRCULAR) ·rea de colis„o em forma de cÌrculo, com raio definido a partir do ponto pivÙ)
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-modo (entrada, passagem por valor): modo de colis√£o a ser utilizado por este objeto.
+modo (entrada, passagem por valor): modo de colis„o a ser utilizado por este objeto.
 ********************************/
 void DefineTipoColisaoObjeto(int idObjeto, PIGModoColisao modo){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->SetModoColisao(modo);
 }
 
 /********************************
-A fun√ß√£o GetPixelsObjeto() √© respons√°vel por extrair os pixels da imagem que originou o objeto, devolvendo-os como
-uma matriz de pixels (PIGCor). Mudan√ßas nessa matriz s√≥ ser√£o validadas ap√≥s a chamada da fun√ß√£o AtualizaPixelsObjeto().
-O linha 0 corresponde √† primeira linha da imagem, ou seja, √† linha superior, pois o sistema de coordenadas
+A funÁ„o GetPixelsObjeto() È respons·vel por extrair os pixels da imagem que originou o objeto, devolvendo-os como
+uma matriz de pixels (PIGCor). MudanÁas nessa matriz sÛ ser„o validadas apÛs a chamada da funÁ„o AtualizaPixelsObjeto().
+O linha 0 corresponde ‡ primeira linha da imagem, ou seja, ‡ linha superior, pois o sistema de coordenadas
 das imagens tem o eixo Y aumentando para baixo.
-Par√¢metros:
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
 Retorno:
-matriz de pixels (PIGCor) da imagem que gerou o objeto. O total de linhas da matriz √© dado pela altura original do objeto e o
-total de colunas √© dado pela largura original do objeto. Ambos os valores podem ser obtidos pela fun√ß√£o GetDimensoesOriginaisObjeto().
+matriz de pixels (PIGCor) da imagem que gerou o objeto. O total de linhas da matriz È dado pela altura original do objeto e o
+total de colunas È dado pela largura original do objeto. Ambos os valores podem ser obtidos pela funÁ„o GetDimensoesOriginaisObjeto().
 ********************************/
 PIGCor **GetPixelsObjeto(int idObjeto){
     return CPIGGerenciadorSprites::GetObjeto(idObjeto)->GetPixels();
 }
 
 /********************************
-A fun√ß√£o AtualizaPixelsObjeto() √© respons√°vel por efetivar quaisquer mudan√ßas nos pixels do objeto obtidos pela fun√ß√£o GetPixelsObjeto().
-Par√¢metros:
+A funÁ„o AtualizaPixelsObjeto() È respons·vel por efetivar quaisquer mudanÁas nos pixels do objeto obtidos pela funÁ„o GetPixelsObjeto().
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou n√£o ao ler o arquivo em quest√£o. O valor padr√£o √© 1, indicando que o fundo deve ser retirado.
+retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou n„o ao ler o arquivo em quest„o. O valor padr„o È 1, indicando que o fundo deve ser retirado.
 ********************************/
 void AtualizaPixelsObjeto(int idObjeto, int retiraFundo=1){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->AtualizaPixels(retiraFundo);
 }
 
 /********************************
-A fun√ß√£o InsereTransicaoObjeto() √© respons√°vel por criar e inserir uma nova transi√ß√£o ao final de sequ√™ncia de transi√ß√µes do objeto.
-Par√¢metros:
+A funÁ„o InsereTransicaoObjeto() È respons·vel por criar e inserir uma nova transiÁ„o ao final de sequÍncia de transiÁıes do objeto.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-tempo (entrada, passagem por valor): duracao (em segundos) da transi√ß√£o.
-deltaX (entrada, passagem por valor): diferen√ßa da posi√ß√£o no eixo X em rela√ß√£o √† posi√ß√£o do objeto no in√≠cio da transi√ß√£o.
-deltaY (entrada, passagem por valor): diferen√ßa da posi√ß√£o no eixo Y em rela√ß√£o √† posi√ß√£o do objeto no in√≠cio da transi√ß√£o.
-deltaAltura (entrada, passagem por valor): diferen√ßa da altura do objeto em rela√ß√£o ao in√≠cio da transi√ß√£o.
-deltaLargura (entrada, passagem por valor): diferen√ßa da largura do objeto em rela√ß√£o ao in√≠cio da transi√ß√£o.
-deltaAngulo (entrada, passagem por valor): diferen√ßa de √¢ngulo (em graus) do objeto em rela√ß√£o ao in√≠cio da transi√ß√£o.
-corFinal (entrada, passagem por valor): colora√ß√£o do objeto ao final da transi√ß√£o.
-deltaOpacidade (entrada, passagem por valor): diferen√ßa do n√≠vel de opacidade do objeto em rela√ß√£o ao in√≠cio da transi√ß√£o.
+tempo (entrada, passagem por valor): duracao (em segundos) da transiÁ„o.
+deltaX (entrada, passagem por valor): diferenÁa da posiÁ„o no eixo X em relaÁ„o ‡ posiÁ„o do objeto no inÌcio da transiÁ„o.
+deltaY (entrada, passagem por valor): diferenÁa da posiÁ„o no eixo Y em relaÁ„o ‡ posiÁ„o do objeto no inÌcio da transiÁ„o.
+deltaAltura (entrada, passagem por valor): diferenÁa da altura do objeto em relaÁ„o ao inÌcio da transiÁ„o.
+deltaLargura (entrada, passagem por valor): diferenÁa da largura do objeto em relaÁ„o ao inÌcio da transiÁ„o.
+deltaAngulo (entrada, passagem por valor): diferenÁa de ‚ngulo (em graus) do objeto em relaÁ„o ao inÌcio da transiÁ„o.
+corFinal (entrada, passagem por valor): coloraÁ„o do objeto ao final da transiÁ„o.
+deltaOpacidade (entrada, passagem por valor): diferenÁa do nÌvel de opacidade do objeto em relaÁ„o ao inÌcio da transiÁ„o.
 ********************************/
 void InsereTransicaoObjeto(int idObjeto, double tempo, int deltaX, int deltaY, int deltaAltura, int deltaLargura, double deltaAngulo, PIGCor corFinal, int deltaOpacidade){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->InsereTransicao(tempo,{deltaX,deltaY,deltaAltura,deltaLargura,deltaAngulo,corFinal,deltaOpacidade});
 }
 
 /********************************
-A fun√ß√£o ExecutandoTransicaoObjeto() retorna a informa√ß√£o sobre a execu√ß√£o (neste momento) de transi√ß√µes do objeto.
-Par√¢metros:
+A funÁ„o ExecutandoTransicaoObjeto() retorna a informaÁ„o sobre a execuÁ„o (neste momento) de transiÁıes do objeto.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
 Retorno:
-inteiro que indica se o objeto est√° executando alguma transi√ß√£o no momento (valor diferente de 0) ou n√£o (valor igual a 0).
+inteiro que indica se o objeto est· executando alguma transiÁ„o no momento (valor diferente de 0) ou n„o (valor igual a 0).
 ********************************/
 int ExecutandoTransicaoObjeto(int idObjeto){
     return CPIGGerenciadorSprites::GetObjeto(idObjeto)->ExecutandoTransicao();
 }
 
 /********************************
-A fun√ß√£o LeArquivoTransicaoObjeto() √© respons√°vel por ler, criar e inserir as transi√ß√µes para um objeto, provenientes de um arquivo texto.
-Cada linha do arquivo texto corresponde a uma transi√ß√£o (em ordem) e deve possuir 11 valores:
-1) um double representando a duracao (em segundos) da transi√ß√£o.
-2) um inteiro representando a diferen√ßa da posi√ß√£o no eixo X em rela√ß√£o √† posi√ß√£o do objeto no in√≠cio da transi√ß√£o.
-3) um inteiro representando a diferen√ßa da posi√ß√£o no eixo Y em rela√ß√£o √† posi√ß√£o do objeto no in√≠cio da transi√ß√£o.
-4) um inteiro representando a diferen√ßa da altura do objeto em rela√ß√£o ao in√≠cio da transi√ß√£o.
-5) um inteiro representando a diferen√ßa da largura do objeto em rela√ß√£o ao in√≠cio da transi√ß√£o.
-6) um double representando a diferen√ßa de √¢ngulo (em graus) do objeto em rela√ß√£o ao in√≠cio da transi√ß√£o.
-7) um inteiro representando a componente R (vermelho) da colora√ß√£o do objeto ao final da transi√ß√£o.
-8) um inteiro representando a componente G (verde) da colora√ß√£o do objeto ao final da transi√ß√£o.
-9) um inteiro representando a componente B (azul) da colora√ß√£o do objeto ao final da transi√ß√£o.
-10) um inteiro representando a componente A (canal alfa) da colora√ß√£o do objeto ao final da transi√ß√£o.
-11) um inteiro representando a diferen√ßa do n√≠vel de opacidade do objeto em rela√ß√£o ao in√≠cio da transi√ß√£o.
-Par√¢metros:
+A funÁ„o LeArquivoTransicaoObjeto() È respons·vel por ler, criar e inserir as transiÁıes para um objeto, provenientes de um arquivo texto.
+Cada linha do arquivo texto corresponde a uma transiÁ„o (em ordem) e deve possuir 11 valores:
+1) um double representando a duracao (em segundos) da transiÁ„o.
+2) um inteiro representando a diferenÁa da posiÁ„o no eixo X em relaÁ„o ‡ posiÁ„o do objeto no inÌcio da transiÁ„o.
+3) um inteiro representando a diferenÁa da posiÁ„o no eixo Y em relaÁ„o ‡ posiÁ„o do objeto no inÌcio da transiÁ„o.
+4) um inteiro representando a diferenÁa da altura do objeto em relaÁ„o ao inÌcio da transiÁ„o.
+5) um inteiro representando a diferenÁa da largura do objeto em relaÁ„o ao inÌcio da transiÁ„o.
+6) um double representando a diferenÁa de ‚ngulo (em graus) do objeto em relaÁ„o ao inÌcio da transiÁ„o.
+7) um inteiro representando a componente R (vermelho) da coloraÁ„o do objeto ao final da transiÁ„o.
+8) um inteiro representando a componente G (verde) da coloraÁ„o do objeto ao final da transiÁ„o.
+9) um inteiro representando a componente B (azul) da coloraÁ„o do objeto ao final da transiÁ„o.
+10) um inteiro representando a componente A (canal alfa) da coloraÁ„o do objeto ao final da transiÁ„o.
+11) um inteiro representando a diferenÁa do nÌvel de opacidade do objeto em relaÁ„o ao inÌcio da transiÁ„o.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-nomeArq (entrada, passagem por refer√™ncia): nome com extens√£o do arquivo texto contendo as transi√ß√µes.
+nomeArq (entrada, passagem por referÍncia): nome com extens„o do arquivo texto contendo as transiÁıes.
 ********************************/
 void LeArquivoTransicaoObjeto(int idObjeto, char *nomeArq){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->LeTransicoes(nomeArq);
 }
 
 /********************************
-A fun√ß√£o IniciaAutomacaoObjeto() √© respons√°vel por iniciar as transi√ß√µes j√° inseridas no objeto, de acordo como o tipo de transi√ß√£o informada.
-Par√¢metros:
+A funÁ„o IniciaAutomacaoObjeto() È respons·vel por iniciar as transiÁıes j· inseridas no objeto, de acordo como o tipo de transiÁ„o informada.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
 ********************************/
 void IniciaAutomacaoObjeto(int idObjeto){
@@ -2794,9 +2794,9 @@ void IniciaAutomacaoObjeto(int idObjeto){
 }
 
 /********************************
-A fun√ß√£o TrataAutomacaoObjeto() √© respons√°vel por calcular o estado da transi√ß√£o corrente do objeto e aplicar essas modifica√ß√£o a ela.
-A fun√ß√£o deve ser chamada a cada frame, para ter resultados mais precisos.
-Par√¢metros:
+A funÁ„o TrataAutomacaoObjeto() È respons·vel por calcular o estado da transiÁ„o corrente do objeto e aplicar essas modificaÁ„o a ela.
+A funÁ„o deve ser chamada a cada frame, para ter resultados mais precisos.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
 ********************************/
 void TrataAutomacaoObjeto(int idObjeto){
@@ -2804,8 +2804,8 @@ void TrataAutomacaoObjeto(int idObjeto){
 }
 
 /********************************
-A fun√ß√£o PausaAutomacaoObjeto() √© respons√°vel por pausar as transi√ß√µes e a√ß√µes associadas a um objeto.
-Par√¢metros:
+A funÁ„o PausaAutomacaoObjeto() È respons·vel por pausar as transiÁıes e aÁıes associadas a um objeto.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
 ********************************/
 void PausaAutomacaoObjeto(int idObjeto){
@@ -2813,8 +2813,8 @@ void PausaAutomacaoObjeto(int idObjeto){
 }
 
 /********************************
-A fun√ß√£o DespausaAutomacaoObjeto() √© respons√°vel por despausar as transi√ß√µes e a√ß√µes associadas a um objeto.
-Par√¢metros:
+A funÁ„o DespausaAutomacaoObjeto() È respons·vel por despausar as transiÁıes e aÁıes associadas a um objeto.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
 ********************************/
 void DespausaAutomacaoObjeto(int idObjeto){
@@ -2822,10 +2822,10 @@ void DespausaAutomacaoObjeto(int idObjeto){
 }
 
 /********************************
-A fun√ß√£o DefineTipoTransicaoObjeto() √© respons√°vel por determinar como a sequ√™ncia de transi√ß√µes ser√° executada.
-√â poss√≠vel faz√™-la uma √∫nica vez (PIG_TRANSICAO_NORMAL), em loop (PIG_TRANSICAO_LOOP) ou indo at√© o final da sequ√™ncia e retornando, em vai-v√©m (PIG_TRANSICAO_VAIVEM).
-A fun√ß√£o deve ser chamada a cada frame, para ter resultados mais precisos.
-Par√¢metros:
+A funÁ„o DefineTipoTransicaoObjeto() È respons·vel por determinar como a sequÍncia de transiÁıes ser· executada.
+… possÌvel fazÍ-la uma ˙nica vez (PIG_TRANSICAO_NORMAL), em loop (PIG_TRANSICAO_LOOP) ou indo atÈ o final da sequÍncia e retornando, em vai-vÈm (PIG_TRANSICAO_VAIVEM).
+A funÁ„o deve ser chamada a cada frame, para ter resultados mais precisos.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
 ********************************/
 void DefineTipoTransicaoObjeto(int idObjeto, PIGTipoTransicao valor){
@@ -2833,8 +2833,8 @@ void DefineTipoTransicaoObjeto(int idObjeto, PIGTipoTransicao valor){
 }
 
 /********************************
-A fun√ß√£o LimpaTransicoesObjeto() √© respons√°vel por remover a sequ√™ncia de transi√ß√µes do objeto.
-Par√¢metros:
+A funÁ„o LimpaTransicoesObjeto() È respons·vel por remover a sequÍncia de transiÁıes do objeto.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
 ********************************/
 void LimpaTransicoesObjeto(int idObjeto){
@@ -2842,22 +2842,22 @@ void LimpaTransicoesObjeto(int idObjeto){
 }
 
 /********************************
-A fun√ß√£o InsereAcaoObjeto() √© respons√°vel por inserir na linha de tempo de automa√ß√£o do objeto uma a√ß√£o a ser executada.
-A a√ß√£o √© composta por uma fun√ß√£o "acao" que ser√° executada quando a linha de tempo atingir o par√¢metro "tempo" e ser√° repetida a cada "repeticao" segundos.
-A a√ß√£o pode armazenar um ponteiro gen√©rico "param" que ser√° utilizado na chamada da fun√ß√£o.
-Par√¢metros:
+A funÁ„o InsereAcaoObjeto() È respons·vel por inserir na linha de tempo de automaÁ„o do objeto uma aÁ„o a ser executada.
+A aÁ„o È composta por uma funÁ„o "acao" que ser· executada quando a linha de tempo atingir o par‚metro "tempo" e ser· repetida a cada "repeticao" segundos.
+A aÁ„o pode armazenar um ponteiro genÈrico "param" que ser· utilizado na chamada da funÁ„o.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
-tempo (entrada, passagem por valor): tempo (em segundos) da primeira chamada da fun√ß√£o.
-repeticao (entrada, passagem por valor): tempo (em segundos) entre a chamada anterior e a pr√≥xima. O valor -1 indica que a fun√ß√£o n√£o ser√° repetida.
-param (entrada, passagem por refer√™ncia): ponteiro gen√©rico para um valor que ser√° utilizado na chamada da fun√ß√£o.
+tempo (entrada, passagem por valor): tempo (em segundos) da primeira chamada da funÁ„o.
+repeticao (entrada, passagem por valor): tempo (em segundos) entre a chamada anterior e a prÛxima. O valor -1 indica que a funÁ„o n„o ser· repetida.
+param (entrada, passagem por referÍncia): ponteiro genÈrico para um valor que ser· utilizado na chamada da funÁ„o.
 ********************************/
 void InsereAcaoObjeto(int idObjeto, double tempo, double repeticao, PIGFuncaoSimples acao, void *param){
     CPIGGerenciadorSprites::GetObjeto(idObjeto)->InsereAcao(tempo,repeticao,acao,param);
 }
 
 /********************************
-A fun√ß√£o LimpaAcoesObjeto() √© respons√°vel por remover as a√ß√µes restantes associadas ao objeto.
-Par√¢metros:
+A funÁ„o LimpaAcoesObjeto() È respons·vel por remover as aÁıes restantes associadas ao objeto.
+Par‚metros:
 idObjeto (entrada, passagem por valor): identificador do objeto.
 ********************************/
 void LimpaAcoesObjeto(int idObjeto){
@@ -2866,90 +2866,90 @@ void LimpaAcoesObjeto(int idObjeto){
 
 
 /********************************
-Se√ß√£o de gerador de part√≠culas
+SeÁ„o de gerador de partÌculas
 ********************************/
 
 /********************************
-A fun√ß√£o CriaGeradorParticulas() cria um novo gerador de part√≠culas (GDP). As part√≠culas em si precisam ser criadas
-posteriormente atrav√©s da fun√ß√£o CriaParticula(), passando o identificador do GDP como par√¢metro.
-Par√¢metros:
-maxParticulas (entrada, passagem por valor): informa o maior n√∫mero de part√≠culas que o gerador ter√° simultaneamente. O maior valor aceito √© PIG_MAX_PARTICULAS part√≠culas.
-nomeArquivo (entrada, passagem por refer√™ncia): indica o caminho relativo ou absoluto do arquivo de imagem,
-que ser√° utilizado para cada part√≠cula do GDP.
-audioCriacao (entrada, passagem por valor n√£o-obrigat√≥rio): indica qual audio previamente criado deve ser tocado quando uma part√≠cula for efetivamente criada.
-audioEncerramento (entrada, passagem por valor n√£o-obrigat√≥rio): indica qual audio previamente criado deve ser tocado quando uma part√≠cula for destruida por acabar o tempo de vida ou por sair da √°rea de ativa√ß√£o.
-retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou n√£o ao ler o arquivo em quest√£o. O valor padr√£o √© 1, indicando que o fundo deve ser retirado.
-corFundo (entrada, passagem por refer√™ncia n√£o-obrigat√≥rio): indica se h√° uma cor espec√≠fica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o par√¢metro retiraFundo seja diferente de 0, o pixel (0,0) da imagem ser√° considerado como cor de fundo.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica qual janela vai receber o GDP.
+A funÁ„o CriaGeradorParticulas() cria um novo gerador de partÌculas (GDP). As partÌculas em si precisam ser criadas
+posteriormente atravÈs da funÁ„o CriaParticula(), passando o identificador do GDP como par‚metro.
+Par‚metros:
+maxParticulas (entrada, passagem por valor): informa o maior n˙mero de partÌculas que o gerador ter· simultaneamente. O maior valor aceito È PIG_MAX_PARTICULAS partÌculas.
+nomeArquivo (entrada, passagem por referÍncia): indica o caminho relativo ou absoluto do arquivo de imagem,
+que ser· utilizado para cada partÌcula do GDP.
+audioCriacao (entrada, passagem por valor n„o-obrigatÛrio): indica qual audio previamente criado deve ser tocado quando uma partÌcula for efetivamente criada.
+audioEncerramento (entrada, passagem por valor n„o-obrigatÛrio): indica qual audio previamente criado deve ser tocado quando uma partÌcula for destruida por acabar o tempo de vida ou por sair da ·rea de ativaÁ„o.
+retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou n„o ao ler o arquivo em quest„o. O valor padr„o È 1, indicando que o fundo deve ser retirado.
+corFundo (entrada, passagem por referÍncia n„o-obrigatÛrio): indica se h· uma cor especÌfica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o par‚metro retiraFundo seja diferente de 0, o pixel (0,0) da imagem ser· considerado como cor de fundo.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica qual janela vai receber o GDP.
 ********************************/
 int CriaGeradorParticulas(int maxParticulas, char* nomeArquivo, int audioCriacao=-1, int audioEncerramento=-1, int retiraFundo=1, PIGCor *corFundo=NULL, int idJanela=0){
     return CPIGGerenciadorGDP::CriaGeradorParticulas(maxParticulas,nomeArquivo,audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela);
 }
 
 /********************************
-A fun√ß√£o CriaGeradorParticulasPorAnimacao() cria um novo gerador de part√≠culas (GDP). As part√≠culas em si precisam ser criadas
-posteriormente atrav√©s da fun√ß√£o CriaParticula(), passando o identificador do GDP como par√¢metro. As part√≠culas ser√£o semelhantes a uma anima√ß√£o j√° criada anteriormente
-que √© indicada pelo par√¢metro idAnima√ß√£o.
-Par√¢metros:
-maxParticulas (entrada, passagem por valor): informa o maior n√∫mero de part√≠culas que o gerador ter√° simultaneamente. O maior valor aceito √© PIG_MAX_PARTICULAS part√≠culas.
-idAnimacao (entrada, passagem por refer√™ncia): identificador da anima√ß√£o (j√° criada anteriormente) que ser√° utilizada
-para cada part√≠cula do GDP.
-audioCriacao (entrada, passagem por valor n√£o-obrigat√≥rio): indica qual audio previamente criado deve ser tocado quando uma part√≠cula for efetivamente criada.
-audioEncerramento (entrada, passagem por valor n√£o-obrigat√≥rio): indica qual audio previamente criado deve ser tocado quando uma part√≠cula for destruida por acabar o tempo de vida ou por sair da √°rea de ativa√ß√£o.
-retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou n√£o ao ler o arquivo em quest√£o. O valor padr√£o √© 1, indicando que o fundo deve ser retirado.
-corFundo (entrada, passagem por refer√™ncia n√£o-obrigat√≥rio): indica se h√° uma cor espec√≠fica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o par√¢metro retiraFundo seja diferente de 0, o pixel (0,0) da imagem ser√° considerado como cor de fundo.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica qual janela vai receber o GDP.
+A funÁ„o CriaGeradorParticulasPorAnimacao() cria um novo gerador de partÌculas (GDP). As partÌculas em si precisam ser criadas
+posteriormente atravÈs da funÁ„o CriaParticula(), passando o identificador do GDP como par‚metro. As partÌculas ser„o semelhantes a uma animaÁ„o j· criada anteriormente
+que È indicada pelo par‚metro idAnimaÁ„o.
+Par‚metros:
+maxParticulas (entrada, passagem por valor): informa o maior n˙mero de partÌculas que o gerador ter· simultaneamente. O maior valor aceito È PIG_MAX_PARTICULAS partÌculas.
+idAnimacao (entrada, passagem por referÍncia): identificador da animaÁ„o (j· criada anteriormente) que ser· utilizada
+para cada partÌcula do GDP.
+audioCriacao (entrada, passagem por valor n„o-obrigatÛrio): indica qual audio previamente criado deve ser tocado quando uma partÌcula for efetivamente criada.
+audioEncerramento (entrada, passagem por valor n„o-obrigatÛrio): indica qual audio previamente criado deve ser tocado quando uma partÌcula for destruida por acabar o tempo de vida ou por sair da ·rea de ativaÁ„o.
+retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou n„o ao ler o arquivo em quest„o. O valor padr„o È 1, indicando que o fundo deve ser retirado.
+corFundo (entrada, passagem por referÍncia n„o-obrigatÛrio): indica se h· uma cor especÌfica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o par‚metro retiraFundo seja diferente de 0, o pixel (0,0) da imagem ser· considerado como cor de fundo.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica qual janela vai receber o GDP.
 ********************************/
 int CriaGeradorParticulasPorAnimacao(int maxParticulas, int idAnimacao, int audioCriacao=-1, int audioEncerramento=-1, int retiraFundo=1, PIGCor *corFundo=NULL, int idJanela=0){
     return CPIGGerenciadorGDP::CriaGeradorParticulas(maxParticulas,CPIGGerenciadorSprites::GetAnimacao(idAnimacao),audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela);
 }
 
 /********************************
-A fun√ß√£o CriaGeradorParticulasPorObjeto() cria um novo gerador de part√≠culas (GDP). As part√≠culas em si precisam ser criadas
-posteriormente atrav√©s da fun√ß√£o CriaParticula(), passando o identificador do GDP como par√¢metro. As part√≠culas ser√£o semelhantes a um objeto j√° criado anteriormente
-que √© indicado pelo par√¢metro idObjeto.
-Par√¢metros:
-maxParticulas (entrada, passagem por valor): informa o maior n√∫mero de part√≠culas que o gerador ter√° simultaneamente. O maior valor aceito √© PIG_MAX_PARTICULAS part√≠culas.
-idObjeto (entrada, passagem por refer√™ncia): identificador do objeto (j√° criado anteriormente) que ser√° utilizado
-para cada part√≠cula do GDP.
-audioCriacao (entrada, passagem por valor n√£o-obrigat√≥rio): indica qual audio previamente criado deve ser tocado quando uma part√≠cula for efetivamente criada.
-audioEncerramento (entrada, passagem por valor n√£o-obrigat√≥rio): indica qual audio previamente criado deve ser tocado quando uma part√≠cula for destruida por acabar o tempo de vida ou por sair da √°rea de ativa√ß√£o.
-retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou n√£o ao ler o arquivo em quest√£o. O valor padr√£o √© 1, indicando que o fundo deve ser retirado.
-corFundo (entrada, passagem por refer√™ncia n√£o-obrigat√≥rio): indica se h√° uma cor espec√≠fica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o par√¢metro retiraFundo seja diferente de 0, o pixel (0,0) da imagem ser√° considerado como cor de fundo.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica qual janela vai receber o GDP.
+A funÁ„o CriaGeradorParticulasPorObjeto() cria um novo gerador de partÌculas (GDP). As partÌculas em si precisam ser criadas
+posteriormente atravÈs da funÁ„o CriaParticula(), passando o identificador do GDP como par‚metro. As partÌculas ser„o semelhantes a um objeto j· criado anteriormente
+que È indicado pelo par‚metro idObjeto.
+Par‚metros:
+maxParticulas (entrada, passagem por valor): informa o maior n˙mero de partÌculas que o gerador ter· simultaneamente. O maior valor aceito È PIG_MAX_PARTICULAS partÌculas.
+idObjeto (entrada, passagem por referÍncia): identificador do objeto (j· criado anteriormente) que ser· utilizado
+para cada partÌcula do GDP.
+audioCriacao (entrada, passagem por valor n„o-obrigatÛrio): indica qual audio previamente criado deve ser tocado quando uma partÌcula for efetivamente criada.
+audioEncerramento (entrada, passagem por valor n„o-obrigatÛrio): indica qual audio previamente criado deve ser tocado quando uma partÌcula for destruida por acabar o tempo de vida ou por sair da ·rea de ativaÁ„o.
+retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou n„o ao ler o arquivo em quest„o. O valor padr„o È 1, indicando que o fundo deve ser retirado.
+corFundo (entrada, passagem por referÍncia n„o-obrigatÛrio): indica se h· uma cor especÌfica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o par‚metro retiraFundo seja diferente de 0, o pixel (0,0) da imagem ser· considerado como cor de fundo.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica qual janela vai receber o GDP.
 ********************************/
 int CriaGeradorParticulasPorObjeto(int maxParticulas, int idObjeto, int audioCriacao=-1, int audioEncerramento=-1, int retiraFundo=1, PIGCor *corFundo=NULL, int idJanela=0){
     return CPIGGerenciadorGDP::CriaGeradorParticulas(maxParticulas,CPIGGerenciadorSprites::GetObjeto(idObjeto),audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela);
 }
 
 /********************************
-A fun√ß√£o DestroiGeradorParticulas() encerra um gerador de part√≠culas (GDP). Todas as part√≠culas relacionadas a ele tamb√©m s√£o finalizadas
+A funÁ„o DestroiGeradorParticulas() encerra um gerador de partÌculas (GDP). Todas as partÌculas relacionadas a ele tambÈm s„o finalizadas
 neste momento.
-Par√¢metros:
-idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da fun√ß√£o CriaGeradorParticulas().
+Par‚metros:
+idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da funÁ„o CriaGeradorParticulas().
 ********************************/
 void DestroiGeradorParticulas(int idGerador){
     CPIGGerenciadorGDP::DestroiGeradorParticulas(idGerador);
 }
 
 /********************************
-A fun√ß√£o MoveGeradorParticulas() reposiciona um gerador de part√≠culas (GDP). Na pr√°tica, isto significa que as novas part√≠culas que
-forem criadas posteriormente ter√£o esse ponto de origem.
-Par√¢metros:
-idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da fun√ß√£o CriaGeradorParticulas().
-posicaoX (entrada, passagem por valor): informa a nova posi√ß√£o X do GDP, em rela√ß√£o ao sistema de coordenadas do jogo.
-posicaoY (entrada, passagem por valor): informa a nova posi√ß√£o Y do GDP, em rela√ß√£o ao sistema de coordenadas do jogo.
+A funÁ„o MoveGeradorParticulas() reposiciona um gerador de partÌculas (GDP). Na pr·tica, isto significa que as novas partÌculas que
+forem criadas posteriormente ter„o esse ponto de origem.
+Par‚metros:
+idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da funÁ„o CriaGeradorParticulas().
+posicaoX (entrada, passagem por valor): informa a nova posiÁ„o X do GDP, em relaÁ„o ao sistema de coordenadas do jogo.
+posicaoY (entrada, passagem por valor): informa a nova posiÁ„o Y do GDP, em relaÁ„o ao sistema de coordenadas do jogo.
 ********************************/
 void MoveGeradorParticulas(int idGerador, int posicaoX, int posicaoY){
     CPIGGerenciadorGDP::GetGerador(idGerador)->Move(posicaoX,posicaoY);
 }
 
 /********************************
-A fun√ß√£o DeslocaGeradorParticulas() √© respons√°vel por deslocar uma determinado gerador de part√≠culas (GDP) em rela√ß√£o √† sua posi√ß√£o atual.
-Par√¢metros:
+A funÁ„o DeslocaGeradorParticulas() È respons·vel por deslocar uma determinado gerador de partÌculas (GDP) em relaÁ„o ‡ sua posiÁ„o atual.
+Par‚metros:
 idGerador (entrada, passagem por valor): identificador do GDP a ser deslocada.
-deltaX (entrada, passagem por valor): valor a ser somado ou subtra√≠do na componente X da posi√ß√£o do GDP.
-deltaY (entrada, passagem por valor): valor a ser somado ou subtra√≠do na componente Y da posi√ß√£o do GDP.
+deltaX (entrada, passagem por valor): valor a ser somado ou subtraÌdo na componente X da posiÁ„o do GDP.
+deltaY (entrada, passagem por valor): valor a ser somado ou subtraÌdo na componente Y da posiÁ„o do GDP.
 ********************************/
 void DeslocaGeradorParticulas(int idGerador, int deltaX, int deltaY){
     CPIGGerenciadorGDP::GetGerador(idGerador)->Desloca(deltaX,deltaY);
@@ -2957,39 +2957,39 @@ void DeslocaGeradorParticulas(int idGerador, int deltaX, int deltaY){
 
 /*
 /********************************
-A fun√ß√£o MudaDirecaoParticulas() modifica a dire√ß√£o na qual as part√≠culas se movimentar√£o ap√≥s serem criadas.
-Somente as part√≠culas criadas posteriormente seguir√£o a dire√ß√£o especificada.
-Par√¢metros:
-idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da fun√ß√£o CriaGeradorParticulas().
-valorX (entrada, passagem por valor): informa a componente X da dire√ß√£o a ser definida para as part√≠culas.
-valorY (entrada, passagem por valor): informa a componente Y da dire√ß√£o a ser definida para as part√≠culas.
+A funÁ„o MudaDirecaoParticulas() modifica a direÁ„o na qual as partÌculas se movimentar„o apÛs serem criadas.
+Somente as partÌculas criadas posteriormente seguir„o a direÁ„o especificada.
+Par‚metros:
+idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da funÁ„o CriaGeradorParticulas().
+valorX (entrada, passagem por valor): informa a componente X da direÁ„o a ser definida para as partÌculas.
+valorY (entrada, passagem por valor): informa a componente Y da direÁ„o a ser definida para as partÌculas.
 ********************************/
 //void MudaDirecaoParticulas(int idGerador,int valorX,int valorY){
     //CPIGGerenciadorParticulas::GetGerador(idGerador)->MudaDirecao(valorX,valorY);
 //}
 
 /********************************
-A fun√ß√£o InsereTransicaoParticulas() √© respons√°vel por criar e inserir uma nova transi√ß√£o ao final de sequ√™ncia de transi√ß√µes das part√≠culas do gerador.
-Par√¢metros:
+A funÁ„o InsereTransicaoParticulas() È respons·vel por criar e inserir uma nova transiÁ„o ao final de sequÍncia de transiÁıes das partÌculas do gerador.
+Par‚metros:
 idGerador (entrada, passagem por valor): identificador do gerador.
-tempo (entrada, passagem por valor): duracao (em segundos) da transi√ß√£o das part√≠culas.
-deltaX (entrada, passagem por valor): diferen√ßa da posi√ß√£o no eixo X em rela√ß√£o √† posi√ß√£o das part√≠culas no in√≠cio da transi√ß√£o.
-deltaY (entrada, passagem por valor): diferen√ßa da posi√ß√£o no eixo Y em rela√ß√£o √† posi√ß√£o das part√≠culas no in√≠cio da transi√ß√£o.
-deltaAltura (entrada, passagem por valor): diferen√ßa da altura das part√≠culas em rela√ß√£o ao in√≠cio da transi√ß√£o.
-deltaLargura (entrada, passagem por valor): diferen√ßa da largura das part√≠culas em rela√ß√£o ao in√≠cio da transi√ß√£o.
-deltaAngulo (entrada, passagem por valor): diferen√ßa de √¢ngulo (em graus) das part√≠culas em rela√ß√£o ao in√≠cio da transi√ß√£o.
-corFinal (entrada, passagem por valor): colora√ß√£o das part√≠culas ao final da transi√ß√£o.
-deltaOpacidade (entrada, passagem por valor): diferen√ßa do n√≠vel de opacidade das part√≠culas em rela√ß√£o ao in√≠cio da transi√ß√£o.
+tempo (entrada, passagem por valor): duracao (em segundos) da transiÁ„o das partÌculas.
+deltaX (entrada, passagem por valor): diferenÁa da posiÁ„o no eixo X em relaÁ„o ‡ posiÁ„o das partÌculas no inÌcio da transiÁ„o.
+deltaY (entrada, passagem por valor): diferenÁa da posiÁ„o no eixo Y em relaÁ„o ‡ posiÁ„o das partÌculas no inÌcio da transiÁ„o.
+deltaAltura (entrada, passagem por valor): diferenÁa da altura das partÌculas em relaÁ„o ao inÌcio da transiÁ„o.
+deltaLargura (entrada, passagem por valor): diferenÁa da largura das partÌculas em relaÁ„o ao inÌcio da transiÁ„o.
+deltaAngulo (entrada, passagem por valor): diferenÁa de ‚ngulo (em graus) das partÌculas em relaÁ„o ao inÌcio da transiÁ„o.
+corFinal (entrada, passagem por valor): coloraÁ„o das partÌculas ao final da transiÁ„o.
+deltaOpacidade (entrada, passagem por valor): diferenÁa do nÌvel de opacidade das partÌculas em relaÁ„o ao inÌcio da transiÁ„o.
 ********************************/
 void InsereTransicaoParticulas(int idGerador, double tempo, int deltaX, int deltaY, int deltaAlt, int deltaLarg, double deltaAng, PIGCor corFinal, int deltaOpacidade){
     CPIGGerenciadorGDP::GetGerador(idGerador)->InsereTransicao(tempo,{deltaX,deltaY,deltaAlt,deltaLarg,deltaAng,corFinal,deltaOpacidade});
 }
 
 /********************************
-A fun√ß√£o DefineTipoTransicaoParticulas() √© respons√°vel por determinar como a sequ√™ncia de transi√ß√µes das part√≠culas do gerador ser√° executada.
-√â poss√≠vel faz√™-la uma √∫nica vez (PIG_TRANSICAO_NORMAL), em loop (PIG_TRANSICAO_LOOP) ou indo at√© o final da sequ√™ncia e retornando, em vai-v√©m (PIG_TRANSICAO_VAIVEM).
-A fun√ß√£o deve ser chamada a cada frame, para ter resultados mais precisos.
-Par√¢metros:
+A funÁ„o DefineTipoTransicaoParticulas() È respons·vel por determinar como a sequÍncia de transiÁıes das partÌculas do gerador ser· executada.
+… possÌvel fazÍ-la uma ˙nica vez (PIG_TRANSICAO_NORMAL), em loop (PIG_TRANSICAO_LOOP) ou indo atÈ o final da sequÍncia e retornando, em vai-vÈm (PIG_TRANSICAO_VAIVEM).
+A funÁ„o deve ser chamada a cada frame, para ter resultados mais precisos.
+Par‚metros:
 idGerador (entrada, passagem por valor): identificador do gerador.
 ********************************/
 void DefineTipoTransicaoParticulas(int idGerador, PIGTipoTransicao valor){
@@ -2997,57 +2997,57 @@ void DefineTipoTransicaoParticulas(int idGerador, PIGTipoTransicao valor){
 }
 
 /********************************
-A fun√ß√£o LimpaTransicoesParticulas() √© respons√°vel por remover a sequ√™ncia de transi√ß√µes das part√≠culas do gerador.
-Par√¢metros:
-idGerador (entrada, passagem por valor): identificador do gerador de part√≠culas.
+A funÁ„o LimpaTransicoesParticulas() È respons·vel por remover a sequÍncia de transiÁıes das partÌculas do gerador.
+Par‚metros:
+idGerador (entrada, passagem por valor): identificador do gerador de partÌculas.
 ********************************/
 void LimpaTransicoesParticulas(int idGerador){
     CPIGGerenciadorGDP::GetGerador(idGerador)->LimpaTransicoes();
 }
 
 /********************************
-A fun√ß√£o InsereTransicaoGDP() √© respons√°vel por criar e inserir uma nova transi√ß√£o ao final de sequ√™ncia de transi√ß√µes do gerador em si.
-Essa transi√ß√£o modifica as caracter√≠sticas do gerador, que podem se refletir tamb√©m nas caracter√≠sticas das part√≠culas que ser√£o posteriormente criadas usando o pr√≥prio gerador como modelo.
-Par√¢metros:
+A funÁ„o InsereTransicaoGDP() È respons·vel por criar e inserir uma nova transiÁ„o ao final de sequÍncia de transiÁıes do gerador em si.
+Essa transiÁ„o modifica as caracterÌsticas do gerador, que podem se refletir tambÈm nas caracterÌsticas das partÌculas que ser„o posteriormente criadas usando o prÛprio gerador como modelo.
+Par‚metros:
 idGerador (entrada, passagem por valor): identificador do gerador.
-tempo (entrada, passagem por valor): duracao (em segundos) da transi√ß√£o do gerador.
-deltaX (entrada, passagem por valor): diferen√ßa da posi√ß√£o no eixo X em rela√ß√£o √† posi√ß√£o do gerador no in√≠cio da transi√ß√£o.
-deltaY (entrada, passagem por valor): diferen√ßa da posi√ß√£o no eixo Y em rela√ß√£o √† posi√ß√£o do gerador no in√≠cio da transi√ß√£o.
-deltaAltura (entrada, passagem por valor): diferen√ßa da altura que o modelo ter√° em rela√ß√£o ao in√≠cio da transi√ß√£o.
-deltaLargura (entrada, passagem por valor): diferen√ßa da largura que o modelo ter√° em rela√ß√£o ao in√≠cio da transi√ß√£o.
-deltaAngulo (entrada, passagem por valor): diferen√ßa de √¢ngulo (em graus) que o modelo ter√° em rela√ß√£o ao in√≠cio da transi√ß√£o.
-corFinal (entrada, passagem por valor): colora√ß√£o que o modelo ter√° ao final da transi√ß√£o.
-deltaOpacidade (entrada, passagem por valor): diferen√ßa do n√≠vel de opacidade que o modelo ter√° em rela√ß√£o ao in√≠cio da transi√ß√£o.
+tempo (entrada, passagem por valor): duracao (em segundos) da transiÁ„o do gerador.
+deltaX (entrada, passagem por valor): diferenÁa da posiÁ„o no eixo X em relaÁ„o ‡ posiÁ„o do gerador no inÌcio da transiÁ„o.
+deltaY (entrada, passagem por valor): diferenÁa da posiÁ„o no eixo Y em relaÁ„o ‡ posiÁ„o do gerador no inÌcio da transiÁ„o.
+deltaAltura (entrada, passagem por valor): diferenÁa da altura que o modelo ter· em relaÁ„o ao inÌcio da transiÁ„o.
+deltaLargura (entrada, passagem por valor): diferenÁa da largura que o modelo ter· em relaÁ„o ao inÌcio da transiÁ„o.
+deltaAngulo (entrada, passagem por valor): diferenÁa de ‚ngulo (em graus) que o modelo ter· em relaÁ„o ao inÌcio da transiÁ„o.
+corFinal (entrada, passagem por valor): coloraÁ„o que o modelo ter· ao final da transiÁ„o.
+deltaOpacidade (entrada, passagem por valor): diferenÁa do nÌvel de opacidade que o modelo ter· em relaÁ„o ao inÌcio da transiÁ„o.
 ********************************/
 void InsereTransicaoGDP(int idGerador, double tempo, int deltaX, int deltaY, int deltaAlt, int deltaLarg, double deltaAng, PIGCor corFinal, int deltaOpacidade){
     CPIGGerenciadorGDP::GetGerador(idGerador)->InsereTransicaoGDP(tempo,{deltaX,deltaY,deltaAlt,deltaLarg,deltaAng,corFinal,deltaOpacidade});
 }
 
 /********************************
-A fun√ß√£o LeArquivoTransicaoGDP() √© respons√°vel por ler, criar e inserir as transi√ß√µes para um gerador, provenientes de um arquivo texto.
-Cada linha do arquivo texto corresponde a uma transi√ß√£o (em ordem) e deve possuir 11 valores:
-1) um double representando a duracao (em segundos) da transi√ß√£o.
-2) um inteiro representando a diferen√ßa da posi√ß√£o no eixo X em rela√ß√£o √† posi√ß√£o do gerador no in√≠cio da transi√ß√£o.
-3) um inteiro representando a diferen√ßa da posi√ß√£o no eixo Y em rela√ß√£o √† posi√ß√£o do gerador no in√≠cio da transi√ß√£o.
-4) um inteiro representando a diferen√ßa da altura do modelo em rela√ß√£o ao in√≠cio da transi√ß√£o.
-5) um inteiro representando a diferen√ßa da largura do modelo em rela√ß√£o ao in√≠cio da transi√ß√£o.
-6) um double representando a diferen√ßa de √¢ngulo (em graus) do modelo em rela√ß√£o ao in√≠cio da transi√ß√£o.
-7) um inteiro representando a componente R (vermelho) da colora√ß√£o do modelo ao final da transi√ß√£o.
-8) um inteiro representando a componente G (verde) da colora√ß√£o do modelo ao final da transi√ß√£o.
-9) um inteiro representando a componente B (azul) da colora√ß√£o do modelo ao final da transi√ß√£o.
-10) um inteiro representando a componente A (canal alfa) da colora√ß√£o do modelo ao final da transi√ß√£o.
-11) um inteiro representando a diferen√ßa do n√≠vel de opacidade do modelo em rela√ß√£o ao in√≠cio da transi√ß√£o.
-Par√¢metros:
+A funÁ„o LeArquivoTransicaoGDP() È respons·vel por ler, criar e inserir as transiÁıes para um gerador, provenientes de um arquivo texto.
+Cada linha do arquivo texto corresponde a uma transiÁ„o (em ordem) e deve possuir 11 valores:
+1) um double representando a duracao (em segundos) da transiÁ„o.
+2) um inteiro representando a diferenÁa da posiÁ„o no eixo X em relaÁ„o ‡ posiÁ„o do gerador no inÌcio da transiÁ„o.
+3) um inteiro representando a diferenÁa da posiÁ„o no eixo Y em relaÁ„o ‡ posiÁ„o do gerador no inÌcio da transiÁ„o.
+4) um inteiro representando a diferenÁa da altura do modelo em relaÁ„o ao inÌcio da transiÁ„o.
+5) um inteiro representando a diferenÁa da largura do modelo em relaÁ„o ao inÌcio da transiÁ„o.
+6) um double representando a diferenÁa de ‚ngulo (em graus) do modelo em relaÁ„o ao inÌcio da transiÁ„o.
+7) um inteiro representando a componente R (vermelho) da coloraÁ„o do modelo ao final da transiÁ„o.
+8) um inteiro representando a componente G (verde) da coloraÁ„o do modelo ao final da transiÁ„o.
+9) um inteiro representando a componente B (azul) da coloraÁ„o do modelo ao final da transiÁ„o.
+10) um inteiro representando a componente A (canal alfa) da coloraÁ„o do modelo ao final da transiÁ„o.
+11) um inteiro representando a diferenÁa do nÌvel de opacidade do modelo em relaÁ„o ao inÌcio da transiÁ„o.
+Par‚metros:
 idGerador (entrada, passagem por valor): identificador do gerador.
-nomeArq (entrada, passagem por refer√™ncia): nome com extens√£o do arquivo texto contendo as transi√ß√µes.
+nomeArq (entrada, passagem por referÍncia): nome com extens„o do arquivo texto contendo as transiÁıes.
 ********************************/
 void LeTransicoesGDP(int idGerador, string nomeArq){
     CPIGGerenciadorGDP::GetGerador(idGerador)->LeTransicoesGDP(nomeArq);
 }
 
 /********************************
-A fun√ß√£o IniciaAutomacaoGDP() √© respons√°vel por iniciar as transi√ß√µes j√° inseridas no gerador, de acordo como o tipo de transi√ß√£o informada.
-Par√¢metros:
+A funÁ„o IniciaAutomacaoGDP() È respons·vel por iniciar as transiÁıes j· inseridas no gerador, de acordo como o tipo de transiÁ„o informada.
+Par‚metros:
 idGerador (entrada, passagem por valor): identificador do gerador.
 ********************************/
 void IniciaAutomacaoGDP(int idGerador){
@@ -3055,29 +3055,29 @@ void IniciaAutomacaoGDP(int idGerador){
 }
 
 /********************************
-A fun√ß√£o LimpaTransicoesGDP() √© respons√°vel por remover a sequ√™ncia de transi√ß√µes do gerador de part√≠culas em si.
-Par√¢metros:
-idGerador (entrada, passagem por valor): identificador do gerador de part√≠culas.
+A funÁ„o LimpaTransicoesGDP() È respons·vel por remover a sequÍncia de transiÁıes do gerador de partÌculas em si.
+Par‚metros:
+idGerador (entrada, passagem por valor): identificador do gerador de partÌculas.
 ********************************/
 void LimpaTransicoesGDP(int idGerador){
     CPIGGerenciadorGDP::GetGerador(idGerador)->LimpaTransicoesGDP();
 }
 
 /********************************
-A fun√ß√£o ExecutandoTransicaoGDP() retorna a informa√ß√£o sobre a execu√ß√£o (neste momento) de transi√ß√µes do gerador.
-Par√¢metros:
+A funÁ„o ExecutandoTransicaoGDP() retorna a informaÁ„o sobre a execuÁ„o (neste momento) de transiÁıes do gerador.
+Par‚metros:
 idGerador (entrada, passagem por valor): identificador do gerador.
 Retorno:
-inteiro que indica se o gerador est√° executando alguma transi√ß√£o no momento (valor diferente de 0) ou n√£o (valor igual a 0).
+inteiro que indica se o gerador est· executando alguma transiÁ„o no momento (valor diferente de 0) ou n„o (valor igual a 0).
 ********************************/
 bool ExecutandoTransicaoGDP(int idGerador){
     return CPIGGerenciadorGDP::GetGerador(idGerador)->ExecutandoTransicaoGDP();
 }
 
 /********************************
-A fun√ß√£o TrataAutomacaoGDP() √© respons√°vel por calcular o estado da transi√ß√£o corrente do gerador e aplicar essas modifica√ß√£o a ela.
-A fun√ß√£o deve ser chamada a cada frame, para ter resultados mais precisos.
-Par√¢metros:
+A funÁ„o TrataAutomacaoGDP() È respons·vel por calcular o estado da transiÁ„o corrente do gerador e aplicar essas modificaÁ„o a ela.
+A funÁ„o deve ser chamada a cada frame, para ter resultados mais precisos.
+Par‚metros:
 idGerador (entrada, passagem por valor): identificador do gerador.
 ********************************/
 void TrataAutomacaoGDP(int idGerador){
@@ -3085,8 +3085,8 @@ void TrataAutomacaoGDP(int idGerador){
 }
 
 /********************************
-A fun√ß√£o PausaAutomacaoGDP() √© respons√°vel por pausar as transi√ß√µes e a√ß√µes associadas a um gerador.
-Par√¢metros:
+A funÁ„o PausaAutomacaoGDP() È respons·vel por pausar as transiÁıes e aÁıes associadas a um gerador.
+Par‚metros:
 idGerador (entrada, passagem por valor): identificador do gerador.
 ********************************/
 void PausaAutomacaoGDP(int idGerador){
@@ -3094,8 +3094,8 @@ void PausaAutomacaoGDP(int idGerador){
 }
 
 /********************************
-A fun√ß√£o DespausaAutomacaoGDP() √© respons√°vel por despausar as transi√ß√µes e a√ß√µes associadas a um gerador.
-Par√¢metros:
+A funÁ„o DespausaAutomacaoGDP() È respons·vel por despausar as transiÁıes e aÁıes associadas a um gerador.
+Par‚metros:
 idGerador (entrada, passagem por valor): identificador do gerador.
 ********************************/
 void DespausaAutomacaoGDP(int idGerador){
@@ -3103,22 +3103,22 @@ void DespausaAutomacaoGDP(int idGerador){
 }
 
 /********************************
-A fun√ß√£o InsereAcaoGDP() √© respons√°vel por inserir na linha de tempo de automa√ß√£o do gerador uma a√ß√£o a ser executada.
-A a√ß√£o √© composta por uma fun√ß√£o "acao" que ser√° executada quando a linha de tempo atingir o par√¢metro "tempo" e ser√° repetida a cada "repeticao" segundos.
-A a√ß√£o pode armazenar um ponteiro gen√©rico "param" que ser√° utilizado na chamada da fun√ß√£o.
-Par√¢metros:
+A funÁ„o InsereAcaoGDP() È respons·vel por inserir na linha de tempo de automaÁ„o do gerador uma aÁ„o a ser executada.
+A aÁ„o È composta por uma funÁ„o "acao" que ser· executada quando a linha de tempo atingir o par‚metro "tempo" e ser· repetida a cada "repeticao" segundos.
+A aÁ„o pode armazenar um ponteiro genÈrico "param" que ser· utilizado na chamada da funÁ„o.
+Par‚metros:
 idGerador (entrada, passagem por valor): identificador do gerador.
-tempo (entrada, passagem por valor): tempo (em segundos) da primeira chamada da fun√ß√£o.
-repeticao (entrada, passagem por valor): tempo (em segundos) entre a chamada anterior e a pr√≥xima. O valor -1 indica que a fun√ß√£o n√£o ser√° repetida.
-param (entrada, passagem por refer√™ncia): ponteiro gen√©rico para um valor que ser√° utilizado na chamada da fun√ß√£o.
+tempo (entrada, passagem por valor): tempo (em segundos) da primeira chamada da funÁ„o.
+repeticao (entrada, passagem por valor): tempo (em segundos) entre a chamada anterior e a prÛxima. O valor -1 indica que a funÁ„o n„o ser· repetida.
+param (entrada, passagem por referÍncia): ponteiro genÈrico para um valor que ser· utilizado na chamada da funÁ„o.
 ********************************/
 void InsereAcaoGDP(int idGerador, double tempo, double repeticao, PIGFuncaoSimples acao, void *param){
     CPIGGerenciadorGDP::GetGerador(idGerador)->InsereAcaoGDP(tempo,repeticao,acao,param);
 }
 
 /********************************
-A fun√ß√£o LimpaAcoesGDP() √© respons√°vel por remover as a√ß√µes restantes associadas ao gerador.
-Par√¢metros:
+A funÁ„o LimpaAcoesGDP() È respons·vel por remover as aÁıes restantes associadas ao gerador.
+Par‚metros:
 idGerador (entrada, passagem por valor): identificador do gerador.
 ********************************/
 void LimpaAcoesGDP(int idGerador){
@@ -3126,10 +3126,10 @@ void LimpaAcoesGDP(int idGerador){
 }
 
 /********************************
-A fun√ß√£o DefineTipoTransicaoGDP() √© respons√°vel por determinar como a sequ√™ncia de transi√ß√µes do gerador de part√≠culas ser√° executada.
-√â poss√≠vel faz√™-la uma √∫nica vez (PIG_TRANSICAO_NORMAL), em loop (PIG_TRANSICAO_LOOP) ou indo at√© o final da sequ√™ncia e retornando, em vai-v√©m (PIG_TRANSICAO_VAIVEM).
-A fun√ß√£o deve ser chamada a cada frame, para ter resultados mais precisos.
-Par√¢metros:
+A funÁ„o DefineTipoTransicaoGDP() È respons·vel por determinar como a sequÍncia de transiÁıes do gerador de partÌculas ser· executada.
+… possÌvel fazÍ-la uma ˙nica vez (PIG_TRANSICAO_NORMAL), em loop (PIG_TRANSICAO_LOOP) ou indo atÈ o final da sequÍncia e retornando, em vai-vÈm (PIG_TRANSICAO_VAIVEM).
+A funÁ„o deve ser chamada a cada frame, para ter resultados mais precisos.
+Par‚metros:
 idGerador (entrada, passagem por valor): identificador do gerador.
 ********************************/
 void DefineTipoTransicaoGDP(int idGerador, PIGTipoTransicao tipo){
@@ -3137,143 +3137,143 @@ void DefineTipoTransicaoGDP(int idGerador, PIGTipoTransicao tipo){
 }
 
 /********************************
-A fun√ß√£o SetAnguloParticulas() modifica o √¢ngulo de desenho das part√≠culas ap√≥s serem criadas.
-Somente as part√≠culas criadas posteriormente ter√£o o √¢ngulo especificada.
-Par√¢metros:
-idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da fun√ß√£o CriaGeradorParticulas().
-angulo (entrada, passagem por valor): informa o angulo das part√≠culas.
+A funÁ„o SetAnguloParticulas() modifica o ‚ngulo de desenho das partÌculas apÛs serem criadas.
+Somente as partÌculas criadas posteriormente ter„o o ‚ngulo especificada.
+Par‚metros:
+idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da funÁ„o CriaGeradorParticulas().
+angulo (entrada, passagem por valor): informa o angulo das partÌculas.
 ********************************/
 void SetAnguloParticulas(int idGerador, double angulo){
     CPIGGerenciadorGDP::GetGerador(idGerador)->SetAngulo(angulo);
 }
 
 /********************************
-A fun√ß√£o MudaCorParticulas() √© respons√°vel por mesclar uma determinada cor com os pixels do arquivo de imagem da part√≠cula.
-Ap√≥s a modifica√ß√£o, todos os desenhos desta part√≠cula ser√£o mostrados j√° com a mesclagem definida.
-Para voltar ao padr√£o original de pixels, deve-se chamar a fun√ß√£o, passando a cor branca (255,255,255,255).
-Par√¢metros:
-idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da fun√ß√£o CriaGeradorParticulas().
-cor (entrada,passagem por valor): cor do sistema RGB utilizada para mesclagem com o arquivo de imagem da part√≠cula.
+A funÁ„o MudaCorParticulas() È respons·vel por mesclar uma determinada cor com os pixels do arquivo de imagem da partÌcula.
+ApÛs a modificaÁ„o, todos os desenhos desta partÌcula ser„o mostrados j· com a mesclagem definida.
+Para voltar ao padr„o original de pixels, deve-se chamar a funÁ„o, passando a cor branca (255,255,255,255).
+Par‚metros:
+idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da funÁ„o CriaGeradorParticulas().
+cor (entrada,passagem por valor): cor do sistema RGB utilizada para mesclagem com o arquivo de imagem da partÌcula.
 ********************************/
 void SetCorParticulas(int idGerador, PIGCor cor){
     CPIGGerenciadorGDP::GetGerador(idGerador)->SetColoracao(cor);
 }
 
 /********************************
-A fun√ß√£o SetOpacidadeParticulas() modifica a opacidade das part√≠culas ap√≥s serem criadas.
-Somente as part√≠culas criadas posteriormente ter√£o a opacidade especificada.
-Par√¢metros:
-idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da fun√ß√£o CriaGeradorParticulas().
-opacidade (entrada, passagem por valor): informa a opacidade das part√≠culas.
+A funÁ„o SetOpacidadeParticulas() modifica a opacidade das partÌculas apÛs serem criadas.
+Somente as partÌculas criadas posteriormente ter„o a opacidade especificada.
+Par‚metros:
+idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da funÁ„o CriaGeradorParticulas().
+opacidade (entrada, passagem por valor): informa a opacidade das partÌculas.
 ********************************/
 void SetOpacidadeParticulas(int idGerador, int opacidade){
     CPIGGerenciadorGDP::GetGerador(idGerador)->SetOpacidade(opacidade);
 }
 
 /********************************
-A fun√ß√£o SetDimensoesParticulas() modifica o tamanho das part√≠culas ap√≥s serem criadas.
-Somente as part√≠culas criadas posteriormente ter√£o o tamanho definido.
-Par√¢metros:
-idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da fun√ß√£o CriaGeradorParticulas().
-altura (entrada, passagem por valor): informa a altura da part√≠cula ao ser criada.
-largura (entrada, passagem por valor): informa a largura da part√≠cula ao ser criada.
+A funÁ„o SetDimensoesParticulas() modifica o tamanho das partÌculas apÛs serem criadas.
+Somente as partÌculas criadas posteriormente ter„o o tamanho definido.
+Par‚metros:
+idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da funÁ„o CriaGeradorParticulas().
+altura (entrada, passagem por valor): informa a altura da partÌcula ao ser criada.
+largura (entrada, passagem por valor): informa a largura da partÌcula ao ser criada.
 ********************************/
 void SetDimensoesParticulas(int idGerador, int altura, int largura){
     CPIGGerenciadorGDP::GetGerador(idGerador)->SetDimensoes(altura,largura);
 }
 
 /********************************
-A fun√ß√£o SetPivoAbsolutoParticulas() determina o ponto a ser considerado como pivo da part√≠cula.
-Somente as part√≠culas criadas posteriormente ter√£o o piv√¥ especificado.
-Par√¢metros:
-idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da fun√ß√£o CriaGeradorParticulas().
-posicaoX (entrada, passagem por valor): Valor da coordenada X do piv√¥ em rela√ß√£o ao ponto (0,0) da part√≠cula.
-posicaoY (entrada, passagem por valor): Valor da coordenada Y do piv√¥ em rela√ß√£o ao ponto (0,0) da part√≠cula.
+A funÁ„o SetPivoAbsolutoParticulas() determina o ponto a ser considerado como pivo da partÌcula.
+Somente as partÌculas criadas posteriormente ter„o o pivÙ especificado.
+Par‚metros:
+idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da funÁ„o CriaGeradorParticulas().
+posicaoX (entrada, passagem por valor): Valor da coordenada X do pivÙ em relaÁ„o ao ponto (0,0) da partÌcula.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y do pivÙ em relaÁ„o ao ponto (0,0) da partÌcula.
 ********************************/
 void SetPivoAbsolutoParticulas(int idGerador, int posicaoX, int posicaoY){
     CPIGGerenciadorGDP::GetGerador(idGerador)->SetPivoAbsoluto({(double)posicaoX,(double)posicaoY});
 }
 
 /********************************
-A fun√ß√£o SetPivoProporcionalParticula() define um ponto (X,Y) proporcional ao tamanho da part√≠cula, sobre o qual o part√≠cula ser√°
-rotacionado quando a fun√ß√£o SetAnguloParticula() for executada.
-Par√¢metros:
-idGerador (entrada, passagem por valor): identificador do gerador de part√≠culas.
-relX (entrada, passagem por valor): porcentagem da largura da part√≠cula onde ficar√° o piv√¥.
-relY (entrada, passagem por valor): porcentagem da altura da part√≠cula onde ficar√° o piv√¥.
+A funÁ„o SetPivoProporcionalParticula() define um ponto (X,Y) proporcional ao tamanho da partÌcula, sobre o qual o partÌcula ser·
+rotacionado quando a funÁ„o SetAnguloParticula() for executada.
+Par‚metros:
+idGerador (entrada, passagem por valor): identificador do gerador de partÌculas.
+relX (entrada, passagem por valor): porcentagem da largura da partÌcula onde ficar· o pivÙ.
+relY (entrada, passagem por valor): porcentagem da altura da partÌcula onde ficar· o pivÙ.
 ********************************/
 void SetPivoProporcionalParticulas(int idGerador, float relX, float relY){
     CPIGGerenciadorGDP::GetGerador(idGerador)->SetPivoProporcional({relX,relY});
 }
 
 /********************************
-A fun√ß√£o CriaParticula() adiciona uma nova part√≠cula ao jogo relacionada com o GDP passado como par√¢metro.
-A part√≠culas √© criada com todas as caracter√≠sticas (√¢ngulo, cor, tamanho, posi√ß√£o, transi√ß√µes etc) que forem correntes ao gerador neste momento.
-Par√¢metros:
-idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da fun√ß√£o CriaGeradorParticulas().
+A funÁ„o CriaParticula() adiciona uma nova partÌcula ao jogo relacionada com o GDP passado como par‚metro.
+A partÌculas È criada com todas as caracterÌsticas (‚ngulo, cor, tamanho, posiÁ„o, transiÁıes etc) que forem correntes ao gerador neste momento.
+Par‚metros:
+idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da funÁ„o CriaGeradorParticulas().
 Retorno:
-inteiro indicando a quantidade atual de part√≠culas do gerador (valor maior ou igual a zero).
-Se a part√≠cula n√£o tiver sido criada por excesso de part√≠culas ativas, o valor retornado √© -1.
+inteiro indicando a quantidade atual de partÌculas do gerador (valor maior ou igual a zero).
+Se a partÌcula n„o tiver sido criada por excesso de partÌculas ativas, o valor retornado È -1.
 ********************************/
 int CriaParticula(int idGerador){
     return CPIGGerenciadorGDP::GetGerador(idGerador)->CriaParticula();
 }
 
 /********************************
-A fun√ß√£o DefineLimitesParticula() √© respons√°vel por definir um espa√ßo no cen√°rio onde a part√≠cula ser√° considerada ativa.
-Tamb√©m √© definido um tempo de vida m√°ximo, ap√≥s o qual a part√≠cula n√£o ser√° mais considerada ativa.
-Par√¢metros:
-idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da fun√ß√£o CriaGeradorParticulas().
-minX (entrada, passagem por valor): valor m√≠nimo de X para que a part√≠cula seja considerada ativa
-minY (entrada, passagem por valor): valor m√≠nimo de Y para que a part√≠cula seja considerada ativa
-maxX (entrada, passagem por valor): valor m√°ximo de X para que a part√≠cula seja considerada ativa
-maxY (entrada, passagem por valor): valor m√°ximo de Y para que a part√≠cula seja considerada ativa
-maxTempo (entrada, passagem por valor): tempo m√°ximo de vida da part√≠cula
+A funÁ„o DefineLimitesParticula() È respons·vel por definir um espaÁo no cen·rio onde a partÌcula ser· considerada ativa.
+TambÈm È definido um tempo de vida m·ximo, apÛs o qual a partÌcula n„o ser· mais considerada ativa.
+Par‚metros:
+idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da funÁ„o CriaGeradorParticulas().
+minX (entrada, passagem por valor): valor mÌnimo de X para que a partÌcula seja considerada ativa
+minY (entrada, passagem por valor): valor mÌnimo de Y para que a partÌcula seja considerada ativa
+maxX (entrada, passagem por valor): valor m·ximo de X para que a partÌcula seja considerada ativa
+maxY (entrada, passagem por valor): valor m·ximo de Y para que a partÌcula seja considerada ativa
+maxTempo (entrada, passagem por valor): tempo m·ximo de vida da partÌcula
 ********************************/
 void DefineLimitesParticula(int idGerador, int minX, int minY, int maxX, int maxY, double maxTempo){
     return CPIGGerenciadorGDP::GetGerador(idGerador)->DefineLimites({minX,minY,maxX,maxY},maxTempo);
 }
 
 /********************************
-A fun√ß√£o QuantidadeParticulasAtivas() indica quantas part√≠culas do GDP em quest√£o ainda est√£o ativas. As part√≠culas deixam de
+A funÁ„o QuantidadeParticulasAtivas() indica quantas partÌculas do GDP em quest„o ainda est„o ativas. As partÌculas deixam de
 ser ativas quando saem da tela do jogo, quando colidem com algum objeto ou quando esgotam seu tempo de vida.
-Par√¢metros:
-idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da fun√ß√£o CriaGeradorParticulas().
+Par‚metros:
+idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da funÁ„o CriaGeradorParticulas().
 Retorno:
-inteiro que indica o n√∫mero de part√≠culas ativas.
+inteiro que indica o n˙mero de partÌculas ativas.
 ********************************/
 int QuantidadeParticulasAtivas(int idGerador){
     return CPIGGerenciadorGDP::GetGerador(idGerador)->GetQtdAtivas();
 }
 
 /********************************
-A fun√ß√£o DesenhaParticulas() desenha todas as part√≠culas ativas do GDP na posi√ß√£o que estiverem.
-Par√¢metros:
-idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da fun√ß√£o CriaGeradorParticulas().
+A funÁ„o DesenhaParticulas() desenha todas as partÌculas ativas do GDP na posiÁ„o que estiverem.
+Par‚metros:
+idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da funÁ„o CriaGeradorParticulas().
 ********************************/
 void DesenhaParticulas(int idGerador){
     CPIGGerenciadorGDP::GetGerador(idGerador)->Desenha();
 }
 
 /********************************
-A fun√ß√£o TestaColisaoParticulasObjeto() indica se houve colis√£o de alguma part√≠cula ativa do GDP com um outro objeto espec√≠fico, atrav√©s do seu identificador.
-Par√¢metros:
-idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da fun√ß√£o CriaGeradorParticulas().
-idObjeto (entrada, passagem por valor): identificador do objeto que pode ter colidido com as part√≠culas do GDP.
+A funÁ„o TestaColisaoParticulasObjeto() indica se houve colis„o de alguma partÌcula ativa do GDP com um outro objeto especÌfico, atravÈs do seu identificador.
+Par‚metros:
+idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da funÁ„o CriaGeradorParticulas().
+idObjeto (entrada, passagem por valor): identificador do objeto que pode ter colidido com as partÌculas do GDP.
 Retorno:
-inteiro que indica se houve colis√£o de alguma part√≠cula ativa do GDP (valor diferente de zero) ou n√£o (valor igual a 0, zero).
+inteiro que indica se houve colis„o de alguma partÌcula ativa do GDP (valor diferente de zero) ou n„o (valor igual a 0, zero).
 ********************************/
 int TestaColisaoParticulasObjeto(int idGerador, int idObjeto){
     return CPIGGerenciadorGDP::GetGerador(idGerador)->Colisao(CPIGGerenciadorSprites::GetObjeto(idObjeto));
 }
 
 /********************************
-A fun√ß√£o TestaColisaoParticulasAnimacao() indica se houve colis√£o de alguma part√≠cula ativa do GDP com uma outra anim√ß√£o espec√≠fica, atrav√©s do seu identificador.
-Par√¢metros:
-idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da fun√ß√£o CriaGeradorParticulas().
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o que pode ter colidido com as part√≠culas do GDP.
+A funÁ„o TestaColisaoParticulasAnimacao() indica se houve colis„o de alguma partÌcula ativa do GDP com uma outra animÁ„o especÌfica, atravÈs do seu identificador.
+Par‚metros:
+idGerador (entrada, passagem por valor): informa o identificador do GDP passado como retorno da funÁ„o CriaGeradorParticulas().
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o que pode ter colidido com as partÌculas do GDP.
 Retorno:
-inteiro que indica se houve colis√£o de alguma part√≠cula ativa do GDP (valor diferente de zero) ou n√£o (valor igual a 0, zero).
+inteiro que indica se houve colis„o de alguma partÌcula ativa do GDP (valor diferente de zero) ou n„o (valor igual a 0, zero).
 ********************************/
 int TestaColisaoParticulasAnimacao(int idGerador, int idAnimacao){
     return CPIGGerenciadorGDP::GetGerador(idGerador)->Colisao(CPIGGerenciadorSprites::GetAnimacao(idAnimacao));
@@ -3281,14 +3281,14 @@ int TestaColisaoParticulasAnimacao(int idGerador, int idAnimacao){
 
 
 /********************************
-Se√ß√£o dos temporizadores
+SeÁ„o dos temporizadores
 ********************************/
 
 /********************************
-A fun√ß√£o CriaTimer() √© respons√°vel por criar um timer (temporizador). Ap√≥s a cria√ß√£o o tempo decorrido
-poder√° ser obtido a partir da fun√ß√£o TempoDecorrido(), informando o identificador que √© passado na resposta.
-Par√¢metros:
-congelado (entrada, passagem por valor): valor l√≥gico que indica se o timer deve ser criado sem iniciar de imediato a contagem de tempo ou n√£o.
+A funÁ„o CriaTimer() È respons·vel por criar um timer (temporizador). ApÛs a criaÁ„o o tempo decorrido
+poder· ser obtido a partir da funÁ„o TempoDecorrido(), informando o identificador que È passado na resposta.
+Par‚metros:
+congelado (entrada, passagem por valor): valor lÛgico que indica se o timer deve ser criado sem iniciar de imediato a contagem de tempo ou n„o.
 Retorno:
 inteiro que identifica o timer criado.
 ********************************/
@@ -3297,21 +3297,21 @@ int CriaTimer(int congelado=false){
 }
 
 /********************************
-A fun√ß√£o TempoDecorrido() √© respons√°vel por informar o tempo decorrido desde a cria√ß√£o do timer
-at√© a hora em que a fun√ß√£o for chamada.
-Par√¢metros:
+A funÁ„o TempoDecorrido() È respons·vel por informar o tempo decorrido desde a criaÁ„o do timer
+atÈ a hora em que a funÁ„o for chamada.
+Par‚metros:
 idTimer (entrada, passagem por valor): identificador do timer.
 Retorno:
-n√∫mero real indicando o tempo (em segundos) desde a cria√ß√£o do timer.
+n˙mero real indicando o tempo (em segundos) desde a criaÁ„o do timer.
 ********************************/
 double TempoDecorrido(int idTimer){
     return CPIGGerenciadorTimers::GetTimer(idTimer)->GetTempoDecorrido();
 }
 
 /********************************
-A fun√ß√£o PausaTimer() √© respons√°vel por realizar uma pausa na contagem do tempo de um timer. Ap√≥s a despausa,
-o timer continuar√° a contar o tempo normalmente.
-Par√¢metros:
+A funÁ„o PausaTimer() È respons·vel por realizar uma pausa na contagem do tempo de um timer. ApÛs a despausa,
+o timer continuar· a contar o tempo normalmente.
+Par‚metros:
 idTimer (entrada, passagem por valor): identificador do timer.
 ********************************/
 void PausaTimer(int idTimer){
@@ -3319,16 +3319,16 @@ void PausaTimer(int idTimer){
 }
 
 /********************************
-A fun√ß√£o PausaTudo() √© respons√°vel por realizar uma pausa na contagem do tempo de todos os timers
-criados pela fun√ß√£o CriaTimer();
+A funÁ„o PausaTudo() È respons·vel por realizar uma pausa na contagem do tempo de todos os timers
+criados pela funÁ„o CriaTimer();
 ********************************/
 void PausaTudo(){
     CPIGGerenciadorTimers::PausaTodos();
 }
 
 /********************************
-A fun√ß√£o DespausaTimer() √© respons√°vel por retomar a contagem do tempo de todos os timers ap√≥s uma pausa.
-Par√¢metros:
+A funÁ„o DespausaTimer() È respons·vel por retomar a contagem do tempo de todos os timers apÛs uma pausa.
+Par‚metros:
 idTimer (entrada, passagem por valor): identificador do timer.
 ********************************/
 void DespausaTimer(int idTimer){
@@ -3336,28 +3336,28 @@ void DespausaTimer(int idTimer){
 }
 
 /********************************
-A fun√ß√£o DespausaTudo() √© respons√°vel por retomar a contagem do tempo de todos os timers
-criados pela fun√ß√£o CriaTimer();
+A funÁ„o DespausaTudo() È respons·vel por retomar a contagem do tempo de todos os timers
+criados pela funÁ„o CriaTimer();
 ********************************/
 void DespausaTudo(){
     CPIGGerenciadorTimers::DespausaTodos();
 }
 
 /********************************
-A fun√ß√£o ReiniciaTimer() √© respons√°vel por zerar a contagem do tempo de um timer, idependente do tempo j√° decorrido.
-Na pr√°tica, √© equivalente a encerrer um temporizador e recri√°-lo em seguida.
-Par√¢metros:
+A funÁ„o ReiniciaTimer() È respons·vel por zerar a contagem do tempo de um timer, idependente do tempo j· decorrido.
+Na pr·tica, È equivalente a encerrer um temporizador e recri·-lo em seguida.
+Par‚metros:
 idTimer (entrada, passagem por valor): identificador do timer.
-congelado (entrada, passagem por valor): valor l√≥gico que indica se o timer deve ser zerado sem iniciar de imediato a contagem de tempo ou n√£o.
+congelado (entrada, passagem por valor): valor lÛgico que indica se o timer deve ser zerado sem iniciar de imediato a contagem de tempo ou n„o.
 ********************************/
 void ReiniciaTimer(int idTimer, int congelado=false){
     CPIGGerenciadorTimers::GetTimer(idTimer)->Reinicia(congelado);
 }
 
 /********************************
-A fun√ß√£o DestroiTimer() √© respons√°vel por encerrar a utiliza√ß√£o de timer.
-Seu identificador n√£o poder√° ser utilizado ap√≥s a fun√ß√£o ser executada.
-Par√¢metros:
+A funÁ„o DestroiTimer() È respons·vel por encerrar a utilizaÁ„o de timer.
+Seu identificador n„o poder· ser utilizado apÛs a funÁ„o ser executada.
+Par‚metros:
 idTimer (entrada, passagem por valor): identificador do timer.
 ********************************/
 void DestroiTimer(int idTimer){
@@ -3365,68 +3365,68 @@ void DestroiTimer(int idTimer){
 }
 
 /********************************
-A fun√ß√£o AssociaGrupoTimer() √© respons√°vel por associar um timer a um grupo espec√≠fico.
+A funÁ„o AssociaGrupoTimer() È respons·vel por associar um timer a um grupo especÌfico.
 Os timers de um mesmo grupo pode ser tratados simultaneamente
-(ex: diversos timers de um prsonagem/objeto podem ser pausados/despausados/reiniciados com uma fun√ß√£o s√≥).
-Par√¢metros:
+(ex: diversos timers de um prsonagem/objeto podem ser pausados/despausados/reiniciados com uma funÁ„o sÛ).
+Par‚metros:
 idTimer (entrada, passagem por valor): identificador do timer.
 idGrupo (entrada, passagem por valor): identificador do grupos (qualquer valor entre 0 e PIG_MAX_GRUPOS_TIMERS-1).
 Retorno:
-n√∫mero inteiro que indica se o grupo √© v√°lido (1) ou n√£o (0).
+n˙mero inteiro que indica se o grupo È v·lido (1) ou n„o (0).
 ********************************/
 int AssociaGrupoTimer(int idTimer, int idGrupo){
     return CPIGGerenciadorTimers::AssociaTimerGrupo(idTimer,idGrupo);
 }
 
 /********************************
-A fun√ß√£o DesassociaGrupoTimer() √© respons√°vel por desassociar um timer de um grupo espec√≠fico.
+A funÁ„o DesassociaGrupoTimer() È respons·vel por desassociar um timer de um grupo especÌfico.
 Os timers de um mesmo grupo pode ser tratados simultaneamente
-(ex: diversos timers de um prsonagem/objeto podem ser pausados/despausados/reiniciados com uma fun√ß√£o s√≥).
-Par√¢metros:
+(ex: diversos timers de um prsonagem/objeto podem ser pausados/despausados/reiniciados com uma funÁ„o sÛ).
+Par‚metros:
 idTimer (entrada, passagem por valor): identificador do timer.
 idGrupo (entrada, passagem por valor): identificador do grupos (qualquer valor entre 0 e PIG_MAX_GRUPOS_TIMERS-1).
 Retorno:
-n√∫mero inteiro que indica se o grupo √© v√°lido (1) ou n√£o (0).
+n˙mero inteiro que indica se o grupo È v·lido (1) ou n„o (0).
 ********************************/
 int DesassociaGrupoTimer(int idTimer, int idGrupo){
     return CPIGGerenciadorTimers::DesassociaTimerGrupo(idTimer,idGrupo);
 }
 
 /********************************
-A fun√ß√£o PausaGrupoTimers() √© respons√°vel por pausar todos os timers de um grupo espec√≠fico.
+A funÁ„o PausaGrupoTimers() È respons·vel por pausar todos os timers de um grupo especÌfico.
 Os timers de um mesmo grupo pode ser tratados simultaneamente
-(ex: diversos timers de um prsonagem/objeto podem ser pausados/despausados/reiniciados com uma fun√ß√£o s√≥).
-Par√¢metros:
+(ex: diversos timers de um prsonagem/objeto podem ser pausados/despausados/reiniciados com uma funÁ„o sÛ).
+Par‚metros:
 idGrupo (entrada, passagem por valor): identificador do grupos (qualquer valor entre 0 e PIG_MAX_GRUPOS_TIMERS-1).
 Retorno:
-n√∫mero inteiro que indica se o grupo √© inv√°lido (-1) ou quantos timers foram pausados no grupo (maior ou igual a 0).
+n˙mero inteiro que indica se o grupo È inv·lido (-1) ou quantos timers foram pausados no grupo (maior ou igual a 0).
 ********************************/
 int PausaGrupoTimers(int idGrupo){
     return CPIGGerenciadorTimers::PausaGrupo(idGrupo);
 }
 
 /********************************
-A fun√ß√£o DespausaGrupoTimers() √© respons√°vel por despausar todos os timers de um grupo espec√≠fico.
+A funÁ„o DespausaGrupoTimers() È respons·vel por despausar todos os timers de um grupo especÌfico.
 Os timers de um mesmo grupo pode ser tratados simultaneamente
-(ex: diversos timers de um prsonagem/objeto podem ser pausados/despausados/reiniciados com uma fun√ß√£o s√≥).
-Par√¢metros:
+(ex: diversos timers de um prsonagem/objeto podem ser pausados/despausados/reiniciados com uma funÁ„o sÛ).
+Par‚metros:
 idGrupo (entrada, passagem por valor): identificador do grupos (qualquer valor entre 0 e PIG_MAX_GRUPOS_TIMERS-1).
 Retorno:
-n√∫mero inteiro que indica se o grupo √© inv√°lido (-1) ou quantos timers foram despausados no grupo (maior ou igual a 0).
+n˙mero inteiro que indica se o grupo È inv·lido (-1) ou quantos timers foram despausados no grupo (maior ou igual a 0).
 ********************************/
 int DespausaGrupoTimers(int idGrupo){
     return CPIGGerenciadorTimers::DespausaGrupo(idGrupo);
 }
 
 /********************************
-A fun√ß√£o ReiniciaGrupoTimers() √© respons√°vel por reiniciar todos os timers de um grupo espec√≠fico.
+A funÁ„o ReiniciaGrupoTimers() È respons·vel por reiniciar todos os timers de um grupo especÌfico.
 Os timers de um mesmo grupo pode ser tratados simultaneamente
-(ex: diversos timers de um prsonagem/objeto podem ser pausados/despausados/reiniciados com uma fun√ß√£o s√≥).
-Par√¢metros:
+(ex: diversos timers de um prsonagem/objeto podem ser pausados/despausados/reiniciados com uma funÁ„o sÛ).
+Par‚metros:
 idGrupo (entrada, passagem por valor): identificador do grupos (qualquer valor entre 0 e PIG_MAX_GRUPOS_TIMERS-1).
-congelado (entrada, passagem por valor): valor l√≥gico que indica se o timer deve ser zerado sem iniciar de imediato a contagem de tempo ou n√£o.
+congelado (entrada, passagem por valor): valor lÛgico que indica se o timer deve ser zerado sem iniciar de imediato a contagem de tempo ou n„o.
 Retorno:
-n√∫mero inteiro que indica se o grupo √© inv√°lido (-1) ou quantos timers foram reiniciados no grupo (maior ou igual a 0).
+n˙mero inteiro que indica se o grupo È inv·lido (-1) ou quantos timers foram reiniciados no grupo (maior ou igual a 0).
 ********************************/
 int ReiniciaGrupoTimers(int idGrupo, int congelado=false){
     return CPIGGerenciadorTimers::ReiniciaGrupo(idGrupo,congelado);
@@ -3435,63 +3435,63 @@ int ReiniciaGrupoTimers(int idGrupo, int congelado=false){
 
 
 /********************************
-Se√ß√£o das anima√ß√µes
+SeÁ„o das animaÁıes
 ********************************/
 
 /********************************
-A fun√ß√£o CriaAnimacao() √© respons√°vel por criar uma animacao. A anima√ß√£o pode ser considerada um tipo especial
-de objeto, capaz de mudar de figura (sprite) dentro de um tempo determinado. Uma sequ√™ncia completa de
-sprites √© chamada de modo. Uma mesma anima√ß√£o pode apresentar v√°rios modos diferentes.
-Para que a anima√ß√£o funcione corretamente, ser√° necess√°rio: definir cada frame (peda√ßo do arquivo bitmap que cont√©m o sprite desejado),
-criar um ou mais modos, inserir os frames criados no modo correspondente e dizer qual modo dever√° ser exibido inicialmente.
-Tudo isso pode ser feito por outras fun√ß√µes que manipulam as anima√ß√µes.
-Par√¢metros:
-nomeArquivo (entrada, passagem por refer√™ncia): string que informa o nome do arquivo da imagem (spritesheet) da anima√ß√£o.
-retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou n√£o ao ler o arquivo em quest√£o. O valor padr√£o √© 1, indicando que o fundo deve ser retirado.
-corFundo (entrada, passagem por refer√™ncia n√£o-obrigat√≥rio): indica se h√° uma cor espec√≠fica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o par√¢metro retiraFundo seja diferente de 0, o pixel (0,0) da imagem ser√° considerado como cor de fundo.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica qual janela vai receber a anima√ß√£o.
+A funÁ„o CriaAnimacao() È respons·vel por criar uma animacao. A animaÁ„o pode ser considerada um tipo especial
+de objeto, capaz de mudar de figura (sprite) dentro de um tempo determinado. Uma sequÍncia completa de
+sprites È chamada de modo. Uma mesma animaÁ„o pode apresentar v·rios modos diferentes.
+Para que a animaÁ„o funcione corretamente, ser· necess·rio: definir cada frame (pedaÁo do arquivo bitmap que contÈm o sprite desejado),
+criar um ou mais modos, inserir os frames criados no modo correspondente e dizer qual modo dever· ser exibido inicialmente.
+Tudo isso pode ser feito por outras funÁıes que manipulam as animaÁıes.
+Par‚metros:
+nomeArquivo (entrada, passagem por referÍncia): string que informa o nome do arquivo da imagem (spritesheet) da animaÁ„o.
+retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou n„o ao ler o arquivo em quest„o. O valor padr„o È 1, indicando que o fundo deve ser retirado.
+corFundo (entrada, passagem por referÍncia n„o-obrigatÛrio): indica se h· uma cor especÌfica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o par‚metro retiraFundo seja diferente de 0, o pixel (0,0) da imagem ser· considerado como cor de fundo.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica qual janela vai receber a animaÁ„o.
 Retorno:
-inteiro que representa o identificador √∫nico da anima√ß√£o. Todas as opera√ß√µes subsequentes com esta anima√ß√£o dever√£o receber este identificador como par√¢metro.
+inteiro que representa o identificador ˙nico da animaÁ„o. Todas as operaÁıes subsequentes com esta animaÁ„o dever„o receber este identificador como par‚metro.
 ********************************/
 int CriaAnimacao(char* nomeArquivo, int retiraFundo=1, PIGCor *corFundo=NULL, int idJanela=0){
     return CPIGGerenciadorSprites::CriaAnimacao(nomeArquivo,retiraFundo,corFundo,idJanela);
 }
 
 /********************************
-A fun√ß√£o CriaAnimacao() √© respons√°vel por criar uma animacao a partir de outra j√° existente. A anima√ß√£o pode ser considerada um tipo especial
-de objeto, capaz de mudar de figura (sprite) dentro de um tempo determinado. Uma sequ√™ncia completa de
-sprites √© chamada de modo. Uma mesma anima√ß√£o pode apresentar v√°rios modos diferentes.
-Esta forma de criar uma anima√ß√£o, copia todos os frames e modos de outra anima√ß√£o j√° existente, evitando assim
-que toda esta prepara√ß√£o precise ser feita novamente. O usu√°rio deve ter cuidado de n√£o destruir a anima√ß√£o
-original enquanto as c√≥pias estiverem ativas ou haver√° erros de execu√ß√£o. Da mesma forma, n√£o se deve alterar os
-frames ou os modos da c√≥pia, pois pode provocar erros na anima√ß√£o original.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): indica o identificador da anima√ß√£o original que ser√° copiada.
-retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou n√£o ao ler o arquivo em quest√£o. O valor padr√£o √© 1, indicando que o fundo deve ser retirado.
-corFundo (entrada, passagem por refer√™ncia n√£o-obrigat√≥rio): indica se h√° uma cor espec√≠fica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o par√¢metro retiraFundo seja diferente de 0, o pixel (0,0) da imagem ser√° considerado como cor de fundo.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica qual janela vai receber a anima√ß√£o.
+A funÁ„o CriaAnimacao() È respons·vel por criar uma animacao a partir de outra j· existente. A animaÁ„o pode ser considerada um tipo especial
+de objeto, capaz de mudar de figura (sprite) dentro de um tempo determinado. Uma sequÍncia completa de
+sprites È chamada de modo. Uma mesma animaÁ„o pode apresentar v·rios modos diferentes.
+Esta forma de criar uma animaÁ„o, copia todos os frames e modos de outra animaÁ„o j· existente, evitando assim
+que toda esta preparaÁ„o precise ser feita novamente. O usu·rio deve ter cuidado de n„o destruir a animaÁ„o
+original enquanto as cÛpias estiverem ativas ou haver· erros de execuÁ„o. Da mesma forma, n„o se deve alterar os
+frames ou os modos da cÛpia, pois pode provocar erros na animaÁ„o original.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): indica o identificador da animaÁ„o original que ser· copiada.
+retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou n„o ao ler o arquivo em quest„o. O valor padr„o È 1, indicando que o fundo deve ser retirado.
+corFundo (entrada, passagem por referÍncia n„o-obrigatÛrio): indica se h· uma cor especÌfica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o par‚metro retiraFundo seja diferente de 0, o pixel (0,0) da imagem ser· considerado como cor de fundo.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica qual janela vai receber a animaÁ„o.
 Retorno:
-inteiro que representa o identificador √∫nico da anima√ß√£o. Todas as opera√ß√µes subsequentes com esta anima√ß√£o dever√£o receber este identificador como par√¢metro.
+inteiro que representa o identificador ˙nico da animaÁ„o. Todas as operaÁıes subsequentes com esta animaÁ„o dever„o receber este identificador como par‚metro.
 ********************************/
 int CriaAnimacao(int idAnimacao, int retiraFundo=1, PIGCor *corFundo=NULL, int idJanela=0){
     return CPIGGerenciadorSprites::CriaAnimacao(CPIGGerenciadorSprites::GetAnimacao(idAnimacao),retiraFundo,corFundo,idJanela);
 }
 
 /********************************
-A fun√ß√£o CriaAnimacaoDeObjeto() √© respons√°vel por criar uma animacao a partir de um objeto j√° existente. A anima√ß√£o pode ser considerada um tipo especial
-de objeto, capaz de mudar de figura (sprite) dentro de um tempo determinado. Uma sequ√™ncia completa de
-sprites √© chamada de modo. Uma mesma anima√ß√£o pode apresentar v√°rios modos diferentes.
-Esta forma de criar uma anima√ß√£o, copia todos os frames e modos de outra anima√ß√£o j√° existente, evitando assim
-que toda esta prepara√ß√£o precise ser feita novamente. O usu√°rio deve ter cuidado de n√£o destruir a anima√ß√£o
-original enquanto as c√≥pias estiverem ativas ou haver√° erros de execu√ß√£o. Da mesma forma, n√£o se deve alterar os
-frames ou os modos da c√≥pia, pois pode provocar erros na anima√ß√£o original.
-Par√¢metros:
-idObjeto (entrada, passagem por valor): indica o identificador do objeto original que servir√° de base para a cria√ß√£o da anima√ß√£o.
-retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou n√£o ao ler o arquivo em quest√£o. O valor padr√£o √© 1, indicando que o fundo deve ser retirado.
-corFundo (entrada, passagem por refer√™ncia n√£o-obrigat√≥rio): indica se h√° uma cor espec√≠fica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o par√¢metro retiraFundo seja diferente de 0, o pixel (0,0) da imagem ser√° considerado como cor de fundo.
-idJanela (entrada, passagem por valor n√£o-obrigat√≥rio): indica qual janela vai receber a anima√ß√£o.
+A funÁ„o CriaAnimacaoDeObjeto() È respons·vel por criar uma animacao a partir de um objeto j· existente. A animaÁ„o pode ser considerada um tipo especial
+de objeto, capaz de mudar de figura (sprite) dentro de um tempo determinado. Uma sequÍncia completa de
+sprites È chamada de modo. Uma mesma animaÁ„o pode apresentar v·rios modos diferentes.
+Esta forma de criar uma animaÁ„o, copia todos os frames e modos de outra animaÁ„o j· existente, evitando assim
+que toda esta preparaÁ„o precise ser feita novamente. O usu·rio deve ter cuidado de n„o destruir a animaÁ„o
+original enquanto as cÛpias estiverem ativas ou haver· erros de execuÁ„o. Da mesma forma, n„o se deve alterar os
+frames ou os modos da cÛpia, pois pode provocar erros na animaÁ„o original.
+Par‚metros:
+idObjeto (entrada, passagem por valor): indica o identificador do objeto original que servir· de base para a criaÁ„o da animaÁ„o.
+retiraFundo (entrada, passagem por valor): inteiro que indica se o fundo da imagem deve ser retirado ou n„o ao ler o arquivo em quest„o. O valor padr„o È 1, indicando que o fundo deve ser retirado.
+corFundo (entrada, passagem por referÍncia n„o-obrigatÛrio): indica se h· uma cor especÌfica para ser considerada como cor de fundo da imagem. Caso, o valor seja NULL, mas o par‚metro retiraFundo seja diferente de 0, o pixel (0,0) da imagem ser· considerado como cor de fundo.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica qual janela vai receber a animaÁ„o.
 Retorno:
-inteiro que representa o identificador √∫nico da anima√ß√£o. Todas as opera√ß√µes subsequentes com esta anima√ß√£o dever√£o receber este identificador como par√¢metro.
+inteiro que representa o identificador ˙nico da animaÁ„o. Todas as operaÁıes subsequentes com esta animaÁ„o dever„o receber este identificador como par‚metro.
 ********************************/
 int CriaAnimacaoDeObjeto(int idObjeto, int retiraFundo=1, PIGCor *corFundo=NULL, int idJanela=0){
     return CPIGGerenciadorSprites::CriaAnimacao(CPIGGerenciadorSprites::GetObjeto(idObjeto),retiraFundo,corFundo,idJanela);
@@ -3499,23 +3499,23 @@ int CriaAnimacaoDeObjeto(int idObjeto, int retiraFundo=1, PIGCor *corFundo=NULL,
 
 
 /********************************
-A fun√ß√£o DestroiAnimacao() √© respons√°vel por eliminar a anima√ß√£o em quest√£o do jogo.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o a ser exclu√≠da.
+A funÁ„o DestroiAnimacao() È respons·vel por eliminar a animaÁ„o em quest„o do jogo.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o a ser excluÌda.
 ********************************/
 void DestroiAnimacao(int idAnimacao){
     CPIGGerenciadorSprites::DestroiSprite(idAnimacao);
 }
 
 /********************************
-A fun√ß√£o CriaFrameAnimacao() √© respons√°vel por estabelecar uma parte do sprisheet da anima√ß√£o que cont√©m um sprite espec√≠fico.
-O frame criado deve ser posteriormente inserido em um ou mais modos da anima√ß√£o. O posicionamento do frame
+A funÁ„o CriaFrameAnimacao() È respons·vel por estabelecar uma parte do sprisheet da animaÁ„o que contÈm um sprite especÌfico.
+O frame criado deve ser posteriormente inserido em um ou mais modos da animaÁ„o. O posicionamento do frame
 respeita o sistema de coordenadas dos arquivos de imagem, com o eixo Y aumentando para baixo.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o a ter um novo frame.
-codigoFrame (entrada, passagem por valor): numero do frame a ser criado. Pode ser usado qualquer n√∫mero de 0..MAX_FRAMES-1.
-xBitmap (entrada, passagem por valor): indica a posi√ß√£o de eixo X onde come√ßa o frame.
-yBitmap (entrada, passagem por valor): indica a posi√ß√£o de eixo Y onde come√ßa o frame. Neste caso, o eixo Y aumenta para baixo.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o a ter um novo frame.
+codigoFrame (entrada, passagem por valor): numero do frame a ser criado. Pode ser usado qualquer n˙mero de 0..MAX_FRAMES-1.
+xBitmap (entrada, passagem por valor): indica a posiÁ„o de eixo X onde comeÁa o frame.
+yBitmap (entrada, passagem por valor): indica a posiÁ„o de eixo Y onde comeÁa o frame. Neste caso, o eixo Y aumenta para baixo.
 altura (entrada, passagem por valor): altura em pixels do frame.
 largura (entrada, passagem por valor): largura em pixels do frame.
 ********************************/
@@ -3524,71 +3524,71 @@ void CriaFrameAnimacao(int idAnimacao, int codigoFrame, int xBitmap, int yBitmap
 }
 
 /********************************
-A fun√ß√£o CarregaArquivoFramesAnimacao() √© respons√°vel por ler de arquivo texto os frames de uma anima√ß√£o.
-Cada linha do arquivo texto deve conter 5 n√∫meros inteiros: o n√∫mero do frame, a posi√ß√£o do frame no eixo X do arquivo de imagem,
-a posi√ß√£o do frame no eixo Y do arquivo de imagem, a altura do frame e a largura do frame (todas as unidades em pixels).
-Par√¢metros:
-idObjeto (entrada, passagem por valor): identificador da anima√ß√£o.
-nomeArq (entrada, passagem por refer√™ncia): nome do arquivo texto contendo os frames.
+A funÁ„o CarregaArquivoFramesAnimacao() È respons·vel por ler de arquivo texto os frames de uma animaÁ„o.
+Cada linha do arquivo texto deve conter 5 n˙meros inteiros: o n˙mero do frame, a posiÁ„o do frame no eixo X do arquivo de imagem,
+a posiÁ„o do frame no eixo Y do arquivo de imagem, a altura do frame e a largura do frame (todas as unidades em pixels).
+Par‚metros:
+idObjeto (entrada, passagem por valor): identificador da animaÁ„o.
+nomeArq (entrada, passagem por referÍncia): nome do arquivo texto contendo os frames.
 ********************************/
 void CarregaArquivoFramesAnimacao(int idAnimacao, char *nomeArq){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->CarregaArquivoFrames(nomeArq);
 }
 
 /********************************
-A fun√ß√£o CarregaFramesPorLinhaAnimacao() √© respons√°vel por subdividir o arquivo de imagem em linhas (de mesmo tamanho) e colunas (de mesmo tamanho).
-Cada subdivis√£o representar√° um frame que ser√° automaticamente criado para a anima√ß√£o, com numera√ß√£o incremental a partir do par√¢metro "frameInicial".
-Ao final das "qtdColunas" da primeira linha, a defini√ß√£o dos frames continua na linha inferior.
-A fun√ß√£o pode ser utilizada em spritesheets regulares.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
-frameInicial (entrada, passagem por valor): numera√ß√£o do primeiro frame a ser criado pela fun√ß√£o. Os demais frames ter√£o numera√ß√£o consecutiva.
-qtdLinhas (entrada, passagem por valor): quantidade de linhas na qual o arquivo de imagem ser√° dividido.
-qtdColunas (entrada, passagem por valor): quantidade de colunas na qual o arquivo de imagem ser√° dividido.
+A funÁ„o CarregaFramesPorLinhaAnimacao() È respons·vel por subdividir o arquivo de imagem em linhas (de mesmo tamanho) e colunas (de mesmo tamanho).
+Cada subdivis„o representar· um frame que ser· automaticamente criado para a animaÁ„o, com numeraÁ„o incremental a partir do par‚metro "frameInicial".
+Ao final das "qtdColunas" da primeira linha, a definiÁ„o dos frames continua na linha inferior.
+A funÁ„o pode ser utilizada em spritesheets regulares.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
+frameInicial (entrada, passagem por valor): numeraÁ„o do primeiro frame a ser criado pela funÁ„o. Os demais frames ter„o numeraÁ„o consecutiva.
+qtdLinhas (entrada, passagem por valor): quantidade de linhas na qual o arquivo de imagem ser· dividido.
+qtdColunas (entrada, passagem por valor): quantidade de colunas na qual o arquivo de imagem ser· dividido.
 ********************************/
 void CarregaFramesPorLinhaAnimacao(int idAnimacao, int frameInicial, int qtdLinhas, int qtdColunas){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->CriaFramesAutomaticosPorLinha(frameInicial,qtdLinhas,qtdColunas);
 }
 
 /********************************
-A fun√ß√£o CarregaFramesPorColunaAnimacao() √© respons√°vel por subdividir o arquivo de imagem em linhas (de mesmo tamanho) e colunas (de mesmo tamanho).
-Cada subdivis√£o representar√° um frame que ser√° automaticamente criado para a anima√ß√£o, com numera√ß√£o incremental a partir do par√¢metro "frameInicial".
-Ao final das "qtdLinhas" da primeira coluna, a defini√ß√£o dos frames continua na coluna seguinte.
-A fun√ß√£o pode ser utilizada em spritesheets regulares.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
-frameInicial (entrada, passagem por valor): numera√ß√£o do primeiro frame a ser criado pela fun√ß√£o. Os demais frames ter√£o numera√ß√£o consecutiva.
-qtdLinhas (entrada, passagem por valor): quantidade de linhas na qual o arquivo de imagem ser√° dividido.
-qtdColunas (entrada, passagem por valor): quantidade de colunas na qual o arquivo de imagem ser√° dividido.
+A funÁ„o CarregaFramesPorColunaAnimacao() È respons·vel por subdividir o arquivo de imagem em linhas (de mesmo tamanho) e colunas (de mesmo tamanho).
+Cada subdivis„o representar· um frame que ser· automaticamente criado para a animaÁ„o, com numeraÁ„o incremental a partir do par‚metro "frameInicial".
+Ao final das "qtdLinhas" da primeira coluna, a definiÁ„o dos frames continua na coluna seguinte.
+A funÁ„o pode ser utilizada em spritesheets regulares.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
+frameInicial (entrada, passagem por valor): numeraÁ„o do primeiro frame a ser criado pela funÁ„o. Os demais frames ter„o numeraÁ„o consecutiva.
+qtdLinhas (entrada, passagem por valor): quantidade de linhas na qual o arquivo de imagem ser· dividido.
+qtdColunas (entrada, passagem por valor): quantidade de colunas na qual o arquivo de imagem ser· dividido.
 ********************************/
 void CarregaFramesPorColunaAnimacao(int idAnimacao, int frameInicial, int qtdLinhas, int qtdColunas){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->CriaFramesAutomaticosPorColuna(frameInicial,qtdLinhas,qtdColunas);
 }
 
 /********************************
-A fun√ß√£o CriaModoAnimacao() √© respons√°vel por criar um modo, ou seja, uma sequ√™ncia de sprites.
-Ap√≥s a cria√ß√£o do modo, os frames deve ser inseridos um a um. O modo pode ser criado antes dos frames
-e vice-versa, mas os frames s√≥ podem ser associados ao modo, ap√≥s as respectivas cria√ß√µes.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o a ter um novo modo.
-codigoModo (entrada, passagem por valor): numero do modo a ser criado. Pode ser usado qualquer n√∫mero de 0..MAX_MODOS-1.
-loop (entrada, passagem por valor): valor l√≥gico que indica se este modo deve recome√ßar do primeiro frame ap√≥s a execu√ß√£o do √∫ltimo.
+A funÁ„o CriaModoAnimacao() È respons·vel por criar um modo, ou seja, uma sequÍncia de sprites.
+ApÛs a criaÁ„o do modo, os frames deve ser inseridos um a um. O modo pode ser criado antes dos frames
+e vice-versa, mas os frames sÛ podem ser associados ao modo, apÛs as respectivas criaÁıes.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o a ter um novo modo.
+codigoModo (entrada, passagem por valor): numero do modo a ser criado. Pode ser usado qualquer n˙mero de 0..MAX_MODOS-1.
+loop (entrada, passagem por valor): valor lÛgico que indica se este modo deve recomeÁar do primeiro frame apÛs a execuÁ„o do ˙ltimo.
 ********************************/
 void CriaModoAnimacao(int idAnimacao, int codigoModo, int loop){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->CriaModo(codigoModo,loop);
 }
 
 /********************************
-A fun√ß√£o InsereFrameAnimacao() √© respons√°vel por associar os frames aos modos correspondentes.
+A funÁ„o InsereFrameAnimacao() È respons·vel por associar os frames aos modos correspondentes.
 Um mesmo frame pode fazer parte de diversos modos.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o em quest√£o.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o em quest„o.
 codigoModo (entrada, passagem por valor): numero do modo a ter um frame inserido.
 codigoFrame (entrada, passagem por valor): numero do frame a ser inserido no modo.
-tempo (entrada, passagem por valor): dura√ß√£o (em segundos) da exibi√ß√£o autom√°tica do frame neste modo espec√≠fico.
-idAudio (entrada, passagem por valor n√£o-obrigat√≥rio): identificador do audio (j√° criado anteriormente) que deve ser tocado quando o frame for exibido. O valor -1 deve ser utilizado se nenhum audio deve ser tocado.
-alturaAnimacao (entrada, passagem por valor n√£o-obrigat√≥rio): tamanho em pixels altura da anima√ß√£o quando estiver exibindo este frame. Um valor negativo neste par√¢metro ou no pr√≥ximo (larguraAnimacao) indica que n√£o haver√° altera√ß√£o de dimens√µes da anima√ß√£o.
-larguraAnimacao (entrada, passagem por valor n√£o-obrigat√≥rio): tamanho em pixels largura da anima√ß√£o quando estiver exibindo este frame. Um valor negativo neste par√¢metro ou no anterior (alturaAnimacao) indica que n√£o haver√° altera√ß√£o de dimens√µes da anima√ß√£o.
+tempo (entrada, passagem por valor): duraÁ„o (em segundos) da exibiÁ„o autom·tica do frame neste modo especÌfico.
+idAudio (entrada, passagem por valor n„o-obrigatÛrio): identificador do audio (j· criado anteriormente) que deve ser tocado quando o frame for exibido. O valor -1 deve ser utilizado se nenhum audio deve ser tocado.
+alturaAnimacao (entrada, passagem por valor n„o-obrigatÛrio): tamanho em pixels altura da animaÁ„o quando estiver exibindo este frame. Um valor negativo neste par‚metro ou no prÛximo (larguraAnimacao) indica que n„o haver· alteraÁ„o de dimensıes da animaÁ„o.
+larguraAnimacao (entrada, passagem por valor n„o-obrigatÛrio): tamanho em pixels largura da animaÁ„o quando estiver exibindo este frame. Um valor negativo neste par‚metro ou no anterior (alturaAnimacao) indica que n„o haver· alteraÁ„o de dimensıes da animaÁ„o.
 ********************************/
 void InsereFrameAnimacao(int idAnimacao, int codigoModo, int codigoFrame, float tempo, int idAudio=-1, int alturaAnimacao=-1, int larguraAnimacao=-1){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->InsereFrame(codigoModo,codigoFrame,tempo,idAudio,alturaAnimacao,larguraAnimacao);
@@ -3596,71 +3596,71 @@ void InsereFrameAnimacao(int idAnimacao, int codigoModo, int codigoFrame, float 
 
 
 /********************************
-A fun√ß√£o InsereAudioFrameAnimacao() √© respons√°vel por acrescentar um audio a um dos frames.
-O audio √© tocado assim que o frame √© desenhado pela primeira vez.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o em quest√£o.
-codigoModo (entrada, passagem por valor): n√∫mero do modo a ter um frame inserido.
-indiceFrame (entrada, passagem por valor): √≠ndice (posi√ß√£o) do frame no modo em quest√£o.
-idAudio (entrada, passagem por valor n√£o-obrigat√≥rio): identificador do audio (j√° criado anteriormente) que deve ser tocado quando o frame for exibido. O valor -1 deve ser utilizado se nenhum audio deve ser tocado.
+A funÁ„o InsereAudioFrameAnimacao() È respons·vel por acrescentar um audio a um dos frames.
+O audio È tocado assim que o frame È desenhado pela primeira vez.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o em quest„o.
+codigoModo (entrada, passagem por valor): n˙mero do modo a ter um frame inserido.
+indiceFrame (entrada, passagem por valor): Ìndice (posiÁ„o) do frame no modo em quest„o.
+idAudio (entrada, passagem por valor n„o-obrigatÛrio): identificador do audio (j· criado anteriormente) que deve ser tocado quando o frame for exibido. O valor -1 deve ser utilizado se nenhum audio deve ser tocado.
 ********************************/
 void InsereAudioFrameAnimacao(int idAnimacao, int codigoModo, int indiceFrame, int idAudio){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetAudioFrame(codigoModo,indiceFrame,idAudio);
 }
 
 /********************************
-A fun√ß√£o MudaModoAnimacao() √© respons√°vel por alterar a anima√ß√£o para um outro modo.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o em quest√£o.
+A funÁ„o MudaModoAnimacao() È respons·vel por alterar a animaÁ„o para um outro modo.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o em quest„o.
 codigoModo (entrada, passagem por valor): numero do novo modo.
 indiceFrame (entrada, passagem por valor): indica a partir de qual frame o modo deve ser exibido. O valor 0 significa aprtir do primeiro frame.
-forcado (entrada, passagem por valor): valor l√≥gico que indica se a mudan√ßa de modo deve ser feita for√ßosamente ou n√£o. Se n√£o for for√ßada, a mudan√ßa s√≥ ocorrer√° se o modo atual j√° tiver terminado de ser animado.
+forcado (entrada, passagem por valor): valor lÛgico que indica se a mudanÁa de modo deve ser feita forÁosamente ou n„o. Se n„o for forÁada, a mudanÁa sÛ ocorrer· se o modo atual j· tiver terminado de ser animado.
 ********************************/
 void MudaModoAnimacao(int idAnimacao, int codigoModo, int indiceFrame, int forcado=1){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->MudaModo(codigoModo,indiceFrame,forcado);
 }
 
 /********************************
-A fun√ß√£o GetModoAtualAnimacao() √© respons√°vel por recuperar o valor do modo atual da anima√ß√£o.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o em quest√£o.
+A funÁ„o GetModoAtualAnimacao() È respons·vel por recuperar o valor do modo atual da animaÁ„o.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o em quest„o.
 Retorno:
-inteiro que representa o modo atual da anima√ß√£o.
+inteiro que representa o modo atual da animaÁ„o.
 ********************************/
 int GetModoAtualAnimacao(int idAnimacao){
     return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetModoAtual();
 }
 
 /********************************
-A fun√ß√£o GetFrameAtualAnimacao() recupera o valor do frame atual exibido na anima√ß√£o.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
+A funÁ„o GetFrameAtualAnimacao() recupera o valor do frame atual exibido na animaÁ„o.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
 Retorno:
-N√∫mero do frame atual da anima√ß√£o.
+N˙mero do frame atual da animaÁ„o.
 ********************************/
 int GetFrameAtualAnimacao(int idAnimacao){
     return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetFrameAtual();
 }
 
 /********************************
-A fun√ß√£o TestaColisaoAnimacoes() indica se houve colis√£o entre duas anima√ß√µes, de forma semelhante aos objetos.
-Par√¢metros:
-idAnimacao1 (entrada, passagem por valor): identificador da primeira anima√ß√£o.
-idAnimacao2 (entrada, passagem por valor): identificador da segunda anima√ß√£o.
+A funÁ„o TestaColisaoAnimacoes() indica se houve colis„o entre duas animaÁıes, de forma semelhante aos objetos.
+Par‚metros:
+idAnimacao1 (entrada, passagem por valor): identificador da primeira animaÁ„o.
+idAnimacao2 (entrada, passagem por valor): identificador da segunda animaÁ„o.
 Retorno:
-inteiro que indica se houve colis√£o entre as anima√ß√µes.
+inteiro que indica se houve colis„o entre as animaÁıes.
 ********************************/
 int TestaColisaoAnimacoes(int idAnimacao1, int idAnimacao2){
     return CPIGGerenciadorSprites::GetAnimacao(idAnimacao1)->Colisao(CPIGGerenciadorSprites::GetAnimacao(idAnimacao2));
 }
 
 /********************************
-A fun√ß√£o TestaColisaoAnimacaoObjeto() indica se houve colis√£o de alguma animacao com algum outro objeto espec√≠fico, atrav√©s do seu identificador.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o que pode ter colidido com o objeto.
-idObjeto (entrada, passagem por valor): identificador do objeto que pode ter colidido com a anima√ß√£o.
+A funÁ„o TestaColisaoAnimacaoObjeto() indica se houve colis„o de alguma animacao com algum outro objeto especÌfico, atravÈs do seu identificador.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o que pode ter colidido com o objeto.
+idObjeto (entrada, passagem por valor): identificador do objeto que pode ter colidido com a animaÁ„o.
 Retorno:
-inteiro que indica se houve colis√£o da anima√ß√£o com o objeto.
+inteiro que indica se houve colis„o da animaÁ„o com o objeto.
 ********************************/
 int TestaColisaoAnimacaoObjeto(int idAnimacao, int idObjeto){
     return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->Colisao(CPIGGerenciadorSprites::GetObjeto(idObjeto));
@@ -3668,13 +3668,13 @@ int TestaColisaoAnimacaoObjeto(int idAnimacao, int idObjeto){
 
 
 /********************************
-A fun√ß√£o DefineAreaColisaoObjeto() √© respons√°vel estabelecer um pol√≠gono que ser√° utilizado como √°rea de colis√£o da anima√ß√£o com as demais.
+A funÁ„o DefineAreaColisaoObjeto() È respons·vel estabelecer um polÌgono que ser· utilizado como ·rea de colis„o da animaÁ„o com as demais.
 Os vetores X e Y deve ter pelo menos qtdPontos elementos.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
-pontosX (entrada, passagem por refer√™ncia): vetor de inteiros, de tamanho qtdPontos, contendo os valores X de cada ponto do pol√≠gono.
-pontosY (entrada, passagem por refer√™ncia): vetor de inteiros, de tamanho qtdPontos, contendo os valores Y de cada ponto do pol√≠gono.
-qtdPontos (entrada, passagem por valor): quantidade de pontos da anima√ß√£o.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
+pontosX (entrada, passagem por referÍncia): vetor de inteiros, de tamanho qtdPontos, contendo os valores X de cada ponto do polÌgono.
+pontosY (entrada, passagem por referÍncia): vetor de inteiros, de tamanho qtdPontos, contendo os valores Y de cada ponto do polÌgono.
+qtdPontos (entrada, passagem por valor): quantidade de pontos da animaÁ„o.
 ********************************/
 void DefineAreaColisaoAnimacao(int idAnimacao, int pontosX[], int pontosY[], int qtdPontos) {
     vector<PIGPonto2D> vertices;
@@ -3687,139 +3687,139 @@ void DefineAreaColisaoAnimacao(int idAnimacao, int pontosX[], int pontosY[], int
 }
 
 /********************************
-A fun√ß√£o DefineRaioColisaoAnimacao() √© respons√°vel por estabelecer um raio, em rela√ß√£o ao piv√¥ da anima√ß√£o, que ser√° utilizado para teste de colis√£o circular desta anima√ß√£o com as demais.
-A defini√ß√£o do raio s√≥ ser√° √∫til se o tipode colis√£o deste objeto for circular, definido pela fun√ß√£o DefineTipoColisaoObjeto().
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
-raio (entrada, passagem por valor): tamanho do raio que formar√° a √°rea de colis√£o desta anima√ß√£o.
+A funÁ„o DefineRaioColisaoAnimacao() È respons·vel por estabelecer um raio, em relaÁ„o ao pivÙ da animaÁ„o, que ser· utilizado para teste de colis„o circular desta animaÁ„o com as demais.
+A definiÁ„o do raio sÛ ser· ˙til se o tipode colis„o deste objeto for circular, definido pela funÁ„o DefineTipoColisaoObjeto().
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
+raio (entrada, passagem por valor): tamanho do raio que formar· a ·rea de colis„o desta animaÁ„o.
 ********************************/
 void DefineRaioColisaoAnimacao(int idAnimacao, float raio){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetRaioColisaoCircular(raio);
 }
 
 /********************************
-A fun√ß√£o DefineTipoColisaoAnimacao() √© respons√°vel por definir o tipod e colis√£o que ser√° utilizada por esta anima√ß√£o com as demais.
-√â poss√≠vel ter 3 tipos de colis√£o: por bouding-box (PIG_COLISAO_OOBB - √°rea de colis√£o delimitada pelo ponto X,Y da anima√ß√£o, sua altura e largura e rota√ß√£o),
-por pol√≠gono (PIG_COLISAO_POLIGONO) √°rea de colis√£o formada por pontos gen√©ricos) e circular (PIG_COLISAO_CIRCULAR) √°rea de colis√£o em forma de c√≠rculo, com raio definido a partir do ponto piv√¥)
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
-modo (entrada, passagem por valor): modo de colis√£o a ser utilizado por esta anima√ß√£o.
+A funÁ„o DefineTipoColisaoAnimacao() È respons·vel por definir o tipod e colis„o que ser· utilizada por esta animaÁ„o com as demais.
+… possÌvel ter 3 tipos de colis„o: por bouding-box (PIG_COLISAO_OOBB - ·rea de colis„o delimitada pelo ponto X,Y da animaÁ„o, sua altura e largura e rotaÁ„o),
+por polÌgono (PIG_COLISAO_POLIGONO) ·rea de colis„o formada por pontos genÈricos) e circular (PIG_COLISAO_CIRCULAR) ·rea de colis„o em forma de cÌrculo, com raio definido a partir do ponto pivÙ)
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
+modo (entrada, passagem por valor): modo de colis„o a ser utilizado por esta animaÁ„o.
 ********************************/
 void DefineTipoColisaoAnimacao(int idAnimacao, PIGModoColisao modo){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetModoColisao(modo);
 }
 
 /********************************
-A fun√ß√£o DesenhaAnimacao() √© respons√°vel por desenhar uma anima√ß√£o na tela. A anima√ß√£o ser√° desenhada de acordo com o modo atual da anima√ß√£o,
-fazendo com que os frames sejam automaticamente ajustados de acordo com o tempo estipulado. Caso o modo atual esteja em loop, o primeiro frame ser√°
-desenhado novamente logo ap√≥s o t√©rmino do √∫ltimo frame.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o a ser desenhada.
+A funÁ„o DesenhaAnimacao() È respons·vel por desenhar uma animaÁ„o na tela. A animaÁ„o ser· desenhada de acordo com o modo atual da animaÁ„o,
+fazendo com que os frames sejam automaticamente ajustados de acordo com o tempo estipulado. Caso o modo atual esteja em loop, o primeiro frame ser·
+desenhado novamente logo apÛs o tÈrmino do ˙ltimo frame.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o a ser desenhada.
 Retorno:
-inteiro que indica se a anima√ß√£o encerrou ou n√£o. O valor s√≥ ser√° diferente de zero, se o modo atual tamb√©m n√£o estiver em loop.
+inteiro que indica se a animaÁ„o encerrou ou n„o. O valor sÛ ser· diferente de zero, se o modo atual tambÈm n„o estiver em loop.
 ********************************/
 int DesenhaAnimacao(int idAnimacao){
     return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->Desenha();
 }
 
 /********************************
-A fun√ß√£o MoveAnimacao() √© respons√°vel por movimentar uma determinada anima√ß√£o para uma nova posi√ß√£o informada.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o a ser movida.
-posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu√°rio deseja reposicionar a anima√ß√£o.
-posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu√°rio deseja reposicionar a anima√ß√£o.
+A funÁ„o MoveAnimacao() È respons·vel por movimentar uma determinada animaÁ„o para uma nova posiÁ„o informada.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o a ser movida.
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu·rio deseja reposicionar a animaÁ„o.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu·rio deseja reposicionar a animaÁ„o.
 ********************************/
 void MoveAnimacao(int idAnimacao, int x, int y){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->Move(x,y);
 }
 
 /********************************
-A fun√ß√£o DeslocaAnimcao() √© respons√°vel por deslocar uma determinada animacao em rela√ß√£o √† sua posi√ß√£o atual.
-Par√¢metros:
+A funÁ„o DeslocaAnimcao() È respons·vel por deslocar uma determinada animacao em relaÁ„o ‡ sua posiÁ„o atual.
+Par‚metros:
 idAnimacao (entrada, passagem por valor): identificador da animacao a ser deslocada.
-deltaX (entrada, passagem por valor): valor a ser somado ou subtra√≠do na componente X da posi√ß√£o da anima√ß√£o.
-deltaY (entrada, passagem por valor): valor a ser somado ou subtra√≠do na componente Y da posi√ß√£o da anima√ß√£o.
+deltaX (entrada, passagem por valor): valor a ser somado ou subtraÌdo na componente X da posiÁ„o da animaÁ„o.
+deltaY (entrada, passagem por valor): valor a ser somado ou subtraÌdo na componente Y da posiÁ„o da animaÁ„o.
 ********************************/
 void DeslocaAnimacao(int idAnimacao, int deltaX, int deltaY){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->Desloca(deltaX,deltaY);
 }
 
 /********************************
-A fun√ß√£o SetLoopModoAnimacao() √© respons√°vel por definir a exist√™ncia ou n√£o de loop em um modo de uma anima√ß√£o.
-Par√¢metros:
+A funÁ„o SetLoopModoAnimacao() È respons·vel por definir a existÍncia ou n„o de loop em um modo de uma animaÁ„o.
+Par‚metros:
 idAnimacao (entrada, passagem por valor): identificador da animacao a ser deslocada.
-codigoModo (entrada, passagem por valor): numero do modo em quest√£o.
-loop (entrada, passagem por valor): valor que indica a exist√™ncia (diferente de zero) ou n√£o (igual a zero) de loop no modo em quest√£o.
+codigoModo (entrada, passagem por valor): numero do modo em quest„o.
+loop (entrada, passagem por valor): valor que indica a existÍncia (diferente de zero) ou n„o (igual a zero) de loop no modo em quest„o.
 ********************************/
 void SetLoopModoAnimacao(int idAnimacao, int modo, int loop){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetLoopModo(modo,loop);
 }
 
 /********************************
-A fun√ß√£o SetTempoFrameAnimacao() √© respons√°vel por definir uma nova dura√ß√£o para exibi√ß√£o do frame.
-Par√¢metros:
+A funÁ„o SetTempoFrameAnimacao() È respons·vel por definir uma nova duraÁ„o para exibiÁ„o do frame.
+Par‚metros:
 idAnimacao (entrada, passagem por valor): identificador da animacao a ser deslocada.
-codigoModo (entrada, passagem por valor): numero do modo em quest√£o.
+codigoModo (entrada, passagem por valor): numero do modo em quest„o.
 indiceFrame (entrada, passagem por valor): indica a partir de qual frame o modo deve ser exibido. O valor 0 significa aprtir do primeiro frame.
-tempo (entrada, passagem por valor): valor que indica a nova dura√ß√£o de exibi√ß√£o do frame, em segundos.
+tempo (entrada, passagem por valor): valor que indica a nova duraÁ„o de exibiÁ„o do frame, em segundos.
 ********************************/
 void SetTempoFrameAnimacao(int idAnimacao, int modo, int indiceFrame, float tempo){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetTempoFrame(modo,indiceFrame,tempo);
 }
 
 /********************************
-A fun√ß√£o SetAudioFrameAnimacao() √© respons√°vel por definir um novo audio a ser executado quando o frame em quest√£o come√ßar a ser exibido.
-Par√¢metros:
+A funÁ„o SetAudioFrameAnimacao() È respons·vel por definir um novo audio a ser executado quando o frame em quest„o comeÁar a ser exibido.
+Par‚metros:
 idAnimacao (entrada, passagem por valor): identificador da animacao a ser deslocada.
-codigoModo (entrada, passagem por valor): numero do modo em quest√£o.
+codigoModo (entrada, passagem por valor): numero do modo em quest„o.
 indiceFrame (entrada, passagem por valor): indica a partir de qual frame o modo deve ser exibido. O valor 0 significa aprtir do primeiro frame.
-idAudio (entrada, passagem por valor): identificador do audio (j√° criado) a ser tocado quando o frame come√ßar a ser exibido.
+idAudio (entrada, passagem por valor): identificador do audio (j· criado) a ser tocado quando o frame comeÁar a ser exibido.
 ********************************/
 void SetAudioFrameAnimacao(int idAnimacao, int modo, int indiceFrame, int idAudio){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetAudioFrame(modo,indiceFrame,idAudio);
 }
 
 /********************************
-A fun√ß√£o GetLoopModoAnimacao() √© respons√°vel por recuperar a exist√™ncia ou n√£o de loop em um modo de uma anima√ß√£o.
-Par√¢metros:
+A funÁ„o GetLoopModoAnimacao() È respons·vel por recuperar a existÍncia ou n„o de loop em um modo de uma animaÁ„o.
+Par‚metros:
 idAnimacao (entrada, passagem por valor): identificador da animacao a ser deslocada.
-codigoModo (entrada, passagem por valor): numero do modo em quest√£o.
+codigoModo (entrada, passagem por valor): numero do modo em quest„o.
 Retorno:
-inteiro que indica a exist√™ncia (diferente de zero) ou n√£o (igual a zero) de loop no modo em quest√£o.
+inteiro que indica a existÍncia (diferente de zero) ou n„o (igual a zero) de loop no modo em quest„o.
 ********************************/
 int GetLoopModoAnimacao(int idAnimacao, int modo){
     return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetLoopModo(modo);
 }
 
 /********************************
-A fun√ß√£o GetAudioFrameAnimacao() √© respons√°vel por recuprar o identificador do audio a ser executado quando o frame em quest√£o come√ßar a ser exibido.
-Par√¢metros:
+A funÁ„o GetAudioFrameAnimacao() È respons·vel por recuprar o identificador do audio a ser executado quando o frame em quest„o comeÁar a ser exibido.
+Par‚metros:
 idAnimacao (entrada, passagem por valor): identificador da animacao a ser deslocada.
-codigoModo (entrada, passagem por valor): numero do modo em quest√£o.
+codigoModo (entrada, passagem por valor): numero do modo em quest„o.
 indiceFrame (entrada, passagem por valor): indica a partir de qual frame o modo deve ser exibido. O valor 0 significa aprtir do primeiro frame.
 Retorno:
-inteiro que representa o identificador do audio (j√° criado) a ser tocado quando o frame come√ßar a ser exibido.
+inteiro que representa o identificador do audio (j· criado) a ser tocado quando o frame comeÁar a ser exibido.
 ********************************/
 int GetAudioFrameAnimacao(int idAnimacao, int modo, int indiceFrame){
     return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetAudioFrame(modo,indiceFrame);
 }
 
 /********************************
-A fun√ß√£o GetTempoFrameAnimacao() √© respons√°vel por recuperar a dura√ß√£o da exibi√ß√£o do frame.
-Par√¢metros:
+A funÁ„o GetTempoFrameAnimacao() È respons·vel por recuperar a duraÁ„o da exibiÁ„o do frame.
+Par‚metros:
 idAnimacao (entrada, passagem por valor): identificador da animacao a ser deslocada.
-codigoModo (entrada, passagem por valor): numero do modo em quest√£o.
+codigoModo (entrada, passagem por valor): numero do modo em quest„o.
 indiceFrame (entrada, passagem por valor): indica a partir de qual frame o modo deve ser exibido. O valor 0 significa aprtir do primeiro frame.
 Retorno:
-float que indica a nova dura√ß√£o de exibi√ß√£o do frame, em segundos.
+float que indica a nova duraÁ„o de exibiÁ„o do frame, em segundos.
 ********************************/
 float GetTempoFrameAnimacao(int idAnimacao, int modo, int indiceFrame){
     return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetTempoFrame(modo,indiceFrame);
 }
 
 /********************************
-A fun√ß√£o PausaAnimacao() √© respons√°vel por pausar a exibi√ß√£o dos frames da anima√ß√£o.
-Par√¢metros:
+A funÁ„o PausaAnimacao() È respons·vel por pausar a exibiÁ„o dos frames da animaÁ„o.
+Par‚metros:
 idAnimacao (entrada, passagem por valor): identificador da animacao a ser deslocada.
 ********************************/
 void PausaAnimacao(int idAnimacao){
@@ -3827,8 +3827,8 @@ void PausaAnimacao(int idAnimacao){
 }
 
 /********************************
-A fun√ß√£o DespausaAnimacao() √© respons√°vel por despausar a exibi√ß√£o dos frames da anima√ß√£o.
-Par√¢metros:
+A funÁ„o DespausaAnimacao() È respons·vel por despausar a exibiÁ„o dos frames da animaÁ„o.
+Par‚metros:
 idAnimacao (entrada, passagem por valor): identificador da animacao a ser deslocada.
 ********************************/
 void DesausaAnimacao(int idAnimacao){
@@ -3836,34 +3836,34 @@ void DesausaAnimacao(int idAnimacao){
 }
 
 /********************************
-A fun√ß√£o SetOpacidadeAnimacao() √© respons√°vel por modificar o n√≠vel de opacidade da anima√ß√£o.
-O n√≠vel de opacidade varia de 0-255, sendo 0 totalmente transparente e 255 totalmente opaco.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
-valor (entrada,passagem por valor): n√≠vel de opacidade da anima√ß√£o na faixa 0-255.
+A funÁ„o SetOpacidadeAnimacao() È respons·vel por modificar o nÌvel de opacidade da animaÁ„o.
+O nÌvel de opacidade varia de 0-255, sendo 0 totalmente transparente e 255 totalmente opaco.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
+valor (entrada,passagem por valor): nÌvel de opacidade da animaÁ„o na faixa 0-255.
 ********************************/
 void SetOpacidadeAnimacao(int idAnimacao, int valor){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetOpacidade(valor);
 }
 
 /********************************
-A fun√ß√£o GetOpacidadeAnimacao() √© respons√°vel por recuperar o n√≠vel de opacidade da anima√ß√£o.
-O n√≠vel de opacidade varia de 0-255, sendo 0 totalmente transparente e 255 totalmente opaco.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
+A funÁ„o GetOpacidadeAnimacao() È respons·vel por recuperar o nÌvel de opacidade da animaÁ„o.
+O nÌvel de opacidade varia de 0-255, sendo 0 totalmente transparente e 255 totalmente opaco.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
 Retorno:
-Retorna o n√≠vel de opacidade da anima√ß√£o na faixa 0-255.
+Retorna o nÌvel de opacidade da animaÁ„o na faixa 0-255.
 ********************************/
 int GetOpacidadeAnimacao(int idAnimacao){
     return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetOpacidade();
 }
 
 /********************************
-A fun√ß√£o SetColoracaoAnimacao() √© respons√°vel por mesclar uma determinada cor com os pixels do arquivo de imagem.
-Ap√≥s a modifica√ß√£o, todos os desenhos desta anima√ß√£o ser√£o mostrados j√° com a mesclagem definida.
-Para voltar ao padr√£o original de pixels, deve-se chamar a fun√ß√£o, passando a cor branca (255,255,255,255).
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o a ser desenhado.
+A funÁ„o SetColoracaoAnimacao() È respons·vel por mesclar uma determinada cor com os pixels do arquivo de imagem.
+ApÛs a modificaÁ„o, todos os desenhos desta animaÁ„o ser„o mostrados j· com a mesclagem definida.
+Para voltar ao padr„o original de pixels, deve-se chamar a funÁ„o, passando a cor branca (255,255,255,255).
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o a ser desenhado.
 cor (entrada,passagem por valor): cor do sistema RGB utilizada para mesclagem com o arquivo de imagem
 ********************************/
 void SetColoracaoAnimacao(int idAnimacao, PIGCor cor){
@@ -3871,11 +3871,11 @@ void SetColoracaoAnimacao(int idAnimacao, PIGCor cor){
 }
 
 /********************************
-A fun√ß√£o SetFlipAnimacao() √© respons√°vel por virar a anima√ß√£o, invertendo-a em alguma dire√ß√£o. A anima√ß√£o somente ser√°
-desenhada na nova orienta√ß√£o no pr√≥ximo comando DesenhaAnimacao().
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o a ser virada.
-valor (entrada, passagem por valor): valor do tipo de Flip. Pode ser PIG_FLIP_NENHUM (nenhum tipo de invers√£o),
+A funÁ„o SetFlipAnimacao() È respons·vel por virar a animaÁ„o, invertendo-a em alguma direÁ„o. A animaÁ„o somente ser·
+desenhada na nova orientaÁ„o no prÛximo comando DesenhaAnimacao().
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o a ser virada.
+valor (entrada, passagem por valor): valor do tipo de Flip. Pode ser PIG_FLIP_NENHUM (nenhum tipo de invers„o),
 PIG_FLIP_HORIZONTAL (inverte da esquerda para a direita), PIG_FLIP_VERTICAL (inverte de cima para baixo),
 ou PIG_FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
 ********************************/
@@ -3884,11 +3884,11 @@ void SetFlipAnimacao(int idAnimacao, PIGFlip valor){
 }
 
 /********************************
-A fun√ß√£o GetFlipAnimacao() √© respons√°vel por recuperar o valor da manipula√ß√£o causada pela fun√ß√£o SetFlipAnimacao().
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o a ser virada.
+A funÁ„o GetFlipAnimacao() È respons·vel por recuperar o valor da manipulaÁ„o causada pela funÁ„o SetFlipAnimacao().
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o a ser virada.
 Retorno:
-inteiro que indica o tipo de Flip. Pode ser PIG_FLIP_NENHUM (nenhum tipo de invers√£o),
+inteiro que indica o tipo de Flip. Pode ser PIG_FLIP_NENHUM (nenhum tipo de invers„o),
 PIG_FLIP_HORIZONTAL (inverte da esquerda para a direita), PIG_FLIP_VERTICAL (inverte de cima para baixo),
 ou PIG_FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
 ********************************/
@@ -3897,61 +3897,61 @@ PIGFlip GetFlipAnimacao(int idAnimacao){
 }
 
 /********************************
-A fun√ß√£o SetAnguloAnimacao() √© respons√°vel pela angula√ß√£o de determinada animacao. A angula√ß√£o √© calculada em sentido
-hor√°rio a partir do eixo X (0 graus). A anima√ß√£o ser√° desenhada com a angula√ß√£o informada no pr√≥ximo comando
-DesenhaAnimcao(). A detec√ß√£o de colis√£o n√£o funciona com anima√ß√µes fora da angula√ß√£o padr√£o (0 graus).
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
-angulo (entrada, passagem por valor): valor para indicar a angula√ß√£o da anima√ß√£o em graus.
+A funÁ„o SetAnguloAnimacao() È respons·vel pela angulaÁ„o de determinada animacao. A angulaÁ„o È calculada em sentido
+hor·rio a partir do eixo X (0 graus). A animaÁ„o ser· desenhada com a angulaÁ„o informada no prÛximo comando
+DesenhaAnimcao(). A detecÁ„o de colis„o n„o funciona com animaÁıes fora da angulaÁ„o padr„o (0 graus).
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
+angulo (entrada, passagem por valor): valor para indicar a angulaÁ„o da animaÁ„o em graus.
 ********************************/
 void SetAnguloAnimacao(int idAnimacao, double angulo){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetAngulo(angulo);
 }
 
 /********************************
-A fun√ß√£o GetAnguloAnimacao() √© respons√°vel por recuperar o √¢ngulo de rota√ß√£o de determinada anima√ß√£o. A angula√ß√£o √© calculada em sentido
-hor√°rio a partir do eixo X (0 graus). A anima√ß√£o ser√° desenhada com a angula√ß√£o informada no pr√≥ximo comando
-DesenhaAnimacao(). A detec√ß√£o de colis√£o n√£o funciona com anima√ß√µes fora da angula√ß√£o padr√£o (0 graus).
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
+A funÁ„o GetAnguloAnimacao() È respons·vel por recuperar o ‚ngulo de rotaÁ„o de determinada animaÁ„o. A angulaÁ„o È calculada em sentido
+hor·rio a partir do eixo X (0 graus). A animaÁ„o ser· desenhada com a angulaÁ„o informada no prÛximo comando
+DesenhaAnimacao(). A detecÁ„o de colis„o n„o funciona com animaÁıes fora da angulaÁ„o padr„o (0 graus).
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
 Retorno:
-Retorna o valor do √¢ngulo em graus.
+Retorna o valor do ‚ngulo em graus.
 ********************************/
 double GetAnguloAnimacao(int idAnimacao){
     return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetAngulo();
 }
 
 /********************************
-A fun√ß√£o SetPivoAbsolutoAnimacao() define um ponto (X,Y) em rela√ß√£o ao ponto (0,0) da anima√ß√£o, sobre o qual a anima√ß√£o ser√°
-rotacionado quando a fun√ß√£o SetAnguloAnimacao() for executada.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
-posicaoX (entrada, passagem por valor): Valor da coordenada X do piv√¥ em rela√ß√£o ao ponto (0,0) da anima√ß√£o.
-posicaoY (entrada, passagem por valor): Valor da coordenada Y do piv√¥ em rela√ß√£o ao ponto (0,0) da anima√ß√£o.
+A funÁ„o SetPivoAbsolutoAnimacao() define um ponto (X,Y) em relaÁ„o ao ponto (0,0) da animaÁ„o, sobre o qual a animaÁ„o ser·
+rotacionado quando a funÁ„o SetAnguloAnimacao() for executada.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
+posicaoX (entrada, passagem por valor): Valor da coordenada X do pivÙ em relaÁ„o ao ponto (0,0) da animaÁ„o.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y do pivÙ em relaÁ„o ao ponto (0,0) da animaÁ„o.
 ********************************/
 void SetPivoAbsolutoAnimacao(int idAnimacao, int posicaoX, int posicaoY){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetPivoAbsoluto({(double)posicaoX,(double)posicaoY});
 }
 
 /********************************
-A fun√ß√£o SetPivoProporcionalAnimacao() define um ponto (X,Y) proporcional ao tamanho da anima√ß√£o, sobre o qual a anima√ß√£o ser√°
-rotacionado quando a fun√ß√£o SetAnguloAnimacao() for executada.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
-relX (entrada, passagem por valor): porcentagem da largura da anima√ß√£o onde ficar√° o piv√¥.
-relY (entrada, passagem por valor): porcentagem da altura da anima√ß√£o onde ficar√° o piv√¥.
+A funÁ„o SetPivoProporcionalAnimacao() define um ponto (X,Y) proporcional ao tamanho da animaÁ„o, sobre o qual a animaÁ„o ser·
+rotacionado quando a funÁ„o SetAnguloAnimacao() for executada.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
+relX (entrada, passagem por valor): porcentagem da largura da animaÁ„o onde ficar· o pivÙ.
+relY (entrada, passagem por valor): porcentagem da altura da animaÁ„o onde ficar· o pivÙ.
 ********************************/
 void SetPivoProporcionalAnimacao(int idAnimacao, float relX, float relY){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetPivoProporcional({relX,relY});
 }
 
 /********************************
-A fun√ß√£o GetPivoAnimacao() define um ponto (X,Y) em rela√ß√£o ao ponto (0,0) da animacao, sobre o qual a anima√ß√£o ser√°
-rotacionado quando a fun√ß√£o SetAnguloAnimacao() for executada.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
-posicaoX (sa√≠da, passagem por refer√™ncia): Valor da coordenada X do piv√¥ em rela√ß√£o ao ponto (0,0) da anima√ß√£o.
-posicaoY (sa√≠da, passagem por refer√™ncia): Valor da coordenada Y do piv√¥ em rela√ß√£o ao ponto (0,0) da anima√ß√£o.
+A funÁ„o GetPivoAnimacao() define um ponto (X,Y) em relaÁ„o ao ponto (0,0) da animacao, sobre o qual a animaÁ„o ser·
+rotacionado quando a funÁ„o SetAnguloAnimacao() for executada.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
+posicaoX (saÌda, passagem por referÍncia): Valor da coordenada X do pivÙ em relaÁ„o ao ponto (0,0) da animaÁ„o.
+posicaoY (saÌda, passagem por referÍncia): Valor da coordenada Y do pivÙ em relaÁ„o ao ponto (0,0) da animaÁ„o.
 ********************************/
 void GetPivoAnimacao(int idAnimacao, int *posicaoX, int *posicaoY){
     PIGPonto2D p = CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetPivo();
@@ -3960,10 +3960,10 @@ void GetPivoAnimacao(int idAnimacao, int *posicaoX, int *posicaoY){
 }
 
 /********************************
-A fun√ß√£o SetDimensoesAnimacao() √© respons√°vel por delimitar a altura e a largura da anima√ß√£o que ser√° desenhada na tela,
+A funÁ„o SetDimensoesAnimacao() È respons·vel por delimitar a altura e a largura da animaÁ„o que ser· desenhada na tela,
 independentemente do tamanho original do arquivo de imagem.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
 altura (entrada, passagem por valor): altura em pixels.
 largura (entrada, passagem por valor): largura em pixels.
 ********************************/
@@ -3972,117 +3972,117 @@ void SetDimensoesAnimacao(int idAnimacao, int altura, int largura){
 }
 
 /********************************
-A fun√ß√£o GetDimensoesAnimacao() √© respons√°vel por recuperar a altura e a largura da √°rea a ser usada
-para desenhar a anima√ß√£o na tela. Em outras palavras, representa o tamanho atual da anima√ß√£o.
-Par√¢metros:
-idObjeto (entrada, passagem por valor): identificador da anima√ß√£o.
-altura (sa√≠da, passagem por refer√™ncia): altura atual em pixels da anima√ß√£o.
-largura (sa√≠da, passagem por refer√™ncia): largura atual em pixels da anima√ß√£o.
+A funÁ„o GetDimensoesAnimacao() È respons·vel por recuperar a altura e a largura da ·rea a ser usada
+para desenhar a animaÁ„o na tela. Em outras palavras, representa o tamanho atual da animaÁ„o.
+Par‚metros:
+idObjeto (entrada, passagem por valor): identificador da animaÁ„o.
+altura (saÌda, passagem por referÍncia): altura atual em pixels da animaÁ„o.
+largura (saÌda, passagem por referÍncia): largura atual em pixels da animaÁ„o.
 ********************************/
 void GetDimensoesAnimacao(int idAnimacao, int *altura, int *largura){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetDimensoes(*altura,*largura);
 }
 
 /********************************
-A fun√ß√£o SetValorIntAnimacao() √© respons√°vel incorporar a uma anima√ß√£o um atributo inteiro.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
-indice (entrada, passagem por valor): relaciona um n√∫mero inteiro ao atributo.
-valor (entrada, passagem por valor): valor do atributo inteiro a ser associado √† anima√ß√£o.
+A funÁ„o SetValorIntAnimacao() È respons·vel incorporar a uma animaÁ„o um atributo inteiro.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
+indice (entrada, passagem por valor): relaciona um n˙mero inteiro ao atributo.
+valor (entrada, passagem por valor): valor do atributo inteiro a ser associado ‡ animaÁ„o.
 ********************************/
 void SetValorIntAnimacao(int idAnimacao, int indice, int valor){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetValorInt(indice,valor);
 }
 
 /********************************
-A fun√ß√£o SetValorFloatAnimacao() √© respons√°vel incorporar a uma anima√ß√£o um atributo float.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
-indice (entrada, passagem por valor): relaciona um n√∫mero inteiro ao atributo.
-valor (entrada, passagem por valor): valor do atributo float a ser associado √† anima√ß√£o.
+A funÁ„o SetValorFloatAnimacao() È respons·vel incorporar a uma animaÁ„o um atributo float.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
+indice (entrada, passagem por valor): relaciona um n˙mero inteiro ao atributo.
+valor (entrada, passagem por valor): valor do atributo float a ser associado ‡ animaÁ„o.
 ********************************/
 void SetValorFloatAnimacao(int idAnimacao, int indice, float valor){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetValorFloat(indice,valor);
 }
 
 /********************************
-A fun√ß√£o SetValorIntAnimacao() √© respons√°vel incorporar a uma anima√ß√£o um atributo inteiro.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
-indice (entrada, passagem por valor): relaciona um n√∫mero inteiro ao atributo.
-valor (entrada, passagem por refer√™ncia): valor do atributo string a ser associado √† anima√ß√£o.
+A funÁ„o SetValorIntAnimacao() È respons·vel incorporar a uma animaÁ„o um atributo inteiro.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
+indice (entrada, passagem por valor): relaciona um n˙mero inteiro ao atributo.
+valor (entrada, passagem por referÍncia): valor do atributo string a ser associado ‡ animaÁ„o.
 ********************************/
 void SetValorStringAnimacao(int idAnimacao, int indice, char *valor){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetValorString(indice,valor);
 }
 
 /********************************
-A fun√ß√£o SetValorIntAnimacao() √© respons√°vel incorporar a uma anima√ß√£o um atributo inteiro.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
-indice (entrada, passagem por refer√™ncia): relaciona uma string ao atributo.
-valor (entrada, passagem por valor): valor do atributo inteiro a ser associado √† anima√ß√£o.
+A funÁ„o SetValorIntAnimacao() È respons·vel incorporar a uma animaÁ„o um atributo inteiro.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
+indice (entrada, passagem por referÍncia): relaciona uma string ao atributo.
+valor (entrada, passagem por valor): valor do atributo inteiro a ser associado ‡ animaÁ„o.
 ********************************/
 void SetValorIntAnimacao(int idAnimacao, char *indice, int valor){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetValorInt(indice,valor);
 }
 
 /********************************
-A fun√ß√£o SetValorFloatAnimacao() √© respons√°vel incorporar a uma anima√ß√£o um atributo float.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
-indice (entrada, passagem por refer√™ncia): relaciona uma string ao atributo.
-valor (entrada, passagem por valor): valor do atributo float a ser associado √† anima√ß√£o.
+A funÁ„o SetValorFloatAnimacao() È respons·vel incorporar a uma animaÁ„o um atributo float.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
+indice (entrada, passagem por referÍncia): relaciona uma string ao atributo.
+valor (entrada, passagem por valor): valor do atributo float a ser associado ‡ animaÁ„o.
 ********************************/
 void SetValorFloatAnimacao(int idAnimacao, char *indice, float valor){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetValorFloat(indice,valor);
 }
 
 /********************************
-A fun√ß√£o SetValorIntAnimacao() √© respons√°vel incorporar a uma anima√ß√£o um atributo inteiro.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
-indice (entrada, passagem por refer√™ncia): relaciona uma string ao atributo.
-valor (entrada, passagem por refer√™ncia): valor do atributo string a ser associado √† anima√ß√£o.
+A funÁ„o SetValorIntAnimacao() È respons·vel incorporar a uma animaÁ„o um atributo inteiro.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
+indice (entrada, passagem por referÍncia): relaciona uma string ao atributo.
+valor (entrada, passagem por referÍncia): valor do atributo string a ser associado ‡ animaÁ„o.
 ********************************/
 void SetValorStringAnimacao(int idAnimacao, char *indice, char *valor){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->SetValorString(indice,valor);
 }
 
 /********************************
-A fun√ß√£o GetValorIntAnimacao() √© respons√°vel recuperar o valor de um atributo inteiro relacionado a uma anima√ß√£o.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
-indice (entrada, passagem por valor): indica o n√∫mero do atributo que se deseja recuperar.
-valor (sa√≠da, passagem por refer√™ncia): indica o valor do atributo, se a fun√ß√£o retornar um resultado diferente de zero.
+A funÁ„o GetValorIntAnimacao() È respons·vel recuperar o valor de um atributo inteiro relacionado a uma animaÁ„o.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
+indice (entrada, passagem por valor): indica o n˙mero do atributo que se deseja recuperar.
+valor (saÌda, passagem por referÍncia): indica o valor do atributo, se a funÁ„o retornar um resultado diferente de zero.
 Retorno:
-Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n√£o existir, a fun√ß√£o retorna o valor 0 (zero).
+Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n„o existir, a funÁ„o retorna o valor 0 (zero).
 ********************************/
 int GetValorIntAnimacao(int idAnimacao, int indice, int *valor){
     return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetValorInt(indice,*valor);
 }
 
 /********************************
-A fun√ß√£o GetValorFloatAnimacao() √© respons√°vel recuperar o valor de um atributo float relacionado a uma anima√ß√£o.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
-indice (entrada, passagem por valor): indica o n√∫mero do atributo que se deseja recuperar.
-valor (sa√≠da, passagem por refer√™ncia): indica o valor do atributo, se a fun√ß√£o retornar um resultado diferente de zero.
+A funÁ„o GetValorFloatAnimacao() È respons·vel recuperar o valor de um atributo float relacionado a uma animaÁ„o.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
+indice (entrada, passagem por valor): indica o n˙mero do atributo que se deseja recuperar.
+valor (saÌda, passagem por referÍncia): indica o valor do atributo, se a funÁ„o retornar um resultado diferente de zero.
 Retorno:
-Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n√£o existir, a fun√ß√£o retorna o valor 0 (zero).
+Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n„o existir, a funÁ„o retorna o valor 0 (zero).
 ********************************/
 int GetValorFloatAnimacao(int idAnimacao, int indice, float *valor){
     return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetValorFloat(indice,*valor);
 }
 
 /********************************
-A fun√ß√£o GetValorStringAnimacao() √© respons√°vel recuperar o valor de um atributo string relacionado a uma anima√ß√£o.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
-indice (entrada, passagem por valor): indica o n√∫mero do atributo que se deseja recuperar.
-valor (sa√≠da, passagem por refer√™ncia): indica o valor do atributo, se a fun√ß√£o retornar um resultado diferente de zero.
+A funÁ„o GetValorStringAnimacao() È respons·vel recuperar o valor de um atributo string relacionado a uma animaÁ„o.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
+indice (entrada, passagem por valor): indica o n˙mero do atributo que se deseja recuperar.
+valor (saÌda, passagem por referÍncia): indica o valor do atributo, se a funÁ„o retornar um resultado diferente de zero.
 Retorno:
-Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n√£o existir, a fun√ß√£o retorna o valor 0 (zero).
+Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n„o existir, a funÁ„o retorna o valor 0 (zero).
 ********************************/
 int GetValorStringAnimacao(int idAnimacao, int indice, char *valor){
     string str;
@@ -4092,39 +4092,39 @@ int GetValorStringAnimacao(int idAnimacao, int indice, char *valor){
 }
 
 /********************************
-A fun√ß√£o GetValorIntAnimacao() √© respons√°vel recuperar o valor de um atributo inteiro relacionado a uma anima√ß√£o.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
-indice (entrada, passagem por refer√™ncia): indica o nome do atributo que se deseja recuperar.
-valor (sa√≠da, passagem por refer√™ncia): indica o valor do atributo, se a fun√ß√£o retornar um resultado diferente de zero.
+A funÁ„o GetValorIntAnimacao() È respons·vel recuperar o valor de um atributo inteiro relacionado a uma animaÁ„o.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
+indice (entrada, passagem por referÍncia): indica o nome do atributo que se deseja recuperar.
+valor (saÌda, passagem por referÍncia): indica o valor do atributo, se a funÁ„o retornar um resultado diferente de zero.
 Retorno:
-Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n√£o existir, a fun√ß√£o retorna o valor 0 (zero).
+Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n„o existir, a funÁ„o retorna o valor 0 (zero).
 ********************************/
 int GetValorIntAnimacao(int idAnimacao, char *indice, int *valor){
     return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetValorInt(indice,*valor);
 }
 
 /********************************
-A fun√ß√£o GetValorFloatAnimacao() √© respons√°vel recuperar o valor de um atributo float relacionado a uma anima√ß√£o.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
+A funÁ„o GetValorFloatAnimacao() È respons·vel recuperar o valor de um atributo float relacionado a uma animaÁ„o.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
 indice (entrada, passagem por valor): indica o nome do atributo que se deseja recuperar.
-valor (sa√≠da, passagem por refer√™ncia): indica o valor do atributo, se a fun√ß√£o retornar um resultado diferente de zero.
+valor (saÌda, passagem por referÍncia): indica o valor do atributo, se a funÁ„o retornar um resultado diferente de zero.
 Retorno:
-Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n√£o existir, a fun√ß√£o retorna o valor 0 (zero).
+Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n„o existir, a funÁ„o retorna o valor 0 (zero).
 ********************************/
 int GetValorFloatAnimacao(int idAnimacao, char *indice, float *valor){
     return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetValorFloat(indice,*valor);
 }
 
 /********************************
-A fun√ß√£o GetValorStringAnimacao() √© respons√°vel recuperar o valor de um atributo string relacionado a uma anima√ß√£o.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
+A funÁ„o GetValorStringAnimacao() È respons·vel recuperar o valor de um atributo string relacionado a uma animaÁ„o.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
 indice (entrada, passagem por valor): indica o nome do atributo que se deseja recuperar.
-valor (sa√≠da, passagem por refer√™ncia): indica o valor do atributo, se a fun√ß√£o retornar um resultado diferente de zero.
+valor (saÌda, passagem por referÍncia): indica o valor do atributo, se a funÁ„o retornar um resultado diferente de zero.
 Retorno:
-Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n√£o existir, a fun√ß√£o retorna o valor 0 (zero).
+Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo n„o existir, a funÁ„o retorna o valor 0 (zero).
 ********************************/
 int GetValorStringAnimacao(int idAnimacao, char *indice, char *valor){
     string str;
@@ -4134,11 +4134,11 @@ int GetValorStringAnimacao(int idAnimacao, char *indice, char *valor){
 }
 
 /********************************
-A fun√ß√£o GetXYAnimacao() √© respons√°vel por recuperar o valor da posi√ß√£o (X,Y) da animacao de acordo com o sistema de coordenadas do jogo.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
-posicaoX (sa√≠da, passagem por referencia): indica a posicao no eixo X da anima√ß√£o.
-posicaoY (sa√≠da, passagem por referencia): indica a posicao no eixo Y da anima√ß√£o.
+A funÁ„o GetXYAnimacao() È respons·vel por recuperar o valor da posiÁ„o (X,Y) da animacao de acordo com o sistema de coordenadas do jogo.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
+posicaoX (saÌda, passagem por referencia): indica a posicao no eixo X da animaÁ„o.
+posicaoY (saÌda, passagem por referencia): indica a posicao no eixo Y da animaÁ„o.
 ********************************/
 void GetXYAnimacao(int idAnimacao, int *posicaoX, int *posicaoY){
     PIGPonto2D p = CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetXY();
@@ -4147,130 +4147,130 @@ void GetXYAnimacao(int idAnimacao, int *posicaoX, int *posicaoY){
 }
 
 /********************************
-A fun√ß√£o InsereTransicaoAnimacao() √© respons√°vel por criar e inserir uma nova transi√ß√£o ao final de sequ√™ncia de transi√ß√µes da anima√ß√£o.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
-tempo (entrada, passagem por valor): duracao (em segundos) da transi√ß√£o.
-deltaX (entrada, passagem por valor): diferen√ßa da posi√ß√£o no eixo X em rela√ß√£o √† posi√ß√£o da anima√ß√£o no in√≠cio da transi√ß√£o.
-deltaY (entrada, passagem por valor): diferen√ßa da posi√ß√£o no eixo Y em rela√ß√£o √† posi√ß√£o da anima√ß√£o no in√≠cio da transi√ß√£o.
-deltaAltura (entrada, passagem por valor): diferen√ßa da altura da anima√ß√£o em rela√ß√£o ao in√≠cio da transi√ß√£o.
-deltaLargura (entrada, passagem por valor): diferen√ßa da largura da anima√ß√£o em rela√ß√£o ao in√≠cio da transi√ß√£o.
-deltaAngulo (entrada, passagem por valor): diferen√ßa de √¢ngulo (em graus) da anima√ß√£o em rela√ß√£o ao in√≠cio da transi√ß√£o.
-corFinal (entrada, passagem por valor): colora√ß√£o da anima√ß√£o ao final da transi√ß√£o.
-deltaOpacidade (entrada, passagem por valor): diferen√ßa do n√≠vel de opacidade da anima√ß√£o em rela√ß√£o ao in√≠cio da transi√ß√£o.
+A funÁ„o InsereTransicaoAnimacao() È respons·vel por criar e inserir uma nova transiÁ„o ao final de sequÍncia de transiÁıes da animaÁ„o.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
+tempo (entrada, passagem por valor): duracao (em segundos) da transiÁ„o.
+deltaX (entrada, passagem por valor): diferenÁa da posiÁ„o no eixo X em relaÁ„o ‡ posiÁ„o da animaÁ„o no inÌcio da transiÁ„o.
+deltaY (entrada, passagem por valor): diferenÁa da posiÁ„o no eixo Y em relaÁ„o ‡ posiÁ„o da animaÁ„o no inÌcio da transiÁ„o.
+deltaAltura (entrada, passagem por valor): diferenÁa da altura da animaÁ„o em relaÁ„o ao inÌcio da transiÁ„o.
+deltaLargura (entrada, passagem por valor): diferenÁa da largura da animaÁ„o em relaÁ„o ao inÌcio da transiÁ„o.
+deltaAngulo (entrada, passagem por valor): diferenÁa de ‚ngulo (em graus) da animaÁ„o em relaÁ„o ao inÌcio da transiÁ„o.
+corFinal (entrada, passagem por valor): coloraÁ„o da animaÁ„o ao final da transiÁ„o.
+deltaOpacidade (entrada, passagem por valor): diferenÁa do nÌvel de opacidade da animaÁ„o em relaÁ„o ao inÌcio da transiÁ„o.
 ********************************/
 void InsereTransicaoAnimacao(int idAnimacao, double tempo, int deltaX, int deltaY, int deltaAltura, int deltaLargura, double deltaAngulo, PIGCor corFinal, int deltaOpacidade){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->InsereTransicao(tempo,{deltaX,deltaY,deltaAltura,deltaLargura,deltaAngulo,corFinal,deltaOpacidade});
 }
 
 /********************************
-A fun√ß√£o ExecutandoTransicaoAnimacao() retorna a informa√ß√£o sobre a execu√ß√£o (neste momento) de transi√ß√µes da anima√ß√£o.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
+A funÁ„o ExecutandoTransicaoAnimacao() retorna a informaÁ„o sobre a execuÁ„o (neste momento) de transiÁıes da animaÁ„o.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
 Retorno:
-inteiro que indica se a anima√ß√£o est√° executando alguma transi√ß√£o no momento (valor diferente de 0) ou n√£o (valor igual a 0).
+inteiro que indica se a animaÁ„o est· executando alguma transiÁ„o no momento (valor diferente de 0) ou n„o (valor igual a 0).
 ********************************/
 int ExecutandoTransicaoAnimacao(int idAnimacao){
     return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->ExecutandoTransicao();
 }
 
 /********************************
-A fun√ß√£o LeArquivoTransicaoAnimacao() √© respons√°vel por ler, criar e inserir as transi√ß√µes para uma anima√ß√£o, provenientes de um arquivo texto.
-Cada linha do arquivo texto corresponde a uma transi√ß√£o (em ordem) e deve possuir 11 valores:
-1) um double representando a duracao (em segundos) da transi√ß√£o.
-2) um inteiro repreentando a diferen√ßa da posi√ß√£o no eixo X em rela√ß√£o √† posi√ß√£o da anima√ß√£o no in√≠cio da transi√ß√£o.
-3) um inteiro repreentando a diferen√ßa da posi√ß√£o no eixo Y em rela√ß√£o √† posi√ß√£o da anima√ß√£o no in√≠cio da transi√ß√£o.
-4) um inteiro repreentando a diferen√ßa da altura da anima√ß√£o em rela√ß√£o ao in√≠cio da transi√ß√£o.
-5) um inteiro repreentando a diferen√ßa da largura da anima√ß√£o em rela√ß√£o ao in√≠cio da transi√ß√£o.
-6) um double repreentando a diferen√ßa de √¢ngulo (em graus) da anima√ß√£o em rela√ß√£o ao in√≠cio da transi√ß√£o.
-7) um inteiro repreentando a componente R (vermelho) da colora√ß√£o da anima√ß√£o ao final da transi√ß√£o.
-8) um inteiro repreentando a componente G (verde) da colora√ß√£o da anima√ß√£o ao final da transi√ß√£o.
-9) um inteiro repreentando a componente B (azul) da colora√ß√£o da anima√ß√£o ao final da transi√ß√£o.
-10) um inteiro repreentando a componente A (canal alfa) da colora√ß√£o da anima√ß√£o ao final da transi√ß√£o.
-11) um inteiro repreentando a diferen√ßa do n√≠vel de opacidade da anima√ß√£o em rela√ß√£o ao in√≠cio da transi√ß√£o.
-Par√¢metros:
-idSprite (entrada, passagem por valor): identificador da anima√ß√£o.
-nomeArq (entrada, passagem por refer√™ncia): nome com extens√£o do arquivo texto contendo as transi√ß√µes.
+A funÁ„o LeArquivoTransicaoAnimacao() È respons·vel por ler, criar e inserir as transiÁıes para uma animaÁ„o, provenientes de um arquivo texto.
+Cada linha do arquivo texto corresponde a uma transiÁ„o (em ordem) e deve possuir 11 valores:
+1) um double representando a duracao (em segundos) da transiÁ„o.
+2) um inteiro repreentando a diferenÁa da posiÁ„o no eixo X em relaÁ„o ‡ posiÁ„o da animaÁ„o no inÌcio da transiÁ„o.
+3) um inteiro repreentando a diferenÁa da posiÁ„o no eixo Y em relaÁ„o ‡ posiÁ„o da animaÁ„o no inÌcio da transiÁ„o.
+4) um inteiro repreentando a diferenÁa da altura da animaÁ„o em relaÁ„o ao inÌcio da transiÁ„o.
+5) um inteiro repreentando a diferenÁa da largura da animaÁ„o em relaÁ„o ao inÌcio da transiÁ„o.
+6) um double repreentando a diferenÁa de ‚ngulo (em graus) da animaÁ„o em relaÁ„o ao inÌcio da transiÁ„o.
+7) um inteiro repreentando a componente R (vermelho) da coloraÁ„o da animaÁ„o ao final da transiÁ„o.
+8) um inteiro repreentando a componente G (verde) da coloraÁ„o da animaÁ„o ao final da transiÁ„o.
+9) um inteiro repreentando a componente B (azul) da coloraÁ„o da animaÁ„o ao final da transiÁ„o.
+10) um inteiro repreentando a componente A (canal alfa) da coloraÁ„o da animaÁ„o ao final da transiÁ„o.
+11) um inteiro repreentando a diferenÁa do nÌvel de opacidade da animaÁ„o em relaÁ„o ao inÌcio da transiÁ„o.
+Par‚metros:
+idSprite (entrada, passagem por valor): identificador da animaÁ„o.
+nomeArq (entrada, passagem por referÍncia): nome com extens„o do arquivo texto contendo as transiÁıes.
 ********************************/
 void LeArquivoTransicaoAnimacao(int idAnimacao, char *nomeArq){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->LeTransicoes(nomeArq);
 }
 
 /********************************
-A fun√ß√£o IniciaAutomacaoAnimacao() √© respons√°vel por iniciar as transi√ß√µes j√° inseridas na anima√ß√£o, de acordo como o tipo de transi√ß√£o informada.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
+A funÁ„o IniciaAutomacaoAnimacao() È respons·vel por iniciar as transiÁıes j· inseridas na animaÁ„o, de acordo como o tipo de transiÁ„o informada.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
 ********************************/
 void IniciaAutomacaoAnimacao(int idAnimacao){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->IniciaAutomacao();
 }
 
 /********************************
-A fun√ß√£o TrataAutomacaoAnimacao() √© respons√°vel por calcular o estado da transi√ß√£o corrente da anima√ß√£o e aplicar essas modifica√ß√£o a ela.
-A fun√ß√£o deve ser chamada a cada frame, para ter resultados mais precisos.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
+A funÁ„o TrataAutomacaoAnimacao() È respons·vel por calcular o estado da transiÁ„o corrente da animaÁ„o e aplicar essas modificaÁ„o a ela.
+A funÁ„o deve ser chamada a cada frame, para ter resultados mais precisos.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
 ********************************/
 void TrataAutomacaoAnimacao(int idAnimacao){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->TrataAutomacao();
 }
 
 /********************************
-A fun√ß√£o PausaAutomacaoAnimacao() √© respons√°vel por pausar as transi√ß√µes e a√ß√µes associadas a uma anima√ß√£o.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
+A funÁ„o PausaAutomacaoAnimacao() È respons·vel por pausar as transiÁıes e aÁıes associadas a uma animaÁ„o.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
 ********************************/
 void PausaAutomacaoAnimacao(int idAnimacao){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->PausaAutomacao();
 }
 
 /********************************
-A fun√ß√£o DespausaAutomacaoAnimacao() √© respons√°vel por despausar as transi√ß√µes e a√ß√µes associadas a uma anima√ß√£o.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
+A funÁ„o DespausaAutomacaoAnimacao() È respons·vel por despausar as transiÁıes e aÁıes associadas a uma animaÁ„o.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
 ********************************/
 void DespausaAutomacaoAnimacao(int idAnimacao){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->DespausaAutomacao();
 }
 
 /********************************
-A fun√ß√£o DefineTipoTransicaoAnimacao() √© respons√°vel por determinar como a sequ√™ncia de transi√ß√µes da anima√ß√£o ser√° executada.
-√â poss√≠vel faz√™-la uma √∫nica vez (PIG_TRANSICAO_NORMAL), em loop (PIG_TRANSICAO_LOOP) ou indo at√© o final da sequ√™ncia e retornando, em vai-v√©m (PIG_TRANSICAO_VAIVEM).
-A fun√ß√£o deve ser chamada a cada frame, para ter resultados mais precisos.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
+A funÁ„o DefineTipoTransicaoAnimacao() È respons·vel por determinar como a sequÍncia de transiÁıes da animaÁ„o ser· executada.
+… possÌvel fazÍ-la uma ˙nica vez (PIG_TRANSICAO_NORMAL), em loop (PIG_TRANSICAO_LOOP) ou indo atÈ o final da sequÍncia e retornando, em vai-vÈm (PIG_TRANSICAO_VAIVEM).
+A funÁ„o deve ser chamada a cada frame, para ter resultados mais precisos.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
 ********************************/
 void DefineTipoTransicaoAnimacao(int idAnimacao, PIGTipoTransicao valor){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->DefineTipoTransicao(valor);
 }
 
 /********************************
-A fun√ß√£o LimpaTransicoesAnimacao() √© respons√°vel por remover a sequ√™ncia de transi√ß√µes do anima√ß√£o.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
+A funÁ„o LimpaTransicoesAnimacao() È respons·vel por remover a sequÍncia de transiÁıes do animaÁ„o.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
 ********************************/
 void LimpaTransicoesAnimacao(int idAnimacao){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->LimpaTransicoes();
 }
 
 /********************************
-A fun√ß√£o InsereAcaoAnimacao() √© respons√°vel por inserir na linha de tempo de automa√ß√£o do anima√ß√£o uma a√ß√£o a ser executada.
-A a√ß√£o √© composta por uma fun√ß√£o "acao" que ser√° executada quando a linha de tempo atingir o par√¢metro "tempo" e ser√° repetida a cada "repeticao" segundos.
-A a√ß√£o pode armazenar um ponteiro gen√©rico "param" que ser√° utilizado na chamada da fun√ß√£o.
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
-tempo (entrada, passagem por valor): tempo (em segundos) da primeira chamada da fun√ß√£o.
-repeticao (entrada, passagem por valor): tempo (em segundos) entre a chamada anterior e a pr√≥xima. O valor -1 indica que a fun√ß√£o n√£o ser√° repetida.
-param (entrada, passagem por refer√™ncia): ponteiro gen√©rico para um valor que ser√° utilizado na chamada da fun√ß√£o.
+A funÁ„o InsereAcaoAnimacao() È respons·vel por inserir na linha de tempo de automaÁ„o do animaÁ„o uma aÁ„o a ser executada.
+A aÁ„o È composta por uma funÁ„o "acao" que ser· executada quando a linha de tempo atingir o par‚metro "tempo" e ser· repetida a cada "repeticao" segundos.
+A aÁ„o pode armazenar um ponteiro genÈrico "param" que ser· utilizado na chamada da funÁ„o.
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
+tempo (entrada, passagem por valor): tempo (em segundos) da primeira chamada da funÁ„o.
+repeticao (entrada, passagem por valor): tempo (em segundos) entre a chamada anterior e a prÛxima. O valor -1 indica que a funÁ„o n„o ser· repetida.
+param (entrada, passagem por referÍncia): ponteiro genÈrico para um valor que ser· utilizado na chamada da funÁ„o.
 ********************************/
 void InsereAcaoAnimacao(int idAnimacao, double tempo, double repeticao, PIGFuncaoSimples acao, void *param){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->InsereAcao(tempo,repeticao,acao,param);
 }
 
 /********************************
-A fun√ß√£o LimpaAcoesAnimacao() √© respons√°vel por remover as a√ß√µes restantes associadas √† anima√ß√£o
-Par√¢metros:
-idAnimacao (entrada, passagem por valor): identificador da anima√ß√£o.
+A funÁ„o LimpaAcoesAnimacao() È respons·vel por remover as aÁıes restantes associadas ‡ animaÁ„o
+Par‚metros:
+idAnimacao (entrada, passagem por valor): identificador da animaÁ„o.
 ********************************/
 void LimpaAcoesAnimacao(int idAnimacao){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->LimpaAcoes();
@@ -4278,46 +4278,46 @@ void LimpaAcoesAnimacao(int idAnimacao){
 
 
 /********************************
-Se√ß√£o dos √°udios
+SeÁ„o dos ·udios
 ********************************/
 
 /********************************
-A fun√ß√£o CriaAudio() √© respons√°vel por ler e preparar um arquivo de audio.
-Os formatos permitidos s√£o WAVE, AIFF, RIFF, OGG, VOC.
-Par√¢metros:
-nomeArquivo (entrada, passagem por refer√™ncia): string que informa o nome do arquivo de √°udio.
-nLoops (entrada, passagem por valor): indica o n√∫mero de repeti√ß√µes do √°udio. O valor 0 indica que ser√° tocado apenas uma vez. O valor -1 indica que o audio deve ser tocado indefinidamente.
+A funÁ„o CriaAudio() È respons·vel por ler e preparar um arquivo de audio.
+Os formatos permitidos s„o WAVE, AIFF, RIFF, OGG, VOC.
+Par‚metros:
+nomeArquivo (entrada, passagem por referÍncia): string que informa o nome do arquivo de ·udio.
+nLoops (entrada, passagem por valor): indica o n˙mero de repetiÁıes do ·udio. O valor 0 indica que ser· tocado apenas uma vez. O valor -1 indica que o audio deve ser tocado indefinidamente.
 tempoExecucao (entrada, passage por valor): indica uma quantidade de milissegundos do arquivo de audio que dem ser tocados. O valor de -1 indica que todo o arquivo deve ser tocado.
 Retorno:
-Retorna o identificador do audio para ser utilizado por outras fun√ß√µes.
+Retorna o identificador do audio para ser utilizado por outras funÁıes.
 ********************************/
 int CriaAudio(char *nomeArquivo, int nLoops, int tempoExecucao=-1){
     return CPIGGerenciadorAudios::CriaAudio(nomeArquivo,nLoops,tempoExecucao);
 }
 
 /********************************
-A fun√ß√£o DestroiAudio() √© respons√°vel por eliminar um √°udio do jogo.
-Par√¢metros:
-idAudio (entrada, passagem por valor): identificador do √°udio a ser exclu√≠do.
+A funÁ„o DestroiAudio() È respons·vel por eliminar um ·udio do jogo.
+Par‚metros:
+idAudio (entrada, passagem por valor): identificador do ·udio a ser excluÌdo.
 ********************************/
 void DestroiAudio(int idAudio){
     CPIGGerenciadorAudios::DestroiAudio(idAudio);
 }
 
 /********************************
-A fun√ß√£o CarregaBackground() √© respons√°vel por ler e preparar um arquivo de audio para ser tocado em background.
-Apenas um √∫nico arquivo de √°udio para background √© permitido. Os formatos permitidos s√£o WAVE, MOD, MIDI, OGG, MP3, FLAC.
-Par√¢metros:
-nomeArquivo (entrada, passagem por refer√™ncia): string que informa o nome do arquivo de √°udio.
+A funÁ„o CarregaBackground() È respons·vel por ler e preparar um arquivo de audio para ser tocado em background.
+Apenas um ˙nico arquivo de ·udio para background È permitido. Os formatos permitidos s„o WAVE, MOD, MIDI, OGG, MP3, FLAC.
+Par‚metros:
+nomeArquivo (entrada, passagem por referÍncia): string que informa o nome do arquivo de ·udio.
 ********************************/
 void CarregaBackground(char *nomeArquivo){
     CPIGGerenciadorAudios::CarregaBackground(nomeArquivo);
 }
 
 /********************************
-A fun√ß√£o PlayBackground() √© respons√°vel por tocar um √°udio de background previamente carregado.
-Par√¢metros:
-nVezes (entrada, passagem por valor): indica o n√∫mero de vezes que o background deve ser executado.
+A funÁ„o PlayBackground() È respons·vel por tocar um ·udio de background previamente carregado.
+Par‚metros:
+nVezes (entrada, passagem por valor): indica o n˙mero de vezes que o background deve ser executado.
 O valor -1 indica que deve ser tocado indefinidamente.
 ********************************/
 void PlayBackground(int nVezes=-1){
@@ -4325,162 +4325,162 @@ void PlayBackground(int nVezes=-1){
 }
 
 /********************************
-A fun√ß√£o StopBackground() √© respons√°vel por parar um √°udio de background previamente carregado.
+A funÁ„o StopBackground() È respons·vel por parar um ·udio de background previamente carregado.
 ********************************/
 void StopBackground(){
     CPIGGerenciadorAudios::StopBackground();
 }
 
 /********************************
-A fun√ß√£o PauseBackground() √© respons√°vel por pausar um √°udio de background previamente carregado.
+A funÁ„o PauseBackground() È respons·vel por pausar um ·udio de background previamente carregado.
 ********************************/
 void PauseBackground(){
     CPIGGerenciadorAudios::PauseBackground();
 }
 
 /********************************
-A fun√ß√£o ResumeBackground() √© respons√°vel por continuar a tocar um √°udio de background previamente carregado.
+A funÁ„o ResumeBackground() È respons·vel por continuar a tocar um ·udio de background previamente carregado.
 ********************************/
 void ResumeBackground(){
     CPIGGerenciadorAudios::ResumeBackground();
 }
 
 /********************************
-A fun√ß√£o GetStatusBackground() recupera o status do audio de background.
+A funÁ„o GetStatusBackground() recupera o status do audio de background.
 Retorno:
-Retorna: o valor do status do √°udio de background(PIG_AUDIO_TOCANDO, PIG_AUDIO_PARADO ou PIG_AUDIO_PAUSADO)
+Retorna: o valor do status do ·udio de background(PIG_AUDIO_TOCANDO, PIG_AUDIO_PARADO ou PIG_AUDIO_PAUSADO)
 ********************************/
 PIGStatusAudio GetStatusBackground(){
     return CPIGGerenciadorAudios::GetStatusBackground();
 }
 
 /********************************
-A fun√ß√£o SetVolumeBackground() define o valor do volume do √°udio de background.
-Par√¢metro:
-valor (entrada, passagem por valor): valor do novo volume a ser utilizado. Os valores devem ser entre 0 (mudo) e 128 (volume m√°ximo).
+A funÁ„o SetVolumeBackground() define o valor do volume do ·udio de background.
+Par‚metro:
+valor (entrada, passagem por valor): valor do novo volume a ser utilizado. Os valores devem ser entre 0 (mudo) e 128 (volume m·ximo).
 ********************************/
 void SetVolumeBackground(int valor){
     CPIGGerenciadorAudios::SetVolumeBackground(valor);
 }
 
 /********************************
-A fun√ß√£o GetVolumeBackground() recupera o valor do volume do √°udio de background.
+A funÁ„o GetVolumeBackground() recupera o valor do volume do ·udio de background.
 Retorno:
-Retorna o valor do volume do audio de background. Os valores devem ser entre 0 (mudo) e 128 (volume m√°ximo).
+Retorna o valor do volume do audio de background. Os valores devem ser entre 0 (mudo) e 128 (volume m·ximo).
 ********************************/
 int GetVolumeBackground(){
     return CPIGGerenciadorAudios::GetVolumeBackground();
 }
 
 /********************************
-A fun√ß√£o SetVolumeBackground() define o valor do volume do √°udio em quest√£o.
-Par√¢metro:
-idAudio (entrada, passagem por valor): identificador do √°udio.
-volume (entrada, passagem por valor): valor do novo volume a ser utilizado. Os valores devem ser entre 0 (mudo) e 128 (volume m√°ximo).
+A funÁ„o SetVolumeBackground() define o valor do volume do ·udio em quest„o.
+Par‚metro:
+idAudio (entrada, passagem por valor): identificador do ·udio.
+volume (entrada, passagem por valor): valor do novo volume a ser utilizado. Os valores devem ser entre 0 (mudo) e 128 (volume m·ximo).
 ********************************/
 void SetVolume(int idAudio, int volume){
     CPIGGerenciadorAudios::GetAudio(idAudio)->SetVolume(volume);
 }
 
 /********************************
-A fun√ß√£o SetVolumeBackground() recupera o valor do volume do √°udio em quest√£o.
-Par√¢metro:
-idAudio (entrada, passagem por valor): identificador do √°udio.
+A funÁ„o SetVolumeBackground() recupera o valor do volume do ·udio em quest„o.
+Par‚metro:
+idAudio (entrada, passagem por valor): identificador do ·udio.
 Retorno:
-Retorna o valor do volume do audio. Os valores devem ser entre 0 (mudo) e 128 (volume m√°ximo).
+Retorna o valor do volume do audio. Os valores devem ser entre 0 (mudo) e 128 (volume m·ximo).
 ********************************/
 int GetVolume(int idAudio){
     return CPIGGerenciadorAudios::GetAudio(idAudio)->GetVolume();
 }
 
 /********************************
-A fun√ß√£o SetVolumeBackground() define o valor do volume de todos os √°udios.
-Par√¢metro:
-volume (entrada, passagem por valor): valor do novo volume a ser utilizado. Os valores devem ser entre 0 (mudo) e 128 (volume m√°ximo).
+A funÁ„o SetVolumeBackground() define o valor do volume de todos os ·udios.
+Par‚metro:
+volume (entrada, passagem por valor): valor do novo volume a ser utilizado. Os valores devem ser entre 0 (mudo) e 128 (volume m·ximo).
 ********************************/
 void SetVolumeTudo(int volume){
     CPIGGerenciadorAudios::SetVolumeTudo(volume);
 }
 
 /********************************
-A fun√ß√£o PlayAudio() √© respons√°vel por tocar um √°udio previamente criado.
-Par√¢metro:
-idAudio (entrada, passagem por valor): indentificador do √°udio.
+A funÁ„o PlayAudio() È respons·vel por tocar um ·udio previamente criado.
+Par‚metro:
+idAudio (entrada, passagem por valor): indentificador do ·udio.
 ********************************/
 void PlayAudio(int idAudio){
     CPIGGerenciadorAudios::Play(idAudio);
 }
 
 /********************************
-A fun√ß√£o PauseAudio() √© respons√°vel por pausar um √°udio que esteja tocandoo.
-Par√¢metro:
-idAudio (entrada, passagem por valor): indentificador do √°udio.
+A funÁ„o PauseAudio() È respons·vel por pausar um ·udio que esteja tocandoo.
+Par‚metro:
+idAudio (entrada, passagem por valor): indentificador do ·udio.
 ********************************/
 void PauseAudio(int idAudio){
     CPIGGerenciadorAudios::GetAudio(idAudio)->Pause();
 }
 
 /********************************
-A fun√ß√£o ResumeAudio() √© respons√°vel por continuar a tocar um √°udio pausado.
-Par√¢metro:
-idAudio (entrada, passagem por valor): indentificador do √°udio.
+A funÁ„o ResumeAudio() È respons·vel por continuar a tocar um ·udio pausado.
+Par‚metro:
+idAudio (entrada, passagem por valor): indentificador do ·udio.
 ********************************/
 void ResumeAudio(int idAudio){
     CPIGGerenciadorAudios::GetAudio(idAudio)->Resume();
 }
 
 /********************************
-A fun√ß√£o StopAudio() √© respons√°vel por parar um √°udio pausado ou tocando.
-Par√¢metro:
-idAudio (entrada, passagem por valor): indentificador do √°udio.
+A funÁ„o StopAudio() È respons·vel por parar um ·udio pausado ou tocando.
+Par‚metro:
+idAudio (entrada, passagem por valor): indentificador do ·udio.
 ********************************/
 void StopAudio(int idAudio){
     CPIGGerenciadorAudios::GetAudio(idAudio)->Stop();
 }
 
 /********************************
-A fun√ß√£o GetStatusAudio() recupera o status do audio em quest√£o.
-Par√¢metro:
-idAudio (entrada, passagem por valor): indentificador do √°udio.
+A funÁ„o GetStatusAudio() recupera o status do audio em quest„o.
+Par‚metro:
+idAudio (entrada, passagem por valor): indentificador do ·udio.
 Retorno:
-Retorna: o valor do status do √°udio (PIG_AUDIO_TOCANDO, PIG_AUDIO_PARADO ou PIG_AUDIO_PAUSADO)
+Retorna: o valor do status do ·udio (PIG_AUDIO_TOCANDO, PIG_AUDIO_PARADO ou PIG_AUDIO_PAUSADO)
 ********************************/
 PIGStatusAudio GetStatusAudio(int idAudio){
     return CPIGGerenciadorAudios::GetAudio(idAudio)->GetStatus();
 }
 
 /********************************
-A fun√ß√£o ResumeTudoAudio() √© respons√°vel por parar todos os √°udios pausados ou tocando.
+A funÁ„o ResumeTudoAudio() È respons·vel por parar todos os ·udios pausados ou tocando.
 ********************************/
 void StopTudoAudio(){
     CPIGGerenciadorAudios::StopTudo();
 }
 
 /********************************
-A fun√ß√£o PauseTudoAudio() √© respons√°vel por pausar todos os √°udios que estiverem tocando.
+A funÁ„o PauseTudoAudio() È respons·vel por pausar todos os ·udios que estiverem tocando.
 ********************************/
 void PauseTudoAudio(){
     CPIGGerenciadorAudios::PauseTudo();
 }
 
 /********************************
-A fun√ß√£o ResumeTudoAudio() √© respons√°vel por continuar a tocar todos os √°udios pausados.
+A funÁ„o ResumeTudoAudio() È respons·vel por continuar a tocar todos os ·udios pausados.
 ********************************/
 void ResumeTudoAudio(){
     CPIGGerenciadorAudios::ResumeTudo();
 }
 
 /********************************
-Se√ß√£o dos sockets
+SeÁ„o dos sockets
 ********************************/
 
 /********************************
-A fun√ß√£o CriaSocketCliente() √© respons√°vel por abrir uma conex√£o TCP com um servidor por meio do seu hostname, que pode ser o nome do computador
-em uma rede local ou seu endere√ßo IP, e uma porta. O servidor precisa estar online ou a conex√£o n√£o ser√° estabelecida.
-Par√¢metros:
-hostname (entrada, passagem por valor): nome do computador (servidor) na rede local ou endere√ßo IP
-porta (entrada, passagem por valor): n√∫mero da porta aberta no servidor
-maxBytesPacote (entrada, passagem por valor): tamanho m√°ximo de bytes enviados e/ou recebidos de cada vez
+A funÁ„o CriaSocketCliente() È respons·vel por abrir uma conex„o TCP com um servidor por meio do seu hostname, que pode ser o nome do computador
+em uma rede local ou seu endereÁo IP, e uma porta. O servidor precisa estar online ou a conex„o n„o ser· estabelecida.
+Par‚metros:
+hostname (entrada, passagem por valor): nome do computador (servidor) na rede local ou endereÁo IP
+porta (entrada, passagem por valor): n˙mero da porta aberta no servidor
+maxBytesPacote (entrada, passagem por valor): tamanho m·ximo de bytes enviados e/ou recebidos de cada vez
 Retorno:
 Identificador do socket cliente que foi criado.
 ********************************/
@@ -4489,12 +4489,12 @@ int CriaSocketCliente(char *hostname, int porta, int maxBytesPacote=PIG_MAX_MENS
 }
 
 /********************************
-A fun√ß√£o CriaSocketServidor() √© respons√°vel por abrir um canal de comunica√ß√£o para transmiss√µes entrantes (ingoing).
-A cria√ß√£o do socket pode ser impedida por pol√≠ticas de acesso do firewall instalado.
-Par√¢metros:
-maxClientes (entrada, passagem por valor): n√∫mero m√°ximo de clientes que poder√£o se comunicar concomitantemente com o servidor.
-porta (entrada, passagem por valor): n√∫mero da porta a ser aberta. Deve ser utilizado um valor na faixa 0-65535 que n√£o esteja sendo utilizado por nenhum outro processo.
-maxBytesPacote (entrada, passagem por valor): tamanho m√°ximo de bytes enviados e/ou recebidos de cada vez.
+A funÁ„o CriaSocketServidor() È respons·vel por abrir um canal de comunicaÁ„o para transmissıes entrantes (ingoing).
+A criaÁ„o do socket pode ser impedida por polÌticas de acesso do firewall instalado.
+Par‚metros:
+maxClientes (entrada, passagem por valor): n˙mero m·ximo de clientes que poder„o se comunicar concomitantemente com o servidor.
+porta (entrada, passagem por valor): n˙mero da porta a ser aberta. Deve ser utilizado um valor na faixa 0-65535 que n„o esteja sendo utilizado por nenhum outro processo.
+maxBytesPacote (entrada, passagem por valor): tamanho m·ximo de bytes enviados e/ou recebidos de cada vez.
 Retorno:
 Identificador do socket servidor que foi criado.
 ********************************/
@@ -4503,10 +4503,10 @@ int CriaSocketServidor(int maxClientes, int porta, int maxBytesPacote=PIG_MAX_ME
 }
 
 /********************************
-A fun√ß√£o CriaSocketUDP() √© respons√°vel por abrir um canal de comunica√ß√£o transmiss√µes de acordo com o protocolo UDP.
-O mesmo socket √© utilizado para envio e recebimento das inform√ß√µes, n√£o havendo papel de cliente e servidor distintos.
-Par√¢metros:
-porta (entrada, passagem por valor): n√∫mero da porta a ser aberta. Deve ser utilizado um valor na faixa 0-65535 que n√£o esteja sendo utilizado por nenhum outro processo.
+A funÁ„o CriaSocketUDP() È respons·vel por abrir um canal de comunicaÁ„o transmissıes de acordo com o protocolo UDP.
+O mesmo socket È utilizado para envio e recebimento das informÁıes, n„o havendo papel de cliente e servidor distintos.
+Par‚metros:
+porta (entrada, passagem por valor): n˙mero da porta a ser aberta. Deve ser utilizado um valor na faixa 0-65535 que n„o esteja sendo utilizado por nenhum outro processo.
 Retorno:
 Identificador do socket UDP que foi criado.
 ********************************/
@@ -4515,8 +4515,8 @@ int CriaSocketUDP(int porta){
 }
 
 /********************************
-A fun√ß√£o DestroiSocketCliente() √© respons√°vel por fechar o socket cliente aberto, impossibilitando novos envios e recebimentos por ele.
-Par√¢metros:
+A funÁ„o DestroiSocketCliente() È respons·vel por fechar o socket cliente aberto, impossibilitando novos envios e recebimentos por ele.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket a ser fechado.
 ********************************/
 void DestroiSocketCliente(int idSocket){
@@ -4524,8 +4524,8 @@ void DestroiSocketCliente(int idSocket){
 }
 
 /********************************
-A fun√ß√£o DestroiSocketServidor() √© respons√°vel por fechar o socket servidor aberto, impossibilitando novos envios e recebimentos por ele.
-Par√¢metros:
+A funÁ„o DestroiSocketServidor() È respons·vel por fechar o socket servidor aberto, impossibilitando novos envios e recebimentos por ele.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket a ser fechado.
 ********************************/
 void DestroiSocketServidor(int idSocket){
@@ -4533,8 +4533,8 @@ void DestroiSocketServidor(int idSocket){
 }
 
 /********************************
-A fun√ß√£o DestroiSocketUDP() √© respons√°vel por fechar o socket UDP aberto, impossibilitando novos envios e recebimentos por ele.
-Par√¢metros:
+A funÁ„o DestroiSocketUDP() È respons·vel por fechar o socket UDP aberto, impossibilitando novos envios e recebimentos por ele.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket a ser fechado.
 ********************************/
 void DestroiSocketUDP(int idSocket){
@@ -4542,360 +4542,360 @@ void DestroiSocketUDP(int idSocket){
 }
 
 /********************************
-A fun√ß√£o GetAtivoSocketCliente() √© respons√°vel por verificar se o socket cliente ainda est√° ativo e conectado ao servidor ou n√£o.
-Par√¢metros:
+A funÁ„o GetAtivoSocketCliente() È respons·vel por verificar se o socket cliente ainda est· ativo e conectado ao servidor ou n„o.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro que determina se o socket cliente ainda est√° ativo e conectado (valor diferente de zero) ou n√£o (valor zero)
+Inteiro que determina se o socket cliente ainda est· ativo e conectado (valor diferente de zero) ou n„o (valor zero)
 ********************************/
 int GetAtivoSocketCliente(int idSocket){
     return CPIGGerenciadorSockets::GetCliente(idSocket)->GetAtivo();
 }
 
 /********************************
-A fun√ß√£o GetAtivoSocketServidor() √© respons√°vel por verificar se o socket servidor ainda est√° ativo ou n√£o.
-Par√¢metros:
+A funÁ„o GetAtivoSocketServidor() È respons·vel por verificar se o socket servidor ainda est· ativo ou n„o.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro que determina se o socket servidor ainda est√° ativo (valor diferente de zero) ou n√£o (valor zero)
+Inteiro que determina se o socket servidor ainda est· ativo (valor diferente de zero) ou n„o (valor zero)
 ********************************/
 int GetAtivoSocketServidor(int idSocket){
     return CPIGGerenciadorSockets::GetServidor(idSocket)->GetAtivo();
 }
 
 /********************************
-A fun√ß√£o GetAtivoSocketUDP() √© respons√°vel por verificar se o socket UDP ainda est√° ativo ou n√£o.
-Par√¢metros:
+A funÁ„o GetAtivoSocketUDP() È respons·vel por verificar se o socket UDP ainda est· ativo ou n„o.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro que determina se o socket UDP ainda est√° ativo (valor diferente de zero) ou n√£o (valor zero)
+Inteiro que determina se o socket UDP ainda est· ativo (valor diferente de zero) ou n„o (valor zero)
 ********************************/
 int GetAtivoSocketUDP(int idSocket){
     return CPIGGerenciadorSockets::GetSocketUDP(idSocket)->GetAtivo();
 }
 
 /********************************
-A fun√ß√£o GetBytesEnviadosSocketCliente() √© respons√°vel por recuperar a quantidade de bytes j√° enviados atrav√©s do socket cliente desde a sua cria√ß√£o.
-Par√¢metros:
+A funÁ„o GetBytesEnviadosSocketCliente() È respons·vel por recuperar a quantidade de bytes j· enviados atravÈs do socket cliente desde a sua criaÁ„o.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro longo que indica a quantidade de bytes enviados atrav√©s do socket.
+Inteiro longo que indica a quantidade de bytes enviados atravÈs do socket.
 ********************************/
 long GetBytesEnviadosSocketCliente(int idSocket){
     return CPIGGerenciadorSockets::GetCliente(idSocket)->GetBytesEnviados();
 }
 
 /********************************
-A fun√ß√£o GetBytesRecebidosSocketCliente() √© respons√°vel por recuperar a quantidade de bytes j√° recebidos atrav√©s do socket cliente desde a sua cria√ß√£o.
-Par√¢metros:
+A funÁ„o GetBytesRecebidosSocketCliente() È respons·vel por recuperar a quantidade de bytes j· recebidos atravÈs do socket cliente desde a sua criaÁ„o.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro longo que indica a quantidade de bytes recebidos atrav√©s do socket.
+Inteiro longo que indica a quantidade de bytes recebidos atravÈs do socket.
 ********************************/
 long GetBytesRecebidosSocketCliente(int idSocket){
     return CPIGGerenciadorSockets::GetCliente(idSocket)->GetBytesRecebidos();
 }
 
 /********************************
-A fun√ß√£o GetPacotesEnviadosSocketCliente() √© respons√°vel por recuperar a quantidade de pacotes (mensagens) j√° enviados atrav√©s do socket cliente desde a sua cria√ß√£o.
-Par√¢metros:
+A funÁ„o GetPacotesEnviadosSocketCliente() È respons·vel por recuperar a quantidade de pacotes (mensagens) j· enviados atravÈs do socket cliente desde a sua criaÁ„o.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro longo que indica a quantidade de pacotes enviados atrav√©s do socket.
+Inteiro longo que indica a quantidade de pacotes enviados atravÈs do socket.
 ********************************/
 long GetPacotesEnviadosSocketCliente(int idSocket){
     return CPIGGerenciadorSockets::GetCliente(idSocket)->GetPacotesEnviados();
 }
 
 /********************************
-A fun√ß√£o GetPacotesRecebidosSocketCliente() √© respons√°vel por recuperar a quantidade de pacotes (mensagens) j√° recebidos atrav√©s do socket cliente desde a sua cria√ß√£o.
-Par√¢metros:
+A funÁ„o GetPacotesRecebidosSocketCliente() È respons·vel por recuperar a quantidade de pacotes (mensagens) j· recebidos atravÈs do socket cliente desde a sua criaÁ„o.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro longo que indica a quantidade de pacotes recebidos atrav√©s do socket.
+Inteiro longo que indica a quantidade de pacotes recebidos atravÈs do socket.
 ********************************/
 long GetPacotesRecebidosSocketCliente(int idSocket){
     return CPIGGerenciadorSockets::GetCliente(idSocket)->GetPacotesRecebidos();
 }
 
 /********************************
-A fun√ß√£o GetTempoUltimoRecebidoSocketCliente() √© respons√°vel por recuperar o momento em que o √∫ltimo pacote foi recebido pelo socket.
-Par√¢metros:
+A funÁ„o GetTempoUltimoRecebidoSocketCliente() È respons·vel por recuperar o momento em que o ˙ltimo pacote foi recebido pelo socket.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro longo que indica o tempo do recebimento do √∫ltimo pacote pelo socket.
+Inteiro longo que indica o tempo do recebimento do ˙ltimo pacote pelo socket.
 ********************************/
 long GetTempoUltimoRecebidoSocketCliente(int idSocket){
     return CPIGGerenciadorSockets::GetCliente(idSocket)->GetTempoUltimoRecebido();
 }
 
 /********************************
-A fun√ß√£o GetTempoUltimoEnviadoSocketCliente() √© respons√°vel por recuperar o momento em que o √∫ltimo pacote foi enviado pelo socket.
-Par√¢metros:
+A funÁ„o GetTempoUltimoEnviadoSocketCliente() È respons·vel por recuperar o momento em que o ˙ltimo pacote foi enviado pelo socket.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro longo que indica o tempo do envio do √∫ltimo pacote pelo socket.
+Inteiro longo que indica o tempo do envio do ˙ltimo pacote pelo socket.
 ********************************/
 long GetTempoUltimoEnviadoSocketCliente(int idSocket){
     return CPIGGerenciadorSockets::GetCliente(idSocket)->GetTempoUltimoEnviado();
 }
 
 /********************************
-A fun√ß√£o GetBytesEnviadosSocketServidor() √© respons√°vel por recuperar a quantidade de bytes j√° enviados atrav√©s do socket cliente desde a sua cria√ß√£o.
-Par√¢metros:
+A funÁ„o GetBytesEnviadosSocketServidor() È respons·vel por recuperar a quantidade de bytes j· enviados atravÈs do socket cliente desde a sua criaÁ„o.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro longo que indica a quantidade de bytes enviados atrav√©s do socket.
+Inteiro longo que indica a quantidade de bytes enviados atravÈs do socket.
 ********************************/
 long GetBytesEnviadosSocketServidor(int idSocket){
     return CPIGGerenciadorSockets::GetServidor(idSocket)->GetBytesEnviados();
 }
 
 /********************************
-A fun√ß√£o GetBytesRecebidosSocketServidor() √© respons√°vel por recuperar a quantidade de bytes j√° recebidos atrav√©s do socket cliente desde a sua cria√ß√£o.
-Par√¢metros:
+A funÁ„o GetBytesRecebidosSocketServidor() È respons·vel por recuperar a quantidade de bytes j· recebidos atravÈs do socket cliente desde a sua criaÁ„o.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro longo que indica a quantidade de bytes recebidos atrav√©s do socket.
+Inteiro longo que indica a quantidade de bytes recebidos atravÈs do socket.
 ********************************/
 long GetBytesRecebidosSocketServidor(int idSocket){
     return CPIGGerenciadorSockets::GetServidor(idSocket)->GetBytesRecebidos();
 }
 
 /********************************
-A fun√ß√£o GetPacotesEnviadosSocketServidor() √© respons√°vel por recuperar a quantidade de pacotes (mensagens) j√° enviados atrav√©s do socket cliente desde a sua cria√ß√£o.
-Par√¢metros:
+A funÁ„o GetPacotesEnviadosSocketServidor() È respons·vel por recuperar a quantidade de pacotes (mensagens) j· enviados atravÈs do socket cliente desde a sua criaÁ„o.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro longo que indica a quantidade de pacotes enviados atrav√©s do socket.
+Inteiro longo que indica a quantidade de pacotes enviados atravÈs do socket.
 ********************************/
 long GetPacotesEnviadosSocketServidor(int idSocket){
     return CPIGGerenciadorSockets::GetCliente(idSocket)->GetPacotesEnviados();
 }
 
 /********************************
-A fun√ß√£o GetPacotesRecebidosSocketServidor() √© respons√°vel por recuperar a quantidade de pacotes (mensagens) j√° recebidos atrav√©s do socket cliente desde a sua cria√ß√£o.
-Par√¢metros:
+A funÁ„o GetPacotesRecebidosSocketServidor() È respons·vel por recuperar a quantidade de pacotes (mensagens) j· recebidos atravÈs do socket cliente desde a sua criaÁ„o.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro longo que indica a quantidade de pacotes recebidos atrav√©s do socket.
+Inteiro longo que indica a quantidade de pacotes recebidos atravÈs do socket.
 ********************************/
 long GetPacotesRecebidosSocketServidor(int idSocket){
     return CPIGGerenciadorSockets::GetCliente(idSocket)->GetPacotesRecebidos();
 }
 
 /********************************
-A fun√ß√£o GetTempoUltimoRecebidoSocketServidor() √© respons√°vel por recuperar o momento em que o √∫ltimo pacote foi recebido pelo socket.
-Par√¢metros:
+A funÁ„o GetTempoUltimoRecebidoSocketServidor() È respons·vel por recuperar o momento em que o ˙ltimo pacote foi recebido pelo socket.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro longo que indica o tempo do recebimento do √∫ltimo pacote pelo socket.
+Inteiro longo que indica o tempo do recebimento do ˙ltimo pacote pelo socket.
 ********************************/
 long GetTempoUltimoRecebidoSocketServidor(int idSocket){
     return CPIGGerenciadorSockets::GetServidor(idSocket)->GetTempoUltimoRecebido();
 }
 
 /********************************
-A fun√ß√£o GetTempoUltimoEnviadoSocketServidor() √© respons√°vel por recuperar o momento em que o √∫ltimo pacote foi enviado pelo socket.
-Par√¢metros:
+A funÁ„o GetTempoUltimoEnviadoSocketServidor() È respons·vel por recuperar o momento em que o ˙ltimo pacote foi enviado pelo socket.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro longo que indica o tempo do envio do √∫ltimo pacote pelo socket.
+Inteiro longo que indica o tempo do envio do ˙ltimo pacote pelo socket.
 ********************************/
 long GetTempoUltimoEnviadoSocketServidor(int idSocket){
     return CPIGGerenciadorSockets::GetServidor(idSocket)->GetTempoUltimoEnviado();
 }
 
 /********************************
-A fun√ß√£o GetBytesEnviadosSocketUDP() √© respons√°vel por recuperar a quantidade de bytes j√° enviados atrav√©s do socket cliente desde a sua cria√ß√£o.
-Par√¢metros:
+A funÁ„o GetBytesEnviadosSocketUDP() È respons·vel por recuperar a quantidade de bytes j· enviados atravÈs do socket cliente desde a sua criaÁ„o.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro longo que indica a quantidade de bytes enviados atrav√©s do socket.
+Inteiro longo que indica a quantidade de bytes enviados atravÈs do socket.
 ********************************/
 long GetBytesEnviadosSocketUDP(int idSocket){
     return CPIGGerenciadorSockets::GetSocketUDP(idSocket)->GetBytesEnviados();
 }
 
 /********************************
-A fun√ß√£o GetBytesRecebidosSocketUDP() √© respons√°vel por recuperar a quantidade de bytes j√° recebidos atrav√©s do socket cliente desde a sua cria√ß√£o.
-Par√¢metros:
+A funÁ„o GetBytesRecebidosSocketUDP() È respons·vel por recuperar a quantidade de bytes j· recebidos atravÈs do socket cliente desde a sua criaÁ„o.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro longo que indica a quantidade de bytes recebidos atrav√©s do socket.
+Inteiro longo que indica a quantidade de bytes recebidos atravÈs do socket.
 ********************************/
 long GetBytesRecebidosSocketUDP(int idSocket){
     return CPIGGerenciadorSockets::GetSocketUDP(idSocket)->GetBytesRecebidos();
 }
 
 /********************************
-A fun√ß√£o GetPacotesEnviadosSocketUDP() √© respons√°vel por recuperar a quantidade de pacotes (mensagens) j√° enviados atrav√©s do socket cliente desde a sua cria√ß√£o.
-Par√¢metros:
+A funÁ„o GetPacotesEnviadosSocketUDP() È respons·vel por recuperar a quantidade de pacotes (mensagens) j· enviados atravÈs do socket cliente desde a sua criaÁ„o.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro longo que indica a quantidade de pacotes enviados atrav√©s do socket.
+Inteiro longo que indica a quantidade de pacotes enviados atravÈs do socket.
 ********************************/
 long GetPacotesEnviadosSocketUDP(int idSocket){
     return CPIGGerenciadorSockets::GetSocketUDP(idSocket)->GetPacotesEnviados();
 }
 
 /********************************
-A fun√ß√£o GetPacotesRecebidosSocketUDP() √© respons√°vel por recuperar a quantidade de pacotes (mensagens) j√° recebidos atrav√©s do socket cliente desde a sua cria√ß√£o.
-Par√¢metros:
+A funÁ„o GetPacotesRecebidosSocketUDP() È respons·vel por recuperar a quantidade de pacotes (mensagens) j· recebidos atravÈs do socket cliente desde a sua criaÁ„o.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro longo que indica a quantidade de pacotes recebidos atrav√©s do socket.
+Inteiro longo que indica a quantidade de pacotes recebidos atravÈs do socket.
 ********************************/
 long GetPacotesRecebidosSocketUDP(int idSocket){
     return CPIGGerenciadorSockets::GetSocketUDP(idSocket)->GetPacotesRecebidos();
 }
 
 /********************************
-A fun√ß√£o GetTempoUltimoRecebidoSocketUDP() √© respons√°vel por recuperar o momento em que o √∫ltimo pacote foi recebido pelo socket.
-Par√¢metros:
+A funÁ„o GetTempoUltimoRecebidoSocketUDP() È respons·vel por recuperar o momento em que o ˙ltimo pacote foi recebido pelo socket.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro longo que indica o tempo do recebimento do √∫ltimo pacote pelo socket.
+Inteiro longo que indica o tempo do recebimento do ˙ltimo pacote pelo socket.
 ********************************/
 long GetTempoUltimoRecebidoSocketUDP(int idSocket){
     return CPIGGerenciadorSockets::GetSocketUDP(idSocket)->GetTempoUltimoRecebido();
 }
 
 /********************************
-A fun√ß√£o GetTempoUltimoEnviadoSocketUDP() √© respons√°vel por recuperar o momento em que o √∫ltimo pacote foi enviado pelo socket.
-Par√¢metros:
+A funÁ„o GetTempoUltimoEnviadoSocketUDP() È respons·vel por recuperar o momento em que o ˙ltimo pacote foi enviado pelo socket.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro longo que indica o tempo do envio do √∫ltimo pacote pelo socket.
+Inteiro longo que indica o tempo do envio do ˙ltimo pacote pelo socket.
 ********************************/
 long GetTempoUltimoEnviadoSocketUDP(int idSocket){
     return CPIGGerenciadorSockets::GetSocketUDP(idSocket)->GetTempoUltimoEnviado();
 }
 
 /********************************
-A fun√ß√£o GetPortaRemotaSocketCliente() √© respons√°vel por recuperar o n√∫mero da porta remota (do servidor) √† qual est√° conectado o socket.
-Par√¢metros:
+A funÁ„o GetPortaRemotaSocketCliente() È respons·vel por recuperar o n˙mero da porta remota (do servidor) ‡ qual est· conectado o socket.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro que indica o n√∫mero da porta remota (do servidor) √† qual est√° conectado o socket.
+Inteiro que indica o n˙mero da porta remota (do servidor) ‡ qual est· conectado o socket.
 ********************************/
 int GetPortaRemotaSocketCliente(int idSocket){
     return CPIGGerenciadorSockets::GetCliente(idSocket)->GetPortaRemota();
 }
 
 /********************************
-A fun√ß√£o GetPortaLocalSocketServidor() √© respons√°vel por recuperar o n√∫mero da porta local que est√° sendo utilizada pelo socket servidor.
-Par√¢metros:
+A funÁ„o GetPortaLocalSocketServidor() È respons·vel por recuperar o n˙mero da porta local que est· sendo utilizada pelo socket servidor.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro que indica o n√∫mero da porta local do socket servidor.
+Inteiro que indica o n˙mero da porta local do socket servidor.
 ********************************/
 int GetPortaLocalSocketServidor(int idSocket){
     return CPIGGerenciadorSockets::GetServidor(idSocket)->GetPortaLocal();
 }
 
 /********************************
-A fun√ß√£o GetPortaLocalSocketUDP() √© respons√°vel por recuperar o n√∫mero da porta local que est√° sendo utilizada pelo socket UDP.
-Par√¢metros:
+A funÁ„o GetPortaLocalSocketUDP() È respons·vel por recuperar o n˙mero da porta local que est· sendo utilizada pelo socket UDP.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro que indica o n√∫mero da porta local do socket UDP.
+Inteiro que indica o n˙mero da porta local do socket UDP.
 ********************************/
 int GetPortaLocalSocketUDP(int idSocket){
     return CPIGGerenciadorSockets::GetSocketUDP(idSocket)->GetPortaLocal();
 }
 
 /********************************
-A fun√ß√£o GetHostRemotoSocketCliente() √© respons√°vel por recuperar o nome do computador (da rede local) ou do endere√ßo IP ao qual est√° conectado o socket cliente, ou seja, o servidor.
-Par√¢metros:
+A funÁ„o GetHostRemotoSocketCliente() È respons·vel por recuperar o nome do computador (da rede local) ou do endereÁo IP ao qual est· conectado o socket cliente, ou seja, o servidor.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
-hostname (sa√≠da, passagem por refer√™ncia): nome do computador (da rede local) ou do endere√ßo IP ao qual est√° conectado o socket cliente.
+hostname (saÌda, passagem por referÍncia): nome do computador (da rede local) ou do endereÁo IP ao qual est· conectado o socket cliente.
 ********************************/
 void GetHostRemotoSocketCliente(int idSocket, char *hostname){
     strcpy(hostname,CPIGGerenciadorSockets::GetCliente(idSocket)->GetHostRemoto().c_str());
 }
 
 /********************************
-A fun√ß√£o GetHostLocalSocketCliente() √© respons√°vel por recuperar o nome do computador (na rede local) ou do endere√ßo IP da m√°quina est√° aberto o socket cliente.
-Par√¢metros:
+A funÁ„o GetHostLocalSocketCliente() È respons·vel por recuperar o nome do computador (na rede local) ou do endereÁo IP da m·quina est· aberto o socket cliente.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
-hostname (sa√≠da, passagem por refer√™ncia): nome do computador (na rede local) ou do endere√ßo IP da m√°quina no qual est√° aberto o socket cliente.
+hostname (saÌda, passagem por referÍncia): nome do computador (na rede local) ou do endereÁo IP da m·quina no qual est· aberto o socket cliente.
 ********************************/
 void GetHostLocalSocketCliente(int idSocket, char *hostname){
     strcpy(hostname,CPIGGerenciadorSockets::GetCliente(idSocket)->GetHostLocal().c_str());
 }
 
 /********************************
-A fun√ß√£o GetHostLocalSocketServidor() √© respons√°vel por recuperar o nome do computador (na rede local) ou do endere√ßo IP da m√°quina est√° aberto o socket servidor.
-Par√¢metros:
+A funÁ„o GetHostLocalSocketServidor() È respons·vel por recuperar o nome do computador (na rede local) ou do endereÁo IP da m·quina est· aberto o socket servidor.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
-hostname (sa√≠da, passagem por refer√™ncia): nome do computador (na rede local) ou do endere√ßo IP da m√°quina no qual est√° aberto o socket servidor.
+hostname (saÌda, passagem por referÍncia): nome do computador (na rede local) ou do endereÁo IP da m·quina no qual est· aberto o socket servidor.
 ********************************/
 void GetHostLocalSocketServidor(int idSocket, char *hostname){
     strcpy(hostname,CPIGGerenciadorSockets::GetServidor(idSocket)->GetHostLocal().c_str());
 }
 
 /********************************
-A fun√ß√£o GetHostLocalSocketUDP() √© respons√°vel por recuperar o nome do computador (na rede local) ou do endere√ßo IP da m√°quina est√° aberto o socket UDP.
-Par√¢metros:
+A funÁ„o GetHostLocalSocketUDP() È respons·vel por recuperar o nome do computador (na rede local) ou do endereÁo IP da m·quina est· aberto o socket UDP.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
-hostname (sa√≠da, passagem por refer√™ncia): nome do computador (na rede local) ou do endere√ßo IP da m√°quina no qual est√° aberto o socket UDP.
+hostname (saÌda, passagem por referÍncia): nome do computador (na rede local) ou do endereÁo IP da m·quina no qual est· aberto o socket UDP.
 ********************************/
 void GetHostLocalSocketUDP(int idSocket, char *hostname){
     strcpy(hostname,CPIGGerenciadorSockets::GetSocketUDP(idSocket)->GetHostLocal().c_str());
 }
 
 /********************************
-A fun√ß√£o GetTamanhoPacoteSocketCliente() √© respons√°vel por recuperar o tamanho m√°ximo de bytes utilizado pelo socket para envio ou recebimento de mensagens.
-Par√¢metros:
+A funÁ„o GetTamanhoPacoteSocketCliente() È respons·vel por recuperar o tamanho m·ximo de bytes utilizado pelo socket para envio ou recebimento de mensagens.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro que indica o tamanho m√°ximo, em bytes, das mensagens enviadas ou recebidas pelo socket.
+Inteiro que indica o tamanho m·ximo, em bytes, das mensagens enviadas ou recebidas pelo socket.
 ********************************/
 int GetTamanhoPacoteSocketCliente(int idSocket){
     return CPIGGerenciadorSockets::GetCliente(idSocket)->GetTamanhoPacote();
 }
 
 /********************************
-A fun√ß√£o GetTamanhoPacoteSocketServidor() √© respons√°vel por recuperar o tamanho m√°ximo de bytes utilizado pelo socket para envio ou recebimento de mensagens.
-Par√¢metros:
+A funÁ„o GetTamanhoPacoteSocketServidor() È respons·vel por recuperar o tamanho m·ximo de bytes utilizado pelo socket para envio ou recebimento de mensagens.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro que indica o tamanho m√°ximo, em bytes, das mensagens enviadas ou recebidas pelo socket.
+Inteiro que indica o tamanho m·ximo, em bytes, das mensagens enviadas ou recebidas pelo socket.
 ********************************/
 int GetTamanhoPacoteSocketServidor(int idSocket){
     return CPIGGerenciadorSockets::GetServidor(idSocket)->GetTamanhoPacote();
 }
 
 /********************************
-A fun√ß√£o GetMaximoConexoesSocketServidor() √© respons√°vel por recuperar a quantidade m√°xima de conex√µes que podem ser estabelecidas pelo socket servidor com outros sockets clientes.
-Par√¢metros:
+A funÁ„o GetMaximoConexoesSocketServidor() È respons·vel por recuperar a quantidade m·xima de conexıes que podem ser estabelecidas pelo socket servidor com outros sockets clientes.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro que indica a quantidade m√°xima de conex√µes concomitantes que podem ser estabelecidas pelo socket servidor com outros sockets clientes.
+Inteiro que indica a quantidade m·xima de conexıes concomitantes que podem ser estabelecidas pelo socket servidor com outros sockets clientes.
 ********************************/
 int GetMaximoConexoesSocketServidor(int idSocket){
     return CPIGGerenciadorSockets::GetServidor(idSocket)->GetMaximoConexoes();
 }
 
 /********************************
-A fun√ß√£o GetQuantidadeConexoesSocketServidor() √© respons√°vel por recuperar a quantidade de conex√µes atualmente abertas pelo socket servidor com outros sockets clientes.
-Par√¢metros:
+A funÁ„o GetQuantidadeConexoesSocketServidor() È respons·vel por recuperar a quantidade de conexıes atualmente abertas pelo socket servidor com outros sockets clientes.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
 Retorno:
-Inteiro que indica a quantidade de conex√µes atualmente abertas pelo socket servidor com outros sockets clientes.
+Inteiro que indica a quantidade de conexıes atualmente abertas pelo socket servidor com outros sockets clientes.
 ********************************/
 int GetQuantidadeConexoesSocketServidor(int idSocket){
     return CPIGGerenciadorSockets::GetServidor(idSocket)->GetQuantidadeConexoes();
 }
 
 /********************************
-A fun√ß√£o EnviaDadosSocketCliente() √© respons√°vel por efetivamente enviar bytes armazenados em mem√≥ria principal atrav√©s do socket cliente, para o servidor.
-O recebimento de dados atrav√©s da rede pode ser detectado pela gera√ß√£o de um evento de rede. A mensagem transmitida deve ser recuperada a partir desse evento.
-Par√¢metros:
+A funÁ„o EnviaDadosSocketCliente() È respons·vel por efetivamente enviar bytes armazenados em memÛria principal atravÈs do socket cliente, para o servidor.
+O recebimento de dados atravÈs da rede pode ser detectado pela geraÁ„o de um evento de rede. A mensagem transmitida deve ser recuperada a partir desse evento.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
-buffer (entrada, passagem por valor): ponteiro (endere√ßo) para o local da mem√≥ria onde est√£o armazenados os dados a serem transmitidos. Pode ser, inclusive, o nome de uma string ou vetor.
-tamanhoBuffer (entrada, passagem por valor): quantidade de bytes que devem ser lidos e transmitidos a partir do endere√ßo indicado no buffer.
+buffer (entrada, passagem por valor): ponteiro (endereÁo) para o local da memÛria onde est„o armazenados os dados a serem transmitidos. Pode ser, inclusive, o nome de uma string ou vetor.
+tamanhoBuffer (entrada, passagem por valor): quantidade de bytes que devem ser lidos e transmitidos a partir do endereÁo indicado no buffer.
 Retorno:
 Inteiro que indica a quantidade de bytes efetivamente transmitida.
 ********************************/
@@ -4904,12 +4904,12 @@ int EnviaDadosSocketCliente(int idSocket, void *buffer, int tamanhoBuffer){
 }
 
 /********************************
-A fun√ß√£o EnviaDadosSocketServidor() √© respons√°vel por efetivamente enviar bytes armazenados em mem√≥ria principal atrav√©s do socket servidor, para o cliente.
-O recebimento de dados atrav√©s da rede pode ser detectado pela gera√ß√£o de um evento de rede. A mensagem transmitida deve ser recuperada a partir desse evento.
-Par√¢metros:
+A funÁ„o EnviaDadosSocketServidor() È respons·vel por efetivamente enviar bytes armazenados em memÛria principal atravÈs do socket servidor, para o cliente.
+O recebimento de dados atravÈs da rede pode ser detectado pela geraÁ„o de um evento de rede. A mensagem transmitida deve ser recuperada a partir desse evento.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
-buffer (entrada, passagem por valor): ponteiro (endere√ßo) para o local da mem√≥ria onde est√£o armazenados os dados a serem transmitidos. Pode ser, inclusive, o nome de uma string ou vetor.
-tamanhoBuffer (entrada, passagem por valor): quantidade de bytes que devem ser lidos e transmitidos a partir do endere√ßo indicado no buffer.
+buffer (entrada, passagem por valor): ponteiro (endereÁo) para o local da memÛria onde est„o armazenados os dados a serem transmitidos. Pode ser, inclusive, o nome de uma string ou vetor.
+tamanhoBuffer (entrada, passagem por valor): quantidade de bytes que devem ser lidos e transmitidos a partir do endereÁo indicado no buffer.
 Retorno:
 Inteiro que indica a quantidade de bytes efetivamente transmitida.
 ********************************/
@@ -4918,12 +4918,12 @@ int EnviaDadosSocketServidor(int idSocket, int socketSecundario, void *buffer, i
 }
 
 /********************************
-A fun√ß√£o EnviaDadosSocketUDP() √© respons√°vel por efetivamente enviar bytes armazenados em mem√≥ria principal atrav√©s do socket UDP, para outro socket UDP.
-O recebimento de dados atrav√©s da rede pode ser detectado pela gera√ß√£o de um evento de rede. A mensagem transmitida deve ser recuperada a partir desse evento.
-Par√¢metros:
+A funÁ„o EnviaDadosSocketUDP() È respons·vel por efetivamente enviar bytes armazenados em memÛria principal atravÈs do socket UDP, para outro socket UDP.
+O recebimento de dados atravÈs da rede pode ser detectado pela geraÁ„o de um evento de rede. A mensagem transmitida deve ser recuperada a partir desse evento.
+Par‚metros:
 idSocket (entrada, passagem por valor): identificador do socket.
-buffer (entrada, passagem por valor): ponteiro (endere√ßo) para o local da mem√≥ria onde est√£o armazenados os dados a serem transmitidos. Pode ser, inclusive, o nome de uma string ou vetor.
-tamanhoBuffer (entrada, passagem por valor): quantidade de bytes que devem ser lidos e transmitidos a partir do endere√ßo indicado no buffer.
+buffer (entrada, passagem por valor): ponteiro (endereÁo) para o local da memÛria onde est„o armazenados os dados a serem transmitidos. Pode ser, inclusive, o nome de uma string ou vetor.
+tamanhoBuffer (entrada, passagem por valor): quantidade de bytes que devem ser lidos e transmitidos a partir do endereÁo indicado no buffer.
 Retorno:
 Inteiro que indica a quantidade de bytes efetivamente transmitida.
 ********************************/
@@ -4935,96 +4935,96 @@ int EnviaDadosSocketUDP(int idSocket, void *buffer, int tamanhoBuffer, char *hos
 #ifdef PIGCOMVIDEO
 
 /********************************
-Se√ß√£o dos v√≠deos.
+SeÁ„o dos vÌdeos.
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-Toda a parte de v√≠deo √© considerada experimental e pode n√£o funcionar dependendo do v√≠deo,
-dos drives instalados, do sistema operacional ou do formato do v√≠deo.
+Toda a parte de vÌdeo È considerada experimental e pode n„o funcionar dependendo do vÌdeo,
+dos drives instalados, do sistema operacional ou do formato do vÌdeo.
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ********************************/
 
 
 /********************************
-A fun√ß√£o CriaVideo() √© respons√°vel por ler e preparar um arquivo de v√≠deo.
-Os formatos permitidos s√£o AVI, MP4, MOV.
-Par√¢metros:
-nomeArquivo (entrada, passagem por refer√™ncia): string que informa o nome do arquivo de v√≠deo.
-idJanela (entrada, passagem por valor): indica em qual janela o v√≠deo ser√° exibido.
+A funÁ„o CriaVideo() È respons·vel por ler e preparar um arquivo de vÌdeo.
+Os formatos permitidos s„o AVI, MP4, MOV.
+Par‚metros:
+nomeArquivo (entrada, passagem por referÍncia): string que informa o nome do arquivo de vÌdeo.
+idJanela (entrada, passagem por valor): indica em qual janela o vÌdeo ser· exibido.
 Retorno:
-Retorna o identificador do v√≠deo para ser utilizado por outras fun√ß√µes.
+Retorna o identificador do vÌdeo para ser utilizado por outras funÁıes.
 ********************************/
 int CriaVideo(char *nomeArquivo, int idJanela=0){
     return CPIGGerenciadorVideos::CriaVideo(nomeArquivo,idJanela);
 }
 
 /********************************
-A fun√ß√£o DestroiVideo() √© respons√°vel por eliminar um v√≠deo do jogo.
-Par√¢metros:
-idVideo (entrada, passagem por valor): identificador do v√≠deo a ser exclu√≠do.
+A funÁ„o DestroiVideo() È respons·vel por eliminar um vÌdeo do jogo.
+Par‚metros:
+idVideo (entrada, passagem por valor): identificador do vÌdeo a ser excluÌdo.
 ********************************/
 void DestroiVideo(int idVideo){
     CPIGGerenciadorVideos::DestroiVideo(idVideo);
 }
 
 /********************************
-A fun√ß√£o SetSeekVideo() √© respons√°vel por avan√ßar ou retroceder o v√≠deo instantaneamente.
-Par√¢metros:
-idVideo (entrada, passagem por valor): identificador do v√≠deo.
-incremento (entrada, passagem por valor): quantidade de tempo (em segundos) para o avan√ßao ou retrocesso do v√≠deo.
+A funÁ„o SetSeekVideo() È respons·vel por avanÁar ou retroceder o vÌdeo instantaneamente.
+Par‚metros:
+idVideo (entrada, passagem por valor): identificador do vÌdeo.
+incremento (entrada, passagem por valor): quantidade de tempo (em segundos) para o avanÁao ou retrocesso do vÌdeo.
 ********************************/
 void SetSeekVideo(int idVideo, double incremento){
     CPIGGerenciadorVideos::GetVideo(idVideo)->SetSeek(incremento);
 }
 
 /********************************
-A fun√ß√£o PlayVideo() √© respons√°vel por tocar um v√≠deo previamente criado.
-Par√¢metro:
-idVideo (entrada, passagem por valor): indentificador do v√≠deo.
+A funÁ„o PlayVideo() È respons·vel por tocar um vÌdeo previamente criado.
+Par‚metro:
+idVideo (entrada, passagem por valor): indentificador do vÌdeo.
 ********************************/
 void PlayVideo(int idVideo){
     CPIGGerenciadorVideos::GetVideo(idVideo)->Play();
 }
 
 /********************************
-A fun√ß√£o StopVideo() √© respons√°vel por parar um v√≠deo pausado ou tocando.
-Par√¢metro:
-idVideo (entrada, passagem por valor): indentificador do v√≠deo.
+A funÁ„o StopVideo() È respons·vel por parar um vÌdeo pausado ou tocando.
+Par‚metro:
+idVideo (entrada, passagem por valor): indentificador do vÌdeo.
 ********************************/
 void StopVideo(int idVideo){
     CPIGGerenciadorVideos::GetVideo(idVideo)->Stop();
 }
 
 /********************************
-A fun√ß√£o PauseVideo() √© respons√°vel por pausar um v√≠deo que esteja tocando.
-Par√¢metro:
-idVideo (entrada, passagem por valor): indentificador do v√≠deo.
+A funÁ„o PauseVideo() È respons·vel por pausar um vÌdeo que esteja tocando.
+Par‚metro:
+idVideo (entrada, passagem por valor): indentificador do vÌdeo.
 ********************************/
 void PauseVideo(int idVideo){
     CPIGGerenciadorVideos::GetVideo(idVideo)->Pause();
 }
 
 /********************************
-A fun√ß√£o ResumeVideo() √© respons√°vel por continuar a tocar um v√≠deo pausado.
-Par√¢metro:
-idVideo (entrada, passagem por valor): indentificador do v√≠deo.
+A funÁ„o ResumeVideo() È respons·vel por continuar a tocar um vÌdeo pausado.
+Par‚metro:
+idVideo (entrada, passagem por valor): indentificador do vÌdeo.
 ********************************/
 void ResumeVideo(int idVideo){
     CPIGGerenciadorVideos::GetVideo(idVideo)->Resume();
 }
 
 /********************************
-A fun√ß√£o DesenhaVideo() √© respons√°vel por desenhar os frames de um v√≠deo na tela. O v√≠deo ser√° desenhado de acordo com todas as defini√ß√µes
-de posi√ß√£o e √¢ngulo informado at√© o momento. Al√©m disso, se o v√≠deo estiver virado (flipping), isso tamb√©m ser√° levado em considera√ß√£o, bem como a colora√ß√£o e a opacidade definidas.
-Par√¢metro:
-idVideo (entrada, passagem por valor): identificador do v√≠deo a ser desenhado.
+A funÁ„o DesenhaVideo() È respons·vel por desenhar os frames de um vÌdeo na tela. O vÌdeo ser· desenhado de acordo com todas as definiÁıes
+de posiÁ„o e ‚ngulo informado atÈ o momento. AlÈm disso, se o vÌdeo estiver virado (flipping), isso tambÈm ser· levado em consideraÁ„o, bem como a coloraÁ„o e a opacidade definidas.
+Par‚metro:
+idVideo (entrada, passagem por valor): identificador do vÌdeo a ser desenhado.
 ********************************/
 int DesenhaVideo(int idVideo){
     return CPIGGerenciadorVideos::GetVideo(idVideo)->Desenha();
 }
 
 /********************************
-A fun√ß√£o SetVolumeVideo() √© respons√°vel por definir o volume para o v√≠deo. O valor informado deve ser positivo ou zero (mudo).
-Par√¢metro:
-idVideo (entrada, passagem por valor): indentificador do v√≠deo.
+A funÁ„o SetVolumeVideo() È respons·vel por definir o volume para o vÌdeo. O valor informado deve ser positivo ou zero (mudo).
+Par‚metro:
+idVideo (entrada, passagem por valor): indentificador do vÌdeo.
 valor (entrada, passagem por valor): volume a ser definido. Deve ser positivo ou zero (mudo).
 ********************************/
 void SetVolumeVideo(int idVideo, double valor){
@@ -5032,83 +5032,83 @@ void SetVolumeVideo(int idVideo, double valor){
 }
 
 /********************************
-A fun√ß√£o GetVolumeVideo() √© respons√°vel por recuperar o valor do volume do v√≠deo.
-Par√¢metro:
-idVideo (entrada, passagem por valor): indentificador do v√≠deo.
+A funÁ„o GetVolumeVideo() È respons·vel por recuperar o valor do volume do vÌdeo.
+Par‚metro:
+idVideo (entrada, passagem por valor): indentificador do vÌdeo.
 Retorno:
-N√≠vel de volume do v√≠deo (deve ser sempre um valor positivo).
+NÌvel de volume do vÌdeo (deve ser sempre um valor positivo).
 ********************************/
 double GetVolumeVideo(int idVideo){
     return CPIGGerenciadorVideos::GetVideo(idVideo)->GetVolume();
 }
 
 /********************************
-A fun√ß√£o GetNomeArquivoVideo() √© respons√°vel por recuperar o nome do arquivo que deu origem ao video.
-Par√¢metro:
-idVideo (entrada, passagem por valor): indentificador do v√≠deo.
-nome (sa√≠da, passagem por refer√™ncia): nome do arquivo utilizado para criar o video.
+A funÁ„o GetNomeArquivoVideo() È respons·vel por recuperar o nome do arquivo que deu origem ao video.
+Par‚metro:
+idVideo (entrada, passagem por valor): indentificador do vÌdeo.
+nome (saÌda, passagem por referÍncia): nome do arquivo utilizado para criar o video.
 ********************************/
 void GetNomeArquivoVideo(int idVideo, char *nome){
     strcpy(nome,CPIGGerenciadorVideos::GetVideo(idVideo)->GetNomeArquivo().c_str());
 }
 
 /********************************
-A fun√ß√£o GetTempoAtualVideo() √© respons√°vel por recuperar o valor (em milissegundo) do tempo de v√≠deo j√° exibido, ou seja, o momento atual do v√≠deo.
-Par√¢metro:
-idVideo (entrada, passagem por valor): indentificador do v√≠deo.
+A funÁ„o GetTempoAtualVideo() È respons·vel por recuperar o valor (em milissegundo) do tempo de vÌdeo j· exibido, ou seja, o momento atual do vÌdeo.
+Par‚metro:
+idVideo (entrada, passagem por valor): indentificador do vÌdeo.
 Retorno:
-Total de tempo (em milissegundos) da parte j√° exibida do v√≠deo.
+Total de tempo (em milissegundos) da parte j· exibida do vÌdeo.
 ********************************/
 double GetTempoAtualVideo(int idVideo){
     return CPIGGerenciadorVideos::GetVideo(idVideo)->GetTempoAtual();
 }
 
 /********************************
-A fun√ß√£o GetTempoAtualVideo() √© respons√°vel por recuperar uma string contendo a hora, minuto, segundo e milissegundo do frame atual do video.
-Par√¢metro:
-idVideo (entrada, passagem por valor): indentificador do v√≠deo.
-str (sa√≠da, passagem por refer√™ncia): posi√ß√£o do frame atual, definido em hora, minuto, segundo e milissegundo.
+A funÁ„o GetTempoAtualVideo() È respons·vel por recuperar uma string contendo a hora, minuto, segundo e milissegundo do frame atual do video.
+Par‚metro:
+idVideo (entrada, passagem por valor): indentificador do vÌdeo.
+str (saÌda, passagem por referÍncia): posiÁ„o do frame atual, definido em hora, minuto, segundo e milissegundo.
 ********************************/
 void GetTempoAtualVideo(int idVideo, char *str){
     strcpy(str,CPIGGerenciadorVideos::GetVideo(idVideo)->GetTempoAtualString().c_str());
 }
 
 /********************************
-A fun√ß√£o GetTempoTotalVideo() √© respons√°vel por recuperar a drua√ß√£o total do v√≠deo (em milissegundo).
-Par√¢metro:
-idVideo (entrada, passagem por valor): indentificador do v√≠deo.
+A funÁ„o GetTempoTotalVideo() È respons·vel por recuperar a druaÁ„o total do vÌdeo (em milissegundo).
+Par‚metro:
+idVideo (entrada, passagem por valor): indentificador do vÌdeo.
 Retorno
-Tempo total do v√≠deo em milissegundos.
+Tempo total do vÌdeo em milissegundos.
 ********************************/
 double GetTempoTotalVideo(int idVideo){
     return CPIGGerenciadorVideos::GetVideo(idVideo)->GetTempoTotal();
 }
 
 /********************************
-A fun√ß√£o GetTempoTotalVideo() √© respons√°vel por recuperar uma string contendo a dura√ß√£o do video em hora, minuto, segundo e milissegundo.
-Par√¢metro:
-idVideo (entrada, passagem por valor): indentificador do v√≠deo.
-str (sa√≠da, passagem por refer√™ncia): dura√ß√£o do v√≠deo, definido em hora, minuto, segundo e milissegundo.
+A funÁ„o GetTempoTotalVideo() È respons·vel por recuperar uma string contendo a duraÁ„o do video em hora, minuto, segundo e milissegundo.
+Par‚metro:
+idVideo (entrada, passagem por valor): indentificador do vÌdeo.
+str (saÌda, passagem por referÍncia): duraÁ„o do vÌdeo, definido em hora, minuto, segundo e milissegundo.
 ********************************/
 void GetTempoTotalVideo(int idVideo, char *str){
     strcpy(str,CPIGGerenciadorVideos::GetVideo(idVideo)->GetTempoTotalString().c_str());
 }
 
 /********************************
-A fun√ß√£o GetTempoFrameVideo() √© respons√°vel por recuperar a dura√ß√£o esperada para cada frame do video (em milissegundo).
-Par√¢metro:
-idVideo (entrada, passagem por valor): indentificador do v√≠deo.
+A funÁ„o GetTempoFrameVideo() È respons·vel por recuperar a duraÁ„o esperada para cada frame do video (em milissegundo).
+Par‚metro:
+idVideo (entrada, passagem por valor): indentificador do vÌdeo.
 Retorno:
-Dura√ß√£o esperado de cada frame do v√≠deo (em milissegundo).
+DuraÁ„o esperado de cada frame do vÌdeo (em milissegundo).
 ********************************/
 double GetTempoFrameVideo(int idVideo){
     return CPIGGerenciadorVideos::GetVideo(idVideo)->GetTempoFrame();
 }
 
 /********************************
-A fun√ß√£o GetFPSVideo() √© respons√°vel por recuperar a quantidade de frames do v√≠deo que deveriam ser exibidos a cada segundo.
-Par√¢metro:
-idVideo (entrada, passagem por valor): indentificador do v√≠deo.
+A funÁ„o GetFPSVideo() È respons·vel por recuperar a quantidade de frames do vÌdeo que deveriam ser exibidos a cada segundo.
+Par‚metro:
+idVideo (entrada, passagem por valor): indentificador do vÌdeo.
 Retorno:
 Quantidade desejada de frames a cada segundo.
 ********************************/
@@ -5117,35 +5117,35 @@ double GetFPSVideo(int idVideo){
 }
 
 /********************************
-A fun√ß√£o SetAnguloVideo() √© respons√°vel pela angula√ß√£o de determinado v√≠deo. A angula√ß√£o √© calculada em sentido
-hor√°rio a partir do eixo X (0 graus). O v√≠deo ser√° desenhado com a angula√ß√£o informada no pr√≥ximo comando
+A funÁ„o SetAnguloVideo() È respons·vel pela angulaÁ„o de determinado vÌdeo. A angulaÁ„o È calculada em sentido
+hor·rio a partir do eixo X (0 graus). O vÌdeo ser· desenhado com a angulaÁ„o informada no prÛximo comando
 DesenhaVideo().
-Par√¢metros:
-idVideo (entrada, passagem por valor): identificador do v√≠deo.
-angulo (entrada, passagem por valor): valor para indicar a angula√ß√£o do v√≠deo em graus.
+Par‚metros:
+idVideo (entrada, passagem por valor): identificador do vÌdeo.
+angulo (entrada, passagem por valor): valor para indicar a angulaÁ„o do vÌdeo em graus.
 ********************************/
 void SetAnguloVideo(int idVideo, float angulo){
     CPIGGerenciadorVideos::GetVideo(idVideo)->SetAngulo(angulo);
 }
 
 /********************************
-A fun√ß√£o GetAnguloVideo() √© respons√°vel por recuperar o √¢ngulo de rota√ß√£o de determinado v√≠deo. A angula√ß√£o √© calculada em sentido
-hor√°rio a partir do eixo X (0 graus). O v√≠deo ser√° desenhado com a angula√ß√£o informada no pr√≥ximo comando
+A funÁ„o GetAnguloVideo() È respons·vel por recuperar o ‚ngulo de rotaÁ„o de determinado vÌdeo. A angulaÁ„o È calculada em sentido
+hor·rio a partir do eixo X (0 graus). O vÌdeo ser· desenhado com a angulaÁ„o informada no prÛximo comando
 DesenhaVideo().
-idVideo (entrada, passagem por valor): identificador do v√≠deo.
+idVideo (entrada, passagem por valor): identificador do vÌdeo.
 Retorno:
-Retorna o valor do √¢ngulo em graus.
+Retorna o valor do ‚ngulo em graus.
 ********************************/
 double GetAnguloVideo(int idVideo){
     return CPIGGerenciadorVideos::GetVideo(idVideo)->GetAngulo();
 }
 
 /********************************
-A fun√ß√£o SetFlipVideo() √© respons√°vel por virar o v√≠deo, invertendo-o em alguma dire√ß√£o. O v√≠deo somente ser√°
-desenhado na nova orienta√ß√£o no pr√≥ximo comando DesenhaVideo().
-Par√¢metros:
-idVideo (entrada, passagem por valor): identificador do v√≠deo a ser virado.
-valor (entrada, passagem por valor): valor do tipo de Flip. Pode ser FLIP_NENHUM (nenhum tipo de invers√£o),
+A funÁ„o SetFlipVideo() È respons·vel por virar o vÌdeo, invertendo-o em alguma direÁ„o. O vÌdeo somente ser·
+desenhado na nova orientaÁ„o no prÛximo comando DesenhaVideo().
+Par‚metros:
+idVideo (entrada, passagem por valor): identificador do vÌdeo a ser virado.
+valor (entrada, passagem por valor): valor do tipo de Flip. Pode ser FLIP_NENHUM (nenhum tipo de invers„o),
 FLIP_HORIZONTAL (inverte da esquerda para a direita), FLIP_VERTICAL (inverte de cima para baixo),
 ou FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
 ********************************/
@@ -5154,11 +5154,11 @@ void SetFlipVideo(int idVideo, PIGFlip valor){
 }
 
 /********************************
-A fun√ß√£o GetFlipVideo() √© respons√°vel por recuperar o valor da manipula√ß√£o causada pela fun√ß√£o SetFlipVideo().
-Par√¢metros:
-idVideo (entrada, passagem por valor): identificador do v√≠deo a ser virado.
+A funÁ„o GetFlipVideo() È respons·vel por recuperar o valor da manipulaÁ„o causada pela funÁ„o SetFlipVideo().
+Par‚metros:
+idVideo (entrada, passagem por valor): identificador do vÌdeo a ser virado.
 Retorno:
-inteiro que indica o tipo de Flip. Pode ser PIG_FLIP_NENHUM (nenhum tipo de invers√£o),
+inteiro que indica o tipo de Flip. Pode ser PIG_FLIP_NENHUM (nenhum tipo de invers„o),
 PIG_FLIP_HORIZONTAL (inverte da esquerda para a direita), PIG_FLIP_VERTICAL (inverte de cima para baixo),
 ou PIG_FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
 ********************************/
@@ -5167,36 +5167,36 @@ PIGFlip GetFlipVideo(int idVideo){
 }
 
 /********************************
-A fun√ß√£o SetPivoAbsolutoVideo() define um ponto (X,Y) em rela√ß√£o ao ponto (0,0) do v√≠deo, sobre o qual o video ser√°
-rotacionado quando a fun√ß√£o SetAnguloVideo() for executada.
-Par√¢metros:
-idVideo (entrada, passagem por valor): identificador do v√≠deo.
-posicaoX (entrada, passagem por valor): Valor da coordenada X do piv√¥ em rela√ß√£o ao ponto (0,0) do v√≠deo.
-posicaoY (entrada, passagem por valor): Valor da coordenada Y do piv√¥ em rela√ß√£o ao ponto (0,0) do v√≠deo.
+A funÁ„o SetPivoAbsolutoVideo() define um ponto (X,Y) em relaÁ„o ao ponto (0,0) do vÌdeo, sobre o qual o video ser·
+rotacionado quando a funÁ„o SetAnguloVideo() for executada.
+Par‚metros:
+idVideo (entrada, passagem por valor): identificador do vÌdeo.
+posicaoX (entrada, passagem por valor): Valor da coordenada X do pivÙ em relaÁ„o ao ponto (0,0) do vÌdeo.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y do pivÙ em relaÁ„o ao ponto (0,0) do vÌdeo.
 ********************************/
 void SetPivoAbsolutoVideo(int idVideo, int posicaoX, int posicaoY){
     CPIGGerenciadorVideos::GetVideo(idVideo)->SetPivoAbsoluto({(double)posicaoX,(double)posicaoY});
 }
 
 /********************************
-A fun√ß√£o SetPivoProporcionalVideo() define um ponto relativo (X,Y) em rela√ß√£o ao video (0,0) e ao tamanho do v√≠deo, sobre o qual o v√≠deo ser√°
-rotacionado quando a fun√ß√£o SetAnguloVideo() for executada.
-Par√¢metros:
-idVideo (entrada, passagem por valor): identificador do v√≠deo.
-relX (entrada, passagem por valor): porcentagem da largura do v√≠deo onde ficar√° o piv√¥.
-relY (entrada, passagem por valor): porcentagem da altura do v√≠deo onde ficar√° o piv√¥.
+A funÁ„o SetPivoProporcionalVideo() define um ponto relativo (X,Y) em relaÁ„o ao video (0,0) e ao tamanho do vÌdeo, sobre o qual o vÌdeo ser·
+rotacionado quando a funÁ„o SetAnguloVideo() for executada.
+Par‚metros:
+idVideo (entrada, passagem por valor): identificador do vÌdeo.
+relX (entrada, passagem por valor): porcentagem da largura do vÌdeo onde ficar· o pivÙ.
+relY (entrada, passagem por valor): porcentagem da altura do vÌdeo onde ficar· o pivÙ.
 ********************************/
 void SetPivoProporcionalVideo(int idVideo, float relX, float relY){
     CPIGGerenciadorVideos::GetVideo(idVideo)->SetPivoProporcional({relX,relY});
 }
 
 /********************************
-A fun√ß√£o GetPivoVideo() define um ponto (X,Y) em rela√ß√£o ao ponto (0,0) do v√≠deo, sobre o qual o v√≠deo ser√°
-rotacionado quando a fun√ß√£o SetAnguloVideo() for executada.
-Par√¢metros:
-idVideo (entrada, passagem por valor): identificador do v√≠deo.
-posicaoX (sa√≠da, passagem por refer√™ncia): Valor da coordenada X do piv√¥ em rela√ß√£o ao ponto (0,0) do v√≠deo.
-posicaoY (sa√≠da, passagem por refer√™ncia): Valor da coordenada Y do piv√¥ em rela√ß√£o ao ponto (0,0) do v√≠deo.
+A funÁ„o GetPivoVideo() define um ponto (X,Y) em relaÁ„o ao ponto (0,0) do vÌdeo, sobre o qual o vÌdeo ser·
+rotacionado quando a funÁ„o SetAnguloVideo() for executada.
+Par‚metros:
+idVideo (entrada, passagem por valor): identificador do vÌdeo.
+posicaoX (saÌda, passagem por referÍncia): Valor da coordenada X do pivÙ em relaÁ„o ao ponto (0,0) do vÌdeo.
+posicaoY (saÌda, passagem por referÍncia): Valor da coordenada Y do pivÙ em relaÁ„o ao ponto (0,0) do vÌdeo.
 ********************************/
 void GetPivoVideo(int idVideo, int *posicaoX, int *posicaoY){
     PIGPonto2D p = CPIGGerenciadorVideos::GetVideo(idVideo)->GetPivo();
@@ -5205,21 +5205,21 @@ void GetPivoVideo(int idVideo, int *posicaoX, int *posicaoY){
 }
 
 /********************************
-A fun√ß√£o MoveVideo() √© respons√°vel por movimentar um determinado v√≠deo para uma nova posi√ß√£o informada.
-Par√¢metros:
-idVideo (entrada, passagem por valor): identificador do v√≠deo a ser movido.
-posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu√°rio deseja reposicionar o v√≠deo.
-posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu√°rio deseja reposicionar o v√≠deo.
+A funÁ„o MoveVideo() È respons·vel por movimentar um determinado vÌdeo para uma nova posiÁ„o informada.
+Par‚metros:
+idVideo (entrada, passagem por valor): identificador do vÌdeo a ser movido.
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usu·rio deseja reposicionar o vÌdeo.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usu·rio deseja reposicionar o vÌdeo.
 ********************************/
 void MoveVideo(int idVideo, int posicaoX, int posicaoY){
     CPIGGerenciadorVideos::GetVideo(idVideo)->Move(posicaoX,posicaoY);
 }
 
 /********************************
-A fun√ß√£o SetDimensoesVideo() √© respons√°vel por delimitar a altura e a largura do v√≠deo que ser√° desenhado na tela,
+A funÁ„o SetDimensoesVideo() È respons·vel por delimitar a altura e a largura do vÌdeo que ser· desenhado na tela,
 independentemente do tamanho original do arquivo.
-Par√¢metros:
-idVideo (entrada, passagem por valor): identificador do v√≠deo.
+Par‚metros:
+idVideo (entrada, passagem por valor): identificador do vÌdeo.
 altura (entrada, passagem por valor): altura em pixels.
 largura (entrada, passagem por valor): largura em pixels.
 ********************************/
@@ -5228,79 +5228,79 @@ void SetDimensoesVideo(int idVideo, int altura, int largura){
 }
 
 /********************************
-A fun√ß√£o GetDimensoesVideo() √© respons√°vel por recuperar a altura e a largura da √°rea a ser usada
-para desenhar o v√≠deo na tela. Em outras palavras, representa o tamanho atual do v√≠deo.
-Par√¢metros:
-idVideo (entrada, passagem por valor): identificador do v√≠deo.
-altura (sa√≠da, passagem por refer√™ncia): altura atual em pixels do v√≠deo.
-largura (sa√≠da, passagem por refer√™ncia): largura atual em pixels do v√≠deo.
+A funÁ„o GetDimensoesVideo() È respons·vel por recuperar a altura e a largura da ·rea a ser usada
+para desenhar o vÌdeo na tela. Em outras palavras, representa o tamanho atual do vÌdeo.
+Par‚metros:
+idVideo (entrada, passagem por valor): identificador do vÌdeo.
+altura (saÌda, passagem por referÍncia): altura atual em pixels do vÌdeo.
+largura (saÌda, passagem por referÍncia): largura atual em pixels do vÌdeo.
 ********************************/
 void GetDimensoesVideo(int idVideo, int *altura, int *largura){
     CPIGGerenciadorVideos::GetVideo(idVideo)->GetDimensoes(*altura,*largura);
 }
 
 /********************************
-A fun√ß√£o GetDimensoesOriginaisVideo() √© respons√°vel por recuperar a altura e a largura originais dos frames do v√≠deo.
-Qualquer utiliza√ß√£o da fun√ß√£o SetDimensoesVideo() √© ignorada para o c√°lculo desta fun√ß√£o.
-Par√¢metros:
-idVideo (entrada, passagem por valor): identificador do v√≠deo.
-altura (sa√≠da, passagem por refer√™ncia): altura original em pixels do v√≠deo.
-largura (sa√≠da, passagem por refer√™ncia): largura original em pixels do v√≠deo.
+A funÁ„o GetDimensoesOriginaisVideo() È respons·vel por recuperar a altura e a largura originais dos frames do vÌdeo.
+Qualquer utilizaÁ„o da funÁ„o SetDimensoesVideo() È ignorada para o c·lculo desta funÁ„o.
+Par‚metros:
+idVideo (entrada, passagem por valor): identificador do vÌdeo.
+altura (saÌda, passagem por referÍncia): altura original em pixels do vÌdeo.
+largura (saÌda, passagem por referÍncia): largura original em pixels do vÌdeo.
 ********************************/
 void GetDimensoesOriginaisVideo(int idVideo, int *altura, int *largura){
     CPIGGerenciadorVideos::GetVideo(idVideo)->GetResolucao(*altura,*largura);
 }
 
 /********************************
-A fun√ß√£o OcupaJanelaInteiraVideo() √© respons√°vel por redimensionar a exibi√ß√£o do video, para que este ocupe todo o tamanho
+A funÁ„o OcupaJanelaInteiraVideo() È respons·vel por redimensionar a exibiÁ„o do video, para que este ocupe todo o tamanho
 da janela em que estiver sendo executado.
-Par√¢metros:
-idVideo (entrada, passagem por valor): identificador do v√≠deo a ser desenhado.
+Par‚metros:
+idVideo (entrada, passagem por valor): identificador do vÌdeo a ser desenhado.
 ********************************/
 void OcupaJanelaInteiraVideo(int idVideo){
     CPIGGerenciadorVideos::GetVideo(idVideo)->OcupaJanelaInteira();
 }
 
 /********************************
-A fun√ß√£o UsaResolucaoOriginalVideo() √© respons√°vel por redimensionar a exibi√ß√£o do video, para que este utilize a resolu√ß√£o original
-do arquivo de m√≠dia.
-Par√¢metros:
-idVideo (entrada, passagem por valor): identificador do v√≠deo a ser desenhado.
+A funÁ„o UsaResolucaoOriginalVideo() È respons·vel por redimensionar a exibiÁ„o do video, para que este utilize a resoluÁ„o original
+do arquivo de mÌdia.
+Par‚metros:
+idVideo (entrada, passagem por valor): identificador do vÌdeo a ser desenhado.
 ********************************/
 void UsaResolucaoOriginalVideo(int idVideo){
     CPIGGerenciadorVideos::GetVideo(idVideo)->UsaResolucaoOriginal();
 }
 
 /********************************
-A fun√ß√£o SetColoracaoVideo() √© respons√°vel por mesclar uma determinada cor com os pixels do frame do v√≠deo.
-Ap√≥s a modifica√ß√£o, todos os desenhos deste v√≠deo ser√£o mostrados j√° com a mesclagem definida.
-Para voltar ao padr√£o original de pixels, deve-se chamar a fun√ß√£o, passando a cor branca (255,255,255,255).
-Par√¢metros:
-idVideo (entrada, passagem por valor): identificador do v√≠deo a ser desenhado.
-cor (entrada,passagem por valor): cor do sistema RGB utilizada para mesclagem com o arquivo de v√≠deo.
+A funÁ„o SetColoracaoVideo() È respons·vel por mesclar uma determinada cor com os pixels do frame do vÌdeo.
+ApÛs a modificaÁ„o, todos os desenhos deste vÌdeo ser„o mostrados j· com a mesclagem definida.
+Para voltar ao padr„o original de pixels, deve-se chamar a funÁ„o, passando a cor branca (255,255,255,255).
+Par‚metros:
+idVideo (entrada, passagem por valor): identificador do vÌdeo a ser desenhado.
+cor (entrada,passagem por valor): cor do sistema RGB utilizada para mesclagem com o arquivo de vÌdeo.
 ********************************/
 void SetColoracaoVideo(int idVideo, PIGCor cor){
     CPIGGerenciadorVideos::GetVideo(idVideo)->SetColoracao(cor);
 }
 
 /********************************
-A fun√ß√£o SetOpacidadeVideo() √© respons√°vel por modificar o n√≠vel de opacidade do v√≠deo.
-O n√≠vel de opacidade varia de 0-255, sendo 0 totalmente transparente e 255 totalmente opaco.
-Par√¢metros:
-idVideo (entrada, passagem por valor): identificador do v√≠deo.
-valor (entrada,passagem por valor): n√≠vel de opacidade do v√≠deo na faixa 0-255.
+A funÁ„o SetOpacidadeVideo() È respons·vel por modificar o nÌvel de opacidade do vÌdeo.
+O nÌvel de opacidade varia de 0-255, sendo 0 totalmente transparente e 255 totalmente opaco.
+Par‚metros:
+idVideo (entrada, passagem por valor): identificador do vÌdeo.
+valor (entrada,passagem por valor): nÌvel de opacidade do vÌdeo na faixa 0-255.
 ********************************/
 void SetOpacidadeVideo(int idVideo, int valor){
     CPIGGerenciadorVideos::GetVideo(idVideo)->SetOpacidade(valor);
 }
 
 /********************************
-A fun√ß√£o GetOpacidadeVideo() √© respons√°vel por recuperar o n√≠vel de opacidade de determinado v√≠deo.
-O n√≠vel de opacidade varia de 0-255, sendo 0 totalmente transparente e 255 totalmente opaco.
-Par√¢metros:
-idVideo (entrada, passagem por valor): identificador do v√≠deo.
+A funÁ„o GetOpacidadeVideo() È respons·vel por recuperar o nÌvel de opacidade de determinado vÌdeo.
+O nÌvel de opacidade varia de 0-255, sendo 0 totalmente transparente e 255 totalmente opaco.
+Par‚metros:
+idVideo (entrada, passagem por valor): identificador do vÌdeo.
 Retorno:
-Retorna o n√≠vel de opacidade do v√≠deo na faixa 0-255.
+Retorna o nÌvel de opacidade do vÌdeo na faixa 0-255.
 ********************************/
 int GetOpacidadeVideo(int idVideo){
     return CPIGGerenciadorVideos::GetVideo(idVideo)->GetOpacidade();
@@ -5310,27 +5310,84 @@ int GetOpacidadeVideo(int idVideo){
 
 /*******FORM*********/
 
-int PIGCriaForm(int xForm, int yForm, int altForm, int largForm, int janela = 0){
-    return CPIGGerenciadorForms::CriaForm(xForm,yForm,altForm,largForm,janela);
+
+/********************************
+A funÁ„o PIGCriaForm() È respons·vel por criar um formul·rio que conter· diversos componentes como: botıes, radiobox, checkbox, slidebar etc.
+Com essa chamada, o formul·rio n„o ter· nenhuma imagem de fundo, mas poder· ter uma cor substituindo essa imagem.
+Par‚metros:
+posicaoX (entrada, passagem por valor): posiÁ„o, no eixo X, do canto inferior esquerdo do formul·rio.
+posicaoY (entrada, passagem por valor): posiÁ„o, no eixo Y, do canto inferior esquerdo do formul·rio.
+altura (entrada, passagem por valor): altura do formul·rio em pixels.
+largura (entrada, passagem por valor): largura do formul·rio em pixels.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica em qual janela vai ser criado o formul·rio.
+Retorno:
+inteiro contendo o identificador do formul·rio que foi criado. Esse identificador deve ser utilizado para criar os componentes
+contidos nesse formul·rio.
+********************************/
+int PIGCriaForm(int posicaoX, int posicaoY, int altura, int largura, int idJanela=0){
+    return CPIGGerenciadorForms::CriaForm(posicaoX,posicaoY,altura,largura,idJanela);
 }
 
-int PIGCriaForm(int xForm, int yForm, int altForm, int largForm, string nomeArq, int retiraFundo=1, int janela = 0){
-    return CPIGGerenciadorForms::CriaForm(xForm,yForm,altForm,largForm,nomeArq,retiraFundo,janela);
+/********************************
+A funÁ„o PIGCriaForm() È respons·vel por criar um formul·rio que conter· diversos componentes como: botıes, radiobox, checkbox, slidebar etc.
+Com essa chamada, o formul·rio ter· uma imagem de fundo.
+Par‚metros:
+posicaoX (entrada, passagem por valor): posiÁ„o, no eixo X, do canto inferior esquerdo do formul·rio.
+posicaoY (entrada, passagem por valor): posiÁ„o, no eixo Y, do canto inferior esquerdo do formul·rio.
+altura (entrada, passagem por valor): altura do formul·rio em pixels.
+largura (entrada, passagem por valor): largura do formul·rio em pixels.
+nomeArquivo (entrada, passagem por par‚metro*): nome do arquivo de imagem que servir· de fundo para o formul·rio.
+retiraFundo (entrada, passagem por valor n„o-obrigatÛrio): inteiro que indica se o fundo da imagem deve ser retirado ou n„o ao ler o arquivo em quest„o. O valor padr„o È 1, indicando que o fundo deve ser retirado.
+idJanela (entrada, passagem por valor n„o-obrigatÛrio): indica em qual janela vai ser criado o formul·rio.
+Retorno:
+inteiro contendo o identificador do formul·rio que foi criado. Esse identificador deve ser utilizado para criar os componentes
+contidos nesse formul·rio.
+********************************/
+int PIGCriaForm(int posicaoX, int posicaoY, int altura, int largura, char *nomeArquivo, int retiraFundo=1, int idJanela=0){
+    return CPIGGerenciadorForms::CriaForm(posicaoX,posicaoY,altura,largura,nomeArquivo,retiraFundo,idJanela);
 }
 
-int PIGCriaForm(string nomeArqTexto){
+/********************************
+A funÁ„o PIGCriaForm() È respons·vel por criar um formul·rio que conter· diversos componentes como: botıes, radiobox, checkbox, slidebar etc.
+Com essa chamada, o formul·rio e os componentes ser„o cirados confrome os par‚metros existentes dentro de um arquivo de texto.
+Par‚metros:
+nomeArqTexto (entrada, passagem por par‚metro*): nome do arquivo de texto que contÈm as caracterÌsticas do formul·rio e dos componentes.
+Retorno:
+inteiro contendo o identificador do formul·rio que foi criado. Esse identificador deve ser utilizado para criar os componentes
+contidos nesse formul·rio.
+********************************/
+int PIGCriaForm(char *nomeArqTexto){
     return CPIGGerenciadorForms::CriaForm(nomeArqTexto);
 }
 
-
+/********************************
+A funÁ„o PIGFormTrataEvento() È respons·vel por tratar eventos de mouse e de teclado relacionados aos componentes existentes dentro do formul·rio em quest„o.
+Par‚metros:
+idForm (entrada, passagem por par‚metro): identificador do formul·rio em quest„o.
+PIGEvento (entrada, passagem por valor): evento a ser tratado pelo formul·rio.
+Retorno:
+inteiro indicando que o evento foi tratado por alum componente do formula¥rio (PIG_SELECIONADO_TRATADO) ou n„o foi tratado por nenhum componente (PIG_NAO_SELECIONADO).
+********************************/
 int PIGFormTrataEvento(int idForm, PIGEvento evento){
     return CPIGGerenciadorForms::GetForm(idForm)->TrataEvento(evento);
 }
 
+/********************************
+A funÁ„o PIGFormDesenha() È respons·vel por desenhar o formul·rio e todos os seus componentes.
+Par‚metros:
+idForm (entrada, passagem por par‚metro*: identificador do formul·rio em quest„o.
+Retorno:
+inteiro se houve o desenho do formul·rio e dos componentes ou n„o.
+********************************/
 int PIGFormDesenha(int idForm){
     return CPIGGerenciadorForms::GetForm(idForm)->Desenha();
 }
 
+/********************************
+A funÁ„o PIGDestroiForm() È respons·vel por liberar a memÛria do formul·rio e de todos os componentes envolvidos.
+Par‚metros:
+idForm (entrada, passagem por par‚metro): identificador do formul·rio em quest„o.
+********************************/
 void PIGDestroiForm(int idForm){
     CPIGGerenciadorForms::DestroiForm(idForm);
 }
@@ -5343,6 +5400,10 @@ int PIGCriaComponentePorParametro(int idForm, char* parametros){
 
 void PIGComponentesDefineAcao(int idComponente, PIGFuncaoSimples funcao, void *parametro){
     CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->DefineAcao(funcao,parametro);
+}
+
+int PIGGetComponentePorLabel(int idForm, char *label){
+    return CPIGGerenciadorForms::GetForm(idForm)->GetIdComponentePeloLabel(label);
 }
 
 void PIGComponentesSetLabel(int idComponente, char* novoLabel){
@@ -5492,11 +5553,11 @@ void PIGBotaoOnOffDefineAtalho(int idComponente, int teclaAtalho){
 
 /*******AREADETEXTO*********/
 
-int PIGCriaAreaDeTexto(int idForm, int x, int y, int altura, int largura, char* nomeArq, int maxCars = 200, int retiraFundo=1){
+int PIGCriaAreaDeTexto(int idForm, int x, int y, int altura, int largura, char* nomeArq, int maxCars=200, int retiraFundo=1){
     return CPIGGerenciadorForms::GetForm(idForm)->CriaAreaDeTexto(x,y,altura,largura,nomeArq,maxCars,retiraFundo);
 }
 
-int PIGCriaAreaDeTexto(int idForm, int x, int y, int altura, int largura, int maxCars = 200){
+int PIGCriaAreaDeTexto(int idForm, int x, int y, int altura, int largura, int maxCars=200){
     return CPIGGerenciadorForms::GetForm(idForm)->CriaAreaDeTexto(x,y,altura,largura,maxCars);
 }
 
@@ -5534,11 +5595,11 @@ void PIGAreaDeTextoGetTexto(int idComponente, char* texto){
 
 /**********CAMPOTEXTO**************/
 
-int PIGCriaCampoTexto(int idForm, int x, int y, int altura, int largura, char* nomeArq, int maxCars = 200, bool apenasNumeros=false, int retiraFundo=1){
+int PIGCriaCampoTexto(int idForm, int x, int y, int altura, int largura, char* nomeArq, int maxCars=200, bool apenasNumeros=false, int retiraFundo=1){
     return CPIGGerenciadorForms::GetForm(idForm)->CriaCampoTextoESenha(x,y,altura,largura,nomeArq,maxCars,apenasNumeros,retiraFundo,false);
 }
 
-int PIGCriaCampoTexto(int idForm, int x, int y, int altura, int largura, int maxCars = 200, bool apenasNumeros=false){
+int PIGCriaCampoTexto(int idForm, int x, int y, int altura, int largura, int maxCars=200, bool apenasNumeros=false){
     return CPIGGerenciadorForms::GetForm(idForm)->CriaCampoTextoESenha(x,y,altura,largura,maxCars,apenasNumeros,false);
 }
 

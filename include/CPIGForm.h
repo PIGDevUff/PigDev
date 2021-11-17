@@ -135,6 +135,14 @@ public:
         }
     }
 
+    int GetIdComponentePeloLabel(string label){
+        for(int i=0;i<totalComponentes;i++){
+            if (componentes[i]->GetLabel()==label)
+                return componentes[i]->GetId();
+        }
+        return -1;
+    }
+
     inline int GetIdComponente(int componente){
         return (id * PIG_MAX_COMPONENTES) + componente;
     }

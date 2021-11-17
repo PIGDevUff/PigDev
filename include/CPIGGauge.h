@@ -134,6 +134,7 @@ public:
         porcentagemConcluida = PIGLimitaValor(porcentagem,0.0,1.0);
         valorAtual = valorMin + (valorMax - valorMin)*porcentagemConcluida;
         marcadorAtualizado = false;
+        OnAction();
     }
 
     double GetValorAtual(){

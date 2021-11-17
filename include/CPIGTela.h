@@ -1,5 +1,5 @@
-#ifndef __CPIGTELA__
-#define __CPIGTELA__
+#ifndef _CPIGTELA_
+#define _CPIGTELA_
 
 class CPIGTela{
 
@@ -105,8 +105,7 @@ void DefineAcaoDestroi(PIGFuncaoSimples acao){
     acaoDestroi = acao;
 }
 
-
 };
 
 typedef CPIGTela *PIGTela;
-#endif // __CPIGTELA__
+#endif // _CPIGTELA_

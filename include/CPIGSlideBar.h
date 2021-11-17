@@ -31,7 +31,6 @@ class CPIGSlideBar : public CPIGGauge{
 
     void AtualizaMarcador()override{
         CPIGGauge::AtualizaMarcador();
-        //OnAction();
 
         switch (orientacaoCrescimento){
         case PIG_GAUGE_ESQ_DIR:
@@ -186,7 +185,7 @@ public:
 
         EscreveHint();
 
-        return 0;
+        return 1;
     }
 
 

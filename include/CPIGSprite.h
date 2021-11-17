@@ -121,7 +121,7 @@ void AplicaTransicao(PIGEstadoTransicao estado){
 
 public:
 
-int GetID(){
+int GetId(){
     return id;
 }
 

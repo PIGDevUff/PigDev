@@ -1,5 +1,5 @@
-#ifndef __CPIGGERENCIADORTELAS__
-#define __CPIGGERENCIADORTELAS__
+#ifndef _CPIGGERENCIADORTELAS_
+#define _CPIGGERENCIADORTELAS_
 
 #include "CPIGTela.h"
 
@@ -71,4 +71,4 @@ static int Desenha(){
 int CPIGGerenciadorTelas::telaAtual;
 PIGTela CPIGGerenciadorTelas::telas[PIG_MAX_TELAS];
 
-#endif // __CPIGGERENCIADORTELAS__
+#endif // _CPIGGERENCIADORTELAS_

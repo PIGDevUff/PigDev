@@ -26,7 +26,8 @@ private:
         while (i<textoOrig.size()){
             letraAnt = letra;
             letra = textoOrig[i];
-            letra = letra %256;
+            //letra = letra %256;
+            letra = ConvChar(letra);
 
             switch (estado){
             case 0://estado sem formatacao
@@ -124,8 +125,6 @@ public:
 
     //construtor com o nome do arquivo da fonte, o tamanha e a janela
     CPIGMapaCaracteresDinamicos(string nomeFonte, int tamanhoFonte, int idJanela):CPIGMapaCaracteres(nomeFonte,tamanhoFonte,PIG_ESTILO_NORMAL,BRANCO,idJanela){
-        //IniciaBase(nomeFonte,tamanhoFonte,idJanela, -1);
-
         for (int estilo=1;estilo<PIG_TOTALESTILOS;estilo++)
             CriaLetrasSurface(estilo, 0, BRANCO, NULL, BRANCO);
 
@@ -139,10 +138,8 @@ public:
         case PIG_TEXTO_ESQUERDA:
             break;
         case PIG_TEXTO_DIREITA:
-            //EscreveStringEsquerda(texto,x-formatada.LargTotalPixels(),y,ang,formatada.LargTotalPixels());break;
             x -= formatada.LargTotalPixels();delta = formatada.LargTotalPixels();break;
         case PIG_TEXTO_CENTRO:
-            //EscreveStringEsquerda(texto,x-formatada.LargTotalPixels()/2,y,ang,formatada.LargTotalPixels()/2);break;
             x -= formatada.LargTotalPixels()/2;delta = formatada.LargTotalPixels()/2;break;
         }
 
@@ -156,7 +153,8 @@ public:
 
         for (int i=0;i<formatada.size();i++){
             Uint16 aux = formatada.GetLetra(i);
-            aux = aux %256;
+
+            aux = ConvChar(aux);
             if (aux-PIG_PRIMEIRO_CAR<0) continue;
             corAtual = formatada.GetCor(i);
             estiloAtual = formatada.GetEstilo(i);

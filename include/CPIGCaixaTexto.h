@@ -9,7 +9,6 @@ private:
 
     bool cursorExibido;
     int maxCaracteres;
-    bool somenteNumeros;
     PIGTimer timer;
 
 protected:
@@ -158,7 +157,7 @@ protected:
     //adiciona um texto (caracter ou string) na posiçăo indicada pelo cursor (se possível)
     virtual int AdicionaTexto(string frase){
         if (texto.size()+frase.size()>maxCaracteres) return 0;//ultrapassa o limite máximo de carcteres
-        if (somenteNumeros&&!PIGSomenteNumeros(frase)) return 0;//năo é número
+        //if (somenteNumeros&&!PIGSomenteNumeros(frase)) return 0;//năo é número
 
         texto.insert(posCursor,frase);
 
@@ -214,7 +213,7 @@ protected:
         return PIG_SELECIONADO_TRATADO;
     }
 
-    void IniciaBase(int maxCars, bool apenasNum){
+    void IniciaBase(int maxCars){
         margemEsq = margemDir = margemCima = margemBaixo = 5;
         posLabel = PIG_COMPONENTE_ESQ_BAIXO;//posiçăo padrăo do label
         posCursor = 0;//cursor no início do texto
@@ -222,7 +221,6 @@ protected:
         timer = new CPIGTimer(false);//o timer do cursor que só será exibido quando estiver editando
         SetFonteTexto(0);
         maxCaracteres = maxCars;
-        somenteNumeros = apenasNum;
         IniciaCoresBasicas();
         AjustaPosicaoTextoCursor();
     }
@@ -230,14 +228,14 @@ protected:
 
 public:
 
-    CPIGCaixaTexto(int idComponente,int px, int py, int altura,int largura,std::string nomeArq,int maxCars = 200,bool apenasNumeros=false,int retiraFundo=1,int janela=0):
+    CPIGCaixaTexto(int idComponente, int px, int py, int altura, int largura, string nomeArq, int maxCars=PIG_MAX_CARS_CAIXATEXTO, int retiraFundo=1, int janela=0):
         CPIGComponente(idComponente,px,py,altura,largura,nomeArq,retiraFundo,janela){
-            IniciaBase(maxCars,apenasNumeros);
+            IniciaBase(maxCars);
     }
 
-    CPIGCaixaTexto(int idComponente,int px, int py, int altura,int largura,int maxCars = 200,bool apenasNumeros=false,int janela=0):
+    CPIGCaixaTexto(int idComponente, int px, int py, int altura, int largura, int maxCars=PIG_MAX_CARS_CAIXATEXTO, int janela=0):
         CPIGComponente(idComponente,px,py,altura,largura,janela){
-            IniciaBase(maxCars,apenasNumeros);
+            IniciaBase(maxCars);
     }
 
     virtual ~CPIGCaixaTexto(){

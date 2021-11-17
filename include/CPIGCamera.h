@@ -35,7 +35,7 @@ void Move(SDL_Point nova){
     pos = nova;
 }
 
-void Desloca(int dx,int dy){
+void Desloca(int dx, int dy){
     pos.x += dx;
     pos.y += dy;
 }

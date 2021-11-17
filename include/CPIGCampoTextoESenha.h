@@ -8,6 +8,7 @@ class CPIGCampoTextoESenha: public CPIGCaixaTexto{
 private:
 
     char mascara;//símbolo usado quando o campo for de senha
+    bool somenteNumeros;//se o campo só aceita números ou aceita também letras
     string (CPIGCampoTextoESenha::*GetTextoVisivelPtr)();//ponteiro para a funçăo que vai retornar o texto visivel
 
     void ProcessaAtributos(CPIGAtributos atrib)override{
@@ -101,8 +102,9 @@ private:
         else SDL_StopTextInput();
     }
 
-    void IniciaBase(bool campoSenha){
+    void IniciaBase(bool campoSenha, bool apenasNumero){
         mascara = '*';
+        somenteNumeros = apenasNumero;
         if(campoSenha){
             GetTextoVisivelPtr = &CPIGCampoTextoESenha::CPIGCampoTextoESenha::GetTextoMask;
         }else{
@@ -113,14 +115,14 @@ private:
 
 public:
 
-    CPIGCampoTextoESenha(int idComponente,int px, int py, int altura,int largura,std::string nomeArq,int maxCars = 200, bool apenasNumeros=false, bool campoSenha = false, int retiraFundo=1,int janela=0):
-        CPIGCaixaTexto(idComponente,px,py,altura,largura,nomeArq,maxCars,apenasNumeros,retiraFundo,janela){
-            IniciaBase(campoSenha);
+    CPIGCampoTextoESenha(int idComponente,int px, int py, int altura, int largura, string nomeArq, int maxCars=PIG_MAX_CARS_CAIXATEXTO, bool apenasNumeros=false, bool campoSenha = false, int retiraFundo=1, int janela=0):
+        CPIGCaixaTexto(idComponente,px,py,altura,largura,nomeArq,maxCars,retiraFundo,janela){
+            IniciaBase(campoSenha,apenasNumeros);
     }
 
-    CPIGCampoTextoESenha(int idComponente,int px, int py, int altura,int largura,int maxCars = 200, bool apenasNumeros=false, bool campoSenha = false, int janela=0):
-        CPIGCaixaTexto(idComponente,px,py,altura,largura,maxCars,apenasNumeros,janela){
-            IniciaBase(campoSenha);
+    CPIGCampoTextoESenha(int idComponente,int px, int py, int altura, int largura, int maxCars=PIG_MAX_CARS_CAIXATEXTO, bool apenasNumeros=false, bool campoSenha = false, int janela=0):
+        CPIGCaixaTexto(idComponente,px,py,altura,largura,maxCars,janela){
+            IniciaBase(campoSenha,apenasNumeros);
     }
 
     CPIGCampoTextoESenha(int idComponente,CPIGAtributos atrib):CPIGCampoTextoESenha(LeParametros(idComponente,atrib)){}
@@ -167,6 +169,11 @@ public:
 
     void SetMascara(char c){
         mascara = c;
+    }
+
+    virtual int AdicionaTexto(string frase)override{
+        if (somenteNumeros&&!PIGSomenteNumeros(frase)) return 0;//năo é número
+        return CPIGCaixaTexto::AdicionaTexto(frase);
     }
 
 };

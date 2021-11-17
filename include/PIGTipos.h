@@ -67,6 +67,7 @@ Principais definições utilizadas pela PIG
 #define PIG_MAX_VIDEOS                  10
 
 #define PIG_MAX_COMPONENTES             500
+#define PIG_MAX_CARS_CAIXATEXTO         200
 #define PIG_MAX_FORMS                   100
 
 #define PIG_MAX_TELAS                   2000

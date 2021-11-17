@@ -127,7 +127,7 @@ protected:
                 break;
             }
             //PIGPonto2D p = lab->GetXY();
-            //printf("p (%d): %d,%d\n",posLabel,(int)p.x,(int)p.y);
+            //printf("id: %d p (%d): %d,%d\n",id,posLabel,(int)p.x,(int)p.y);
     }
 
     //desenha o label
@@ -147,6 +147,7 @@ protected:
 
         valorStr = atrib.GetString("label","");
         if (valorStr != "") SetLabel(atrib.GetString("label",""));
+
 
         valorStr = atrib.GetString("hint","");
         if (valorStr != "") SetHint(valorStr);
@@ -175,8 +176,9 @@ protected:
         valorStr  = atrib.GetString("corHint","");
         if (valorStr != "") SetCorHint(PIGCriaCorString(valorStr));
 
-        valorStr = atrib.GetString("posicaoLabel","");
+        valorStr = atrib.GetString("posLabel","");
         if (valorStr != "") SetPosicaoPadraoLabel(ConverteStringPosicao(valorStr));
+
     }
 
 public:
@@ -202,11 +204,6 @@ public:
     void DefineAcao(PIGFuncaoSimples funcao, void *parametro){
         acao = funcao;
         param = parametro;
-    }
-
-    //recupera o id do componente
-    int GetId(){
-        return id;
     }
 
     //desenha o componente, cada subclasse precisa implementar como fazer isso

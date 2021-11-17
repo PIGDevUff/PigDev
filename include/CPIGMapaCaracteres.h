@@ -21,6 +21,11 @@ protected:
     string nome;
     int tamFonte;
 
+    inline static Uint16 ConvChar(Uint16 letra){
+        if (letra>6500) letra+=64;
+        return letra % 256;
+    }
+
     //cria o conjunto de glifos das letras com as características fornecidas
     void CriaLetrasSurface(PIGEstilo estilo, int nivelOutline, PIGCor corOutline, SDL_Surface *fundo,  PIGCor corFonte=BRANCO){
         TTF_SetFontStyle(font,estilo);
@@ -83,7 +88,7 @@ protected:
 
 public:
 
-    CPIGMapaCaracteres(string nomeFonte, int tamanhoFonte, int estilo, string nomeFundo, int idJanela, SDL_Renderer *renderer=NULL){
+    CPIGMapaCaracteres(string nomeFonte, int tamanhoFonte, PIGEstilo estilo, string nomeFundo, int idJanela, SDL_Renderer *renderer=NULL){
         IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo, renderer);
 
         SDL_Surface *fundo = IMG_Load(nomeFundo.c_str());//carrega a imagem de fundo
@@ -92,7 +97,7 @@ public:
         SDL_FreeSurface(fundo);
     }
 
-    CPIGMapaCaracteres(string nomeFonte, int tamanhoFonte,int estilo, string nomeFundo, int outline, PIGCor corOutline, int idJanela, SDL_Renderer *renderer=NULL){
+    CPIGMapaCaracteres(string nomeFonte, int tamanhoFonte, PIGEstilo estilo, string nomeFundo, int outline, PIGCor corOutline, int idJanela, SDL_Renderer *renderer=NULL){
         IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo, renderer);
 
         SDL_Surface *fundo = IMG_Load(nomeFundo.c_str());//carrega a imagem de fundo
@@ -100,7 +105,7 @@ public:
         CriaLetrasSurface(estilo, outline, corOutline, fundo);
     }
 
-    CPIGMapaCaracteres(string nomeFonte,int tamanhoFonte,int estilo, PIGCor corFonte, int outline, PIGCor corOutline, int idJanela, SDL_Renderer *renderer=NULL){
+    CPIGMapaCaracteres(string nomeFonte, int tamanhoFonte, PIGEstilo estilo, PIGCor corFonte, int outline, PIGCor corOutline, int idJanela, SDL_Renderer *renderer=NULL){
         IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo, renderer);
 
         CriaLetrasSurface(estilo, outline, corOutline, NULL);//, corFonte);
@@ -108,7 +113,7 @@ public:
         SDL_SetRenderTarget(render, NULL);
     }
 
-    CPIGMapaCaracteres(string nomeFonte, int tamanhoFonte, int estilo, PIGCor corFonte, int idJanela, SDL_Renderer *renderer=NULL){
+    CPIGMapaCaracteres(string nomeFonte, int tamanhoFonte, PIGEstilo estilo, PIGCor corFonte, int idJanela, SDL_Renderer *renderer=NULL){
         IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo, renderer);
 
         CriaLetrasSurface(estilo, 0, BRANCO, NULL);//, corFonte);
@@ -134,7 +139,7 @@ public:
     }
 
     void SubstituiGlyph(string nomeArq, uint16_t glyph, int largNova, int x, int y, int alt, int larg){
-        glyph = glyph%256;
+        glyph = ConvChar(glyph);
         if (glyph<PIG_PRIMEIRO_CAR||glyph>=PIG_ULTIMO_CAR) throw CPIGErroIndice(glyph,"caracter");//se o indice do glyph antigo não existe
 
         int h;
@@ -181,7 +186,8 @@ public:
             estilo = estiloFixo;
 
         TTF_SetFontStyle(font,estilo);
-        letra = letra%256;
+
+        letra = ConvChar(letra);
         TTF_GlyphMetrics(font,letra,&xMin,&xMax,&yMin,&yMax,&adv);
 
         metrica.descent = -yMin;
@@ -202,8 +208,7 @@ public:
     }
 
     int GetLarguraLetra(Uint16 letra, int estilo=0){
-        Uint16 aux = letra;
-        aux = aux % 256;
+        Uint16 aux = ConvChar(letra);
         if(estiloFixo>=0)
             estilo = estiloFixo;
         return larguraLetra[estilo][aux-PIG_PRIMEIRO_CAR];
@@ -250,7 +255,11 @@ public:
 
         for (unsigned int i=0;i<texto.size();i++){
             aux = texto[i];
-            aux = aux % 256;
+            //aux = aux % 256;
+            if (aux==65475) continue;
+            //if (aux>6500) aux+=64;
+            //aux = aux % 256;
+            aux = ConvChar(aux);
             if(texto[i] != '\n')
                 resp += larguraLetra[estiloFixo][aux-PIG_PRIMEIRO_CAR];
         }
@@ -258,16 +267,13 @@ public:
         return resp;
     }
 
-    /*inline Uint8 PIGConverteParaByte(Uint16 valor){
-            if (aux==65475) continue;
-            if (aux>6500) aux+=64;
-            aux = aux % 256;//UTF16 string, retirando só o byte que interessa
-    }*/
 
     virtual void Escreve(string texto, int x, int y, PIGCor corFonte=BRANCO, PIGPosTexto pos=PIG_TEXTO_ESQUERDA, float ang=0, int alvoTextura=0){
-        int w,h;
         if (texto=="") return;
-        int larguraPixels = GetLarguraPixelsString(texto);
+        string strs(texto.c_str());//precisa fazer p converter os formatos de strings "texto" que podem ser diferentes
+
+        int w,h;
+        int larguraPixels = GetLarguraPixelsString(strs);
         int delta=0;
         switch(pos){
         case PIG_TEXTO_ESQUERDA:
@@ -292,11 +298,10 @@ public:
         SDL_Point ponto = {delta,tamFonte};
         Uint16 aux;
 
-        for (unsigned int i=0;i<texto.size();i++){
-            aux = texto[i];
+        for (unsigned int i=0;i<strs.size();i++){
+            aux = strs[i];
             if (aux==65475) continue;
-            //if (aux>6500) aux+=64;
-            aux = aux % 256;//UTF16 string, retirando só o byte que interessa
+            aux = ConvChar(aux);
             if (aux-PIG_PRIMEIRO_CAR<0) continue;
             //printf("aux: %d  %d",aux,aux-PRIMEIRO_CAR);
 
@@ -350,6 +355,8 @@ public:
         SDL_SetTextureColorMod(textura,cor.r,cor.g,cor.b);
 
         Escreve(texto,0,*altJanela-tamFonte+fontDescent,cor,PIG_TEXTO_ESQUERDA,0,1);
+        //SDL_SetRenderDrawColor(render,255,0,0,255);
+        //SDL_RenderDrawRect(render,NULL);
         SDL_SetRenderTarget(render, NULL);
     }
 

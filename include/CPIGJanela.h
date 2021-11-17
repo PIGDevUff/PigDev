@@ -17,13 +17,13 @@ int id;
 int modo;
 bool fechada;
 float opacidade;
-std::string titulo;
+string titulo;
 PIGCamera cameraMovel,cameraFixa;
 bool fixo;
 
 public:
 
-CPIGJanela(std::string tituloJanela,int idJanela,int altTela,int largTela){
+CPIGJanela(string tituloJanela, int idJanela, int altTela, int largTela){
     id = idJanela;
     titulo = tituloJanela;
     altura = altTela;
@@ -139,7 +139,7 @@ inline SDL_Point GetPosicaoCamera(){
     return cameraMovel->GetXY();
 }
 
-void DefineFundo(std::string nomeArquivo){
+void DefineFundo(string nomeArquivo){
     SDL_Surface* bitmap = IMG_Load(nomeArquivo.c_str());
     if (textFundo)
         SDL_DestroyTexture(textFundo);
@@ -147,7 +147,7 @@ void DefineFundo(std::string nomeArquivo){
     SDL_FreeSurface(bitmap);
 }
 
-void SaveScreenshot(std::string nomeArquivo, bool BMP) {
+void SaveScreenshot(string nomeArquivo, bool BMP) {
     if (window==NULL) return;
     SDL_Surface* saveSurface = NULL;
     SDL_Surface* infoSurface = NULL;
@@ -190,11 +190,11 @@ int GetLargura(){
     return largura;
 }
 
-std::string GetTitulo(){
+string GetTitulo(){
     return titulo;
 }
 
-void SetTitulo(std::string novoTitulo){
+void SetTitulo(string novoTitulo){
     if (window==NULL) return;
     titulo = novoTitulo;
     SDL_SetWindowTitle(window,titulo.c_str());
@@ -217,7 +217,7 @@ void SetOpacidade(float valor){
     SDL_SetWindowOpacity(window,opacidade);
 }
 
-void SetPosicao(int x,int y){
+void SetPosicao(int x, int y){
     if (window==NULL) return;
     SDL_SetWindowPosition(window,x,y);
 }
@@ -278,7 +278,7 @@ void DesenhaRetanguloVazado(int x, int y, int alturaRet, int larguraRet, PIGCor 
     SDL_RenderDrawRect(renderer,&rect);
 }
 
-void DesenhaLinhaSimples(int x1,int y1,int x2,int y2,PIGCor cor){
+void DesenhaLinhaSimples(int x1, int y1, int x2, int y2, PIGCor cor){
     SDL_SetRenderDrawColor(renderer,cor.r,cor.g,cor.b,255);
     int camX1,camY1,camX2,camY2;
     GetCamera()->ConverteCoordenadaWorldScreen(x1,altura-y1-1,camX1,camY1);
@@ -287,7 +287,7 @@ void DesenhaLinhaSimples(int x1,int y1,int x2,int y2,PIGCor cor){
     //SDL_RenderDrawLine(renderer,x1-camera->GetX(),altura-y1-1+camera->GetY(),x2-camera->GetX(),altura-y2-1+camera->GetY());
 }
 
-void DesenhaLinhasDisjuntas(int x[],int y[],int qtd,PIGCor cor){
+void DesenhaLinhasDisjuntas(int x[], int y[], int qtd, PIGCor cor){
     SDL_SetRenderDrawColor(renderer,cor.r,cor.g,cor.b,255);
     int camX1,camY1,camX2,camY2;
     for (int k=0;k<qtd;k+=2){
@@ -298,7 +298,7 @@ void DesenhaLinhasDisjuntas(int x[],int y[],int qtd,PIGCor cor){
     }
 }
 
-void DesenhaLinhasSequencia(int x[],int y[],int qtd,PIGCor cor){
+void DesenhaLinhasSequencia(int x[], int y[], int qtd, PIGCor cor){
     SDL_SetRenderDrawColor(renderer,cor.r,cor.g,cor.b,255);
     int camX1,camY1,camX2,camY2;
     for (int k=0;k<qtd-1;k++){
@@ -309,7 +309,7 @@ void DesenhaLinhasSequencia(int x[],int y[],int qtd,PIGCor cor){
     }
 }
 
-void DesenhaPoligono(int px[],int py[],int lados,PIGCor cor){
+void DesenhaPoligono(int px[], int py[], int lados, PIGCor cor){
     int minX=INT_MAX,maxX=-1,minY=INT_MAX,maxY=-1;
     int cx=0,cy=0;
 
@@ -358,7 +358,7 @@ void DesenhaPoligono(int px[],int py[],int lados,PIGCor cor){
     delete off;
 }
 
-PIGCor GetPixel(int x,int y) {
+PIGCor GetPixel(int x, int y) {
     if (x<0 || x>=largura  ||y<0 ||y>=altura) return PRETO;
     PIGCor resp;
     SDL_Surface* infoSurface = SDL_GetWindowSurface(window);

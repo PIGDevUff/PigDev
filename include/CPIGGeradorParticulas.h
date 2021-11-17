@@ -35,7 +35,7 @@ void AtualizaParticulas(){
         //printf("viva %d %d %d\n",i,parts[i]->viva,parts[i]->GetID());
         if (parts[i]->ChecaViva()==false){;
             //printf("antes del %d (%f)\n",parts[i]->GetID(),maxTempo);
-            CPIGGerenciadorSprites::DestroiAnimacao(parts[i]->GetID());
+            CPIGGerenciadorSprites::DestroiAnimacao(parts[i]->GetId());
 
             if (audioFim>=0)
                 CPIGGerenciadorAudios::Play(audioFim);
