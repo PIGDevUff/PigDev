@@ -27,7 +27,7 @@ private:
         for(int i=0;i<totalComponentes;i++){
             int aux = componentes[i]->TrataEventoMouse(evento);
             if(aux == PIG_SELECIONADO_TRATADO){
-                if (componenteComFoco!=-1 && componenteComFoco!=i){  //se já tem um outro componente com foco, ele vai perder o foco
+                if (componenteComFoco!=-1 && componenteComFoco!=i){     //se já tem um outro componente com foco, ele vai perder o foco
                     componentes[componenteComFoco]->SetFoco(false);
                 }
                 componenteComFoco = i;                                //anota que terá o foco

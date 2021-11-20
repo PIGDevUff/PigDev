@@ -26,7 +26,7 @@ private:
         return PIG_SELECIONADO_TRATADO;
     }
 
-    void IniciaBase(std::string labelItem,std::string arqImagemIcone="",int alturaIcone=0,int larguraIcone=0){
+    void IniciaBase(string labelItem, string arqImagemIcone="", int alturaIcone=0, int larguraIcone=0){
         if (arqImagemIcone!=""){
             icone = new CPIGSprite(-1,arqImagemIcone,1,NULL,idJanela);
             icone->SetDimensoes(alturaIcone,larguraIcone);

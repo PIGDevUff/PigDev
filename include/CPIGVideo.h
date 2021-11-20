@@ -887,7 +887,7 @@ void DestroiVideoState(){
 
 public:
 
-CPIGVideo(std::string nomeArq,int idJanela=0):
+CPIGVideo(string nomeArq, int idJanela=0):
     CPIGSprite(-1,*CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura(),CPIGGerenciadorJanelas::GetJanela(idJanela)->GetLargura(),nomeArq,idJanela){
     volume = 1.2;
     janelaAtual = CPIGGerenciadorJanelas::GetJanela(idJanela);
@@ -1100,7 +1100,7 @@ double GetTempoAtual(){
     return is->videoClock;
 }
 
-std::string GetTempoAtualString(){
+string GetTempoAtualString(){
     if (is==NULL) return "";
     double base = is->videoClock;
     double fH = base / 3600.;
@@ -1117,7 +1117,7 @@ double GetTempoTotal(){
     return (is->pFormatCtx->duration*1.0/AV_TIME_BASE);
 }
 
-std::string GetTempoTotalString(){
+string GetTempoTotalString(){
     double base = GetTempoTotal();
     double fH = base / 3600.;
     int     H = static_cast<int>(fH);

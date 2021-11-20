@@ -35,7 +35,7 @@ static int GetQtdJanelas(){
 static int CriaJanela(string nome, int altura=PIG_ALT_TELA, int largura=PIG_LARG_TELA){
     if (qtdJanelas==PIG_MAX_JANELAS) return -1;
     janelas[qtdJanelas++] = new CPIGJanela(nome,qtdJanelas,altura,largura);
-    return qtdJanelas-1;//foi incrmentada log acima
+    return qtdJanelas-1;//foi incrementada logo acima
 }
 
 inline static PIGJanela GetJanela(int idJanela){

@@ -58,8 +58,12 @@ private:
         off->SetCorTransparente(2,true,croma2);
         //off->SalvarImagemPNG("interno.png",2);
 
+        double deltaCrescimento=0;
+        if (crescimentoHorario)
+            deltaCrescimento = deltaAng-porcentagemConcluida*(deltaAng);
+
         //circulo com a barra na cor desejada
-        off->DesenhaCirculoFinal(larg/2-2,croma1,coresBasicas[3],angBase,porcentagemConcluida*(deltaAng)+angBase,0);
+        off->DesenhaCirculoFinal(larg/2-2,croma1,coresBasicas[3],angBase+deltaCrescimento,porcentagemConcluida*(deltaAng)+angBase+deltaCrescimento,0);
         off->SetCorTransparente(0,true,croma1);
         //off->SalvarImagemPNG("barra.png",0);
 
