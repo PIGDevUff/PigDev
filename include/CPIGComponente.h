@@ -26,8 +26,8 @@ protected:
 
     //inicializa o componente com valores padrão
     void IniciaBase(){
-        lab = new CPIGLabel("",0,BRANCO,idJanela);
-        hint = new CPIGLabel("",0,BRANCO,idJanela);
+        lab = new CPIGLabel("",0,idJanela);
+        hint = new CPIGLabel("",0,idJanela);
         SetPosicaoPadraoLabel(PIG_COMPONENTE_CENTRO_CENTRO);
         audioComponente = -1;
         margemEsq = margemDir = margemCima = margemBaixo = 0;
@@ -148,7 +148,6 @@ protected:
         valorStr = atrib.GetString("label","");
         if (valorStr != "") SetLabel(atrib.GetString("label",""));
 
-
         valorStr = atrib.GetString("hint","");
         if (valorStr != "") SetHint(valorStr);
 
@@ -178,7 +177,6 @@ protected:
 
         valorStr = atrib.GetString("posLabel","");
         if (valorStr != "") SetPosicaoPadraoLabel(ConverteStringPosicao(valorStr));
-
     }
 
 public:
@@ -226,7 +224,7 @@ public:
 
     //define a cor do label
     virtual void SetCorLabel(PIGCor corLabel){
-        lab->SetCor(corLabel);
+        lab->SetCorFonte(corLabel);
     }
 
     //recupera a cor do label
@@ -246,7 +244,7 @@ public:
 
     //define a cor do hint
     virtual void SetCorHint(PIGCor cor){
-        hint->SetCor(cor);
+        hint->SetCorFonte(cor);
     }
 
     //recupera o hint
