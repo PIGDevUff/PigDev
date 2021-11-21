@@ -40,15 +40,14 @@ protected:
         if (valorStr != "") SetCorDesabilitado(PIGCriaCorString(valorStr));
     }
 
-    static CPIGBotaoClick LeParametros(int idComponente,CPIGAtributos atrib){
+    static CPIGBotaoClick LeParametros(int idComponente, CPIGAtributos atrib){
         CPIGBotaoClick *resp;
 
         if (atrib.GetString("nomeArq","")!=""){
-            resp = new CPIGBotaoClick(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            resp = new CPIGBotaoClick(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                        atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
         }else{
-            resp = new CPIGBotaoClick(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
-                       atrib.GetInt("janela",0));
+            resp = new CPIGBotaoClick(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),atrib.GetInt("janela",0));
         }
 
         resp->ProcessaAtributos(atrib);
@@ -92,8 +91,8 @@ protected:
 
 public:
 
-    CPIGBotaoClick(int idComponente,int px, int py, int alt,int larg,std::string nomeArq, int retiraFundo=1,int janela=0):
-        CPIGBotao(idComponente,px,py,alt,larg,nomeArq,retiraFundo,janela){
+    CPIGBotaoClick(int idComponente, int alt, int larg, string nomeArq, int retiraFundo=1, int janela=0):
+        CPIGBotao(idComponente,alt,larg,nomeArq,retiraFundo,janela){
             CriaFramesAutomaticosPorLinha(1,1,4);
             MudaFrameAtual(1); //frame de estado normal do botao
             tempoRepeticao = 0.2;
@@ -101,8 +100,8 @@ public:
             timer = new CPIGTimer(false);
         }
 
-    CPIGBotaoClick(int idComponente,int px, int py, int alt,int larg,int janela=0):
-        CPIGBotao(idComponente,px,py,alt,larg,janela){
+    CPIGBotaoClick(int idComponente, int alt, int larg, int janela=0):
+        CPIGBotao(idComponente,alt,larg,janela){
             IniciaCoresBasicas();
             tempoRepeticao = 0.2;
             botaoRepeticao = false;
@@ -133,7 +132,7 @@ public:
         botaoRepeticao = repeticao;
     }
 
-    int Desenha(){
+    int Desenha()override{
         TrataTimer();
         return CPIGBotao::Desenha();
     }

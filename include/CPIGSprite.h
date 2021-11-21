@@ -52,8 +52,8 @@ void IniciaBase(int altura, int largura, int janela){
 }
 
 void ExtraiPixels() {
-
-    pixels = (PIGCor **)malloc(sizeof(PIGCor *) * bitmap->h);
+    if (!bitmap) return;
+    pixels = (PIGCor **)malloc(sizeof(PIGCor*) * bitmap->h);
     for (int i = 0; i < bitmap->h; i++) {
         pixels[i] = (PIGCor *)calloc(sizeof(PIGCor), bitmap->w);
     }

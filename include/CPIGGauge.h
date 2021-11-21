@@ -80,13 +80,13 @@ protected:
         IniciaCoresBasicas();
     }
 
-    CPIGGauge(int idComponente,int px, int py,int altura,int largura,std::string imgTrilha,int altMarcador, int largMarcador, std::string imgMarcador,int retiraFundoTrilha=1, int retiraFundoMarcador=1,int janela=0):
-        CPIGComponente(idComponente,px,py,altura,largura,imgTrilha,retiraFundoTrilha,janela){
+    CPIGGauge(int idComponente, int altura, int largura, string imgTrilha, int altMarcador, int largMarcador, string imgMarcador, int retiraFundoTrilha=1, int retiraFundoMarcador=1, int janela=0):
+        CPIGComponente(idComponente,altura,largura,imgTrilha,retiraFundoTrilha,janela){
         IniciaBase();
     }
 
-    CPIGGauge(int idComponente,int px, int py,int altura,int largura,int janela=0):
-        CPIGComponente(idComponente,px,py,altura,largura,janela){
+    CPIGGauge(int idComponente, int altura, int largura, int janela=0):
+        CPIGComponente(idComponente,altura,largura,janela){
         IniciaBase();
     }
 
@@ -201,8 +201,15 @@ public:
     }
 
     virtual void Desloca(double dx, double dy)override{
-        CPIGSprite::Desloca(dx,dy);
+        CPIGComponente::Desloca(dx,dy);
         if (marcador) marcador->Desloca(dx,dy);
+        AtualizaMarcador();
+    }
+
+    virtual void Move(double nx, double ny)override{
+        CPIGComponente::Move(nx,ny);
+        if (marcador) marcador->Desloca(pos.x-nx,pos.y-ny);
+        AtualizaMarcador();
     }
 };
 typedef CPIGGauge *PIGGauge;

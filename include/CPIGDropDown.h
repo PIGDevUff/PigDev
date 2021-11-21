@@ -17,11 +17,11 @@ private:
         CPIGDropDown *resp;
 
         if (atrib.GetString("nomeArq","")!=""){
-            resp = new CPIGDropDown(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
+            resp = new CPIGDropDown(idComponente,atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
                           atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),
                           atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
         }else{
-            resp = new CPIGDropDown(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
+            resp = new CPIGDropDown(idComponente,atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
                           atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),atrib.GetInt("janela",0));
         }
 
@@ -94,13 +94,13 @@ private:
 
 public:
 
-    CPIGDropDown(int idComponente,int px, int py,int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, string nomeArqFundo="", int retiraFundo=1, int janela=0):
-        CPIGListaItemComponente(idComponente,px,py,larguraTotal,alturaLinha,nomeArqFundo,retiraFundo,janela){
+    CPIGDropDown(int idComponente, int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, string nomeArqFundo="", int retiraFundo=1, int janela=0):
+        CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,nomeArqFundo,retiraFundo,janela){
             SetRecolhida(true);
     }
 
-    CPIGDropDown(int idComponente,int px, int py,int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0,int janela=0):
-        CPIGListaItemComponente(idComponente,px,py,larguraTotal,alturaLinha,janela){
+    CPIGDropDown(int idComponente, int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, int janela=0):
+        CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,janela){
             SetRecolhida(true);
     }
 
@@ -112,7 +112,7 @@ public:
     }
 
     int Desenha(){
-        if (visivel==false) return -1;
+        if (visivel==false) return 0;
 
         DesenhaLabel();
 
@@ -169,16 +169,6 @@ public:
     int TrataEventoTeclado(PIGEvento evento){
         return 0;
     }
-
-    /*void Move(double nx, double ny)override{
-        CPIGSprite::Move(nx,ny);
-        SetPosicaoPadraoLabel(posLabel);
-
-        for(unsigned int i=0;i<itens.size();i++){
-            int posY = pos.y - altBaseLista*(i+1);
-            itens[i]->Move(pos.x,posY);
-        }
-    }*/
 
 };
 

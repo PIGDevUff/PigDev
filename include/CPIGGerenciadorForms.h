@@ -32,14 +32,14 @@ public:
         return f->GetComponente<T>(idComponente);
     }
 
-    static int CriaForm(int x, int y, int altura, int largura, int janela = 0){
+    static int CriaForm(int altura, int largura, int janela = 0){
         int resp = forms->ProxID();
-        return forms->Insere(new CPIGForm(resp,x,y,altura,largura,janela));
+        return forms->Insere(new CPIGForm(resp,altura,largura,janela));
     }
 
-    static int CriaForm(int x, int y, int altura, int largura, string nomeArq, int retiraFundo=1, int janela = 0){
+    static int CriaForm(int altura, int largura, string nomeArq, int retiraFundo=1, int janela = 0){
         int resp = forms->ProxID();
-        return forms->Insere(new CPIGForm(resp,x,y,altura,largura,nomeArq,retiraFundo,janela));
+        return forms->Insere(new CPIGForm(resp,altura,largura,nomeArq,retiraFundo,janela));
     }
 
     static int CriaForm(string nomeArqTexto){

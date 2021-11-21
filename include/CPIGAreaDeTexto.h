@@ -35,11 +35,11 @@ private:
         CPIGAreaDeTexto *resp;
 
         if (atrib.GetString("nomeArq","")!=""){
-            resp = new CPIGAreaDeTexto(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            resp = new CPIGAreaDeTexto(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                         atrib.GetString("nomeArq",""),atrib.GetInt("maxCaracters",200),
                         atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
         }else{
-            resp = new CPIGAreaDeTexto(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            resp = new CPIGAreaDeTexto(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                         atrib.GetInt("maxCaracters",200),atrib.GetInt("janela",0));
         }
 
@@ -268,7 +268,8 @@ private:
         slideVerticalAtivado = false;
         //slideHorizontal = new CPIGSlideBar(id+1,(int)pos.x,(int)pos.y,20,larg,20,20,idJanela);
 
-        slideVertical = new CPIGSlideBar(id+2,((int)pos.x)+larg-20,(int)pos.y,alt,20,20,20,idJanela);
+        slideVertical = new CPIGSlideBar(id+2,alt,20,20,20,idJanela);
+        slideVertical->Move(((int)pos.x)+larg-20,(int)pos.y);
         slideVertical->SetOrientacao(PIG_GAUGE_CIMA_BAIXO);
         AjustaPosicaoTextoCursor();
         coresBasicas[3] = AZUL;
@@ -276,13 +277,13 @@ private:
 
 public:
 
-    CPIGAreaDeTexto(int idComponente, int px, int py, int altura,int largura, string nomeArq, int maxCars=PIG_MAX_CARS_CAIXATEXTO, int retiraFundo=1, int janela=0):
-        CPIGCaixaTexto(idComponente,px,py,altura,largura,nomeArq,maxCars,retiraFundo,janela){ // A altura é um vetor, mas eu preciso dela, entao eu acabei colocando como o tamanho da fonte, qualquer coisa só mudar aqui
+    CPIGAreaDeTexto(int idComponente, int altura, int largura, string nomeArq, int maxCars=PIG_MAX_CARS_CAIXATEXTO, int retiraFundo=1, int janela=0):
+        CPIGCaixaTexto(idComponente,altura,largura,nomeArq,maxCars,retiraFundo,janela){ // A altura é um vetor, mas eu preciso dela, entao eu acabei colocando como o tamanho da fonte, qualquer coisa só mudar aqui
             IniciaBase();
         }
 
-    CPIGAreaDeTexto(int idComponente, int px, int py, int altura, int largura, int maxCars=PIG_MAX_CARS_CAIXATEXTO, int janela=0):
-        CPIGCaixaTexto(idComponente,px,py,altura,largura,maxCars,janela){ // A altura é um vetor, mas eu preciso dela, entao eu acabei colocando como o tamanho da fonte, qualquer coisa só mudar aqui
+    CPIGAreaDeTexto(int idComponente, int altura, int largura, int maxCars=PIG_MAX_CARS_CAIXATEXTO, int janela=0):
+        CPIGCaixaTexto(idComponente,altura,largura,maxCars,janela){ // A altura é um vetor, mas eu preciso dela, entao eu acabei colocando como o tamanho da fonte, qualquer coisa só mudar aqui
             IniciaBase();
         }
 

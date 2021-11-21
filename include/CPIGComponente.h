@@ -145,6 +145,18 @@ protected:
         int valorInt;
         string valorStr;
 
+        int px = 0, py = 0;
+        px = atrib.GetInt("px",0);
+        py = atrib.GetInt("py",0);
+        Move(px,py);
+
+        int mEsq=0,mDir=0,mCima=0,mBaixo=0;
+        mEsq = atrib.GetInt("margemEsq",0);
+        mDir = atrib.GetInt("margemDir",0);
+        mCima = atrib.GetInt("margemCima",0);
+        mBaixo = atrib.GetInt("margemBaixo",0);
+        SetMargens(mEsq,mDir,mCima,mBaixo);
+
         valorStr = atrib.GetString("label","");
         if (valorStr != "") SetLabel(atrib.GetString("label",""));
 
@@ -181,16 +193,14 @@ protected:
 
 public:
 
-    CPIGComponente(int idComponente, int px, int py, int altura, int largura, int janela=0)
-    :CPIGSprite(idComponente,altura, largura, "",janela){
+    CPIGComponente(int idComponente, int altura, int largura, int janela=0)
+    :CPIGSprite(idComponente,altura,largura,"",janela){
         IniciaBase();
-        CPIGSprite::Move(px,py);
     }
 
-    CPIGComponente(int idComponente, int px, int py, int altura, int largura, string nomeArq, int retiraFundo=1, int janela=0)
+    CPIGComponente(int idComponente, int altura, int largura, string nomeArq, int retiraFundo=1, int janela=0)
     :CPIGSprite(idComponente,nomeArq,retiraFundo,NULL,janela){
         IniciaBase();
-        CPIGSprite::Move(px,py);
         CPIGSprite::SetDimensoes(altura,largura);
     }
 
@@ -407,8 +417,13 @@ public:
 
     }*/
 
-    void Move(double nx, double ny)override{
+    virtual void Move(double nx, double ny)override{
         CPIGSprite::Desloca(nx-pos.x,ny-pos.y);
+        PosicionaLabel();
+    }
+
+    virtual void Desloca(double dx, double dy)override{
+        CPIGSprite::Desloca(dx,dy);
         PosicionaLabel();
     }
 

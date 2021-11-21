@@ -17,11 +17,11 @@ protected:
         CPIGRadioBox *resp;
 
         if (atrib.GetString("nomeArq","")!=""){
-            resp = new CPIGRadioBox(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
+            resp = new CPIGRadioBox(idComponente,atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
                           atrib.GetString("nomeArqItem",""),atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),
                           atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
         }else{
-            resp = new CPIGRadioBox(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
+            resp = new CPIGRadioBox(idComponente,atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
                           atrib.GetString("nomeArqItem",""),atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),atrib.GetInt("janela",0));
         }
 
@@ -58,13 +58,13 @@ protected:
 
 public:
 
-    CPIGRadioBox(int idComponente, int posX, int posY, int larguraTotal, int alturaLinha, string imgIcone, int alturaIcone, int larguraIcone, string imgFundo, int retiraFundo=1, int janela = 0):
-        CPIGListaItemComponente(idComponente,posX,posY,larguraTotal,alturaLinha,imgFundo,retiraFundo,janela){
+    CPIGRadioBox(int idComponente, int larguraTotal, int alturaLinha, string imgIcone, int alturaIcone, int larguraIcone, string imgFundo, int retiraFundo=1, int janela = 0):
+        CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,imgFundo,retiraFundo,janela){
             arqImagemIcone = imgIcone;
         }
 
-    CPIGRadioBox(int idComponente, int posX, int posY, int larguraTotal, int alturaLinha, string imgIcone, int alturaIcone, int larguraIcone, int janela = 0):
-        CPIGListaItemComponente(idComponente,posX,posY,larguraTotal,alturaLinha,janela){
+    CPIGRadioBox(int idComponente, int larguraTotal, int alturaLinha, string imgIcone, int alturaIcone, int larguraIcone, int janela = 0):
+        CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,janela){
             arqImagemIcone = imgIcone;
         }
 
@@ -81,7 +81,7 @@ public:
         icone->MudaFrameAtual(1);
     }
 
-    int Desenha(){
+    int Desenha()override{
         if (visivel==false) return 0;
 
         DesenhaLabel();

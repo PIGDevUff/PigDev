@@ -36,14 +36,14 @@ protected:
 
     virtual void AjustaFrame()=0;
 
-    CPIGBotao(int idComponente,int px, int py, int alt,int larg,std::string nomeArq, int retiraFundo=1,int janela=0):
-        CPIGComponente(idComponente,px,py,alt,larg,nomeArq,retiraFundo,janela){
+    CPIGBotao(int idComponente, int alt, int larg, string nomeArq, int retiraFundo=1, int janela=0):
+        CPIGComponente(idComponente,alt,larg,nomeArq,retiraFundo,janela){
             tecla = PIG_TECLA_ENTER;//sem tecla de atalho
             SetPosicaoPadraoLabel(PIG_COMPONENTE_CENTRO_CENTRO);
         }
 
-    CPIGBotao(int idComponente,int px, int py, int alt,int larg,int janela=0):
-        CPIGComponente(idComponente,px,py,alt,larg,janela){
+    CPIGBotao(int idComponente, int alt, int larg, int janela=0):
+        CPIGComponente(idComponente,alt,larg,janela){
             tecla = PIG_TECLA_ENTER;//sem tecla de atalho
             SetPosicaoPadraoLabel(PIG_COMPONENTE_CENTRO_CENTRO);
         }
@@ -80,7 +80,7 @@ public:
         AjustaFrame();
     }
 
-    int Desenha(){
+    int Desenha()override{
         if (visivel==false) return 0;
 
         if (text)

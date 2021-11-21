@@ -15,12 +15,11 @@ private:
         CPIGGaugeBar *resp;
 
         if (atrib.GetString("nomeArq","")!=""){
-            resp = new CPIGGaugeBar(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            resp = new CPIGGaugeBar(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                           atrib.GetString("nomeArq",""),atrib.GetString("nomeArqMarcador",""),
                           atrib.GetInt("retiraFundo",1),atrib.GetInt("retiraFundoMarcador",1),atrib.GetInt("janela",0));
         }else{
-            resp = new CPIGGaugeBar(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
-                          atrib.GetInt("janela",0));
+            resp = new CPIGGaugeBar(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),atrib.GetInt("janela",0));
         }
 
         resp->ProcessaAtributos(atrib);
@@ -111,8 +110,8 @@ private:
 
 public:
 
-    CPIGGaugeBar(int idComponente, int px, int py, int altura, int largura, string imgMoldura, string imgMarcador, int retiraFundoTrilha=1, int retiraFundoMarcador=1, int janela=0):
-        CPIGGauge(idComponente,px,py,altura,largura,imgMoldura,altura,largura,imgMarcador,retiraFundoTrilha,retiraFundoMarcador,janela){
+    CPIGGaugeBar(int idComponente, int altura, int largura, string imgMoldura, string imgMarcador, int retiraFundoTrilha=1, int retiraFundoMarcador=1, int janela=0):
+        CPIGGauge(idComponente,altura,largura,imgMoldura,altura,largura,imgMarcador,retiraFundoTrilha,retiraFundoMarcador,janela){
         IniciaCoresBasicas();
         if (imgMarcador!=""){
             marcador = new CPIGSprite(-1,imgMarcador,retiraFundoMarcador,NULL,janela);
@@ -120,8 +119,8 @@ public:
         }
     }
 
-    CPIGGaugeBar(int idComponente, int px, int py, int altura, int largura, int janela=0):
-        CPIGGauge(idComponente,px,py,altura,largura,janela){
+    CPIGGaugeBar(int idComponente, int altura, int largura, int janela=0):
+        CPIGGauge(idComponente,altura,largura,janela){
         IniciaCoresBasicas();
     }
 
@@ -132,7 +131,7 @@ public:
     CPIGGaugeBar(int idComponente, CPIGAtributos atrib):CPIGGaugeBar(LeParametros(idComponente,atrib)){}
 
     int Desenha(){
-        if(visivel==false) return -1;
+        if(visivel==false) return 0;
 
         if (!marcadorAtualizado) AtualizaMarcador();
 

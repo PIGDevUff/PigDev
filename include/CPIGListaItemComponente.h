@@ -9,7 +9,7 @@ protected:
 
     int altBaseLista;                     //espaço vertical entre os itens
     PIGPosicaoComponente posIcones,posLabels;
-    vector <PIGItemComponente> itens;
+    vector<PIGItemComponente> itens;
     int itemDestaque;
     int altIcone,largIcone;                           //altura e largura das imagens dos itens
 
@@ -40,17 +40,18 @@ protected:
         PIGItemComponente item;
         if (arqImagemFundo==""){
             if (arqImagemIcone==""){
-                item = new CPIGItemComponente(itens.size(),pos.x,yItem,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
+                item = new CPIGItemComponente(itens.size(),itemLabel,larg,altBaseLista,retiraFundo,idJanela);
             }else{
-                item = new CPIGItemComponente(itens.size(),pos.x,yItem,altIcone,largIcone,arqImagemIcone,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
+                item = new CPIGItemComponente(itens.size(),altIcone,largIcone,arqImagemIcone,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
             }
         }else{
             if (arqImagemIcone==""){
-                item = new CPIGItemComponente(itens.size(),pos.x,yItem,arqImagemFundo,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
+                item = new CPIGItemComponente(itens.size(),arqImagemFundo,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
             }else{
-                item = new CPIGItemComponente(itens.size(),pos.x,yItem,altIcone,largIcone,arqImagemIcone,arqImagemFundo,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
+                item = new CPIGItemComponente(itens.size(),altIcone,largIcone,arqImagemIcone,arqImagemFundo,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
             }
         }
+        item->Move(pos.x,yItem);
         item->SetHint(hintMsg);
 
         //if (audio==-1) audio = audioComponente;//audio padrao do componente
@@ -69,13 +70,13 @@ protected:
 
 public:
 
-    CPIGListaItemComponente(int idComponente, int posX, int posY, int larguraTotal, int alturaLinha, string nomeArqFundoLista, int retiraFundo=1, int janela = 0):
-        CPIGComponente(idComponente,posX,posY,0,larguraTotal,nomeArqFundoLista,retiraFundo,janela){
+    CPIGListaItemComponente(int idComponente, int larguraTotal, int alturaLinha, string nomeArqFundoLista, int retiraFundo=1, int janela = 0):
+        CPIGComponente(idComponente,0,larguraTotal,nomeArqFundoLista,retiraFundo,janela){
         IniciaBase(alturaLinha);
     }
 
-    CPIGListaItemComponente(int idComponente, int posX, int posY, int larguraTotal, int alturaLinha, int janela = 0):
-        CPIGComponente(idComponente,posX,posY,0,larguraTotal,janela){
+    CPIGListaItemComponente(int idComponente, int larguraTotal, int alturaLinha, int janela = 0):
+        CPIGComponente(idComponente,0,larguraTotal,janela){
         IniciaBase(alturaLinha);
     }
 
@@ -227,11 +228,11 @@ public:
         return 1;
     }
 
-    void Move(double nx, double ny){
+    void Move(double nx, double ny)override{
         double dx = nx-pos.x;
         double dy = ny-pos.y;
 
-        CPIGSprite::Desloca(dx,dy);
+        CPIGComponente::Desloca(dx,dy);
         PosicionaLabel();
 
         for(unsigned int i=0;i<itens.size();i++)

@@ -15,11 +15,11 @@ protected:
         CPIGListBox *resp;
 
         if (atrib.GetString("nomeArq","")!=""){
-            resp = new CPIGListBox(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
+            resp = new CPIGListBox(idComponente,atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
                           atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),
                           atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
         }else{
-            resp = new CPIGListBox(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
+            resp = new CPIGListBox(idComponente,atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
                           atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),atrib.GetInt("janela",0));
         }
 
@@ -56,12 +56,12 @@ private:
 
 public:
 
-    CPIGListBox(int idComponente,int px, int py,int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, string nomeArqFundo="", int retiraFundo=1, int janela=0):
-        CPIGListaItemComponente(idComponente,px,py,larguraTotal,alturaLinha,nomeArqFundo,retiraFundo,janela){
+    CPIGListBox(int idComponente, int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, string nomeArqFundo="", int retiraFundo=1, int janela=0):
+        CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,nomeArqFundo,retiraFundo,janela){
     }
 
-    CPIGListBox(int idComponente,int px, int py,int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, int janela=0):
-        CPIGListaItemComponente(idComponente,px,py,larguraTotal,alturaLinha,janela){
+    CPIGListBox(int idComponente, int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, int janela=0):
+        CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,janela){
     }
 
     CPIGListBox(int idComponente,CPIGAtributos atrib):CPIGListBox(LeParametros(idComponente,atrib)){}

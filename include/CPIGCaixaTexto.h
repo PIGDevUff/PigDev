@@ -207,7 +207,7 @@ protected:
     }
 
     //o botao esquerdo faz com que a ediçăo do trexto comece ou que o cursor seja reposicionado
-    virtual int TrataMouseBotaoEsquerdo(SDL_Point p,int inicioLinha = 0){
+    virtual int TrataMouseBotaoEsquerdo(SDL_Point p, int inicioLinha = 0){
         posCursor = CalculaPosicaoCursor(GetTextoVisivel(),p.x);
         AjustaPosicaoTextoCursor();
         return PIG_SELECIONADO_TRATADO;
@@ -228,13 +228,13 @@ protected:
 
 public:
 
-    CPIGCaixaTexto(int idComponente, int px, int py, int altura, int largura, string nomeArq, int maxCars=PIG_MAX_CARS_CAIXATEXTO, int retiraFundo=1, int janela=0):
-        CPIGComponente(idComponente,px,py,altura,largura,nomeArq,retiraFundo,janela){
+    CPIGCaixaTexto(int idComponente, int altura, int largura, string nomeArq, int maxCars=PIG_MAX_CARS_CAIXATEXTO, int retiraFundo=1, int janela=0):
+        CPIGComponente(idComponente,altura,largura,nomeArq,retiraFundo,janela){
             IniciaBase(maxCars);
     }
 
-    CPIGCaixaTexto(int idComponente, int px, int py, int altura, int largura, int maxCars=PIG_MAX_CARS_CAIXATEXTO, int janela=0):
-        CPIGComponente(idComponente,px,py,altura,largura,janela){
+    CPIGCaixaTexto(int idComponente, int altura, int largura, int maxCars=PIG_MAX_CARS_CAIXATEXTO, int janela=0):
+        CPIGComponente(idComponente,altura,largura,janela){
             IniciaBase(maxCars);
     }
 
@@ -285,7 +285,7 @@ public:
     }
 
     //reposiciona o componente
-    void Move(int nx, int ny){
+    virtual void Move(double nx, double ny)override{
         int dx = nx-pos.x;
         int dy = ny-pos.y;
         CPIGComponente::Desloca(dx,dy);

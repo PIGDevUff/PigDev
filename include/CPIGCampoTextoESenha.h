@@ -22,11 +22,11 @@ private:
         CPIGCampoTextoESenha *resp;
 
         if (atrib.GetString("nomeArq","")!=""){
-            resp = new CPIGCampoTextoESenha(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            resp = new CPIGCampoTextoESenha(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                         atrib.GetString("nomeArq",""),atrib.GetInt("maxCaracters",200),atrib.GetInt("apenasNumeros",0),atrib.GetInt("campoSenha",0),
                         atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
         }else{
-            resp = new CPIGCampoTextoESenha(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            resp = new CPIGCampoTextoESenha(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                         atrib.GetInt("maxCaracters",200),atrib.GetInt("apenasNumeros",0),atrib.GetInt("campoSenha",0),atrib.GetInt("janela",0));
         }
 
@@ -115,13 +115,13 @@ private:
 
 public:
 
-    CPIGCampoTextoESenha(int idComponente,int px, int py, int altura, int largura, string nomeArq, int maxCars=PIG_MAX_CARS_CAIXATEXTO, bool apenasNumeros=false, bool campoSenha = false, int retiraFundo=1, int janela=0):
-        CPIGCaixaTexto(idComponente,px,py,altura,largura,nomeArq,maxCars,retiraFundo,janela){
+    CPIGCampoTextoESenha(int idComponente, int altura, int largura, string nomeArq, int maxCars=PIG_MAX_CARS_CAIXATEXTO, bool apenasNumeros=false, bool campoSenha = false, int retiraFundo=1, int janela=0):
+        CPIGCaixaTexto(idComponente,altura,largura,nomeArq,maxCars,retiraFundo,janela){
             IniciaBase(campoSenha,apenasNumeros);
     }
 
-    CPIGCampoTextoESenha(int idComponente,int px, int py, int altura, int largura, int maxCars=PIG_MAX_CARS_CAIXATEXTO, bool apenasNumeros=false, bool campoSenha = false, int janela=0):
-        CPIGCaixaTexto(idComponente,px,py,altura,largura,maxCars,janela){
+    CPIGCampoTextoESenha(int idComponente, int altura, int largura, int maxCars=PIG_MAX_CARS_CAIXATEXTO, bool apenasNumeros=false, bool campoSenha = false, int janela=0):
+        CPIGCaixaTexto(idComponente,altura,largura,maxCars,janela){
             IniciaBase(campoSenha,apenasNumeros);
     }
 

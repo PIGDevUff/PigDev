@@ -16,11 +16,11 @@ class CPIGSlideBar : public CPIGGauge{
         CPIGSlideBar *resp;
 
         if (atrib.GetString("nomeArq","")!=""){
-            resp = new CPIGSlideBar(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            resp = new CPIGSlideBar(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                           atrib.GetString("nomeArq",""),atrib.GetInt("alturaMarcador",0),atrib.GetInt("larguraMarcador",0),atrib.GetString("nomeArqMarcador",""),
                           atrib.GetInt("retiraFundo",1),atrib.GetInt("retiraFundoMarcador",1),atrib.GetInt("janela",0));
         }else{
-            resp = new CPIGSlideBar(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            resp = new CPIGSlideBar(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                           atrib.GetInt("alturaMarcador",0),atrib.GetInt("larguraMarcador",0),atrib.GetInt("janela",0));
         }
 
@@ -97,16 +97,17 @@ class CPIGSlideBar : public CPIGGauge{
 
 public:
 
-    CPIGSlideBar(int idComponente, int px, int py, int altTrilha, int largTrilha, string imgTrilha, int altMarcador, int largMarcador, string imgMarcador,int retiraFundoTrilha=1, int retiraFundoMarcador=1, int janela=0):
-        CPIGGauge(idComponente,px,py,altTrilha,largTrilha,imgTrilha,altMarcador,largMarcador,imgMarcador,retiraFundoTrilha,retiraFundoMarcador,janela){
+    CPIGSlideBar(int idComponente, int altTrilha, int largTrilha, string imgTrilha, int altMarcador, int largMarcador, string imgMarcador,int retiraFundoTrilha=1, int retiraFundoMarcador=1, int janela=0):
+        CPIGGauge(idComponente,altTrilha,largTrilha,imgTrilha,altMarcador,largMarcador,imgMarcador,retiraFundoTrilha,retiraFundoMarcador,janela){
             deltaTeclado = deltaRodinha = 10;
             marcador = new CPIGSprite(-1,imgMarcador,retiraFundoMarcador,NULL,janela);
             marcador->GetDimensoes(altMarcador,largMarcador);
+            //marcador->Move(0,0);
             AtualizaMarcador();
     }
 
-    CPIGSlideBar(int idComponente, int px, int py, int altTrilha, int largTrilha, int alturaMarcador, int larguraMarcador,int janela=0):
-        CPIGGauge(idComponente,px,py,altTrilha,largTrilha,janela){
+    CPIGSlideBar(int idComponente, int altTrilha, int largTrilha, int alturaMarcador, int larguraMarcador,int janela=0):
+        CPIGGauge(idComponente,altTrilha,largTrilha,janela){
             deltaTeclado = deltaRodinha = 10;
             altMarcador = alturaMarcador;
             largMarcador = larguraMarcador;
@@ -169,7 +170,7 @@ public:
     }
 
     int Desenha(){
-        if(visivel==false) return -1;
+        if(visivel==false) return 0;
 
         if (!marcadorAtualizado) AtualizaMarcador();
 

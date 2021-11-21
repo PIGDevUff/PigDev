@@ -1,10 +1,10 @@
 /**************************************************
-A classe CPIGItemComponente descreve o código dos items que compõem certos componentes como checkbox, radiobox, listbox e dropdown.
+A classe CPIGItemComponente descreve o cÃ³digo dos items que compÃµem certos componentes como checkbox, radiobox, listbox e dropdown.
 Todos esses componentes se caracterizam por possuir diversos itens e por se poder marcar/selecionar um ou mais desses itens.
-Os elementos principais da classe CPIGItemComponente são: o texto do item (label, obrigatório), a imagem de fundo (textura básica do componente, opcional) e um ícone (imagem extra, opcional).
-Além disso, os objetos da classe possuem um ponteiro para função que permite que o frame do ícone seja alterado externamente.
-O ícone pode ser alterado para representar a marcação ou não do item dentro de um checkbox ou radiobox.
-O label é posicionado sempre internamente, mas pode estar alinhado à direita (com ou sem a presença do ícone), à esquerda (com ou sem a presença do ícone) ou centralizado (com ou sem a presença do ícone).
+Os elementos principais da classe CPIGItemComponente sÃ£o: o texto do item (label, obrigatÃ³rio), a imagem de fundo (textura bÃ¡sica do componente, opcional) e um Ã­cone (imagem extra, opcional).
+AlÃ©m disso, os objetos da classe possuem um ponteiro para funÃ§Ã£o que permite que o frame do Ã­cone seja alterado externamente.
+O Ã­cone pode ser alterado para representar a marcaÃ§Ã£o ou nÃ£o do item dentro de um checkbox ou radiobox.
+O label Ã© posicionado sempre internamente, mas pode estar alinhado Ã  direita (com ou sem a presenÃ§a do Ã­cone), Ã  esquerda (com ou sem a presenÃ§a do Ã­cone) ou centralizado (com ou sem a presenÃ§a do Ã­cone).
 **************************************************/
 
 #ifndef _CPIGITEMCOMPONENTE_
@@ -16,7 +16,7 @@ class CPIGItemComponente:public CPIGComponente{
 
 private:
 
-    void (*AjustaFrame)(CPIGItemComponente*);       //ponteiro para função que será chamada sempre que algum estado do item mudar
+    void (*AjustaFrame)(CPIGItemComponente*);       //ponteiro para funÃ§Äƒo que serÃ¡ chamada sempre que algum estado do item mudar
     PIGSprite icone;
     PIGPosicaoComponente posIcone,posRelativaLabel;
 
@@ -43,26 +43,26 @@ private:
 public:
 
     //item com icone e com fundo
-    CPIGItemComponente(int idComponente, int px, int py, int alturaIcone,int larguraIcone, string arqImagemIcone, string arqImagemFundo, string labelItem, int larguraLista, int alturaItemLista, int retiraFundo=1, int janela=0):
-        CPIGComponente(idComponente,px,py,alturaItemLista,larguraLista,arqImagemFundo,retiraFundo,janela){
+    CPIGItemComponente(int idComponente, int alturaIcone,int larguraIcone, string arqImagemIcone, string arqImagemFundo, string labelItem, int larguraLista, int alturaItemLista, int retiraFundo=1, int janela=0):
+        CPIGComponente(idComponente,alturaItemLista,larguraLista,arqImagemFundo,retiraFundo,janela){
         IniciaBase(labelItem,arqImagemIcone,alturaIcone,larguraIcone);//,larguraLista,alturaItemLista);
     }
 
     //item com icone e sem fundo
-    CPIGItemComponente(int idComponente, int px, int py, int alturaIcone,int larguraIcone, string arqImagemIcone, string labelItem, int larguraLista, int alturaItemLista, int retiraFundo=1, int janela=0):
-        CPIGComponente(idComponente,px,py,alturaItemLista,larguraLista,janela){
+    CPIGItemComponente(int idComponente, int alturaIcone,int larguraIcone, string arqImagemIcone, string labelItem, int larguraLista, int alturaItemLista, int retiraFundo=1, int janela=0):
+        CPIGComponente(idComponente,alturaItemLista,larguraLista,janela){
         IniciaBase(labelItem,arqImagemIcone,alturaIcone,larguraIcone);//,larguraLista,alturaItemLista);
     }
 
     //item sem icone e com fundo
-    CPIGItemComponente(int idComponente, int px, int py, string arqImagemFundo, string labelItem, int larguraLista, int alturaItemLista, int retiraFundo=1, int janela=0):
-        CPIGComponente(idComponente,px,py,alturaItemLista,larguraLista,arqImagemFundo,retiraFundo,janela){
+    CPIGItemComponente(int idComponente, string arqImagemFundo, string labelItem, int larguraLista, int alturaItemLista, int retiraFundo=1, int janela=0):
+        CPIGComponente(idComponente,alturaItemLista,larguraLista,arqImagemFundo,retiraFundo,janela){
         IniciaBase(labelItem,"",0,0);//,larguraLista,alturaItemLista);
     }
 
     //item sem icone e sem fundo
-    CPIGItemComponente(int idComponente, int px, int py, string labelItem, int larguraLista, int alturaItemLista, int retiraFundo=1, int janela=0):
-        CPIGComponente(idComponente,px,py,alturaItemLista,larguraLista,janela){
+    CPIGItemComponente(int idComponente, string labelItem, int larguraLista, int alturaItemLista, int retiraFundo=1, int janela=0):
+        CPIGComponente(idComponente,alturaItemLista,larguraLista,janela){
         IniciaBase(labelItem,"",0,0);//,larguraLista,alturaItemLista);
     }
 
@@ -215,7 +215,7 @@ public:
         }
     }
 
-    //define a posição do label (dentre posições pré-estabelecidas)
+    //define a posiÃ§Äƒo do label (dentre posiÃ§Å‘es prÃ©-estabelecidas)
     void SetPosicaoPadraoLabel(PIGPosicaoComponente pos)override{
         posLabel = pos;
         if (posRelativaLabel == PIG_COMPONENTE_ESQ_CENTRO){
@@ -259,7 +259,7 @@ public:
     }
 
     void Desloca(double dx, double dy)override{
-        CPIGSprite::Desloca(dx,dy);
+        CPIGComponente::Desloca(dx,dy);
         if (icone) icone->Desloca(dx,dy);
     }
 

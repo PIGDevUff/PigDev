@@ -42,11 +42,10 @@ protected:
         CPIGBotaoOnOff *resp;
 
         if (atrib.GetString("nomeArq","")!=""){
-            resp = new CPIGBotaoOnOff(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+            resp = new CPIGBotaoOnOff(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                        atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
         }else{
-            resp = new CPIGBotaoOnOff(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
-                       atrib.GetInt("janela",0));
+            resp = new CPIGBotaoOnOff(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),atrib.GetInt("janela",0));
         }
 
         resp->ProcessaAtributos(atrib);
@@ -84,14 +83,14 @@ protected:
 
 public:
 
-    CPIGBotaoOnOff(int idComponente, int px, int py, int alt, int larg, string nomeArq, int retiraFundo=1, int janela=0):
-        CPIGBotao(idComponente,px,py,alt,larg,nomeArq,retiraFundo,janela){
+    CPIGBotaoOnOff(int idComponente, int alt, int larg, string nomeArq, int retiraFundo=1, int janela=0):
+        CPIGBotao(idComponente,alt,larg,nomeArq,retiraFundo,janela){
             CriaFramesAutomaticosPorLinha(1,2,3);
             MudaFrameAtual(1); //frame de estado normal do botao
         }
 
-    CPIGBotaoOnOff(int idComponente,int px, int py, int alt,int larg,int janela=0):
-        CPIGBotao(idComponente,px,py,alt,larg,janela){
+    CPIGBotaoOnOff(int idComponente, int alt, int larg, int janela=0):
+        CPIGBotao(idComponente,alt,larg,janela){
             IniciaCoresBasicas();
         }
 

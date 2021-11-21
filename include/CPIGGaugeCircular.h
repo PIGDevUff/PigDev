@@ -26,7 +26,7 @@ private:
     }
 
     static CPIGGaugeCircular LeParametros(int idComponente, CPIGAtributos atrib){
-        CPIGGaugeCircular *resp = new CPIGGaugeCircular(idComponente,atrib.GetInt("px",0),atrib.GetInt("py",0),atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+        CPIGGaugeCircular *resp = new CPIGGaugeCircular(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),
                           atrib.GetInt("raioInterno",0),atrib.GetInt("janela",0));
 
         resp->ProcessaAtributos(atrib);
@@ -35,9 +35,7 @@ private:
     }
 
     virtual void AtualizaMarcador()override{
-        //PIGCor corBarra = PIGMixCor(coresBasicas[1],coresBasicas[2],porcentagemConcluida);//cor da barra mizada entre a cor inicial e a final
         //coresBasicas[3] é a cor a ser utilizada no marcador
-
         CPIGGauge::AtualizaMarcador();
         PIGCor opcoes[4] = {VERDE,AZUL,ROXO,LARANJA}; //4 cores quaisquer
         PIGCor croma1, croma2; //cores usada como cromakey para transparencias (não podem ser nem a cor da barra, nem a cor do fundo)
@@ -86,14 +84,12 @@ private:
 
         if (text) SDL_DestroyTexture(text);
         text = SDL_CreateTextureFromSurface(renderer,off->GetSurface(1));
-
-        //OnAction();
     }
 
 public:
 
-    CPIGGaugeCircular(int idComponente, int px, int py, int altura, int largura, int raioInterior, int janela=0):
-        CPIGGauge(idComponente,px,py,altura,largura,janela){
+    CPIGGaugeCircular(int idComponente, int altura, int largura, int raioInterior, int janela=0):
+        CPIGGauge(idComponente,altura,largura,janela){
 
         angBase = 0;
         deltaAng = 360;
@@ -104,7 +100,6 @@ public:
 
         off = new CPIGOffscreenRenderer(altura,largura,3);
 
-        Move(px,py);
         SetPivoProporcional({larg/2.0,alt/2.0});
 
         AtualizaMarcador();
@@ -116,8 +111,8 @@ public:
         delete off;
     }
 
-    int Desenha(){
-        if(visivel==false) return -1;
+    int Desenha()override{
+        if(visivel==false) return 0;
 
         if (!marcadorAtualizado) AtualizaMarcador();
 
@@ -133,7 +128,6 @@ public:
 
     void SetCrescimentoHorario(bool horario){
         crescimentoHorario = horario;
-        //AtualizaMarcador();
         marcadorAtualizado = false;
     }
 
@@ -141,19 +135,16 @@ public:
         if (valorRaio<0||valorRaio>0.9*larg/2) return;
 
         raioInterno = valorRaio;
-        //AtualizaMarcador();
         marcadorAtualizado = false;
     }
 
     void SetAnguloBase(double novoAng){
         angBase = novoAng;
-        //AtualizaMarcador();
         marcadorAtualizado = false;
     }
 
     void SetDeltaAngulo(double novoDelta){
         deltaAng = novoDelta;
-        //AtualizaMarcador();
         marcadorAtualizado = false;
     }
 
