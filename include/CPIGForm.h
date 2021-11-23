@@ -294,19 +294,25 @@ public:
         return idComponente;
     }
 
-    int CriaGaugeCircular(int altura, int largura, int raioInterior, int idJanela=0){
+    int CriaGaugeCircular(int altura, int largura){
         int idComponente = GetIdComponente(totalComponentes);
-        componentes[totalComponentes++] = new CPIGGaugeCircular(idComponente,altura,largura,raioInterior,idJanela);
+        componentes[totalComponentes++] = new CPIGGaugeCircular(idComponente,altura,largura,idJanela);
         return idComponente;
     }
 
-    int CriaSlideBar(int altura, int largura, string imgTrilha, int alturaMarcador, int larguraMarcador, string imgMarcador, int retiraFundoTrilha=1, int retiraFundoMarcador=1, int idJanela=0){
+    int CriaGaugeCircular(int altura, int largura, string imgTrilha, int alturaMarcador, int larguraMarcador, string imgMarcador, int retiraFundoTrilha=1, int retiraFundoMarcador=1){
+        int idComponente = GetIdComponente(totalComponentes);
+        componentes[totalComponentes++] = new CPIGGaugeCircular(idComponente,altura,largura,imgTrilha,alturaMarcador,larguraMarcador, imgMarcador, retiraFundoTrilha, retiraFundoMarcador, idJanela);
+        return idComponente;
+    }
+
+    int CriaSlideBar(int altura, int largura, string imgTrilha, int alturaMarcador, int larguraMarcador, string imgMarcador, int retiraFundoTrilha=1, int retiraFundoMarcador=1){
         int idComponente = GetIdComponente(totalComponentes);
         componentes[totalComponentes++] = new CPIGSlideBar(idComponente,altura,largura,imgTrilha,alturaMarcador,larguraMarcador,imgMarcador,retiraFundoTrilha,retiraFundoMarcador,idJanela);
         return idComponente;
     }
 
-    int CriaSlideBar(int altura, int largura, int alturaMarcador, int larguraMarcador, int idJanela=0){
+    int CriaSlideBar(int altura, int largura, int alturaMarcador, int larguraMarcador){
         int idComponente = GetIdComponente(totalComponentes);
         componentes[totalComponentes++] = new CPIGSlideBar(idComponente,altura,largura,alturaMarcador,larguraMarcador,idJanela);
         return idComponente;

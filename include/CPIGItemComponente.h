@@ -131,16 +131,8 @@ public:
         return 1;
     }
 
-    void SetAlturaIcone(int alturaIcone){
-        int altIcone,largIcone;
-        icone->GetDimensoes(altIcone,largIcone);
-        icone->SetDimensoes(alturaIcone,largIcone);
-    }
-
-    void SetLarguraIcone(int larguraIcone){
-        int altIcone,largIcone;
-        icone->GetDimensoes(altIcone,largIcone);
-        icone->SetDimensoes(altIcone,larguraIcone);
+    void SetDimensoesIcone(int alturaIcone,int larguraIcone){
+        icone->SetDimensoes(alturaIcone,larguraIcone);
     }
 
     void AlinhaLabelDireita(){

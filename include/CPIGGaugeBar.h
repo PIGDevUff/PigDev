@@ -50,13 +50,18 @@ private:
 
     virtual void AtualizaMarcador()override{
         CPIGGauge::AtualizaMarcador();
-        OnAction();
+        //OnAction();
         if (marcador==NULL) return;
 
-        int altBarra=0,largBarra=0;
+        int altBarraFinal=0,largBarraFinal=0;
         int altBarraOrig=0,largBarraOrig=0;
 
         marcador->GetDimensoesOriginais(altBarraOrig,largBarraOrig);
+        int altUtilBarraTela = alt - (margemCima+margemBaixo);
+        int largUtilBarraTela = larg - (margemDir+margemEsq);
+        int altUtilBarraOrig = altBarraOrig - (margemCima+margemBaixo);
+        int largUtilBarraOrig = largBarraOrig - (margemEsq+margemDir);
+
         PIGPonto2D posBarra={0,0};
 
         double perc = porcentagemConcluida;
@@ -66,44 +71,47 @@ private:
 
         switch(orientacaoCrescimento){
         case PIG_GAUGE_ESQ_DIR:
-            altBarra = alt-margemCima-margemBaixo;
-            largBarra = (larg-margemDir-margemEsq)*perc;
+            altBarraFinal = altUtilBarraTela;
+            largBarraFinal = largUtilBarraTela*perc;
             posBarra = {pos.x+margemEsq,pos.y+margemBaixo};
-            r.x = r.y = 0;
-            r.w = largBarra*perc;
-            r.h = altBarra;
+            r.x = margemEsq;
+            r.y = margemCima;//sistema de coordenada da imagem
+            r.w = largUtilBarraOrig*perc;
+            r.h = altUtilBarraOrig;
             break;
         case PIG_GAUGE_DIR_ESQ:
-            altBarra = alt-margemCima-margemBaixo;
-            largBarra = (larg-margemDir-margemEsq)*perc;
-            posBarra = {pos.x+larg-margemDir-largBarra,pos.y+margemBaixo};
-            r.x = largBarraOrig*(1-perc);
-            r.y = 0;
-            r.w = largBarraOrig*perc;
-            r.h = altBarra;
+            altBarraFinal = altUtilBarraTela;
+            largBarraFinal = largUtilBarraTela*perc;
+            posBarra = {pos.x+larg-margemDir-largBarraFinal-1,pos.y+margemBaixo};
+            r.x = margemEsq + (largUtilBarraOrig)*(1-perc);
+            r.y = margemCima;
+            r.w = (largUtilBarraOrig)*perc;
+            r.h = altUtilBarraOrig;
             break;
         case PIG_GAUGE_BAIXO_CIMA:
-            altBarra = (alt-margemCima-margemBaixo)*perc;
-            largBarra = larg-margemDir-margemEsq;
+            altBarraFinal = (altUtilBarraTela)*perc;
+            largBarraFinal = largUtilBarraTela;
             posBarra = {pos.x+margemEsq,pos.y+margemBaixo};
-            r.x = 0;
-            r.y = altBarraOrig*(1-perc);
-            r.w = largBarraOrig;
-            r.h = altBarraOrig*perc;
+            r.x = margemEsq;
+            r.y = margemCima+altUtilBarraOrig*(1-perc);
+            r.w = largUtilBarraOrig;
+            r.h = (altUtilBarraOrig)*perc;
             break;
         case PIG_GAUGE_CIMA_BAIXO:
-            altBarra = (alt-margemCima-margemBaixo)*perc;
-            largBarra = larg-margemDir-margemEsq;
-            posBarra = {pos.x+margemEsq,pos.y+alt-margemCima-altBarra};
-            r.x = r.y = 0;
-            r.w = largBarraOrig;
-            r.h = altBarraOrig*perc;
+            altBarraFinal = (altUtilBarraTela)*perc;
+            largBarraFinal = largUtilBarraTela;
+            posBarra = {pos.x+margemEsq,pos.y+alt-margemCima-altBarraFinal};
+            r.x = margemEsq;
+            r.y = margemCima;
+            r.w = largUtilBarraOrig;
+            r.h = (altUtilBarraOrig)*perc;
             break;
         }
 
-        //printf("x %d y %d alt %d larg %d %d,%d,%d,%d\n",(int)posBarra.x,(int)posBarra.y,altBarra,largBarra,margemEsq,margemDir,margemCima,margemBaixo);
+        //printf("x y w h %d %d %d %d %.1f\n",r.x,r.y,r.w,r.h,perc);
+        //printf("x %d y %d alt %d larg %d %d,%d,%d,%d\n",(int)posBarra.x,(int)posBarra.y,altBarraFinal,largBarraFinal,margemEsq,margemDir,margemCima,margemBaixo);
         marcador->DefineFrame(1,r);
-        marcador->SetDimensoes(altBarra,largBarra);
+        marcador->SetDimensoes(altBarraFinal,largBarraFinal);
         marcador->MudaFrameAtual(1);
         marcador->Move((int)posBarra.x,(int)posBarra.y);
     }
@@ -111,7 +119,7 @@ private:
 public:
 
     CPIGGaugeBar(int idComponente, int altura, int largura, string imgMoldura, string imgMarcador, int retiraFundoTrilha=1, int retiraFundoMarcador=1, int janela=0):
-        CPIGGauge(idComponente,altura,largura,imgMoldura,altura,largura,imgMarcador,retiraFundoTrilha,retiraFundoMarcador,janela){
+        CPIGGauge(idComponente,altura,largura,imgMoldura,retiraFundoTrilha,janela){
         IniciaCoresBasicas();
         if (imgMarcador!=""){
             marcador = new CPIGSprite(-1,imgMarcador,retiraFundoMarcador,NULL,janela);
@@ -124,33 +132,44 @@ public:
         IniciaCoresBasicas();
     }
 
-    virtual ~CPIGGaugeBar(){
-        if (marcador) delete marcador;
-    }
+    virtual ~CPIGGaugeBar(){}
 
     CPIGGaugeBar(int idComponente, CPIGAtributos atrib):CPIGGaugeBar(LeParametros(idComponente,atrib)){}
 
-    int Desenha(){
+    int Desenha()override{
         if(visivel==false) return 0;
 
         if (!marcadorAtualizado) AtualizaMarcador();
 
         //moldura
-        if (text)
-            CPIGSprite::Desenha();
-        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
-
-        //Desenha Barra
-        if (marcador)
-            marcador->Desenha();
-        else{
+        if (text){
+            if (marcadorFrente){
+                //Desenha Barra
+                CPIGSprite::Desenha();
+                if (marcador) marcador->Desenha();
+            }else{
+                if (marcador) marcador->Desenha();
+                CPIGSprite::Desenha();
+            }
+        }else{
+            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
             DesenhaBarraCor();
         }
+
 
         DesenhaLabel();
 
         EscreveHint();
 
+        return 1;
+    }
+
+    int SetOrientacao(PIGGaugeCrescimento orientacao){
+        if (orientacao==PIG_GAUGE_HORARIO||orientacao==PIG_GAUGE_ANTIHORARIO)
+            return 0;
+
+        orientacaoCrescimento = orientacao;
+        marcadorAtualizado = false;
         return 1;
     }
 
@@ -160,11 +179,6 @@ public:
 
     int TrataEventoTeclado(PIGEvento evento){
         return 0;
-    }
-
-    virtual void SetMargens(int mEsq, int mDir, int mCima, int mBaixo)override{
-        CPIGComponente::SetMargens(mEsq,mDir,mCima,mBaixo);
-        marcadorAtualizado = false;
     }
 
 };

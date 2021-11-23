@@ -8,8 +8,7 @@ class CPIGBotaoClick: public CPIGBotao{
 protected:
 
     PIGTimer timer;
-    bool botaoRepeticao;
-    double tempoRepeticao;
+    double tempoRepeticao,tempoAcionamento;
 
     void IniciaCoresBasicas(){
         coresBasicas[0] = coresBasicas[1] = AZUL;
@@ -21,11 +20,11 @@ protected:
     virtual void ProcessaAtributos(CPIGAtributos atrib)override{
         CPIGBotao::ProcessaAtributos(atrib);
 
-        int valorInt = atrib.GetInt("repeticao",0);
-        if (valorInt == true) DefineBotaoRepeticao(true);
-
         float valorFloat = atrib.GetFloat("tempoRepeticao",-1);
         if (valorFloat > 0) DefineTempoRepeticao(valorFloat);
+
+        valorFloat = atrib.GetFloat("tempoAcionamento",-1);
+        if (valorFloat > 0) DefineTempoAcionamento(valorFloat);
 
         string valorStr = atrib.GetString("corNormal","");
         if (valorStr != "") SetCorNormal(PIGCriaCorString(valorStr));
@@ -74,13 +73,13 @@ protected:
     }
 
     void TrataTimer(){
-        if (timer->GetTempoDecorrido()>=tempoRepeticao){
-            if (botaoRepeticao&&mouseOver&&CPIGMouse::GetEstadoBotaoEsquerdo()==PIG_MOUSE_PRESSIONADO){
+        double tempo = timer->GetTempoDecorrido();
+        if (tempo>=tempoRepeticao){
+            if (tempoRepeticao>0&&mouseOver&&CPIGMouse::GetEstadoBotaoEsquerdo()==PIG_MOUSE_PRESSIONADO){
                 OnAction();
-            }else{
-                SetAcionado(false);
             }
-        }
+        }else if (tempo>tempoAcionamento)
+            SetAcionado(false);
     }
 
     int OnAction()override{
@@ -95,16 +94,16 @@ public:
         CPIGBotao(idComponente,alt,larg,nomeArq,retiraFundo,janela){
             CriaFramesAutomaticosPorLinha(1,1,4);
             MudaFrameAtual(1); //frame de estado normal do botao
-            tempoRepeticao = 0.2;
-            botaoRepeticao = false;
+            tempoRepeticao = 1.0;
+            tempoAcionamento = 0.2;
             timer = new CPIGTimer(false);
         }
 
     CPIGBotaoClick(int idComponente, int alt, int larg, int janela=0):
         CPIGBotao(idComponente,alt,larg,janela){
             IniciaCoresBasicas();
-            tempoRepeticao = 0.2;
-            botaoRepeticao = false;
+            tempoRepeticao = 1.0;
+            tempoAcionamento = 0.2;
             timer = new CPIGTimer(false);
         }
 
@@ -128,8 +127,8 @@ public:
         tempoRepeticao = segundos;
     }
 
-    inline void DefineBotaoRepeticao(bool repeticao){
-        botaoRepeticao = repeticao;
+    inline void DefineTempoAcionamento(double segundos){
+        tempoAcionamento = segundos;
     }
 
     int Desenha()override{

@@ -3,7 +3,7 @@
 
 #include "CPIGComponente.h"
 
-typedef enum {PIG_GAUGE_CIMA_BAIXO,PIG_GAUGE_BAIXO_CIMA,PIG_GAUGE_ESQ_DIR,PIG_GAUGE_DIR_ESQ} PIGGaugeCrescimento;
+typedef enum {PIG_GAUGE_CIMA_BAIXO,PIG_GAUGE_BAIXO_CIMA,PIG_GAUGE_ESQ_DIR,PIG_GAUGE_DIR_ESQ,PIG_GAUGE_HORARIO,PIG_GAUGE_ANTIHORARIO} PIGGaugeCrescimento;
 
 class CPIGGauge: public CPIGComponente{
 
@@ -12,8 +12,19 @@ protected:
     PIGSprite marcador;
     double delta,porcentagemConcluida;
     double valorMax,valorMin,valorAtual;
-    bool marcadorAtualizado;
+    bool marcadorAtualizado,marcadorFrente;
     PIGGaugeCrescimento orientacaoCrescimento;
+
+    static PIGGaugeCrescimento ConverteStringCrescimento(string str){
+        transform(str.begin(), str.end(), str.begin(), ::toupper);
+        if (str=="ESQ_DIR") return PIG_GAUGE_ESQ_DIR;
+        if (str=="DIR_ESQ") return PIG_GAUGE_DIR_ESQ;
+        if (str=="CIMA_BAIXO") return PIG_GAUGE_CIMA_BAIXO;
+        if (str=="BAIXO_CIMA") return PIG_GAUGE_BAIXO_CIMA;
+        if (str=="HORARIO") return PIG_GAUGE_HORARIO;
+        if (str=="ANTIHORARIO") return PIG_GAUGE_ANTIHORARIO;
+        return PIG_GAUGE_ESQ_DIR;
+    }
 
     virtual void AtualizaMarcador(){
         coresBasicas[3] = PIGMixCor(coresBasicas[1],coresBasicas[2],porcentagemConcluida);
@@ -52,6 +63,9 @@ protected:
 
         valorStr = atrib.GetString("corFinal","");
         if (valorStr != "") SetCorFinal(PIGCriaCorString(valorStr));
+
+        valorStr = atrib.GetString("crescimento","");
+        if (valorStr != "") SetOrientacao(ConverteStringCrescimento(valorStr));
     }
 
     void SetFoco(bool valor){
@@ -77,10 +91,12 @@ protected:
         orientacaoCrescimento = PIG_GAUGE_ESQ_DIR;
         delta = 1;
         marcador = NULL;
+        marcadorAtualizado = false;
+        marcadorFrente = true;
         IniciaCoresBasicas();
     }
 
-    CPIGGauge(int idComponente, int altura, int largura, string imgTrilha, int altMarcador, int largMarcador, string imgMarcador, int retiraFundoTrilha=1, int retiraFundoMarcador=1, int janela=0):
+    CPIGGauge(int idComponente, int altura, int largura, string imgTrilha, int retiraFundoTrilha=1, int janela=0):
         CPIGComponente(idComponente,altura,largura,imgTrilha,retiraFundoTrilha,janela){
         IniciaBase();
     }
@@ -90,7 +106,9 @@ protected:
         IniciaBase();
     }
 
-    virtual ~CPIGGauge(){}
+    virtual ~CPIGGauge(){
+        if (marcador) delete marcador;
+    }
 
 public:
 
@@ -125,10 +143,7 @@ public:
         delta = valor;
     }
 
-    void SetOrientacao(PIGGaugeCrescimento orientacao){
-        orientacaoCrescimento = orientacao;
-        marcadorAtualizado = false;
-    }
+    virtual int SetOrientacao(PIGGaugeCrescimento orientacao) = 0;
 
     void SetPorcentagemConcluida(double porcentagem){
         porcentagemConcluida = PIGLimitaValor(porcentagem,0.0,1.0);
@@ -147,12 +162,6 @@ public:
 
     double GetValorMin(){
         return valorMin;
-    }
-
-    string GetStringValorMarcador(){
-        stringstream ss;
-        ss <<valorAtual;
-        return ss.str();
     }
 
     double GetPorcentagemConcluida(){
@@ -177,11 +186,13 @@ public:
 
     void MinimizaValorAtual(){
         valorAtual = valorMin;
+        porcentagemConcluida = (valorAtual - valorMin)/(valorMax - valorMin);
         marcadorAtualizado = false;
     }
 
     void MaximizaValorAtual(){
         valorAtual = valorMax;
+        porcentagemConcluida = (valorAtual - valorMin)/(valorMax - valorMin);
         marcadorAtualizado = false;
     }
 
@@ -203,13 +214,21 @@ public:
     virtual void Desloca(double dx, double dy)override{
         CPIGComponente::Desloca(dx,dy);
         if (marcador) marcador->Desloca(dx,dy);
-        AtualizaMarcador();
     }
 
     virtual void Move(double nx, double ny)override{
         CPIGComponente::Move(nx,ny);
         if (marcador) marcador->Desloca(pos.x-nx,pos.y-ny);
-        AtualizaMarcador();
+    }
+
+    void SetMarcadorFrente(bool valor){
+        marcadorFrente = valor;
+        marcadorAtualizado = false;
+    }
+
+    virtual void SetMargens(int mEsq, int mDir, int mCima, int mBaixo)override{
+        CPIGComponente::SetMargens(mEsq,mDir,mCima,mBaixo);
+        marcadorAtualizado = false;
     }
 };
 typedef CPIGGauge *PIGGauge;

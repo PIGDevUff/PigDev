@@ -13,6 +13,7 @@ private:
     bool linhasPauta;
     PIGSlideBar slideVertical;
     bool slideVerticalAtivado;
+    int tamPadraoSlide;
     vector<string> linhas;
 
     void ProcessaAtributos(CPIGAtributos atrib)override{
@@ -84,13 +85,7 @@ private:
     void AjustaSlideVerticalPeloCursor(){
         int alturaTotalTexto = linhas.size()*(espacoEntreLinhas+altLetra);
 
-        if (alturaTotalTexto>(alt-margemCima+margemBaixo)){
-            if (slideVerticalAtivado==false){
-                slideVerticalAtivado = true;
-                SetMargens(margemEsq,margemDir+20,margemBaixo,margemCima);
-                SetLargMaxTexto(larg-margemDir-margemEsq);
-            }
-        }else slideVerticalAtivado = false;
+        slideVerticalAtivado = alturaTotalTexto>(alt-margemCima+margemBaixo);
 
         //printf("vett ativado %d\n",slideVerticalAtivado);
         if (slideVerticalAtivado){
@@ -266,24 +261,25 @@ private:
         largMax = larg;
         linhasPauta = false;
         slideVerticalAtivado = false;
-        //slideHorizontal = new CPIGSlideBar(id+1,(int)pos.x,(int)pos.y,20,larg,20,20,idJanela);
+        tamPadraoSlide = 20;
 
-        slideVertical = new CPIGSlideBar(id+2,alt,20,20,20,idJanela);
-        slideVertical->Move(((int)pos.x)+larg-20,(int)pos.y);
+        slideVertical = new CPIGSlideBar(id+2,alt,tamPadraoSlide,tamPadraoSlide,tamPadraoSlide,idJanela);
+        slideVertical->Move(((int)pos.x)+larg,(int)pos.y);
         slideVertical->SetOrientacao(PIG_GAUGE_CIMA_BAIXO);
         AjustaPosicaoTextoCursor();
+        CPIGCaixaTexto::IniciaCoresBasicas();
         coresBasicas[3] = AZUL;
     }
 
 public:
 
     CPIGAreaDeTexto(int idComponente, int altura, int largura, string nomeArq, int maxCars=PIG_MAX_CARS_CAIXATEXTO, int retiraFundo=1, int janela=0):
-        CPIGCaixaTexto(idComponente,altura,largura,nomeArq,maxCars,retiraFundo,janela){ // A altura é um vetor, mas eu preciso dela, entao eu acabei colocando como o tamanho da fonte, qualquer coisa só mudar aqui
+        CPIGCaixaTexto(idComponente,altura,largura,nomeArq,maxCars,retiraFundo,janela){
             IniciaBase();
         }
 
     CPIGAreaDeTexto(int idComponente, int altura, int largura, int maxCars=PIG_MAX_CARS_CAIXATEXTO, int janela=0):
-        CPIGCaixaTexto(idComponente,altura,largura,maxCars,janela){ // A altura é um vetor, mas eu preciso dela, entao eu acabei colocando como o tamanho da fonte, qualquer coisa só mudar aqui
+        CPIGCaixaTexto(idComponente,altura,largura,maxCars,janela){
             IniciaBase();
         }
 
@@ -292,28 +288,30 @@ public:
     virtual ~CPIGAreaDeTexto(){
         linhas.clear();
         delete slideVertical;
-        //delete slideHorizontal;
     }
 
     void Move(double nx,double ny)override{
-        CPIGCaixaTexto::Move(nx,ny);
         int dx = nx-pos.x;
         int dy = ny-pos.y;
+        Desloca(dx,dy);
+    }
+
+    void Desloca(double dx,double dy)override{
+        CPIGCaixaTexto::Desloca(dx,dy);
         slideVertical->Desloca(dx,dy);
-        //slideHorizontal->Desloca(dx,dy);
     }
 
     void SetDimensoes(int altura,int largura)override{
         CPIGSprite::SetDimensoes(altura,largura);
+        slideVertical->Move(((int)pos.x)+largura,(int)pos.y);
+        slideVertical->SetDimensoes(altura,tamPadraoSlide);
         PosicionaLabel();
         AjustaPosicaoTextoCursor();
         AjustaSlideVerticalPeloCursor();
     }
 
     int Desenha() override{
-        if (!visivel) return -1;
-
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x,pos.y,alt,larg);
+        if (!visivel) return 0;
 
         //imagem de fundo
         if (text)
@@ -321,6 +319,7 @@ public:
         else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
 
         //DesenhaMarcacaoMargem();
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x+margemEsq,pos.y+margemBaixo,alt-(margemBaixo+margemCima),larg-(margemEsq+margemDir));
 
         DesenhaCursor();//desenha o cursor (se estiver em ediçăo)
         CPIGGerenciadorFontes::GetFonte(fonteTexto)->EscreveLonga(texto,xTexto,yTexto,largMax,(espacoEntreLinhas + altLetra),coresBasicas[1],PIG_TEXTO_ESQUERDA);
@@ -331,8 +330,6 @@ public:
         if(linhasPauta) DesenhaLinhasHorizontais();
 
         if(slideVerticalAtivado) slideVertical->Desenha();
-
-        //if(slideHorizontalAtivado) slideHorizontal->Desenha();
 
         DesenhaLabel();
 
@@ -364,12 +361,20 @@ public:
         AjustaSlideVerticalPeloCursor();
     }
 
+    int MouseSobreSlide(SDL_Point p){
+        if (p.x>pos.x+larg&&p.x<pos.x+larg+tamPadraoSlide&&p.y>pos.y&&p.y<pos.y+alt)
+            return 1;
+        return 0;
+    }
+
     int TrataEventoMouse(PIGEvento evento)override{
         SDL_Point p = GetPosicaoMouse();
         ChecaMouseOver(p);
 
-        if(slideVerticalAtivado){
+        if(slideVerticalAtivado&&MouseSobreSlide(p)){
+            ((PIGComponente)slideVertical)->SetFoco(true);
             int resp = slideVertical->TrataEventoMouse(evento);
+            ((PIGComponente)slideVertical)->SetFoco(false);
             if (resp==PIG_SELECIONADO_TRATADO){
                 AjustaPosicaoTextoCursor();
                 return resp;
@@ -378,10 +383,9 @@ public:
                     SobeCursor();
                 else if (evento.mouse.relY<0)
                     DesceCursor();
+                return PIG_SELECIONADO_TRATADO;
             }
         }
-
-        //if(scrollHorizontalAtivado) scrollHorizontal->TrataEventoMouse(evento);
 
         if(mouseOver){
             if(!habilitado) return PIG_SELECIONADO_DESABILITADO;

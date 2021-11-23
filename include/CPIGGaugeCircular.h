@@ -9,34 +9,39 @@ private:
 
     double angBase,deltaAng;
     int raioInterno;
-    bool crescimentoHorario;
     PIGOffscreenRenderer off;
 
     void ProcessaAtributos(CPIGAtributos atrib)override{
         CPIGGauge::ProcessaAtributos(atrib);
 
-        int valorFloat = atrib.GetFloat("anguloBase",0);
+        float valorFloat = atrib.GetFloat("anguloBase",0);
         if (valorFloat != 0) SetAnguloBase(valorFloat);
 
         valorFloat = atrib.GetFloat("deltaAngulo",0);
         if (valorFloat != 0) SetDeltaAngulo(valorFloat);
 
-        int valorInt = atrib.GetInt("horario",0);
-        if (valorInt) SetCrescimentoHorario(valorInt);
+        int valorInt = atrib.GetInt("raioInterno",-1);
+        if (valorInt > -1) SetRaioInterno(valorInt);
     }
 
     static CPIGGaugeCircular LeParametros(int idComponente, CPIGAtributos atrib){
-        CPIGGaugeCircular *resp = new CPIGGaugeCircular(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),
-                          atrib.GetInt("raioInterno",0),atrib.GetInt("janela",0));
+        CPIGGaugeCircular *resp;
 
+        if (atrib.GetString("nomeArq","") != ""){
+            resp = new CPIGGaugeCircular(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+                        atrib.GetString("nomeArq",""),atrib.GetInt("alturaMarcador",0),atrib.GetInt("larguraMarcador",0),atrib.GetString("nomeArqMarcador",""),
+                        atrib.GetInt("retiraFundo",1),atrib.GetInt("retiraFundoMarcador",1),atrib.GetInt("janela",0));
+
+        }else{
+            resp = new CPIGGaugeCircular(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),atrib.GetInt("janela",0));
+        }
         resp->ProcessaAtributos(atrib);
 
         return *resp;
     }
 
-    virtual void AtualizaMarcador()override{
+    void AtualizaTexturaGrafico(){
         //coresBasicas[3] é a cor a ser utilizada no marcador
-        CPIGGauge::AtualizaMarcador();
         PIGCor opcoes[4] = {VERDE,AZUL,ROXO,LARANJA}; //4 cores quaisquer
         PIGCor croma1, croma2; //cores usada como cromakey para transparencias (não podem ser nem a cor da barra, nem a cor do fundo)
 
@@ -57,7 +62,7 @@ private:
         //off->SalvarImagemPNG("interno.png",2);
 
         double deltaCrescimento=0;
-        if (crescimentoHorario)
+        if (orientacaoCrescimento==PIG_GAUGE_HORARIO)
             deltaCrescimento = deltaAng-porcentagemConcluida*(deltaAng);
 
         //circulo com a barra na cor desejada
@@ -86,21 +91,49 @@ private:
         text = SDL_CreateTextureFromSurface(renderer,off->GetSurface(1));
     }
 
+    virtual void AtualizaMarcador()override{
+        CPIGGauge::AtualizaMarcador();
+        OnAction();
+        if (marcador){
+            marcador->SetPivoAbsoluto({margemEsq,margemBaixo});
+            marcador->Move(pos.x+larg/2-margemEsq,pos.y+alt/2-margemBaixo);
+            double angMarcador=0;
+            if (orientacaoCrescimento==PIG_GAUGE_HORARIO)
+                angMarcador = porcentagemConcluida*(deltaAng)+angBase;
+            else angMarcador = angBase+deltaAng-porcentagemConcluida*(deltaAng);
+            marcador->SetAngulo(angMarcador);
+        }else{
+            AtualizaTexturaGrafico();
+        }
+    }
+
 public:
 
-    CPIGGaugeCircular(int idComponente, int altura, int largura, int raioInterior, int janela=0):
+    CPIGGaugeCircular(int idComponente, int altura, int largura, int janela=0):
         CPIGGauge(idComponente,altura,largura,janela){
 
         angBase = 0;
         deltaAng = 360;
-        raioInterno = raioInterior;
-        crescimentoHorario = true;
+        raioInterno = 0;
+        orientacaoCrescimento = PIG_GAUGE_HORARIO;
 
         IniciaCoresBasicas();
 
         off = new CPIGOffscreenRenderer(altura,largura,3);
 
-        SetPivoProporcional({larg/2.0,alt/2.0});
+        AtualizaMarcador();
+    }
+
+    CPIGGaugeCircular(int idComponente, int altura, int largura, string imgTrilha, int alturaMarcador, int larguraMarcador, string imgMarcador, int retiraFundoTrilha=1, int retiraFundoMarcador=1, int janela=0):
+        CPIGGauge(idComponente,altura,largura,imgTrilha,retiraFundoTrilha,janela){
+
+        marcador = new CPIGSprite(-1,imgMarcador,retiraFundoMarcador,NULL,janela);
+        marcador->SetDimensoes(alturaMarcador,larguraMarcador);
+
+        angBase = 0;
+        deltaAng = 360;
+        raioInterno = 0;
+        orientacaoCrescimento = PIG_GAUGE_HORARIO;
 
         AtualizaMarcador();
     }
@@ -108,7 +141,7 @@ public:
     CPIGGaugeCircular(int idComponente, CPIGAtributos atrib):CPIGGaugeCircular(LeParametros(idComponente,atrib)){}
 
     virtual ~CPIGGaugeCircular(){
-        delete off;
+        if (off) delete off;
     }
 
     int Desenha()override{
@@ -118,6 +151,8 @@ public:
 
         //vai desenhar o gauge em si
         CPIGSprite::Desenha();
+        if (marcador)
+            marcador->Desenha();
 
         DesenhaLabel();
 
@@ -126,9 +161,14 @@ public:
         return 1;
     }
 
-    void SetCrescimentoHorario(bool horario){
-        crescimentoHorario = horario;
-        marcadorAtualizado = false;
+    int SetOrientacao(PIGGaugeCrescimento orientacao){
+        if (orientacao==PIG_GAUGE_HORARIO||orientacao==PIG_GAUGE_ANTIHORARIO){
+            orientacaoCrescimento = orientacao;
+            marcadorAtualizado = false;
+
+            return 1;
+        }
+        return 0;
     }
 
     void SetRaioInterno(int valorRaio){

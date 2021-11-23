@@ -110,7 +110,7 @@ private:
         }else{
             GetTextoVisivelPtr = &CPIGCampoTextoESenha::GetTexto;
         }
-        IniciaCoresBasicas();
+        CPIGCaixaTexto::IniciaCoresBasicas();
     }
 
 public:
@@ -131,14 +131,14 @@ public:
 
     //desenha o componente completo
     int Desenha() override{
-        if (!visivel) return -1;
-
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x,pos.y,alt,larg);
+        if (!visivel) return 0;
 
         //imagem de fundo
         if (text)
             CPIGSprite::Desenha();
         else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
+
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x+margemEsq,pos.y+margemBaixo,alt-(margemBaixo+margemCima),larg-(margemEsq+margemDir));
 
         CPIGGerenciadorFontes::GetFonte(fonteTexto)->Escreve(GetTextoVisivel(),xTexto,yTexto,coresBasicas[1],PIG_TEXTO_ESQUERDA);
         DesenhaCursor();//desenha o cursor (se estiver em ediçăo)

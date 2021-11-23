@@ -9,6 +9,9 @@ protected:
 
     virtual void ProcessaAtributos(CPIGAtributos atrib)override{
         CPIGListaItemComponente::ProcessaAtributos(atrib);
+
+        string valorStr = atrib.GetString("corDestaque","");
+        if (valorStr != "") SetCorDestaque(PIGCriaCorString(valorStr));
     }
 
     static CPIGListBox LeParametros(int idComponente, CPIGAtributos atrib){
@@ -50,7 +53,7 @@ private:
     void DesenhaRetanguloMarcacao(){
         if(itemDestaque !=-1){
             PIGPonto2D p = itens[itemDestaque]->GetXY();
-            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado(p.x,p.y,altBaseLista,larg,AZUL);
+            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado(p.x+margemEsq,p.y+margemBaixo,altBaseLista-(margemCima+margemBaixo),larg-(margemDir+margemEsq),coresBasicas[1]);
         }
     }
 
@@ -118,20 +121,20 @@ public:
     int Desenha(){
         if (visivel==false) return 0;
 
-        DesenhaLabel();
-
         CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x,pos.y,alt,larg);
 
         if (text)//se tiver imagem de fundo
             CPIGSprite::Desenha();
         else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
 
-        DesenhaRetanguloMarcacao();
-
         for (PIGItemComponente i: itens)
             i->Desenha();
 
+        DesenhaRetanguloMarcacao();
+
         CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
+
+        DesenhaLabel();
 
         return 1;
     }
@@ -144,6 +147,10 @@ public:
         }
         itens[indice]->SetAcionado(marcado);
         return 1;
+    }
+
+    void SetCorDestaque(PIGCor cor){
+        coresBasicas[1] = cor;
     }
 
 };

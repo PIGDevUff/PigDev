@@ -15,16 +15,20 @@ protected:
 
     void IniciaCoresBasicas(){
         coresBasicas[0] = CINZA;
+        coresBasicas[1] = AZUL;
     }
 
     virtual void ProcessaAtributos(CPIGAtributos atrib)override{
         CPIGComponente::ProcessaAtributos(atrib);
 
-        int valorInt = atrib.GetInt("larguraIcone",-1);
-        if (valorInt > -1) DefineLarguraIconeItem(valorInt);
+        int larguraIcone = 0;
+        int alturaIcone = 0;
 
-        valorInt = atrib.GetInt("alturaIcone",-1);
-        if (valorInt > -1) DefineAlturaIconeItem(valorInt);
+        larguraIcone = atrib.GetInt("larguraIcone",largIcone);
+        alturaIcone = atrib.GetInt("alturaIcone",altIcone);
+
+        if (larguraIcone != largIcone || alturaIcone != altIcone)
+            SetDimensoesIcone(alturaIcone,larguraIcone);
     }
 
     void IniciaBase(int alturaLinha){
@@ -86,20 +90,11 @@ public:
         itens.clear();
     }
 
-    void DefineAlturaIconeItem(int alturaImagemIcone){
-        altIcone = alturaImagemIcone;
+    void SetDimensoesIcone(int alturaIcone, int larguraIcone){
         for (unsigned int i=0;i<itens.size();i++){
-            itens[i]->SetAlturaIcone(altIcone);
+            itens[i]->SetDimensoesIcone(alturaIcone,larguraIcone);
         }
     }
-
-    void DefineLarguraIconeItem(int larguraImagemIcone){
-        largIcone = larguraImagemIcone;
-        for (unsigned int i=0;i<itens.size();i++){
-            itens[i]->SetLarguraIcone(largIcone);
-        }
-    }
-
     void AlinhaLabelDireita(){
         if (posLabels!=PIG_COMPONENTE_DIR_CENTRO){//se os labels estão à direita do botões, inverte
             for (PIGItemComponente i: itens)

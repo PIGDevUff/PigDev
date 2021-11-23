@@ -19,11 +19,11 @@ protected:
 
     void SetAcionado(bool valor){
         if (acionado&&!valor){
-            Desloca(-margemEsq,-margemBaixo);
-            SetDimensoes(alt-(margemCima+margemBaixo),larg-(margemEsq+margemDir));
+            Desloca(-margemEsq,margemBaixo);
+            //SetDimensoes(alt-(margemCima+margemBaixo),larg-(margemEsq+margemDir));
         }else if (!acionado&&valor){
-            Desloca(margemEsq,margemBaixo);
-            SetDimensoes(alt+(margemCima+margemBaixo),larg+(margemEsq+margemDir));
+            Desloca(margemEsq,-margemBaixo);
+            //SetDimensoes(alt+(margemCima+margemBaixo),larg+(margemEsq+margemDir));
         }
         acionado = valor;
         AjustaFrame();

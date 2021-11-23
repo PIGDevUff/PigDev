@@ -54,12 +54,13 @@ class CPIGSlideBar : public CPIGGauge{
         xMarc += margemEsq;
         yMarc += margemBaixo;
         if (marcador){
+            //printf("%d,%d  %d %d\n",xMarc,yMarc,altMarcador-(margemBaixo+margemCima),largMarcador-(margemEsq+margemDir));
             marcador->Move(xMarc,yMarc);
             marcador->SetDimensoes(altMarcador-(margemBaixo+margemCima),largMarcador-(margemEsq+margemDir));
         }
     }
 
-    int TrataClickTrilha(int px,int py){
+    int TrataClickTrilha(int px, int py){
         double perc;
         px = PIGLimitaValor(px,(int)pos.x+largMarcador/2,(int)pos.x+larg-largMarcador/2);
         py = PIGLimitaValor(py,(int)pos.y+altMarcador/2,(int)pos.y+alt-altMarcador/2);
@@ -78,7 +79,7 @@ class CPIGSlideBar : public CPIGGauge{
             perc = 1.0 - 1.0*(py-(pos.y+altMarcador/2))/(alt-altMarcador);
             break;
         }
-
+        //printf("vou definir perc %f\n",perc);
         SetPorcentagemConcluida(perc);
 
         return PIG_SELECIONADO_TRATADO;
@@ -97,12 +98,12 @@ class CPIGSlideBar : public CPIGGauge{
 
 public:
 
-    CPIGSlideBar(int idComponente, int altTrilha, int largTrilha, string imgTrilha, int altMarcador, int largMarcador, string imgMarcador,int retiraFundoTrilha=1, int retiraFundoMarcador=1, int janela=0):
-        CPIGGauge(idComponente,altTrilha,largTrilha,imgTrilha,altMarcador,largMarcador,imgMarcador,retiraFundoTrilha,retiraFundoMarcador,janela){
+    CPIGSlideBar(int idComponente, int altTrilha, int largTrilha, string imgTrilha, int alturaMarcador, int larguraMarcador, string imgMarcador,int retiraFundoTrilha=1, int retiraFundoMarcador=1, int janela=0):
+        CPIGGauge(idComponente,altTrilha,largTrilha,imgTrilha,retiraFundoTrilha,janela){
             deltaTeclado = deltaRodinha = 10;
+            altMarcador = alturaMarcador;
+            largMarcador = larguraMarcador;
             marcador = new CPIGSprite(-1,imgMarcador,retiraFundoMarcador,NULL,janela);
-            marcador->GetDimensoes(altMarcador,largMarcador);
-            //marcador->Move(0,0);
             AtualizaMarcador();
     }
 
@@ -117,9 +118,7 @@ public:
 
     CPIGSlideBar(int idComponente,CPIGAtributos atrib):CPIGSlideBar(LeParametros(idComponente,atrib)){}
 
-    virtual ~CPIGSlideBar(){
-        if (marcador) delete marcador;
-    }
+    virtual ~CPIGSlideBar(){}
 
     int TrataEventoMouse(PIGEvento evento){
         SDL_Point p = GetPosicaoMouse();
@@ -130,6 +129,9 @@ public:
                 return TrataRodinha(evento);
 
             if(evento.mouse.acao == PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO)
+                return TrataClickTrilha(p.x,p.y);
+
+            if(temFoco && CPIGMouse::GetEstadoBotao(PIG_MOUSE_ESQUERDO)==PIG_MOUSE_PRESSIONADO)
                 return TrataClickTrilha(p.x,p.y);
 
             return PIG_SELECIONADO_MOUSEOVER;
@@ -167,6 +169,16 @@ public:
         delta = dPadrao;
         deltaRodinha = dRodinha;
         deltaTeclado = dTeclado;
+    }
+
+    int SetOrientacao(PIGGaugeCrescimento orientacao){
+        if (orientacao==PIG_GAUGE_HORARIO||orientacao==PIG_GAUGE_ANTIHORARIO)
+            return 0;
+
+        orientacaoCrescimento = orientacao;
+        marcadorAtualizado = false;
+
+        return 1;
     }
 
     int Desenha(){

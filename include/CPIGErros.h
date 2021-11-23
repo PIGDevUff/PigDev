@@ -59,7 +59,7 @@ protected:
 
 public:
 
-    CPIGErroParametro(string parametro,string arquivo):CPIGErro(){
+    CPIGErroParametro(string parametro, string arquivo):CPIGErro(){
         nomeParam = parametro;
         nomeArq = arquivo;
         mensagem = "O parametro <"+nomeParam+"> nao foi definido ou possui valor incorreto no arquivo ("+nomeArq+")";
@@ -87,7 +87,7 @@ protected:
 
 public:
 
-    CPIGErroIndice(int indVetor,string tipoDeDado):CPIGErro(){
+    CPIGErroIndice(int indVetor, string tipoDeDado):CPIGErro(){
         tipoDado = tipoDeDado;
         indice = indVetor;
         mensagem = "O indice <"+std::to_string(indice)+"> nao pode ser utlizado para referenciar um ("+tipoDado+")";
