@@ -217,8 +217,8 @@ public:
     }
 
     virtual void Move(double nx, double ny)override{
+        if (marcador) marcador->Desloca(nx-pos.x,ny-pos.y);
         CPIGComponente::Move(nx,ny);
-        if (marcador) marcador->Desloca(pos.x-nx,pos.y-ny);
     }
 
     void SetMarcadorFrente(bool valor){

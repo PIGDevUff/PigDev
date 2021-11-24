@@ -26,9 +26,9 @@ private:
         return PIG_SELECIONADO_TRATADO;
     }
 
-    void IniciaBase(string labelItem, string arqImagemIcone="", int alturaIcone=0, int larguraIcone=0){
+    void IniciaBase(string labelItem, string arqImagemIcone="", int alturaIcone=0, int larguraIcone=0,int retiraFundoIcone=1){
         if (arqImagemIcone!=""){
-            icone = new CPIGSprite(-1,arqImagemIcone,1,NULL,idJanela);
+            icone = new CPIGSprite(-1,arqImagemIcone,retiraFundoIcone,NULL,idJanela);
             icone->SetDimensoes(alturaIcone,larguraIcone);
             AlinhaIconeEsquerda();
             posIcone = PIG_COMPONENTE_ESQ_CENTRO;
@@ -43,15 +43,15 @@ private:
 public:
 
     //item com icone e com fundo
-    CPIGItemComponente(int idComponente, int alturaIcone,int larguraIcone, string arqImagemIcone, string arqImagemFundo, string labelItem, int larguraLista, int alturaItemLista, int retiraFundo=1, int janela=0):
+    CPIGItemComponente(int idComponente, int alturaIcone,int larguraIcone, string arqImagemIcone, string arqImagemFundo, string labelItem, int larguraLista, int alturaItemLista, int retiraFundo=1, int retiraFundoIcone=1, int janela=0):
         CPIGComponente(idComponente,alturaItemLista,larguraLista,arqImagemFundo,retiraFundo,janela){
-        IniciaBase(labelItem,arqImagemIcone,alturaIcone,larguraIcone);//,larguraLista,alturaItemLista);
+        IniciaBase(labelItem,arqImagemIcone,alturaIcone,larguraIcone,retiraFundoIcone);//,larguraLista,alturaItemLista);
     }
 
     //item com icone e sem fundo
-    CPIGItemComponente(int idComponente, int alturaIcone,int larguraIcone, string arqImagemIcone, string labelItem, int larguraLista, int alturaItemLista, int retiraFundo=1, int janela=0):
+    CPIGItemComponente(int idComponente, int alturaIcone,int larguraIcone, string arqImagemIcone, string labelItem, int larguraLista, int alturaItemLista, int retiraFundoIcone=1, int janela=0):
         CPIGComponente(idComponente,alturaItemLista,larguraLista,janela){
-        IniciaBase(labelItem,arqImagemIcone,alturaIcone,larguraIcone);//,larguraLista,alturaItemLista);
+        IniciaBase(labelItem,arqImagemIcone,alturaIcone,larguraIcone,retiraFundoIcone);//,larguraLista,alturaItemLista);
     }
 
     //item sem icone e com fundo

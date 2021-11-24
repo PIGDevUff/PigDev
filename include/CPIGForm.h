@@ -27,18 +27,18 @@ private:
         for(int i=0;i<totalComponentes;i++){
             int aux = componentes[i]->TrataEventoMouse(evento);
             if(aux == PIG_SELECIONADO_TRATADO){
-                if (componenteComFoco!=-1 && componenteComFoco!=i){     //se já tem um outro componente com foco, ele vai perder o foco
+                if (componenteComFoco!=-1 && componenteComFoco!=i){     //se jÃ¡ tem um outro componente com foco, ele vai perder o foco
                     componentes[componenteComFoco]->SetFoco(false);
                 }
-                componenteComFoco = i;                                //anota que terá o foco
+                componenteComFoco = i;                                //anota que terÃ¡ o foco
                 componenteMouseOver = i;                              //anota que tem MouseOver
-                componentes[componenteComFoco]->SetFoco(true);        //faz o componente em questão ganhar foco
+                componentes[componenteComFoco]->SetFoco(true);        //faz o componente em questÄƒo ganhar foco
                 return 1;
             }else if (aux == PIG_SELECIONADO_MOUSEOVER){
                 componenteMouseOver = i;
             }
         }
-        if (evento.mouse.acao==PIG_MOUSE_PRESSIONADO&&evento.mouse.botao==PIG_MOUSE_ESQUERDO&&componenteComFoco!=-1){  //se já tem um componente com foco, ele vai perder o foco
+        if (evento.mouse.acao==PIG_MOUSE_PRESSIONADO&&evento.mouse.botao==PIG_MOUSE_ESQUERDO&&componenteComFoco!=-1){  //se jÃ¡ tem um componente com foco, ele vai perder o foco
             componentes[componenteComFoco]->SetFoco(false);
             componenteComFoco = -1;
         }
@@ -70,7 +70,7 @@ private:
         transform(tipo.begin(), tipo.end(), tipo.begin(), ::toupper);
         if (tipo=="BOTAOCLICK") return PIG_BOTAOCLICK;
         if (tipo=="BOTAOONOFF") return PIG_BOTAOONOFF;
-        if (tipo=="CAMPOTEXTOSENHA") return PIG_CAMPOTEXTOSENHA;
+        if (tipo=="CAMPOTEXTO") return PIG_CAMPOTEXTOSENHA;
         if (tipo=="AREADETEXTO") return PIG_AREADETEXTO;
         if (tipo=="CHECKBOX") return PIG_CHECKBOX;
         if (tipo=="RADIOBOX") return PIG_RADIOBOX;
@@ -104,7 +104,8 @@ private:
 
             while (arq.eof()==false){
                 getline(arq,linha);
-                resp->CriaComponentePorParametro(linha);
+                if (linha[0]!='#')
+                    resp->CriaComponentePorParametro(linha);
             }
 
             arq.close();

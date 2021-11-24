@@ -66,12 +66,13 @@ private:
             deltaCrescimento = deltaAng-porcentagemConcluida*(deltaAng);
 
         //circulo com a barra na cor desejada
-        off->DesenhaCirculoFinal(larg/2-2,croma1,coresBasicas[3],angBase+deltaCrescimento,porcentagemConcluida*(deltaAng)+angBase+deltaCrescimento,0);
+        off->DesenhaCirculoFinal(larg/2-2,croma1,coresBasicas[3],deltaCrescimento,porcentagemConcluida*(deltaAng)+deltaCrescimento,0);
         off->SetCorTransparente(0,true,croma1);
         //off->SalvarImagemPNG("barra.png",0);
 
         //criculo com o fundo na cor de fundo
-        off->DesenhaCirculoFinal(larg/2-2,croma1,coresBasicas[0],angBase,angBase+deltaAng,1);
+        //printf("base %f final %f\n",angBase,angBase+deltaAng);
+        off->DesenhaCirculoFinal(larg/2-2,croma1,coresBasicas[0],0,deltaAng,1);
         off->SetCorTransparente(1,true,croma1);
         //off->SalvarImagemPNG("fundo.png",1);
 
@@ -89,6 +90,8 @@ private:
 
         if (text) SDL_DestroyTexture(text);
         text = SDL_CreateTextureFromSurface(renderer,off->GetSurface(1));
+
+        //SetAngulo(angBase);
     }
 
     virtual void AtualizaMarcador()override{
@@ -116,6 +119,7 @@ public:
         deltaAng = 360;
         raioInterno = 0;
         orientacaoCrescimento = PIG_GAUGE_HORARIO;
+        //SetPivoProporcional({0.5,0.5});
 
         IniciaCoresBasicas();
 
@@ -134,6 +138,8 @@ public:
         deltaAng = 360;
         raioInterno = 0;
         orientacaoCrescimento = PIG_GAUGE_HORARIO;
+
+        off = NULL;
 
         AtualizaMarcador();
     }

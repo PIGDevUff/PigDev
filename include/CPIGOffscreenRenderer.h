@@ -101,6 +101,8 @@ public:
         vector<double> ang1,ang2,ang3,ang4;
         iniP.x = -1;
 
+        //printf("angInicial %f angFinal %f\n",angInicial,angFinal);
+
         SDL_SetRenderDrawColor(layers[layer].render,cor.r,cor.g,cor.b,cor.a);
 
         do {
@@ -131,11 +133,15 @@ public:
             if (raio > x || err > y) err += ++x*2+1; /* e_xy+e_x > 0 or no 2nd y-step */
         }while (x < 0);
 
+        //FILE *arq = fopen("angs.txt","w");
+        //fprintf(arq,"%f %f\n",angInicial,angFinal);
+
         for (unsigned int i=0;i<q1.size();i++){
             if ((ang1[i]>=angInicial&&ang1[i]<=angFinal)||(ang1[i]+360>=angInicial&&ang1[i]+360<=angFinal)){
                 if (iniP.x==-1&&ang1[i]>=angInicial)
                     iniP = q1[i];
                 SDL_RenderDrawPoint(layers[layer].render,q1[i].x,q1[i].y);
+                //fprintf(arq,"%f %d %d\n",ang1[i],q1[i].x,q1[i].y);
                 if (angFinal<=360)
                     fimP = q1[i];
                 else if (ang1[i]<=angInicial)
@@ -147,6 +153,7 @@ public:
                 if (iniP.x==-1&&ang2[i]>=angInicial)
                     iniP = q2[i];
                 SDL_RenderDrawPoint(layers[layer].render,q2[i].x,q2[i].y);
+                //fprintf(arq,"%f %d %d\n",ang2[i],q2[i].x,q2[i].y);
                 if (angFinal<=360)
                     fimP = q2[i];
                 else if (ang2[i]<=angInicial)
@@ -158,6 +165,7 @@ public:
                 if (iniP.x==-1&&ang3[i]>=angInicial)
                     iniP = q3[i];
                 SDL_RenderDrawPoint(layers[layer].render,q3[i].x,q3[i].y);
+                //fprintf(arq,"%f %d %d\n",ang3[i],q3[i].x,q3[i].y);
                 if (angFinal<=360)
                     fimP = q3[i];
                 else if (ang3[i]<=angInicial)
@@ -169,13 +177,16 @@ public:
                 if (iniP.x==-1&&ang4[i]>=angInicial)
                     iniP = q4[i];
                 SDL_RenderDrawPoint(layers[layer].render,q4[i].x,q4[i].y);
+                //fprintf(arq,"%f %d %d\n",ang4[i],q4[i].x,q4[i].y);
                 if (angFinal<=360)
                     fimP = q4[i];
                 else if (ang4[i]<=angInicial)
                     fimP = q4[i];
             }
         }
-
+        //fclose(arq);
+        //if (angInicial==90&&angFinal==270)
+        //system("pause");
    }
 
     inline void PintarFundo(PIGCor cor, int layer=0){

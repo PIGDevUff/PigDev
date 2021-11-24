@@ -40,19 +40,19 @@ protected:
         IniciaCoresBasicas();
     }
 
-    void CriaItem(int yItem, string itemLabel, string arqImagemIcone="", string arqImagemFundo="", bool itemMarcado = false, bool itemHabilitado = true, string hintMsg="", int retiraFundo=1){
+    void CriaItem(int yItem, string itemLabel, string arqImagemIcone="", string arqImagemFundo="", bool itemMarcado = false, bool itemHabilitado = true, string hintMsg="", int retiraFundo=1, int retiraFundoIcone=1){
         PIGItemComponente item;
         if (arqImagemFundo==""){
             if (arqImagemIcone==""){
                 item = new CPIGItemComponente(itens.size(),itemLabel,larg,altBaseLista,retiraFundo,idJanela);
             }else{
-                item = new CPIGItemComponente(itens.size(),altIcone,largIcone,arqImagemIcone,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
+                item = new CPIGItemComponente(itens.size(),altIcone,largIcone,arqImagemIcone,itemLabel,larg,altBaseLista,retiraFundoIcone,idJanela);
             }
         }else{
             if (arqImagemIcone==""){
                 item = new CPIGItemComponente(itens.size(),arqImagemFundo,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
             }else{
-                item = new CPIGItemComponente(itens.size(),altIcone,largIcone,arqImagemIcone,arqImagemFundo,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
+                item = new CPIGItemComponente(itens.size(),altIcone,largIcone,arqImagemIcone,arqImagemFundo,itemLabel,larg,altBaseLista,retiraFundo,retiraFundoIcone,idJanela);
             }
         }
         item->Move(pos.x,yItem);

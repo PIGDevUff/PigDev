@@ -89,7 +89,8 @@ protected:
         if (evento.teclado.acao==PIG_TECLA_EDICAO) return 1;
 
         if (evento.teclado.acao==PIG_TECLA_INPUT){//caracteres normais
-            if (AdicionaTexto( ConverteString(evento.teclado.texto).c_str() ) ){
+            string s = ConverteString(evento.teclado.texto);
+            if (AdicionaTexto(s)){
                 return OnAction();
             }
             return 0;
@@ -170,10 +171,10 @@ protected:
         string resp(str);
         if (strlen(str)>1){
             if ((uint8_t)str[0]==195){
-                resp = str[1]+64;
-            }else if ((uint8_t)str[0]==194){
                 resp = str[1];
-            }
+            }/*else if ((uint8_t)str[0]==194){
+                resp = str[1];
+            }*/
 
         }
         return resp;

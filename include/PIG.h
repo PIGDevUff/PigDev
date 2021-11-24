@@ -5603,12 +5603,12 @@ void PIGAreaDeTextoGetTexto(int idComponente, char* texto){
 
 /**********CAMPOTEXTO**************/
 
-int PIGCriaCampoTexto(int idForm, int altura, int largura, char* nomeArq, int maxCars=200, bool apenasNumeros=false, int retiraFundo=1){
-    return CPIGGerenciadorForms::GetForm(idForm)->CriaCampoTextoESenha(altura,largura,nomeArq,maxCars,apenasNumeros,retiraFundo,false);
+int PIGCriaCampoTexto(int idForm, int altura, int largura, char* nomeArq, int maxCars=200, bool apenasNumeros=false, bool senha=false, int retiraFundo=1){
+    return CPIGGerenciadorForms::GetForm(idForm)->CriaCampoTextoESenha(altura,largura,nomeArq,maxCars,apenasNumeros,retiraFundo,senha);
 }
 
-int PIGCriaCampoTexto(int idForm, int altura, int largura, int maxCars=200, bool apenasNumeros=false){
-    return CPIGGerenciadorForms::GetForm(idForm)->CriaCampoTextoESenha(altura,largura,maxCars,apenasNumeros,false);
+int PIGCriaCampoTexto(int idForm, int altura, int largura, int maxCars=200, bool apenasNumeros=false, bool senha=false){
+    return CPIGGerenciadorForms::GetForm(idForm)->CriaCampoTextoESenha(altura,largura,maxCars,apenasNumeros,senha);
 }
 
 void PIGCampoTextoSetTexto(int idComponente, char* frase){
@@ -5623,13 +5623,25 @@ void PIGCampoTextoSetCorCursor(int idComponente, PIGCor cor){
     CPIGGerenciadorForms::GetComponente<PIGCampoTextoESenha>(idComponente)->SetCorCursor(cor);
 }
 
+void PIGCampoTextoSetCorTexto(int idComponente, PIGCor cor){
+    CPIGGerenciadorForms::GetComponente<PIGCampoTextoESenha>(idComponente)->SetCorFonte(cor);
+}
+
+void PIGCampoTextoSetCorFundo(int idComponente, PIGCor cor){
+    CPIGGerenciadorForms::GetComponente<PIGCampoTextoESenha>(idComponente)->SetCorFundo(cor);
+}
+
+void PIGCampoTextoSetMascara(int idComponente, char mascara){
+    CPIGGerenciadorForms::GetComponente<PIGCampoTextoESenha>(idComponente)->SetMascara(mascara);
+}
+
 void PIGCampoTextoGetTexto(int idComponente, char* texto){
     strcpy(texto,(char*)(CPIGGerenciadorForms::GetComponente<PIGCampoTextoESenha>(idComponente)->GetTexto()).c_str());
 }
 
 /**********CAMPOSENHA**************/
 
-int PIGCriaCampoSenha(int idForm, int altura, int largura, char* nomeArq, int maxCars = 200, bool apenasNumeros=false, int retiraFundo=1){
+/*int PIGCriaCampoSenha(int idForm, int altura, int largura, char* nomeArq, int maxCars = 200, bool apenasNumeros=false, int retiraFundo=1){
     return CPIGGerenciadorForms::GetForm(idForm)->CriaCampoTextoESenha(altura,largura,nomeArq,maxCars,apenasNumeros,retiraFundo,true);
 }
 
@@ -5647,17 +5659,7 @@ void PIGCampoSenhaSetFonteTexto(int idComponente, int fonte){
 
 void PIGCampoSenhaSetCorCursor(int idComponente, PIGCor cor){
     CPIGGerenciadorForms::GetComponente<PIGCampoTextoESenha>(idComponente)->SetCorCursor(cor);
-}
-
-/*******GENERICO_LISTA********/
-
-//#define PIGListBoxSetMarcadoItem(x,y,z)  { return CPIGGerenciadorForms::GetComponente<PIGListaItens>(x)->SetAcionadoItem(y,z);}
-
-int PIGSetMarcadoItem(int idComponente, int indice, bool marcado){
-    return CPIGGerenciadorForms::GetComponente<PIGListaComponente>(idComponente)->SetAcionadoItem(indice,marcado);
-}
-
-const auto& PIGListBoxSetMarcadoItem = PIGSetMarcadoItem;
+}*/
 
 /**********LISTA**************/
 
@@ -5669,13 +5671,13 @@ int PIGCriaListBox(int idForm, int larguraTotal, int alturaLinha, int alturaItem
     return CPIGGerenciadorForms::GetForm(idForm)->CriaListBox(larguraTotal,alturaLinha,alturaItem,largItem);
 }
 
-void PIGListBoxCriaItem(int idComponente, char* texto, char *imagemIcone = "", char *imagemFundo="", char *hintMsg="", bool itemHabilitado = true, int retiraFundoImg = 1){
-    CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->CriaItem(texto,imagemIcone,imagemFundo,false,itemHabilitado,hintMsg,retiraFundoImg);
+void PIGListBoxCriaItem(int idComponente, char* texto, char *imagemIcone = "", char *imagemFundo="", char *hintMsg="", bool itemHabilitado = true, int retiraFundoImg=1, int retiraFundoIcone=1){
+    CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->CriaItem(texto,imagemIcone,imagemFundo,false,itemHabilitado,hintMsg,retiraFundoImg,retiraFundoIcone);
 }
 
-/*int PIGListBoxSetMarcadoItem(int idComponente, int indice, bool marcado){
+int PIGListBoxSetMarcadoItem(int idComponente, int indice, bool marcado){
     return CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->SetAcionadoItem(indice,marcado);
-}*/
+}
 
 int PIGListBoxGetMarcadoItem(int idComponente, int indice){
     return CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->GetAcionadoItem(indice);
@@ -5745,8 +5747,8 @@ int PIGCriaDropDown(int idForm, int larguraTotal, int alturaLinha, int alturaIte
     return CPIGGerenciadorForms::GetForm(idForm)->CriaDropDown(larguraTotal,alturaLinha,alturaItem,larguraItem);
 }
 
-void PIGDropDownCriaItem(int idComponente, char* texto, char* imagemIcone = "", char *imagemFundo="", char* hintMsg="", bool itemHabilitado = true, int retiraFundoImg = 1){
-    CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->CriaItem(texto,imagemIcone,imagemFundo,itemHabilitado,hintMsg,retiraFundoImg);
+void PIGDropDownCriaItem(int idComponente, char* texto, char* imagemIcone = "", char *imagemFundo="", char* hintMsg="", bool itemHabilitado = true, int retiraFundoImg=1, int retiraFundoIcone=1){
+    CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->CriaItem(texto,imagemIcone,imagemFundo,itemHabilitado,hintMsg,retiraFundoImg,retiraFundoIcone);
 }
 
 int PIGDropDownSetMarcadoItem(int idComponente, int indice, bool marcado){
@@ -5818,8 +5820,8 @@ int PIGCriaRadioBox(int idForm, int larguraTotal, int alturaLinha, char* imagemI
     return CPIGGerenciadorForms::GetForm(idForm)->CriaRadioBox(larguraTotal,alturaLinha,imagemItem,alturaItem,larguraItem);
 }
 
-void PIGRadioBoxCriaItem(int idComponente, char* itemLabel, char *imagemFundo="", char *hintMsg="", bool itemHabilitado = true, int retiraFundo=1){
-    CPIGGerenciadorForms::GetComponente<PIGRadioBox>(idComponente)->CriaItem(itemLabel,imagemFundo,itemHabilitado,hintMsg,retiraFundo);
+void PIGRadioBoxCriaItem(int idComponente, char* itemLabel, char *imagemFundo="", char *hintMsg="", bool itemHabilitado = true, int retiraFundo=1, int retiraFundoIcone=1){
+    CPIGGerenciadorForms::GetComponente<PIGRadioBox>(idComponente)->CriaItem(itemLabel,imagemFundo,itemHabilitado,hintMsg,retiraFundo,retiraFundoIcone);
 }
 
 int PIGRadioBoxSetMarcadoItem(int idComponente, int indice, bool marcado){
@@ -5890,8 +5892,8 @@ int PIGCriaCheckBox(int idForm, int larguraTotal, int alturaLinha, char* imagemI
     return CPIGGerenciadorForms::GetForm(idForm)->CriaCheckBox(larguraTotal,alturaLinha,imagemItem,alturaItem,larguraItem);
 }
 
-void PIGCheckBoxCriaItem(int idComponente, char* itemLabel, char *imagemFundo="", char* hintMsg="", bool itemMarcado = false, bool itemHabilitado = true, int retiraFundo=1){
-    CPIGGerenciadorForms::GetComponente<PIGCheckBox>(idComponente)->CriaItem(itemLabel,imagemFundo,itemMarcado,itemHabilitado,hintMsg,retiraFundo);
+void PIGCheckBoxCriaItem(int idComponente, char* itemLabel, char *imagemFundo="", char* hintMsg="", bool itemMarcado = false, bool itemHabilitado = true, int retiraFundo=1, int retiraFundoIcone=1){
+    CPIGGerenciadorForms::GetComponente<PIGCheckBox>(idComponente)->CriaItem(itemLabel,imagemFundo,itemMarcado,itemHabilitado,hintMsg,retiraFundo,retiraFundoIcone);
 }
 
 int PIGCheckBoxSetMarcadoItem(int idComponente, int indice, bool marcado){

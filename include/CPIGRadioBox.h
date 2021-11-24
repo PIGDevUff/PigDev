@@ -44,11 +44,11 @@ protected:
     static void AjustaFrame(PIGItemComponente item){
         int resp;
         if (item->GetHabilitado()==false){
-            if (item->GetAcionado()) resp = 4;
-            else resp = 3;
-        }else if (item->GetMouseOver()){
             if (item->GetAcionado()) resp = 6;
             else resp = 5;
+        }else if (item->GetMouseOver()){
+            if (item->GetAcionado()) resp = 4;
+            else resp = 3;
         }else{
             if (item->GetAcionado()) resp = 2;
             else resp = 1;
@@ -72,13 +72,14 @@ public:
 
     virtual ~CPIGRadioBox(){}
 
-    void CriaItem(string itemLabel, string arqImagemFundoItem="", bool itemHabilitado = true, string hintMsg="", int retiraFundo=1){
+    void CriaItem(string itemLabel, string arqImagemFundoItem="", bool itemHabilitado = true, string hintMsg="", int retiraFundo=1, int retiraFundoIcone=1){
         int yItem = pos.y+alt-(altBaseLista)*(itens.size()+1);
-        CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,false,itemHabilitado,hintMsg,retiraFundo);
+        CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,false,itemHabilitado,hintMsg,retiraFundo,retiraFundoIcone);
         itens[itens.size()-1]->DefineFuncaoAjusteFrame(AjustaFrame);
         PIGSprite icone = itens[itens.size()-1]->GetIcone();
         icone->CriaFramesAutomaticosPorLinha(1,1,6);
-        icone->MudaFrameAtual(1);
+        //icone->MudaFrameAtual(1);
+        AjustaFrame(itens[itens.size()-1]);
     }
 
     int Desenha()override{

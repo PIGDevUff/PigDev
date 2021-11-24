@@ -181,6 +181,16 @@ public:
         return 1;
     }
 
+    virtual void Desloca(double dx, double dy)override{
+        CPIGGauge::Desloca(dx,dy);
+        xMarc += dx;
+        yMarc += dy;
+    }
+
+    virtual void Move(double nx, double ny)override{
+        Desloca(nx-pos.x,ny-pos.y);
+    }
+
     int Desenha(){
         if(visivel==false) return 0;
 
