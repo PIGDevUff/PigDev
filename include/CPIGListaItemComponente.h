@@ -57,19 +57,15 @@ protected:
         }
         item->Move(pos.x,yItem);
         item->SetHint(hintMsg);
-
-        //if (audio==-1) audio = audioComponente;//audio padrao do componente
-
         item->SetAudio(audioComponente);
         item->SetAcionado(itemMarcado);
         item->SetHabilitado(itemHabilitado);
         itens.push_back(item);
-        //alt += altBaseLista;
-        //pos.y -= ;
-        CPIGSprite::SetDimensoes(alt+altBaseLista,larg);
-        CPIGSprite::Move(pos.x,pos.y-altBaseLista);
-        //dest.y -= altBaseLista;
-        //printf("altura agora %d\n",alt);
+    }
+
+    void DeslocaItens(double dx, double dy){
+        for(unsigned int i=0;i<itens.size();i++)
+            itens[i]->Desloca(dx, dy);
     }
 
 public:
@@ -230,8 +226,7 @@ public:
         CPIGComponente::Desloca(dx,dy);
         PosicionaLabel();
 
-        for(unsigned int i=0;i<itens.size();i++)
-            itens[i]->Desloca(dx, dy);
+        DeslocaItens(dx,dy);
 
         AlinhaLabelEsquerda();
     }
