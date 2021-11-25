@@ -271,6 +271,10 @@ private:
         coresBasicas[3] = AZUL;
     }
 
+    PIGTipoComponente GetTipo(){
+        return PIG_AREADETEXTO;
+    }
+
 public:
 
     CPIGAreaDeTexto(int idComponente, int altura, int largura, string nomeArq, int maxCars=PIG_MAX_CARS_CAIXATEXTO, int retiraFundo=1, int janela=0):

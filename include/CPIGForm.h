@@ -66,11 +66,11 @@ private:
             componentes[i] = NULL;
     }
 
-    static PIGTiposComponentes GetTipoComponente(string tipo){
+    static PIGTipoComponente GetTipoComponente(string tipo){
         transform(tipo.begin(), tipo.end(), tipo.begin(), ::toupper);
         if (tipo=="BOTAOCLICK") return PIG_BOTAOCLICK;
         if (tipo=="BOTAOONOFF") return PIG_BOTAOONOFF;
-        if (tipo=="CAMPOTEXTO") return PIG_CAMPOTEXTOSENHA;
+        if (tipo=="CAMPOTEXTO") return PIG_CAMPOTEXTO;
         if (tipo=="AREADETEXTO") return PIG_AREADETEXTO;
         if (tipo=="CHECKBOX") return PIG_CHECKBOX;
         if (tipo=="RADIOBOX") return PIG_RADIOBOX;
@@ -80,7 +80,7 @@ private:
         if (tipo=="GAUGECIRCULAR") return PIG_GAUGECIRCULAR;
         if (tipo=="SLIDEBAR") return PIG_SLIDEBAR;
         printf("componente <%s> invalido lido da linha da parametros!!!\n",tipo.c_str());
-        return (PIGTiposComponentes)-1;
+        return (PIGTipoComponente)-1;
     }
 
     static CPIGForm LeArquivo(int idForm, string nomeArqTexto){
@@ -114,6 +114,10 @@ private:
         return *resp;
     }
 
+    PIGTipoComponente GetTipo(){
+        return PIG_FORM;
+    }
+
 
 public:
 
@@ -136,7 +140,7 @@ public:
         }
     }
 
-    int GetIdComponentePeloLabel(string label){
+    int GetIdComponente(string label){
         for(int i=0;i<totalComponentes;i++){
             if (componentes[i]->GetLabel()==label)
                 return componentes[i]->GetId();
@@ -345,7 +349,7 @@ public:
             case PIG_BOTAOCLICK: componentes[totalComponentes++] = new CPIGBotaoClick(idComponente,atrib);break;
             case PIG_BOTAOONOFF: componentes[totalComponentes++] = new CPIGBotaoOnOff(idComponente,atrib);break;
             case PIG_AREADETEXTO: componentes[totalComponentes++] = new CPIGAreaDeTexto(idComponente,atrib);break;
-            case PIG_CAMPOTEXTOSENHA: componentes[totalComponentes++] = new CPIGCampoTextoESenha(idComponente,atrib);break;
+            case PIG_CAMPOTEXTO: componentes[totalComponentes++] = new CPIGCampoTextoESenha(idComponente,atrib);break;
             case PIG_RADIOBOX: componentes[totalComponentes++] = new CPIGRadioBox(idComponente,atrib);break;
             case PIG_CHECKBOX: componentes[totalComponentes++] = new CPIGCheckBox(idComponente,atrib);break;
             case PIG_LISTBOX: componentes[totalComponentes++] = new CPIGListBox(idComponente,atrib);break;

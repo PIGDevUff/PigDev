@@ -48,14 +48,10 @@ private:
     }
 
     int ChecaMouseOver(SDL_Point pMouse)override{
-        SDL_Rect r={(int)pos.x,0,larg,0};
-        if (recolhida){
-            //r.y = ((int)pos.y)+alt-altBaseLista;
-            r.y = pos.y;
-            r.h = altBaseLista;
-        }else{
-            r.y = ((int)pos.y)-altBaseLista*itens.size();
-            r.h = (itens.size()+1)*altBaseLista;
+        SDL_Rect r={(int)pos.x,pos.y,larg,altBaseLista};
+        if (!recolhida){
+            r.y -= altBaseLista*itens.size();
+            r.h += itens.size()*altBaseLista;
         }
         SetMouseOver(SDL_PointInRect(&pMouse,&r));
 
@@ -94,6 +90,10 @@ private:
         CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
     }
 
+    PIGTipoComponente GetTipo(){
+        return PIG_DROPDOWN;
+    }
+
 public:
 
     CPIGDropDown(int idComponente, int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, string nomeArqFundo="", int retiraFundo=1, int janela=0):
@@ -109,9 +109,8 @@ public:
     CPIGDropDown(int idComponente,CPIGAtributos atrib):CPIGDropDown(LeParametros(idComponente,atrib)){}
 
     void CriaItem(string itemLabel, string arqImagemIcone="", string arqImagemFundoItem="", bool itemHabilitado = true, string hintMsg="", int retiraFundo=1, int retiraFundoIcone=1){
-        //int yItem = pos.y+alt-(altBaseLista)*(itens.size()+2);
+
         int yItem = pos.y-altBaseLista*(itens.size()+1);
-        //printf("%s criado em %d\n",itemLabel.c_str(),yItem);
         CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,false,itemHabilitado,hintMsg,retiraFundo,retiraFundoIcone);
 
         if (recolhida){
@@ -124,13 +123,13 @@ public:
     int Desenha(){
         if (visivel==false) return 0;
 
-        DesenhaLabel();
-
         if (recolhida){
             DesenhaItemDestaque();
         }else{
             DesenhaListaItens();
         }
+
+        DesenhaLabel();
 
         return 1;
     }

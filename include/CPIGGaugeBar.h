@@ -116,6 +116,10 @@ private:
         marcador->Move((int)posBarra.x,(int)posBarra.y);
     }
 
+    PIGTipoComponente GetTipo(){
+        return PIG_GAUGEBAR;
+    }
+
 public:
 
     CPIGGaugeBar(int idComponente, int altura, int largura, string imgMoldura, string imgMarcador, int retiraFundoTrilha=1, int retiraFundoMarcador=1, int janela=0):

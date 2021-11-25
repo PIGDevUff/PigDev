@@ -81,6 +81,10 @@ protected:
         return CPIGComponente::OnAction();
     }
 
+    PIGTipoComponente GetTipo(){
+        return PIG_BOTAOONOFF;
+    }
+
 public:
 
     CPIGBotaoOnOff(int idComponente, int alt, int larg, string nomeArq, int retiraFundo=1, int janela=0):

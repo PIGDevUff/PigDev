@@ -40,7 +40,7 @@ protected:
         IniciaCoresBasicas();
     }
 
-    void CriaItem(int yItem, string itemLabel, string arqImagemIcone="", string arqImagemFundo="", bool itemMarcado = false, bool itemHabilitado = true, string hintMsg="", int retiraFundo=1, int retiraFundoIcone=1){
+    PIGItemComponente CriaItem(int yItem, string itemLabel, string arqImagemIcone="", string arqImagemFundo="", bool itemMarcado = false, bool itemHabilitado = true, string hintMsg="", int retiraFundo=1, int retiraFundoIcone=1){
         PIGItemComponente item;
         if (arqImagemFundo==""){
             if (arqImagemIcone==""){
@@ -61,6 +61,7 @@ protected:
         item->SetAcionado(itemMarcado);
         item->SetHabilitado(itemHabilitado);
         itens.push_back(item);
+        return item;
     }
 
     void DeslocaItens(double dx, double dy){
@@ -208,14 +209,14 @@ public:
         return itemDestaque;
     }
 
-    int SetAcionadoItem(int indice, bool marcado){
+    int SetAcionadoItem(int indice, bool valor){
         if (indice<0||indice>=itens.size()) return 0;
-        if (marcado){
+        if (valor){
             itemDestaque = indice;
             for (PIGItemComponente i: itens)
                 i->SetAcionado(false);
         }
-        itens[indice]->SetAcionado(marcado);
+        itens[indice]->SetAcionado(valor);
         return 1;
     }
 

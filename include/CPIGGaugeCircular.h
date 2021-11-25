@@ -110,6 +110,10 @@ private:
         }
     }
 
+    PIGTipoComponente GetTipo(){
+        return PIG_GAUGECIRCULAR;
+    }
+
 public:
 
     CPIGGaugeCircular(int idComponente, int altura, int largura, int janela=0):

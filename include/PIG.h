@@ -5400,6 +5400,29 @@ void PIGDestroiForm(int idForm){
     CPIGGerenciadorForms::DestroiForm(idForm);
 }
 
+/********************************
+A função PIGFormGetIdPorComponente() é responsável por recuperar o identificador do formulário que possui o componente passado como parâmetro.
+Parâmetros:
+idComponente (entrada, passagem por parâmetro): identificador do componente em questão.
+Retorno:
+inteiro que representa o identificador do formulário que possui o componente em questão.
+********************************/
+int PIGFormGetIdPorComponente(int idComponente){
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetId();
+}
+
+/********************************
+A função PIGFormGetIdComponenteLabel() é responsável por recuperar o identificador do componente que possui o label informado.
+Parâmetros:
+idForm (entrada, passagem por parâmetro): identificador do formulário que possui o componente.
+label (entrada, passagem por referência): label a ser procurado no formulário.
+Retorno:
+inteiro que representa o identificador do componente que possui o label (se encontrado) ou -1, se não encontrado.
+********************************/
+int PIGFormGetIdComponenteLabel(int idForm, char *label){
+    return CPIGGerenciadorForms::GetForm(idForm)->GetIdComponente(label);
+}
+
 /*******COMPONENTES*********/
 
 int PIGCriaComponentePorParametro(int idForm, char* parametros){
@@ -5410,40 +5433,60 @@ void PIGComponentesDefineAcao(int idComponente, PIGFuncaoSimples funcao, void *p
     CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->DefineAcao(funcao,parametro);
 }
 
-int PIGGetComponentePorLabel(int idForm, char *label){
-    return CPIGGerenciadorForms::GetForm(idForm)->GetIdComponentePeloLabel(label);
-}
-
 void PIGComponentesSetLabel(int idComponente, char* novoLabel){
     CPIGGerenciadorForms::GetFormComponente(idComponente)->GetComponente(idComponente)->SetLabel(novoLabel);
-}
-
-void PIGComponentesSetFonteLabel(int idComponente, int fonte){
-    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetFonteLabel(fonte);
-}
-
-void PIGComponentesSetCorLabel(int idComponente, PIGCor cor){
-    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetCorLabel(cor);
-}
-
-void PIGComponentesSetFonteHint(int idComponente, int fonte){
-    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetFonteHint(fonte);
-}
-
-void PIGComponentesSetCorHint(int idComponente, PIGCor cor){
-    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetCorHint(cor);
-}
-
-void PIGComponentesSetAudio(int idComponente, int idAudio){
-    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetAudio(idAudio);
 }
 
 void PIGComponentesGetLabel(int idComponente, char *label){
     strcpy(label,(char*)(CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetLabel()).c_str());
 }
 
+void PIGComponentesSetFonteLabel(int idComponente, int fonte){
+    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetFonteLabel(fonte);
+}
+
+int PIGComponentesGetFonteLabel(int idComponente){
+    return CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetFonteLabel();
+}
+
+void PIGComponentesSetCorLabel(int idComponente, PIGCor cor){
+    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetCorLabel(cor);
+}
+
+PIGCor PIGComponentesGetCorLabel(int idComponente){
+    return CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetCorLabel();
+}
+
 void PIGComponentesSetHint(int idComponente, char *hint){
     CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetHint(hint);
+}
+
+void PIGComponentesGetHint(int idComponente, char* hint){
+    strcpy(hint,(char*)(CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetHint()).c_str());
+}
+
+void PIGComponentesSetFonteHint(int idComponente, int fonte){
+    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetFonteHint(fonte);
+}
+
+int PIGComponentesGetFonteHint(int idComponente){
+    return CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetFonteHint();
+}
+
+void PIGComponentesSetCorHint(int idComponente, PIGCor cor){
+    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetCorHint(cor);
+}
+
+PIGCor PIGComponentesGetCorHint(int idComponente){
+    return CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetCorHint();
+}
+
+void PIGComponentesSetAudio(int idComponente, int idAudio){
+    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetAudio(idAudio);
+}
+
+int PIGComponentesGetAudio(int idComponente){
+    return CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetAudio();
 }
 
 void PIGComponentesMove(int idComponente, int x, int y){
@@ -5454,6 +5497,10 @@ void PIGComponentesSetDimensoes(int idComponente, int altura, int largura){
     CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetDimensoes(altura,largura);
 }
 
+void PIGComponentesGetDimensoes(int idComponente, int &altura, int &largura){
+    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetDimensoes(altura,largura);
+}
+
 void PIGComponentesSetPosicaoPadraoLabel(int idComponente, PIGPosicaoComponente pos){
     CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetPosicaoPadraoLabel(pos);
 }
@@ -5462,11 +5509,11 @@ void PIGComponentesSetPosicaoPersonalizadaLabel(int idComponente, int x, int y){
     CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetPosicaoPersonalizadaLabel(x,y);
 }
 
-void PIGComponentesSetPosPadraoExternaComponente(int idComponente, PIGPosicaoComponente pos, PIGComponente componenteAssociado){
+/*void PIGComponentesSetPosPadraoExternaComponente(int idComponente, PIGPosicaoComponente pos, PIGComponente componenteAssociado){
     CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetPosPadraoExternaComponente(pos,componenteAssociado);
 }
 
-/*void PIGComponentes_SetPosPadraoComponenteNaTela(int idComponente,PIGAncora pos){
+void PIGComponentes_SetPosPadraoComponenteNaTela(int idComponente,PIGAncora pos){
     CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetPosPadraoComponenteNaTela(pos);
 }*/
 
@@ -5474,29 +5521,19 @@ void PIGComponentesSetHabilitado(int idComponente, int valor){
     CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetHabilitado(valor);
 }
 
+int PIGComponentesGetHabilitado(int idComponente){
+    return CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetHabilitado();
+}
+
+
 void PIGComponentesSetVisivel(int idComponente, int valor){
     CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->SetVisivel(valor);
-}
-
-PIGCor PIGComponentesGetCorLabel(int idComponente){
-    return CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetCorLabel();
-}
-
-void PIGComponentesGetHint(int idComponente, char* hint){
-    strcpy(hint,(char*)(CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetHint()).c_str());
-}
-
-int PIGComponentesGetFonteHint(int idComponente){
-    return CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetFonteHint();
 }
 
 int PIGComponentesGetVisivel(int idComponente){
     return CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetVisivel();
 }
 
-int PIGComponentesGetHabilitado(int idComponente){
-    return CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetHabilitado();
-}
 
 int PIGComponentesGetAcionado(int idComponente){
     return CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetAcionado();
@@ -5506,16 +5543,18 @@ int PIGComponentesGetMouseOver(int idComponente){
     return CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetMouseOver();
 }
 
-PIGPosicaoComponente PIGComponentesGetPosComponente(int idComponente){
+/*PIGPosicaoComponente PIGComponentesGetPosComponente(int idComponente){
     return CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetPosComponente();
-}
+}*/
 
-void PIGComponentesGetDimensoes(int idComponente, int &altura, int &largura){
-    CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetDimensoes(altura,largura);
-}
 
-void PIGComponentesGetDimensoesOriginais(int idComponente, int &altura, int &largura){
+
+/*void PIGComponentesGetDimensoesOriginais(int idComponente, int &altura, int &largura){
     CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetDimensoesOriginais(altura,largura);
+}*/
+
+PIGTipoComponente PIGComponenteGetTipo(int idComponente){
+    return CPIGGerenciadorForms::GetComponente<PIGComponente>(idComponente)->GetTipo();
 }
 
 void PIGComponentesSetMargens(int idComponente, int horEsq, int horDir, int vertBaixo, int vertCima){

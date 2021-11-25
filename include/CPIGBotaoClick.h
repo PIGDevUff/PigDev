@@ -88,6 +88,10 @@ protected:
         return CPIGComponente::OnAction();
     }
 
+    PIGTipoComponente GetTipo(){
+        return PIG_BOTAOCLICK;
+    }
+
 public:
 
     CPIGBotaoClick(int idComponente, int alt, int larg, string nomeArq, int retiraFundo=1, int janela=0):

@@ -56,6 +56,10 @@ protected:
         item->GetIcone()->MudaFrameAtual(resp);
     }
 
+    PIGTipoComponente GetTipo(){
+        return PIG_RADIOBOX;
+    }
+
 public:
 
     CPIGRadioBox(int idComponente, int larguraTotal, int alturaLinha, string imgIcone, int alturaIcone, int larguraIcone, string imgFundo, int retiraFundo=1, int janela = 0):
@@ -77,19 +81,14 @@ public:
         DeslocaItens(0,altBaseLista);//desloca todos os itens para cima, pois o novo item vai entrar abaixo dos outros
 
         int yItem = pos.y;
-
-        //int yItem = pos.y+alt-(altBaseLista)*(itens.size()+1);
-        CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,false,itemHabilitado,hintMsg,retiraFundo,retiraFundoIcone);
-        itens[itens.size()-1]->DefineFuncaoAjusteFrame(AjustaFrame);
-        PIGSprite icone = itens[itens.size()-1]->GetIcone();
-        icone->CriaFramesAutomaticosPorLinha(1,1,6);
-        AjustaFrame(itens[itens.size()-1]);
+        PIGItemComponente item = CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,false,itemHabilitado,hintMsg,retiraFundo,retiraFundoIcone);
+        item->DefineFuncaoAjusteFrame(AjustaFrame);
+        item->GetIcone()->CriaFramesAutomaticosPorLinha(1,1,6);
+        AjustaFrame(item);
     }
 
     int Desenha()override{
         if (visivel==false) return 0;
-
-        DesenhaLabel();
 
         CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x,pos.y,alt,larg);
 
@@ -101,6 +100,8 @@ public:
             i->Desenha();
 
         CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
+
+        DesenhaLabel();
 
         return 1;
     }

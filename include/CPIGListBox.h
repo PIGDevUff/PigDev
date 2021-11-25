@@ -48,6 +48,10 @@ protected:
         }
     }
 
+    PIGTipoComponente GetTipo(){
+        return PIG_LISTBOX;
+    }
+
 private:
 
     void DesenhaRetanguloMarcacao(){
@@ -118,7 +122,6 @@ public:
         DeslocaItens(0,altBaseLista);//desloca todos os itens para cima, pois o novo item vai entrar abaixo dos outros
 
         int yItem = pos.y;
-        //int yItem = pos.y+alt-(altBaseLista)*(itens.size()+1);
         CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,itemMarcado,itemHabilitado,hintMsg,retiraFundo,retiraFundoIcone);
     }
 

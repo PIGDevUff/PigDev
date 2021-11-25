@@ -57,14 +57,18 @@ protected:
         item->GetIcone()->MudaFrameAtual(resp);
     }
 
+    PIGTipoComponente GetTipo(){
+        return PIG_CHECKBOX;
+    }
+
 public:
 
-    CPIGCheckBox(int idComponente, int larguraTotal, int alturaLinha, string imgIcone, int alturaIcone, int larguraIcone, string imgFundo, int retiraFundo=1, int janela = 0):
+    CPIGCheckBox(int idComponente, int larguraTotal, int alturaLinha, string imgIcone, int alturaIcone, int larguraIcone, string imgFundo, int retiraFundo=1, int janela=0):
         CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,imgFundo,retiraFundo,janela){
             arqImagemIcone = imgIcone;
         }
 
-    CPIGCheckBox(int idComponente, int larguraTotal, int alturaLinha, string imgIcone, int alturaIcone, int larguraIcone, int janela = 0):
+    CPIGCheckBox(int idComponente, int larguraTotal, int alturaLinha, string imgIcone, int alturaIcone, int larguraIcone, int janela=0):
         CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,janela){
             arqImagemIcone = imgIcone;
         }
@@ -78,12 +82,10 @@ public:
         DeslocaItens(0,altBaseLista);//desloca todos os itens para cima, pois o novo item vai entrar abaixo dos outros
 
         int yItem = pos.y;
-        //printf("chechk %s criado em %d\n",itemLabel.c_str(),yItem);
-        CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,itemMarcado,itemHabilitado,hintMsg,retiraFundo,retiraFundoIcone);
-        itens[itens.size()-1]->DefineFuncaoAjusteFrame(AjustaFrame);
-        PIGSprite icone = itens[itens.size()-1]->GetIcone();
-        icone->CriaFramesAutomaticosPorLinha(1,1,6);
-        AjustaFrame(itens[itens.size()-1]);
+        PIGItemComponente item = CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,itemMarcado,itemHabilitado,hintMsg,retiraFundo,retiraFundoIcone);
+        item->DefineFuncaoAjusteFrame(AjustaFrame);
+        item->GetIcone()->CriaFramesAutomaticosPorLinha(1,1,6);
+        AjustaFrame(item);
     }
 
     int Desenha(){

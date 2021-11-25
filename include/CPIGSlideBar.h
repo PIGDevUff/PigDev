@@ -96,6 +96,10 @@ class CPIGSlideBar : public CPIGGauge{
         return PIG_NAO_SELECIONADO;
     }
 
+    PIGTipoComponente GetTipo(){
+        return PIG_SLIDEBAR;
+    }
+
 public:
 
     CPIGSlideBar(int idComponente, int altTrilha, int largTrilha, string imgTrilha, int alturaMarcador, int larguraMarcador, string imgMarcador,int retiraFundoTrilha=1, int retiraFundoMarcador=1, int janela=0):

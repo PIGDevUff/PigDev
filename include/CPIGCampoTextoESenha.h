@@ -83,7 +83,6 @@ private:
 
     int PulaLinha(){return 1;}//năo usa o PulaLinha
 
-
     void SetHabilitado(bool valor){
         habilitado = valor;
     }
@@ -111,6 +110,10 @@ private:
             GetTextoVisivelPtr = &CPIGCampoTextoESenha::GetTexto;
         }
         CPIGCaixaTexto::IniciaCoresBasicas();
+    }
+
+    PIGTipoComponente GetTipo(){
+        return PIG_CAMPOTEXTO;
     }
 
 public:

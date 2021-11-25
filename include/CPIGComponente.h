@@ -8,8 +8,8 @@ typedef enum{PIG_COMPONENTE_CIMA_CENTRO,PIG_COMPONENTE_CIMA_ESQ,PIG_COMPONENTE_C
              PIG_COMPONENTE_DIR_CIMA,PIG_COMPONENTE_DIR_BAIXO,PIG_COMPONENTE_DIR_CENTRO,PIG_COMPONENTE_ESQ_BAIXO,PIG_COMPONENTE_ESQ_CENTRO,PIG_COMPONENTE_ESQ_CIMA,
              PIG_COMPONENTE_CENTRO_CENTRO,PIG_COMPONENTE_PERSONALIZADA} PIGPosicaoComponente;
 typedef enum{PIG_ANCORA_NORTE,PIG_ANCORA_SUL,PIG_ANCORA_LESTE,PIG_ANCORA_OESTE,PIG_ANCORA_NORDESTE,PIG_ANCORA_NOROESTE,PIG_ANCORA_SUDESTE,PIG_ANCORA_SUDOESTE,PIG_ANCORA_CENTRO}PIGAncora;
-typedef enum{PIG_NAO_SELECIONADO,PIG_SELECIONADO_MOUSEOVER,PIG_SELECIONADO_INVISIVEL,PIG_SELECIONADO_DESABILITADO,PIG_SELECIONADO_TRATADO}PIGEstadosEventos;
-typedef enum{PIG_FORM,PIG_BOTAOCLICK,PIG_BOTAOONOFF,PIG_AREADETEXTO,PIG_CAMPOTEXTOSENHA,PIG_RADIOBOX,PIG_CHECKBOX,PIG_LISTBOX,PIG_DROPDOWN,PIG_GAUGEBAR,PIG_GAUGECIRCULAR,PIG_SLIDEBAR}PIGTiposComponentes;
+typedef enum{PIG_NAO_SELECIONADO,PIG_SELECIONADO_MOUSEOVER,PIG_SELECIONADO_INVISIVEL,PIG_SELECIONADO_DESABILITADO,PIG_SELECIONADO_TRATADO}PIGEstadoEvento;
+typedef enum{PIG_FORM,PIG_BOTAOCLICK,PIG_BOTAOONOFF,PIG_AREADETEXTO,PIG_CAMPOTEXTO,PIG_RADIOBOX,PIG_CHECKBOX,PIG_LISTBOX,PIG_DROPDOWN,PIG_GAUGEBAR,PIG_GAUGECIRCULAR,PIG_SLIDEBAR,PIG_OUTROCOMPONENTE}PIGTipoComponente;
 
 class CPIGComponente: public CPIGSprite{
 
@@ -214,6 +214,8 @@ public:
         param = parametro;
     }
 
+    virtual PIGTipoComponente GetTipo()=0;
+
     //desenha o componente, cada subclasse precisa implementar como fazer isso
     virtual int Desenha()=0;
 
@@ -226,10 +228,40 @@ public:
         hint->SetTexto(novoHint);
     }
 
+    //recupera o hint
+    string GetHint(){
+        return hint->GetTexto();
+    }
+
+    //define a cor do hint
+    virtual void SetCorHint(PIGCor cor){
+        hint->SetCorFonte(cor);
+    }
+
+    //recupera a cor do hint
+    virtual PIGCor GetCorHint(){
+        return hint->GetColoracao();
+    }
+
+    //define a fonte do hint
+    virtual void SetFonteHint(int fonte){
+        hint->SetFonte(fonte);
+    }
+
+    //recupera a fonte do hint
+    virtual int GetFonteHint(){
+        return hint->GetFonte();
+    }
+
     //define o label do componente
     virtual void SetLabel(string novoLabel){
         lab->SetTexto(novoLabel);
         PosicionaLabel();
+    }
+
+    //recupera o label
+    string GetLabel(){
+        return lab->GetTexto();
     }
 
     //define a cor do label
@@ -242,40 +274,25 @@ public:
         return lab->GetColoracao();
     }
 
-    //define o audio padrão do componentePIG_COMPONENTE_CENTRO_CENTRO
-    virtual void SetAudio(int idAudio){
-        audioComponente = idAudio;
-    }
-
-    //define a fonte do hint
-    virtual void SetFonteHint(int fonte){
-        hint->SetFonte(fonte);
-    }
-
-    //define a cor do hint
-    virtual void SetCorHint(PIGCor cor){
-        hint->SetCorFonte(cor);
-    }
-
-    //recupera o hint
-    string GetHint(){
-        return hint->GetTexto();
-    }
-
-    //recupera a fonte do hint
-    int GetFonteHint(){
-        return hint->GetFonte();
-    }
-
     //define a fonte do label
     virtual void SetFonteLabel(int fonte){
         lab->SetFonte(fonte);
         PosicionaLabel();
     }
 
-    //recupera o label
-    string GetLabel(){
-        return lab->GetTexto();
+    //recupera a fonte do label
+    virtual int GetFonteLabel(){
+        return lab->GetFonte();
+    }
+
+    //define o audio padrão do componente
+    virtual void SetAudio(int idAudio){
+        audioComponente = idAudio;
+    }
+
+    //recupera o audio do componente
+    virtual int GetAudio(){
+        return audioComponente;
     }
 
     //define a posição do label (dentre posições pré-estabelecidas)
@@ -327,6 +344,7 @@ public:
         return posComponente;
     }
 
+/* //ainda nao funcionando
     void SetPosPadraoExternaComponente(PIGPosicaoComponente pos, CPIGComponente *componenteAssociado){
         int altComponente,largComponente;
         PIGPonto2D p = componenteAssociado->GetXY();
@@ -378,8 +396,7 @@ public:
 
     }
 
-    //ainda nao funcionando
-    /*void SetPosPadraoComponenteNaTela(PIG_Ancora ancora){
+    void SetPosPadraoComponenteNaTela(PIG_Ancora ancora){
         int largJanela,altJanela;
 
         largJanela = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetLargura();

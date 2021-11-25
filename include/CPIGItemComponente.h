@@ -40,6 +40,10 @@ private:
         coresBasicas[0] = {0,0,0,0};
     }
 
+    PIGTipoComponente GetTipo(){
+        return PIG_OUTROCOMPONENTE;
+    }
+
 public:
 
     //item com icone e com fundo
