@@ -118,13 +118,15 @@ public:
     }
 
     int TrataEventoTeclado(PIGEvento evento){
+        if (!temFoco) return PIG_SEMFOCO;
+        if (!habilitado) return PIG_DESABILITADO;
+        if (!visivel) return PIG_INVISIVEL;
+
         if (evento.teclado.acao==PIG_TECLA_PRESSIONADA && evento.teclado.tecla==tecla){
-            if (!habilitado) return PIG_SELECIONADO_DESABILITADO;
-            if (!visivel) return PIG_SELECIONADO_INVISIVEL;
             if (timer->GetTempoDecorrido()>tempoRepeticao) return OnAction();
         }
 
-        return 0;
+        return PIG_NAOSELECIONADO;
     }
 
     inline void DefineTempoRepeticao(double segundos){

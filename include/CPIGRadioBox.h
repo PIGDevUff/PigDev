@@ -120,6 +120,9 @@ public:
     }
 
     int TrataEventoMouse(PIGEvento evento){
+        if (!habilitado) return PIG_DESABILITADO;
+        if (!visivel) return PIG_INVISIVEL;
+
         int resp = -1;
         bool mouseOverAntes = mouseOver;
 
@@ -127,7 +130,7 @@ public:
 
         if (ChecaMouseOver(p)>0){
             for (unsigned int i=0;i<itens.size();i++){
-                if (itens[i]->TrataEventoMouse(evento) == PIG_SELECIONADO_TRATADO){
+                if (itens[i]->TrataEventoMouse(evento) == PIG_TRATADO){
                     if (itens[i]->GetAcionado())
                         resp = i;
                     OnAction();
@@ -135,19 +138,22 @@ public:
             }
             SetAcionadoItem(resp,resp!=-1);
             if (resp>0)
-                return PIG_SELECIONADO_TRATADO;
-            else return PIG_SELECIONADO_MOUSEOVER;
+                return PIG_TRATADO;
+            else return PIG_MOUSEOVER;
         }else if (mouseOverAntes){               //mouse estava antes, mas saiu
             for (unsigned int i=0;i<itens.size();i++){
                 itens[i]->SetMouseOver(false);
             }
         }
 
-        return PIG_NAO_SELECIONADO;
+        return PIG_NAOSELECIONADO;
     }
 
     int TrataEventoTeclado(PIGEvento evento){
-        return 0;
+        if (!temFoco) return PIG_SEMFOCO;
+        if (!habilitado) return PIG_DESABILITADO;
+        if (!visivel) return PIG_INVISIVEL;
+        return PIG_NAOSELECIONADO;
     }
 
     void SetDimensoes(int altura, int largura)override{

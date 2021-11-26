@@ -150,18 +150,18 @@ public:
     }
 
     int TrataEventoMouse(PIGEvento evento){
+        if (!habilitado) return PIG_DESABILITADO;
+        if (!visivel) return PIG_INVISIVEL;
+
         int resp = -1;
         bool mouseOverAntes = mouseOver;
         SDL_Point p = GetPosicaoMouse();
 
         if (ChecaMouseOver(p)){
 
-            if (!habilitado) return PIG_SELECIONADO_DESABILITADO;
-            if (!visivel) return PIG_SELECIONADO_INVISIVEL;
-
             if (!recolhida){        //se o dropdown está exibindo os itens, é preciso tratá-los individualmente
                 for (unsigned int i=0;i<itens.size();i++){
-                    if(itens[i]->TrataEventoMouse(evento) == PIG_SELECIONADO_TRATADO){
+                    if(itens[i]->TrataEventoMouse(evento) == PIG_TRATADO){
                         if (itens[i]->GetAcionado()){
                             resp = i;
                         }
@@ -174,12 +174,12 @@ public:
                     SetRecolhida(!recolhida);
                 }
 
-                if (resp>=0) return PIG_SELECIONADO_TRATADO;
-                else return PIG_SELECIONADO_MOUSEOVER;
+                if (resp>=0) return PIG_TRATADO;
+                else return PIG_MOUSEOVER;
             }
             if (evento.mouse.acao == PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO){
                 SetRecolhida(!recolhida);
-                return PIG_SELECIONADO_TRATADO;
+                return PIG_TRATADO;
             }
         }else if (mouseOverAntes){               //mouse estava antes, mas saiu
             for (unsigned int i=0;i<itens.size();i++){
@@ -187,11 +187,14 @@ public:
             }
         }
 
-        return PIG_NAO_SELECIONADO;
+        return PIG_NAOSELECIONADO;
     }
 
     int TrataEventoTeclado(PIGEvento evento){
-        return 0;
+        if (!temFoco) return PIG_SEMFOCO;
+        if (!habilitado) return PIG_DESABILITADO;
+        if (!visivel) return PIG_INVISIVEL;
+        return PIG_NAOSELECIONADO;
     }
 
 };

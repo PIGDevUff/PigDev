@@ -23,7 +23,7 @@ private:
     int OnMouseClick(){
         SetAcionado(!GetAcionado());
         if (audioComponente>=0) CPIGGerenciadorAudios::Play(audioComponente);
-        return PIG_SELECIONADO_TRATADO;
+        return PIG_TRATADO;
     }
 
     void IniciaBase(string labelItem, string arqImagemIcone="", int alturaIcone=0, int larguraIcone=0,int retiraFundoIcone=1){
@@ -34,8 +34,8 @@ private:
             posIcone = PIG_COMPONENTE_ESQ_CENTRO;
         }else icone = NULL;
         SetLabel(labelItem);
-        posRelativaLabel = PIG_COMPONENTE_CENTRO_CENTRO;
-        SetPosicaoPadraoLabel(PIG_COMPONENTE_CENTRO_CENTRO);
+        posRelativaLabel = PIG_COMPONENTE_ESQ_CENTRO;
+        SetPosicaoPadraoLabel(PIG_COMPONENTE_ESQ_CENTRO);
         AjustaFrame = NULL;
         coresBasicas[0] = {0,0,0,0};
     }
@@ -122,15 +122,7 @@ public:
         if (icone)
             icone->Desenha();
 
-        if (SDL_RenderIsClipEnabled(renderer)){
-            SDL_Rect r;
-            SDL_RenderGetClipRect(renderer,&r);
-            SDL_RenderSetClipRect(renderer,NULL);
-            EscreveHint();
-            SDL_RenderSetClipRect(renderer,&r);
-        }else{
-            EscreveHint();
-        }
+        EscreveHint();
 
         return 1;
     }
@@ -224,6 +216,9 @@ public:
     }
 
     int TrataEventoMouse(PIGEvento evento)override{
+        if (!habilitado) return PIG_DESABILITADO;
+        if (!visivel) return PIG_INVISIVEL;
+
         SDL_Point p;
         if (CPIGGerenciadorJanelas::GetJanela(idJanela)->GetUsandoCameraFixa())
             p = CPIGMouse::PegaXYTela();
@@ -232,15 +227,13 @@ public:
         ChecaMouseOver(p);
 
         if(mouseOver){
-            if (habilitado==false) return PIG_SELECIONADO_DESABILITADO;
-            if (visivel==false) return PIG_SELECIONADO_INVISIVEL;
             if (evento.mouse.acao==PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO){
                 return OnMouseClick();
             }
-            return PIG_SELECIONADO_MOUSEOVER;
+            return PIG_MOUSEOVER;
         }
 
-        return PIG_NAO_SELECIONADO;
+        return PIG_NAOSELECIONADO;
     }
 
     int TrataEventoTeclado(PIGEvento evento){
@@ -257,6 +250,7 @@ public:
     void Desloca(double dx, double dy)override{
         CPIGComponente::Desloca(dx,dy);
         if (icone) icone->Desloca(dx,dy);
+        lab->Desloca(dx,dy);
     }
 
     PIGSprite GetIcone(){

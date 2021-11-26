@@ -142,7 +142,7 @@ private:
 
     int PosicionaCursorLinha(int linha, int xLinha){
         if (linha<0||(linhas.size()>0&&linha>=linhas.size()))
-            return PIG_NAO_SELECIONADO;
+            return PIG_NAOSELECIONADO;
 
         int posInicial = GetPosInicialDeUmaLinha(linha);
         //printf("posInicial %d\n",posInicial);
@@ -154,7 +154,7 @@ private:
 
         AjustaPosicaoTextoCursor();
         AjustaSlideVerticalPeloCursor();
-        return PIG_SELECIONADO_TRATADO;
+        return PIG_TRATADO;
     }
 
     //trata o evento do botao esquerdo
@@ -372,6 +372,9 @@ public:
     }
 
     int TrataEventoMouse(PIGEvento evento)override{
+        if (!habilitado) return PIG_DESABILITADO;
+        if (!visivel) return PIG_INVISIVEL;
+
         SDL_Point p = GetPosicaoMouse();
         ChecaMouseOver(p);
 
@@ -379,7 +382,7 @@ public:
             ((PIGComponente)slideVertical)->SetFoco(true);
             int resp = slideVertical->TrataEventoMouse(evento);
             ((PIGComponente)slideVertical)->SetFoco(false);
-            if (resp==PIG_SELECIONADO_TRATADO){
+            if (resp==PIG_TRATADO){
                 AjustaPosicaoTextoCursor();
                 return resp;
             }else if (evento.tipoEvento==PIG_EVENTO_MOUSE&&evento.mouse.acao==PIG_MOUSE_RODINHA){
@@ -387,18 +390,16 @@ public:
                     SobeCursor();
                 else if (evento.mouse.relY<0)
                     DesceCursor();
-                return PIG_SELECIONADO_TRATADO;
+                return PIG_TRATADO;
             }
         }
 
         if(mouseOver){
-            if(!habilitado) return PIG_SELECIONADO_DESABILITADO;
-            if(!visivel) return PIG_SELECIONADO_INVISIVEL;
             if (evento.mouse.acao == PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO) return TrataMouseBotaoEsquerdo(p);
-            return PIG_SELECIONADO_MOUSEOVER;
+            return PIG_MOUSEOVER;
         }
 
-        return PIG_NAO_SELECIONADO;
+        return PIG_NAOSELECIONADO;
     }
 
 

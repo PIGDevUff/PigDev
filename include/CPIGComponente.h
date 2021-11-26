@@ -8,7 +8,7 @@ typedef enum{PIG_COMPONENTE_CIMA_CENTRO,PIG_COMPONENTE_CIMA_ESQ,PIG_COMPONENTE_C
              PIG_COMPONENTE_DIR_CIMA,PIG_COMPONENTE_DIR_BAIXO,PIG_COMPONENTE_DIR_CENTRO,PIG_COMPONENTE_ESQ_BAIXO,PIG_COMPONENTE_ESQ_CENTRO,PIG_COMPONENTE_ESQ_CIMA,
              PIG_COMPONENTE_CENTRO_CENTRO,PIG_COMPONENTE_PERSONALIZADA} PIGPosicaoComponente;
 typedef enum{PIG_ANCORA_NORTE,PIG_ANCORA_SUL,PIG_ANCORA_LESTE,PIG_ANCORA_OESTE,PIG_ANCORA_NORDESTE,PIG_ANCORA_NOROESTE,PIG_ANCORA_SUDESTE,PIG_ANCORA_SUDOESTE,PIG_ANCORA_CENTRO}PIGAncora;
-typedef enum{PIG_NAO_SELECIONADO,PIG_SELECIONADO_MOUSEOVER,PIG_SELECIONADO_INVISIVEL,PIG_SELECIONADO_DESABILITADO,PIG_SELECIONADO_TRATADO}PIGEstadoEvento;
+typedef enum{PIG_NAOSELECIONADO,PIG_SEMFOCO,PIG_MOUSEOVER,PIG_INVISIVEL,PIG_DESABILITADO,PIG_TRATADO}PIGEstadoEvento;
 typedef enum{PIG_FORM,PIG_BOTAOCLICK,PIG_BOTAOONOFF,PIG_AREADETEXTO,PIG_CAMPOTEXTO,PIG_RADIOBOX,PIG_CHECKBOX,PIG_LISTBOX,PIG_DROPDOWN,PIG_GAUGEBAR,PIG_GAUGECIRCULAR,PIG_SLIDEBAR,PIG_OUTROCOMPONENTE}PIGTipoComponente;
 
 class CPIGComponente: public CPIGSprite{
@@ -40,12 +40,18 @@ protected:
     //escreve o hint do componente na tela
     void EscreveHint(){
         if (mouseOver&&hint->GetTexto()!=""){
+            SDL_Rect r;
+            SDL_RenderGetClipRect(renderer,&r);
+            SDL_RenderSetClipRect(renderer,NULL);
+
             SDL_Point p;
             if (CPIGGerenciadorJanelas::GetJanela(idJanela)->GetUsandoCameraFixa())
                 p = CPIGMouse::PegaXYTela();
             else p = CPIGMouse::PegaXYWorld();
             hint->Move(p.x+5,p.y+5);
             hint->Desenha();
+
+            SDL_RenderSetClipRect(renderer,&r);
         }
     }
 
@@ -138,7 +144,7 @@ protected:
     virtual int OnAction(){
         if (acao) acao(id,param);//rever se NULL é necessário
         if (audioComponente>=0) CPIGGerenciadorAudios::Play(audioComponente);
-        return PIG_SELECIONADO_TRATADO;
+        return PIG_TRATADO;
     }
 
     virtual void ProcessaAtributos(CPIGAtributos atrib){

@@ -82,18 +82,18 @@ class CPIGSlideBar : public CPIGGauge{
         //printf("vou definir perc %f\n",perc);
         SetPorcentagemConcluida(perc);
 
-        return PIG_SELECIONADO_TRATADO;
+        return PIG_TRATADO;
     }
 
     int TrataRodinha(PIGEvento evento){
         if(evento.mouse.relY > 0){
             AvancaMarcador(deltaRodinha);
-            return PIG_SELECIONADO_TRATADO;
+            return PIG_TRATADO;
         }else if (evento.mouse.relY < 0){
             AvancaMarcador(-deltaRodinha);
-            return PIG_SELECIONADO_TRATADO;
+            return PIG_TRATADO;
         }
-        return PIG_NAO_SELECIONADO;
+        return PIG_NAOSELECIONADO;
     }
 
     PIGTipoComponente GetTipo(){
@@ -125,6 +125,9 @@ public:
     virtual ~CPIGSlideBar(){}
 
     int TrataEventoMouse(PIGEvento evento){
+        if (!habilitado) return PIG_DESABILITADO;
+        if (!visivel) return PIG_INVISIVEL;
+
         SDL_Point p = GetPosicaoMouse();
         ChecaMouseOver(p);
 
@@ -138,13 +141,16 @@ public:
             if(temFoco && CPIGMouse::GetEstadoBotao(PIG_MOUSE_ESQUERDO)==PIG_MOUSE_PRESSIONADO)
                 return TrataClickTrilha(p.x,p.y);
 
-            return PIG_SELECIONADO_MOUSEOVER;
+            return PIG_MOUSEOVER;
         }
-        return PIG_NAO_SELECIONADO;
+        return PIG_NAOSELECIONADO;
     }
 
     int TrataEventoTeclado(PIGEvento evento){
-        if (!temFoco) return 0;
+        if (!temFoco) return PIG_SEMFOCO;
+        if (!habilitado) return PIG_DESABILITADO;
+        if (!visivel) return PIG_INVISIVEL;
+
         if(evento.teclado.acao == PIG_TECLA_PRESSIONADA){
             switch(orientacaoCrescimento){
             case PIG_GAUGE_ESQ_DIR:
@@ -164,9 +170,9 @@ public:
                 if(evento.teclado.tecla == PIG_TECLA_BAIXO) AvancaMarcador(deltaTeclado);
                 break;
             }
-            return PIG_SELECIONADO_TRATADO;
+            return PIG_TRATADO;
         }
-        return PIG_NAO_SELECIONADO;
+        return PIG_NAOSELECIONADO;
     }
 
     void SetDeltas(int dPadrao = 1,int dRodinha = 10,int dTeclado = 10){
@@ -200,6 +206,8 @@ public:
 
         if (!marcadorAtualizado) AtualizaMarcador();
 
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x,pos.y,alt,larg);
+
         if (text)
             CPIGSprite::Desenha();
         else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
@@ -207,6 +215,8 @@ public:
         if (marcador)
             marcador->Desenha();
         else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(xMarc,yMarc,altMarcador-(margemBaixo+margemCima),largMarcador-(margemEsq+margemDir),coresBasicas[1]);
+
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
 
         DesenhaLabel();
 

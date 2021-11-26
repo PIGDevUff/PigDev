@@ -53,6 +53,9 @@ protected:
 public:
 
     int TrataEventoMouse(PIGEvento evento){
+        if (!habilitado) return PIG_DESABILITADO;
+        if (!visivel) return PIG_INVISIVEL;
+
         SDL_Point p = GetPosicaoMouse();
 
         //printf("mouse %d,%d\n",p.x,p.y);
@@ -60,13 +63,11 @@ public:
 
         if (mouseOver){
             //printf("over\n");
-            if (!habilitado) return PIG_SELECIONADO_DESABILITADO;
-            if (!visivel) return PIG_SELECIONADO_INVISIVEL;
             if(evento.mouse.acao==PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO) return OnAction();
-            return PIG_SELECIONADO_MOUSEOVER;
+            return PIG_MOUSEOVER;
         }
 
-        return PIG_NAO_SELECIONADO;
+        return PIG_NAOSELECIONADO;
     }
 
     virtual int TrataEventoTeclado(PIGEvento evento)=0;
@@ -83,9 +84,13 @@ public:
     int Desenha()override{
         if (visivel==false) return 0;
 
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x,pos.y,alt,larg);
+
         if (text)
             CPIGSprite::Desenha();
         else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
+
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
 
         DesenhaLabel();
 

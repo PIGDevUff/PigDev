@@ -84,7 +84,9 @@ protected:
 
     //trata os diversos tipos de eventos de teclado que podem ocorrer
     int TrataEventoTeclado(PIGEvento evento){
-        if(!temFoco) return 0;
+        if (!temFoco) return PIG_SEMFOCO;
+        if (!habilitado) return PIG_DESABILITADO;
+        if (!visivel) return PIG_INVISIVEL;
 
         if (evento.teclado.acao==PIG_TECLA_EDICAO) return 1;
 
@@ -211,7 +213,7 @@ protected:
     virtual int TrataMouseBotaoEsquerdo(SDL_Point p, int inicioLinha = 0){
         posCursor = CalculaPosicaoCursor(GetTextoVisivel(),p.x);
         AjustaPosicaoTextoCursor();
-        return PIG_SELECIONADO_TRATADO;
+        return PIG_TRATADO;
     }
 
     void IniciaBase(int maxCars){

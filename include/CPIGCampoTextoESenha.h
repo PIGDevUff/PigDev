@@ -157,17 +157,18 @@ public:
     }
 
     int TrataEventoMouse(PIGEvento evento){
+        if (!habilitado) return PIG_DESABILITADO;
+        if (!visivel) return PIG_INVISIVEL;
+
         SDL_Point p = GetPosicaoMouse();
         ChecaMouseOver(p);
 
         if(mouseOver){
-            if (habilitado==false) return PIG_SELECIONADO_DESABILITADO;
-            if (visivel==false) return PIG_SELECIONADO_INVISIVEL;
             if (evento.mouse.acao == PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO) return TrataMouseBotaoEsquerdo(p);
-            return PIG_SELECIONADO_MOUSEOVER;
+            return PIG_MOUSEOVER;
         }
 
-        return PIG_NAO_SELECIONADO;
+        return PIG_NAOSELECIONADO;
     }
 
     void SetMascara(char c){

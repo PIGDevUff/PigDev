@@ -26,7 +26,7 @@ private:
         componenteMouseOver = -1;
         for(int i=0;i<totalComponentes;i++){
             int aux = componentes[i]->TrataEventoMouse(evento);
-            if(aux == PIG_SELECIONADO_TRATADO){
+            if(aux == PIG_TRATADO){
                 if (componenteComFoco!=-1 && componenteComFoco!=i){     //se já tem um outro componente com foco, ele vai perder o foco
                     componentes[componenteComFoco]->SetFoco(false);
                 }
@@ -34,7 +34,7 @@ private:
                 componenteMouseOver = i;                              //anota que tem MouseOver
                 componentes[componenteComFoco]->SetFoco(true);        //faz o componente em questăo ganhar foco
                 return 1;
-            }else if (aux == PIG_SELECIONADO_MOUSEOVER){
+            }else if (aux == PIG_MOUSEOVER){
                 componenteMouseOver = i;
             }
         }
@@ -52,7 +52,7 @@ private:
         for(int i=0;i<totalComponentes;i++){
             componentes[i]->TrataEventoTeclado(evento);
         }
-        return PIG_NAO_SELECIONADO;
+        return PIG_NAOSELECIONADO;
     }
 
     void IniciaCoresBasicas(){

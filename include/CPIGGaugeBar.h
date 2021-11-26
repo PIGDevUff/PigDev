@@ -145,6 +145,8 @@ public:
 
         if (!marcadorAtualizado) AtualizaMarcador();
 
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x,pos.y,alt,larg);
+
         //moldura
         if (text){
             if (marcadorFrente){
@@ -160,6 +162,7 @@ public:
             DesenhaBarraCor();
         }
 
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
 
         DesenhaLabel();
 

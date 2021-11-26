@@ -34,8 +34,7 @@ protected:
         SetPosicaoPadraoLabel(PIG_COMPONENTE_CIMA_CENTRO);//posiçăo padrăo do label
         altBaseLista = alturaLinha;
         altIcone = largIcone = alturaLinha;
-        posIcones = PIG_COMPONENTE_DIR_CENTRO;//só pode ser posicionamento ŕ esquerda ou ŕ direita
-        //itemDestaque = -1;
+        posIcones = PIG_COMPONENTE_DIR_CENTRO;//só pode ser posicionamento à esquerda ou à direita
         IniciaCoresBasicas();
     }
 

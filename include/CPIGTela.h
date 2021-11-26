@@ -57,7 +57,7 @@ int DescarregaTela(){
 int TrataEvento(PIGEvento evento){
     if (acaoTrataEvento!=NULL)
         return acaoTrataEvento(id,evento,dados);
-    return PIG_NAO_SELECIONADO;
+    return PIG_NAOSELECIONADO;
 }
 
 void PreparaSaida(int outraTela){

@@ -91,7 +91,7 @@ private:
         if (text) SDL_DestroyTexture(text);
         text = SDL_CreateTextureFromSurface(renderer,off->GetSurface(1));
 
-        //SetAngulo(angBase);
+        SetAngulo(angBase);
     }
 
     virtual void AtualizaMarcador()override{
@@ -123,7 +123,7 @@ public:
         deltaAng = 360;
         raioInterno = 0;
         orientacaoCrescimento = PIG_GAUGE_HORARIO;
-        //SetPivoProporcional({0.5,0.5});
+        SetPivoProporcional({0.5,0.5});
 
         IniciaCoresBasicas();
 
@@ -159,10 +159,14 @@ public:
 
         if (!marcadorAtualizado) AtualizaMarcador();
 
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x,pos.y,alt,larg);
+
         //vai desenhar o gauge em si
         CPIGSprite::Desenha();
         if (marcador)
             marcador->Desenha();
+
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
 
         DesenhaLabel();
 

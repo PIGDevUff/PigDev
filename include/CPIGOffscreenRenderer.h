@@ -137,7 +137,7 @@ public:
         //fprintf(arq,"%f %f\n",angInicial,angFinal);
 
         for (unsigned int i=0;i<q1.size();i++){
-            if ((ang1[i]>=angInicial&&ang1[i]<=angFinal)||(ang1[i]+360>=angInicial&&ang1[i]+360<=angFinal)){
+            if ((ang1[i]>=angInicial&&ang1[i]<=angFinal)){//||(ang1[i]+360>=angInicial&&ang1[i]+360<=angFinal)){
                 if (iniP.x==-1&&ang1[i]>=angInicial)
                     iniP = q1[i];
                 SDL_RenderDrawPoint(layers[layer].render,q1[i].x,q1[i].y);
@@ -149,7 +149,7 @@ public:
             }
         }
         for (unsigned int i=0;i<q1.size();i++){
-            if ((ang2[i]>=angInicial&&ang2[i]<=angFinal)||(ang2[i]+360>=angInicial&&ang2[i]+360<=angFinal)){
+            if ((ang2[i]>=angInicial&&ang2[i]<=angFinal)){//||(ang2[i]+360>=angInicial&&ang2[i]+360<=angFinal)){
                 if (iniP.x==-1&&ang2[i]>=angInicial)
                     iniP = q2[i];
                 SDL_RenderDrawPoint(layers[layer].render,q2[i].x,q2[i].y);
@@ -161,7 +161,7 @@ public:
             }
         }
         for (unsigned int i=0;i<q1.size();i++){
-            if ((ang3[i]>=angInicial&&ang3[i]<=angFinal)||(ang3[i]+360>=angInicial&&ang3[i]+360<=angFinal)){
+            if ((ang3[i]>=angInicial&&ang3[i]<=angFinal)){//||(ang3[i]+360>=angInicial&&ang3[i]+360<=angFinal)){
                 if (iniP.x==-1&&ang3[i]>=angInicial)
                     iniP = q3[i];
                 SDL_RenderDrawPoint(layers[layer].render,q3[i].x,q3[i].y);
@@ -173,7 +173,8 @@ public:
             }
         }
         for (unsigned int i=0;i<q1.size();i++){
-            if ((ang4[i]>=angInicial&&ang4[i]<=angFinal)||(ang4[i]+360>=angInicial&&ang4[i]+360<=angFinal)){
+            //if (i==0||ang4[i]>ang4[i-1])
+            if ((ang4[i]>=angInicial&&ang4[i]<=angFinal)){//||(ang4[i]+360>=angInicial&&ang4[i]+360<=angFinal)){
                 if (iniP.x==-1&&ang4[i]>=angInicial)
                     iniP = q4[i];
                 SDL_RenderDrawPoint(layers[layer].render,q4[i].x,q4[i].y);
