@@ -7,10 +7,9 @@ class CPIGListaItemComponente: public CPIGComponente{
 
 protected:
 
-    int altBaseLista;                     //espaço vertical entre os itens
+    int altBaseLista;                     //espaÃ§o vertical entre os itens
     PIGPosicaoComponente posIcones,posLabels;
     vector<PIGItemComponente> itens;
-    int itemDestaque;
     int altIcone,largIcone;                           //altura e largura das imagens dos itens
 
     void IniciaCoresBasicas(){
@@ -32,11 +31,11 @@ protected:
     }
 
     void IniciaBase(int alturaLinha){
-        SetPosicaoPadraoLabel(PIG_COMPONENTE_CIMA_CENTRO);//posição padrão do label
+        SetPosicaoPadraoLabel(PIG_COMPONENTE_CIMA_CENTRO);//posiÃ§Äƒo padrÄƒo do label
         altBaseLista = alturaLinha;
         altIcone = largIcone = alturaLinha;
-        posIcones = PIG_COMPONENTE_DIR_CENTRO;//só pode ser posicionamento à esquerda ou à direita
-        itemDestaque = -1;
+        posIcones = PIG_COMPONENTE_DIR_CENTRO;//sÃ³ pode ser posicionamento Å• esquerda ou Å• direita
+        //itemDestaque = -1;
         IniciaCoresBasicas();
     }
 
@@ -93,7 +92,7 @@ public:
         }
     }
     void AlinhaLabelDireita(){
-        if (posLabels!=PIG_COMPONENTE_DIR_CENTRO){//se os labels estão à direita do botões, inverte
+        if (posLabels!=PIG_COMPONENTE_DIR_CENTRO){//se os labels estÄƒo Å• direita do botÅ‘es, inverte
             for (PIGItemComponente i: itens)
                 i->AlinhaLabelDireita();
             posLabels = PIG_COMPONENTE_DIR_CENTRO;
@@ -101,7 +100,7 @@ public:
     }
 
     void AlinhaLabelEsquerda(){
-        if (posLabels!=PIG_COMPONENTE_ESQ_CENTRO){//se os labels estão à direita do botões, inverte
+        if (posLabels!=PIG_COMPONENTE_ESQ_CENTRO){//se os labels estÄƒo Å• direita do botÅ‘es, inverte
             for (PIGItemComponente i: itens)
                 i->AlinhaLabelEsquerda();
             posLabels = PIG_COMPONENTE_ESQ_CENTRO;
@@ -109,7 +108,7 @@ public:
     }
 
     void AlinhaLabelCentro(){
-        if (posLabels!=PIG_COMPONENTE_CENTRO_CENTRO){//se os labels estão à direita do botões, inverte
+        if (posLabels!=PIG_COMPONENTE_CENTRO_CENTRO){//se os labels estÄƒo Å• direita do botÅ‘es, inverte
             for (PIGItemComponente i: itens)
                 i->AlinhaLabelCentro();
             posLabels = PIG_COMPONENTE_CENTRO_CENTRO;
@@ -117,7 +116,7 @@ public:
     }
 
     void AlinhaIconeDireita(){
-        if (posIcones==PIG_COMPONENTE_ESQ_CENTRO){//se os labels estão à direita do botões, inverte
+        if (posIcones==PIG_COMPONENTE_ESQ_CENTRO){//se os labels estÄƒo Å• direita do botÅ‘es, inverte
             for (PIGItemComponente i: itens)
                 i->AlinhaIconeDireita();
             posIcones = PIG_COMPONENTE_DIR_CENTRO;
@@ -125,7 +124,7 @@ public:
     }
 
     void AlinhaIconeEsquerda(){
-        if (posIcones!=PIG_COMPONENTE_DIR_CENTRO){//se os labels estão à direita do botões, inverte
+        if (posIcones!=PIG_COMPONENTE_DIR_CENTRO){//se os labels estÄƒo Å• direita do botÅ‘es, inverte
             for (PIGItemComponente i: itens)
                 i->AlinhaIconeEsquerda();
             posIcones = PIG_COMPONENTE_ESQ_CENTRO;
@@ -134,51 +133,67 @@ public:
 
     virtual int Desenha()=0;
 
-    int GetAcionadoItem(int item){
-        if (item<0||item>=itens.size()) return -1;
-        return itens[item]->GetAcionado();
+    int GetAcionadoItem(int indice){
+        if (indice<0||indice>=itens.size()) return -1;
+        return itens[indice]->GetAcionado();
     }
 
-    void SetAudioItem(int audio, int idItem=-1){
-        if (idItem==-1){
+    virtual int SetAcionadoItem(int indice, bool valor){
+        if (indice<0||indice>=itens.size()) return 0;
+        itens[indice]->SetAcionado(valor);
+        return 1;
+    }
+
+    int SetAcionadoApenasItem(int indice, bool valor){
+        if (indice<0||indice>=itens.size()) return 0;
+        if (valor){
+            for (PIGItemComponente i: itens)
+                i->SetAcionado(false);
+        }
+        itens[indice]->SetAcionado(valor);
+        return 1;
+    }
+
+    void SetAudioItem(int audio, int indice=-1){
+        if (indice==-1){
             for(PIGItemComponente item :itens) item->SetAudio(audio);
-        }else if (idItem>=0&&idItem<itens.size()){
-            itens[idItem]->SetAudio(audio);
+        }else if (indice>=0&&indice<itens.size()){
+            itens[indice]->SetAudio(audio);
         }
     }
 
-    void SetCorLabelItem(PIGCor cor, int idItem=-1){
-        if (idItem==-1){
+    void SetCorLabelItem(PIGCor cor, int indice=-1){
+        if (indice==-1){
             for(PIGItemComponente item :itens) item->SetCorLabel(cor);
-        }else if (idItem>=0&&idItem<itens.size()){
-            itens[idItem]->SetCorLabel(cor);
+        }else if (indice>=0&&indice<itens.size()){
+            itens[indice]->SetCorLabel(cor);
         }
     }
 
-    void SetCorFundoItem(PIGCor cor, int idItem=-1){
-        if (idItem==-1){
+    void SetCorFundoItem(PIGCor cor, int indice=-1){
+        if (indice==-1){
             for(PIGItemComponente item :itens) item->SetCorFundo(cor);
-        }else if (idItem>=0&&idItem<itens.size()){
-            itens[idItem]->SetCorFundo(cor);
+        }else if (indice>=0&&indice<itens.size()){
+            itens[indice]->SetCorFundo(cor);
         }
     }
 
-    void SetFonteItem(int fonte, int idItem=-1){
-        if (idItem==-1){
+    void SetFonteItem(int fonte, int indice=-1){
+        if (indice==-1){
             for(PIGItemComponente item :itens) item->SetFonteLabel(fonte);
-        }else if (idItem>=0&&idItem<itens.size()){
-            itens[idItem]->SetFonteLabel(fonte);
+        }else if (indice>=0&&indice<itens.size()){
+            itens[indice]->SetFonteLabel(fonte);
         }
     }
 
-    int GetHabilitadoItem(int item){
-        if (item<0||item>=itens.size()) return -1;
-        return itens[item]->GetHabilitado();
+    int GetHabilitadoItem(int indice){
+        if (indice<0||indice>=itens.size()) return -1;
+        return itens[indice]->GetHabilitado();
     }
 
-    int SetHabilitadoItem(int item, bool valor){
-        if (item<0||item>=itens.size()) return -1;
-        itens[item]->SetHabilitado(valor);
+    int SetHabilitadoItem(int indice, bool valor){
+        if (indice<0||indice>=itens.size()) return -1;
+        itens[indice]->SetHabilitado(valor);
         return 1;
     }
 
@@ -205,19 +220,9 @@ public:
             i->SetAudio(audio);
     }
 
-    int GetItemDestaque(){
-        return itemDestaque;
-    }
-
-    int SetAcionadoItem(int indice, bool valor){
-        if (indice<0||indice>=itens.size()) return 0;
-        if (valor){
-            itemDestaque = indice;
-            for (PIGItemComponente i: itens)
-                i->SetAcionado(false);
-        }
-        itens[indice]->SetAcionado(valor);
-        return 1;
+    string GetLabelItem(int indice){
+        if (indice<0||indice>=itens.size()) return "";
+        return itens[indice]->GetLabel();
     }
 
     void Move(double nx, double ny)override{

@@ -110,7 +110,7 @@ public:
     }
 
     int Desenha()override{
-        if (!visivel) return -1;
+        if (!visivel) return 0;
 
         //fundo
         if (text)

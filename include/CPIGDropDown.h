@@ -8,6 +8,7 @@ class CPIGDropDown: public CPIGListaItemComponente{
 private:
 
     bool recolhida;
+    int itemDestaque;
 
     void ProcessaAtributos(CPIGAtributos atrib)override{
         CPIGListaItemComponente::ProcessaAtributos(atrib);
@@ -65,12 +66,12 @@ private:
             CPIGSprite::Desenha();
         }else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,altBaseLista,larg,coresBasicas[0]);
 
-        if (itemDestaque>=0){                       //desenha o item no cabeÁalho do dropdown
+        if (itemDestaque>=0){                       //desenha o item no cabe√ßalho do dropdown
             PIGPonto2D pItem = itens[itemDestaque]->GetXY();
-            itens[itemDestaque]->Move(pItem.x,pos.y);     //move o item para o ponto do cabeÁalho
+            itens[itemDestaque]->Move(pItem.x,pos.y);     //move o item para o ponto do cabe√ßalho
             //printf("%.0f, %0.f\n",pItem.x,pos.y);
-            itens[itemDestaque]->Desenha();         //desenha o item no cabeÁalho
-            itens[itemDestaque]->Move(pItem.x,pItem.y); //devolve o item para a posiÁ„o normal (onde tambÈm dever· ser desenhado)
+            itens[itemDestaque]->Desenha();         //desenha o item no cabe√ßalho
+            itens[itemDestaque]->Move(pItem.x,pItem.y); //devolve o item para a posi√ßƒÉo normal (onde tamb√©m dever√° ser desenhado)
         }
         CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
     }
@@ -99,14 +100,28 @@ public:
     CPIGDropDown(int idComponente, int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, string nomeArqFundo="", int retiraFundo=1, int janela=0):
         CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,nomeArqFundo,retiraFundo,janela){
             SetRecolhida(true);
+            itemDestaque = -1;
     }
 
     CPIGDropDown(int idComponente, int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, int janela=0):
         CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,janela){
             SetRecolhida(true);
+            itemDestaque = -1;
     }
 
     CPIGDropDown(int idComponente,CPIGAtributos atrib):CPIGDropDown(LeParametros(idComponente,atrib)){}
+
+    virtual ~CPIGDropDown(){}
+
+    int GetItemDestaque(){
+        return itemDestaque;
+    }
+
+    int SetAcionadoItem(int indice, bool valor)override{
+        int resp = CPIGListaItemComponente::SetAcionadoApenasItem(indice,valor);
+        if (resp) itemDestaque = indice;
+        return resp;
+    }
 
     void CriaItem(string itemLabel, string arqImagemIcone="", string arqImagemFundoItem="", bool itemHabilitado = true, string hintMsg="", int retiraFundo=1, int retiraFundoIcone=1){
 
@@ -144,7 +159,7 @@ public:
             if (!habilitado) return PIG_SELECIONADO_DESABILITADO;
             if (!visivel) return PIG_SELECIONADO_INVISIVEL;
 
-            if (!recolhida){        //se o dropdown est· exibindo os itens, È preciso trat·-los individualmente
+            if (!recolhida){        //se o dropdown est√° exibindo os itens, √© preciso trat√°-los individualmente
                 for (unsigned int i=0;i<itens.size();i++){
                     if(itens[i]->TrataEventoMouse(evento) == PIG_SELECIONADO_TRATADO){
                         if (itens[i]->GetAcionado()){

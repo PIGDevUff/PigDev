@@ -7,6 +7,8 @@ class CPIGListBox: public CPIGListaItemComponente{
 
 protected:
 
+    int itemDestaque;
+
     virtual void ProcessaAtributos(CPIGAtributos atrib)override{
         CPIGListaItemComponente::ProcessaAtributos(atrib);
 
@@ -65,15 +67,27 @@ public:
 
     CPIGListBox(int idComponente, int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, string nomeArqFundo="", int retiraFundo=1, int janela=0):
         CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,nomeArqFundo,retiraFundo,janela){
+            itemDestaque = -1;
     }
 
     CPIGListBox(int idComponente, int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, int janela=0):
         CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,janela){
+            itemDestaque = -1;
     }
 
     CPIGListBox(int idComponente,CPIGAtributos atrib):CPIGListBox(LeParametros(idComponente,atrib)){}
 
     virtual ~CPIGListBox(){}
+
+    int GetItemDestaque(){
+        return itemDestaque;
+    }
+
+    int SetAcionadoItem(int indice, bool valor)override{
+        int resp = CPIGListaItemComponente::SetAcionadoApenasItem(indice,valor);
+        if (resp) itemDestaque = indice;
+        return resp;
+    }
 
     int TrataEventoTeclado(PIGEvento evento)override{
         if(!temFoco||!habilitado||!visivel) return 0;

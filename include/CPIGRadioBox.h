@@ -7,6 +7,7 @@ class CPIGRadioBox: public CPIGListaItemComponente{
 
 protected:
 
+    int itemDestaque;
     string arqImagemIcone;
 
     virtual void ProcessaAtributos(CPIGAtributos atrib)override{
@@ -65,16 +66,28 @@ public:
     CPIGRadioBox(int idComponente, int larguraTotal, int alturaLinha, string imgIcone, int alturaIcone, int larguraIcone, string imgFundo, int retiraFundo=1, int janela = 0):
         CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,imgFundo,retiraFundo,janela){
             arqImagemIcone = imgIcone;
+            itemDestaque = -1;
         }
 
     CPIGRadioBox(int idComponente, int larguraTotal, int alturaLinha, string imgIcone, int alturaIcone, int larguraIcone, int janela = 0):
         CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,janela){
             arqImagemIcone = imgIcone;
+            itemDestaque = -1;
         }
 
     CPIGRadioBox(int idComponente,CPIGAtributos atrib):CPIGRadioBox(LeParametros(idComponente,atrib)){}
 
     virtual ~CPIGRadioBox(){}
+
+    int GetItemDestaque(){
+        return itemDestaque;
+    }
+
+    int SetAcionadoItem(int indice, bool valor)override{
+        int resp = CPIGListaItemComponente::SetAcionadoApenasItem(indice,valor);
+        if (resp) itemDestaque = indice;
+        return resp;
+    }
 
     void CriaItem(string itemLabel, string arqImagemFundoItem="", bool itemHabilitado = true, string hintMsg="", int retiraFundo=1, int retiraFundoIcone=1){
         CPIGListaItemComponente::SetDimensoes(alt+altBaseLista,larg); //aumenta o tamanho do componente para comportar o novo item

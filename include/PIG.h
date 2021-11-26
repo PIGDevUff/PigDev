@@ -5770,10 +5770,13 @@ void PIGListBoxDefineDimensaoIconeItem(int idComponente, int alturaIcone, int la
     CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->SetDimensoesIcone(alturaIcone,larguraIcone);
 }
 
+void PIGListBoxGetLabelItem(int idComponente, int indice, char *label){
+    strcpy(label,CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->GetLabelItem(indice).c_str());
+}
+
 int PIGListBoxGetItemDestaque(int idComponente){
     return CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->GetItemDestaque();
 }
-
 
 
 /**********DROPDOWN**************/
@@ -5840,6 +5843,10 @@ void PIGDropDownAlinhaIconeEsquerda(int idComponente){
 
 void PIGDropDownDefineDimensaoIconeItem(int idComponente, int alturaIcone, int larguraIcone){
     CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->SetDimensoesIcone(alturaIcone,larguraIcone);
+}
+
+void PIGDropDownGetLabelItem(int idComponente, int indice, char *label){
+    strcpy(label,CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->GetLabelItem(indice).c_str());
 }
 
 int PIGDropDownGetItemDestaque(int idComponente){
@@ -5919,7 +5926,9 @@ int PIGRadioBoxGetItemDestaque(int idComponente){
     return CPIGGerenciadorForms::GetComponente<PIGRadioBox>(idComponente)->GetItemDestaque();
 }
 
-
+void PIGRadioBoxGetLabelItem(int idComponente, int indice, char *label){
+    strcpy(label,CPIGGerenciadorForms::GetComponente<PIGRadioBox>(idComponente)->GetLabelItem(indice).c_str());
+}
 
 /**********CHECKBOX**************/
 
@@ -5989,6 +5998,10 @@ void PIGCheckBoxDefineDimensaoIconeItem(int idComponente, int alturaIcone, int l
 
 void PIGCheckBoxSetMarcadoTodos(int idComponente, bool marcado){
     CPIGGerenciadorForms::GetComponente<PIGCheckBox>(idComponente)->SetAcionadoTodos(marcado);
+}
+
+void PIGCheckBoxGetLabelItem(int idComponente, int indice, char *label){
+    strcpy(label,CPIGGerenciadorForms::GetComponente<PIGCheckBox>(idComponente)->GetLabelItem(indice).c_str());
 }
 
 vector<int> PIGCheckBoxGetItensMarcados(int idComponente){
