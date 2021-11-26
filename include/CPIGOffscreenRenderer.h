@@ -85,25 +85,21 @@ public:
         int ym = alt/2;
         SDL_Point p1,p2;
         LimpaLayer(layer,corCirculo);
+
         DesenhaCirculoFatia(xm,ym,raio,corFundo,angInicial,angFinal,p1,p2,layer);
         if (angFinal-angInicial<360&&angFinal-angInicial>0){
             SDL_RenderDrawLine(layers[layer].render,p1.x,p1.y,xm,ym);
             SDL_RenderDrawLine(layers[layer].render,p2.x,p2.y,xm,ym);
         }
+
         PintarArea(0,0,corFundo,layer);
     }
 
-    void DesenhaCirculoFatia(int centroX, int centroY, int raio, PIGCor cor, double angInicial, double angFinal, SDL_Point &iniP, SDL_Point &fimP, int layer=0){
-        if (angFinal==0) return;
+    static void CriaPontos(int centroX, int centroY, int raio, double angInicial, double angFinal, vector<double> &angs, vector<SDL_Point> &pontos){
         int ra = raio;
         int x = -raio, y = 0, err = 2-2*raio; /* II. Quadrant */
         vector<SDL_Point> q1,q2,q3,q4;
         vector<double> ang1,ang2,ang3,ang4;
-        iniP.x = -1;
-
-        //printf("angInicial %f angFinal %f\n",angInicial,angFinal);
-
-        SDL_SetRenderDrawColor(layers[layer].render,cor.r,cor.g,cor.b,cor.a);
 
         do {
             SDL_Point p = {centroX-x,centroY-y};
@@ -123,8 +119,7 @@ public:
 
             p = {centroX+y,centroY-x};
             q4.push_back(p);
-            if(x==-ra)
-                a=270;
+            if(x==-ra) a=270;
             else a = 360+atan(1.*-x/-y)*180/M_PI;
             ang4.push_back(a);
 
@@ -133,61 +128,49 @@ public:
             if (raio > x || err > y) err += ++x*2+1; /* e_xy+e_x > 0 or no 2nd y-step */
         }while (x < 0);
 
-        //FILE *arq = fopen("angs.txt","w");
-        //fprintf(arq,"%f %f\n",angInicial,angFinal);
+        angs.clear();
+        pontos.clear();
 
-        for (unsigned int i=0;i<q1.size();i++){
-            if ((ang1[i]>=angInicial&&ang1[i]<=angFinal)){//||(ang1[i]+360>=angInicial&&ang1[i]+360<=angFinal)){
-                if (iniP.x==-1&&ang1[i]>=angInicial)
-                    iniP = q1[i];
-                SDL_RenderDrawPoint(layers[layer].render,q1[i].x,q1[i].y);
-                //fprintf(arq,"%f %d %d\n",ang1[i],q1[i].x,q1[i].y);
-                if (angFinal<=360)
-                    fimP = q1[i];
-                else if (ang1[i]<=angInicial)
-                    fimP = q1[i];
+        //colocar os pontos em ordem pelo ângulo
+        for (int i=0;i<q1.size();i++){//primeiro quadrante
+            if (ang1[i]<=angFinal-angInicial&&(i==0||ang1[i]>ang1[i-1])){
+                angs.push_back(ang1[i]);
+                pontos.push_back(q1[i]);
             }
         }
-        for (unsigned int i=0;i<q1.size();i++){
-            if ((ang2[i]>=angInicial&&ang2[i]<=angFinal)){//||(ang2[i]+360>=angInicial&&ang2[i]+360<=angFinal)){
-                if (iniP.x==-1&&ang2[i]>=angInicial)
-                    iniP = q2[i];
-                SDL_RenderDrawPoint(layers[layer].render,q2[i].x,q2[i].y);
-                //fprintf(arq,"%f %d %d\n",ang2[i],q2[i].x,q2[i].y);
-                if (angFinal<=360)
-                    fimP = q2[i];
-                else if (ang2[i]<=angInicial)
-                    fimP = q2[i];
+        for (int i=0;i<q2.size();i++){//segundo quadrante
+            if (ang2[i]<=angFinal-angInicial&&(i==0||ang2[i]>ang2[i-1])){
+                angs.push_back(ang2[i]);
+                pontos.push_back(q2[i]);
             }
         }
-        for (unsigned int i=0;i<q1.size();i++){
-            if ((ang3[i]>=angInicial&&ang3[i]<=angFinal)){//||(ang3[i]+360>=angInicial&&ang3[i]+360<=angFinal)){
-                if (iniP.x==-1&&ang3[i]>=angInicial)
-                    iniP = q3[i];
-                SDL_RenderDrawPoint(layers[layer].render,q3[i].x,q3[i].y);
-                //fprintf(arq,"%f %d %d\n",ang3[i],q3[i].x,q3[i].y);
-                if (angFinal<=360)
-                    fimP = q3[i];
-                else if (ang3[i]<=angInicial)
-                    fimP = q3[i];
+        for (int i=0;i<q3.size();i++){//terceiro quadrante
+            if (ang3[i]<=angFinal-angInicial&&(i==0||ang3[i]>ang3[i-1])){
+                angs.push_back(ang3[i]);
+                pontos.push_back(q3[i]);
             }
         }
-        for (unsigned int i=0;i<q1.size();i++){
-            //if (i==0||ang4[i]>ang4[i-1])
-            if ((ang4[i]>=angInicial&&ang4[i]<=angFinal)){//||(ang4[i]+360>=angInicial&&ang4[i]+360<=angFinal)){
-                if (iniP.x==-1&&ang4[i]>=angInicial)
-                    iniP = q4[i];
-                SDL_RenderDrawPoint(layers[layer].render,q4[i].x,q4[i].y);
-                //fprintf(arq,"%f %d %d\n",ang4[i],q4[i].x,q4[i].y);
-                if (angFinal<=360)
-                    fimP = q4[i];
-                else if (ang4[i]<=angInicial)
-                    fimP = q4[i];
+        for (int i=0;i<q4.size();i++){//quarto quadrante
+            if (ang4[i]<=angFinal-angInicial&&(i==0||ang4[i]>ang4[i-1])){
+                angs.push_back(ang4[i]);
+                pontos.push_back(q4[i]);
             }
         }
-        //fclose(arq);
-        //if (angInicial==90&&angFinal==270)
-        //system("pause");
+    }
+
+    void DesenhaCirculoFatia(int centroX, int centroY, int raio, PIGCor cor, double angInicial, double angFinal, SDL_Point &iniP, SDL_Point &fimP, int layer=0){
+        vector<double> angs;
+        vector<SDL_Point> pontos;
+        CriaPontos(centroX,centroY,raio,angInicial,angFinal,angs,pontos);
+
+        iniP = pontos[0];
+        fimP = pontos.back();
+
+        SDL_SetRenderDrawColor(layers[layer].render,cor.r,cor.g,cor.b,cor.a);
+
+        for (int i=1;i<pontos.size();i++){
+            SDL_RenderDrawLine(layers[layer].render,pontos[i-1].x,pontos[i-1].y,pontos[i].x,pontos[i].y);
+        }
    }
 
     inline void PintarFundo(PIGCor cor, int layer=0){
