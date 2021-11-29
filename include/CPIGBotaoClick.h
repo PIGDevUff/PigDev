@@ -83,13 +83,15 @@ protected:
     }
 
     PIGEstadoEvento OnAction()override{
-        SetAcionado(true);
-        timer->Reinicia(false);
+        if (timer->GetTempoDecorrido()>tempoRepeticao){
+            SetAcionado(true);
+            timer->Reinicia(false);
+        }
         return CPIGComponente::OnAction();
     }
 
     void IniciaBase(){
-        tempoRepeticao = 1.0;
+        tempoRepeticao = 0.5;
         tempoAcionamento = 0.2;
         timer = new CPIGTimer(false);
         tipo = PIG_BOTAOCLICK;
@@ -114,18 +116,6 @@ public:
 
     virtual ~CPIGBotaoClick(){
         delete timer;
-    }
-
-    PIGEstadoEvento TrataEventoTeclado(PIGEvento evento)override{
-        if (!temFoco) return PIG_SEMFOCO;
-        if (!habilitado) return PIG_DESABILITADO;
-        if (!visivel) return PIG_INVISIVEL;
-
-        if (evento.teclado.acao==PIG_TECLA_PRESSIONADA && evento.teclado.tecla==tecla){
-            if (timer->GetTempoDecorrido()>tempoRepeticao) return OnAction();
-        }
-
-        return PIG_NAOSELECIONADO;
     }
 
     inline void DefineTempoRepeticao(double segundos){

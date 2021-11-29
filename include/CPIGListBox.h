@@ -91,7 +91,7 @@ public:
         if (!habilitado) return PIG_DESABILITADO;
         if (!visivel) return PIG_INVISIVEL;
 
-        int resp = -1;
+        int resp = itemDestaque;
         bool mouseOverAntes = mouseOver;
 
         if (ChecaMouseOver(GetPosicaoMouse())>0){
@@ -100,19 +100,25 @@ public:
                 if(aux == PIG_TRATADO){
                     if (itens[i]->GetAcionado())
                         resp = i;
-                    SetHint(itens[i]->GetHint());
-                    SetFonteHint(itens[i]->GetFonteHint());
+                    //SetHint(itens[i]->GetHint());
+                    //SetFonteHint(itens[i]->GetFonteHint());
+                    SetAcionadoApenasItem(resp,resp!=-1);
+                    itemDestaque = resp;
                     OnAction();
+                    break;
                 }
             }
-            SetAcionadoItem(resp,resp!=-1);
+            if (resp>0)
+                return PIG_TRATADO;
+            else return PIG_MOUSEOVER;
+            //SetAcionadoItem(resp,resp!=-1);
         }else if (mouseOverAntes){               //mouse estava antes, mas saiu
             for (unsigned int i=0;i<itens.size();i++){
                 itens[i]->SetMouseOver(false);
             }
         }
 
-        return resp>=0?PIG_TRATADO:PIG_NAOSELECIONADO;
+        return PIG_NAOSELECIONADO;
     }
 
     void CriaItem(string itemLabel, string arqImagemIcone="", string arqImagemFundoItem="", bool itemMarcado = false, bool itemHabilitado = true, string hintMsg="", int retiraFundo=1, int retiraFundoIcone=1){

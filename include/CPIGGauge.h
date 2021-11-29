@@ -132,6 +132,7 @@ public:
     void SetPorcentagemConcluida(double porcentagem){
         porcentagemConcluida = PIGLimitaValor(porcentagem,0.0,1.0);
         valorAtual = valorMin + (valorMax - valorMin)*porcentagemConcluida;
+        porcentagemConcluida = (valorAtual - valorMin)/(valorMax - valorMin); //correção para que o percentual represent um valor inteiro dentro da faixa min-max
         marcadorAtualizado = false;
         OnAction();
     }

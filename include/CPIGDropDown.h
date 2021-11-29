@@ -143,7 +143,7 @@ public:
         if (!habilitado) return PIG_DESABILITADO;
         if (!visivel) return PIG_INVISIVEL;
 
-        int resp = -1;
+        int resp = itemDestaque;
         bool mouseOverAntes = mouseOver;
         SDL_Point p = GetPosicaoMouse();
 
@@ -152,13 +152,15 @@ public:
             if (!recolhida){        //se o dropdown está exibindo os itens, é preciso tratá-los individualmente
                 for (unsigned int i=0;i<itens.size();i++){
                     if(itens[i]->TrataEventoMouse(evento) == PIG_TRATADO){
-                        if (itens[i]->GetAcionado()){
+                        if (itens[i]->GetAcionado())
                             resp = i;
-                        }
+
+                        SetAcionadoApenasItem(resp,resp!=-1);
+                        itemDestaque = resp;
                         OnAction();
+                        break;
                     }
                 }
-                SetAcionadoItem(resp,resp!=-1);
 
                 if (evento.mouse.acao == PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO){
                     SetRecolhida(!recolhida);

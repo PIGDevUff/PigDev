@@ -68,6 +68,16 @@ public:
         return PIG_NAOSELECIONADO;
     }
 
+    PIGEstadoEvento TrataEventoTeclado(PIGEvento evento)override{
+        if (!habilitado) return PIG_DESABILITADO;
+        if (!visivel) return PIG_INVISIVEL;
+
+        if (evento.teclado.acao==PIG_TECLA_PRESSIONADA && evento.teclado.tecla==tecla){
+            return OnAction();
+        }
+        return PIG_NAOSELECIONADO;
+    }
+
     void DefineAtalho(int teclaAtalho){
         tecla = teclaAtalho;
     }

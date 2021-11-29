@@ -109,7 +109,7 @@ public:
         if (!habilitado) return PIG_DESABILITADO;
         if (!visivel) return PIG_INVISIVEL;
 
-        int resp = -1;
+        int resp = itemDestaque;
         bool mouseOverAntes = mouseOver;
 
         if (ChecaMouseOver(GetPosicaoMouse())>0){
@@ -117,10 +117,14 @@ public:
                 if (itens[i]->TrataEventoMouse(evento) == PIG_TRATADO){
                     if (itens[i]->GetAcionado())
                         resp = i;
+
+                    SetAcionadoApenasItem(resp,resp!=-1);
+                    itemDestaque = resp;
                     OnAction();
+                    break;
                 }
             }
-            SetAcionadoItem(resp,resp!=-1);
+
             if (resp>0)
                 return PIG_TRATADO;
             else return PIG_MOUSEOVER;

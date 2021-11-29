@@ -98,17 +98,6 @@ public:
 
     CPIGBotaoOnOff(int idComponente,CPIGAtributos atrib):CPIGBotaoOnOff(LeParametros(idComponente,atrib)){}
 
-    PIGEstadoEvento TrataEventoTeclado(PIGEvento evento){
-        if (!temFoco) return PIG_SEMFOCO;
-        if (!habilitado) return PIG_DESABILITADO;
-        if (!visivel) return PIG_INVISIVEL;
-
-        if (evento.teclado.acao==PIG_TECLA_PRESSIONADA && evento.teclado.tecla==tecla){
-            return OnAction();
-        }
-        return PIG_NAOSELECIONADO;
-    }
-
     inline void SetCorNormalOff(PIGCor cor){
         coresBasicas[1] = cor;
     }
