@@ -3,7 +3,7 @@
 
 #include "CPIGGauge.h"
 
-class CPIGSlideBar : public CPIGGauge{
+class CPIGSlideBar: public CPIGGauge{
 
     int deltaRodinha,deltaTeclado;
     int altMarcador,largMarcador,xMarc,yMarc;
@@ -60,7 +60,7 @@ class CPIGSlideBar : public CPIGGauge{
         }
     }
 
-    int TrataClickTrilha(int px, int py){
+    PIGEstadoEvento TrataClickTrilha(int px, int py){
         double perc;
         px = PIGLimitaValor(px,(int)pos.x+largMarcador/2,(int)pos.x+larg-largMarcador/2);
         py = PIGLimitaValor(py,(int)pos.y+altMarcador/2,(int)pos.y+alt-altMarcador/2);
@@ -85,7 +85,7 @@ class CPIGSlideBar : public CPIGGauge{
         return PIG_TRATADO;
     }
 
-    int TrataRodinha(PIGEvento evento){
+    PIGEstadoEvento TrataRodinha(PIGEvento evento){
         if(evento.mouse.relY > 0){
             AvancaMarcador(deltaRodinha);
             return PIG_TRATADO;
@@ -96,10 +96,6 @@ class CPIGSlideBar : public CPIGGauge{
         return PIG_NAOSELECIONADO;
     }
 
-    PIGTipoComponente GetTipo(){
-        return PIG_SLIDEBAR;
-    }
-
 public:
 
     CPIGSlideBar(int idComponente, int altTrilha, int largTrilha, string imgTrilha, int alturaMarcador, int larguraMarcador, string imgMarcador,int retiraFundoTrilha=1, int retiraFundoMarcador=1, int janela=0):
@@ -107,6 +103,7 @@ public:
             deltaTeclado = deltaRodinha = 10;
             altMarcador = alturaMarcador;
             largMarcador = larguraMarcador;
+            tipo = PIG_SLIDEBAR;
             marcador = new CPIGSprite(-1,imgMarcador,retiraFundoMarcador,NULL,janela);
             AtualizaMarcador();
     }
@@ -116,6 +113,7 @@ public:
             deltaTeclado = deltaRodinha = 10;
             altMarcador = alturaMarcador;
             largMarcador = larguraMarcador;
+            tipo = PIG_SLIDEBAR;
             AtualizaMarcador();
             IniciaCoresBasicas();
     }
@@ -124,7 +122,7 @@ public:
 
     virtual ~CPIGSlideBar(){}
 
-    int TrataEventoMouse(PIGEvento evento){
+    PIGEstadoEvento TrataEventoMouse(PIGEvento evento)override{
         if (!habilitado) return PIG_DESABILITADO;
         if (!visivel) return PIG_INVISIVEL;
 
@@ -146,7 +144,7 @@ public:
         return PIG_NAOSELECIONADO;
     }
 
-    int TrataEventoTeclado(PIGEvento evento){
+    PIGEstadoEvento TrataEventoTeclado(PIGEvento evento)override{
         if (!temFoco) return PIG_SEMFOCO;
         if (!habilitado) return PIG_DESABILITADO;
         if (!visivel) return PIG_INVISIVEL;
@@ -218,11 +216,7 @@ public:
 
         CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
 
-        DesenhaLabel();
-
-        EscreveHint();
-
-        return 1;
+        return CPIGComponente::Desenha();
     }
 
 

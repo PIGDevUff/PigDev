@@ -20,11 +20,8 @@ protected:
     virtual void ProcessaAtributos(CPIGAtributos atrib)override{
         CPIGComponente::ProcessaAtributos(atrib);
 
-        int larguraIcone = 0;
-        int alturaIcone = 0;
-
-        larguraIcone = atrib.GetInt("larguraIcone",largIcone);
-        alturaIcone = atrib.GetInt("alturaIcone",altIcone);
+        int larguraIcone = atrib.GetInt("larguraIcone",largIcone);
+        int alturaIcone = atrib.GetInt("alturaIcone",altIcone);
 
         if (larguraIcone != largIcone || alturaIcone != altIcone)
             SetDimensoesIcone(alturaIcone,larguraIcone);
@@ -34,7 +31,7 @@ protected:
         SetPosicaoPadraoLabel(PIG_COMPONENTE_CIMA_CENTRO);//posiçăo padrăo do label
         altBaseLista = alturaLinha;
         altIcone = largIcone = alturaLinha;
-        posIcones = PIG_COMPONENTE_DIR_CENTRO;//só pode ser posicionamento à esquerda ou à direita
+        posIcones = PIG_COMPONENTE_ESQ_CENTRO;//só pode ser posicionamento à esquerda ou à direita
         IniciaCoresBasicas();
     }
 
@@ -67,8 +64,6 @@ protected:
             itens[i]->Desloca(dx, dy);
     }
 
-public:
-
     CPIGListaItemComponente(int idComponente, int larguraTotal, int alturaLinha, string nomeArqFundoLista, int retiraFundo=1, int janela = 0):
         CPIGComponente(idComponente,0,larguraTotal,nomeArqFundoLista,retiraFundo,janela){
         IniciaBase(alturaLinha);
@@ -79,11 +74,13 @@ public:
         IniciaBase(alturaLinha);
     }
 
-    ~CPIGListaItemComponente(){
+    virtual ~CPIGListaItemComponente(){
         for (PIGItemComponente i: itens)
             delete i;
         itens.clear();
     }
+
+public:
 
     void SetDimensoesIcone(int alturaIcone, int larguraIcone){
         for (unsigned int i=0;i<itens.size();i++){
@@ -107,7 +104,7 @@ public:
     }
 
     void AlinhaLabelCentro(){
-        if (posLabels!=PIG_COMPONENTE_CENTRO_CENTRO){//se os labels estăo ŕ direita do botőes, inverte
+        if (posLabels!=PIG_COMPONENTE_CENTRO_CENTRO){//se os labels estăo à direita do botőes, inverte
             for (PIGItemComponente i: itens)
                 i->AlinhaLabelCentro();
             posLabels = PIG_COMPONENTE_CENTRO_CENTRO;
@@ -115,7 +112,7 @@ public:
     }
 
     void AlinhaIconeDireita(){
-        if (posIcones==PIG_COMPONENTE_ESQ_CENTRO){//se os labels estăo ŕ direita do botőes, inverte
+        if (posIcones!=PIG_COMPONENTE_DIR_CENTRO){//se os labels estăo à direita do botőes, inverte
             for (PIGItemComponente i: itens)
                 i->AlinhaIconeDireita();
             posIcones = PIG_COMPONENTE_DIR_CENTRO;
@@ -123,14 +120,12 @@ public:
     }
 
     void AlinhaIconeEsquerda(){
-        if (posIcones!=PIG_COMPONENTE_DIR_CENTRO){//se os labels estăo ŕ direita do botőes, inverte
+        if (posIcones!=PIG_COMPONENTE_ESQ_CENTRO){//se os labels estăo à direita do botőes, inverte
             for (PIGItemComponente i: itens)
                 i->AlinhaIconeEsquerda();
             posIcones = PIG_COMPONENTE_ESQ_CENTRO;
         }
     }
-
-    virtual int Desenha()=0;
 
     int GetAcionadoItem(int indice){
         if (indice<0||indice>=itens.size()) return -1;
@@ -196,12 +191,6 @@ public:
         return 1;
     }
 
-    void SetHabilitado(bool valor) override{
-        habilitado = valor;
-        for(PIGItemComponente i: itens)
-            i->SetHabilitado(habilitado);
-    }
-
     void SetVisivel(bool valor) override{
         visivel = valor;
         for(PIGItemComponente i: itens)
@@ -219,6 +208,12 @@ public:
             i->SetAudio(audio);
     }
 
+    void SetHabilitado(bool valor)override{
+        CPIGComponente::SetHabilitado(valor);
+        for (PIGItemComponente i: itens)
+            i->SetHabilitadoLista(habilitado);
+    }
+
     string GetLabelItem(int indice){
         if (indice<0||indice>=itens.size()) return "";
         return itens[indice]->GetLabel();
@@ -232,8 +227,6 @@ public:
         PosicionaLabel();
 
         DeslocaItens(dx,dy);
-
-        AlinhaLabelEsquerda();
     }
 
 };

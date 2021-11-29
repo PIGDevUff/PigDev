@@ -76,13 +76,9 @@ protected:
             MudaFrameAtual(corAtual);
     }
 
-    int OnAction() override{
+    PIGEstadoEvento OnAction()override{
         SetAcionado(!acionado);
         return CPIGComponente::OnAction();
-    }
-
-    PIGTipoComponente GetTipo(){
-        return PIG_BOTAOONOFF;
     }
 
 public:
@@ -91,16 +87,18 @@ public:
         CPIGBotao(idComponente,alt,larg,nomeArq,retiraFundo,janela){
             CriaFramesAutomaticosPorLinha(1,2,3);
             MudaFrameAtual(1); //frame de estado normal do botao
+            tipo = PIG_BOTAOONOFF;
         }
 
     CPIGBotaoOnOff(int idComponente, int alt, int larg, int janela=0):
         CPIGBotao(idComponente,alt,larg,janela){
             IniciaCoresBasicas();
+            tipo = PIG_BOTAOONOFF;
         }
 
     CPIGBotaoOnOff(int idComponente,CPIGAtributos atrib):CPIGBotaoOnOff(LeParametros(idComponente,atrib)){}
 
-    int TrataEventoTeclado(PIGEvento evento){
+    PIGEstadoEvento TrataEventoTeclado(PIGEvento evento){
         if (!temFoco) return PIG_SEMFOCO;
         if (!habilitado) return PIG_DESABILITADO;
         if (!visivel) return PIG_INVISIVEL;

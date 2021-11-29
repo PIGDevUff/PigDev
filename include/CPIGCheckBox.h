@@ -30,17 +30,6 @@ protected:
         return *resp;
     }
 
-    void SetFoco(bool valor){
-        temFoco = valor;
-    }
-
-    void SetAcionado(bool valor){
-    }
-
-    void SetMouseOver(bool valor){
-        mouseOver = valor;
-    }
-
     static void AjustaFrame(PIGItemComponente item){
         int resp;
         if (item->GetHabilitado()==false){
@@ -57,20 +46,18 @@ protected:
         item->GetIcone()->MudaFrameAtual(resp);
     }
 
-    PIGTipoComponente GetTipo(){
-        return PIG_CHECKBOX;
-    }
-
 public:
 
     CPIGCheckBox(int idComponente, int larguraTotal, int alturaLinha, string imgIcone, int alturaIcone, int larguraIcone, string imgFundo, int retiraFundo=1, int janela=0):
         CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,imgFundo,retiraFundo,janela){
             arqImagemIcone = imgIcone;
+            tipo = PIG_CHECKBOX;
         }
 
     CPIGCheckBox(int idComponente, int larguraTotal, int alturaLinha, string imgIcone, int alturaIcone, int larguraIcone, int janela=0):
         CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,janela){
             arqImagemIcone = imgIcone;
+            tipo = PIG_CHECKBOX;
         }
 
     CPIGCheckBox(int idComponente,CPIGAtributos atrib):CPIGCheckBox(LeParametros(idComponente,atrib)){}
@@ -102,21 +89,17 @@ public:
 
         CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
 
-        DesenhaLabel();
-
-        return 1;
+        return CPIGComponente::Desenha();
     }
 
-    int TrataEventoMouse(PIGEvento evento){
+    PIGEstadoEvento TrataEventoMouse(PIGEvento evento)override{
         if (!habilitado) return PIG_DESABILITADO;
         if (!visivel) return PIG_INVISIVEL;
 
         int resp = 0;
         bool mouseOverAntes = mouseOver;
 
-        SDL_Point p = GetPosicaoMouse();
-
-        if (ChecaMouseOver(p)>0){
+        if (ChecaMouseOver(GetPosicaoMouse())>0){
             for (unsigned int i=0;i<itens.size();i++){
                 if (itens[i]->TrataEventoMouse(evento) == PIG_TRATADO){
                     resp = 1;
@@ -130,13 +113,6 @@ public:
                 itens[i]->SetMouseOver(false);
             }
         }
-        return PIG_NAOSELECIONADO;
-    }
-
-    int TrataEventoTeclado(PIGEvento evento){
-        if (!temFoco) return PIG_SEMFOCO;
-        if (!habilitado) return PIG_DESABILITADO;
-        if (!visivel) return PIG_INVISIVEL;
         return PIG_NAOSELECIONADO;
     }
 

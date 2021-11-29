@@ -19,6 +19,69 @@ double ang;
 PIGCor corAtual;
 PIGFuncaoPintarArea userFunctionPintarArea;
 
+static void CriaPontosCirculo(int centroX, int centroY, int raio, double angInicial, double angFinal, vector<double> &angs, vector<SDL_Point> &pontos){
+    int ra = raio;
+    int x = -raio, y = 0, err = 2-2*raio; /* II. Quadrant */
+    vector<SDL_Point> q1,q2,q3,q4;
+    vector<double> ang1,ang2,ang3,ang4;
+
+    do {
+        SDL_Point p = {centroX-x,centroY-y};
+        q1.push_back(p);
+        double a = atan(1.*y/-x)*180/M_PI;
+        ang1.push_back(a);
+
+        p = {centroX-y,centroY+x};
+        q2.push_back(p);
+        a = 180+atan(1.*x/y)*180/M_PI;
+        ang2.push_back(a);
+
+        p = {centroX+x,centroY+y};
+        q3.push_back(p);
+        a = atan(1.*-y/x)*180/M_PI+180;
+        ang3.push_back(a);
+
+        p = {centroX+y,centroY-x};
+        q4.push_back(p);
+        if(x==-ra) a=270;
+        else a = 360+atan(1.*-x/-y)*180/M_PI;
+        ang4.push_back(a);
+
+        raio = err;
+        if (raio <= y) err += ++y*2+1;           /* e_xy+e_y < 0 */
+        if (raio > x || err > y) err += ++x*2+1; /* e_xy+e_x > 0 or no 2nd y-step */
+    }while (x < 0);
+
+    angs.clear();
+    pontos.clear();
+
+    //colocar os pontos em ordem pelo ângulo
+    for (int i=0;i<q1.size();i++){//primeiro quadrante
+        if (ang1[i]<=angFinal-angInicial&&(i==0||ang1[i]>ang1[i-1])){
+            angs.push_back(ang1[i]);
+            pontos.push_back(q1[i]);
+        }
+    }
+    for (int i=0;i<q2.size();i++){//segundo quadrante
+        if (ang2[i]<=angFinal-angInicial&&(i==0||ang2[i]>ang2[i-1])){
+            angs.push_back(ang2[i]);
+            pontos.push_back(q2[i]);
+        }
+    }
+    for (int i=0;i<q3.size();i++){//terceiro quadrante
+        if (ang3[i]<=angFinal-angInicial&&(i==0||ang3[i]>ang3[i-1])){
+            angs.push_back(ang3[i]);
+            pontos.push_back(q3[i]);
+        }
+    }
+    for (int i=0;i<q4.size();i++){//quarto quadrante
+        if (ang4[i]<=angFinal-angInicial&&(i==0||ang4[i]>ang4[i-1])){
+            angs.push_back(ang4[i]);
+            pontos.push_back(q4[i]);
+        }
+    }
+}
+
 public:
 
     inline SDL_Renderer *GetRenderer(int layer=0){
@@ -95,73 +158,10 @@ public:
         PintarArea(0,0,corFundo,layer);
     }
 
-    static void CriaPontos(int centroX, int centroY, int raio, double angInicial, double angFinal, vector<double> &angs, vector<SDL_Point> &pontos){
-        int ra = raio;
-        int x = -raio, y = 0, err = 2-2*raio; /* II. Quadrant */
-        vector<SDL_Point> q1,q2,q3,q4;
-        vector<double> ang1,ang2,ang3,ang4;
-
-        do {
-            SDL_Point p = {centroX-x,centroY-y};
-            q1.push_back(p);
-            double a = atan(1.*y/-x)*180/M_PI;
-            ang1.push_back(a);
-
-            p = {centroX-y,centroY+x};
-            q2.push_back(p);
-            a = 180+atan(1.*x/y)*180/M_PI;
-            ang2.push_back(a);
-
-            p = {centroX+x,centroY+y};
-            q3.push_back(p);
-            a = atan(1.*-y/x)*180/M_PI+180;
-            ang3.push_back(a);
-
-            p = {centroX+y,centroY-x};
-            q4.push_back(p);
-            if(x==-ra) a=270;
-            else a = 360+atan(1.*-x/-y)*180/M_PI;
-            ang4.push_back(a);
-
-            raio = err;
-            if (raio <= y) err += ++y*2+1;           /* e_xy+e_y < 0 */
-            if (raio > x || err > y) err += ++x*2+1; /* e_xy+e_x > 0 or no 2nd y-step */
-        }while (x < 0);
-
-        angs.clear();
-        pontos.clear();
-
-        //colocar os pontos em ordem pelo ângulo
-        for (int i=0;i<q1.size();i++){//primeiro quadrante
-            if (ang1[i]<=angFinal-angInicial&&(i==0||ang1[i]>ang1[i-1])){
-                angs.push_back(ang1[i]);
-                pontos.push_back(q1[i]);
-            }
-        }
-        for (int i=0;i<q2.size();i++){//segundo quadrante
-            if (ang2[i]<=angFinal-angInicial&&(i==0||ang2[i]>ang2[i-1])){
-                angs.push_back(ang2[i]);
-                pontos.push_back(q2[i]);
-            }
-        }
-        for (int i=0;i<q3.size();i++){//terceiro quadrante
-            if (ang3[i]<=angFinal-angInicial&&(i==0||ang3[i]>ang3[i-1])){
-                angs.push_back(ang3[i]);
-                pontos.push_back(q3[i]);
-            }
-        }
-        for (int i=0;i<q4.size();i++){//quarto quadrante
-            if (ang4[i]<=angFinal-angInicial&&(i==0||ang4[i]>ang4[i-1])){
-                angs.push_back(ang4[i]);
-                pontos.push_back(q4[i]);
-            }
-        }
-    }
-
     void DesenhaCirculoFatia(int centroX, int centroY, int raio, PIGCor cor, double angInicial, double angFinal, SDL_Point &iniP, SDL_Point &fimP, int layer=0){
         vector<double> angs;
         vector<SDL_Point> pontos;
-        CriaPontos(centroX,centroY,raio,angInicial,angFinal,angs,pontos);
+        CriaPontosCirculo(centroX,centroY,raio,angInicial,angFinal,angs,pontos);
 
         iniP = pontos[0];
         fimP = pontos.back();

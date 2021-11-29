@@ -2,6 +2,7 @@
 #define _CPIGGAUGECIRCULAR_
 
 #include "CPIGGauge.h"
+#include "CPIGOffscreenRenderer.h"
 
 class CPIGGaugeCircular:public CPIGGauge{
 
@@ -59,9 +60,7 @@ private:
         //circulo interno para criar efeito de coroa circular
         off->DesenhaCirculoFinal(raioInterno,croma2,croma1,0,360.0,2);
         off->SetCorTransparente(2,true,croma2);
-        off->SalvarImagemPNG("interno.png",2);
-
-        //system("pause");
+        //off->SalvarImagemPNG("interno.png",2);
 
         double deltaCrescimento=0;
         if (orientacaoCrescimento==PIG_GAUGE_HORARIO)
@@ -70,13 +69,13 @@ private:
         //circulo com a barra na cor desejada
         off->DesenhaCirculoFinal(larg/2-2,croma1,coresBasicas[3],deltaCrescimento,porcentagemConcluida*(deltaAng)+deltaCrescimento,0);
         off->SetCorTransparente(0,true,croma1);
-        off->SalvarImagemPNG("barra.png",0);
+        //off->SalvarImagemPNG("barra.png",0);
 
         //criculo com o fundo na cor de fundo
         //printf("base %f final %f\n",angBase,angBase+deltaAng);
         off->DesenhaCirculoFinal(larg/2-2,croma1,coresBasicas[0],0,deltaAng,1);
         off->SetCorTransparente(1,true,croma1);
-        off->SalvarImagemPNG("trilha.png",1);
+        //off->SalvarImagemPNG("trilha.png",1);
 
         //mistura o circulo interno com a barra
         off->MergeSurface(2,0,SDL_BLENDMODE_NONE);
@@ -112,8 +111,13 @@ private:
         }
     }
 
-    PIGTipoComponente GetTipo(){
-        return PIG_GAUGECIRCULAR;
+    void IniciaBase(){
+        angBase = 0;
+        deltaAng = 360;
+        raioInterno = 0;
+        orientacaoCrescimento = PIG_GAUGE_HORARIO;
+        tipo = PIG_GAUGECIRCULAR;
+        AtualizaMarcador();
     }
 
 public:
@@ -121,17 +125,13 @@ public:
     CPIGGaugeCircular(int idComponente, int altura, int largura, int janela=0):
         CPIGGauge(idComponente,altura,largura,janela){
 
-        angBase = 0;
-        deltaAng = 360;
-        raioInterno = 0;
-        orientacaoCrescimento = PIG_GAUGE_HORARIO;
         SetPivoProporcional({0.5,0.5});
 
         IniciaCoresBasicas();
 
         off = new CPIGOffscreenRenderer(altura,largura,3);
 
-        AtualizaMarcador();
+        IniciaBase();
     }
 
     CPIGGaugeCircular(int idComponente, int altura, int largura, string imgTrilha, int alturaMarcador, int larguraMarcador, string imgMarcador, int retiraFundoTrilha=1, int retiraFundoMarcador=1, int janela=0):
@@ -140,14 +140,9 @@ public:
         marcador = new CPIGSprite(-1,imgMarcador,retiraFundoMarcador,NULL,janela);
         marcador->SetDimensoes(alturaMarcador,larguraMarcador);
 
-        angBase = 0;
-        deltaAng = 360;
-        raioInterno = 0;
-        orientacaoCrescimento = PIG_GAUGE_HORARIO;
-
         off = NULL;
 
-        AtualizaMarcador();
+        IniciaBase();
     }
 
     CPIGGaugeCircular(int idComponente, CPIGAtributos atrib):CPIGGaugeCircular(LeParametros(idComponente,atrib)){}
@@ -170,11 +165,7 @@ public:
 
         CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
 
-        DesenhaLabel();
-
-        EscreveHint();
-
-        return 1;
+        return CPIGComponente::Desenha();
     }
 
     int SetOrientacao(PIGGaugeCrescimento orientacao){
@@ -191,7 +182,6 @@ public:
         if (valorRaio<0||valorRaio>0.9*larg/2) return;
 
         raioInterno = valorRaio;
-        printf("raio %d\n",raioInterno);
         marcadorAtualizado = false;
     }
 
@@ -205,13 +195,6 @@ public:
         marcadorAtualizado = false;
     }
 
-    int TrataEventoMouse(PIGEvento evento){
-        return 0;
-    }
-
-    int TrataEventoTeclado(PIGEvento evento){
-        return 0;
-    }
 };
 
 typedef CPIGGaugeCircular *PIGGaugeCircular;

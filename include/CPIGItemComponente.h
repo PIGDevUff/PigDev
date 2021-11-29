@@ -18,18 +18,22 @@ private:
 
     void (*AjustaFrame)(CPIGItemComponente*);       //ponteiro para funçăo que será chamada sempre que algum estado do item mudar
     PIGSprite icone;
+    int altIcone,largIcone;
     PIGPosicaoComponente posIcone,posRelativaLabel;
+    bool habilitadoPorSi;
 
-    int OnMouseClick(){
+    PIGEstadoEvento OnMouseClick(){
         SetAcionado(!GetAcionado());
         if (audioComponente>=0) CPIGGerenciadorAudios::Play(audioComponente);
         return PIG_TRATADO;
     }
 
     void IniciaBase(string labelItem, string arqImagemIcone="", int alturaIcone=0, int larguraIcone=0,int retiraFundoIcone=1){
+        altIcone = alturaIcone;
+        largIcone = larguraIcone;
         if (arqImagemIcone!=""){
             icone = new CPIGSprite(-1,arqImagemIcone,retiraFundoIcone,NULL,idJanela);
-            icone->SetDimensoes(alturaIcone,larguraIcone);
+            icone->SetDimensoes(altIcone,largIcone);
             AlinhaIconeEsquerda();
             posIcone = PIG_COMPONENTE_ESQ_CENTRO;
         }else icone = NULL;
@@ -38,10 +42,8 @@ private:
         SetPosicaoPadraoLabel(PIG_COMPONENTE_ESQ_CENTRO);
         AjustaFrame = NULL;
         coresBasicas[0] = {0,0,0,0};
-    }
-
-    PIGTipoComponente GetTipo(){
-        return PIG_OUTROCOMPONENTE;
+        habilitadoPorSi=true;
+        tipo = PIG_OUTROCOMPONENTE;
     }
 
 public:
@@ -49,36 +51,32 @@ public:
     //item com icone e com fundo
     CPIGItemComponente(int idComponente, int alturaIcone,int larguraIcone, string arqImagemIcone, string arqImagemFundo, string labelItem, int larguraLista, int alturaItemLista, int retiraFundo=1, int retiraFundoIcone=1, int janela=0):
         CPIGComponente(idComponente,alturaItemLista,larguraLista,arqImagemFundo,retiraFundo,janela){
-        IniciaBase(labelItem,arqImagemIcone,alturaIcone,larguraIcone,retiraFundoIcone);//,larguraLista,alturaItemLista);
+        IniciaBase(labelItem,arqImagemIcone,alturaIcone,larguraIcone,retiraFundoIcone);
     }
 
     //item com icone e sem fundo
     CPIGItemComponente(int idComponente, int alturaIcone,int larguraIcone, string arqImagemIcone, string labelItem, int larguraLista, int alturaItemLista, int retiraFundoIcone=1, int janela=0):
         CPIGComponente(idComponente,alturaItemLista,larguraLista,janela){
-        IniciaBase(labelItem,arqImagemIcone,alturaIcone,larguraIcone,retiraFundoIcone);//,larguraLista,alturaItemLista);
+        IniciaBase(labelItem,arqImagemIcone,alturaIcone,larguraIcone,retiraFundoIcone);
     }
 
     //item sem icone e com fundo
     CPIGItemComponente(int idComponente, string arqImagemFundo, string labelItem, int larguraLista, int alturaItemLista, int retiraFundo=1, int janela=0):
         CPIGComponente(idComponente,alturaItemLista,larguraLista,arqImagemFundo,retiraFundo,janela){
-        IniciaBase(labelItem,"",0,0);//,larguraLista,alturaItemLista);
+        IniciaBase(labelItem,"",0,0);
     }
 
     //item sem icone e sem fundo
     CPIGItemComponente(int idComponente, string labelItem, int larguraLista, int alturaItemLista, int retiraFundo=1, int janela=0):
         CPIGComponente(idComponente,alturaItemLista,larguraLista,janela){
-        IniciaBase(labelItem,"",0,0);//,larguraLista,alturaItemLista);
+        IniciaBase(labelItem,"",0,0);
     }
 
-    ~CPIGItemComponente(){
+    virtual ~CPIGItemComponente(){
         if (icone) delete icone;
     }
 
-    bool GetAcionado(){
-        return acionado;
-    }
-
-    void SetAcionado(bool valor){
+    void SetAcionado(bool valor)override{
         if (acionado&&!valor){
             Desloca(-margemEsq,-margemBaixo);
             SetDimensoes(alt-(margemCima+margemBaixo),larg-(margemEsq+margemDir));
@@ -86,21 +84,28 @@ public:
             Desloca(margemEsq,margemBaixo);
             SetDimensoes(alt+(margemCima+margemBaixo),larg+(margemEsq+margemDir));
         }
-        acionado = valor;
+        CPIGComponente::SetAcionado(valor);
         if (AjustaFrame) AjustaFrame(this);
     }
 
-    void SetHabilitado(bool valor){
-        habilitado = valor;
+    void SetHabilitado(bool valor)override{
+        habilitadoPorSi = valor;
+        CPIGComponente::SetHabilitado(valor);
         if (AjustaFrame) AjustaFrame(this);
     }
 
-    void SetFoco(bool valor){
-        temFoco = valor;
+    void SetHabilitadoLista(bool valor){
+        if (valor){
+           CPIGComponente::SetHabilitado(habilitadoPorSi);
+        }else{
+            habilitadoPorSi = habilitado;
+            CPIGComponente::SetHabilitado(valor);
+        }
+        if (AjustaFrame) AjustaFrame(this);
     }
 
-    void SetMouseOver(bool valor){
-        mouseOver = valor;
+    void SetMouseOver(bool valor)override{
+        CPIGComponente::SetMouseOver(valor);
         if (AjustaFrame) AjustaFrame(this);
     }
 
@@ -117,26 +122,22 @@ public:
             CPIGSprite::Desenha();
         else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
 
-        DesenhaLabel();
-
         if (icone)
             icone->Desenha();
 
-        EscreveHint();
-
-        return 1;
+        return CPIGComponente::Desenha();
     }
 
     void SetDimensoesIcone(int alturaIcone,int larguraIcone){
-        icone->SetDimensoes(alturaIcone,larguraIcone);
+        altIcone = alturaIcone;
+        largIcone = larguraIcone;
+        icone->SetDimensoes(altIcone,largIcone);
     }
 
     void AlinhaLabelDireita(){
         posRelativaLabel = PIG_COMPONENTE_DIR_CENTRO;
         int largLabel = lab->GetLargura();//CGerenciadorFontes::GetLarguraPixels(label,fonteLabel);
         if (icone){
-            int largIcone,altIcone;
-            icone->GetDimensoes(altIcone,largIcone);
             if (posIcone==PIG_COMPONENTE_ESQ_CENTRO){
                 SetPosicaoPersonalizadaLabel(larg-largLabel,0);
             }else SetPosicaoPersonalizadaLabel(larg-largLabel-largIcone,0);
@@ -149,8 +150,6 @@ public:
         posRelativaLabel = PIG_COMPONENTE_ESQ_CENTRO;
         if (icone){
             if (posIcone==PIG_COMPONENTE_ESQ_CENTRO){
-                int largIcone,altIcone;
-                icone->GetDimensoes(altIcone,largIcone);
                 SetPosicaoPersonalizadaLabel(largIcone,0);
             }else SetPosicaoPersonalizadaLabel(0,0);
         }else{
@@ -162,8 +161,6 @@ public:
         posRelativaLabel = PIG_COMPONENTE_CENTRO_CENTRO;
         int largLabel = lab->GetLargura();//CGerenciadorFontes::GetLarguraPixels(label,fonteLabel);
         if (icone){
-            int largIcone,altIcone;
-            icone->GetDimensoes(altIcone,largIcone);
             if (posIcone==PIG_COMPONENTE_ESQ_CENTRO){
                 SetPosicaoPersonalizadaLabel(largIcone+(larg-largIcone)/2-largLabel/2,0);
             }else SetPosicaoPersonalizadaLabel((larg-largIcone)/2-largLabel/2,0);
@@ -174,11 +171,8 @@ public:
 
     void AlinhaIconeDireita(){
         if (icone){
-            int altIcone,largIcone;
-            icone->GetDimensoes(altIcone,largIcone);
             posIcone=PIG_COMPONENTE_DIR_CENTRO;
             icone->Move(pos.x+larg-largIcone,pos.y);
-
             if (posRelativaLabel == PIG_COMPONENTE_ESQ_CENTRO){
                 AlinhaLabelEsquerda();
             }else if (posRelativaLabel == PIG_COMPONENTE_CENTRO_CENTRO){
@@ -215,16 +209,11 @@ public:
         }
     }
 
-    int TrataEventoMouse(PIGEvento evento)override{
+    PIGEstadoEvento TrataEventoMouse(PIGEvento evento)override{
         if (!habilitado) return PIG_DESABILITADO;
         if (!visivel) return PIG_INVISIVEL;
 
-        SDL_Point p;
-        if (CPIGGerenciadorJanelas::GetJanela(idJanela)->GetUsandoCameraFixa())
-            p = CPIGMouse::PegaXYTela();
-        else p = CPIGMouse::PegaXYWorld();
-
-        ChecaMouseOver(p);
+        ChecaMouseOver(GetPosicaoMouse());
 
         if(mouseOver){
             if (evento.mouse.acao==PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO){
@@ -234,10 +223,6 @@ public:
         }
 
         return PIG_NAOSELECIONADO;
-    }
-
-    int TrataEventoTeclado(PIGEvento evento){
-        return 0;
     }
 
     void Move(double nx, double ny)override{

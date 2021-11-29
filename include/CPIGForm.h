@@ -22,10 +22,10 @@ private:
     int componenteComFoco,componenteMouseOver;
     PIGComponente componentes[PIG_MAX_COMPONENTES];
 
-    int TrataEventoMouse(PIGEvento evento){
+    PIGEstadoEvento TrataEventoMouse(PIGEvento evento){
         componenteMouseOver = -1;
         for(int i=0;i<totalComponentes;i++){
-            int aux = componentes[i]->TrataEventoMouse(evento);
+            PIGEstadoEvento aux = componentes[i]->TrataEventoMouse(evento);
             if(aux == PIG_TRATADO){
                 if (componenteComFoco!=-1 && componenteComFoco!=i){     //se já tem um outro componente com foco, ele vai perder o foco
                     componentes[componenteComFoco]->SetFoco(false);
@@ -33,7 +33,7 @@ private:
                 componenteComFoco = i;                                //anota que terá o foco
                 componenteMouseOver = i;                              //anota que tem MouseOver
                 componentes[componenteComFoco]->SetFoco(true);        //faz o componente em questăo ganhar foco
-                return 1;
+                return aux;
             }else if (aux == PIG_MOUSEOVER){
                 componenteMouseOver = i;
             }
@@ -42,28 +42,31 @@ private:
             componentes[componenteComFoco]->SetFoco(false);
             componenteComFoco = -1;
         }
-        return 0;
-    }
-
-    int TrataEventoTeclado(PIGEvento evento){
-        if(componenteComFoco!=-1){
-            return componentes[componenteComFoco]->TrataEventoTeclado(evento);
-        }
-        for(int i=0;i<totalComponentes;i++){
-            componentes[i]->TrataEventoTeclado(evento);
-        }
         return PIG_NAOSELECIONADO;
     }
 
-    void IniciaCoresBasicas(){
-        coresBasicas[0] = PRETO;
+    PIGEstadoEvento TrataEventoTeclado(PIGEvento evento){
+        if(componenteComFoco!=-1){
+            return componentes[componenteComFoco]->TrataEventoTeclado(evento);
+        }
+
+        PIGEstadoEvento resp = PIG_NAOSELECIONADO;
+
+        for(int i=0;i<totalComponentes;i++){
+            PIGEstadoEvento aux = componentes[i]->TrataEventoTeclado(evento);
+            if (aux!=PIG_NAOSELECIONADO)
+                resp = aux;
+        }
+        return resp;
     }
 
     void IniciaBase(){
+        coresBasicas[0] = PRETO;
         totalComponentes = 0;
         componenteComFoco = componenteMouseOver = -1;
         for(int i=0;i<PIG_MAX_COMPONENTES;i++)
             componentes[i] = NULL;
+        tipo = PIG_FORM;
     }
 
     static PIGTipoComponente GetTipoComponente(string tipo){
@@ -168,7 +171,9 @@ public:
         if (componenteMouseOver!=-1)
             componentes[componenteMouseOver]->Desenha();
 
-        return 1;
+        lab->Desenha();
+
+        return CPIGComponente::Desenha();
     }
 
     int TrataEvento(PIGEvento evento){
@@ -178,9 +183,7 @@ public:
     }
 
     PIGComponente GetComponente(int idComponente){
-        //printf("vou tentar pegar o compo %d\n",idComponente);
         if (componentes[idComponente % PIG_MAX_COMPONENTES]==NULL) throw CPIGErroIndice(idComponente,"componentes");
-        //printf("devolvendo %d\n",idComponente);
         return componentes[idComponente % PIG_MAX_COMPONENTES];
     }
 

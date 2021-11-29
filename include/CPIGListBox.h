@@ -33,27 +33,6 @@ protected:
         return *resp;
     }
 
-    void SetFoco(bool valor){
-        temFoco = valor;
-    }
-
-    void SetAcionado(bool valor){}
-
-    void SetMouseOver(bool valor){
-        mouseOver = valor;
-    }
-
-    void SetHabilitado(bool valor){
-        habilitado = valor;
-        for(unsigned int i=0;i<itens.size();i++){
-            itens[i]->SetHabilitado(valor);
-        }
-    }
-
-    PIGTipoComponente GetTipo(){
-        return PIG_LISTBOX;
-    }
-
 private:
 
     void DesenhaRetanguloMarcacao(){
@@ -68,11 +47,13 @@ public:
     CPIGListBox(int idComponente, int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, string nomeArqFundo="", int retiraFundo=1, int janela=0):
         CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,nomeArqFundo,retiraFundo,janela){
             itemDestaque = -1;
+            tipo = PIG_LISTBOX;
     }
 
     CPIGListBox(int idComponente, int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, int janela=0):
         CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,janela){
             itemDestaque = -1;
+            tipo = PIG_LISTBOX;
     }
 
     CPIGListBox(int idComponente,CPIGAtributos atrib):CPIGListBox(LeParametros(idComponente,atrib)){}
@@ -89,7 +70,7 @@ public:
         return resp;
     }
 
-    int TrataEventoTeclado(PIGEvento evento)override{
+    PIGEstadoEvento TrataEventoTeclado(PIGEvento evento)override{
         if (!temFoco) return PIG_SEMFOCO;
         if (!habilitado) return PIG_DESABILITADO;
         if (!visivel) return PIG_INVISIVEL;
@@ -106,16 +87,14 @@ public:
         return PIG_TRATADO;
     }
 
-    int TrataEventoMouse(PIGEvento evento){
+    PIGEstadoEvento TrataEventoMouse(PIGEvento evento)override{
         if (!habilitado) return PIG_DESABILITADO;
         if (!visivel) return PIG_INVISIVEL;
 
         int resp = -1;
         bool mouseOverAntes = mouseOver;
 
-        SDL_Point p = GetPosicaoMouse();
-
-        if (ChecaMouseOver(p)>0){
+        if (ChecaMouseOver(GetPosicaoMouse())>0){
             for (unsigned int i=0;i<itens.size();i++){
                 int aux = itens[i]->TrataEventoMouse(evento);
                 if(aux == PIG_TRATADO){
@@ -126,7 +105,7 @@ public:
                     OnAction();
                 }
             }
-            SetAcionado(resp,resp!=-1);
+            SetAcionadoItem(resp,resp!=-1);
         }else if (mouseOverAntes){               //mouse estava antes, mas saiu
             for (unsigned int i=0;i<itens.size();i++){
                 itens[i]->SetMouseOver(false);
@@ -160,19 +139,7 @@ public:
 
         CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
 
-        DesenhaLabel();
-
-        return 1;
-    }
-
-    int SetAcionado(int indice, bool marcado){
-        if (indice<0||indice>=itens.size()) return 0;
-        if (marcado){
-            itemDestaque = indice;
-            for (PIGItemComponente i: itens) i->SetAcionado(false);
-        }
-        itens[indice]->SetAcionado(marcado);
-        return 1;
+        return CPIGComponente::Desenha();
     }
 
     void SetCorDestaque(PIGCor cor){

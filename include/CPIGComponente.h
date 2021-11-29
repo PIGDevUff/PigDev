@@ -21,6 +21,7 @@ protected:
     PIGLabel lab,hint;
     PIGFuncaoSimples acao;
     PIGCor coresBasicas[10];
+    PIGTipoComponente tipo;
     int margemEsq,margemDir,margemCima,margemBaixo;
     void *param;
 
@@ -141,10 +142,16 @@ protected:
         lab->Desenha();
     }
 
-    virtual int OnAction(){
+    virtual PIGEstadoEvento OnAction(){
         if (acao) acao(id,param);//rever se NULL é necessário
         if (audioComponente>=0) CPIGGerenciadorAudios::Play(audioComponente);
         return PIG_TRATADO;
+    }
+
+    inline SDL_Point GetPosicaoMouse(){
+        if (CPIGGerenciadorJanelas::GetJanela(idJanela)->GetUsandoCameraFixa())
+            return CPIGMouse::PegaXYTela();
+        else return CPIGMouse::PegaXYWorld();
     }
 
     virtual void ProcessaAtributos(CPIGAtributos atrib){
@@ -197,8 +204,6 @@ protected:
         if (valorStr != "") SetPosicaoPadraoLabel(ConverteStringPosicao(valorStr));
     }
 
-public:
-
     CPIGComponente(int idComponente, int altura, int largura, int janela=0)
     :CPIGSprite(idComponente,altura,largura,"",janela){
         IniciaBase();
@@ -210,6 +215,8 @@ public:
         CPIGSprite::SetDimensoes(altura,largura);
     }
 
+public:
+
     virtual ~CPIGComponente(){
         if (lab) delete lab;
         if (hint) delete hint;
@@ -220,14 +227,29 @@ public:
         param = parametro;
     }
 
-    virtual PIGTipoComponente GetTipo()=0;
+    PIGTipoComponente GetTipo(){
+        return tipo;
+    }
 
     //desenha o componente, cada subclasse precisa implementar como fazer isso
-    virtual int Desenha()=0;
+    virtual int Desenha(){
+        DesenhaLabel();
+        EscreveHint();
+        return 1;
+    }
 
-    virtual int TrataEventoMouse(PIGEvento evento)=0;
+    virtual PIGEstadoEvento TrataEventoMouse(PIGEvento evento){
+        if (!habilitado) return PIG_DESABILITADO;
+        if (!visivel) return PIG_INVISIVEL;
+        return PIG_NAOSELECIONADO;
+    }
 
-    virtual int TrataEventoTeclado(PIGEvento evento)=0;
+    virtual PIGEstadoEvento TrataEventoTeclado(PIGEvento evento){
+        if (!temFoco) return PIG_SEMFOCO;
+        if (!habilitado) return PIG_DESABILITADO;
+        if (!visivel) return PIG_INVISIVEL;
+        return PIG_NAOSELECIONADO;
+    }
 
     //define a mensagem de hint do componente
     void SetHint(string novoHint){
@@ -240,12 +262,12 @@ public:
     }
 
     //define a cor do hint
-    virtual void SetCorHint(PIGCor cor){
+    void SetCorHint(PIGCor cor){
         hint->SetCorFonte(cor);
     }
 
     //recupera a cor do hint
-    virtual PIGCor GetCorHint(){
+    PIGCor GetCorHint(){
         return hint->GetColoracao();
     }
 
@@ -255,12 +277,12 @@ public:
     }
 
     //recupera a fonte do hint
-    virtual int GetFonteHint(){
+    int GetFonteHint(){
         return hint->GetFonte();
     }
 
     //define o label do componente
-    virtual void SetLabel(string novoLabel){
+    void SetLabel(string novoLabel){
         lab->SetTexto(novoLabel);
         PosicionaLabel();
     }
@@ -271,23 +293,23 @@ public:
     }
 
     //define a cor do label
-    virtual void SetCorLabel(PIGCor corLabel){
+    void SetCorLabel(PIGCor corLabel){
         lab->SetCorFonte(corLabel);
     }
 
     //recupera a cor do label
-    virtual PIGCor GetCorLabel(){
+    PIGCor GetCorLabel(){
         return lab->GetColoracao();
     }
 
     //define a fonte do label
-    virtual void SetFonteLabel(int fonte){
+    void SetFonteLabel(int fonte){
         lab->SetFonte(fonte);
         PosicionaLabel();
     }
 
     //recupera a fonte do label
-    virtual int GetFonteLabel(){
+    int GetFonteLabel(){
         return lab->GetFonte();
     }
 
@@ -318,13 +340,21 @@ public:
         visivel = valor;
     }
 
-    virtual void SetFoco(bool valor)=0;
+    virtual void SetFoco(bool valor){
+        temFoco = valor;
+    }
 
-    virtual void SetHabilitado(bool valor)=0;
+    virtual void SetHabilitado(bool valor){
+        habilitado = valor;
+    }
 
-    virtual void SetMouseOver(bool valor)=0;
+    virtual void SetMouseOver(bool valor){
+        mouseOver = valor;
+    }
 
-    virtual void SetAcionado(bool valor)=0;
+    virtual void SetAcionado(bool valor){
+        acionado = valor;
+    }
 
     bool GetFoco(){
         return temFoco;
@@ -453,12 +483,6 @@ public:
     void SetDimensoes(int altura, int largura)override{
         CPIGSprite::SetDimensoes(altura,largura);
         PosicionaLabel();
-    }
-
-    inline SDL_Point GetPosicaoMouse(){
-        if (CPIGGerenciadorJanelas::GetJanela(idJanela)->GetUsandoCameraFixa())
-            return CPIGMouse::PegaXYTela();
-        else return CPIGMouse::PegaXYWorld();
     }
 
     virtual void SetMargens(int mEsq, int mDir, int mCima, int mBaixo){

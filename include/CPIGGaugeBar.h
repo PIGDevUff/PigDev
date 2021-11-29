@@ -116,15 +116,12 @@ private:
         marcador->Move((int)posBarra.x,(int)posBarra.y);
     }
 
-    PIGTipoComponente GetTipo(){
-        return PIG_GAUGEBAR;
-    }
-
 public:
 
     CPIGGaugeBar(int idComponente, int altura, int largura, string imgMoldura, string imgMarcador, int retiraFundoTrilha=1, int retiraFundoMarcador=1, int janela=0):
         CPIGGauge(idComponente,altura,largura,imgMoldura,retiraFundoTrilha,janela){
         IniciaCoresBasicas();
+        tipo = PIG_GAUGEBAR;
         if (imgMarcador!=""){
             marcador = new CPIGSprite(-1,imgMarcador,retiraFundoMarcador,NULL,janela);
             AtualizaMarcador();
@@ -133,6 +130,7 @@ public:
 
     CPIGGaugeBar(int idComponente, int altura, int largura, int janela=0):
         CPIGGauge(idComponente,altura,largura,janela){
+        tipo = PIG_GAUGEBAR;
         IniciaCoresBasicas();
     }
 
@@ -164,11 +162,7 @@ public:
 
         CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
 
-        DesenhaLabel();
-
-        EscreveHint();
-
-        return 1;
+        return CPIGComponente::Desenha();
     }
 
     int SetOrientacao(PIGGaugeCrescimento orientacao){
@@ -178,14 +172,6 @@ public:
         orientacaoCrescimento = orientacao;
         marcadorAtualizado = false;
         return 1;
-    }
-
-    int TrataEventoMouse(PIGEvento evento){
-        return 0;
-    }
-
-    int TrataEventoTeclado(PIGEvento evento){
-        return 0;
     }
 
 };

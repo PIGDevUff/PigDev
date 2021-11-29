@@ -68,22 +68,6 @@ protected:
         if (valorStr != "") SetOrientacao(ConverteStringCrescimento(valorStr));
     }
 
-    void SetFoco(bool valor){
-        temFoco = valor;
-    }
-
-    void SetAcionado(bool valor){
-        acionado = valor;
-    }
-
-    void SetMouseOver(bool valor){
-        mouseOver = valor;
-    }
-
-    void SetHabilitado(bool valor){
-        habilitado = valor;
-    }
-
     void IniciaBase(){
         valorMin = valorAtual = 0;
         valorMax = 100;
@@ -143,7 +127,7 @@ public:
         delta = valor;
     }
 
-    virtual int SetOrientacao(PIGGaugeCrescimento orientacao) = 0;
+    virtual int SetOrientacao(PIGGaugeCrescimento orientacao)=0;
 
     void SetPorcentagemConcluida(double porcentagem){
         porcentagemConcluida = PIGLimitaValor(porcentagem,0.0,1.0);

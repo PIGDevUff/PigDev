@@ -62,7 +62,7 @@ protected:
     }
 
     //trata teclas de movimentaçăo do cursor
-    virtual int TrataTeclasEspeciais(PIGEvento evento){
+    virtual PIGEstadoEvento TrataTeclasEspeciais(PIGEvento evento){
         switch (evento.teclado.tecla){
             case PIG_TECLA_BACKSPACE:
                 RetiraTextoBackSpace();break;
@@ -83,25 +83,25 @@ protected:
     }
 
     //trata os diversos tipos de eventos de teclado que podem ocorrer
-    int TrataEventoTeclado(PIGEvento evento){
+    PIGEstadoEvento TrataEventoTeclado(PIGEvento evento)override{
         if (!temFoco) return PIG_SEMFOCO;
         if (!habilitado) return PIG_DESABILITADO;
         if (!visivel) return PIG_INVISIVEL;
 
-        if (evento.teclado.acao==PIG_TECLA_EDICAO) return 1;
+        if (evento.teclado.acao==PIG_TECLA_EDICAO) return PIG_TRATADO;
 
         if (evento.teclado.acao==PIG_TECLA_INPUT){//caracteres normais
             string s = ConverteString(evento.teclado.texto);
             if (AdicionaTexto(s)){
                 return OnAction();
             }
-            return 0;
+            return PIG_NAOSELECIONADO;
         }
 
         if (evento.teclado.acao==PIG_TECLA_PRESSIONADA){//teclas especiais
             return TrataTeclasEspeciais(evento);
         }
-        return 0;
+        return PIG_NAOSELECIONADO;
     }
 
     string texto;
@@ -210,7 +210,7 @@ protected:
     }
 
     //o botao esquerdo faz com que a ediçăo do trexto comece ou que o cursor seja reposicionado
-    virtual int TrataMouseBotaoEsquerdo(SDL_Point p, int inicioLinha = 0){
+    virtual PIGEstadoEvento TrataMouseBotaoEsquerdo(SDL_Point p, int inicioLinha=0){
         posCursor = CalculaPosicaoCursor(GetTextoVisivel(),p.x);
         AjustaPosicaoTextoCursor();
         return PIG_TRATADO;
@@ -228,8 +228,11 @@ protected:
         AjustaPosicaoTextoCursor();
     }
 
-
-public:
+    void SetFoco(bool valor) override{
+        CPIGComponente::SetFoco(valor);
+        if (temFoco) SDL_StartTextInput();
+        else SDL_StopTextInput();
+    }
 
     CPIGCaixaTexto(int idComponente, int altura, int largura, string nomeArq, int maxCars=PIG_MAX_CARS_CAIXATEXTO, int retiraFundo=1, int janela=0):
         CPIGComponente(idComponente,altura,largura,nomeArq,retiraFundo,janela){
@@ -244,6 +247,9 @@ public:
     virtual ~CPIGCaixaTexto(){
         delete timer;
     }
+
+
+public:
 
     //define o texto a ser mostrado no componente
     virtual int SetTexto(string frase){
@@ -278,13 +284,6 @@ public:
     //define a cor do cursor
     void SetCorCursor(PIGCor cor){
         coresBasicas[2] = cor;
-    }
-
-    //define se o componente está em foco ou não
-    void SetFoco(bool valor) override{
-        temFoco = valor;
-        if (temFoco) SDL_StartTextInput();
-        else SDL_StopTextInput();
     }
 
     //reposiciona o componente

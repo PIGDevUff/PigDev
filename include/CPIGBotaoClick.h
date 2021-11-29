@@ -82,14 +82,17 @@ protected:
             SetAcionado(false);
     }
 
-    int OnAction()override{
+    PIGEstadoEvento OnAction()override{
         SetAcionado(true);
         timer->Reinicia(false);
         return CPIGComponente::OnAction();
     }
 
-    PIGTipoComponente GetTipo(){
-        return PIG_BOTAOCLICK;
+    void IniciaBase(){
+        tempoRepeticao = 1.0;
+        tempoAcionamento = 0.2;
+        timer = new CPIGTimer(false);
+        tipo = PIG_BOTAOCLICK;
     }
 
 public:
@@ -98,17 +101,13 @@ public:
         CPIGBotao(idComponente,alt,larg,nomeArq,retiraFundo,janela){
             CriaFramesAutomaticosPorLinha(1,1,4);
             MudaFrameAtual(1); //frame de estado normal do botao
-            tempoRepeticao = 1.0;
-            tempoAcionamento = 0.2;
-            timer = new CPIGTimer(false);
+            IniciaBase();
         }
 
     CPIGBotaoClick(int idComponente, int alt, int larg, int janela=0):
         CPIGBotao(idComponente,alt,larg,janela){
             IniciaCoresBasicas();
-            tempoRepeticao = 1.0;
-            tempoAcionamento = 0.2;
-            timer = new CPIGTimer(false);
+            IniciaBase();
         }
 
     CPIGBotaoClick(int idComponente,CPIGAtributos atrib):CPIGBotaoClick(LeParametros(idComponente,atrib)){}
@@ -117,7 +116,7 @@ public:
         delete timer;
     }
 
-    int TrataEventoTeclado(PIGEvento evento){
+    PIGEstadoEvento TrataEventoTeclado(PIGEvento evento)override{
         if (!temFoco) return PIG_SEMFOCO;
         if (!habilitado) return PIG_DESABILITADO;
         if (!visivel) return PIG_INVISIVEL;

@@ -83,24 +83,6 @@ private:
 
     int PulaLinha(){return 1;}//năo usa o PulaLinha
 
-    void SetHabilitado(bool valor){
-        habilitado = valor;
-    }
-
-    void SetAcionado(bool valor){
-        acionado = valor;
-    }
-
-    void SetMouseOver(bool valor){
-        mouseOver = valor;
-    }
-
-    void SetFoco(bool valor) override{
-        temFoco = valor;
-        if (temFoco) SDL_StartTextInput();
-        else SDL_StopTextInput();
-    }
-
     void IniciaBase(bool campoSenha, bool apenasNumero){
         mascara = '*';
         somenteNumeros = apenasNumero;
@@ -110,10 +92,7 @@ private:
             GetTextoVisivelPtr = &CPIGCampoTextoESenha::GetTexto;
         }
         CPIGCaixaTexto::IniciaCoresBasicas();
-    }
-
-    PIGTipoComponente GetTipo(){
-        return PIG_CAMPOTEXTO;
+        tipo = PIG_CAMPOTEXTO;
     }
 
 public:
@@ -149,14 +128,10 @@ public:
         //desbloqueia o desenho fora da area do componente
         CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
 
-        DesenhaLabel();
-
-        EscreveHint();
-
-        return 1;
+        return CPIGComponente::Desenha();
     }
 
-    int TrataEventoMouse(PIGEvento evento){
+    PIGEstadoEvento TrataEventoMouse(PIGEvento evento)override{
         if (!habilitado) return PIG_DESABILITADO;
         if (!visivel) return PIG_INVISIVEL;
 
@@ -164,7 +139,8 @@ public:
         ChecaMouseOver(p);
 
         if(mouseOver){
-            if (evento.mouse.acao == PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO) return TrataMouseBotaoEsquerdo(p);
+            if (evento.mouse.acao == PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO)
+                return TrataMouseBotaoEsquerdo(p);
             return PIG_MOUSEOVER;
         }
 

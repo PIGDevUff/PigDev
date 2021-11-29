@@ -13,11 +13,7 @@ protected:
         CPIGComponente::ProcessaAtributos(atrib);
     }
 
-    void SetFoco(bool valor){
-        temFoco = valor;
-    }
-
-    void SetAcionado(bool valor){
+    void SetAcionado(bool valor)override{
         if (acionado&&!valor){
             Desloca(-margemEsq,margemBaixo);
             //SetDimensoes(alt-(margemCima+margemBaixo),larg-(margemEsq+margemDir));
@@ -25,12 +21,17 @@ protected:
             Desloca(margemEsq,-margemBaixo);
             //SetDimensoes(alt+(margemCima+margemBaixo),larg+(margemEsq+margemDir));
         }
-        acionado = valor;
+        CPIGComponente::SetAcionado(valor);
         AjustaFrame();
     }
 
-    void SetMouseOver(bool valor){
-        mouseOver = valor;
+    void SetMouseOver(bool valor)override{
+        CPIGComponente::SetMouseOver(valor);
+        AjustaFrame();
+    }
+
+    void SetHabilitado(bool valor)override{
+        CPIGComponente::SetHabilitado(valor);
         AjustaFrame();
     }
 
@@ -52,33 +53,23 @@ protected:
 
 public:
 
-    int TrataEventoMouse(PIGEvento evento){
+    PIGEstadoEvento TrataEventoMouse(PIGEvento evento)override{
         if (!habilitado) return PIG_DESABILITADO;
         if (!visivel) return PIG_INVISIVEL;
 
-        SDL_Point p = GetPosicaoMouse();
-
-        //printf("mouse %d,%d\n",p.x,p.y);
-        ChecaMouseOver(p);
+        ChecaMouseOver(GetPosicaoMouse());
 
         if (mouseOver){
-            //printf("over\n");
-            if(evento.mouse.acao==PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO) return OnAction();
+            if(evento.mouse.acao==PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO)
+                return OnAction();
             return PIG_MOUSEOVER;
         }
 
         return PIG_NAOSELECIONADO;
     }
 
-    virtual int TrataEventoTeclado(PIGEvento evento)=0;
-
     void DefineAtalho(int teclaAtalho){
         tecla = teclaAtalho;
-    }
-
-    void SetHabilitado(bool valor){
-        habilitado = valor;
-        AjustaFrame();
     }
 
     int Desenha()override{
@@ -92,11 +83,7 @@ public:
 
         CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
 
-        DesenhaLabel();
-
-        EscreveHint();
-
-        return 1;
+        return CPIGComponente::Desenha();
     }
 
 };

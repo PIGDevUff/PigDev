@@ -49,24 +49,6 @@ private:
         return *resp;
     }
 
-    void SetHabilitado(bool valor){
-        habilitado = valor;
-    }
-
-    void SetAcionado(bool valor){
-        acionado = valor;
-    }
-
-    void SetMouseOver(bool valor){
-        mouseOver = valor;
-    }
-
-    void SetFoco(bool valor) override{
-        temFoco = valor;
-        if (temFoco) SDL_StartTextInput();
-        else SDL_StopTextInput();
-    }
-
     //Recupera todo o texto da área
     inline string GetTextoVisivel(){
         return GetTexto();
@@ -140,7 +122,7 @@ private:
 
     }
 
-    int PosicionaCursorLinha(int linha, int xLinha){
+    PIGEstadoEvento PosicionaCursorLinha(int linha, int xLinha){
         if (linha<0||(linhas.size()>0&&linha>=linhas.size()))
             return PIG_NAOSELECIONADO;
 
@@ -157,11 +139,13 @@ private:
         return PIG_TRATADO;
     }
 
+    inline int MouseSobreSlide(SDL_Point p){
+        return (p.x>pos.x+larg&&p.x<pos.x+larg+tamPadraoSlide&&p.y>pos.y&&p.y<pos.y+alt);
+    }
+
     //trata o evento do botao esquerdo
-    int TrataMouseBotaoEsquerdo(SDL_Point p, int inicioLinha=0)override{
-        //printf("viu tratar esq\n");
+    PIGEstadoEvento TrataMouseBotaoEsquerdo(SDL_Point p, int inicioLinha=0)override{
         int linha = GetLinhaPonto(p);
-        //printf("linha %d\n",linha);
         return PosicionaCursorLinha(linha,p.x);
     }
 
@@ -254,7 +238,7 @@ private:
         AvancaCursor();
         AjustaSlideVerticalPeloCursor();
         return 1;
-    };
+    }
 
     void IniciaBase(){
         espacoEntreLinhas = 0;
@@ -269,10 +253,7 @@ private:
         AjustaPosicaoTextoCursor();
         CPIGCaixaTexto::IniciaCoresBasicas();
         coresBasicas[3] = AZUL;
-    }
-
-    PIGTipoComponente GetTipo(){
-        return PIG_AREADETEXTO;
+        tipo = PIG_AREADETEXTO;
     }
 
 public:
@@ -335,11 +316,7 @@ public:
 
         if(slideVerticalAtivado) slideVertical->Desenha();
 
-        DesenhaLabel();
-
-        EscreveHint();
-
-        return 1;
+        return CPIGComponente::Desenha();
     }
 
     void SetFonteTexto(int fonte) override{
@@ -365,13 +342,7 @@ public:
         AjustaSlideVerticalPeloCursor();
     }
 
-    int MouseSobreSlide(SDL_Point p){
-        if (p.x>pos.x+larg&&p.x<pos.x+larg+tamPadraoSlide&&p.y>pos.y&&p.y<pos.y+alt)
-            return 1;
-        return 0;
-    }
-
-    int TrataEventoMouse(PIGEvento evento)override{
+    PIGEstadoEvento TrataEventoMouse(PIGEvento evento)override{
         if (!habilitado) return PIG_DESABILITADO;
         if (!visivel) return PIG_INVISIVEL;
 
@@ -380,7 +351,7 @@ public:
 
         if(slideVerticalAtivado&&MouseSobreSlide(p)){
             ((PIGComponente)slideVertical)->SetFoco(true);
-            int resp = slideVertical->TrataEventoMouse(evento);
+            PIGEstadoEvento resp = slideVertical->TrataEventoMouse(evento);
             ((PIGComponente)slideVertical)->SetFoco(false);
             if (resp==PIG_TRATADO){
                 AjustaPosicaoTextoCursor();
@@ -395,7 +366,8 @@ public:
         }
 
         if(mouseOver){
-            if (evento.mouse.acao == PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO) return TrataMouseBotaoEsquerdo(p);
+            if (evento.mouse.acao == PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO)
+                return TrataMouseBotaoEsquerdo(p);
             return PIG_MOUSEOVER;
         }
 

@@ -38,12 +38,6 @@ private:
         }
     }
 
-    void SetAcionado(bool valor){}
-
-    void SetMouseOver(bool valor){
-        mouseOver = valor;
-    }
-
     void SetRecolhida(bool valor){
         recolhida = valor;
     }
@@ -91,22 +85,20 @@ private:
         CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
     }
 
-    PIGTipoComponente GetTipo(){
-        return PIG_DROPDOWN;
-    }
-
 public:
 
     CPIGDropDown(int idComponente, int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, string nomeArqFundo="", int retiraFundo=1, int janela=0):
         CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,nomeArqFundo,retiraFundo,janela){
             SetRecolhida(true);
             itemDestaque = -1;
+            tipo = PIG_DROPDOWN;
     }
 
     CPIGDropDown(int idComponente, int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, int janela=0):
         CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,janela){
             SetRecolhida(true);
             itemDestaque = -1;
+            tipo = PIG_DROPDOWN;
     }
 
     CPIGDropDown(int idComponente,CPIGAtributos atrib):CPIGDropDown(LeParametros(idComponente,atrib)){}
@@ -144,12 +136,10 @@ public:
             DesenhaListaItens();
         }
 
-        DesenhaLabel();
-
-        return 1;
+        return CPIGComponente::Desenha();
     }
 
-    int TrataEventoMouse(PIGEvento evento){
+    PIGEstadoEvento TrataEventoMouse(PIGEvento evento)override{
         if (!habilitado) return PIG_DESABILITADO;
         if (!visivel) return PIG_INVISIVEL;
 
@@ -187,13 +177,6 @@ public:
             }
         }
 
-        return PIG_NAOSELECIONADO;
-    }
-
-    int TrataEventoTeclado(PIGEvento evento){
-        if (!temFoco) return PIG_SEMFOCO;
-        if (!habilitado) return PIG_DESABILITADO;
-        if (!visivel) return PIG_INVISIVEL;
         return PIG_NAOSELECIONADO;
     }
 
