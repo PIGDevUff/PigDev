@@ -19,11 +19,11 @@ private:
 
         if (atrib.GetString("nomeArq","")!=""){
             resp = new CPIGDropDown(idComponente,atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
-                          atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),
+                          atrib.GetInt("alturaIcone",0),atrib.GetInt("larguraIcone",0),
                           atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
         }else{
             resp = new CPIGDropDown(idComponente,atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
-                          atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),atrib.GetInt("janela",0));
+                          atrib.GetInt("alturaIcone",0),atrib.GetInt("larguraIcone",0),atrib.GetInt("janela",0));
         }
 
         resp->ProcessaAtributos(atrib);

@@ -21,8 +21,8 @@ private:
         valorFloat = atrib.GetFloat("deltaAngulo",0);
         if (valorFloat != 0) SetDeltaAngulo(valorFloat);
 
-        int valorInt = atrib.GetInt("raioInterno",-1);
-        if (valorInt > -1) SetRaioInterno(valorInt);
+        int valorInt = atrib.GetInt("raioInterno",0);
+        if (valorInt > 0) SetRaioInterno(valorInt);
     }
 
     static CPIGGaugeCircular LeParametros(int idComponente, CPIGAtributos atrib){

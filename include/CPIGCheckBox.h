@@ -18,11 +18,11 @@ protected:
 
         if (atrib.GetString("nomeArq","")!=""){
             resp = new CPIGCheckBox(idComponente,atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
-                          atrib.GetString("nomeArqItem",""),atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),
+                          atrib.GetString("nomeArqIcone",""),atrib.GetInt("alturaIcone",0),atrib.GetInt("larguraIcone",0),
                           atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
         }else{
             resp = new CPIGCheckBox(idComponente,atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
-                          atrib.GetString("nomeArqItem",""),atrib.GetInt("alturaItem",0),atrib.GetInt("larguraItem",0),atrib.GetInt("janela",0));
+                          atrib.GetString("nomeArqIcone",""),atrib.GetInt("alturaIcone",0),atrib.GetInt("larguraIcone",0),atrib.GetInt("janela",0));
         }
 
         resp->ProcessaAtributos(atrib);

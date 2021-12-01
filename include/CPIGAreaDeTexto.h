@@ -8,7 +8,6 @@ class CPIGAreaDeTexto: public CPIGCaixaTexto{
 
 private:
 
-    int largMax;
     int espacoEntreLinhas;
     bool linhasPauta;
     PIGSlideBar slideVertical;
@@ -19,10 +18,7 @@ private:
     void ProcessaAtributos(CPIGAtributos atrib)override{
         CPIGCaixaTexto::ProcessaAtributos(atrib);
 
-        int valorInt = atrib.GetInt("largMax",0);
-        if (valorInt > 0) SetLargMaxTexto(valorInt);
-
-        valorInt = atrib.GetInt("espacoEntreLinhas",0);
+        int valorInt = atrib.GetInt("espacoEntreLinhas",0);
         if (valorInt > 0) SetEspacoEntreAsLinhas(valorInt);
 
         valorInt = atrib.GetInt("linhasVisiveis",0);
@@ -102,7 +98,7 @@ private:
         string textoBase = GetTextoVisivel();
         string aux;
 
-        linhas = CPIGGerenciadorFontes::GetFonte(fonteTexto)->ExtraiLinhas(textoBase,largMax);
+        linhas = CPIGGerenciadorFontes::GetFonte(fonteTexto)->ExtraiLinhas(textoBase,larg-(margemEsq+margemDir));
 
         int linhaPos = GetLinhaDeUmaPos(posCursor);
         int posInicial = GetPosInicialDeUmaLinha(linhaPos);
@@ -242,7 +238,6 @@ private:
 
     void IniciaBase(){
         espacoEntreLinhas = 0;
-        largMax = larg;
         linhasPauta = false;
         slideVerticalAtivado = false;
         tamPadraoSlide = 20;
@@ -307,7 +302,7 @@ public:
         CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x+margemEsq,pos.y+margemBaixo,alt-(margemBaixo+margemCima),larg-(margemEsq+margemDir));
 
         DesenhaCursor();//desenha o cursor (se estiver em ediçăo)
-        CPIGGerenciadorFontes::GetFonte(fonteTexto)->EscreveLonga(texto,xTexto,yTexto,largMax,(espacoEntreLinhas + altLetra),coresBasicas[1],PIG_TEXTO_ESQUERDA);
+        CPIGGerenciadorFontes::GetFonte(fonteTexto)->EscreveLonga(texto,xTexto,yTexto,larg-(margemEsq+margemDir),(espacoEntreLinhas + altLetra),coresBasicas[1],PIG_TEXTO_ESQUERDA);
 
         //desbloqueia o desenho fora da area do componente
         CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
@@ -333,13 +328,6 @@ public:
     //define a cor da linhas horizontais
     void SetCorLinhas(PIGCor cor){
         coresBasicas[3] = cor;
-    }
-
-    //define a largura máxima do texto
-    void SetLargMaxTexto(int largMaxTexto){
-        largMax = largMaxTexto;
-        AjustaPosicaoTextoCursor();
-        AjustaSlideVerticalPeloCursor();
     }
 
     PIGEstadoEvento TrataEventoMouse(PIGEvento evento)override{

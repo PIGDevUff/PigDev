@@ -200,11 +200,12 @@ public:
     }
 
     int Desenha(){
+
         if(visivel==false) return 0;
 
         if (!marcadorAtualizado) AtualizaMarcador();
 
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x,pos.y,alt,larg);
+        //CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x,pos.y,alt,larg);
 
         if (text)
             CPIGSprite::Desenha();
@@ -214,7 +215,9 @@ public:
             marcador->Desenha();
         else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(xMarc,yMarc,altMarcador-(margemBaixo+margemCima),largMarcador-(margemEsq+margemDir),coresBasicas[1]);
 
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
+        printf("latm %d largm %d\n",altMarcador, largMarcador);
+
+        //CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
 
         return CPIGComponente::Desenha();
     }

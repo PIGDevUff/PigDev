@@ -64,7 +64,7 @@ protected:
         valorStr = atrib.GetString("corFinal","");
         if (valorStr != "") SetCorFinal(PIGCriaCorString(valorStr));
 
-        valorStr = atrib.GetString("crescimento","");
+        valorStr = atrib.GetString("orientacao","");
         if (valorStr != "") SetOrientacao(ConverteStringCrescimento(valorStr));
     }
 

@@ -73,7 +73,7 @@ private:
         transform(tipo.begin(), tipo.end(), tipo.begin(), ::toupper);
         if (tipo=="BOTAOCLICK") return PIG_BOTAOCLICK;
         if (tipo=="BOTAOONOFF") return PIG_BOTAOONOFF;
-        if (tipo=="CAMPOTEXTO") return PIG_CAMPOTEXTO;
+        if (tipo=="CAMPODETEXTO") return PIG_CAMPOTEXTO;
         if (tipo=="AREADETEXTO") return PIG_AREADETEXTO;
         if (tipo=="CHECKBOX") return PIG_CHECKBOX;
         if (tipo=="RADIOBOX") return PIG_RADIOBOX;
@@ -105,6 +105,10 @@ private:
                                         atrib.GetInt("janela",0));
             }
 
+            int px = atrib.GetInt("px",0);
+            int py = atrib.GetInt("py",0);
+            resp->Move(px,py);
+
             while (arq.eof()==false){
                 getline(arq,linha);
                 if (linha[0]!='#')
@@ -115,10 +119,6 @@ private:
         }
 
         return *resp;
-    }
-
-    PIGTipoComponente GetTipo(){
-        return PIG_FORM;
     }
 
 
@@ -151,11 +151,16 @@ public:
         return -1;
     }
 
-    inline int GetIdComponente(int componente){
-        return (id * PIG_MAX_COMPONENTES) + componente;
+    inline int GetIdComponente(int indice){
+        if (indice<0||indice>=totalComponentes) throw CPIGErroIndice(indice,"componentes");
+        return (id * PIG_MAX_COMPONENTES) + indice;
     }
 
-    int Desenha(){
+    inline int GetProxIdComponente(){
+        return (id * PIG_MAX_COMPONENTES) + totalComponentes;
+    }
+
+    int Desenha()override{
         if (visivel==false) return 0;
 
         if (text)
@@ -195,133 +200,133 @@ public:
     }
 
     int CriaBotaoClick(int altura, int largura, string nomeArq, int retiraFundo=1){
-        int idComponente = GetIdComponente(totalComponentes);
+        int idComponente = GetProxIdComponente();
         componentes[totalComponentes++] = new CPIGBotaoClick(idComponente,altura,largura,nomeArq,retiraFundo,idJanela);
         return idComponente;
     }
 
     int CriaBotaoClick(int altura, int largura){
-        int idComponente = GetIdComponente(totalComponentes);
+        int idComponente = GetProxIdComponente();
         componentes[totalComponentes++] = new CPIGBotaoClick(idComponente,altura,largura,idJanela);
         return idComponente;
     }
 
     int CriaBotaoOnOff(int altura, int largura, string nomeArq, int retiraFundo=1){
-        int idComponente = GetIdComponente(totalComponentes);
+        int idComponente = GetProxIdComponente();
         componentes[totalComponentes++] = new CPIGBotaoOnOff(idComponente,altura,largura,nomeArq,retiraFundo,idJanela);
         return idComponente;
     }
 
     int CriaBotaoOnOff(int altura, int largura){
-        int idComponente = GetIdComponente(totalComponentes);
+        int idComponente = GetProxIdComponente();
         componentes[totalComponentes++] = new CPIGBotaoOnOff(idComponente,altura,largura,idJanela);
         return idComponente;
     }
 
     int CriaAreaDeTexto(int altura, int largura, string nomeArq, int maxCars=200, int retiraFundo=1){
-        int idComponente = GetIdComponente(totalComponentes);
+        int idComponente = GetProxIdComponente();
         componentes[totalComponentes++] = new CPIGAreaDeTexto(idComponente,altura,largura,nomeArq,maxCars,retiraFundo,idJanela);
         return idComponente;
     }
 
     int CriaAreaDeTexto(int altura, int largura, int maxCars=200){
-        int idComponente = GetIdComponente(totalComponentes);
+        int idComponente = GetProxIdComponente();
         componentes[totalComponentes++] = new CPIGAreaDeTexto(idComponente,altura,largura,maxCars,idJanela);
         return idComponente;
     }
 
     int CriaCampoTextoESenha(int altura, int largura, string nomeArq, int maxCars=200, bool apenasNumeros=false, int retiraFundo=1, bool campoSenha=false){
-        int idComponente = GetIdComponente(totalComponentes);
+        int idComponente = GetProxIdComponente();
         componentes[totalComponentes++] = new CPIGCampoTextoESenha(idComponente,altura,largura,nomeArq,maxCars,apenasNumeros,campoSenha,retiraFundo,idJanela);
         return idComponente;
     }
 
     int CriaCampoTextoESenha(int altura, int largura, int maxCars=200, bool apenasNumeros=false, bool campoSenha=false){
-        int idComponente = GetIdComponente(totalComponentes);
+        int idComponente = GetProxIdComponente();
         componentes[totalComponentes++] = new CPIGCampoTextoESenha(idComponente,altura,largura,maxCars,apenasNumeros,campoSenha,idJanela);
         return idComponente;
     }
 
     int CriaListBox(int larguraTotal, int alturaLinha, int altItem, int largItem, string nomeArq, int retiraFundo=1){
-        int idComponente = GetIdComponente(totalComponentes);
+        int idComponente = GetProxIdComponente();
         componentes[totalComponentes++] = new CPIGListBox(idComponente,larguraTotal,alturaLinha,altItem,largItem,nomeArq,retiraFundo,idJanela);
         return idComponente;
     }
 
     int CriaListBox(int larguraTotal, int alturaLinha, int altItem, int largItem){
-        int idComponente = GetIdComponente(totalComponentes);
+        int idComponente = GetProxIdComponente();
         componentes[totalComponentes++] = new CPIGListBox(idComponente,larguraTotal,alturaLinha,altItem,largItem,idJanela);
         return idComponente;
     }
 
     int CriaDropDown(int larguraTotal, int alturaLinha, int altItem, int largItem, string nomeArq, int retiraFundo=1){
-        int idComponente = GetIdComponente(totalComponentes);
+        int idComponente = GetProxIdComponente();
         componentes[totalComponentes++] = new CPIGDropDown(idComponente,larguraTotal,alturaLinha,altItem,largItem,nomeArq,retiraFundo,idJanela);
         return idComponente;
     }
 
     int CriaDropDown(int larguraTotal, int alturaLinha, int altItem, int largItem){
-        int idComponente = GetIdComponente(totalComponentes);
+        int idComponente = GetProxIdComponente();
         componentes[totalComponentes++] = new CPIGDropDown(idComponente,larguraTotal,alturaLinha,altItem,largItem,idJanela);
         return idComponente;
     }
 
     int CriaGaugeBar(int altura, int largura, string imgMoldura, string imgMarcador="", int retiraFundoMoldura=1, int retiraFundoMarcador=1){
-        int idComponente = GetIdComponente(totalComponentes);
+        int idComponente = GetProxIdComponente();
         componentes[totalComponentes++] = new CPIGGaugeBar(idComponente,altura,largura,imgMoldura,imgMarcador,retiraFundoMoldura,retiraFundoMarcador,idJanela);
         return idComponente;
     }
 
     int CriaGaugeBar(int altura, int largura){
-        int idComponente = GetIdComponente(totalComponentes);
+        int idComponente = GetProxIdComponente();
         componentes[totalComponentes++] = new CPIGGaugeBar(idComponente,altura,largura,idJanela);
         return idComponente;
     }
 
     int CriaRadioBox(int larguraTotal, int alturaLinha, string imagemItem, int alturaItem, int larguraItem, string imagemFundo, int retiraFundo=1){
-        int idComponente = GetIdComponente(totalComponentes);
+        int idComponente = GetProxIdComponente();
         componentes[totalComponentes++] = new CPIGRadioBox(idComponente,larguraTotal,alturaLinha,imagemItem,alturaItem,larguraItem,imagemFundo,retiraFundo,idJanela);
         return idComponente;
     }
 
     int CriaRadioBox(int larguraTotal, int alturaLinha, string imagemItem, int alturaItem, int larguraItem){
-        int idComponente = GetIdComponente(totalComponentes);
+        int idComponente = GetProxIdComponente();
         componentes[totalComponentes++] = new CPIGRadioBox(idComponente,larguraTotal,alturaLinha,imagemItem,alturaItem,larguraItem,idJanela);
         return idComponente;
     }
 
     int CriaCheckBox(int larguraTotal, int alturaLinha, string imagemItem, int alturaItem, int larguraItem, string imagemFundo, int retiraFundo=1){
-        int idComponente = GetIdComponente(totalComponentes);
+        int idComponente = GetProxIdComponente();
         componentes[totalComponentes++] = new CPIGCheckBox(idComponente,larguraTotal,alturaLinha,imagemItem,alturaItem,larguraItem,imagemFundo,retiraFundo,idJanela);
         return idComponente;
     }
 
     int CriaCheckBox(int larguraTotal, int alturaLinha, string imagemItem, int alturaItem, int larguraItem){
-        int idComponente = GetIdComponente(totalComponentes);
+        int idComponente = GetProxIdComponente();
         componentes[totalComponentes++] = new CPIGCheckBox(idComponente,larguraTotal,alturaLinha,imagemItem,alturaItem,larguraItem,idJanela);
         return idComponente;
     }
 
     int CriaGaugeCircular(int altura, int largura){
-        int idComponente = GetIdComponente(totalComponentes);
+        int idComponente = GetProxIdComponente();
         componentes[totalComponentes++] = new CPIGGaugeCircular(idComponente,altura,largura,idJanela);
         return idComponente;
     }
 
     int CriaGaugeCircular(int altura, int largura, string imgTrilha, int alturaMarcador, int larguraMarcador, string imgMarcador, int retiraFundoTrilha=1, int retiraFundoMarcador=1){
-        int idComponente = GetIdComponente(totalComponentes);
+        int idComponente = GetProxIdComponente();
         componentes[totalComponentes++] = new CPIGGaugeCircular(idComponente,altura,largura,imgTrilha,alturaMarcador,larguraMarcador, imgMarcador, retiraFundoTrilha, retiraFundoMarcador, idJanela);
         return idComponente;
     }
 
     int CriaSlideBar(int altura, int largura, string imgTrilha, int alturaMarcador, int larguraMarcador, string imgMarcador, int retiraFundoTrilha=1, int retiraFundoMarcador=1){
-        int idComponente = GetIdComponente(totalComponentes);
+        int idComponente = GetProxIdComponente();
         componentes[totalComponentes++] = new CPIGSlideBar(idComponente,altura,largura,imgTrilha,alturaMarcador,larguraMarcador,imgMarcador,retiraFundoTrilha,retiraFundoMarcador,idJanela);
         return idComponente;
     }
 
     int CriaSlideBar(int altura, int largura, int alturaMarcador, int larguraMarcador){
-        int idComponente = GetIdComponente(totalComponentes);
+        int idComponente = GetProxIdComponente();
         componentes[totalComponentes++] = new CPIGSlideBar(idComponente,altura,largura,alturaMarcador,larguraMarcador,idJanela);
         return idComponente;
     }
@@ -343,7 +348,7 @@ public:
     }
 
     int CriaComponentePorParametro(string parametros){
-        int idComponente = GetIdComponente(totalComponentes);
+        int idComponente = GetProxIdComponente();
         //printf("parametros: %s\n",parametros.c_str());
         CPIGAtributos atrib = CPIGAtributos::GetAtributos(parametros);
         int componente = GetTipoComponente(atrib.GetString("tipo",""));

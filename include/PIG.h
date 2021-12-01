@@ -5423,6 +5423,18 @@ int PIGFormGetIdComponenteLabel(int idForm, char *label){
     return CPIGGerenciadorForms::GetForm(idForm)->GetIdComponente(label);
 }
 
+/********************************
+A função PIGFormGetIdComponenteIndice() é responsável por recuperar o identificador do componente que possui o índice (ordem de criação) informado.
+Parâmetros:
+idForm (entrada, passagem por parâmetro): identificador do formulário que possui o componente.
+indice (entrada, passagem por referência): índice (ordem de criação) do componente a ser procurado no formulário.
+Retorno:
+inteiro que representa o identificador do componente que possui o índice.
+********************************/
+int PIGFormGetIdComponenteIndice(int idForm, int indice){
+    return CPIGGerenciadorForms::GetForm(idForm)->GetIdComponente(indice);
+}
+
 /*******COMPONENTES*********/
 
 int PIGCriaComponentePorParametro(int idForm, char* parametros){
@@ -5604,10 +5616,6 @@ void PIGAreaDeTextoSetFonteTexto(int idComponente, int fonte){
 
 void PIGAreaDeTextoSetLinhasAbaixoTexto(int idComponente, int visivel){
     CPIGGerenciadorForms::GetComponente<PIGAreaDeTexto>(idComponente)->SetLinhasAbaixoTexto(visivel);
-}
-
-void PIGAreaDeTextoSetLargMaxTexto(int idComponente, int largMaxTexto){
-    CPIGGerenciadorForms::GetComponente<PIGAreaDeTexto>(idComponente)->SetLargMaxTexto(largMaxTexto);
 }
 
 void PIGAreaDeTextoSetEspacoEntreAsLinhas(int idComponente, int espaco){
