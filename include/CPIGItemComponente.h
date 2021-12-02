@@ -77,13 +77,6 @@ public:
     }
 
     void SetAcionado(bool valor)override{
-        if (acionado&&!valor){
-            Desloca(-margemEsq,-margemBaixo);
-            SetDimensoes(alt-(margemCima+margemBaixo),larg-(margemEsq+margemDir));
-        }else if (!acionado&&valor){
-            Desloca(margemEsq,margemBaixo);
-            SetDimensoes(alt+(margemCima+margemBaixo),larg+(margemEsq+margemDir));
-        }
         CPIGComponente::SetAcionado(valor);
         if (AjustaFrame) AjustaFrame(this);
     }
@@ -124,6 +117,7 @@ public:
 
         if (icone)
             icone->Desenha();
+        //CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado((int)pos.x,(int)pos.y,alt,larg,AMARELO);
 
         return CPIGComponente::Desenha();
     }
@@ -139,10 +133,10 @@ public:
         int largLabel = lab->GetLargura();//CGerenciadorFontes::GetLarguraPixels(label,fonteLabel);
         if (icone){
             if (posIcone==PIG_COMPONENTE_ESQ_CENTRO){
-                SetPosicaoPersonalizadaLabel(larg-largLabel,0);
-            }else SetPosicaoPersonalizadaLabel(larg-largLabel-largIcone,0);
+                SetPosicaoPersonalizadaLabel(larg-largLabel-margemDir,0);
+            }else SetPosicaoPersonalizadaLabel(larg-largLabel-largIcone-margemDir,0);
         }else{
-            SetPosicaoPersonalizadaLabel(larg-largLabel,0);
+            SetPosicaoPersonalizadaLabel(larg-largLabel-margemDir,0);
         }
     }
 
@@ -150,10 +144,10 @@ public:
         posRelativaLabel = PIG_COMPONENTE_ESQ_CENTRO;
         if (icone){
             if (posIcone==PIG_COMPONENTE_ESQ_CENTRO){
-                SetPosicaoPersonalizadaLabel(largIcone,0);
-            }else SetPosicaoPersonalizadaLabel(0,0);
+                SetPosicaoPersonalizadaLabel(largIcone+margemEsq,0);
+            }else SetPosicaoPersonalizadaLabel(margemEsq,0);
         }else{
-            SetPosicaoPersonalizadaLabel(0,0);
+            SetPosicaoPersonalizadaLabel(margemEsq,0);
         }
     }
 
@@ -162,17 +156,17 @@ public:
         int largLabel = lab->GetLargura();//CGerenciadorFontes::GetLarguraPixels(label,fonteLabel);
         if (icone){
             if (posIcone==PIG_COMPONENTE_ESQ_CENTRO){
-                SetPosicaoPersonalizadaLabel(largIcone+(larg-largIcone)/2-largLabel/2,0);
-            }else SetPosicaoPersonalizadaLabel((larg-largIcone)/2-largLabel/2,0);
+                SetPosicaoPersonalizadaLabel(margemEsq+largIcone+(larg-largIcone-margemEsq-margemDir)/2-largLabel/2,0);
+            }else SetPosicaoPersonalizadaLabel(margemDir+(larg-largIcone-margemEsq-margemDir)/2-largLabel/2,0);
         }else{
-            SetPosicaoPersonalizadaLabel(larg/2-largLabel/2,0);
+            SetPosicaoPersonalizadaLabel(margemEsq+(larg-margemEsq-margemDir)/2-largLabel/2,0);
         }
     }
 
     void AlinhaIconeDireita(){
         if (icone){
             posIcone=PIG_COMPONENTE_DIR_CENTRO;
-            icone->Move(pos.x+larg-largIcone,pos.y);
+            icone->Move(pos.x+larg-largIcone-margemDir,pos.y);
             if (posRelativaLabel == PIG_COMPONENTE_ESQ_CENTRO){
                 AlinhaLabelEsquerda();
             }else if (posRelativaLabel == PIG_COMPONENTE_CENTRO_CENTRO){
@@ -186,7 +180,7 @@ public:
     void AlinhaIconeEsquerda(){
         if (icone){
             posIcone=PIG_COMPONENTE_ESQ_CENTRO;
-            icone->Move(pos.x,pos.y);
+            icone->Move(pos.x+margemEsq,pos.y);
             if (posRelativaLabel == PIG_COMPONENTE_ESQ_CENTRO){
                 AlinhaLabelEsquerda();
             }else if (posRelativaLabel == PIG_COMPONENTE_CENTRO_CENTRO){

@@ -54,15 +54,15 @@ private:
     }
 
     void DesenhaItemDestaque(){
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea((int)pos.x,((int)pos.y),altBaseLista,larg);
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea((int)pos.x,((int)pos.y),altBaseLista+margemBaixo+margemCima,larg);
         if (text){//se tiver imagem de fundo
-            dest.h=altBaseLista;
+            dest.h=altBaseLista+margemBaixo+margemCima;
             CPIGSprite::Desenha();
         }else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,altBaseLista,larg,coresBasicas[0]);
 
         if (itemDestaque>=0){                       //desenha o item no cabeçalho do dropdown
             PIGPonto2D pItem = itens[itemDestaque]->GetXY();
-            itens[itemDestaque]->Move(pItem.x,pos.y);     //move o item para o ponto do cabeçalho
+            itens[itemDestaque]->Move(pItem.x,pos.y+margemBaixo);     //move o item para o ponto do cabeçalho
             //printf("%.0f, %0.f\n",pItem.x,pos.y);
             itens[itemDestaque]->Desenha();         //desenha o item no cabeçalho
             itens[itemDestaque]->Move(pItem.x,pItem.y); //devolve o item para a posiçăo normal (onde também deverá ser desenhado)
@@ -71,11 +71,11 @@ private:
     }
 
     void DesenhaListaItens(){
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea((int)pos.x,((int)pos.y)-(itens.size())*altBaseLista,(itens.size()+1)*altBaseLista,larg);
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea((int)pos.x,((int)pos.y)-(itens.size())*altBaseLista,(itens.size()+1)*altBaseLista+margemBaixo+margemCima,larg);
         if (text){
             frameAtual=0;
             dest.y = *altJanela-pos.y-altBaseLista;
-            dest.h = (itens.size()+1)*altBaseLista;
+            dest.h = (itens.size()+1)*altBaseLista+margemBaixo+margemCima;
             CPIGSprite::Desenha();
         }else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y-altBaseLista*itens.size(),(itens.size()+1)*altBaseLista,larg,coresBasicas[0]);
 
@@ -117,13 +117,13 @@ public:
 
     void CriaItem(string itemLabel, string arqImagemIcone="", string arqImagemFundoItem="", bool itemHabilitado = true, string hintMsg="", int retiraFundo=1, int retiraFundoIcone=1){
 
-        int yItem = pos.y-altBaseLista*(itens.size()+1);
+        int yItem = pos.y-altBaseLista*(itens.size()+1)+margemBaixo;
         CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,false,itemHabilitado,hintMsg,retiraFundo,retiraFundoIcone);
 
         if (recolhida){
-            SetDimensoes(altBaseLista,larg);
+            SetDimensoes(altBaseLista+margemBaixo+margemCima,larg);
         }else{
-            SetDimensoes(altBaseLista*(itens.size()+1),larg);
+            SetDimensoes(altBaseLista*(itens.size()+1)+margemBaixo+margemCima,larg);
         }
     }
 
@@ -135,6 +135,9 @@ public:
         }else{
             DesenhaListaItens();
         }
+
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado((int)pos.x+margemEsq,(int)pos.y+margemBaixo,alt-(margemBaixo+margemCima),larg-(margemEsq+margemDir),VERDE);
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado((int)pos.x,(int)pos.y,alt,larg,VERMELHO);
 
         return CPIGComponente::Desenha();
     }
@@ -180,6 +183,14 @@ public:
         }
 
         return PIG_NAOSELECIONADO;
+    }
+
+
+    virtual void SetMargens(int mEsq, int mDir, int mCima, int mBaixo)override{
+        CPIGListaItemComponente::SetMargens(mEsq,mDir,mCima,mBaixo);
+        if (recolhida)
+            alt = altBaseLista+margemBaixo+margemCima;
+        else alt = altBaseLista*(itens.size()+1)+margemBaixo+margemCima;
     }
 
 };

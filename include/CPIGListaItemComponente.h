@@ -51,10 +51,20 @@ protected:
             }
         }
         item->Move(pos.x,yItem);
+        printf("movendo para %d,%d (%d+%d)\n",(int)pos.x+margemEsq,yItem+margemBaixo,yItem,margemBaixo);
         item->SetHint(hintMsg);
         item->SetAudio(audioComponente);
         item->SetAcionado(itemMarcado);
         item->SetHabilitado(itemHabilitado);
+        item->SetMargens(margemEsq,margemDir,margemCima,margemBaixo);
+        if (posIcones==PIG_COMPONENTE_DIR_CENTRO)
+            item->AlinhaIconeDireita();
+        else item->AlinhaIconeEsquerda();
+        if (posLabels==PIG_COMPONENTE_CENTRO_CENTRO){
+            item->AlinhaLabelCentro();
+        }else if (posLabels==PIG_COMPONENTE_DIR_CENTRO){
+            item->AlinhaLabelDireita();
+        }else item->AlinhaLabelEsquerda();
         itens.push_back(item);
         return item;
     }
@@ -227,6 +237,13 @@ public:
         PosicionaLabel();
 
         DeslocaItens(dx,dy);
+    }
+
+    virtual void SetMargens(int mEsq, int mDir, int mCima, int mBaixo)override{
+        CPIGComponente::SetMargens(mEsq,mDir,mCima,mBaixo);
+        printf("defini margens %d,%d,%d,%d\n",mEsq,mDir,mCima,mBaixo);
+        for (PIGItemComponente i: itens)
+            i->SetMargens(mEsq,mDir,mCima,mBaixo);
     }
 
 };

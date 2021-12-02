@@ -68,7 +68,7 @@ public:
         CPIGListaItemComponente::SetDimensoes(alt+altBaseLista,larg); //aumenta o tamanho do componente para comportar o novo item
         DeslocaItens(0,altBaseLista);//desloca todos os itens para cima, pois o novo item vai entrar abaixo dos outros
 
-        int yItem = pos.y;
+        int yItem = pos.y+margemBaixo;
         PIGItemComponente item = CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,itemMarcado,itemHabilitado,hintMsg,retiraFundo,retiraFundoIcone);
         item->DefineFuncaoAjusteFrame(AjustaFrame);
         item->GetIcone()->CriaFramesAutomaticosPorLinha(1,1,6);
@@ -144,6 +144,11 @@ public:
         }
 
         Move(pos.x,pos.y);
+    }
+
+    virtual void SetMargens(int mEsq, int mDir, int mCima, int mBaixo)override{
+        CPIGListaItemComponente::SetMargens(mEsq,mDir,mCima,mBaixo);
+        alt = altBaseLista*itens.size()+margemBaixo+margemCima;
     }
 
 };

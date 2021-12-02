@@ -215,8 +215,6 @@ public:
             marcador->Desenha();
         else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(xMarc,yMarc,altMarcador-(margemBaixo+margemCima),largMarcador-(margemEsq+margemDir),coresBasicas[1]);
 
-        printf("latm %d largm %d\n",altMarcador, largMarcador);
-
         //CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
 
         return CPIGComponente::Desenha();
