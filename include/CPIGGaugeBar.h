@@ -57,54 +57,51 @@ private:
         int altBarraOrig=0,largBarraOrig=0;
 
         marcador->GetDimensoesOriginais(altBarraOrig,largBarraOrig);
+
         int altUtilBarraTela = alt - (margemCima+margemBaixo);
         int largUtilBarraTela = larg - (margemDir+margemEsq);
-        int altUtilBarraOrig = altBarraOrig - (margemCima+margemBaixo);
-        int largUtilBarraOrig = largBarraOrig - (margemEsq+margemDir);
 
         PIGPonto2D posBarra={0,0};
 
         double perc = porcentagemConcluida;
         SDL_Rect r={0,0,0,0};
 
-        //printf(" porc %f\n",perc);
-
         switch(orientacaoCrescimento){
         case PIG_GAUGE_ESQ_DIR:
             altBarraFinal = altUtilBarraTela;
             largBarraFinal = largUtilBarraTela*perc;
             posBarra = {pos.x+margemEsq,pos.y+margemBaixo};
-            r.x = margemEsq;
-            r.y = margemCima;//sistema de coordenada da imagem
-            r.w = largUtilBarraOrig*perc;
-            r.h = altUtilBarraOrig;
+            r.x = 0;
+            r.y = 0;
+            r.w = largBarraOrig*perc;
+            r.h = altBarraOrig;
             break;
         case PIG_GAUGE_DIR_ESQ:
             altBarraFinal = altUtilBarraTela;
             largBarraFinal = largUtilBarraTela*perc;
             posBarra = {pos.x+larg-margemDir-largBarraFinal-1,pos.y+margemBaixo};
-            r.x = margemEsq + (largUtilBarraOrig)*(1-perc);
-            r.y = margemCima;
-            r.w = (largUtilBarraOrig)*perc;
-            r.h = altUtilBarraOrig;
+            r.x = (largBarraOrig)*(1-perc);
+            r.y = 0;
+            r.w = (largBarraOrig)*perc;
+            r.h = altBarraOrig;
             break;
         case PIG_GAUGE_BAIXO_CIMA:
             altBarraFinal = (altUtilBarraTela)*perc;
             largBarraFinal = largUtilBarraTela;
             posBarra = {pos.x+margemEsq,pos.y+margemBaixo};
-            r.x = margemEsq;
-            r.y = margemCima+altUtilBarraOrig*(1-perc);
-            r.w = largUtilBarraOrig;
-            r.h = (altUtilBarraOrig)*perc;
+            r.x = 0;
+            r.y = altBarraOrig*(1-perc);
+            r.w = largBarraOrig;
+            r.h = (altBarraOrig)*perc;
             break;
         case PIG_GAUGE_CIMA_BAIXO:
             altBarraFinal = (altUtilBarraTela)*perc;
             largBarraFinal = largUtilBarraTela;
             posBarra = {pos.x+margemEsq,pos.y+alt-margemCima-altBarraFinal};
-            r.x = margemEsq;
-            r.y = margemCima;
-            r.w = largUtilBarraOrig;
-            r.h = (altUtilBarraOrig)*perc;
+            r.x = 0;
+            r.y = 0;
+            r.w = largBarraOrig;
+            r.h = (altBarraOrig)*perc;
             break;
         }
 

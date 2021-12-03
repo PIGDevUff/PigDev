@@ -120,7 +120,7 @@ public:
             CPIGSprite::Desenha();
         else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
 
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x+margemEsq,pos.y+margemBaixo,alt-(margemBaixo+margemCima),larg-(margemEsq+margemDir));
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea((int)pos.x+margemEsq,(int)pos.y+margemBaixo,alt-(margemBaixo+margemCima),larg-(margemEsq+margemDir));
 
         CPIGGerenciadorFontes::GetFonte(fonteTexto)->Escreve(GetTextoVisivel(),xTexto,yTexto,coresBasicas[1],PIG_TEXTO_ESQUERDA);
         DesenhaCursor();//desenha o cursor (se estiver em ediçăo)

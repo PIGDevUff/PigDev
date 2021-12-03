@@ -18,6 +18,7 @@ int modo;
 bool fechada;
 float opacidade;
 string titulo;
+SDL_Rect block;
 PIGCamera cameraMovel,cameraFixa;
 bool fixo;
 
@@ -49,6 +50,7 @@ CPIGJanela(string tituloJanela, int idJanela, int altTela, int largTela){
 
     opacidade = 1.0f;
     textFundo = NULL;
+    block = {0,0,-1,-1};
 }
 
 ~CPIGJanela(){
@@ -378,17 +380,21 @@ PIGCor GetPixel(int x, int y) {
 }
 
 void BloqueiaArea(int x, int y, int alt, int larg){
-    SDL_Rect rect;
-    rect.x = x;
-    rect.y = altura-(y+alt);
-    rect.h = alt;
-    rect.w = larg;
+    block.x = x;
+    block.y = altura-(y+alt);
+    block.h = alt;
+    block.w = larg;
 
-    GetCamera()->ConverteCoordenadaWorldScreen(rect.x,rect.y,rect.x,rect.y);
-    SDL_RenderSetClipRect(renderer,&rect);
+    GetCamera()->ConverteCoordenadaWorldScreen(block.x,block.y,block.x,block.y);
+    SDL_RenderSetClipRect(renderer,&block);
+}
+
+SDL_Rect GetAreaBloqueada(){
+    return block;
 }
 
 void DesbloqueiaArea(){
+    block = {0,0,-1,-1};
     SDL_RenderSetClipRect(renderer,NULL);
 }
 

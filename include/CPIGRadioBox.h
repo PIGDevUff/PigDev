@@ -88,6 +88,18 @@ public:
         AjustaFrame(item);
     }
 
+    void CriaItem(CPIGAtributos atrib){
+        CPIGListaItemComponente::SetDimensoes(alt+altBaseLista,larg); //aumenta o tamanho do componente para comportar o novo item
+        DeslocaItens(0,altBaseLista);//desloca todos os itens para cima, pois o novo item vai entrar abaixo dos outros
+
+        int yItem = pos.y+margemBaixo;
+        PIGItemComponente item = CPIGListaItemComponente::CriaItem(yItem,atrib.GetString("label",""),arqImagemIcone,atrib.GetString("nomeArq",""),
+                                                                   false,atrib.GetInt("habilitado",1),atrib.GetString("hint",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("retiraFundoIcone",1));
+        item->DefineFuncaoAjusteFrame(AjustaFrame);
+        item->GetIcone()->CriaFramesAutomaticosPorLinha(1,1,6);
+        AjustaFrame(item);
+    }
+
     int Desenha()override{
         if (visivel==false) return 0;
 

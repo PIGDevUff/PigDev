@@ -127,6 +127,19 @@ public:
         }
     }
 
+    void CriaItem(CPIGAtributos atrib){
+
+        int yItem = pos.y-altBaseLista*(itens.size()+1)+margemBaixo;
+        CPIGListaItemComponente::CriaItem(yItem,atrib.GetString("label",""),atrib.GetString("nomeArqIcone",""),atrib.GetString("nomeArq",""),
+                                                                   false,atrib.GetInt("habilitado",1),atrib.GetString("hint",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("retiraFundoIcone",1));
+
+        if (recolhida){
+            SetDimensoes(altBaseLista+margemBaixo+margemCima,larg);
+        }else{
+            SetDimensoes(altBaseLista*(itens.size()+1)+margemBaixo+margemCima,larg);
+        }
+    }
+
     int Desenha(){
         if (visivel==false) return 0;
 
@@ -135,9 +148,6 @@ public:
         }else{
             DesenhaListaItens();
         }
-
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado((int)pos.x+margemEsq,(int)pos.y+margemBaixo,alt-(margemBaixo+margemCima),larg-(margemEsq+margemDir),VERDE);
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado((int)pos.x,(int)pos.y,alt,larg,VERMELHO);
 
         return CPIGComponente::Desenha();
     }

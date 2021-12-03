@@ -38,7 +38,7 @@ private:
     void DesenhaRetanguloMarcacao(){
         if(itemDestaque !=-1){
             PIGPonto2D p = itens[itemDestaque]->GetXY();
-            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado(p.x+margemEsq,p.y+margemBaixo,altBaseLista-(margemCima+margemBaixo),larg-(margemDir+margemEsq),coresBasicas[1]);
+            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado(p.x,p.y,altBaseLista,larg-(margemDir+margemEsq),coresBasicas[1]);
         }
     }
 
@@ -127,6 +127,15 @@ public:
 
         int yItem = pos.y+margemBaixo;
         CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,itemMarcado,itemHabilitado,hintMsg,retiraFundo,retiraFundoIcone);
+    }
+
+    void CriaItem(CPIGAtributos atrib){
+        CPIGListaItemComponente::SetDimensoes(alt+altBaseLista,larg); //aumenta o tamanho do componente para comportar o novo item
+        DeslocaItens(0,altBaseLista);//desloca todos os itens para cima, pois o novo item vai entrar abaixo dos outros
+
+        int yItem = pos.y+margemBaixo;
+        CPIGListaItemComponente::CriaItem(yItem,atrib.GetString("label",""),atrib.GetString("nomeArqIcone",""),atrib.GetString("nomeArq",""),
+                                                                   false,atrib.GetInt("habilitado",1),atrib.GetString("hint",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("retiraFundoIcone",1));
     }
 
     int Desenha(){

@@ -12,6 +12,14 @@ protected:
     vector<PIGItemComponente> itens;
     int altIcone,largIcone;                           //altura e largura das imagens dos itens
 
+    static PIGPosicaoComponente GetAlinhamento(string alinhamento){
+        transform(alinhamento.begin(), alinhamento.end(), alinhamento.begin(), ::toupper);
+        if (alinhamento=="ESQ_CENTRO") return PIG_COMPONENTE_ESQ_CENTRO;
+        if (alinhamento=="DIR_CENTRO") return PIG_COMPONENTE_DIR_CENTRO;
+        if (alinhamento=="CENTRO_CENTRO") return PIG_COMPONENTE_CENTRO_CENTRO;
+        return PIG_COMPONENTE_ESQ_CENTRO;
+    }
+
     void IniciaCoresBasicas(){
         coresBasicas[0] = CINZA;
         coresBasicas[1] = AZUL;
@@ -20,11 +28,11 @@ protected:
     virtual void ProcessaAtributos(CPIGAtributos atrib)override{
         CPIGComponente::ProcessaAtributos(atrib);
 
-        int larguraIcone = atrib.GetInt("larguraIcone",largIcone);
-        int alturaIcone = atrib.GetInt("alturaIcone",altIcone);
+        string valorStr = atrib.GetString("alinhamentoLabels","");
+        if (valorStr!="") AlinhaLabelItens(GetAlinhamento(valorStr));
 
-        if (larguraIcone != largIcone || alturaIcone != altIcone)
-            SetDimensoesIcone(alturaIcone,larguraIcone);
+        valorStr = atrib.GetString("alinhamentoIcones","");
+        if (valorStr!="") AlinhaIcones(GetAlinhamento(valorStr));
     }
 
     void IniciaBase(int alturaLinha){
@@ -39,32 +47,26 @@ protected:
         PIGItemComponente item;
         if (arqImagemFundo==""){
             if (arqImagemIcone==""){
-                item = new CPIGItemComponente(itens.size(),itemLabel,larg,altBaseLista,retiraFundo,idJanela);
+                item = new CPIGItemComponente(itens.size(),itemLabel,larg-(margemEsq+margemDir),altBaseLista,retiraFundo,idJanela);
             }else{
-                item = new CPIGItemComponente(itens.size(),altIcone,largIcone,arqImagemIcone,itemLabel,larg,altBaseLista,retiraFundoIcone,idJanela);
+                item = new CPIGItemComponente(itens.size(),altIcone,largIcone,arqImagemIcone,itemLabel,larg-(margemEsq+margemDir),altBaseLista,retiraFundoIcone,idJanela);
             }
         }else{
             if (arqImagemIcone==""){
-                item = new CPIGItemComponente(itens.size(),arqImagemFundo,itemLabel,larg,altBaseLista,retiraFundo,idJanela);
+                item = new CPIGItemComponente(itens.size(),arqImagemFundo,itemLabel,larg-(margemEsq+margemDir),altBaseLista,retiraFundo,idJanela);
             }else{
-                item = new CPIGItemComponente(itens.size(),altIcone,largIcone,arqImagemIcone,arqImagemFundo,itemLabel,larg,altBaseLista,retiraFundo,retiraFundoIcone,idJanela);
+                item = new CPIGItemComponente(itens.size(),altIcone,largIcone,arqImagemIcone,arqImagemFundo,itemLabel,larg-(margemEsq+margemDir),altBaseLista,retiraFundo,retiraFundoIcone,idJanela);
             }
         }
-        item->Move(pos.x,yItem);
-        printf("movendo para %d,%d (%d+%d)\n",(int)pos.x+margemEsq,yItem+margemBaixo,yItem,margemBaixo);
+        item->Move(pos.x+margemEsq,yItem);
         item->SetHint(hintMsg);
         item->SetAudio(audioComponente);
         item->SetAcionado(itemMarcado);
         item->SetHabilitado(itemHabilitado);
-        item->SetMargens(margemEsq,margemDir,margemCima,margemBaixo);
-        if (posIcones==PIG_COMPONENTE_DIR_CENTRO)
-            item->AlinhaIconeDireita();
-        else item->AlinhaIconeEsquerda();
-        if (posLabels==PIG_COMPONENTE_CENTRO_CENTRO){
-            item->AlinhaLabelCentro();
-        }else if (posLabels==PIG_COMPONENTE_DIR_CENTRO){
-            item->AlinhaLabelDireita();
-        }else item->AlinhaLabelEsquerda();
+        //item->SetMargens(margemEsq,margemDir,margemCima,margemBaixo);
+        item->AlinhaIcone(posIcones);
+        item->AlinhaLabel(posLabels);
+
         itens.push_back(item);
         return item;
     }
@@ -92,20 +94,23 @@ protected:
 
 public:
 
+    virtual void CriaItem(CPIGAtributos atrib)=0;
+
     void SetDimensoesIcone(int alturaIcone, int larguraIcone){
         for (unsigned int i=0;i<itens.size();i++){
             itens[i]->SetDimensoesIcone(alturaIcone,larguraIcone);
         }
     }
-    void AlinhaLabelDireita(){
-        if (posLabels!=PIG_COMPONENTE_DIR_CENTRO){//se os labels estăo ŕ direita do botőes, inverte
+
+    void AlinhaLabelItens(PIGPosicaoComponente valor){
+        if (posLabels!=valor){//se os labels estăo ŕ direita do botőes, inverte
+            posLabels = valor;
             for (PIGItemComponente i: itens)
-                i->AlinhaLabelDireita();
-            posLabels = PIG_COMPONENTE_DIR_CENTRO;
+                i->AlinhaLabel(posLabels);
         }
     }
 
-    void AlinhaLabelEsquerda(){
+    /*void AlinhaLabelEsquerda(){
         if (posLabels!=PIG_COMPONENTE_ESQ_CENTRO){//se os labels estăo ŕ direita do botőes, inverte
             for (PIGItemComponente i: itens)
                 i->AlinhaLabelEsquerda();
@@ -119,23 +124,23 @@ public:
                 i->AlinhaLabelCentro();
             posLabels = PIG_COMPONENTE_CENTRO_CENTRO;
         }
-    }
+    }*/
 
-    void AlinhaIconeDireita(){
-        if (posIcones!=PIG_COMPONENTE_DIR_CENTRO){//se os labels estăo à direita do botőes, inverte
+    void AlinhaIcones(PIGPosicaoComponente valor){
+        if (posIcones!=valor){//se os labels estăo à direita do botőes, inverte
+            posIcones = valor;
             for (PIGItemComponente i: itens)
-                i->AlinhaIconeDireita();
-            posIcones = PIG_COMPONENTE_DIR_CENTRO;
+                i->AlinhaIcone(posIcones);
         }
     }
 
-    void AlinhaIconeEsquerda(){
+    /*void AlinhaIconeEsquerda(){
         if (posIcones!=PIG_COMPONENTE_ESQ_CENTRO){//se os labels estăo à direita do botőes, inverte
             for (PIGItemComponente i: itens)
                 i->AlinhaIconeEsquerda();
             posIcones = PIG_COMPONENTE_ESQ_CENTRO;
         }
-    }
+    }*/
 
     int GetAcionadoItem(int indice){
         if (indice<0||indice>=itens.size()) return -1;
@@ -239,12 +244,12 @@ public:
         DeslocaItens(dx,dy);
     }
 
-    virtual void SetMargens(int mEsq, int mDir, int mCima, int mBaixo)override{
+    /*virtual void SetMargens(int mEsq, int mDir, int mCima, int mBaixo)override{
         CPIGComponente::SetMargens(mEsq,mDir,mCima,mBaixo);
         printf("defini margens %d,%d,%d,%d\n",mEsq,mDir,mCima,mBaixo);
         for (PIGItemComponente i: itens)
             i->SetMargens(mEsq,mDir,mCima,mBaixo);
-    }
+    }*/
 
 };
 typedef CPIGListaItemComponente *PIGListaComponente;

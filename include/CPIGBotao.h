@@ -15,10 +15,10 @@ protected:
 
     void SetAcionado(bool valor)override{
         if (acionado&&!valor){
-            Desloca(-margemEsq,margemBaixo);
+            Desloca(-margemEsq,margemCima);
             //SetDimensoes(alt-(margemCima+margemBaixo),larg-(margemEsq+margemDir));
         }else if (!acionado&&valor){
-            Desloca(margemEsq,-margemBaixo);
+            Desloca(margemEsq,-margemCima);
             //SetDimensoes(alt+(margemCima+margemBaixo),larg+(margemEsq+margemDir));
         }
         CPIGComponente::SetAcionado(valor);

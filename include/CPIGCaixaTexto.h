@@ -298,7 +298,7 @@ public:
     }
 
     //define as margens do componente
-    virtual void SetMargens(int mEsq, int mDir, int mBaixo, int mCima)override{
+    virtual void SetMargens(int mEsq, int mDir, int mCima, int mBaixo)override{
         CPIGComponente::SetMargens(mEsq,mDir,mCima,mBaixo);
         AjustaPosicaoTextoCursor();
     }

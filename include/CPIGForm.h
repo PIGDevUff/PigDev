@@ -61,7 +61,7 @@ private:
     }
 
     void IniciaBase(){
-        coresBasicas[0] = PRETO;
+        coresBasicas[0] = {0,0,0,0};
         totalComponentes = 0;
         componenteComFoco = componenteMouseOver = -1;
         for(int i=0;i<PIG_MAX_COMPONENTES;i++)
@@ -82,6 +82,7 @@ private:
         if (tipo=="GAUGEBAR") return PIG_GAUGEBAR;
         if (tipo=="GAUGECIRCULAR") return PIG_GAUGECIRCULAR;
         if (tipo=="SLIDEBAR") return PIG_SLIDEBAR;
+        if (tipo=="ITEM") return PIG_ITEMCOMPONENTE;
         printf("componente <%s> invalido lido da linha da parametros!!!\n",tipo.c_str());
         return (PIGTipoComponente)-1;
     }
@@ -111,7 +112,7 @@ private:
 
             while (arq.eof()==false){
                 getline(arq,linha);
-                if (linha[0]!='#')
+                if (linha.size()>0&&linha[0]!='#')
                     resp->CriaComponentePorParametro(linha);
             }
 
@@ -119,6 +120,11 @@ private:
         }
 
         return *resp;
+    }
+
+    void CriaItemLista(CPIGAtributos atrib){
+        PIGListaComponente comp = (PIGListaComponente) componentes[totalComponentes-1];
+        comp->CriaItem(atrib);
     }
 
 
@@ -331,22 +337,6 @@ public:
         return idComponente;
     }
 
-    void SetFoco(bool valor){
-        temFoco = valor;
-    }
-
-    void SetAcionado(bool valor){
-        acionado = valor;
-    }
-
-    void SetMouseOver(bool valor){
-        mouseOver = valor;
-    }
-
-    void SetHabilitado(bool valor){
-        habilitado = valor;
-    }
-
     int CriaComponentePorParametro(string parametros){
         int idComponente = GetProxIdComponente();
         //printf("parametros: %s\n",parametros.c_str());
@@ -365,10 +355,12 @@ public:
             case PIG_GAUGEBAR: componentes[totalComponentes++] = new CPIGGaugeBar(idComponente,atrib);break;
             case PIG_SLIDEBAR: componentes[totalComponentes++] = new CPIGSlideBar(idComponente,atrib);break;
             case PIG_GAUGECIRCULAR: componentes[totalComponentes++] = new CPIGGaugeCircular(idComponente,atrib);break;
+            case PIG_ITEMCOMPONENTE: CriaItemLista(atrib);
         }
         //printf("id comp %d %d\n",idComponente,totalComponentes);
         return idComponente;
     }
+
 
 };
 typedef CPIGForm *PIGForm;

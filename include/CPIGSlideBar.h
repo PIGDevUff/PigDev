@@ -34,52 +34,57 @@ class CPIGSlideBar: public CPIGGauge{
 
         switch (orientacaoCrescimento){
         case PIG_GAUGE_ESQ_DIR:
-                xMarc = pos.x+(int)(porcentagemConcluida*(larg-largMarcador));
-                yMarc = pos.y;
+                xMarc = pos.x+margemEsq+(int)(porcentagemConcluida*(larg-margemEsq-margemDir-largMarcador));
+                yMarc = pos.y+margemBaixo;
                 break;
         case PIG_GAUGE_DIR_ESQ:
-                xMarc = pos.x+(int)((1-porcentagemConcluida)*(larg-largMarcador));
-                yMarc = pos.y;
+                xMarc = pos.x+larg-margemDir-largMarcador-(int)((porcentagemConcluida)*(larg-margemEsq-margemDir-largMarcador));
+                yMarc = pos.y+margemBaixo;
                 break;
         case PIG_GAUGE_BAIXO_CIMA:
-                xMarc = pos.x;
-                yMarc = pos.y+(int)(porcentagemConcluida*(alt-altMarcador));
+                xMarc = pos.x+margemEsq;
+                yMarc = pos.y+margemBaixo+(int)(porcentagemConcluida*(alt-margemBaixo-margemCima-altMarcador));
                 break;
         case PIG_GAUGE_CIMA_BAIXO:
-                xMarc = pos.x;
-                yMarc = pos.y+(int)((1-porcentagemConcluida)*(alt-altMarcador));
+                xMarc = pos.x+margemEsq;
+                yMarc = pos.y+alt-margemCima-altMarcador-(int)((porcentagemConcluida)*(alt-margemBaixo-margemCima-altMarcador));
                 break;
         }
 
-        xMarc += margemEsq;
-        yMarc += margemBaixo;
+        //xMarc += margemEsq;
+        //yMarc += margemBaixo;
         if (marcador){
             //printf("%d,%d  %d %d\n",xMarc,yMarc,altMarcador-(margemBaixo+margemCima),largMarcador-(margemEsq+margemDir));
             marcador->Move(xMarc,yMarc);
-            marcador->SetDimensoes(altMarcador-(margemBaixo+margemCima),largMarcador-(margemEsq+margemDir));
+            marcador->SetDimensoes(altMarcador,largMarcador);//-(margemBaixo+margemCima),largMarcador-(margemEsq+margemDir));
         }
     }
 
     PIGEstadoEvento TrataClickTrilha(int px, int py){
         double perc;
-        px = PIGLimitaValor(px,(int)pos.x+largMarcador/2,(int)pos.x+larg-largMarcador/2);
-        py = PIGLimitaValor(py,(int)pos.y+altMarcador/2,(int)pos.y+alt-altMarcador/2);
+        int minx = (int)pos.x+margemEsq+largMarcador/2;
+        int maxx = (int)pos.x+larg-margemDir-largMarcador/2;
+        int miny = (int)pos.y+margemBaixo+altMarcador/2;
+        int maxy = (int)pos.y+alt-margemCima-altMarcador/2;
+        px = PIGLimitaValor(px,minx,maxx);
+        py = PIGLimitaValor(py,miny,maxy);
 
         switch(orientacaoCrescimento){
         case PIG_GAUGE_ESQ_DIR:
-            perc = 1.0*(px-(pos.x+largMarcador/2))/(larg-largMarcador);
+            perc = 1.0*(px-minx)/(maxx-minx);
             break;
         case PIG_GAUGE_DIR_ESQ:
-            perc = 1.0 - 1.0*(px-(pos.x+largMarcador/2))/(larg-largMarcador);
+            perc = 1.0 - 1.0*(px-minx)/(maxx-minx);
             break;
         case PIG_GAUGE_BAIXO_CIMA:
-            perc = 1.0*(py-(pos.y+altMarcador/2))/(alt-altMarcador);
+            perc = 1.0*(py-miny)/(maxy-miny);
             break;
         case PIG_GAUGE_CIMA_BAIXO:
-            perc = 1.0 - 1.0*(py-(pos.y+altMarcador/2))/(alt-altMarcador);
+            perc = 1.0 - 1.0*(py-miny)/(maxy-miny);
+
             break;
         }
-        //printf("vou definir perc %f\n",perc);
+        //printf("(%d %d %d) (%d %d %d ) vou definir perc %f\n",minx,px,maxx,miny,py,maxy,perc);
         SetPorcentagemConcluida(perc);
 
         return PIG_TRATADO;
@@ -94,6 +99,19 @@ class CPIGSlideBar: public CPIGGauge{
             return PIG_TRATADO;
         }
         return PIG_NAOSELECIONADO;
+    }
+
+    PIGEstadoEvento TrataClickMarcador(SDL_Point p){
+        SDL_Rect r={xMarc,yMarc,largMarcador,altMarcador};
+        if (SDL_PointInRect(&p,&r)){
+            if (orientacaoCrescimento==PIG_GAUGE_DIR_ESQ||orientacaoCrescimento==PIG_GAUGE_ESQ_DIR)
+                p.y = yMarc;
+            else
+                p.x = xMarc;
+            return TrataClickTrilha(p.x,p.y);
+        }
+        return PIG_NAOSELECIONADO;
+
     }
 
 public:
@@ -133,15 +151,17 @@ public:
             if(evento.mouse.acao == PIG_MOUSE_RODINHA)
                 return TrataRodinha(evento);
 
-            if(evento.mouse.acao == PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO)
-                return TrataClickTrilha(p.x,p.y);
-
-            if(temFoco && CPIGMouse::GetEstadoBotao(PIG_MOUSE_ESQUERDO)==PIG_MOUSE_PRESSIONADO)
+            if((evento.mouse.acao == PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO)||
+               (temFoco && CPIGMouse::GetEstadoBotao(PIG_MOUSE_ESQUERDO)==PIG_MOUSE_PRESSIONADO))
                 return TrataClickTrilha(p.x,p.y);
 
             return PIG_MOUSEOVER;
+        }else{
+            if((evento.mouse.acao == PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO)||
+               (temFoco && CPIGMouse::GetEstadoBotao(PIG_MOUSE_ESQUERDO)==PIG_MOUSE_PRESSIONADO))
+                return TrataClickMarcador(p);
+            return PIG_NAOSELECIONADO;
         }
-        return PIG_NAOSELECIONADO;
     }
 
     PIGEstadoEvento TrataEventoTeclado(PIGEvento evento)override{
@@ -211,9 +231,14 @@ public:
             CPIGSprite::Desenha();
         else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
 
+
         if (marcador)
             marcador->Desenha();
-        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(xMarc,yMarc,altMarcador-(margemBaixo+margemCima),largMarcador-(margemEsq+margemDir),coresBasicas[1]);
+        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(xMarc,yMarc,altMarcador,largMarcador,coresBasicas[1]);
+        //CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado(xMarc,yMarc,altMarcador,largMarcador,VERDE);
+
+        //CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado((int)pos.x,(int)pos.y,alt,larg,AMARELO);
+        //CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado((int)pos.x+margemEsq,(int)pos.y+margemBaixo,alt-(margemBaixo+margemCima),larg-(margemEsq+margemDir),VERMELHO);
 
         //CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
 

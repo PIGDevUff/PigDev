@@ -10,7 +10,7 @@ protected:
     string arqImagemIcone;
 
     virtual void ProcessaAtributos(CPIGAtributos atrib)override{
-        CPIGComponente::ProcessaAtributos(atrib);
+        CPIGListaItemComponente::ProcessaAtributos(atrib);
     }
 
     static CPIGCheckBox LeParametros(int idComponente, CPIGAtributos atrib){
@@ -70,6 +70,18 @@ public:
 
         int yItem = pos.y+margemBaixo;
         PIGItemComponente item = CPIGListaItemComponente::CriaItem(yItem,itemLabel,arqImagemIcone,arqImagemFundoItem,itemMarcado,itemHabilitado,hintMsg,retiraFundo,retiraFundoIcone);
+        item->DefineFuncaoAjusteFrame(AjustaFrame);
+        item->GetIcone()->CriaFramesAutomaticosPorLinha(1,1,6);
+        AjustaFrame(item);
+    }
+
+    void CriaItem(CPIGAtributos atrib){
+        CPIGListaItemComponente::SetDimensoes(alt+altBaseLista,larg); //aumenta o tamanho do componente para comportar o novo item
+        DeslocaItens(0,altBaseLista);//desloca todos os itens para cima, pois o novo item vai entrar abaixo dos outros
+
+        int yItem = pos.y+margemBaixo;
+        PIGItemComponente item = CPIGListaItemComponente::CriaItem(yItem,atrib.GetString("label",""),arqImagemIcone,atrib.GetString("nomeArq",""),
+                                                                   atrib.GetInt("acionado",0),atrib.GetInt("habilitado",1),atrib.GetString("hint",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("retiraFundoIcone",1));
         item->DefineFuncaoAjusteFrame(AjustaFrame);
         item->GetIcone()->CriaFramesAutomaticosPorLinha(1,1,6);
         AjustaFrame(item);
