@@ -132,8 +132,8 @@ public:
     }
 
     PIGEstadoEvento TrataEventoMouse(PIGEvento evento)override{
-        if (!habilitado) return PIG_DESABILITADO;
-        if (!visivel) return PIG_INVISIVEL;
+        if (!habilitado) return PIG_COMPONENTE_DESABILITADO;
+        if (!visivel) return PIG_COMPONENTE_INVISIVEL;
 
         SDL_Point p = GetPosicaoMouse();
         ChecaMouseOver(p);
@@ -141,10 +141,10 @@ public:
         if(mouseOver){
             if (evento.mouse.acao == PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO)
                 return TrataMouseBotaoEsquerdo(p);
-            return PIG_MOUSEOVER;
+            return PIG_COMPONENTE_MOUSEOVER;
         }
 
-        return PIG_NAOSELECIONADO;
+        return PIG_COMPONENTE_NAOTRATADO;
     }
 
     void SetMascara(char c){

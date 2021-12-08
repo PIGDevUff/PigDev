@@ -84,24 +84,24 @@ protected:
 
     //trata os diversos tipos de eventos de teclado que podem ocorrer
     PIGEstadoEvento TrataEventoTeclado(PIGEvento evento)override{
-        if (!temFoco) return PIG_SEMFOCO;
-        if (!habilitado) return PIG_DESABILITADO;
-        if (!visivel) return PIG_INVISIVEL;
+        if (!temFoco) return PIG_COMPONENTE_SEMFOCO;
+        if (!habilitado) return PIG_COMPONENTE_DESABILITADO;
+        if (!visivel) return PIG_COMPONENTE_INVISIVEL;
 
-        if (evento.teclado.acao==PIG_TECLA_EDICAO) return PIG_TRATADO;
+        if (evento.teclado.acao==PIG_TECLA_EDICAO) return PIG_COMPONENTE_TRATADO;
 
         if (evento.teclado.acao==PIG_TECLA_INPUT){//caracteres normais
             string s = ConverteString(evento.teclado.texto);
             if (AdicionaTexto(s)){
                 return OnAction();
             }
-            return PIG_NAOSELECIONADO;
+            return PIG_COMPONENTE_NAOTRATADO;
         }
 
         if (evento.teclado.acao==PIG_TECLA_PRESSIONADA){//teclas especiais
             return TrataTeclasEspeciais(evento);
         }
-        return PIG_NAOSELECIONADO;
+        return PIG_COMPONENTE_NAOTRATADO;
     }
 
     string texto;
@@ -213,12 +213,12 @@ protected:
     virtual PIGEstadoEvento TrataMouseBotaoEsquerdo(SDL_Point p, int inicioLinha=0){
         posCursor = CalculaPosicaoCursor(GetTextoVisivel(),p.x);
         AjustaPosicaoTextoCursor();
-        return PIG_TRATADO;
+        return PIG_COMPONENTE_TRATADO;
     }
 
     void IniciaBase(int maxCars){
         margemEsq = margemDir = margemCima = margemBaixo = 5;
-        posLabel = PIG_COMPONENTE_ESQ_BAIXO;//posiçăo padrăo do label
+        posLabel = PIG_POSICAO_ESQ_BAIXO;//posiçăo padrăo do label
         posCursor = 0;//cursor no início do texto
         cursorExibido = true;
         timer = new CPIGTimer(false);//o timer do cursor que só será exibido quando estiver editando

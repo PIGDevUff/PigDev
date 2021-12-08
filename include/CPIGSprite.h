@@ -27,7 +27,7 @@ string nomeArquivo;
 PIGAutomacao automacao;
 int tipoFixo;
 vector<CPIGSprite*> filhos;
-
+thread::id criada;
 private:
 
 void CarregaImagem(string nomeArq){
@@ -117,6 +117,12 @@ void AplicaTransicao(PIGEstadoTransicao estado){
     if (!(estado.cor==BRANCO)) SetColoracao(estado.cor);
     if (estado.opacidade!=opacidade) SetOpacidade(estado.opacidade);
     if (estado.ang!=angulo) SetAngulo(estado.ang);
+}
+
+inline virtual void AtualizaTextura(){
+    if (text) SDL_DestroyTexture(text);
+    text = SDL_CreateTextureFromSurface(renderer, bitmap);
+    criada = this_thread::get_id();
 }
 
 public:
@@ -232,8 +238,8 @@ void PreparaTextura(int retiraFundo, PIGCor *corFundo=NULL){
 
         SDL_SetColorKey( bitmap, SDL_TRUE, SDL_MapRGBA(bitmap->format, red, green, blue,alpha) );
     }else SDL_SetColorKey( bitmap, SDL_FALSE, 0);
-    if (text) SDL_DestroyTexture(text);
-    text = SDL_CreateTextureFromSurface(renderer, bitmap);
+
+    AtualizaTextura();
 }
 
 int RecebeFilho(CPIGSprite *filho, int fixo){
@@ -553,6 +559,12 @@ virtual int Desenha(){
     //SDL_Point p = {pivoRelativo.x,pivoRelativo.y};
     CPIGGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaWorldScreen(enquadrado.x,enquadrado.y,enquadrado.x,enquadrado.y);
     //printf("%d,%d,%d,%d\n",enquadrado.x,enquadrado.y,enquadrado.w,enquadrado.h);
+    #if PIG_MULTITHREAD_TELAS==1
+    if (text!=NULL&&criada!=PIG_MAIN_THREAD_ID){
+        AtualizaTextura();
+    }
+    #endif
+
     SDL_RenderCopyEx(renderer, text, &frames[frameAtual], &enquadrado, -angulo, &pivoInteiro, flip);
     //printf("%d %d\n",pivoInteiro.x,pivoInteiro.y);
     for (unsigned int i=0;i<filhos.size();i++){

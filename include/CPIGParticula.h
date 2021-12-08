@@ -40,6 +40,8 @@ public:
     }
 
     inline bool ChecaViva(){
+        //printf("tempo %f < %f\n",CPIGGerenciadorTimers::GetTimer(timer)->GetTempoDecorrido(),tempoVida);
+        //printf("viva antes %d\n",viva);
         viva = viva &&CPIGGerenciadorTimers::GetTimer(timer)->GetTempoDecorrido()<=tempoVida
                     &&(pos.x>espacoVida.x)&&(pos.x<espacoVida.w)&&(pos.y>espacoVida.y)&&(pos.y<espacoVida.h);
         //if (!viva) printf("%d morri por tempo\n",id);
@@ -48,6 +50,7 @@ public:
         //viva = viva
         //if (!viva) PRINTF("%d morri por tempo\n",id);
         //if (!viva) printf("%d morri por espaco\n",id);
+        return viva;
     }
 
     /*void Move(double nx, double ny) override{

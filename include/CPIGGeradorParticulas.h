@@ -32,7 +32,7 @@ void IniciaBase(int maximoParticulas, int audioCriacao,int audioEncerramento, PI
 void AtualizaParticulas(){
     unsigned int i=0;
     while (i<parts.size()){
-        //printf("viva %d %d %d\n",i,parts[i]->viva,parts[i]->GetID());
+        //printf("viva %d %d %d\n",i,parts[i]->ChecaViva(),parts[i]->GetId());
         if (parts[i]->ChecaViva()==false){;
             //printf("antes del %d (%f)\n",parts[i]->GetID(),maxTempo);
             CPIGGerenciadorSprites::DestroiAnimacao(parts[i]->GetId());
@@ -44,6 +44,7 @@ void AtualizaParticulas(){
             //printf("deletou %d %d size %d\n",id,i,parts.size());
         }else{
             parts[i]->TrataAutomacao();
+            //printf("atualizei part %d\n",i);
             i++;
         }
     }

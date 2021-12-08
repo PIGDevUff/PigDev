@@ -10,10 +10,11 @@ string frase;
 int fonte;
 PIGCor corFonte;
 
-void AtualizaTextura(){
+void AtualizaTextura()override{
     PIGMapaCaracteres mapa = CPIGGerenciadorFontes::GetFonte(fonte);
     larg = mapa->GetLarguraPixelsString(frase);
     alt = mapa->GetFonteAscent()+mapa->GetFonteDescent()+5;
+    criada = this_thread::get_id();
     if (text) SDL_DestroyTexture(text);
     text = SDL_CreateTexture(renderer,SDL_PIXELFORMAT_RGBA8888,SDL_TEXTUREACCESS_TARGET,larg,alt);
     SDL_SetRenderTarget(renderer,text);

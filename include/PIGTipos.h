@@ -71,6 +71,8 @@ Principais definições utilizadas pela PIG
 #define PIG_MAX_FORMS                   100
 
 #define PIG_MAX_TELAS                   2000
+#define PIG_TEMPO_SAIDA_TELA_PADRAO     0.5
+#define PIG_MULTITHREAD_TELAS           1
 
 #define PIG_INTERVALO_FPS               1.0
 

@@ -87,18 +87,18 @@ class CPIGSlideBar: public CPIGGauge{
         //printf("(%d %d %d) (%d %d %d ) vou definir perc %f\n",minx,px,maxx,miny,py,maxy,perc);
         SetPorcentagemConcluida(perc);
 
-        return PIG_TRATADO;
+        return PIG_COMPONENTE_TRATADO;
     }
 
     PIGEstadoEvento TrataRodinha(PIGEvento evento){
         if(evento.mouse.relY > 0){
             AvancaMarcador(deltaRodinha);
-            return PIG_TRATADO;
+            return PIG_COMPONENTE_TRATADO;
         }else if (evento.mouse.relY < 0){
             AvancaMarcador(-deltaRodinha);
-            return PIG_TRATADO;
+            return PIG_COMPONENTE_TRATADO;
         }
-        return PIG_NAOSELECIONADO;
+        return PIG_COMPONENTE_NAOTRATADO;
     }
 
     PIGEstadoEvento TrataClickMarcador(SDL_Point p){
@@ -110,7 +110,7 @@ class CPIGSlideBar: public CPIGGauge{
                 p.x = xMarc;
             return TrataClickTrilha(p.x,p.y);
         }
-        return PIG_NAOSELECIONADO;
+        return PIG_COMPONENTE_NAOTRATADO;
 
     }
 
@@ -141,8 +141,8 @@ public:
     virtual ~CPIGSlideBar(){}
 
     PIGEstadoEvento TrataEventoMouse(PIGEvento evento)override{
-        if (!habilitado) return PIG_DESABILITADO;
-        if (!visivel) return PIG_INVISIVEL;
+        if (!habilitado) return PIG_COMPONENTE_DESABILITADO;
+        if (!visivel) return PIG_COMPONENTE_INVISIVEL;
 
         SDL_Point p = GetPosicaoMouse();
         ChecaMouseOver(p);
@@ -155,19 +155,19 @@ public:
                (temFoco && CPIGMouse::GetEstadoBotao(PIG_MOUSE_ESQUERDO)==PIG_MOUSE_PRESSIONADO))
                 return TrataClickTrilha(p.x,p.y);
 
-            return PIG_MOUSEOVER;
+            return PIG_COMPONENTE_MOUSEOVER;
         }else{
             if((evento.mouse.acao == PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO)||
                (temFoco && CPIGMouse::GetEstadoBotao(PIG_MOUSE_ESQUERDO)==PIG_MOUSE_PRESSIONADO))
                 return TrataClickMarcador(p);
-            return PIG_NAOSELECIONADO;
+            return PIG_COMPONENTE_NAOTRATADO;
         }
     }
 
     PIGEstadoEvento TrataEventoTeclado(PIGEvento evento)override{
-        if (!temFoco) return PIG_SEMFOCO;
-        if (!habilitado) return PIG_DESABILITADO;
-        if (!visivel) return PIG_INVISIVEL;
+        if (!temFoco) return PIG_COMPONENTE_SEMFOCO;
+        if (!habilitado) return PIG_COMPONENTE_DESABILITADO;
+        if (!visivel) return PIG_COMPONENTE_INVISIVEL;
 
         if(evento.teclado.acao == PIG_TECLA_PRESSIONADA){
             switch(orientacaoCrescimento){
@@ -188,9 +188,9 @@ public:
                 if(evento.teclado.tecla == PIG_TECLA_BAIXO) AvancaMarcador(deltaTeclado);
                 break;
             }
-            return PIG_TRATADO;
+            return PIG_COMPONENTE_TRATADO;
         }
-        return PIG_NAOSELECIONADO;
+        return PIG_COMPONENTE_NAOTRATADO;
     }
 
     void SetDeltas(int dPadrao = 1,int dRodinha = 10,int dTeclado = 10){

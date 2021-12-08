@@ -120,7 +120,7 @@ private:
 
     PIGEstadoEvento PosicionaCursorLinha(int linha, int xLinha){
         if (linha<0||(linhas.size()>0&&linha>=linhas.size()))
-            return PIG_NAOSELECIONADO;
+            return PIG_COMPONENTE_NAOTRATADO;
 
         int posInicial = GetPosInicialDeUmaLinha(linha);
         //printf("posInicial %d\n",posInicial);
@@ -132,7 +132,7 @@ private:
 
         AjustaPosicaoTextoCursor();
         AjustaSlideVerticalPeloCursor();
-        return PIG_TRATADO;
+        return PIG_COMPONENTE_TRATADO;
     }
 
     inline int MouseSobreSlide(SDL_Point p){
@@ -331,8 +331,8 @@ public:
     }
 
     PIGEstadoEvento TrataEventoMouse(PIGEvento evento)override{
-        if (!habilitado) return PIG_DESABILITADO;
-        if (!visivel) return PIG_INVISIVEL;
+        if (!habilitado) return PIG_COMPONENTE_DESABILITADO;
+        if (!visivel) return PIG_COMPONENTE_INVISIVEL;
 
         SDL_Point p = GetPosicaoMouse();
         ChecaMouseOver(p);
@@ -341,7 +341,7 @@ public:
             ((PIGComponente)slideVertical)->SetFoco(true);
             PIGEstadoEvento resp = slideVertical->TrataEventoMouse(evento);
             ((PIGComponente)slideVertical)->SetFoco(false);
-            if (resp==PIG_TRATADO){
+            if (resp==PIG_COMPONENTE_TRATADO){
                 AjustaPosicaoTextoCursor();
                 return resp;
             }else if (evento.tipoEvento==PIG_EVENTO_MOUSE&&evento.mouse.acao==PIG_MOUSE_RODINHA){
@@ -349,17 +349,17 @@ public:
                     SobeCursor();
                 else if (evento.mouse.relY<0)
                     DesceCursor();
-                return PIG_TRATADO;
+                return PIG_COMPONENTE_TRATADO;
             }
         }
 
         if(mouseOver){
             if (evento.mouse.acao == PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO)
                 return TrataMouseBotaoEsquerdo(p);
-            return PIG_MOUSEOVER;
+            return PIG_COMPONENTE_MOUSEOVER;
         }
 
-        return PIG_NAOSELECIONADO;
+        return PIG_COMPONENTE_NAOTRATADO;
     }
 
 

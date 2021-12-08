@@ -5741,23 +5741,23 @@ void PIGListBoxSetCorLabelItem(int idComponente, PIGCor cor, int item=-1){
 }
 
 void PIGListBoxAlinhaLabelDireita(int idComponente){
-    CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->AlinhaLabelItens(PIG_COMPONENTE_DIR_CENTRO);
+    CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->AlinhaLabelItens(PIG_POSICAO_DIR_CENTRO);
 }
 
 void PIGListBoxAlinhaLabelEsquerda(int idComponente){
-    CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->AlinhaLabelItens(PIG_COMPONENTE_ESQ_CENTRO);
+    CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->AlinhaLabelItens(PIG_POSICAO_ESQ_CENTRO);
 }
 
 void PIGListBoxAlinhaLabelCentro(int idComponente){
-    CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->AlinhaLabelItens(PIG_COMPONENTE_CENTRO_CENTRO);
+    CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->AlinhaLabelItens(PIG_POSICAO_CENTRO_CENTRO);
 }
 
 void PIGListBoxAlinhaIconeDireita(int idComponente){
-    CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->AlinhaIcones(PIG_COMPONENTE_DIR_CENTRO);
+    CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->AlinhaIcones(PIG_POSICAO_DIR_CENTRO);
 }
 
 void PIGListBoxAlinhaIconeEsquerda(int idComponente){
-    CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->AlinhaIcones(PIG_COMPONENTE_ESQ_CENTRO);
+    CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->AlinhaIcones(PIG_POSICAO_ESQ_CENTRO);
 }
 
 void PIGListBoxDefineDimensaoIconeItem(int idComponente, int alturaIcone, int larguraIcone){
@@ -5816,23 +5816,23 @@ void PIGDropDownSetCorLabelItem(int idComponente,PIGCor cor, int item=-1){
 }
 
 void PIGDropDownAlinhaLabelDireita(int idComponente){
-    CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->AlinhaLabelItens(PIG_COMPONENTE_DIR_CENTRO);
+    CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->AlinhaLabelItens(PIG_POSICAO_DIR_CENTRO);
 }
 
 void PIGDropDownAlinhaLabelEsquerda(int idComponente){
-    CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->AlinhaLabelItens(PIG_COMPONENTE_ESQ_CENTRO);
+    CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->AlinhaLabelItens(PIG_POSICAO_ESQ_CENTRO);
 }
 
 void PIGDropDownAlinhaLabelCentro(int idComponente){
-    CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->AlinhaLabelItens(PIG_COMPONENTE_CENTRO_CENTRO);
+    CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->AlinhaLabelItens(PIG_POSICAO_CENTRO_CENTRO);
 }
 
 void PIGDropDownAlinhaIconeDireita(int idComponente){
-    CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->AlinhaIcones(PIG_COMPONENTE_DIR_CENTRO);
+    CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->AlinhaIcones(PIG_POSICAO_DIR_CENTRO);
 }
 
 void PIGDropDownAlinhaIconeEsquerda(int idComponente){
-    CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->AlinhaIcones(PIG_COMPONENTE_ESQ_CENTRO);
+    CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->AlinhaIcones(PIG_POSICAO_ESQ_CENTRO);
 }
 
 void PIGDropDownDefineDimensaoIconeItem(int idComponente, int alturaIcone, int larguraIcone){
@@ -5893,23 +5893,23 @@ void PIGRadioBoxSetCorLabelItem(int idComponente, PIGCor cor, int item=-1){
 }
 
 void PIGRadioBoxAlinhaLabelDireita(int idComponente){
-    CPIGGerenciadorForms::GetComponente<PIGRadioBox>(idComponente)->AlinhaLabelItens(PIG_COMPONENTE_DIR_CENTRO);
+    CPIGGerenciadorForms::GetComponente<PIGRadioBox>(idComponente)->AlinhaLabelItens(PIG_POSICAO_DIR_CENTRO);
 }
 
 void PIGRadioBoxAlinhaLabelEsquerda(int idComponente){
-    CPIGGerenciadorForms::GetComponente<PIGRadioBox>(idComponente)->AlinhaLabelItens(PIG_COMPONENTE_ESQ_CENTRO);
+    CPIGGerenciadorForms::GetComponente<PIGRadioBox>(idComponente)->AlinhaLabelItens(PIG_POSICAO_ESQ_CENTRO);
 }
 
 void PIGRadioBoxAlinhaLabelCentro(int idComponente){
-    CPIGGerenciadorForms::GetComponente<PIGRadioBox>(idComponente)->AlinhaLabelItens(PIG_COMPONENTE_CENTRO_CENTRO);
+    CPIGGerenciadorForms::GetComponente<PIGRadioBox>(idComponente)->AlinhaLabelItens(PIG_POSICAO_CENTRO_CENTRO);
 }
 
 void PIGRadioBoxAlinhaIconeDireita(int idComponente){
-    CPIGGerenciadorForms::GetComponente<PIGRadioBox>(idComponente)->AlinhaIcones(PIG_COMPONENTE_DIR_CENTRO);
+    CPIGGerenciadorForms::GetComponente<PIGRadioBox>(idComponente)->AlinhaIcones(PIG_POSICAO_DIR_CENTRO);
 }
 
 void PIGRadioBoxAlinhaIconeEsquerda(int idComponente){
-    CPIGGerenciadorForms::GetComponente<PIGRadioBox>(idComponente)->AlinhaIcones(PIG_COMPONENTE_ESQ_CENTRO);
+    CPIGGerenciadorForms::GetComponente<PIGRadioBox>(idComponente)->AlinhaIcones(PIG_POSICAO_ESQ_CENTRO);
 }
 
 void PIGRadioBoxDefineDimensaoIconeItem(int idComponente, int alturaIcone, int larguraIcone){
@@ -5967,23 +5967,23 @@ void PIGCheckBoxSetCorLabelItem(int idComponente, PIGCor cor, int item=-1){
 }
 
 void PIGCheckBoxAlinhaLabelDireita(int idComponente){
-    CPIGGerenciadorForms::GetComponente<PIGCheckBox>(idComponente)->AlinhaLabelItens(PIG_COMPONENTE_DIR_CENTRO);
+    CPIGGerenciadorForms::GetComponente<PIGCheckBox>(idComponente)->AlinhaLabelItens(PIG_POSICAO_DIR_CENTRO);
 }
 
 void PIGCheckBoxAlinhaLabelEsquerda(int idComponente){
-    CPIGGerenciadorForms::GetComponente<PIGCheckBox>(idComponente)->AlinhaLabelItens(PIG_COMPONENTE_ESQ_CENTRO);
+    CPIGGerenciadorForms::GetComponente<PIGCheckBox>(idComponente)->AlinhaLabelItens(PIG_POSICAO_ESQ_CENTRO);
 }
 
 void PIGCheckBoxAlinhaLabelCentro(int idComponente){
-    CPIGGerenciadorForms::GetComponente<PIGCheckBox>(idComponente)->AlinhaLabelItens(PIG_COMPONENTE_CENTRO_CENTRO);
+    CPIGGerenciadorForms::GetComponente<PIGCheckBox>(idComponente)->AlinhaLabelItens(PIG_POSICAO_CENTRO_CENTRO);
 }
 
 void PIGCheckBoxAlinhaIconeDireita(int idComponente){
-    CPIGGerenciadorForms::GetComponente<PIGCheckBox>(idComponente)->AlinhaIcones(PIG_COMPONENTE_DIR_CENTRO);
+    CPIGGerenciadorForms::GetComponente<PIGCheckBox>(idComponente)->AlinhaIcones(PIG_POSICAO_DIR_CENTRO);
 }
 
 void PIGCheckBoxAlinhaIconeEsquerda(int idComponente){
-    CPIGGerenciadorForms::GetComponente<PIGCheckBox>(idComponente)->AlinhaIcones(PIG_COMPONENTE_ESQ_CENTRO);
+    CPIGGerenciadorForms::GetComponente<PIGCheckBox>(idComponente)->AlinhaIcones(PIG_POSICAO_ESQ_CENTRO);
 }
 
 void PIGCheckBoxDefineDimensaoIconeItem(int idComponente, int alturaIcone, int larguraIcone){
@@ -6256,7 +6256,6 @@ void PIGSlideBarSetMarcadorFrente(int idComponente, int frente){
     CPIGGerenciadorForms::GetComponente<PIGSlideBar>(idComponente)->SetMarcadorFrente(frente);
 }
 
-
 void PIGSlideBarSetCorInicial(int idComponente, PIGCor cor){
     CPIGGerenciadorForms::GetComponente<PIGSlideBar>(idComponente)->SetCorInicial(cor);
 }
@@ -6271,4 +6270,44 @@ void PIGSlideBarSetCorTrilha(int idComponente, PIGCor cor){
 
 void PIGSlideBarSetDeltas(int idComponente, int deltaPadrao, int deltaRodinha, int deltaTeclado){
     CPIGGerenciadorForms::GetComponente<PIGSlideBar>(idComponente)->SetDeltas(deltaPadrao,deltaRodinha,deltaTeclado);
+}
+
+void PIGCriaTela(int idTela, int backgroundCriar=0, int backgroundCarregar=0, char *nomeArqCarregamento="", int janela=0){
+    CPIGGerenciadorTelas::CriaTela(idTela,backgroundCriar,backgroundCarregar,nomeArqCarregamento,janela);
+}
+
+void PIGDestroiTela(int idTela){
+    CPIGGerenciadorTelas::DestroiTela(idTela);
+}
+
+void PIGDefineComportamentoTela(int idTela, void *dados, PIGFuncaoSimples criar, PIGFuncaoSimples destruir, PIGFuncaoSimples carregar, PIGFuncaoSimples descarregar, PIGFuncaoSimples atualizar, PIGFuncaoSimples desenhar, PIGFuncaoEvento tratarEvento){
+    CPIGGerenciadorTelas::SetComportamento(idTela,dados,criar,destruir,carregar,descarregar,atualizar,desenhar,tratarEvento);
+}
+
+void PIGTrataEventoTelaAtual(PIGEvento evento){
+    CPIGGerenciadorTelas::TrataEvento(evento);
+}
+
+int PIGAtualizaTelaAtual(){
+    return CPIGGerenciadorTelas::Atualiza();
+}
+
+int PIGDesenhaTelaAtual(){
+    return CPIGGerenciadorTelas::Desenha();
+}
+
+void PIGMudaTelaAtual(int idTela, double tempoSaida=PIG_TEMPO_SAIDA_TELA_PADRAO, bool destroiDescarregar=false){
+    CPIGGerenciadorTelas::PreparaMudancaTela(idTela,tempoSaida,destroiDescarregar);
+}
+
+void PIGSetDadosGeraisTelas(void *param){
+    CPIGGerenciadorTelas::SetDadosGerais(param);
+}
+
+void *PIGGetDadosGeraisTelas(){
+    return CPIGGerenciadorTelas::GetDadosGerais();
+}
+
+PIGEstadoTela PIGGetEstadoTela(int idTela){
+    return CPIGGerenciadorTelas::GetEstadoTela(idTela);
 }

@@ -41,7 +41,7 @@ private:
         return *resp;
     }
 
-    void AtualizaTexturaGrafico(){
+    void AtualizaTextura()override{
         //coresBasicas[3] é a cor a ser utilizada no marcador
         PIGCor opcoes[4] = {VERDE,AZUL,ROXO,LARANJA}; //4 cores quaisquer
         PIGCor croma1, croma2; //cores usada como cromakey para transparencias (não podem ser nem a cor da barra, nem a cor do fundo)
@@ -91,6 +91,7 @@ private:
 
         if (text) SDL_DestroyTexture(text);
         text = SDL_CreateTextureFromSurface(renderer,off->GetSurface(1));
+        criada = this_thread::get_id();
 
         SetAngulo(angBase);
     }
@@ -107,7 +108,7 @@ private:
             else angMarcador = angBase+deltaAng-porcentagemConcluida*(deltaAng);
             marcador->SetAngulo(angMarcador);
         }else{
-            AtualizaTexturaGrafico();
+            AtualizaTextura();
         }
     }
 

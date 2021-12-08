@@ -71,9 +71,9 @@ public:
     }
 
     PIGEstadoEvento TrataEventoTeclado(PIGEvento evento)override{
-        if (!temFoco) return PIG_SEMFOCO;
-        if (!habilitado) return PIG_DESABILITADO;
-        if (!visivel) return PIG_INVISIVEL;
+        if (!temFoco) return PIG_COMPONENTE_SEMFOCO;
+        if (!habilitado) return PIG_COMPONENTE_DESABILITADO;
+        if (!visivel) return PIG_COMPONENTE_INVISIVEL;
 
         if(evento.teclado.acao == PIG_TECLA_PRESSIONADA){
             if(evento.teclado.tecla == PIG_TECLA_CIMA && evento.teclado.repeticao == 0){
@@ -84,12 +84,12 @@ public:
             if(evento.teclado.tecla == PIG_TECLA_BAIXO && evento.teclado.repeticao == 0)
                 itemDestaque = (itemDestaque + 1) % itens.size();
         }
-        return PIG_TRATADO;
+        return PIG_COMPONENTE_TRATADO;
     }
 
     PIGEstadoEvento TrataEventoMouse(PIGEvento evento)override{
-        if (!habilitado) return PIG_DESABILITADO;
-        if (!visivel) return PIG_INVISIVEL;
+        if (!habilitado) return PIG_COMPONENTE_DESABILITADO;
+        if (!visivel) return PIG_COMPONENTE_INVISIVEL;
 
         int resp = itemDestaque;
         bool mouseOverAntes = mouseOver;
@@ -97,7 +97,7 @@ public:
         if (ChecaMouseOver(GetPosicaoMouse())>0){
             for (unsigned int i=0;i<itens.size();i++){
                 int aux = itens[i]->TrataEventoMouse(evento);
-                if(aux == PIG_TRATADO){
+                if(aux == PIG_COMPONENTE_TRATADO){
                     if (itens[i]->GetAcionado())
                         resp = i;
                     //SetHint(itens[i]->GetHint());
@@ -109,8 +109,8 @@ public:
                 }
             }
             if (resp>0)
-                return PIG_TRATADO;
-            else return PIG_MOUSEOVER;
+                return PIG_COMPONENTE_TRATADO;
+            else return PIG_COMPONENTE_MOUSEOVER;
             //SetAcionadoItem(resp,resp!=-1);
         }else if (mouseOverAntes){               //mouse estava antes, mas saiu
             for (unsigned int i=0;i<itens.size();i++){
@@ -118,7 +118,7 @@ public:
             }
         }
 
-        return PIG_NAOSELECIONADO;
+        return PIG_COMPONENTE_NAOTRATADO;
     }
 
     void CriaItem(string itemLabel, string arqImagemIcone="", string arqImagemFundoItem="", bool itemMarcado = false, bool itemHabilitado = true, string hintMsg="", int retiraFundo=1, int retiraFundoIcone=1){

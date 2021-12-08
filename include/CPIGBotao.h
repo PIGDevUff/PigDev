@@ -40,13 +40,13 @@ protected:
     CPIGBotao(int idComponente, int alt, int larg, string nomeArq, int retiraFundo=1, int janela=0):
         CPIGComponente(idComponente,alt,larg,nomeArq,retiraFundo,janela){
             tecla = PIG_TECLA_ENTER;//sem tecla de atalho
-            SetPosicaoPadraoLabel(PIG_COMPONENTE_CENTRO_CENTRO);
+            SetPosicaoPadraoLabel(PIG_POSICAO_CENTRO_CENTRO);
         }
 
     CPIGBotao(int idComponente, int alt, int larg, int janela=0):
         CPIGComponente(idComponente,alt,larg,janela){
             tecla = PIG_TECLA_ENTER;//sem tecla de atalho
-            SetPosicaoPadraoLabel(PIG_COMPONENTE_CENTRO_CENTRO);
+            SetPosicaoPadraoLabel(PIG_POSICAO_CENTRO_CENTRO);
         }
 
     virtual ~CPIGBotao(){}
@@ -54,28 +54,28 @@ protected:
 public:
 
     PIGEstadoEvento TrataEventoMouse(PIGEvento evento)override{
-        if (!habilitado) return PIG_DESABILITADO;
-        if (!visivel) return PIG_INVISIVEL;
+        if (!habilitado) return PIG_COMPONENTE_DESABILITADO;
+        if (!visivel) return PIG_COMPONENTE_INVISIVEL;
 
         ChecaMouseOver(GetPosicaoMouse());
 
         if (mouseOver){
             if(evento.mouse.acao==PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO)
                 return OnAction();
-            return PIG_MOUSEOVER;
+            return PIG_COMPONENTE_MOUSEOVER;
         }
 
-        return PIG_NAOSELECIONADO;
+        return PIG_COMPONENTE_NAOTRATADO;
     }
 
     PIGEstadoEvento TrataEventoTeclado(PIGEvento evento)override{
-        if (!habilitado) return PIG_DESABILITADO;
-        if (!visivel) return PIG_INVISIVEL;
+        if (!habilitado) return PIG_COMPONENTE_DESABILITADO;
+        if (!visivel) return PIG_COMPONENTE_INVISIVEL;
 
         if (evento.teclado.acao==PIG_TECLA_PRESSIONADA && evento.teclado.tecla==tecla){
             return OnAction();
         }
-        return PIG_NAOSELECIONADO;
+        return PIG_COMPONENTE_NAOTRATADO;
     }
 
     void DefineAtalho(int teclaAtalho){

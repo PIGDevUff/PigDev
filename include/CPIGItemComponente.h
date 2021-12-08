@@ -25,7 +25,7 @@ private:
     PIGEstadoEvento OnMouseClick(){
         SetAcionado(!GetAcionado());
         if (audioComponente>=0) CPIGGerenciadorAudios::Play(audioComponente);
-        return PIG_TRATADO;
+        return PIG_COMPONENTE_TRATADO;
     }
 
     void IniciaBase(string labelItem, string arqImagemIcone="", int alturaIcone=0, int larguraIcone=0,int retiraFundoIcone=1){
@@ -34,15 +34,15 @@ private:
         if (arqImagemIcone!=""){
             icone = new CPIGSprite(-1,arqImagemIcone,retiraFundoIcone,NULL,idJanela);
             icone->SetDimensoes(altIcone,largIcone);
-            AlinhaIcone(PIG_COMPONENTE_ESQ_CENTRO);
+            AlinhaIcone(PIG_POSICAO_ESQ_CENTRO);
         }else icone = NULL;
         SetLabel(labelItem);
-        posRelativaLabel = PIG_COMPONENTE_ESQ_CENTRO;
-        SetPosicaoPadraoLabel(PIG_COMPONENTE_ESQ_CENTRO);
+        posRelativaLabel = PIG_POSICAO_ESQ_CENTRO;
+        SetPosicaoPadraoLabel(PIG_POSICAO_ESQ_CENTRO);
         AjustaFrame = NULL;
         coresBasicas[0] = {0,0,0,0};
         habilitadoPorSi=true;
-        tipo = PIG_OUTROCOMPONENTE;
+        tipo = PIG_ITEMCOMPONENTE;
     }
 
 public:
@@ -130,38 +130,38 @@ public:
     void AlinhaLabel(PIGPosicaoComponente valor){
         posRelativaLabel = valor;
         int largLabel = lab->GetLargura();
-        if (icone&&(valor==PIG_COMPONENTE_DIR_CENTRO||valor==PIG_COMPONENTE_CENTRO_CENTRO||valor==PIG_COMPONENTE_ESQ_CENTRO)){
+        if (icone&&(valor==PIG_POSICAO_DIR_CENTRO||valor==PIG_POSICAO_CENTRO_CENTRO||valor==PIG_POSICAO_ESQ_CENTRO)){
             switch(posRelativaLabel){
-            case PIG_COMPONENTE_ESQ_CENTRO:
-                if (posIcone==PIG_COMPONENTE_ESQ_CENTRO){
+            case PIG_POSICAO_ESQ_CENTRO:
+                if (posIcone==PIG_POSICAO_ESQ_CENTRO){
                     SetPosicaoPersonalizadaLabel(largIcone+margemEsq,0);
                 }else SetPosicaoPersonalizadaLabel(margemEsq,0);
                 break;
-            case PIG_COMPONENTE_CENTRO_CENTRO:
-                if (posIcone==PIG_COMPONENTE_ESQ_CENTRO){
+            case PIG_POSICAO_CENTRO_CENTRO:
+                if (posIcone==PIG_POSICAO_ESQ_CENTRO){
                     SetPosicaoPersonalizadaLabel(margemEsq+largIcone+(larg-largIcone-margemEsq-margemDir)/2-largLabel/2,0);
                 }else SetPosicaoPersonalizadaLabel(margemDir+(larg-largIcone-margemEsq-margemDir)/2-largLabel/2,0);
                 break;
-            case PIG_COMPONENTE_DIR_CENTRO:
-                if (posIcone==PIG_COMPONENTE_ESQ_CENTRO){
+            case PIG_POSICAO_DIR_CENTRO:
+                if (posIcone==PIG_POSICAO_ESQ_CENTRO){
                     SetPosicaoPersonalizadaLabel(larg-largLabel-margemDir,0);
                 }else SetPosicaoPersonalizadaLabel(larg-largLabel-largIcone-margemDir,0);
                 break;
             }
         }else{
             switch(posRelativaLabel){
-            case PIG_COMPONENTE_ESQ_CENTRO: SetPosicaoPersonalizadaLabel(margemEsq,0); break;
-            case PIG_COMPONENTE_CENTRO_CENTRO: SetPosicaoPersonalizadaLabel(margemEsq+(larg-margemEsq-margemDir)/2-largLabel/2,0); break;
-            case PIG_COMPONENTE_DIR_CENTRO: SetPosicaoPersonalizadaLabel(larg-largLabel-margemDir,0); break;
+            case PIG_POSICAO_ESQ_CENTRO: SetPosicaoPersonalizadaLabel(margemEsq,0); break;
+            case PIG_POSICAO_CENTRO_CENTRO: SetPosicaoPersonalizadaLabel(margemEsq+(larg-margemEsq-margemDir)/2-largLabel/2,0); break;
+            case PIG_POSICAO_DIR_CENTRO: SetPosicaoPersonalizadaLabel(larg-largLabel-margemDir,0); break;
             }
         }
 
     }
 
     void AlinhaIcone(PIGPosicaoComponente valor){
-        if (icone&&(valor==PIG_COMPONENTE_DIR_CENTRO||valor==PIG_COMPONENTE_ESQ_CENTRO)){
+        if (icone&&(valor==PIG_POSICAO_DIR_CENTRO||valor==PIG_POSICAO_ESQ_CENTRO)){
             posIcone=valor;
-            if (valor==PIG_COMPONENTE_DIR_CENTRO)
+            if (valor==PIG_POSICAO_DIR_CENTRO)
                 icone->Move(pos.x+larg-largIcone-margemDir,pos.y);
             else icone->Move(pos.x+margemEsq,pos.y);
             AlinhaLabel(posRelativaLabel);
@@ -174,8 +174,8 @@ public:
     }
 
     PIGEstadoEvento TrataEventoMouse(PIGEvento evento)override{
-        if (!habilitado) return PIG_DESABILITADO;
-        if (!visivel) return PIG_INVISIVEL;
+        if (!habilitado) return PIG_COMPONENTE_DESABILITADO;
+        if (!visivel) return PIG_COMPONENTE_INVISIVEL;
 
         ChecaMouseOver(GetPosicaoMouse());
 
@@ -183,10 +183,10 @@ public:
             if (evento.mouse.acao==PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO){
                 return OnMouseClick();
             }
-            return PIG_MOUSEOVER;
+            return PIG_COMPONENTE_MOUSEOVER;
         }
 
-        return PIG_NAOSELECIONADO;
+        return PIG_COMPONENTE_NAOTRATADO;
     }
 
     void Move(double nx, double ny)override{

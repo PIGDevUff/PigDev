@@ -14,10 +14,10 @@ protected:
 
     static PIGPosicaoComponente GetAlinhamento(string alinhamento){
         transform(alinhamento.begin(), alinhamento.end(), alinhamento.begin(), ::toupper);
-        if (alinhamento=="ESQ_CENTRO") return PIG_COMPONENTE_ESQ_CENTRO;
-        if (alinhamento=="DIR_CENTRO") return PIG_COMPONENTE_DIR_CENTRO;
-        if (alinhamento=="CENTRO_CENTRO") return PIG_COMPONENTE_CENTRO_CENTRO;
-        return PIG_COMPONENTE_ESQ_CENTRO;
+        if (alinhamento=="ESQ_CENTRO") return PIG_POSICAO_ESQ_CENTRO;
+        if (alinhamento=="DIR_CENTRO") return PIG_POSICAO_DIR_CENTRO;
+        if (alinhamento=="CENTRO_CENTRO") return PIG_POSICAO_CENTRO_CENTRO;
+        return PIG_POSICAO_ESQ_CENTRO;
     }
 
     void IniciaCoresBasicas(){
@@ -36,10 +36,10 @@ protected:
     }
 
     void IniciaBase(int alturaLinha){
-        SetPosicaoPadraoLabel(PIG_COMPONENTE_CIMA_CENTRO);//posiçăo padrăo do label
+        SetPosicaoPadraoLabel(PIG_POSICAO_CIMA_CENTRO);//posiçăo padrăo do label
         altBaseLista = alturaLinha;
         altIcone = largIcone = alturaLinha;
-        posIcones = PIG_COMPONENTE_ESQ_CENTRO;//só pode ser posicionamento à esquerda ou à direita
+        posIcones = PIG_POSICAO_ESQ_CENTRO;//só pode ser posicionamento à esquerda ou à direita
         IniciaCoresBasicas();
     }
 

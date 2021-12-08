@@ -19,8 +19,11 @@
 #include <unordered_map>
 #include <stdint.h>
 #include <limits.h>
+#include <thread>
 
 using namespace std;
+
+thread::id PIG_MAIN_THREAD_ID= this_thread::get_id();
 
 //separa uma string em palavras, usando os delimitadores indicados
 vector<string> PIGSeparaPalavras(string texto, string delim){
