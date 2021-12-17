@@ -115,8 +115,11 @@ float GetFloat(string chave, float retNegativo){
 string GetString(string chave, string retNegativo){
     std::transform(chave.begin(), chave.end(),chave.begin(), ::toupper);
     map<string, string>::iterator it = valoresString.find(chave);
-    if (it == valoresString.end())
+    if (it == valoresString.end()){
+        if (retNegativo=="")
+            return "";
         return retNegativo;
+    }
     return it->second;
 }
 
@@ -140,6 +143,28 @@ void dump(){
     }
 }
 
+//le um conjunto de palavras da stream até encontrar uma que termine com " como último caractere, retorna a string toda
+static string LeString(string inicial,istream &ss){
+    string resp = inicial,aux;
+
+    if (resp[0]=='\"'){//se começa com aspas, retira as aspas
+        resp.erase(0,1);
+        if (resp[resp.size()-1]=='\"'){ //se termina com aspas também retira
+            resp.erase(resp.end()-1);
+        }else{//entra no loop procurando a palavras que vai terminar com aspas
+            while (ss>>aux && aux[aux.size()-1]!='\"'){
+                resp += " " + aux;
+            }
+            if (aux[aux.size()-1]=='\"'){//acrescenta a última palavra que termina com aspas (depois de tirar as aspas)
+                aux.erase(aux.end()-1);
+                resp += " " + aux;
+            }
+        }
+    }
+
+    return resp;
+}
+
 static CPIGAtributos GetAtributos(string parametros){
     CPIGAtributos resp;
     stringstream ss(parametros);
@@ -147,6 +172,7 @@ static CPIGAtributos GetAtributos(string parametros){
 
     while(ss >> variavel){
         ss >> valorString;
+        valorString = LeString(valorString,ss);
         resp.SetValorString(variavel,valorString);
     }
 

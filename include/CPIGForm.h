@@ -98,11 +98,12 @@ private:
             getline(arq,linha);
 
             CPIGAtributos atrib = CPIGAtributos::GetAtributos(linha);
+
             if (atrib.GetString("nomeArq","")!=""){
-                resp = new CPIGForm(idForm,atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+                resp = new CPIGForm(idForm,atrib.GetInt("altura",PIG_ALT_TELA),atrib.GetInt("largura",PIG_LARG_TELA),
                                         atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
             }else{
-                resp = new CPIGForm(idForm,atrib.GetInt("altura",0),atrib.GetInt("largura",0),
+                resp = new CPIGForm(idForm,atrib.GetInt("altura",PIG_ALT_TELA),atrib.GetInt("largura",PIG_LARG_TELA),
                                         atrib.GetInt("janela",0));
             }
 
@@ -175,14 +176,13 @@ public:
 
         //desenha primeiro os componentes fora do mouse
         for(int i=0;i<totalComponentes;i++){
-            if (i!=componenteMouseOver)
+            if (i!=componenteMouseOver){
                 componentes[i]->Desenha();
+            }
         }
         //desenha o componente sob o mouse para que o hint fique por cima dos demais
         if (componenteMouseOver!=-1)
             componentes[componenteMouseOver]->Desenha();
-
-        lab->Desenha();
 
         return CPIGComponente::Desenha();
     }

@@ -20,6 +20,7 @@ float opacidade;
 string titulo;
 SDL_Rect block;
 PIGCamera cameraMovel,cameraFixa;
+SDL_sem *semRender;
 bool fixo;
 
 public:
@@ -51,9 +52,11 @@ CPIGJanela(string tituloJanela, int idJanela, int altTela, int largTela){
     opacidade = 1.0f;
     textFundo = NULL;
     block = {0,0,-1,-1};
+    semRender = SDL_CreateSemaphore(1);
 }
 
 ~CPIGJanela(){
+    SDL_DestroySemaphore(semRender);
     SDL_DestroyRenderer(renderer);
     if (window) SDL_DestroyWindow(window);
     delete cameraMovel;
@@ -172,7 +175,16 @@ void SaveScreenshot(string nomeArquivo, bool BMP) {
     }
 }
 
+inline void TravaRenderer(){
+    SDL_SemWait(semRender);
+}
+
+inline void DestravaRenderer(){
+    SDL_SemPost(semRender);
+}
+
 void IniciaDesenho(){
+    TravaRenderer();
     if (textFundo==NULL) {
         SDL_SetRenderDrawColor(renderer,corFundo.r,corFundo.g,corFundo.b,corFundo.a);
         SDL_RenderClear( renderer );
@@ -182,6 +194,7 @@ void IniciaDesenho(){
 
 inline void EncerraDesenho(){
     SDL_RenderPresent(renderer);
+    DestravaRenderer();
 }
 
 int *GetAltura(){

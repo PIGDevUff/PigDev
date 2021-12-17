@@ -55,8 +55,8 @@ static int CriaTela(int idTela, bool criarBackground=false, bool carregarBackgro
         }
 
         telas[idTela] = new CPIGTela(idTela,comportamento[idTela],criarBackground,carregarBackground,imgFundo,idJanela);
-        //printf("Endereco: %d\n",telas[idTela]);
-        if (telaAtual==-1)
+
+        if (telaAtual==-1)//se for a primeira tela criada, ela será considerada telaAtual
             telaAtual = idTela;
         return 1;
     }

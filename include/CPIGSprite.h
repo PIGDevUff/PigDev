@@ -134,8 +134,10 @@ int GetId(){
 //Construtor para arquivos de vídeo ou Componentes
 CPIGSprite(int idSprite, int altura, int largura, string nomeArq, int janela=0){
     id = idSprite;
+    criada = this_thread::get_id();
     nomeArquivo = nomeArq;
     bitmap = NULL;
+
     IniciaBase(altura,largura,janela);
     pixels = NULL;
 }
@@ -143,6 +145,7 @@ CPIGSprite(int idSprite, int altura, int largura, string nomeArq, int janela=0){
 //Construtor básico para leitura de imagens digitais
 CPIGSprite(int idSprite, string nomeArq, int retiraFundo=1, PIGCor *corFundo=NULL, int janela=0){
     id = idSprite;
+    criada = this_thread::get_id();
     nomeArquivo = nomeArq;
 
     CarregaImagem(nomeArq);
@@ -155,6 +158,7 @@ CPIGSprite(int idSprite, string nomeArq, int retiraFundo=1, PIGCor *corFundo=NUL
 //Construtor para imagens provenientes do renderizador offscreen
 CPIGSprite(int idSprite, PIGOffscreenRenderer offRender, int retiraFundo=1, PIGCor *corFundo=NULL, int janela=0){
     id = idSprite;
+    criada = this_thread::get_id();
     nomeArquivo = "";
 
     SDL_Surface *surface = offRender->GetSurface();
@@ -169,6 +173,7 @@ CPIGSprite(int idSprite, PIGOffscreenRenderer offRender, int retiraFundo=1, PIGC
 //Construtor para Sprite "copiado" de outro Sprite
 CPIGSprite(int idSprite, CPIGSprite *spriteBase, int retiraFundo=1, PIGCor *corFundo=NULL, int janela=0){
     id = idSprite;
+    criada = this_thread::get_id();
 
     CarregaImagem(spriteBase->nomeArquivo);
 
@@ -558,11 +563,15 @@ virtual int Desenha(){
     //printf("%d,%d,%d,%d\n",dest.x,*altJanela-dest.y,dest.h,dest.w);
     //SDL_Point p = {pivoRelativo.x,pivoRelativo.y};
     CPIGGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaWorldScreen(enquadrado.x,enquadrado.y,enquadrado.x,enquadrado.y);
-    //printf("%d,%d,%d,%d\n",enquadrado.x,enquadrado.y,enquadrado.w,enquadrado.h);
+    //
     #if PIG_MULTITHREAD_TELAS==1
-    if (text!=NULL&&criada!=PIG_MAIN_THREAD_ID){
+    if (criada!=PIG_MAIN_THREAD_ID){
+        //printf("mandei atualizar %d\n",)
         AtualizaTextura();
-    }
+    }/*else if (criada!=PIG_MAIN_THREAD_ID){
+        printf("erro %d id %d\n",criada,id);
+        AtualizaTextura();
+    }*/
     #endif
 
     SDL_RenderCopyEx(renderer, text, &frames[frameAtual], &enquadrado, -angulo, &pivoInteiro, flip);

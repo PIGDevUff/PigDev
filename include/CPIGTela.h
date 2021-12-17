@@ -30,25 +30,29 @@ bool criaBackground,carregaBackground;
 PIGEstadoTela estado;
 PIGComportamentoTela comportamento;
 bool destruirAoDescarregar;
+SDL_sem *sem;
 
 public:
 
 static ExecutaFuncaoBackground(void *param){
     PIGStructThread *st = (PIGStructThread*) param;
-    st->funcao(st->id,st->param);
-    //printf("terminei funcao de criacao\n");
     CPIGTela *tela = (CPIGTela*) st->tela;
-    //printf("vou alterar o estado da tela %d\n",st->tela);
+
+    st->funcao(st->id,st->param);
+
     tela->estado = st->estadoFinal;
 
-    //if(tela->id==TELA_JOGO)
-    //    printf("alterei para %d\n",tela->estado);
+    if (tela->estado==PIG_TELA_CARREGADA){
+        SDL_SemPost(tela->sem);
+    }
 
     free(param);
     //printf("terminei background\n");
 }
 
 CPIGTela(int idTela, PIGComportamentoTela comporta, bool criarBackground=false, bool carregarBackground=false, string imgLoading="", int idJanela=0){
+    sem = SDL_CreateSemaphore(0);
+
     id = idTela;
     janela = idJanela;
     comportamento = comporta;
@@ -62,6 +66,7 @@ CPIGTela(int idTela, PIGComportamentoTela comporta, bool criarBackground=false, 
         CPIGGerenciadorSprites::GetSprite(spriteCarrega)->SetDimensoes(PIG_ALT_TELA,PIG_LARG_TELA);
     }
 
+    destruirAoDescarregar = false;
     if (comportamento.acaoCria!=NULL){
         if (criaBackground){
             estado = PIG_TELA_CRIANDO;
@@ -77,7 +82,7 @@ CPIGTela(int idTela, PIGComportamentoTela comporta, bool criarBackground=false, 
             estado = PIG_TELA_CRIADA;
         }
     }else estado = PIG_TELA_CRIADA;
-    destruirAoDescarregar = false;
+
     //printf("%d terminei o construtor\n",id);
 }
 
@@ -99,7 +104,10 @@ bool GetDestruirAoDescarregar(){
 }
 
 int CarregaTela(){
-    if (estado==PIG_TELA_CARREGADA||estado==PIG_TELA_CARREGANDO||estado==PIG_TELA_CRIANDO) return -1;
+    if (estado==PIG_TELA_CARREGADA||estado==PIG_TELA_CARREGANDO||estado==PIG_TELA_CRIANDO){
+        printf("Tela %d com erro carregamento: estado %d\n",id,estado);
+        return -1;
+    }
     mudarPara = -1;
     CPIGGerenciadorTimers::GetTimer(timerSaida)->Reinicia(true);
     if (comportamento.acaoCarrega!=NULL){
@@ -146,13 +154,21 @@ void PreparaSaida(int outraTela, double tempo=PIG_TEMPO_SAIDA_TELA_PADRAO, bool 
 }
 
 int Atualiza(){
-    if (estado==PIG_TELA_CRIANDO||estado==PIG_TELA_CARREGANDO)
+    if (estado==PIG_TELA_CRIANDO||estado==PIG_TELA_CARREGANDO){
+        //printf("%d erro atualiza %d\n",id,estado);
         return -1;
+    }
+
+    //o método atualiza só é chamado para a telaAtual. Logo, se essa é a tela atual, precisa ser carregada primeiro
     if (estado==PIG_TELA_CRIADA){
         CarregaTela();
     }
-    if (estado==PIG_TELA_CARREGADA&&comportamento.acaoAtualiza!=NULL)
+
+    if (estado==PIG_TELA_CARREGADA&&comportamento.acaoAtualiza!=NULL){
         comportamento.acaoAtualiza(id,comportamento.dados);
+    }
+
+    //se já passou o tempo de sair, sinaliza para qual tela o gerenciador tem que mudar
     if (CPIGGerenciadorTimers::GetTimer(timerSaida)->GetTempoDecorrido()>tempoSaida)
         return mudarPara;
     else return -1;
@@ -163,11 +179,14 @@ int Desenha(){
         CPIGGerenciadorJanelas::GetJanela(janela)->PreparaCameraFixa();
         CPIGGerenciadorSprites::GetSprite(spriteCarrega)->Desenha();
     }
-    //if (id==TELA_JOGO)
-    //    printf("estado %d\n",estado);
-    if ((estado==PIG_TELA_CARREGADA||estado==PIG_TELA_SAINDO)&&comportamento.acaoDesenha!=NULL)
-        return comportamento.acaoDesenha(id,comportamento.dados);
-    return 0;
+
+    int resp=0;
+    if ((estado==PIG_TELA_CARREGADA||estado==PIG_TELA_SAINDO)&&comportamento.acaoDesenha!=NULL){
+        SDL_SemWait(sem);
+        resp = comportamento.acaoDesenha(id,comportamento.dados);
+        SDL_SemPost(sem);
+    }
+    return resp;
 }
 
 void SetComportamento(PIGComportamentoTela comporta){
