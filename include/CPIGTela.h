@@ -105,7 +105,7 @@ bool GetDestruirAoDescarregar(){
 
 int CarregaTela(){
     if (estado==PIG_TELA_CARREGADA||estado==PIG_TELA_CARREGANDO||estado==PIG_TELA_CRIANDO){
-        printf("Tela %d com erro carregamento: estado %d\n",id,estado);
+        //printf("Tela %d com erro carregamento: estado %d\n",id,estado);
         return -1;
     }
     mudarPara = -1;
