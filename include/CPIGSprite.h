@@ -27,7 +27,7 @@ string nomeArquivo;
 PIGAutomacao automacao;
 int tipoFixo;
 vector<CPIGSprite*> filhos;
-thread::id criada;
+bool precisaAtualizar;
 private:
 
 void CarregaImagem(string nomeArq){
@@ -120,9 +120,11 @@ void AplicaTransicao(PIGEstadoTransicao estado){
 }
 
 inline virtual void AtualizaTextura(){
-    if (text) SDL_DestroyTexture(text);
-    text = SDL_CreateTextureFromSurface(renderer, bitmap);
-    criada = this_thread::get_id();
+    if (this_thread::get_id()==PIG_MAIN_THREAD_ID){
+        if (text) SDL_DestroyTexture(text);
+        text = SDL_CreateTextureFromSurface(renderer, bitmap);
+        precisaAtualizar = false;
+    }
 }
 
 public:
@@ -134,7 +136,8 @@ int GetId(){
 //Construtor para arquivos de vídeo ou Componentes
 CPIGSprite(int idSprite, int altura, int largura, string nomeArq, int janela=0){
     id = idSprite;
-    criada = this_thread::get_id();
+    //criada = this_thread::get_id();
+    precisaAtualizar = true;
     nomeArquivo = nomeArq;
     bitmap = NULL;
 
@@ -145,7 +148,8 @@ CPIGSprite(int idSprite, int altura, int largura, string nomeArq, int janela=0){
 //Construtor básico para leitura de imagens digitais
 CPIGSprite(int idSprite, string nomeArq, int retiraFundo=1, PIGCor *corFundo=NULL, int janela=0){
     id = idSprite;
-    criada = this_thread::get_id();
+    //criada = this_thread::get_id();
+    precisaAtualizar = true;
     nomeArquivo = nomeArq;
 
     CarregaImagem(nomeArq);
@@ -158,7 +162,8 @@ CPIGSprite(int idSprite, string nomeArq, int retiraFundo=1, PIGCor *corFundo=NUL
 //Construtor para imagens provenientes do renderizador offscreen
 CPIGSprite(int idSprite, PIGOffscreenRenderer offRender, int retiraFundo=1, PIGCor *corFundo=NULL, int janela=0){
     id = idSprite;
-    criada = this_thread::get_id();
+    //criada = this_thread::get_id();
+    precisaAtualizar = true;
     nomeArquivo = "";
 
     SDL_Surface *surface = offRender->GetSurface();
@@ -173,7 +178,8 @@ CPIGSprite(int idSprite, PIGOffscreenRenderer offRender, int retiraFundo=1, PIGC
 //Construtor para Sprite "copiado" de outro Sprite
 CPIGSprite(int idSprite, CPIGSprite *spriteBase, int retiraFundo=1, PIGCor *corFundo=NULL, int janela=0){
     id = idSprite;
-    criada = this_thread::get_id();
+    //criada = this_thread::get_id();
+    precisaAtualizar = true;
 
     CarregaImagem(spriteBase->nomeArquivo);
 
@@ -565,13 +571,11 @@ virtual int Desenha(){
     CPIGGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaWorldScreen(enquadrado.x,enquadrado.y,enquadrado.x,enquadrado.y);
     //
     #if PIG_MULTITHREAD_TELAS==1
-    if (criada!=PIG_MAIN_THREAD_ID){
-        //printf("mandei atualizar %d\n",)
+    if (precisaAtualizar){//criada!=PIG_MAIN_THREAD_ID){
+        //printf("mandei atualizar...");
         AtualizaTextura();
-    }/*else if (criada!=PIG_MAIN_THREAD_ID){
-        printf("erro %d id %d\n",criada,id);
-        AtualizaTextura();
-    }*/
+        //printf("resultado: %d\n",precisaAtualizar);
+    }
     #endif
 
     SDL_RenderCopyEx(renderer, text, &frames[frameAtual], &enquadrado, -angulo, &pivoInteiro, flip);

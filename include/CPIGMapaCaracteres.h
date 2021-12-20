@@ -341,23 +341,31 @@ public:
 
     virtual void Escreve(string texto, SDL_Texture *textura, PIGCor cor){
         int w,h;
-        SDL_SetRenderTarget(render,textura);
-        SDL_SetRenderDrawColor(render,0,0,0,0);
-        int *altJanela;
-        if (janela>-1)
-            altJanela = CPIGGerenciadorJanelas::GetJanela(janela)->GetAltura();
-        else{
-            SDL_GetRendererOutputSize(render,&w,&h);
-            altJanela = &h;
+
+        if (this_thread::get_id()!=PIG_MAIN_THREAD_ID)
+            CPIGGerenciadorJanelas::GetJanela(janela)->TravaRenderer();
+
+        if (SDL_SetRenderTarget(render,textura)==0){
+            SDL_SetRenderDrawColor(render,0,0,0,0);
+            int *altJanela;
+            if (janela>-1)
+                altJanela = CPIGGerenciadorJanelas::GetJanela(janela)->GetAltura();
+            else{
+                SDL_GetRendererOutputSize(render,&w,&h);
+                altJanela = &h;
+            }
+
+            SDL_SetTextureBlendMode(textura, SDL_BLENDMODE_BLEND);
+            SDL_SetTextureColorMod(textura,cor.r,cor.g,cor.b);
+
+            Escreve(texto,0,*altJanela-tamFonte+fontDescent,cor,PIG_TEXTO_ESQUERDA,0,1);
+            //SDL_SetRenderDrawColor(render,255,0,0,255);
+            //SDL_RenderDrawRect(render,NULL);
+            SDL_SetRenderTarget(render, NULL);
         }
 
-        SDL_SetTextureBlendMode(textura, SDL_BLENDMODE_BLEND);
-        SDL_SetTextureColorMod(textura,cor.r,cor.g,cor.b);
-
-        Escreve(texto,0,*altJanela-tamFonte+fontDescent,cor,PIG_TEXTO_ESQUERDA,0,1);
-        //SDL_SetRenderDrawColor(render,255,0,0,255);
-        //SDL_RenderDrawRect(render,NULL);
-        SDL_SetRenderTarget(render, NULL);
+        if (this_thread::get_id()!=PIG_MAIN_THREAD_ID)
+            CPIGGerenciadorJanelas::GetJanela(janela)->TravaRenderer();
     }
 
 

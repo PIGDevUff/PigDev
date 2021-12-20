@@ -110,22 +110,6 @@ public:
         }
     }
 
-    /*void AlinhaLabelEsquerda(){
-        if (posLabels!=PIG_COMPONENTE_ESQ_CENTRO){//se os labels estăo ŕ direita do botőes, inverte
-            for (PIGItemComponente i: itens)
-                i->AlinhaLabelEsquerda();
-            posLabels = PIG_COMPONENTE_ESQ_CENTRO;
-        }
-    }
-
-    void AlinhaLabelCentro(){
-        if (posLabels!=PIG_COMPONENTE_CENTRO_CENTRO){//se os labels estăo à direita do botőes, inverte
-            for (PIGItemComponente i: itens)
-                i->AlinhaLabelCentro();
-            posLabels = PIG_COMPONENTE_CENTRO_CENTRO;
-        }
-    }*/
-
     void AlinhaIcones(PIGPosicaoComponente valor){
         if (posIcones!=valor){//se os labels estăo à direita do botőes, inverte
             posIcones = valor;
@@ -133,14 +117,6 @@ public:
                 i->AlinhaIcone(posIcones);
         }
     }
-
-    /*void AlinhaIconeEsquerda(){
-        if (posIcones!=PIG_COMPONENTE_ESQ_CENTRO){//se os labels estăo à direita do botőes, inverte
-            for (PIGItemComponente i: itens)
-                i->AlinhaIconeEsquerda();
-            posIcones = PIG_COMPONENTE_ESQ_CENTRO;
-        }
-    }*/
 
     int GetAcionadoItem(int indice){
         if (indice<0||indice>=itens.size()) return -1;
@@ -243,13 +219,6 @@ public:
 
         DeslocaItens(dx,dy);
     }
-
-    /*virtual void SetMargens(int mEsq, int mDir, int mCima, int mBaixo)override{
-        CPIGComponente::SetMargens(mEsq,mDir,mCima,mBaixo);
-        printf("defini margens %d,%d,%d,%d\n",mEsq,mDir,mCima,mBaixo);
-        for (PIGItemComponente i: itens)
-            i->SetMargens(mEsq,mDir,mCima,mBaixo);
-    }*/
 
 };
 typedef CPIGListaItemComponente *PIGListaComponente;

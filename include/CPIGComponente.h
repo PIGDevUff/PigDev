@@ -23,12 +23,14 @@ protected:
     PIGCor coresBasicas[10];
     PIGTipoComponente tipo;
     int margemEsq,margemDir,margemCima,margemBaixo;
+    bool imagemPropria;
     void *param;
 
     //inicializa o componente com valores padrão
-    void IniciaBase(){
+    void IniciaBase(bool imagem){
         lab = new CPIGLabel("",0,idJanela);
         hint = new CPIGLabel("",0,idJanela);
+        imagemPropria = imagem;
         SetPosicaoPadraoLabel(PIG_POSICAO_CENTRO_CENTRO);
         audioComponente = -1;
         margemEsq = margemDir = margemCima = margemBaixo = 0;
@@ -36,6 +38,12 @@ protected:
         habilitado = visivel = true;
         param = NULL;
         acao = NULL;
+    }
+
+    //escreve o label
+    inline void EscreveLabel(){
+        if (lab->GetTexto()!="")
+            lab->Desenha();
     }
 
     //escreve o hint do componente na tela
@@ -141,11 +149,6 @@ protected:
             //printf("id: %d p (%d): %d,%d\n",id,posLabel,(int)p.x,(int)p.y);
     }
 
-    //desenha o label
-    inline void DesenhaLabel(){
-        lab->Desenha();
-    }
-
     virtual PIGEstadoEvento OnAction(){
         if (acao) acao(id,param);//rever se NULL é necessário
         if (audioComponente>=0) CPIGGerenciadorAudios::Play(audioComponente);
@@ -210,12 +213,12 @@ protected:
 
     CPIGComponente(int idComponente, int altura, int largura, int janela=0)
     :CPIGSprite(idComponente,altura,largura,"",janela){
-        IniciaBase();
+        IniciaBase(false);
     }
 
     CPIGComponente(int idComponente, int altura, int largura, string nomeArq, int retiraFundo=1, int janela=0)
     :CPIGSprite(idComponente,nomeArq,retiraFundo,NULL,janela){
-        IniciaBase();
+        IniciaBase(true);
         CPIGSprite::SetDimensoes(altura,largura);
     }
 
@@ -236,8 +239,8 @@ public:
     }
 
     //desenha o componente, cada subclasse precisa implementar como fazer isso
-    virtual int Desenha(){
-        DesenhaLabel();
+    virtual inline int Desenha(){
+        EscreveLabel();
         EscreveHint();
         return 1;
     }

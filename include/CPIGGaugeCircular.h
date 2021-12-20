@@ -10,7 +10,6 @@ private:
 
     double angBase,deltaAng;
     int raioInterno;
-    PIGOffscreenRenderer off;
 
     void ProcessaAtributos(CPIGAtributos atrib)override{
         CPIGGauge::ProcessaAtributos(atrib);
@@ -42,11 +41,19 @@ private:
     }
 
     void AtualizaTextura()override{
-        //coresBasicas[3] é a cor a ser utilizada no marcador
+
+        if (this_thread::get_id()!=PIG_MAIN_THREAD_ID) return;
+
+        if (imagemPropria){
+            CPIGSprite::AtualizaTextura();
+            return;
+        }
+
         PIGCor opcoes[4] = {VERDE,AZUL,ROXO,LARANJA}; //4 cores quaisquer
         PIGCor croma1, croma2; //cores usada como cromakey para transparencias (não podem ser nem a cor da barra, nem a cor do fundo)
 
-        //escolha das cores
+
+        //escolha das cores; coresBasicas[3] é a cor a ser utilizada no marcador
         int i=0;
         croma1=opcoes[i];
         while (PIGCoresIguais(croma1,coresBasicas[3])||PIGCoresIguais(croma1,coresBasicas[0])){//não pode ser a cor da barra nem do fundo
@@ -56,6 +63,8 @@ private:
         while (PIGCoresIguais(croma2,coresBasicas[3])||PIGCoresIguais(croma2,coresBasicas[0])||PIGCoresIguais(croma2,croma1)){//não pode ser a cor da barra, nem do fundo, nem a cor croma1
             croma2=opcoes[++i];
         }
+
+        PIGOffscreenRenderer off = new CPIGOffscreenRenderer(alt,larg,3);
 
         //circulo interno para criar efeito de coroa circular
         off->DesenhaCirculoFinal(raioInterno,croma2,croma1,0,360.0,2);
@@ -91,7 +100,10 @@ private:
 
         if (text) SDL_DestroyTexture(text);
         text = SDL_CreateTextureFromSurface(renderer,off->GetSurface(1));
-        criada = this_thread::get_id();
+
+        delete off;
+
+        precisaAtualizar = false;
 
         SetAngulo(angBase);
     }
@@ -130,8 +142,6 @@ public:
 
         IniciaCoresBasicas();
 
-        off = new CPIGOffscreenRenderer(altura,largura,3);
-
         IniciaBase();
     }
 
@@ -141,16 +151,12 @@ public:
         marcador = new CPIGSprite(-1,imgMarcador,retiraFundoMarcador,NULL,janela);
         marcador->SetDimensoes(alturaMarcador,larguraMarcador);
 
-        off = NULL;
-
         IniciaBase();
     }
 
     CPIGGaugeCircular(int idComponente, CPIGAtributos atrib):CPIGGaugeCircular(LeParametros(idComponente,atrib)){}
 
-    virtual ~CPIGGaugeCircular(){
-        if (off) delete off;
-    }
+    virtual ~CPIGGaugeCircular(){}
 
     int Desenha()override{
         if(visivel==false) return 0;

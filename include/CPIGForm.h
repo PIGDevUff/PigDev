@@ -1,6 +1,7 @@
 #ifndef _CPIGFORM_
 #define _CPIGFORM_
 
+#include "CPIGAtributos.h"
 #include "CPIGComponente.h"
 #include "CPIGBotaoClick.h"
 #include "CPIGBotaoOnOff.h"
@@ -128,7 +129,6 @@ private:
         comp->CriaItem(atrib);
     }
 
-
 public:
 
     CPIGForm(int idForm, int altForm, int largForm, int janela = 0):
@@ -170,8 +170,14 @@ public:
     int Desenha()override{
         if (visivel==false) return 0;
 
-        if (text)
+        if (imagemPropria){
+            //printf("des form\n");
+            //refaz=1;
+
             CPIGSprite::Desenha();
+            //refaz=0;
+            //printf("des form ok\n");
+        }
         else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
 
         //desenha primeiro os componentes fora do mouse
@@ -339,7 +345,7 @@ public:
 
     int CriaComponentePorParametro(string parametros){
         int idComponente = GetProxIdComponente();
-        //printf("parametros: %s\n",parametros.c_str());
+
         CPIGAtributos atrib = CPIGAtributos::GetAtributos(parametros);
         int componente = GetTipoComponente(atrib.GetString("tipo",""));
 
@@ -357,7 +363,7 @@ public:
             case PIG_GAUGECIRCULAR: componentes[totalComponentes++] = new CPIGGaugeCircular(idComponente,atrib);break;
             case PIG_ITEMCOMPONENTE: CriaItemLista(atrib);
         }
-        //printf("id comp %d %d\n",idComponente,totalComponentes);
+
         return idComponente;
     }
 

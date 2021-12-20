@@ -116,8 +116,6 @@ string GetString(string chave, string retNegativo){
     std::transform(chave.begin(), chave.end(),chave.begin(), ::toupper);
     map<string, string>::iterator it = valoresString.find(chave);
     if (it == valoresString.end()){
-        if (retNegativo=="")
-            return "";
         return retNegativo;
     }
     return it->second;

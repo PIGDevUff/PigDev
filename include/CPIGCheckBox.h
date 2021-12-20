@@ -92,7 +92,7 @@ public:
 
         CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x,pos.y,alt,larg);
 
-        if (text)//se tiver imagem de fundo
+        if (imagemPropria)//se tiver imagem de fundo
             CPIGSprite::Desenha();
         else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
 

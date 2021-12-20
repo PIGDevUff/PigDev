@@ -143,7 +143,7 @@ public:
         CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x,pos.y,alt,larg);
 
         //moldura
-        if (text){
+        if (imagemPropria){
             if (marcadorFrente){
                 //Desenha Barra
                 CPIGSprite::Desenha();
