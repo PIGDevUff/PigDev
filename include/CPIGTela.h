@@ -123,6 +123,7 @@ int CarregaTela(){
         }else{
             comportamento.acaoCarrega(id,comportamento.dados);
             estado = PIG_TELA_CARREGADA;
+            SDL_SemPost(sem);
         }
     }else estado = PIG_TELA_CARREGADA;
     return 1;
