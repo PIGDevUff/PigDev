@@ -1,7 +1,7 @@
 #include "PIG.h"
 
-PIG_Evento evento;          //evento ser tratado a cada passada do loop principal
-PIG_Teclado meuTeclado;     //variável como mapeamento do teclado
+PIGEvento evento;          //evento ser tratado a cada passada do loop principal
+PIGTeclado meuTeclado;     //variável como mapeamento do teclado
 
 int main( int argc, char* args[] ){
 

@@ -70,10 +70,15 @@ protected:
         if (idJanela>-1)
             render = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetRenderer();
         else render = renderer;
+
         font = TTF_OpenFont(nome.c_str(), tamanhoFonte);
-        fontDescent = TTF_FontDescent(font);
-        if (font==NULL)
+
+        if (font==NULL){
             printf("Erro: arquivo de fonte (%s) nao localizado\n",nomeFonte);
+            exit(-1);
+        }
+
+        fontDescent = TTF_FontDescent(font);
 
         alturaExtra = (int**)malloc(sizeof(int*)*(PIG_TOTALESTILOS));
         larguraLetra = (int**)malloc(sizeof(int*)*(PIG_TOTALESTILOS));

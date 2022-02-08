@@ -34,7 +34,7 @@ SDL_sem *sem;
 
 public:
 
-static ExecutaFuncaoBackground(void *param){
+static void ExecutaFuncaoBackground(void *param){
     PIGStructThread *st = (PIGStructThread*) param;
     CPIGTela *tela = (CPIGTela*) st->tela;
 
