@@ -34,7 +34,7 @@ SDL_sem *sem;
 
 public:
 
-static void ExecutaFuncaoBackground(void *param){
+static int ExecutaFuncaoBackground(void *param){
     PIGStructThread *st = (PIGStructThread*) param;
     CPIGTela *tela = (CPIGTela*) st->tela;
 
@@ -48,6 +48,7 @@ static void ExecutaFuncaoBackground(void *param){
 
     free(param);
     //printf("terminei background\n");
+    return 0;
 }
 
 CPIGTela(int idTela, PIGComportamentoTela comporta, bool criarBackground=false, bool carregarBackground=false, string imgLoading="", int idJanela=0){
