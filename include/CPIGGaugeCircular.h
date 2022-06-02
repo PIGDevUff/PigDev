@@ -112,7 +112,7 @@ private:
         CPIGGauge::AtualizaMarcador();
         OnAction();
         if (marcador){
-            marcador->SetPivoAbsoluto({margemEsq,margemBaixo});
+            marcador->SetPivoAbsoluto({(double)margemEsq,(double)margemBaixo});
             marcador->Move(pos.x+larg/2-margemEsq,pos.y+alt/2-margemBaixo);
             double angMarcador=0;
             if (orientacaoCrescimento==PIG_GAUGE_HORARIO)

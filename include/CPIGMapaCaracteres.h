@@ -74,7 +74,7 @@ protected:
         font = TTF_OpenFont(nome.c_str(), tamanhoFonte);
 
         if (font==NULL){
-            printf("Erro: arquivo de fonte (%s) nao localizado\n",nomeFonte);
+            printf("Erro: arquivo de fonte (%s) nao localizado\n",nomeFonte.c_str());
             exit(-1);
         }
 

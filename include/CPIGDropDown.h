@@ -43,7 +43,7 @@ private:
     }
 
     int ChecaMouseOver(SDL_Point pMouse)override{
-        SDL_Rect r={(int)pos.x,pos.y,larg,altBaseLista};
+        SDL_Rect r={(int)pos.x,(int)pos.y,larg,altBaseLista};
         if (!recolhida){
             r.y -= altBaseLista*itens.size();
             r.h += itens.size()*altBaseLista;
