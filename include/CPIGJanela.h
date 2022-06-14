@@ -352,7 +352,7 @@ void DesenhaPoligono(int px[], int py[], int lados, PIGCor cor){
     for (int i=0;i<lados;i++)
         off->DesenharLinha(px[i]-minX,py[i]-minY,px[(i+1)%lados]-minX,py[(i+1)%lados]-minY,cor);
 
-    off->PintarArea(cx-minX,cy-minY,cor,NULL);
+    off->PintarArea(cx-minX,cy-minY,cor);
 
     SDL_Surface *surf = off->GetSurface();
     if (PIGCoresIguais(cor,PRETO)){

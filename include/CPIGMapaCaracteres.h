@@ -62,7 +62,7 @@ protected:
 
     //inicia os atributos da classe
     void IniciaBase(string nomeFonte, int tamanhoFonte, int idJanela, PIGEstilo estilo, SDL_Renderer *renderer){
-        nome.assign(nomeFonte);
+        nome = nomeFonte;
         tamFonte = tamanhoFonte;
         janela = idJanela;
         estiloFixo = estilo;

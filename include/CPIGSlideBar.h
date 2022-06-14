@@ -61,7 +61,7 @@ class CPIGSlideBar: public CPIGGauge{
     }
 
     PIGEstadoEvento TrataClickTrilha(int px, int py){
-        double perc;
+        double perc=0;
         int minx = (int)pos.x+margemEsq+largMarcador/2;
         int maxx = (int)pos.x+larg-margemDir-largMarcador/2;
         int miny = (int)pos.y+margemBaixo+altMarcador/2;

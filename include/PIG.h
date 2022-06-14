@@ -6272,6 +6272,8 @@ void PIGSlideBarSetDeltas(int idComponente, int deltaPadrao, int deltaRodinha, i
     CPIGGerenciadorForms::GetComponente<PIGSlideBar>(idComponente)->SetDeltas(deltaPadrao,deltaRodinha,deltaTeclado);
 }
 
+
+
 void PIGCriaTela(int idTela, int backgroundCriar=0, int backgroundCarregar=0, char *nomeArqCarregamento="", int janela=0){
     CPIGGerenciadorTelas::CriaTela(idTela,backgroundCriar,backgroundCarregar,nomeArqCarregamento,janela);
 }

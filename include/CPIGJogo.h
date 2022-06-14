@@ -54,26 +54,14 @@ public:
 
     PIGEvento PegaEvento(){
         SDL_Event event;
-        int resp;
-        //if (despausa)
-        //    resp = SDL_PeepEvents(&event,1,SDL_GETEVENT,EVENTO_VIDEO,EVENTO_VIDEO);
-        //else
 
-        resp = SDL_PollEvent(&event);
+        int resp = SDL_PollEvent(&event);
         if (resp){
             if (event.type==SDL_QUIT)
                 rodando = false;
             //if (event.type) printf("Tipo: %d\n",event.type);
             switch(event.type){
-            /*case FF_ALLOC_EVENT:
-            case FF_REFRESH_EVENT:
-            case FF_QUIT_EVENT:
-                ultimoEvento.tipoEvento = EVENTO_VIDEO;
-                ultimoEvento.video.acao = event.type;
-                //PlayerAV *player = (Player) event.user.data1;
-                //player->TrataEvento(ultimoEvento);
-                break;
-            */
+
             case SDL_USEREVENT:
                 if (event.user.code==PIG_EVENTO_AUDIO){
                     ultimoEvento.tipoEvento = PIG_EVENTO_AUDIO;
