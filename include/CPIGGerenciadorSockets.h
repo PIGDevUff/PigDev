@@ -16,6 +16,7 @@ static CPIGRepositorio<PIGSocketUDP> *socketsUDP;
 public:
 
 static void Inicia(){
+    SDLNet_Init();
     clientes = new CPIGRepositorio<PIGClienteTCP>(PIG_MAX_SOCKETS_CLIENTES_TCP,"clientesTCP");
     servidores = new CPIGRepositorio<PIGServidorTCP>(PIG_MAX_SOCKETS_SERVIDORES_TCP,"servidoresTCP");
     socketsUDP = new CPIGRepositorio<PIGSocketUDP>(PIG_MAX_SOCKETS_UDP,"socketsUDP");
@@ -25,6 +26,7 @@ static void Encerra(){
     delete clientes;
     delete servidores;
     delete socketsUDP;
+    SDLNet_Quit();
 }
 
 static int CriaCliente(string hostname, int porta, int maxBytesPacote=PIG_MAX_MENSAGEM_REDE_TCP){

@@ -11,9 +11,6 @@ int main( int argc, char* args[] ){
     //associando o teclado (basta uma única vez) com a variável meuTeclado
     meuTeclado = GetTeclado();
 
-    //int num = CriaFonteNormal("..//fontes//arial.ttf",30,VERDE);
-    int num = CriaFonteDinamica("..//fontes//arial.ttf",30);
-
     //loop principal do jogo
     while(JogoRodando()){
 
@@ -24,8 +21,6 @@ int main( int argc, char* args[] ){
 
         //será feita a preparação do frame que será exibido na tela
         IniciaDesenho();
-
-        EscreverLongaEsquerda(lido,10,300,50,60,VERDE,num);
 
         //todas as chamadas de desenho devem ser feitas aqui na ordem desejada
 

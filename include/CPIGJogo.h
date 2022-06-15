@@ -37,14 +37,11 @@ public:
             CPIGGerenciadorJanelas::Inicia(nome,altura,largura);
         }
 
-        // Initialize the joystick subsystem
-        SDL_InitSubSystem(SDL_INIT_JOYSTICK);
 
-        SDLNet_Init();
     }
 
     ~CPIGJogo(){
-        SDLNet_Quit();
+
 
         delete timerFPS;
         if (offRenderer) delete offRenderer;

@@ -1,5 +1,5 @@
-#ifndef _CPIGGERENCIADORCONTROLE_
-#define _CPIGGERENCIADORCONTROLE_
+#ifndef _CPIGGERENCIADORCONTROLES_
+#define _CPIGGERENCIADORCONTROLES_
 
 #include "CPIGControle.h"
 
@@ -13,6 +13,9 @@ static PIGControle controles[PIG_MAX_CONTROLES];
 public:
 
 static void Inicia(){
+    // Initialize the joystick subsystem
+    SDL_InitSubSystem(SDL_INIT_JOYSTICK);
+
     qtdControles = SDL_NumJoysticks();
     for(int i = 0; i < qtdControles; ++i) {
         controles[i] = new CPIGControle(i);
@@ -33,4 +36,4 @@ static PIGControle GetControle(int idControle){
 
 int CPIGGerenciadorControles::qtdControles;
 PIGControle CPIGGerenciadorControles::controles[PIG_MAX_CONTROLES];
-#endif // _CPIGGERENCIADORCONTROLE_
+#endif // _CPIGGERENCIADORCONTROLES_
