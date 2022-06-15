@@ -10,6 +10,8 @@ private:
 SDL_Window *window;
 SDL_Renderer *renderer;
 SDL_Texture *textFundo;
+int contFPS,lastFPS;
+PIGTimer timerFPS;
 PIGCor corFundo;
 int altura,largura;
 SDL_Point pos;
@@ -40,6 +42,8 @@ CPIGJanela(string tituloJanela, int idJanela, int altTela, int largTela){
         SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
         renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED|SDL_RENDERER_TARGETTEXTURE);
         corFundo = PRETO;
+        contFPS = lastFPS = 0;
+        timerFPS = new CPIGTimer(false);
         SDL_SetRenderDrawColor( renderer, corFundo.r, corFundo.g, corFundo.b, corFundo.a );
         SDL_SetRenderDrawBlendMode(renderer,SDL_BLENDMODE_BLEND);
         fechada = false;
@@ -56,6 +60,7 @@ CPIGJanela(string tituloJanela, int idJanela, int altTela, int largTela){
 }
 
 ~CPIGJanela(){
+    delete timerFPS;
     SDL_DestroySemaphore(semRender);
     SDL_DestroyRenderer(renderer);
     if (window) SDL_DestroyWindow(window);
@@ -195,6 +200,17 @@ void IniciaDesenho(){
 inline void EncerraDesenho(){
     SDL_RenderPresent(renderer);
     DestravaRenderer();
+    contFPS++;
+    if (timerFPS->GetTempoDecorrido()>PIG_INTERVALO_FPS){
+        lastFPS=contFPS;
+        contFPS=0;
+
+        timerFPS->Reinicia(false);
+    }
+}
+
+inline float GetFPS(int idJanela=0){
+    return lastFPS/PIG_INTERVALO_FPS;
 }
 
 int &GetAltura(){

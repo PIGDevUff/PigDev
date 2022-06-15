@@ -10,8 +10,7 @@ private:
 
     PIGEvento ultimoEvento;
     PIGTeclado teclado;
-    int contFPS,lastFPS;
-    PIGTimer timerFPS;
+
     int estado;
     int rodando;
     string diretorioAtual;
@@ -23,8 +22,7 @@ public:
         rodando = true;
         teclado = SDL_GetKeyboardState(NULL);
         estado = 0;
-        contFPS = lastFPS = 0;
-        timerFPS = new CPIGTimer(false);
+
         offRenderer = NULL;
 
         diretorioAtual = PIGGetDiretorioAtual();
@@ -35,17 +33,25 @@ public:
             printf( "Nao foi possivel iniciar o SDL! SDL_Error: %s\n", SDL_GetError() );
         }else{
             CPIGGerenciadorJanelas::Inicia(nome,altura,largura);
+            CPIGAssetLoader::Inicia();
+            CPIGMouse::Inicia(cursor);
+            CPIGGerenciadorSprites::Inicia();
+            CPIGGerenciadorFontes::Inicia();
+            CPIGGerenciadorTimers::Inicia();
+            CPIGGerenciadorGDP::Inicia();
         }
-
-
     }
 
-    ~CPIGJogo(){
+    virtual ~CPIGJogo(){
 
-
-        delete timerFPS;
         if (offRenderer) delete offRenderer;
 
+        CPIGGerenciadorGDP::Encerra();
+        CPIGGerenciadorTimers::Encerra();
+        CPIGGerenciadorFontes::Encerra();
+        CPIGGerenciadorSprites::Encerra();
+        CPIGMouse::Encerra();
+        CPIGAssetLoader::Encerra();
         CPIGGerenciadorJanelas::Encerra();
     }
 
@@ -237,13 +243,7 @@ public:
         }*/
         //SDL_RenderPresent(renderer);
 
-        contFPS++;
-        if (timerFPS->GetTempoDecorrido()>PIG_INTERVALO_FPS){
-            lastFPS=contFPS;
-            contFPS=0;
 
-            timerFPS->Reinicia(false);
-        }
     }
 
     int GetRodando(){
@@ -254,8 +254,8 @@ public:
         estado = valor;
     }
 
-    inline float GetFPS(){
-        return lastFPS/PIG_INTERVALO_FPS;
+    inline float GetFPS(int idJanela=0){
+        return CPIGGerenciadorJanelas::GetJanela(idJanela)->GetFPS();
     }
 
     void PreparaOffScreenRenderer(int altura, int largura){

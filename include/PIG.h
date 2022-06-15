@@ -12,8 +12,8 @@
 #include "CPIGGerenciadorTimers.h"
 #include "CPIGAssetLoader.h"
 #include "CPIGOffscreenRenderer.h"
-#include "CPIGGerenciadorAudios.h"
 #include "CPIGGerenciadorJanelas.h"
+#include "CPIGGerenciadorAudios.h"
 #include "CPIGGerenciadorSockets.h"
 #include "CPIGGerenciadorFontes.h"
 #include "CPIGGerenciadorSprites.h"
@@ -59,12 +59,6 @@ largura (entrada, passagem por valor não-obrigatório): indica a largura em pix
 void CriaJogo(const char *nomeJanela, int cursorProprio=0, int altura=PIG_ALT_TELA, int largura=PIG_LARG_TELA){
     if (jogo==NULL){
         jogo = new CPIGJogo(nomeJanela,cursorProprio,altura,largura);
-        CPIGAssetLoader::Inicia();
-        CPIGMouse::Inicia(cursorProprio);
-        CPIGGerenciadorSprites::Inicia();
-        CPIGGerenciadorGDP::Inicia();
-        CPIGGerenciadorFontes::Inicia();
-        CPIGGerenciadorTimers::Inicia();
         CPIGGerenciadorAudios::Inicia();
         CPIGGerenciadorControles::Inicia();
         CPIGGerenciadorSockets::Inicia();
@@ -327,7 +321,6 @@ a função deve ser chamada e ela irá realizar a liberação de memória dos el
 ********************************/
 void FinalizaJogo(){
     CPIGGerenciadorControles::Encerra();
-    CPIGGerenciadorFontes::Encerra();
     CPIGGerenciadorAudios::Encerra();
     #ifdef PIGCOMVIDEO
     CPIGGerenciadorVideos::Encerra();
@@ -335,11 +328,7 @@ void FinalizaJogo(){
     CPIGGerenciadorSockets::Encerra();
     CPIGGerenciadorForms::Encerra();
     CPIGGerenciadorTelas::Encerra();
-    CPIGGerenciadorSprites::Encerra();
-    CPIGGerenciadorGDP::Encerra();
-    CPIGGerenciadorTimers::Encerra();
-    CPIGMouse::Encerra();
-    CPIGAssetLoader::Encerra();
+
     delete jogo;
 }
 
