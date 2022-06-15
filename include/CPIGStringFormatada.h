@@ -3,18 +3,7 @@
 
 class CPIGStringFormatada{
 
-    char *ExtraiString(){
-        char *resp = (char*)malloc(sizeof(letras.size()+1));
-        unsigned int i=0;
-        while (i<letras.size()){
-            resp[i] = letras[i];
-            i++;
-        }
-        resp[i]='\0';
-        return resp;
-    }
-
-    string letras;
+    vector<int> letras;
     vector<int> largAcumulada;
     vector<PIGCor> cores;
     vector<PIGEstilo> estilos;
@@ -25,7 +14,7 @@ public:
         Clear();
     }
 
-    Uint16 GetLetra(int indice){
+    int GetIntLetra(int indice){
         return letras[indice];
     }
 
@@ -38,14 +27,14 @@ public:
     }
 
     void Clear(){
-        letras = "";
+        letras.clear();
         largAcumulada.clear();
         cores.clear();
         estilos.clear();
     }
 
-    void Adiciona(char letra, int larguraAcumulada, PIGCor cor, PIGEstilo estilo){
-        letras += letra;
+    void Adiciona(int letra, int larguraAcumulada, PIGCor cor, PIGEstilo estilo){
+        letras.push_back(letra);
         largAcumulada.push_back(larguraAcumulada);
         cores.push_back(cor);
         estilos.push_back(estilo);
@@ -69,13 +58,17 @@ public:
     vector<CPIGStringFormatada> SeparaPalavras(string delim){
         vector<CPIGStringFormatada> resp;
         if (letras.size()==0) return resp;
-        unsigned int indice;
         int largBase=0;
         CPIGStringFormatada strAtual;
         for (unsigned int i=0;i<letras.size();i++){
 
-            indice = delim.find(letras[i]);
-            if (indice != std::string::npos){//achou delimitadores
+            bool achou = false;
+            for (char c:delim){
+                if (c==letras[i])
+                    achou = true;
+            }
+
+            if (achou){//achou delimitadores
                 resp.push_back(strAtual);
                 //strAtual.Print();
                 strAtual.Clear();
@@ -88,7 +81,7 @@ public:
                 largBase = largAcumulada[i];
             }else strAtual.Adiciona(letras[i],largAcumulada[i]-largBase,cores[i],estilos[i]);
         }
-        if (strAtual.letras!=""){
+        if (strAtual.letras.size()>0){
             resp.push_back(strAtual);
             //strAtual.Print();
         }
@@ -117,11 +110,11 @@ public:
 
                 if (++i<palavras.size()){
                     linhaAtual = palavras[i]; //começa uma nova linha com a p´roxima palavra
-                }else linhaAtual.letras = "";
+                }else linhaAtual.letras.clear();
             }
         }
 
-        if (linhaAtual.letras != ""){
+        if (linhaAtual.letras.size()>0){
             resp.push_back(linhaAtual); //pega a linha que sobrou do processamento (última linha que não foi quebrada)
         }
 

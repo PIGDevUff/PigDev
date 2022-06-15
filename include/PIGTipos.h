@@ -345,14 +345,14 @@ typedef int PIGEstilo;
 #define PIG_SIMBOLO_SUBLINHADO      '_'
 #define PIG_SIMBOLO_CORTADO         '#'
 
-typedef struct PIGMetricas_Fonte{
+typedef struct PIGMetricasFonte{
     int ascent;         //quantidade de pixels acima da linha horizontal de base da letra (sempre positivo)
     int descent;        //quantidade de pixels abaixo da linha horizontal de base da letra (sempre positivo)
     int altura;         //total de pixels na altura (soma dos dois campos anteriores)
     int recuo;          //quantidade pixels entre a linha vertical de base e o primeiro pixel do eixo X da letra (pode ser negativo)
     int avanco;         //quantidade de pixels entre a linha vertical de base e o último pixel do eixo X da letra (sempre positivo)
     int largura;        //total de pixels na largura (diferença dos dois anteriores)
-}PIGMetricas_Fonte;
+}PIGMetricasFonte;
 
 //Seção de teclas
 

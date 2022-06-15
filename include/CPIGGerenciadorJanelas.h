@@ -1,5 +1,5 @@
-#ifndef _CPIGGerenciadorJanelas_
-#define _CPIGGerenciadorJanelas_
+#ifndef _CPIGGERENCIADORJANELAS_
+#define _CPIGGERENCIADORJANELAS_
 
 #include "CPIGJanela.h"
 
@@ -67,4 +67,4 @@ static void EncerraDesenho(int idJanela=-1){
 
 int CPIGGerenciadorJanelas::qtdJanelas;
 PIGJanela CPIGGerenciadorJanelas::janelas[PIG_MAX_JANELAS];
-#endif // _CPIGGerenciadorJanelas_
+#endif // _CPIGGERENCIADORJANELAS_

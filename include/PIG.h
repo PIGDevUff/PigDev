@@ -517,7 +517,7 @@ idJanela (entrada, passagem por valor não-obrigatório): indica o número da ja
 Retorno:
 inteiro que representa a altura da janela em pixels.
 ********************************/
-int *GetAlturaJanela(int idJanela=0){
+int GetAlturaJanela(int idJanela=0){
     return CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
 }
 
@@ -1547,7 +1547,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o
 retorno:
 struct que representa as métricas principais ao escrever a letra.
 ********************************/
-PIGMetricas_Fonte GetMetricas(char letra, PIGEstilo estilo=PIG_ESTILO_NORMAL, int numFonte=0){
+PIGMetricasFonte GetMetricas(char letra, PIGEstilo estilo=PIG_ESTILO_NORMAL, int numFonte=0){
     return CPIGGerenciadorFontes::GetFonte(numFonte)->GetMetricasLetra(letra,estilo);
 }
 

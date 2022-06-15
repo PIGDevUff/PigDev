@@ -36,20 +36,20 @@ void DesenhaCircular(PIGCor cor) {
 
     SDL_RenderDrawLine(
         renderer,
-        pos.x + pivoAbs.x - raio, *altJanela - (pos.y + pivoAbs.y),
-        pos.x + pivoAbs.x, *altJanela - (pos.y + pivoAbs.y + raio));
+        pos.x + pivoAbs.x - raio, altJanela - (pos.y + pivoAbs.y),
+        pos.x + pivoAbs.x, altJanela - (pos.y + pivoAbs.y + raio));
     SDL_RenderDrawLine(
         renderer,
-        pos.x + pivoAbs.x, *altJanela - (pos.y + pivoAbs.y + raio),
-        pos.x + pivoAbs.x + raio, *altJanela - (pos.y + pivoAbs.y));
+        pos.x + pivoAbs.x, altJanela - (pos.y + pivoAbs.y + raio),
+        pos.x + pivoAbs.x + raio, altJanela - (pos.y + pivoAbs.y));
     SDL_RenderDrawLine(
         renderer,
-        pos.x + pivoAbs.x + raio, *altJanela - (pos.y + pivoAbs.y),
-        pos.x + pivoAbs.x, *altJanela - (pos.y + pivoAbs.y - raio));
+        pos.x + pivoAbs.x + raio, altJanela - (pos.y + pivoAbs.y),
+        pos.x + pivoAbs.x, altJanela - (pos.y + pivoAbs.y - raio));
     SDL_RenderDrawLine(
         renderer,
-        pos.x + pivoAbs.x, *altJanela - (pos.y + pivoAbs.y - raio),
-        pos.x + pivoAbs.x - raio, *altJanela - (pos.y + pivoAbs.y));
+        pos.x + pivoAbs.x, altJanela - (pos.y + pivoAbs.y - raio),
+        pos.x + pivoAbs.x - raio, altJanela - (pos.y + pivoAbs.y));
 
 }
 

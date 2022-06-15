@@ -888,7 +888,7 @@ void DestroiVideoState(){
 public:
 
 CPIGVideo(string nomeArq, int idJanela=0):
-    CPIGSprite(-1,*CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura(),CPIGGerenciadorJanelas::GetJanela(idJanela)->GetLargura(),nomeArq,idJanela){
+    CPIGSprite(-1,CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura(),CPIGGerenciadorJanelas::GetJanela(idJanela)->GetLargura(),nomeArq,idJanela){
     volume = 1.2;
     janelaAtual = CPIGGerenciadorJanelas::GetJanela(idJanela);
 

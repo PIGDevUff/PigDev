@@ -82,7 +82,7 @@ public:
                 //ultimoEvento.mouse.posX = event.button.x;
                 SDL_GetMouseState(&ultimoEvento.mouse.posX,&ultimoEvento.mouse.posY);
                 //ultimoEvento.mouse.posY = CGerenciadorJanelas::GetAltura(ultimoEvento.mouse.numeroJanela) - event.button.y-1;
-                ultimoEvento.mouse.posY = *CPIGGerenciadorJanelas::GetJanela(ultimoEvento.mouse.numeroJanela)->GetAltura() - ultimoEvento.mouse.posY-1;
+                ultimoEvento.mouse.posY = CPIGGerenciadorJanelas::GetJanela(ultimoEvento.mouse.numeroJanela)->GetAltura() - ultimoEvento.mouse.posY-1;
                 //CGerenciadorJanelas::GetJanela(ultimoEvento.mouse.numeroJanela)->GetCamera()->ConverteCoordenadaWorldScreen(ultimoEvento.mouse.posX,ultimoEvento.mouse.posY,&ultimoEvento.mouse.worldX,&ultimoEvento.mouse.worldY);
                 CPIGMouse::ProcessaEvento(ultimoEvento);
                 break;
@@ -92,7 +92,7 @@ public:
                 ultimoEvento.mouse.numeroJanela = event.window.windowID-PIG_JANELA_INICIAL;
                 SDL_GetMouseState(&ultimoEvento.mouse.posX,&ultimoEvento.mouse.posY);
                 //ultimoEvento.mouse.posX = event.motion.x;
-                ultimoEvento.mouse.posY = *CPIGGerenciadorJanelas::GetJanela(ultimoEvento.mouse.numeroJanela)->GetAltura() - ultimoEvento.mouse.posY-1;
+                ultimoEvento.mouse.posY = CPIGGerenciadorJanelas::GetJanela(ultimoEvento.mouse.numeroJanela)->GetAltura() - ultimoEvento.mouse.posY-1;
                 ultimoEvento.mouse.relX = event.motion.xrel;
                 ultimoEvento.mouse.relY = -event.motion.yrel;
                 //printf("%d\n",ultimoEvento.mouse.numeroJanela);

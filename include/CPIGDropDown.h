@@ -74,7 +74,7 @@ private:
         CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea((int)pos.x,((int)pos.y)-(itens.size())*altBaseLista,(itens.size()+1)*altBaseLista+margemBaixo+margemCima,larg);
         if (imagemPropria){
             frameAtual=0;
-            dest.y = *altJanela-pos.y-altBaseLista;
+            dest.y = altJanela-pos.y-altBaseLista;
             dest.h = (itens.size()+1)*altBaseLista+margemBaixo+margemCima;
             CPIGSprite::Desenha();
         }else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y-altBaseLista*itens.size(),(itens.size()+1)*altBaseLista,larg,coresBasicas[0]);

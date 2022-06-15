@@ -197,8 +197,8 @@ inline void EncerraDesenho(){
     DestravaRenderer();
 }
 
-int *GetAltura(){
-    return &altura;
+int &GetAltura(){
+    return altura;
 }
 
 int GetLargura(){

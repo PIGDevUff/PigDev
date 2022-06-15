@@ -1,34 +1,39 @@
 #include "PIG.h"
 
 PIGEvento evento;          //evento ser tratado a cada passada do loop principal
-PIGTeclado meuTeclado;     //vari·vel como mapeamento do teclado
+PIGTeclado meuTeclado;     //vari√°vel como mapeamento do teclado
 
 int main( int argc, char* args[] ){
 
-    //criando o jogo (aplicaÁ„o)
+    //criando o jogo (aplica√ß√£o)
     CriaJogo("Meu Jogo");
 
-    //associando o teclado (basta uma ˙nica vez) com a vari·vel meuTeclado
+    //associando o teclado (basta uma √∫nica vez) com a vari√°vel meuTeclado
     meuTeclado = GetTeclado();
+
+    //int num = CriaFonteNormal("..//fontes//arial.ttf",30,VERDE);
+    int num = CriaFonteDinamica("..//fontes//arial.ttf",30);
 
     //loop principal do jogo
     while(JogoRodando()){
 
-        //pega um evento que tenha ocorrido desde a ˙ltima passada do loop
+        //pega um evento que tenha ocorrido desde a √∫ltima passada do loop
         evento = GetEvento();
 
         //aqui o evento deve ser tratado e tudo deve ser atualizado
 
-        //ser· feita a preparaÁ„o do frame que ser· exibido na tela
+        //ser√° feita a prepara√ß√£o do frame que ser√° exibido na tela
         IniciaDesenho();
+
+        EscreverLongaEsquerda(lido,10,300,50,60,VERDE,num);
 
         //todas as chamadas de desenho devem ser feitas aqui na ordem desejada
 
-        //o frame totalmente pronto ser· mostrado na tela
+        //o frame totalmente pronto ser√° mostrado na tela
         EncerraDesenho();
     }
 
-    //o jogo ser· encerrado
+    //o jogo ser√° encerrado
     FinalizaJogo();
 
     return 0;

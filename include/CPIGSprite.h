@@ -8,7 +8,7 @@ class CPIGSprite{
 protected:
 
 int alt,larg,altOriginal,largOriginal;
-int id,idJanela,*altJanela;
+int id,idJanela,&altJanela;
 PIGPonto2D pos,proporcaoPivo,pivoAbs;
 SDL_Point pivoInteiro;
 bool usaPivoRelativo;
@@ -78,7 +78,7 @@ inline void IniciaCor(){
 //Atributos relativos à janela do Sprite
 inline void IniciaJanela(int janela){
     idJanela = janela;
-    altJanela = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
+    //altJanela = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
     renderer = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetRenderer();
 }
 
@@ -98,7 +98,7 @@ void IniciaOrientacao(){
     usaPivoRelativo = false;
 
     dest.x = pos.x;
-    dest.y = *altJanela-pos.y-alt;
+    dest.y = altJanela-pos.y-alt;
     dest.h = alt;
     dest.w = larg;
 
@@ -134,7 +134,8 @@ int GetId(){
 }
 
 //Construtor para arquivos de vídeo ou Componentes
-CPIGSprite(int idSprite, int altura, int largura, string nomeArq, int janela=0){
+CPIGSprite(int idSprite, int altura, int largura, string nomeArq, int janela=0)
+    :altJanela(CPIGGerenciadorJanelas::GetJanela(janela)->GetAltura()){
     id = idSprite;
     //criada = this_thread::get_id();
     precisaAtualizar = true;
@@ -146,7 +147,8 @@ CPIGSprite(int idSprite, int altura, int largura, string nomeArq, int janela=0){
 }
 
 //Construtor básico para leitura de imagens digitais
-CPIGSprite(int idSprite, string nomeArq, int retiraFundo=1, PIGCor *corFundo=NULL, int janela=0){
+CPIGSprite(int idSprite, string nomeArq, int retiraFundo=1, PIGCor *corFundo=NULL, int janela=0)
+    :altJanela(CPIGGerenciadorJanelas::GetJanela(janela)->GetAltura()){
     id = idSprite;
     //criada = this_thread::get_id();
     precisaAtualizar = true;
@@ -160,7 +162,8 @@ CPIGSprite(int idSprite, string nomeArq, int retiraFundo=1, PIGCor *corFundo=NUL
 }
 
 //Construtor para imagens provenientes do renderizador offscreen
-CPIGSprite(int idSprite, PIGOffscreenRenderer offRender, int retiraFundo=1, PIGCor *corFundo=NULL, int janela=0){
+CPIGSprite(int idSprite, PIGOffscreenRenderer offRender, int retiraFundo=1, PIGCor *corFundo=NULL, int janela=0)
+    :altJanela(CPIGGerenciadorJanelas::GetJanela(janela)->GetAltura()){
     id = idSprite;
     //criada = this_thread::get_id();
     precisaAtualizar = true;
@@ -176,7 +179,8 @@ CPIGSprite(int idSprite, PIGOffscreenRenderer offRender, int retiraFundo=1, PIGC
 }
 
 //Construtor para Sprite "copiado" de outro Sprite
-CPIGSprite(int idSprite, CPIGSprite *spriteBase, int retiraFundo=1, PIGCor *corFundo=NULL, int janela=0){
+CPIGSprite(int idSprite, CPIGSprite *spriteBase, int retiraFundo=1, PIGCor *corFundo=NULL, int janela=0)
+    :altJanela(CPIGGerenciadorJanelas::GetJanela(janela)->GetAltura()){
     id = idSprite;
     //criada = this_thread::get_id();
     precisaAtualizar = true;
@@ -212,7 +216,8 @@ CPIGSprite(int idSprite, CPIGSprite *spriteBase, int retiraFundo=1, PIGCor *corF
 }
 
 //Construtor para sprite "vazio", cuja imagem será gerada posteriormente
-CPIGSprite(int janela){
+CPIGSprite(int janela)
+    :altJanela(CPIGGerenciadorJanelas::GetJanela(janela)->GetAltura()){
     id = -1;
     idJanela = janela;
     nomeArquivo = "";
@@ -229,7 +234,7 @@ CPIGSprite(int janela){
     pos = {0,0};
     pixels = NULL;
     automacao = NULL;
-    altJanela = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
+    //altJanela = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura();
     renderer = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetRenderer();
 }
 
@@ -478,7 +483,7 @@ virtual void Desloca(double dx, double dy){
     pos.x += dx;
     pos.y += dy;
     dest.x = pos.x;
-    dest.y = *altJanela-alt-pos.y;
+    dest.y = altJanela-alt-pos.y;
     for (unsigned int i=0;i<filhos.size();i++){
         if (filhos[i]->tipoFixo!=0)
             filhos[i]->Desloca(dx,dy);
@@ -489,7 +494,7 @@ virtual void SetDimensoes(int altura, int largura){
     dest.h = alt = altura;
     dest.w = larg = largura;
     dest.x = pos.x;
-    dest.y = *altJanela-alt-pos.y;
+    dest.y = altJanela-alt-pos.y;
 
     if (usaPivoRelativo){
         SetPivoProporcional(proporcaoPivo);
@@ -564,7 +569,7 @@ void CriaFramesAutomaticosPorColuna(int idFrameInicial, int qtdLinhas, int qtdCo
 }
 
 virtual int Desenha(){
-    dest.y = *altJanela-alt-pos.y;
+    dest.y = altJanela-alt-pos.y;
     SDL_Rect enquadrado = dest;
     //printf("%d,%d,%d,%d\n",dest.x,*altJanela-dest.y,dest.h,dest.w);
     //SDL_Point p = {pivoRelativo.x,pivoRelativo.y};

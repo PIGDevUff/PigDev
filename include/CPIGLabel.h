@@ -7,13 +7,13 @@ class CPIGLabel:public CPIGSprite{
 
 private:
 string frase;
-int fonte;
+int idFonte;
 PIGCor corFonte;
 
 void AtualizaTextura()override{
-    PIGMapaCaracteres mapa = CPIGGerenciadorFontes::GetFonte(fonte);
-    larg = mapa->GetLarguraPixelsString(frase);
-    alt = mapa->GetFonteAscent()+mapa->GetFonteDescent()+5;
+    PIGFonte fonte = CPIGGerenciadorFontes::GetFonte(idFonte);
+    larg = fonte->GetLarguraPixelsString(frase);
+    alt = fonte->GetFonteAscent()+fonte->GetFonteDescent()+5;
 
     if (this_thread::get_id()!=PIG_MAIN_THREAD_ID){
         //printf("atualizando textura <%s> com thread %d (%d)\n",frase.c_str(),this_thread::get_id(),PIG_MAIN_THREAD_ID);
@@ -33,7 +33,7 @@ void AtualizaTextura()override{
     }
 
     if (text){
-        mapa->Escreve(frase,text,corFonte);
+        fonte->Escreve(frase,text,corFonte);
         precisaAtualizar = false;
     }
 
@@ -45,7 +45,7 @@ void AtualizaTextura()override{
 public:
 
 CPIGLabel(string texto, int numFonte, int idJanela=0):CPIGSprite(idJanela){
-    fonte = numFonte;
+    idFonte = numFonte;
     text = NULL;
     corFonte = BRANCO;
     frase = texto;
@@ -59,7 +59,7 @@ inline void SetTexto(string texto){
 }
 
 inline void SetFonte(int numFonte){
-    fonte = numFonte;
+    idFonte = numFonte;
     AtualizaTextura();
 }
 
@@ -81,7 +81,7 @@ inline string GetTexto(){
 }
 
 inline int GetFonte(){
-    return fonte;
+    return idFonte;
 }
 
 inline PIGCor GetCorFonte(){
