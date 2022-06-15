@@ -242,8 +242,6 @@ public:
             SDL_FreeSurface(infoSurface);
         }*/
         //SDL_RenderPresent(renderer);
-
-
     }
 
     int GetRodando(){

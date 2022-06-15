@@ -319,12 +319,6 @@ public:
         SDL_Point ponto = {delta,tamFonte};
 
         vector<int> conv = Converte(strs);
-        for (Uint16 i:strs){
-            printf("u16 %d %c %d \n",i,i,i%256);
-        }
-        for (int i:conv){
-            printf("int %d %c %d \n",i,i,i-PIG_PRIMEIRO_CAR);
-        }
 
         for (int aux:conv){
             int indice = aux - PIG_PRIMEIRO_CAR;
