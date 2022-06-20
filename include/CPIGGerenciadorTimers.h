@@ -12,27 +12,31 @@ private:
 
 public:
 
-    static void Inicia(){
+    inline static void Inicia(){
         timers = new CPIGRepositorio<PIGTimer>(PIG_MAX_TIMERS,"timers");
     }
 
-    static void Encerra(){
+    inline static void Encerra(){
         delete timers;
     }
 
-    static PIGTimer GetTimer(int idTimer){
+    inline static PIGTimer GetTimer(int idTimer){
         return timers->GetElemento(idTimer);
     }
 
-    static int CriaTimer(bool congelado=false){
+    inline static int CriaTimer(bool congelado=false){
         return timers->Insere(new CPIGTimer(congelado));
     }
 
-    static void DestroiTimer(int idTimer){
+    inline static int InsereTimer(PIGTimer timer){
+        return timers->Insere(timer);
+    }
+
+    inline static void DestroiTimer(int idTimer){
         timers->Remove(idTimer);
     }
 
-    static void PausaTodos(){
+    inline static void PausaTodos(){
         PIGTimer t = timers->GetPrimeiroElemento();
         while (t != NULL){
             t->PausaGeral();
@@ -40,7 +44,7 @@ public:
         }
     }
 
-    static void DespausaTodos(){
+    inline static void DespausaTodos(){
         PIGTimer t = timers->GetPrimeiroElemento();
         while (t != NULL){
             t->DespausaGeral();
@@ -48,14 +52,14 @@ public:
         }
     }
 
-    static int AssociaTimerGrupo(int idTimer, int idGrupo){
+    inline static int AssociaTimerGrupo(int idTimer, int idGrupo){
         if (idGrupo<0||idGrupo>=PIG_MAX_GRUPOS_TIMERS) return 0;
         PIGTimer t = timers->GetElemento(idTimer);  //apenas para checar se o idTimer é valido
         grupos[idGrupo].push_back(idTimer);
         return 1;
     }
 
-    static int DesassociaTimerGrupo(int idTimer, int idGrupo){
+    inline static int DesassociaTimerGrupo(int idTimer, int idGrupo){
         if (idGrupo<0||idGrupo>=PIG_MAX_GRUPOS_TIMERS) return 0;
         PIGTimer t = timers->GetElemento(idTimer);  //apenas para checar se o idTimer é valido
         vector<int>::iterator it = find(grupos[idGrupo].begin(), grupos[idGrupo].end(), idTimer);
@@ -66,7 +70,7 @@ public:
         return 0;
     }
 
-    static int PausaGrupo(int idGrupo){
+    inline static int PausaGrupo(int idGrupo){
         if (idGrupo<0||idGrupo>=PIG_MAX_GRUPOS_TIMERS) return -1;
         int cont=0;
         for (unsigned int i=0;i<grupos[idGrupo].size();i++){
@@ -77,7 +81,7 @@ public:
         return cont;
     }
 
-    static int DespausaGrupo(int idGrupo){
+    inline static int DespausaGrupo(int idGrupo){
         if (idGrupo<0||idGrupo>=PIG_MAX_GRUPOS_TIMERS) return -1;
         int cont=0;
         for (unsigned int i=0;i<grupos[idGrupo].size();i++){
@@ -88,7 +92,7 @@ public:
         return cont;
     }
 
-    static int ReiniciaGrupo(int idGrupo,bool valor){
+    inline static int ReiniciaGrupo(int idGrupo,bool valor){
         if (idGrupo<0||idGrupo>=PIG_MAX_GRUPOS_TIMERS) return -1;
         int cont=0;
         for (unsigned int i=0;i<grupos[idGrupo].size();i++){

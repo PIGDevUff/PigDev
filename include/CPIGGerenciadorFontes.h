@@ -13,12 +13,12 @@ private:
 
 public:
 
-    static PIGFonte GetFonte(int idFonte){
+    inline static PIGFonte GetFonte(int idFonte){
 
         return fontes->GetElemento(idFonte);
     }
 
-    static void Inicia(){
+    inline static void Inicia(){
         TTF_Init();
 
         //fontes[0] = new CPIGPIGMapaCaracteres(PIG_FONTE_PADRAO_NOME,PIG_FONTE_PADRAO_TAM,ESTILO_NORMAL,PIG_FONTE_PADRAO_COR,0);
@@ -31,49 +31,53 @@ public:
         //fontes->Insere(new CPIGMapaCaracteresDinamicos("..//fontes//arial.ttf",PIG_FONTE_PADRAO_TAM,0));
     }
 
-    static void Encerra(){
+    inline static void Encerra(){
         delete fontes;
 
         TTF_Quit();
     }
 
-    static int CriaFonteFundo(string nome, int tamanho, PIGEstilo estilo, string arquivoFundo, int contorno, PIGCor corContorno, int idJanela=0){
+    inline static int CriaFonteFundo(string nome, int tamanho, PIGEstilo estilo, string arquivoFundo, int contorno, PIGCor corContorno, int idJanela=0){
         return fontes->Insere(new CPIGFonte(nome,tamanho,estilo,arquivoFundo,contorno,corContorno,idJanela,NULL));
     }
 
-    static int CriaFonteFundo(string nome, int tamanho, PIGEstilo estilo, string arquivoFundo, int idJanela=0){
+    inline static int CriaFonteFundo(string nome, int tamanho, PIGEstilo estilo, string arquivoFundo, int idJanela=0){
         return fontes->Insere(new CPIGFonte(nome,tamanho,estilo,arquivoFundo,idJanela,NULL));
     }
 
-    static int CriaFonteNormal(string nome, int tamanho, PIGEstilo estilo, PIGCor corLetra, int contorno, PIGCor corContorno, int idJanela=0){
+    inline static int CriaFonteNormal(string nome, int tamanho, PIGEstilo estilo, PIGCor corLetra, int contorno, PIGCor corContorno, int idJanela=0){
         return fontes->Insere(new CPIGFonte(nome,tamanho,estilo,corLetra,contorno,corContorno,idJanela,NULL));
     }
 
-    static int CriaFonteNormal(string nome, int tamanho, PIGEstilo estilo, PIGCor corLetra=PIG_FONTE_PADRAO_COR, int idJanela=0){
+    inline static int CriaFonteNormal(string nome, int tamanho, PIGEstilo estilo, PIGCor corLetra=PIG_FONTE_PADRAO_COR, int idJanela=0){
         return fontes->Insere(new CPIGFonte(nome,tamanho,estilo,corLetra,idJanela,NULL));
     }
 
-    static int CriaFonteFundoOffScreen(string nome, int tamanho, PIGEstilo estilo, string arquivoFundo, int contorno, PIGCor corContorno, PIGOffscreenRenderer off, int layer=0){
+    inline static int CriaFonteFundoOffScreen(string nome, int tamanho, PIGEstilo estilo, string arquivoFundo, int contorno, PIGCor corContorno, PIGOffscreenRenderer off, int layer=0){
         return fontes->Insere(new CPIGFonte(nome,tamanho,estilo,arquivoFundo,contorno,corContorno,-1,off->GetLayer(layer)->render));
     }
 
-    static int CriaFonteFundoOffScreen(string nome, int tamanho, PIGEstilo estilo, string arquivoFundo, PIGOffscreenRenderer off, int layer=0){
+    inline static int CriaFonteFundoOffScreen(string nome, int tamanho, PIGEstilo estilo, string arquivoFundo, PIGOffscreenRenderer off, int layer=0){
         return fontes->Insere(new CPIGFonte(nome,tamanho,estilo,arquivoFundo,-1,off->GetLayer(layer)->render));
     }
 
-    static int CriaFonteNormalOffScreen(string nome, int tamanho, PIGEstilo estilo, PIGCor corLetra, int contorno, PIGCor corContorno, PIGOffscreenRenderer off, int layer=0){
+    inline static int CriaFonteNormalOffScreen(string nome, int tamanho, PIGEstilo estilo, PIGCor corLetra, int contorno, PIGCor corContorno, PIGOffscreenRenderer off, int layer=0){
         return fontes->Insere(new CPIGFonte(nome,tamanho,estilo,corLetra,contorno,corContorno,-1,off->GetLayer(layer)->render));
     }
 
-    static int CriaFonteNormalOffScreen(string nome, int tamanho, PIGEstilo estilo, PIGOffscreenRenderer off, PIGCor corLetra=PIG_FONTE_PADRAO_COR, int layer=0){
+    inline static int CriaFonteNormalOffScreen(string nome, int tamanho, PIGEstilo estilo, PIGOffscreenRenderer off, PIGCor corLetra=PIG_FONTE_PADRAO_COR, int layer=0){
         return fontes->Insere(new CPIGFonte(nome,tamanho,estilo,corLetra,-1,off->GetLayer(layer)->render));
     }
 
-    static int CriaFonteDinamica(string nome, int tamanho, int idJanela=0){
+    inline static int CriaFonteDinamica(string nome, int tamanho, int idJanela=0){
         return fontes->Insere(new CPIGFonteDinamica(nome,tamanho,idJanela));
     }
 
-    static void DestroiFonte(int idFonte){
+    inline static int InsereFonte(PIGFonte fonte){
+        return fontes->Insere(fonte);
+    }
+
+    inline static void DestroiFonte(int idFonte){
         fontes->Remove(idFonte);
     }
 

@@ -7,30 +7,30 @@ class CPIGGerenciadorControles{
 
 private:
 
-static int qtdControles;
-static PIGControle controles[PIG_MAX_CONTROLES];
+    static int qtdControles;
+    static PIGControle controles[PIG_MAX_CONTROLES];
 
 public:
 
-static void Inicia(){
-    // Initialize the joystick subsystem
-    SDL_InitSubSystem(SDL_INIT_JOYSTICK);
+    static void Inicia(){
+        // Initialize the joystick subsystem
+        SDL_InitSubSystem(SDL_INIT_JOYSTICK);
 
-    qtdControles = SDL_NumJoysticks();
-    for(int i = 0; i < qtdControles; ++i) {
-        controles[i] = new CPIGControle(i);
+        qtdControles = SDL_NumJoysticks();
+        for(int i = 0; i < qtdControles; ++i) {
+            controles[i] = new CPIGControle(i);
+        }
     }
-}
 
-static void Encerra(){
-    for(int i = 0; i < qtdControles; ++i) {
-        delete controles[i];
+    static void Encerra(){
+        for(int i = 0; i < qtdControles; ++i) {
+            delete controles[i];
+        }
     }
-}
 
-static PIGControle GetControle(int idControle){
-    return controles[idControle];
-}
+    static PIGControle GetControle(int idControle){
+        return controles[idControle];
+    }
 
 };
 
