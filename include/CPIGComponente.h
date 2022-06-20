@@ -151,7 +151,9 @@ protected:
 
     virtual PIGEstadoEvento OnAction(){
         if (acao) acao(id,param);//rever se NULL é necessário
+        #ifdef PIGCOMAUDIO
         if (audioComponente>=0) CPIGGerenciadorAudios::Play(audioComponente);
+        #endif
         return PIG_COMPONENTE_TRATADO;
     }
 

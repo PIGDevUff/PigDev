@@ -1,5 +1,7 @@
-#ifndef _CPIGGERENCIADORSOCLETS_
+#ifndef _CPIGGERENCIADORSOCKETS_
 #define _CPIGGERENCIADORSOCKETS_
+
+#include "SDL_net.h"
 
 #include "CPIGClienteTCP.h"
 #include "CPIGServidorTCP.h"
@@ -16,6 +18,7 @@ static CPIGRepositorio<PIGSocketUDP> *socketsUDP;
 public:
 
 static void Inicia(){
+
     SDLNet_Init();
     clientes = new CPIGRepositorio<PIGClienteTCP>(PIG_MAX_SOCKETS_CLIENTES_TCP,"clientesTCP");
     servidores = new CPIGRepositorio<PIGServidorTCP>(PIG_MAX_SOCKETS_SERVIDORES_TCP,"servidoresTCP");

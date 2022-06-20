@@ -1,6 +1,9 @@
 #ifndef _CPIGASSETLOADER_
 #define _CPIGASSETLOADER_
 
+#include "SDL_image.h"
+#include "SDL_mixer.h"
+
 class CPIGHashNodeImagem{
 
 public:
@@ -21,6 +24,8 @@ public:
 };
 typedef CPIGHashNodeImagem *PIGHashNodeImagem;
 
+#ifdef PIGCOMAUDIO
+
 class CPIGHashNodeAudio{
 
 public:
@@ -38,34 +43,43 @@ public:
 };
 typedef CPIGHashNodeAudio *PIGHashNodeAudio;
 
+#endif
+
 class CPIGAssetLoader{
 
 private:
 
     static int totalBitmaps;
-    static int totalAudios;
     static unordered_map<string,PIGHashNodeImagem> mapImagens;
+
+    #ifdef PIGCOMAUDIO
+    static int totalAudios;
     static unordered_map<string,PIGHashNodeAudio> mapAudios;
+    #endif
 
 public:
 
     static void Inicia(){
         totalBitmaps=0;
+        #ifdef PIGCOMAUDIO
         totalAudios=0;
+        #endif
     }
 
     static void Encerra(){
         for(unordered_map<string,PIGHashNodeImagem>::iterator it = mapImagens.begin(); it != mapImagens.end(); ++it) {
             delete it->second;
         }
+        #ifdef PIGCOMAUDIO
         for(unordered_map<string,PIGHashNodeAudio>::iterator it = mapAudios.begin(); it != mapAudios.end(); ++it) {
             delete it->second;
         }
+        #endif
     }
 
     static SDL_Surface *LoadImage(string nomeArq){
         unordered_map<string, PIGHashNodeImagem>::iterator it = mapImagens.find(nomeArq);
-        if (it == mapImagens.end()){//n„o achou
+        if (it == mapImagens.end()){//n√£o achou
             PIGHashNodeImagem imagem = new CPIGHashNodeImagem(nomeArq);
             mapImagens[nomeArq]=imagem;
             totalBitmaps++;
@@ -79,7 +93,7 @@ public:
 
     static void FreeImage(string nomeArq){
         unordered_map<string, PIGHashNodeImagem>::iterator it = mapImagens.find(nomeArq);
-        if (it == mapImagens.end()){//n„o achou
+        if (it == mapImagens.end()){//n√£o achou
             printf("Nao existe asset carregado: %s\n",nomeArq.c_str());
         }else{
             it->second->cont--;
@@ -90,9 +104,10 @@ public:
         }
     }
 
+    #ifdef PIGCOMAUDIO
     static Mix_Chunk *LoadAudio(string nomeArq){
         unordered_map<string, PIGHashNodeAudio>::iterator it = mapAudios.find(nomeArq);
-        if (it == mapAudios.end()){//n„o achou
+        if (it == mapAudios.end()){//n√£o achou
             PIGHashNodeAudio audio = new CPIGHashNodeAudio(nomeArq);
             mapAudios[nomeArq] = audio;
             totalAudios++;
@@ -105,7 +120,7 @@ public:
 
     static void FreeAudio(string nomeArq){
         unordered_map<string, PIGHashNodeAudio>::iterator it = mapAudios.find(nomeArq);
-        if (it == mapAudios.end()){//n„o achou
+        if (it == mapAudios.end()){//n√£o achou
             printf("Nao existe asset carregado: %s\n",nomeArq.c_str());
         }else{
             it->second->cont--;
@@ -115,11 +130,15 @@ public:
             }
         }
     }
+    #endif //PIGCOMAUDIO
 
 };
 
 int CPIGAssetLoader::totalBitmaps;
 unordered_map<string,PIGHashNodeImagem> CPIGAssetLoader::mapImagens;
+#ifdef PIGCOMAUDIO
 int CPIGAssetLoader::totalAudios;
 unordered_map<string,PIGHashNodeAudio> CPIGAssetLoader::mapAudios;
+#endif //PIGCOMAUDIO
+
 #endif // _CPIGASSETLOADER_

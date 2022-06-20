@@ -24,7 +24,9 @@ private:
 
     PIGEstadoEvento OnMouseClick(){
         SetAcionado(!GetAcionado());
+        #ifdef PIGCOMAUDIO
         if (audioComponente>=0) CPIGGerenciadorAudios::Play(audioComponente);
+        #endif
         return PIG_COMPONENTE_TRATADO;
     }
 

@@ -21,10 +21,12 @@ void AtualizaFrameAtual(PIGModoAnimacao modo){
     modo->GetDimensoesAtual(a,l);
     SetDimensoes(a,l);
 
+    #ifdef PIGCOMAUDIO
     int audio = modo->GetAudioAtual();
     if (audio>=0){
         CPIGGerenciadorAudios::Play(audio);
     }
+    #endif
 
     CPIGGerenciadorTimers::GetTimer(idTimer)->Reinicia(false);
 }

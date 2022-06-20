@@ -1,8 +1,4 @@
 #include "SDL.h"
-#include "SDL_ttf.h"
-#include "SDL_image.h"
-#include "SDL_net.h"
-#include "SDL_mixer.h"
 
 #include "PIGTipos.h"
 #include "PIGFuncoesBasicas.h"
@@ -13,17 +9,27 @@
 #include "CPIGAssetLoader.h"
 #include "CPIGOffscreenRenderer.h"
 #include "CPIGGerenciadorJanelas.h"
-#include "CPIGGerenciadorAudios.h"
-#include "CPIGGerenciadorSockets.h"
 #include "CPIGGerenciadorFontes.h"
+#ifdef PIGCOMAUDIO
+#include "CPIGGerenciadorAudios.h"
+#endif
 #include "CPIGGerenciadorSprites.h"
 #include "CPIGGerenciadorGDP.h"
+#ifdef PIGCOMREDE
+#include "CPIGGerenciadorSockets.h"
+#endif
 #ifdef PIGCOMVIDEO
 #include "CPIGGerenciadorVideos.h"
 #endif
+#ifdef PIGCOMCONTROLE
 #include "CPIGGerenciadorControles.h"
+#endif
+#ifdef PIGCOMFORM
 #include "CPIGGerenciadorForms.h"
+#endif
+#ifdef PIGCOMTELA
 #include "CPIGGerenciadorTelas.h"
+#endif
 
 #include "CPIGJogo.h"
 
@@ -59,14 +65,6 @@ largura (entrada, passagem por valor não-obrigatório): indica a largura em pix
 void CriaJogo(const char *nomeJanela, int cursorProprio=0, int altura=PIG_ALT_TELA, int largura=PIG_LARG_TELA){
     if (jogo==NULL){
         jogo = new CPIGJogo(nomeJanela,cursorProprio,altura,largura);
-        CPIGGerenciadorAudios::Inicia();
-        CPIGGerenciadorControles::Inicia();
-        CPIGGerenciadorSockets::Inicia();
-        #ifdef PIGCOMVIDEO
-        CPIGGerenciadorVideos::Inicia();
-        #endif
-        CPIGGerenciadorForms::Inicia();
-        CPIGGerenciadorTelas::Inicia();
     }
 }
 
@@ -320,15 +318,6 @@ A função FinalizaJogo() é responsável por encerrar com a PIG. Após tudo o j
 a função deve ser chamada e ela irá realizar a liberação de memória dos elementos criados pela PIG.
 ********************************/
 void FinalizaJogo(){
-    CPIGGerenciadorControles::Encerra();
-    CPIGGerenciadorAudios::Encerra();
-    #ifdef PIGCOMVIDEO
-    CPIGGerenciadorVideos::Encerra();
-    #endif
-    CPIGGerenciadorSockets::Encerra();
-    CPIGGerenciadorForms::Encerra();
-    CPIGGerenciadorTelas::Encerra();
-
     delete jogo;
 }
 
@@ -764,6 +753,7 @@ int GetModoJanela(int idJanela=0){
     return CPIGGerenciadorJanelas::GetJanela(idJanela)->GetModo();
 }
 
+#ifdef PIGCOMCONTROLE
 
 /********************************
 Seção de controle de jogo
@@ -838,6 +828,8 @@ nomeControle (saída, passagem por referência): armazena a string contendo o no
 void GetNomeControle(int idControle, char *nomeControle){
     strcpy(nomeControle,CPIGGerenciadorControles::GetControle(idControle)->GetNome().c_str());
 }
+
+#endif // PIGCOMCONTROLE
 
 
 /********************************
@@ -4264,7 +4256,7 @@ void LimpaAcoesAnimacao(int idAnimacao){
     CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->LimpaAcoes();
 }
 
-
+#ifdef PIGCOMAUDIO
 /********************************
 Seção dos áudios
 ********************************/
@@ -4457,6 +4449,10 @@ A função ResumeTudoAudio() é responsável por continuar a tocar todos os áud
 void ResumeTudoAudio(){
     CPIGGerenciadorAudios::ResumeTudo();
 }
+
+#endif PIGCOMAUDIO
+
+#ifdef PIGCOMREDE
 
 /********************************
 Seção dos sockets
@@ -4919,6 +4915,7 @@ int EnviaDadosSocketUDP(int idSocket, void *buffer, int tamanhoBuffer, char *hos
     return CPIGGerenciadorSockets::GetSocketUDP(idSocket)->EnviaDados(buffer,tamanhoBuffer,hostRemoto,porta);
 }
 
+#endif //PIGCOMREDE
 
 #ifdef PIGCOMVIDEO
 
@@ -5295,6 +5292,10 @@ int GetOpacidadeVideo(int idVideo){
 }
 
 #endif
+
+
+#ifdef PIGCOMFORM
+
 
 /*******FORM*********/
 
@@ -6261,7 +6262,9 @@ void PIGSlideBarSetDeltas(int idComponente, int deltaPadrao, int deltaRodinha, i
     CPIGGerenciadorForms::GetComponente<PIGSlideBar>(idComponente)->SetDeltas(deltaPadrao,deltaRodinha,deltaTeclado);
 }
 
+#endif // PIGCOMFORM
 
+#ifdef PIGCOMTELA
 
 void PIGCriaTela(int idTela, int backgroundCriar=0, int backgroundCarregar=0, char *nomeArqCarregamento="", int janela=0){
     CPIGGerenciadorTelas::CriaTela(idTela,backgroundCriar,backgroundCarregar,nomeArqCarregamento,janela);
@@ -6302,3 +6305,4 @@ void *PIGGetDadosGeraisTelas(){
 PIGEstadoTela PIGGetEstadoTela(int idTela){
     return CPIGGerenciadorTelas::GetEstadoTela(idTela);
 }
+#endif // PIGCOMTELA

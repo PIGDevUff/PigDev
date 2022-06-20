@@ -37,8 +37,10 @@ void AtualizaParticulas(){
             //printf("antes del %d (%f)\n",parts[i]->GetID(),maxTempo);
             CPIGGerenciadorSprites::DestroiAnimacao(parts[i]->GetId());
 
+            #ifdef PIGCOMAUDIO
             if (audioFim>=0)
                 CPIGGerenciadorAudios::Play(audioFim);
+            #endif
 
             parts.erase(parts.begin()+i);
             //printf("deletou %d %d size %d\n",id,i,parts.size());
@@ -86,8 +88,10 @@ public:
         part->IniciaAutomacao();
         parts.push_back(part);
 
+        #ifdef PIGCOMAUDIO
         if (audioInicio>=0)
             CPIGGerenciadorAudios::Play(audioInicio);
+        #endif
 
         return parts.size();
     }

@@ -1,6 +1,8 @@
 #ifndef _CPIGGERENCIADORFONTES_
 #define _CPIGGERENCIADORFONTES_
 
+#include "SDL_ttf.h"
+
 #include "CPIGFonte.h"
 #include "CPIGFonteDinamica.h"
 

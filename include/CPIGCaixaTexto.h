@@ -142,8 +142,9 @@ protected:
 
         texto.erase(posCursor-1,1);//retira o caracter imediatamente atrás do cursor e retrocede com ele
         VoltaCursor();
-
+        #ifdef PIGCOMAUDIO
         if (audioComponente>=0) CPIGGerenciadorAudios::Play(audioComponente);
+        #endif
         return 1;
     }
 
@@ -153,7 +154,9 @@ protected:
 
         texto.erase(posCursor,1);//retira o caracter imediatamente a frente do cursor
 
+        #ifdef PIGCOMAUDIO
         if (audioComponente>=0) CPIGGerenciadorAudios::Play(audioComponente);
+        #endif
         return 1;
     }
 

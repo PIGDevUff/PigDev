@@ -139,10 +139,10 @@ int DescarregaTela(){
 }
 
 int TrataEvento(PIGEvento evento){
-    if (estado!=PIG_TELA_CARREGADA) return PIG_COMPONENTE_NAOTRATADO;
+    if (estado!=PIG_TELA_CARREGADA) return -1;//PIG_COMPONENTE_NAOTRATADO;
     if (comportamento.acaoTrataEvento!=NULL)
         return comportamento.acaoTrataEvento(id,evento,comportamento.dados);
-    return PIG_COMPONENTE_NAOTRATADO;
+    return -1;//PIG_COMPONENTE_NAOTRATADO;
 }
 
 void PreparaSaida(int outraTela, double tempo=PIG_TEMPO_SAIDA_TELA_PADRAO, bool destroiDescarga=false){

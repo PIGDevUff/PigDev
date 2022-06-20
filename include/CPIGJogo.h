@@ -3,6 +3,7 @@
 
 #include "CPIGAtributos.h"
 #include "CPIGGerenciadorJanelas.h"
+#include "CPIGMouse.h"
 
 class CPIGJogo: public CPIGAtributos{
 
@@ -10,9 +11,8 @@ private:
 
     PIGEvento ultimoEvento;
     PIGTeclado teclado;
-
     int estado;
-    int rodando;
+    bool rodando;
     string diretorioAtual;
     PIGOffscreenRenderer offRenderer;
 
@@ -39,12 +39,48 @@ public:
             CPIGGerenciadorFontes::Inicia();
             CPIGGerenciadorTimers::Inicia();
             CPIGGerenciadorGDP::Inicia();
+            #ifdef PIGCOMAUDIO
+            CPIGGerenciadorAudios::Inicia();
+            #endif
+            #ifdef PIGCOMCONTROLE
+            CPIGGerenciadorControles::Inicia();
+            #endif
+            #ifdef PIGCOMREDE
+            CPIGGerenciadorSockets::Inicia();
+            #endif
+            #ifdef PIGCOMVIDEO
+            CPIGGerenciadorVideos::Inicia();
+            #endif
+            #ifdef PIGCOMFORM
+            CPIGGerenciadorForms::Inicia();
+            #endif
+            #ifdef PIGCOMTELA
+            CPIGGerenciadorTelas::Inicia();
+            #endif
         }
     }
 
     virtual ~CPIGJogo(){
-
         if (offRenderer) delete offRenderer;
+
+        #ifdef PIGCOMCONTROLE
+        CPIGGerenciadorControles::Encerra();
+        #endif
+        #ifdef PIGCOMAUDIO
+        CPIGGerenciadorAudios::Encerra();
+        #endif
+        #ifdef PIGCOMVIDEO
+        CPIGGerenciadorVideos::Encerra();
+        #endif
+        #ifdef PIGCOMREDE
+        CPIGGerenciadorSockets::Encerra();
+        #endif
+        #ifdef PIGCOMFORM
+        CPIGGerenciadorForms::Encerra();
+        #endif
+        #ifdef PIGCOMTELA
+        CPIGGerenciadorTelas::Encerra();
+        #endif
 
         CPIGGerenciadorGDP::Encerra();
         CPIGGerenciadorTimers::Encerra();
@@ -244,7 +280,7 @@ public:
         //SDL_RenderPresent(renderer);
     }
 
-    int GetRodando(){
+    bool GetRodando(){
         return rodando;
     }
 
