@@ -1,0 +1,56 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Executar Makefile",
+            "type": "cppbuild",
+            "command": "mingw32-make.exe",
+            "args": [
+                "-f", "Makefile", "run",
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "${workspaceFolder}/../lib:${env:PATH}",
+                    "OS": "${env:OS}"
+                },
+            },
+            "group": "build",
+            "presentation": {
+                // Reveal the output only if unrecognized errors occur.
+                "reveal": "silent"
+            },
+            // Use the standard MS compiler pattern to detect errors, warnings and infos
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "Compilar Makefile",
+            "type": "cppbuild",
+            "command": "mingw32-make.exe",
+            "args": [
+                "-f", "Makefile", "all",
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "OS": "${env:OS}"
+                },
+            },
+            "group": "build",
+            "presentation": {
+                // Reveal the output only if unrecognized errors occur.
+                "reveal": "silent"
+            },
+            // Use the standard MS compiler pattern to detect errors, warnings and infos
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "Compilar e Executar Makefile",
+            "dependsOrder": "sequence",
+            "dependsOn": ["Compilar Makefile","Executar Makefile"],
+            "group": "build",
+        }
+    ]
+}
