@@ -13,7 +13,7 @@
             "options": {
                 "cwd": "${workspaceFolder}",
                 "env": {
-                    "PATH": "${workspaceFolder}/../lib:${env:PATH}",
+                    "PATH": ["${workspaceFolder}/../lib:${env:PATH}"],
                     "OS": "${env:OS}"
                 },
             },
