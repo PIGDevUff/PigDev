@@ -1,5 +1,3 @@
-#include "SDL.h"
-
 #include "PIGTipos.h"
 #include "PIGFuncoesBasicas.h"
 #include "CPIGErros.h"
@@ -10,6 +8,7 @@
 #include "CPIGOffscreenRenderer.h"
 #include "CPIGGerenciadorJanelas.h"
 #include "CPIGGerenciadorFontes.h"
+#include "CPIGGerenciadorLabels.h"
 #ifdef PIGCOMAUDIO
 #include "CPIGGerenciadorAudios.h"
 #endif
@@ -67,7 +66,6 @@ void CriaJogo(const char *nomeJanela, int cursorProprio=0, int altura=PIG_ALT_TE
         jogo = new CPIGJogo(nomeJanela,cursorProprio,altura,largura);
     }
 }
-
 
 /********************************
 A função SetValorIntJogo() é responsável incorporar ao jogo um atributo inteiro.
@@ -1616,6 +1614,267 @@ void SubstituiCaractere(char caractere, char *nomeArquivo, int largNova, int x, 
 
 
 
+
+/********************************
+Seção de Labels
+********************************/
+
+/********************************
+A função CriaLabel() é responsável por criar um label. Qualquer label que for necessário,
+pode ser criado através dessa função. O label ainda não será desenhado, apenas criado dentro do jogo.
+Parâmetros:
+texto (entrada, passagem por referência): string que informa o nome texto que será desenhado na tela.
+corFonte (entrada, passagem por referência não-obrigatório): indica se há uma cor específica para ser considerada como cor da fonte.
+numFonte (entrada, passagem por referência não-obrigatório): indica o número da fonte (já criada) que será utilizada no label.
+idJanela (entrada, passagem por valor não-obrigatório): indica qual janela vai receber o label.
+Retorno:
+inteiro que representa o identificador único do label. Todas as operaçőes subsequentes com este label deverão receber este identificador como parâmetro.
+********************************/
+int CriaLabel(char* texto, PIGCor corFonte=BRANCO, int numFonte=0, int idJanela=0){
+    return CPIGGerenciadorLabels::CriaLabel(texto,corFonte,numFonte,idJanela);
+}
+
+/********************************
+A função DestroiLabel() é responsável por eliminar o label em questão do jogo.
+Parâmetros:
+idLabel (entrada, passagem por valor): identificador do label a ser excluído.
+********************************/
+void DestroiLabel(int idLabel){
+    CPIGGerenciadorLabels::DestroiLabel(idLabel);
+}
+
+/********************************
+A função SetTextoLabel() é responsável por alterar o texto de um label.
+Parâmetros:
+idLabel (entrada, passagem por valor): identificador do label.
+texto (entrada, passagem por referência): indica o novo texto do label.
+********************************/
+void SetTextoLabel(int idLabel, char *texto){
+    CPIGGerenciadorLabels::GetLabel(idLabel)->SetTexto(texto);
+}
+
+/********************************
+A função GetTextoLabel() é responsável por recuperar o texto de um label.
+Parâmetros:
+idLabel (entrada, passagem por valor): identificador do label a ser movido.
+texto (saída, passagem por referência): texto atual do label.
+********************************/
+void GetTextoLabel(int idLabel, char *texto){
+    strcpy(texto,CPIGGerenciadorLabels::GetLabel(idLabel)->GetTexto().c_str());
+}
+
+/********************************
+A função GetXYLabel() é responsável recuperar o valor da posição (X,Y) do label de acordo com o sistema de coordenadas do jogo.
+Parâmetros:
+idLabel (entrada, passagem por valor): identificador do label.
+posicaoX (saída, passagem por referencia): indica a posicao no eixo X do label.
+posicaoY (saída, passagem por referencia): indica a posicao no eixo Y do label.
+********************************/
+void GetXYLabel(int idLabel, int *posicaoX, int *posicaoY){
+    PIGPonto2D p = CPIGGerenciadorLabels::GetLabel(idLabel)->GetXY();
+    *posicaoX = p.x;
+    *posicaoY = p.y;
+}
+
+/********************************
+A função MoveLabel() é responsável por movimentar um determinado label para uma nova posição informada.
+Parâmetros:
+idLabel (entrada, passagem por valor): identificador do label a ser movido.
+posicaoX (entrada, passagem por valor): Valor da coordenada X da tela onde o usuário deseja reposicionar o label.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y da tela onde o usuário deseja reposicionar o label.
+********************************/
+void MoveLabel(int idLabel, int posicaoX, int posicaoY){
+    CPIGGerenciadorLabels::GetLabel(idLabel)->Move(posicaoX,posicaoY);
+}
+
+/********************************
+A função DeslocaLabel() é responsável por deslocar um determinado label em relação à sua posição atual.
+Parâmetros:
+idLabel (entrada, passagem por valor): identificador do label a ser movido.
+deltaX (entrada, passagem por valor): valor a ser somado ou subtraído na componente X da posição do label.
+deltaY (entrada, passagem por valor): valor a ser somado ou subtraído na componente Y da posição do label.
+********************************/
+void DeslocaLabel(int idLabel, int deltaX, int deltaY){
+    CPIGGerenciadorLabels::GetLabel(idLabel)->Desloca(deltaX,deltaY);
+}
+
+/********************************
+A função SetAnguloLabel() é responsável pela angulação de determinado label. A angulação é calculada em sentido
+horário a partir do eixo X (0 graus). O label será desenhado com a angulação informada no próximo comando
+DesenhaLabel().
+Parâmetros:
+idLabel (entrada, passagem por valor): identificador do label.
+angulo (entrada, passagem por valor): valor para indicar a angulação do label em graus.
+********************************/
+void SetAnguloLabel(int idLabel, float angulo){
+    CPIGGerenciadorLabels::GetLabel(idLabel)->SetAngulo(angulo);
+}
+
+/********************************
+A função GetAnguloLabel() é responsável por recuperar o ângulo de rotação de determinado label. A angulação é calculada em sentido
+horário a partir do eixo X (0 graus). O label será desenhado com a angulação informada no próximo comando
+DesenhaLabel().
+Parâmetros:
+idLabel (entrada, passagem por valor): identificador do label.
+Retorno:
+Retorna o valor do ângulo em graus.
+********************************/
+float GetAnguloLabel(int idLabel){
+    return CPIGGerenciadorLabels::GetLabel(idLabel)->GetAngulo();
+}
+
+/********************************
+A função SetPivoAbsolutoLabel() define um ponto (X,Y) em relação ao ponto (0,0) do label, sobre o qual o label será
+rotacionado quando a função SetAnguloLabel() for executada.
+Parâmetros:
+idLabel (entrada, passagem por valor): identificador do label.
+posicaoX (entrada, passagem por valor): Valor da coordenada X do pivô em relação ao ponto (0,0) do label.
+posicaoY (entrada, passagem por valor): Valor da coordenada Y do pivô em relação ao ponto (0,0) do label.
+********************************/
+void SetPivoAbsolutoLabel(int idLabel, int posicaoX, int posicaoY){
+    CPIGGerenciadorLabels::GetLabel(idLabel)->SetPivoAbsoluto({(double)posicaoX,(double)posicaoY});
+}
+
+/********************************
+A função SetPivoProporcionalLabel() define um ponto (X,Y) proporcional ao tamanho do label, sobre o qual o label será
+rotacionado quando a função SetAnguloLabel() for executada.
+Parâmetros:
+idLabel (entrada, passagem por valor): identificador do label.
+relX (entrada, passagem por valor): porcentagem da largura do label onde ficará o pivô.
+relY (entrada, passagem por valor): porcentagem da altura do label onde ficará o pivô.
+********************************/
+void SetPivoProporcionalLabel(int idLabel, float relX, float relY){
+    CPIGGerenciadorLabels::GetLabel(idLabel)->SetPivoProporcional({relX,relY});
+}
+
+/********************************
+A função GetPivoLabel() define um ponto (X,Y) em relação ao ponto (0,0) do label, sobre o qual o label será
+rotacionado quando a função SetAnguloLabel() for executada.
+Parâmetros:
+idLabel (entrada, passagem por valor): identificador do label.
+posicaoX (saída, passagem por referência): Valor da coordenada X do pivô em relação ao ponto (0,0) do label.
+posicaoY (saída, passagem por referência): Valor da coordenada Y do pivô em relação ao ponto (0,0) do label.
+********************************/
+void GetPivoLabel(int idLabel, int *posicaoX, int *posicaoY){
+    PIGPonto2D p = CPIGGerenciadorLabels::GetLabel(idLabel)->GetPivo();
+    *posicaoX = p.x;
+    *posicaoY = p.y;
+}
+
+/********************************
+A função SetFlipLabel() é responsável por virar o label, invertendo-o em alguma direção. O label somente será
+desenhado na nova orientação no próximo comando DesenhaLabel().
+Parâmetros:
+idLabel (entrada, passagem por valor): identificador do label a ser virado.
+valor (entrada, passagem por valor): valor do tipo de Flip. Pode ser FLIP_NENHUM (nenhum tipo de inversão),
+PIG_FLIP_HORIZONTAL (inverte da esquerda para a direita), PIG_FLIP_VERTICAL (inverte de cima para baixo),
+ou PIG_FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
+********************************/
+void SetFlipLabel(int idLabel, PIGFlip valor){
+    CPIGGerenciadorLabels::GetLabel(idLabel)->SetFlip(valor);
+}
+
+/********************************
+A função GetFlipLabel() é responsável por recuperar o valor da manipulação causada pela função SetFlipLabel().
+Parâmetros:
+idLabel (entrada, passagem por valor): identificador do label a ser virado.
+Retorno:
+inteiro que indica o tipo de Flip. Pode ser PIG_FLIP_NENHUM (nenhum tipo de inversão),
+PIG_FLIP_HORIZONTAL (inverte da esquerda para a direita), PIG_FLIP_VERTICAL (inverte de cima para baixo),
+ou PIG_FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
+********************************/
+PIGFlip GetFlipLabel(int idLabel){
+    return CPIGGerenciadorLabels::GetLabel(idLabel)->GetFlip();
+}
+
+/********************************
+A função GetDimensoesLabel() é responsável por recuperar a altura e a largura da área a ser usada
+para desenhar o label na tela. Em outras palavras, representa o tamanho atual do label.
+Parâmetros:
+idLabel (entrada, passagem por valor): identificador do label.
+altura (saída, passagem por referência): altura atual em pixels do label.
+largura (saída, passagem por referência): largura atual em pixels do label.
+********************************/
+void GetDimensoesLabel(int idLabel, int *altura, int *largura){
+    CPIGGerenciadorLabels::GetLabel(idLabel)->GetDimensoes(*altura,*largura);
+}
+
+/********************************
+A função SetCorFonteLabel() é responsável por definir a cor da fonte do label.
+Parâmetros:
+idLabel (entrada, passagem por valor): identificador do label a ser desenhado.
+cor (entrada,passagem por valor): cor do sistema RGB utilizada para a fonte do label.
+********************************/
+void SetCorFonteLabel(int idLabel, PIGCor cor){
+    CPIGGerenciadorLabels::GetLabel(idLabel)->SetCorFonte(cor);
+}
+
+/********************************
+A função GetCorFonteLabel() é responsável por recuperar a cor da fonte utilizada no label
+Parâmetros:
+idLabel (entrada, passagem por valor): identificador do label a ser desenhado.
+Retorno:
+PIGCor que indica a cor utilizada pela fonte do label.
+********************************/
+PIGCor GetCorFonteLabel(int idLabel){
+    return CPIGGerenciadorLabels::GetLabel(idLabel)->GetCorFonte();
+}
+
+/********************************
+A função SetNumeroFonteLabel() é responsável por modificar a fonte utilizada pelo label. O número da fonte deve corresponder ao identificador de uma fonte já criada anteriormente.
+Parâmetros:
+idLabel (entrada, passagem por valor): identificador do label a ser desenhado.
+numFonte (entrada,passagem por valor): identificador da fonte a ser utilizada.
+********************************/
+void SetNumeroFonteLabel(int idLabel, int numFonte){
+    CPIGGerenciadorLabels::GetLabel(idLabel)->SetFonte(numFonte);
+}
+
+/********************************
+A função GetNumeroFonteLabel() é responsável por recuperar o identificador da fonte utilizada pelo label.
+Parâmetros:
+idLabel (entrada, passagem por valor): identificador do label a ser desenhado.
+Retorno:
+inteiro com o valor do identificador da fonte utilizada no label.
+********************************/
+int GetNumeroFonteLabel(int idLabel){
+    return CPIGGerenciadorLabels::GetLabel(idLabel)->GetFonte();
+}
+
+/********************************
+A função SetOpacidadeLabel() é responsável por modificar o nível de opacidade do label.
+O nível de opacidade varia de 0-255, sendo 0 totalmente transparente e 255 totalmente opaco.
+Parâmetros:
+idLabel (entrada, passagem por valor): identificador do label.
+valor (entrada,passagem por valor): nível de opacidade do label na faixa 0-255.
+********************************/
+void SetOpacidadeLabel(int idLabel, int valor){
+    CPIGGerenciadorLabels::GetLabel(idLabel)->SetOpacidade(valor);
+}
+
+/********************************
+A função GetOpacidadeLabel() é responsável por recuperar o nível de opacidade de determinado label.
+O nível de opacidade varia de 0-255, sendo 0 totalmente transparente e 255 totalmente opaco.
+Parâmetros:
+idLabel (entrada, passagem por valor): identificador do label.
+Retorno:
+Retorna o nível de opacidade do label na faixa 0-255.
+********************************/
+int GetOpacidadeLabel(int idLabel){
+    return CPIGGerenciadorLabels::GetLabel(idLabel)->GetOpacidade();
+}
+
+/********************************
+A função DesenhaLabel() é responsável por desenhar um label na tela. O label será desenhado de acordo com todas as definiçőes
+de posição e ângulo informado até o momento. Além disso, se o label estiver virado (flipping), isso também será levado em consideração.
+Parâmetros:
+idLabel (entrada, passagem por valor): identificador do label a ser desenhado.
+********************************/
+void DesenhaLabel(int idLabel){
+    CPIGGerenciadorLabels::GetLabel(idLabel)->Desenha();
+}
+
+
 /********************************
 Seção de sprites
 ********************************/
@@ -1752,7 +2011,7 @@ void DeslocaSprite(int idSprite, int deltaX, int deltaY){
 /********************************
 A função SetAnguloSprite() é responsável pela angulação de determinado sprite. A angulação é calculada em sentido
 horário a partir do eixo X (0 graus). O sprite será desenhado com a angulação informada no próximo comando
-DesenhaSprite(). A detecção de colisão não funciona com sprites fora da angulação padrão (0 graus).
+DesenhaSprite().
 Parâmetros:
 idSprite (entrada, passagem por valor): identificador do sprite.
 angulo (entrada, passagem por valor): valor para indicar a angulação do sprite em graus.
@@ -1764,7 +2023,7 @@ void SetAnguloSprite(int idSprite, float angulo){
 /********************************
 A função GetAnguloSprite() é responsável por recuperar o ângulo de rotação de determinado sprite. A angulação é calculada em sentido
 horário a partir do eixo X (0 graus). O sprite será desenhado com a angulação informada no próximo comando
-DesenhaSprite(). A detecção de colisão não funciona com sprites fora da angulação padrão (0 graus).
+DesenhaSprite().
 Parâmetros:
 idSprite (entrada, passagem por valor): identificador do sprite.
 Retorno:
@@ -1979,7 +2238,7 @@ void DesenhaSpriteOffScreen(int idSprite){
 }
 
 /********************************
-A função DesenhaSprite() é responsável por desenhar um sprite na tela. O sprite será desenhado contendo toda a imagem, na posição indica.
+A função DesenhaSpriteSimples() é responsável por desenhar um sprite na tela, a partir do nome do arquivo apenas. O sprite será desenhado contendo toda a imagem, na posição indica.
 Não será aplicada nenhuma modificação, como ângulo, coloração, ou opacidade, por exemplo.
 Parâmetros:
 idSprite (entrada, passagem por valor): identificador do sprite a ser desenhado.

@@ -61,7 +61,7 @@ static int thread_code(void *data){
             int bytes = cliente->RecebeDados(buffer);
             if (bytes>0){
                 cliente->CriaEventoMensagem(PIG_REDE_MENSAGEM_TCP,buffer,bytes);
-            }else{//não tem atividade
+            }else{//nÃ£o tem atividade
                 cliente->CriaEventoMensagem(PIG_REDE_DESCONEXAO,"",1);
                 cliente->ativo = false;
                 break;

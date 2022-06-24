@@ -112,8 +112,8 @@ public:
         bool mouseOverAntes = mouseOver;
 
         if (ChecaMouseOver(GetPosicaoMouse())>0){
-            for (unsigned int i=0;i<itens.size();i++){
-                if (itens[i]->TrataEventoMouse(evento) == PIG_COMPONENTE_TRATADO){
+            for (PIGItemComponente i: itens){
+                if (i->TrataEventoMouse(evento) == PIG_COMPONENTE_TRATADO){
                     resp = 1;
                     OnAction();
                 }
@@ -121,8 +121,8 @@ public:
             if (resp) return PIG_COMPONENTE_TRATADO;
             else return PIG_COMPONENTE_MOUSEOVER;
         }else if (mouseOverAntes){               //mouse estava antes, mas saiu
-            for (unsigned int i=0;i<itens.size();i++){
-                itens[i]->SetMouseOver(false);
+            for (PIGItemComponente i: itens){
+                i->SetMouseOver(false);
             }
         }
         return PIG_COMPONENTE_NAOTRATADO;
@@ -143,7 +143,7 @@ public:
     vector <int> GetItensMarcados(){
         vector <int> resp;
         for(unsigned int i=0;i<itens.size();i++)
-            if(itens[i]->GetAcionado())resp.push_back(i);
+            if(itens[i]->GetAcionado()) resp.push_back(i);
 
         return resp;
     }

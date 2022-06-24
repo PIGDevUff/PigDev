@@ -58,7 +58,7 @@ PIGTransicao GetTransicaoAtual(){
         }else{
             transAtual++;
             if (tipo == PIG_TRANSICAO_LOOP)
-                transAtual %= trans.size(); //volta à transicao com índice 0
+                transAtual %= trans.size(); //volta Ã  transicao com Ã­ndice 0
             else{
                 if (transAtual==trans.size()) return NULL;//as transicoes acabaram
             }

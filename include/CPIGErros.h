@@ -49,7 +49,7 @@ public:
 };
 
 
-//Erro para falta de par‚metro ou valor incorreto
+//Erro para falta de par√¢metro ou valor incorreto
 class CPIGErroParametro: public CPIGErro{
 
 protected:
@@ -77,7 +77,7 @@ public:
 
 };
 
-//Erro para Ìndices de arrays
+//Erro para √≠ndices de arrays
 class CPIGErroIndice: public CPIGErro{
 
 protected:

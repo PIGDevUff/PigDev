@@ -44,10 +44,10 @@ void AtualizaTextura()override{
 
 public:
 
-CPIGLabel(string texto, int numFonte, int idJanela=0):CPIGSprite(idJanela){
+CPIGLabel(string texto, PIGCor cor, int numFonte, int idJanela=0):CPIGSprite(idJanela){
     idFonte = numFonte;
     text = NULL;
-    corFonte = BRANCO;
+    corFonte = cor;
     frase = texto;
     precisaAtualizar = true;
     AtualizaTextura();

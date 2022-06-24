@@ -171,12 +171,7 @@ public:
         if (visivel==false) return 0;
 
         if (imagemPropria){
-            //printf("des form\n");
-            //refaz=1;
-
             CPIGSprite::Desenha();
-            //refaz=0;
-            //printf("des form ok\n");
         }
         else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
 
@@ -366,7 +361,6 @@ public:
 
         return idComponente;
     }
-
 
 };
 typedef CPIGForm *PIGForm;

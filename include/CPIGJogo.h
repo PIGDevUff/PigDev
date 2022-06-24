@@ -2,7 +2,6 @@
 #define _CPIGJOGO_
 
 #include "CPIGAtributos.h"
-#include "CPIGGerenciadorJanelas.h"
 #include "CPIGMouse.h"
 
 class CPIGJogo: public CPIGAtributos{
@@ -37,6 +36,7 @@ public:
             CPIGMouse::Inicia(cursor);
             CPIGGerenciadorSprites::Inicia();
             CPIGGerenciadorFontes::Inicia();
+            CPIGGerenciadorLabels::Inicia();
             CPIGGerenciadorTimers::Inicia();
             CPIGGerenciadorGDP::Inicia();
             #ifdef PIGCOMAUDIO
@@ -84,6 +84,7 @@ public:
 
         CPIGGerenciadorGDP::Encerra();
         CPIGGerenciadorTimers::Encerra();
+        CPIGGerenciadorLabels::Encerra();
         CPIGGerenciadorFontes::Encerra();
         CPIGGerenciadorSprites::Encerra();
         CPIGMouse::Encerra();
@@ -100,6 +101,8 @@ public:
                 rodando = false;
             //if (event.type) printf("Tipo: %d\n",event.type);
             switch(event.type){
+            case SDL_QUIT:
+                rodando = false; break;
 
             case SDL_USEREVENT:
                 if (event.user.code==PIG_EVENTO_AUDIO){
@@ -111,6 +114,7 @@ public:
                 }
                 free(event.user.data1);
                 break;
+
             case SDL_MOUSEBUTTONDOWN:
             case SDL_MOUSEBUTTONUP:
                 ultimoEvento.tipoEvento = PIG_EVENTO_MOUSE;
@@ -125,6 +129,7 @@ public:
                 //CGerenciadorJanelas::GetJanela(ultimoEvento.mouse.numeroJanela)->GetCamera()->ConverteCoordenadaWorldScreen(ultimoEvento.mouse.posX,ultimoEvento.mouse.posY,&ultimoEvento.mouse.worldX,&ultimoEvento.mouse.worldY);
                 CPIGMouse::ProcessaEvento(ultimoEvento);
                 break;
+
             case SDL_MOUSEMOTION:
                 ultimoEvento.tipoEvento = PIG_EVENTO_MOUSE;
                 ultimoEvento.mouse.acao = PIG_MOUSE_MOVIDO;
@@ -142,6 +147,7 @@ public:
                 CPIGMouse::ProcessaEvento(ultimoEvento);
                 //CMouse::Move(ultimoEvento.mouse.posX, ultimoEvento.mouse.posY);
                 break;
+
             case SDL_MOUSEWHEEL:
                 ultimoEvento.tipoEvento = PIG_EVENTO_MOUSE;
                 ultimoEvento.mouse.acao = PIG_MOUSE_RODINHA;
@@ -150,6 +156,7 @@ public:
                 ultimoEvento.mouse.relY = event.wheel.y;
                 CPIGMouse::ProcessaEvento(ultimoEvento);
                 break;
+
             case SDL_KEYDOWN:
             case SDL_KEYUP:
                 ultimoEvento.tipoEvento = PIG_EVENTO_TECLADO;
@@ -165,11 +172,13 @@ public:
                 ultimoEvento.teclado.tamanhoSelecao = event.edit.length;
                 strcpy(ultimoEvento.teclado.texto,event.edit.text);
                 break;
+
             case SDL_TEXTINPUT:
                 ultimoEvento.tipoEvento = PIG_EVENTO_TECLADO;
                 ultimoEvento.teclado.acao = PIG_TECLA_INPUT;
                 strcpy(ultimoEvento.teclado.texto,event.edit.text);
                 break;
+
             case SDL_WINDOWEVENT:
                 if (event.window.event==PIG_JANELA_FECHADA){
                     CPIGGerenciadorJanelas::GetJanela(event.window.windowID-PIG_JANELA_INICIAL)->Fecha();
@@ -180,6 +189,7 @@ public:
                 ultimoEvento.janela.dado1 = event.window.data1;
                 ultimoEvento.janela.dado2 = event.window.data2;
                 break;
+
             case SDL_CONTROLLERBUTTONDOWN:
             case SDL_CONTROLLERBUTTONUP:
                 ultimoEvento.tipoEvento = PIG_EVENTO_CONTROLADOR;
@@ -188,6 +198,7 @@ public:
                 ultimoEvento.controlador.idControlador = event.cdevice.which;
                 SDL_PollEvent(&event);
                 break;
+
             case SDL_CONTROLLERAXISMOTION:
             //case SDL_JOYAXISMOTION:
                 ultimoEvento.tipoEvento = PIG_EVENTO_CONTROLADOR;

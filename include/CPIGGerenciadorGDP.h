@@ -1,7 +1,6 @@
 #ifndef _CPIGGERENCIADORGDP_
 #define _CPIGGERENCIADORGDP_
 
-#include "CPIGAnimacao.h"
 #include "CPIGGeradorParticulas.h"
 
 class CPIGGerenciadorGDP{

@@ -24,7 +24,7 @@ SDL_Point GetXY(){
     return pos;
 }
 
-//n„o utilizada
+//n√£o utilizada
 void AjustaTela(int novaAltura, int novaLargura){
     altTela = novaAltura;
     largTela = novaLargura;

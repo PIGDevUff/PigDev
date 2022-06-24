@@ -2,6 +2,8 @@
 Principais definições utilizadas pela PIG
 ********************************/
 
+#include "SDL.h"
+
 #define PIG_ALT_TELA                    600
 #define PIG_LARG_TELA                   800
 
@@ -36,6 +38,7 @@ Principais definições utilizadas pela PIG
 #define PIG_MAX_FONTES                  100
 #define PIG_PRIMEIRO_CAR                11
 #define PIG_ULTIMO_CAR                  256
+#define PIG_MAX_LABELS                  10000
 
 #define PIG_FREQ_AUDIO_PADRAO           22050
 #define PIG_QTD_CANAIS_PADRAO           128

@@ -937,7 +937,7 @@ CPIGVideo(string nomeArq, int idJanela=0):
 
 virtual ~CPIGVideo(){
     nomeArquivo = "";
-    Stop();//caso seja chamado o destrutor sem o video j· ter sido parado
+    Stop();//caso seja chamado o destrutor sem o video j√° ter sido parado
 
     //DestroiVideoState();
 
@@ -1016,7 +1016,7 @@ void Play(){
 void Stop(){
     //SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 111);
     //printf("Vou fazer stop\n");
-    if (estado==PIG_VIDEO_PARADO) return;//Stop() pode ser chamado isoladamente ou pelo destrutor, mas n„o deve ser executado 2 vezes
+    if (estado==PIG_VIDEO_PARADO) return;//Stop() pode ser chamado isoladamente ou pelo destrutor, mas n√£o deve ser executado 2 vezes
     estado = PIG_VIDEO_PARADO;
     quit = 1;
 

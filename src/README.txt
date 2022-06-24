@@ -1,7 +1,7 @@
 ***************************************************
                         PIG
 ***************************************************
-                      v 0.8.0
+                      v 0.8.1
 
 1) Como instalar?
 a) Após baixar a PIG (zip), localizar na subpasta /lib os arquivos .zip referentes ao seu SO e descompactá-los nesta mesma subpasta. Se você não pretende utilizar videos, o arquivo .zip relacionado (libVideo_yyy.zip) não precisa ser descompactado.
@@ -41,6 +41,11 @@ d) Pelo terminal/prompt:
    d3) Se o projeto já tiver sido compilado, também é possível chamar o executável diretamente pelo terminal/prompt, mas, neste caso, provavelmente será necessário acrescentar a subpasta /lib ao PATH do sistema, independente do SO.
    d4) Uma alternativa ao item anterior consiste em trazer as bibliotecas dinâmicas (.dll, .so ou .dylib) para a subpasta /src.
 
-What´s new (v0.8.0)?
+What´s new?
+(v0.8.1)
+1) É possível criar Labels (CPIGLabel/PIGLabel), que são textos com pouco modificação de conteúdo ao longo do tempo.
+Os Labels podem ser criados com um conteúdo (texto), uma fonte e uma cor, posteriormente modificavéis. Os Labels têm desempenho melhor que os métodos Escreve...(), pois não é necessário renderizar caractere por caractere.
+
+(v0.8.0)
 1) A PIG agora é modularizável, uma vez que a maioria dos projetos não utiliza todos os subsistemas da PIG. Por exemplo, é possível dispensar o módulo de video ou o módulo de Controladores.
    As alterações podem ser feitas diretamente no Makefile mudando o valor "SIM" do referido módeulo para qualquer outro valor ou até mesmo comentando a linha do módulo.

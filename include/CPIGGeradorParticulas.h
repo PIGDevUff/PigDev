@@ -8,49 +8,49 @@ class CPIGGeradorParticulas: public CPIGAnimacao{
 
 private:
 
-int maxParticulas;       //qtd de partÌculas vivas e m·ximo de partÌculas vivas
-vector<PIGParticula> parts;
-double hpParticulas,maxTempo;
-SDL_Rect maxEspaco;
-int audioInicio,audioFim;
-PIGCor *corFundoImagem;
-bool retiraFundoImagem;
-PIGAutomacao automacaoGDP;
+    int maxParticulas;       //qtd de part√≠culas vivas e m√°ximo de part√≠culas vivas
+    vector<PIGParticula> parts;
+    double hpParticulas,maxTempo;
+    SDL_Rect maxEspaco;
+    int audioInicio,audioFim;
+    PIGCor *corFundoImagem;
+    bool retiraFundoImagem;
+    PIGAutomacao automacaoGDP;
 
-void IniciaBase(int maximoParticulas, int audioCriacao,int audioEncerramento, PIGCor *corFundo, bool retiraFundo){
-    maxParticulas = maximoParticulas;
-    audioInicio = audioCriacao;
-    audioFim = audioEncerramento;
-    corFundoImagem = corFundo;
-    retiraFundoImagem = retiraFundo;
-    maxTempo = 9999999;
-    maxEspaco = {INT_MIN,INT_MIN,INT_MAX,INT_MAX};
-    hpParticulas = 1;
-    automacaoGDP = NULL;
-}
+    void IniciaBase(int maximoParticulas, int audioCriacao,int audioEncerramento, PIGCor *corFundo, bool retiraFundo){
+        maxParticulas = maximoParticulas;
+        audioInicio = audioCriacao;
+        audioFim = audioEncerramento;
+        corFundoImagem = corFundo;
+        retiraFundoImagem = retiraFundo;
+        maxTempo = 9999999;
+        maxEspaco = {INT_MIN,INT_MIN,INT_MAX,INT_MAX};
+        hpParticulas = 1;
+        automacaoGDP = NULL;
+    }
 
-void AtualizaParticulas(){
-    unsigned int i=0;
-    while (i<parts.size()){
-        //printf("viva %d %d %d\n",i,parts[i]->ChecaViva(),parts[i]->GetId());
-        if (parts[i]->ChecaViva()==false){;
-            //printf("antes del %d (%f)\n",parts[i]->GetID(),maxTempo);
-            CPIGGerenciadorSprites::DestroiAnimacao(parts[i]->GetId());
+    void AtualizaParticulas(){
+        unsigned int i=0;
+        while (i<parts.size()){
+            //printf("viva %d %d %d\n",i,parts[i]->ChecaViva(),parts[i]->GetId());
+            if (parts[i]->ChecaViva()==false){;
+                //printf("antes del %d (%f)\n",parts[i]->GetID(),maxTempo);
+                CPIGGerenciadorSprites::DestroiAnimacao(parts[i]->GetId());
 
-            #ifdef PIGCOMAUDIO
-            if (audioFim>=0)
-                CPIGGerenciadorAudios::Play(audioFim);
-            #endif
+                #ifdef PIGCOMAUDIO
+                if (audioFim>=0)
+                    CPIGGerenciadorAudios::Play(audioFim);
+                #endif
 
-            parts.erase(parts.begin()+i);
-            //printf("deletou %d %d size %d\n",id,i,parts.size());
-        }else{
-            parts[i]->TrataAutomacao();
-            //printf("atualizei part %d\n",i);
-            i++;
+                parts.erase(parts.begin()+i);
+                //printf("deletou %d %d size %d\n",id,i,parts.size());
+            }else{
+                parts[i]->TrataAutomacao();
+                //printf("atualizei part %d\n",i);
+                i++;
+            }
         }
     }
-}
 
 public:
 
@@ -103,18 +103,16 @@ public:
     int Desenha() override{
         AtualizaParticulas();
         //CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(pos.x,pos.y,10,10,ROXO);
-        for (unsigned int i=0;i<parts.size();i++)
-            parts[i]->Desenha();
+        for (PIGParticula part:parts)
+            part->Desenha();
 
         return 1;
     }
 
     bool Colisao(PIGObjeto outro){
         bool resp = false;
-        unsigned int i=0;
-        while (i<parts.size()){
-            resp |= parts[i]->Colisao(outro);
-            i++;
+        for (PIGParticula part:parts){
+            resp |= part->Colisao(outro);
         }
         return resp;
     }

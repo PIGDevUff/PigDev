@@ -7,180 +7,180 @@ class CPIGAnimacao:public CPIGObjeto{
 
 private:
 
-PIGModoAnimacao modos[PIG_MAX_MODOS];  //modos da animaÁ„o
-int idTimer;                    //timer da animaÁ„o (se estiver sendo utilizado o gerenciador de timers)
-SDL_Point offset;                  //offset (x,y) a ser utilizado junto com a posiÁ„o (x,y) para desenhar oa animaÁ„o
-int modoAtual;                  //n˙mero que indica o modo atual
+    PIGModoAnimacao modos[PIG_MAX_MODOS];   //modos da anima√ß√£o
+    int idTimer;                            //timer da anima√ß√£o (se estiver sendo utilizado o gerenciador de timers)
+    SDL_Point offset;                       //offset (x,y) a ser utilizado junto com a posi√ß√£o (x,y) para desenhar oa anima√ß√£o
+    int modoAtual;                          //n√∫mero que indica o modo atual
 
-//muda o frame a ser exibido do modo atual
-void AtualizaFrameAtual(PIGModoAnimacao modo){
-    frameAtual = modo->GetFrameAtual();
-    CPIGSprite::MudaFrameAtual(frameAtual);
+    //muda o frame a ser exibido do modo atual
+    void AtualizaFrameAtual(PIGModoAnimacao modo){
+        frameAtual = modo->GetFrameAtual();
+        CPIGSprite::MudaFrameAtual(frameAtual);
 
-    int a,l;
-    modo->GetDimensoesAtual(a,l);
-    SetDimensoes(a,l);
+        int a,l;
+        modo->GetDimensoesAtual(a,l);
+        SetDimensoes(a,l);
 
-    #ifdef PIGCOMAUDIO
-    int audio = modo->GetAudioAtual();
-    if (audio>=0){
-        CPIGGerenciadorAudios::Play(audio);
+        #ifdef PIGCOMAUDIO
+        int audio = modo->GetAudioAtual();
+        if (audio>=0){
+            CPIGGerenciadorAudios::Play(audio);
+        }
+        #endif
+
+        CPIGGerenciadorTimers::GetTimer(idTimer)->Reinicia(false);
     }
-    #endif
-
-    CPIGGerenciadorTimers::GetTimer(idTimer)->Reinicia(false);
-}
 
 public:
 
-//cria uma animaÁ„o a partir de um arquivo de spritesheet
-CPIGAnimacao(int idAnimacao, string nomeArq, int retiraFundo=1, PIGCor *corFundo=NULL, int idJanela=0)
-:CPIGObjeto(idAnimacao,nomeArq,retiraFundo,corFundo,idJanela){
-    offset= {0,0};
-    modoAtual = 0;
+    //cria uma anima√ß√£o a partir de um arquivo de spritesheet
+    CPIGAnimacao(int idAnimacao, string nomeArq, int retiraFundo=1, PIGCor *corFundo=NULL, int idJanela=0)
+    :CPIGObjeto(idAnimacao,nomeArq,retiraFundo,corFundo,idJanela){
+        offset= {0,0};
+        modoAtual = 0;
 
-    for (int i=0;i<PIG_MAX_MODOS;i++)
-        modos[i] = NULL;
+        for (int i=0;i<PIG_MAX_MODOS;i++)
+            modos[i] = NULL;
 
-    idTimer = CPIGGerenciadorTimers::CriaTimer();
-}
-
-//cria uma animaÁ„o a partir deoutra animaÁ„o j· existente
-CPIGAnimacao(int idAnimacao, CPIGAnimacao* base, int retiraFundo=1, PIGCor *corFundo=NULL,int idJanela=0)
-:CPIGObjeto(idAnimacao,(PIGObjeto)base,retiraFundo,corFundo,idJanela){
-    for (int i=0;i<PIG_MAX_MODOS;i++){
-        if (base->modos[i])
-            modos[i] = new CPIGModoAnimacao(base->modos[i]);
-        else modos[i]=NULL;
+        idTimer = CPIGGerenciadorTimers::CriaTimer();
     }
 
-    offset = base->offset;
-    modoAtual = base->modoAtual;
+    //cria uma anima√ß√£o a partir deoutra anima√ß√£o j√° existente
+    CPIGAnimacao(int idAnimacao, CPIGAnimacao* base, int retiraFundo=1, PIGCor *corFundo=NULL,int idJanela=0)
+    :CPIGObjeto(idAnimacao,(PIGObjeto)base,retiraFundo,corFundo,idJanela){
+        for (int i=0;i<PIG_MAX_MODOS;i++){
+            if (base->modos[i])
+                modos[i] = new CPIGModoAnimacao(base->modos[i]);
+            else modos[i]=NULL;
+        }
 
-    idTimer = CPIGGerenciadorTimers::CriaTimer();
-}
+        offset = base->offset;
+        modoAtual = base->modoAtual;
 
-//cria uma animaÁ„o a partir de um objeto
-CPIGAnimacao(int idAnimacao, PIGObjeto base, int retiraFundo=1, PIGCor *corFundo=NULL, int idJanela=0)
-:CPIGObjeto(idAnimacao,base,retiraFundo,corFundo,idJanela){
-    offset = {0,0};
-    modoAtual = 0;
-
-    for (int i=0;i<PIG_MAX_MODOS;i++){
-        modos[i] = NULL;
+        idTimer = CPIGGerenciadorTimers::CriaTimer();
     }
 
-    idTimer = CPIGGerenciadorTimers::CriaTimer();
-}
+    //cria uma anima√ß√£o a partir de um objeto
+    CPIGAnimacao(int idAnimacao, PIGObjeto base, int retiraFundo=1, PIGCor *corFundo=NULL, int idJanela=0)
+    :CPIGObjeto(idAnimacao,base,retiraFundo,corFundo,idJanela){
+        offset = {0,0};
+        modoAtual = 0;
 
-//destroi uma animaÁ„o
-virtual ~CPIGAnimacao(){
-    for (int i=0;i<PIG_MAX_MODOS;i++){
-        if (modos[i])
-            delete modos[i];
+        for (int i=0;i<PIG_MAX_MODOS;i++){
+            modos[i] = NULL;
+        }
+
+        idTimer = CPIGGerenciadorTimers::CriaTimer();
     }
 
-    CPIGGerenciadorTimers::DestroiTimer(idTimer);
-}
+    //destroi uma anima√ß√£o
+    virtual ~CPIGAnimacao(){
+        for (int i=0;i<PIG_MAX_MODOS;i++){
+            if (modos[i])
+                delete modos[i];
+        }
 
-//cria um modo vazio, sem frames associados
-void CriaModo(int idModo, int loop){
-    if (modos[idModo]) delete modos[idModo];
-    modos[idModo] = new CPIGModoAnimacao(loop);
-}
-
-//insere um frame em um dos modos
-void InsereFrame(int idModo, int idFrame, float delayFrame, int audio, int alturaFrame=-1, int larguraFrame=-1){
-    if (alturaFrame==-1)
-        alturaFrame = alt;
-    if (larguraFrame==-1)
-        larguraFrame = larg;
-    modos[idModo]->InsereEstagio(idFrame,delayFrame,audio,alturaFrame,larguraFrame);
-}
-
-//muda o modo atual
-void MudaModo(int idModo, int indiceFrame=0, int forcado=1){
-    if (forcado||(modos[modoAtual]&&modos[modoAtual]->GetEncerrou())){
-        modoAtual = idModo;
-
-        modos[modoAtual]->SetIndiceFrameAtual(indiceFrame);
-
-        AtualizaFrameAtual(modos[modoAtual]);
+        CPIGGerenciadorTimers::DestroiTimer(idTimer);
     }
-}
 
-//retorna o n˙merodo modo atual
-inline int GetModoAtual(){
-    return modoAtual;
-}
+    //cria um modo vazio, sem frames associados
+    void CriaModo(int idModo, int loop){
+        if (modos[idModo]) delete modos[idModo];
+        modos[idModo] = new CPIGModoAnimacao(loop);
+    }
 
-//desenha a animaÁ„o
-int Desenha()override{
-    int resp=0; //0 indica que que o modo de animaÁ„o atual n„o encerrou
+    //insere um frame em um dos modos
+    void InsereFrame(int idModo, int idFrame, float delayFrame, int audio, int alturaFrame=-1, int larguraFrame=-1){
+        if (alturaFrame==-1)
+            alturaFrame = alt;
+        if (larguraFrame==-1)
+            larguraFrame = larg;
+        modos[idModo]->InsereEstagio(idFrame,delayFrame,audio,alturaFrame,larguraFrame);
+    }
 
-    if (modos[modoAtual]!=NULL){
-        float tempoDecorrido;
+    //muda o modo atual
+    void MudaModo(int idModo, int indiceFrame=0, int forcado=1){
+        if (forcado||(modos[modoAtual]&&modos[modoAtual]->GetEncerrou())){
+            modoAtual = idModo;
 
-        tempoDecorrido = CPIGGerenciadorTimers::GetTimer(idTimer)->GetTempoDecorrido();
+            modos[modoAtual]->SetIndiceFrameAtual(indiceFrame);
 
-        if (modos[modoAtual]->TestaTempo(tempoDecorrido)){
             AtualizaFrameAtual(modos[modoAtual]);
-        }else resp = modos[modoAtual]->GetEncerrou();//pode ter encerrado de desenhar todos os est·gios do modo
+        }
     }
 
-    int px = pos.x+offset.x;
-    int py = pos.y+offset.y;
+    //retorna o n√∫merodo modo atual
+    inline int GetModoAtual(){
+        return modoAtual;
+    }
 
-    CPIGObjeto::Move(px,py);
-    CPIGObjeto::Desenha();
+    //desenha a anima√ß√£o
+    int Desenha()override{
+        int resp=0; //0 indica que que o modo de anima√ß√£o atual n√£o encerrou
 
-    px -= offset.x;
-    py -= offset.y;
+        if (modos[modoAtual]!=NULL){
+            float tempoDecorrido;
 
-    CPIGObjeto::Move(px,py);
+            tempoDecorrido = CPIGGerenciadorTimers::GetTimer(idTimer)->GetTempoDecorrido();
 
-    return resp;
-}
+            if (modos[modoAtual]->TestaTempo(tempoDecorrido)){
+                AtualizaFrameAtual(modos[modoAtual]);
+            }else resp = modos[modoAtual]->GetEncerrou();//pode ter encerrado de desenhar todos os est√°gios do modo
+        }
 
-//pausa a animaÁ„o
-inline void Pausa(){
-    CPIGGerenciadorTimers::GetTimer(idTimer)->Pausa();
-}
+        int px = pos.x+offset.x;
+        int py = pos.y+offset.y;
 
-//despausa a animaÁ„o
-inline void Despausa(){
-    CPIGGerenciadorTimers::GetTimer(idTimer)->Despausa();
-}
+        CPIGObjeto::Move(px,py);
+        CPIGObjeto::Desenha();
 
-//define o tempo de um frame j· criado
-inline void SetTempoFrame(int modo, int indiceFrame, double tempo){
-    modos[modo]->SetTempo(indiceFrame,tempo);
-}
+        px -= offset.x;
+        py -= offset.y;
 
-//define se um modo j· criado ter· ou n„o loop
-inline void SetLoopModo(int modo, int loop){
-    modos[modo]->SetLoop(loop);
-}
+        CPIGObjeto::Move(px,py);
 
-//define o audio de um frame j· criado
-inline void SetAudioFrame(int modo, int indiceFrame, int idAudio){
-    modos[modo]->SetAudio(indiceFrame,idAudio);
-}
+        return resp;
+    }
 
-//retorna o tempo de duraÁ„o de um frame j· criado
-inline double GetTempoFrame(int modo, int indiceFrame){
-    return modos[modo]->GetTempoFrame(indiceFrame);
-}
+    //pausa a anima√ß√£o
+    inline void Pausa(){
+        CPIGGerenciadorTimers::GetTimer(idTimer)->Pausa();
+    }
 
-//retorna se um modo tem ou n„o loop
-inline bool GetLoopModo(int modo){
-    return modos[modo]->GetLoop();
-}
+    //despausa a anima√ß√£o
+    inline void Despausa(){
+        CPIGGerenciadorTimers::GetTimer(idTimer)->Despausa();
+    }
 
-//retorna o audio de um frame j· criado
-inline int GetAudioFrame(int modo, int indiceFrame){
-    return modos[modo]->GetAudioFrame(indiceFrame);
-}
+    //define o tempo de um frame j√° criado
+    inline void SetTempoFrame(int modo, int indiceFrame, double tempo){
+        modos[modo]->SetTempo(indiceFrame,tempo);
+    }
+
+    //define se um modo j√° criado ter√° ou n√£o loop
+    inline void SetLoopModo(int modo, int loop){
+        modos[modo]->SetLoop(loop);
+    }
+
+    //define o audio de um frame j√° criado
+    inline void SetAudioFrame(int modo, int indiceFrame, int idAudio){
+        modos[modo]->SetAudio(indiceFrame,idAudio);
+    }
+
+    //retorna o tempo de dura√ß√£o de um frame j√° criado
+    inline double GetTempoFrame(int modo, int indiceFrame){
+        return modos[modo]->GetTempoFrame(indiceFrame);
+    }
+
+    //retorna se um modo tem ou n√£o loop
+    inline bool GetLoopModo(int modo){
+        return modos[modo]->GetLoop();
+    }
+
+    //retorna o audio de um frame j√° criado
+    inline int GetAudioFrame(int modo, int indiceFrame){
+        return modos[modo]->GetAudioFrame(indiceFrame);
+    }
 
 };
 

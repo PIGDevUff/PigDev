@@ -14,7 +14,6 @@ private:
 public:
 
     inline static PIGFonte GetFonte(int idFonte){
-
         return fontes->GetElemento(idFonte);
     }
 

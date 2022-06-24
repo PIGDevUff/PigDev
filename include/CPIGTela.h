@@ -161,7 +161,7 @@ int Atualiza(){
         return -1;
     }
 
-    //o método atualiza só é chamado para a telaAtual. Logo, se essa é a tela atual, precisa ser carregada primeiro
+    //o mÃ©todo atualiza sÃ³ Ã© chamado para a telaAtual. Logo, se essa Ã© a tela atual, precisa ser carregada primeiro
     if (estado==PIG_TELA_CRIADA){
         CarregaTela();
     }
@@ -170,7 +170,7 @@ int Atualiza(){
         comportamento.acaoAtualiza(id,comportamento.dados);
     }
 
-    //se já passou o tempo de sair, sinaliza para qual tela o gerenciador tem que mudar
+    //se jÃ¡ passou o tempo de sair, sinaliza para qual tela o gerenciador tem que mudar
     if (CPIGGerenciadorTimers::GetTimer(timerSaida)->GetTempoDecorrido()>tempoSaida)
         return mudarPara;
     else return -1;

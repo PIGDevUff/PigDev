@@ -150,8 +150,8 @@ static int accept_code(void *data){
         return -1;
     }
     //printf("Vou comecar ciclo de accept\n");
-    //while (servidor->qtdConexoes>=0){//sinalização de encerramento da thread
-    while (servidor->ativo){//sinalização de encerramento da thread
+    //while (servidor->qtdConexoes>=0){//sinalizaÃ§Ã£o de encerramento da thread
+    while (servidor->ativo){//sinalizaÃ§Ã£o de encerramento da thread
         //printf("Checando...\n");
         int pronto = SDLNet_CheckSockets(servidor->socketSet,1);
         if (pronto>0){
@@ -175,8 +175,8 @@ static int receive_code(void *data){
         return -1;
     }
 
-    //while (servidor->qtdConexoes>=0){//sinalização de encerramento da thread
-    while (servidor->ativo){//sinalização de encerramento da thread
+    //while (servidor->qtdConexoes>=0){//sinalizaÃ§Ã£o de encerramento da thread
+    while (servidor->ativo){//sinalizaÃ§Ã£o de encerramento da thread
         int prontos = SDLNet_CheckSockets(servidor->clienteSet,PIG_DELAY_CHECK_TCP_SERVIDOR);
         int indice=0;
         while (prontos>0&&indice<servidor->maxConexoes){

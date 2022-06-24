@@ -50,17 +50,17 @@ private:
         }
 
         PIGCor opcoes[4] = {VERDE,AZUL,ROXO,LARANJA}; //4 cores quaisquer
-        PIGCor croma1, croma2; //cores usada como cromakey para transparencias (n„o podem ser nem a cor da barra, nem a cor do fundo)
+        PIGCor croma1, croma2; //cores usada como cromakey para transparencias (n√£o podem ser nem a cor da barra, nem a cor do fundo)
 
 
-        //escolha das cores; coresBasicas[3] È a cor a ser utilizada no marcador
+        //escolha das cores; coresBasicas[3] √© a cor a ser utilizada no marcador
         int i=0;
         croma1=opcoes[i];
-        while (PIGCoresIguais(croma1,coresBasicas[3])||PIGCoresIguais(croma1,coresBasicas[0])){//n„o pode ser a cor da barra nem do fundo
+        while (PIGCoresIguais(croma1,coresBasicas[3])||PIGCoresIguais(croma1,coresBasicas[0])){//n√£o pode ser a cor da barra nem do fundo
             croma1=opcoes[++i];
         }
         croma2=opcoes[i];
-        while (PIGCoresIguais(croma2,coresBasicas[3])||PIGCoresIguais(croma2,coresBasicas[0])||PIGCoresIguais(croma2,croma1)){//n„o pode ser a cor da barra, nem do fundo, nem a cor croma1
+        while (PIGCoresIguais(croma2,coresBasicas[3])||PIGCoresIguais(croma2,coresBasicas[0])||PIGCoresIguais(croma2,croma1)){//n√£o pode ser a cor da barra, nem do fundo, nem a cor croma1
             croma2=opcoes[++i];
         }
 

@@ -25,7 +25,7 @@ class CPIGTransicao{
 
 private:
 PIGEstadoTransicao ini,fim,delta;
-double tempoAtual,tempoTotal,sobraAnterior; //sobraAnterior é um tempo excedido na transição anterior a ser descontado nesta transição
+double tempoAtual,tempoTotal,sobraAnterior; //sobraAnterior Ã© um tempo excedido na transiÃ§Ã£o anterior a ser descontado nesta transiÃ§Ã£o
 PIGTimer timer;
 
 public:

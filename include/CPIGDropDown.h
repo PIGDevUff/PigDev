@@ -187,8 +187,8 @@ public:
                 return PIG_COMPONENTE_TRATADO;
             }
         }else if (mouseOverAntes){               //mouse estava antes, mas saiu
-            for (unsigned int i=0;i<itens.size();i++){
-                itens[i]->SetMouseOver(false);
+            for (PIGItemComponente i: itens){
+                i->SetMouseOver(false);
             }
         }
 

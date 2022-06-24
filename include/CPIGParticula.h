@@ -7,17 +7,17 @@ class CPIGParticula: public CPIGAnimacao{
 
 private:
 
-SDL_Rect espacoVida;
-double hp;
-double tempoVida;
-int timer;
-bool viva;
+    SDL_Rect espacoVida;
+    double hp;
+    double tempoVida;
+    int timer;
+    bool viva;
 
-double ModificaHP(double valor){
-    hp += valor;
-    viva = hp>0;
-    return hp;
-}
+    double ModificaHP(double valor){
+        hp += valor;
+        viva = hp>0;
+        return hp;
+    }
 
 public:
 

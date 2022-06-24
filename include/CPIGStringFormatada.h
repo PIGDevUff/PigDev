@@ -93,29 +93,29 @@ public:
         if (letras.size()==0) return resp;
         vector<CPIGStringFormatada> palavras = SeparaPalavras(delim);
 
-        CPIGStringFormatada linhaAtual = palavras[0];   //linha atual (que est· sendo montada) contÈm pelo menos a primeira palavra
+        CPIGStringFormatada linhaAtual = palavras[0];   //linha atual (que est√° sendo montada) cont√©m pelo menos a primeira palavra
 
         for (unsigned int i=1;i<palavras.size();i++){
-            CPIGStringFormatada palavra = palavras[i];   //pega a prÛxima palavra
+            CPIGStringFormatada palavra = palavras[i];   //pega a pr√≥xima palavra
 
-            if (linhaAtual.LargTotalPixels() + palavra.LargTotalPixels() > largMax){//a palavra estouraria a largura m·xima se fosse agregada                if (ttttt==0){
-                resp.push_back(linhaAtual); //coloca a linha que est· montada no vetor de linhas
-                linhaAtual = palavra; //a palavra que estouraria o limite comeÁa a prÛxima linha
-            }else{//n„o estourou o limite
+            if (linhaAtual.LargTotalPixels() + palavra.LargTotalPixels() > largMax){//a palavra estouraria a largura m√°xima se fosse agregada                if (ttttt==0){
+                resp.push_back(linhaAtual); //coloca a linha que est√° montada no vetor de linhas
+                linhaAtual = palavra; //a palavra que estouraria o limite come√ßa a pr√≥xima linha
+            }else{//n√£o estourou o limite
                 linhaAtual += palavra;
             }
 
-            if (palavra.letras[palavra.letras.size()-1]=='\n'){//se existe uma quebra de linha forÁada
+            if (palavra.letras[palavra.letras.size()-1]=='\n'){//se existe uma quebra de linha for√ßada
                 resp.push_back(linhaAtual);
 
                 if (++i<palavras.size()){
-                    linhaAtual = palavras[i]; //comeÁa uma nova linha com a p¥roxima palavra
+                    linhaAtual = palavras[i]; //come√ßa uma nova linha com a p¬¥roxima palavra
                 }else linhaAtual.letras.clear();
             }
         }
 
         if (linhaAtual.letras.size()>0){
-            resp.push_back(linhaAtual); //pega a linha que sobrou do processamento (˙ltima linha que n„o foi quebrada)
+            resp.push_back(linhaAtual); //pega a linha que sobrou do processamento (√∫ltima linha que n√£o foi quebrada)
         }
 
         palavras.clear();

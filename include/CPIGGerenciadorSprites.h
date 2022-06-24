@@ -123,7 +123,7 @@ public:
     inline static void DesenhaSprite(string nomeArq, int x, int y, int retiraFundo=1, int idJanela=0){
         int id;
         unordered_map<string, int>::iterator it = spritesSimples.find(nomeArq);
-        if (it == spritesSimples.end()){//não achou
+        if (it == spritesSimples.end()){//nÃ£o achou
             int next = sprites->ProxID();
             id = sprites->Insere(new CPIGSprite(next,nomeArq,retiraFundo,NULL,idJanela));
             spritesSimples[nomeArq] = id;

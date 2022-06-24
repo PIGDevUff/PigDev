@@ -26,10 +26,10 @@ protected:
     bool imagemPropria;
     void *param;
 
-    //inicializa o componente com valores padr„o
+    //inicializa o componente com valores padr√£o
     void IniciaBase(bool imagem){
-        lab = new CPIGLabel("",0,idJanela);
-        hint = new CPIGLabel("",0,idJanela);
+        lab = new CPIGLabel("",BRANCO,0,idJanela);
+        hint = new CPIGLabel("",BRANCO,0,idJanela);
         imagemPropria = imagem;
         SetPosicaoPadraoLabel(PIG_POSICAO_CENTRO_CENTRO);
         audioComponente = -1;
@@ -68,7 +68,7 @@ protected:
         }
     }
 
-    //detecta se o mouse est· sobre o componente ou n„o
+    //detecta se o mouse est√° sobre o componente ou n√£o
     virtual int ChecaMouseOver(SDL_Point pMouse){
         if (visivel==false||habilitado==false)
             return -1;
@@ -96,7 +96,7 @@ protected:
         return PIG_POSICAO_PERSONALIZADA;
     }
 
-    //move o label de acordo com a posiÁ„o
+    //move o label de acordo com a posi√ß√£o
     void PosicionaLabel(){
         int altLabel,largLabel;
         lab->GetDimensoes(altLabel,largLabel);
@@ -150,7 +150,7 @@ protected:
     }
 
     virtual PIGEstadoEvento OnAction(){
-        if (acao) acao(id,param);//rever se NULL È necess·rio
+        if (acao) acao(id,param);//rever se NULL √© necess√°rio
         #ifdef PIGCOMAUDIO
         if (audioComponente>=0) CPIGGerenciadorAudios::Play(audioComponente);
         #endif
@@ -322,7 +322,7 @@ public:
         return lab->GetFonte();
     }
 
-    //define o audio padr„o do componente
+    //define o audio padr√£o do componente
     virtual void SetAudio(int idAudio){
         audioComponente = idAudio;
     }
@@ -332,16 +332,16 @@ public:
         return audioComponente;
     }
 
-    //define a posiÁ„o do label (dentre posiÁıes prÈ-estabelecidas)
+    //define a posi√ß√£o do label (dentre posi√ß√µes pr√©-estabelecidas)
     virtual void SetPosicaoPadraoLabel(PIGPosicaoComponente pos){
         posLabel = pos;
         PosicionaLabel();
     }
 
-    //define a posiÁ„o do label (posiÁ„o arbiraria, relativa ‡ posiÁ„o do componente)
+    //define a posi√ß√£o do label (posi√ß√£o arbiraria, relativa √† posi√ß√£o do componente)
     virtual void SetPosicaoPersonalizadaLabel(int rx, int ry){
         lab->Move(pos.x+rx,pos.y+ry);
-        posLabel = PIG_POSICAO_PERSONALIZADA;//evitar que o usu·rio esqueÁa de chamar tambÈm a SetPosicaoPadraoLabel
+        posLabel = PIG_POSICAO_PERSONALIZADA;//evitar que o usu√°rio esque√ßa de chamar tamb√©m a SetPosicaoPadraoLabel
         PosicionaLabel();
     }
 

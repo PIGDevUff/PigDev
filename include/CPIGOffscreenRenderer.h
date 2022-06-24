@@ -55,7 +55,7 @@ static void CriaPontosCirculo(int centroX, int centroY, int raio, double angInic
     angs.clear();
     pontos.clear();
 
-    //colocar os pontos em ordem pelo ângulo
+    //colocar os pontos em ordem pelo Ã¢ngulo
     for (int i=0;i<q1.size();i++){//primeiro quadrante
         if (ang1[i]<=angFinal-angInicial&&(i==0||ang1[i]>ang1[i-1])){
             angs.push_back(ang1[i]);

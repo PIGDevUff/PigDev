@@ -56,7 +56,7 @@ public:
 
             telas[idTela] = new CPIGTela(idTela,comportamento[idTela],criarBackground,carregarBackground,imgFundo,idJanela);
 
-            if (telaAtual==-1)//se for a primeira tela criada, ela ser· considerada telaAtual
+            if (telaAtual==-1)//se for a primeira tela criada, ela ser√° considerada telaAtual
                 telaAtual = idTela;
             return 1;
         }
@@ -72,7 +72,7 @@ public:
 
             telas[idTela] = tela;
 
-            if (telaAtual==-1)//se for a primeira tela criada, ela ser· considerada telaAtual
+            if (telaAtual==-1)//se for a primeira tela criada, ela ser√° considerada telaAtual
                 telaAtual = idTela;
             return 1;
         }
