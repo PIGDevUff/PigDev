@@ -153,6 +153,10 @@ public:
         PIGEstilo estiloAtual = PIG_ESTILO_NORMAL;
         SDL_Point ponto = {delta,tamFonte};
 
+        SDL_BlendMode bMode = SDL_BLENDMODE_BLEND;
+        if (alvoTextura)
+            bMode = SDL_BLENDMODE_NONE;
+
         for (int i=0;i<formatada.size();i++){
             int aux = formatada.GetIntLetra(i);
             int indice = aux-PIG_PRIMEIRO_CAR;
@@ -161,17 +165,18 @@ public:
             corAtual = formatada.GetCor(i);
             estiloAtual = formatada.GetEstilo(i);
 
-            if (alvoTextura)
-                SDL_SetTextureBlendMode(glyphsT[estiloAtual][indice], SDL_BLENDMODE_NONE);
-            else SDL_SetTextureBlendMode(glyphsT[estiloAtual][indice], SDL_BLENDMODE_BLEND);
-
+            SDL_SetTextureBlendMode(glyphsT[estiloAtual][indice], bMode);
             SDL_SetTextureColorMod(glyphsT[estiloAtual][indice],corAtual.r,corAtual.g,corAtual.b);
 
             rectDestino.w = larguraLetra[estiloAtual][indice];
             rectDestino.h = tamFonte+alturaExtra[estiloAtual][indice];
             rectDestino.y = altJanela-y-rectDestino.h;
 
-            SDL_RenderCopyEx(render,glyphsT[estiloAtual][indice],NULL,&rectDestino,-ang,&ponto,PIG_FLIP_NENHUM);
+            SDL_Rect enquadrado = rectDestino;
+            if (idJanela>=0)
+                CPIGGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaWorldScreen(enquadrado.x,enquadrado.y,enquadrado.x,enquadrado.y);
+
+            SDL_RenderCopyEx(render,glyphsT[estiloAtual][indice],NULL,&enquadrado,-ang,&ponto,PIG_FLIP_NENHUM);
 
             rectDestino.x += rectDestino.w;
             ponto.x -= rectDestino.w;
@@ -183,19 +188,6 @@ public:
         if (texto=="") return;
         CPIGStringFormatada formatada = Processa(texto);
         Escreve(formatada,x,y,pos,ang,alvoTextura);
-    }
-
-    void Escreve(string texto, SDL_Texture *textura, PIGCor cor){
-        SDL_SetRenderTarget(render,textura);
-        SDL_SetRenderDrawColor(render,0,0,0,0);
-        int altJanela = GetAlturaAtualJanela();
-
-        SDL_SetTextureBlendMode(textura, SDL_BLENDMODE_BLEND);
-        SDL_SetTextureColorMod(textura,cor.r,cor.g,cor.b);
-
-        Escreve(texto,0,altJanela-tamFonte+fontDescent,cor,PIG_TEXTO_ESQUERDA,0,1);
-
-        SDL_SetRenderTarget(render, NULL);
     }
 
     //escreve uma string longa (múltiplas linhas), incluindo formataçăo interna, alinhada de acordo com o ponto x,y e o parâmetro pos
@@ -211,10 +203,9 @@ public:
 
     //escreve uma string longa (múltiplas linhas), com formataçăo já processada e fornecida, alinhada de acordo com o ponto x,y e o parâmetro pos
     void EscreveLonga(vector<CPIGStringFormatada> linhas, int x, int y, int espacoEntreLinhas, PIGPosTexto pos=PIG_TEXTO_ESQUERDA, float angulo=0){
-        int yTotal=y;
         for (CPIGStringFormatada str:linhas){
-            Escreve(str,x,yTotal,pos,angulo);
-            yTotal -= espacoEntreLinhas;
+            Escreve(str,x,y,pos,angulo);
+            y -= espacoEntreLinhas;
         }
     }
 

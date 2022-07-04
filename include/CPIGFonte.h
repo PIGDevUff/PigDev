@@ -320,15 +320,16 @@ public:
 
         vector<int> conv = Converte(strs);
 
+        SDL_BlendMode bMode = SDL_BLENDMODE_BLEND;
+        if (alvoTextura)    //caso esteja sendo escrito em textura (label), é preciso ajustar o modo
+            bMode = SDL_BLENDMODE_NONE;
+
         for (int aux:conv){
             int indice = aux - PIG_PRIMEIRO_CAR;
             if (indice<0) continue;
 
             SDL_SetTextureColorMod(glyphsT[estiloFixo][indice],corFonte.r,corFonte.g,corFonte.b);
-
-            if (alvoTextura)    //caso esteja sendo escrito em textura (label), é preciso ajustar o modo
-                SDL_SetTextureBlendMode(glyphsT[estiloFixo][indice], SDL_BLENDMODE_NONE);
-            else SDL_SetTextureBlendMode(glyphsT[estiloFixo][indice], SDL_BLENDMODE_BLEND);
+            SDL_SetTextureBlendMode(glyphsT[estiloFixo][indice], bMode);
 
             rectDestino.w = larguraLetra[estiloFixo][indice];
             rectDestino.h = tamFonte+alturaExtra[estiloFixo][indice];
@@ -345,20 +346,18 @@ public:
             rectDestino.x += rectDestino.w;
             ponto.x -= rectDestino.w;
         }
-
     }
 
     virtual void EscreveLonga(string texto, int x, int y, int largMax, int espacoEntreLinhas, PIGCor corFonte=BRANCO, PIGPosTexto pos=PIG_TEXTO_ESQUERDA, float angulo=0){
         if (texto=="") return;
         vector<string> linhas = ExtraiLinhas(texto,largMax);
-        int yTotal=y;
         for (string str:linhas){
-            Escreve(str,x,yTotal,corFonte,pos,angulo);
-            yTotal -= espacoEntreLinhas;
+            Escreve(str,x,y,corFonte,pos,angulo);
+            y -= espacoEntreLinhas;
         }
     }
 
-    virtual void Escreve(string texto, SDL_Texture *textura, PIGCor cor){
+    virtual void EscreveTextura(string texto, int x, int y, SDL_Texture *textura, PIGCor cor){
         if (this_thread::get_id()!=PIG_MAIN_THREAD_ID)
             CPIGGerenciadorJanelas::GetJanela(idJanela)->TravaRenderer();
 
@@ -369,14 +368,14 @@ public:
             SDL_SetTextureBlendMode(textura, SDL_BLENDMODE_BLEND);
             SDL_SetTextureColorMod(textura,cor.r,cor.g,cor.b);
 
-            Escreve(texto,0,altJanela-tamFonte+fontDescent,cor,PIG_TEXTO_ESQUERDA,0,1);
+            Escreve(texto,x,altJanela-y-tamFonte+fontDescent,cor,PIG_TEXTO_ESQUERDA,0,1);
             //SDL_SetRenderDrawColor(render,255,0,0,255);
             //SDL_RenderDrawRect(render,NULL);
             SDL_SetRenderTarget(render, NULL);
         }
 
         if (this_thread::get_id()!=PIG_MAIN_THREAD_ID)
-            CPIGGerenciadorJanelas::GetJanela(idJanela)->TravaRenderer();
+            CPIGGerenciadorJanelas::GetJanela(idJanela)->DestravaRenderer();
     }
 
 
