@@ -40,7 +40,7 @@ MODULOTELA = SIM
 #se o projeto não utilizar controles, mudar o valor de MODULOCONTROLE abaixo para qualquer outro valor ou apenas comentar a linha abaixo
 MODULOCONTROLE = SIM
 
-#se mostra também a janela de console, al�m da janela gráfica do jogo
+#se mostra também a janela de console, além da janela gráfica do jogo
 MOSTRACONSOLE = SIM
 
 ifeq ($(MODULOAUDIO),SIM)
