@@ -576,7 +576,7 @@ public:
         //SDL_Point p = {pivoRelativo.x,pivoRelativo.y};
         CPIGGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaWorldScreen(enquadrado.x,enquadrado.y,enquadrado.x,enquadrado.y);
         //
-        #if PIG_MULTITHREAD_TELAS==1
+        #ifdef PIGCOMTELA
         if (precisaAtualizar){//criada!=PIG_MAIN_THREAD_ID){
             //printf("mandei atualizar...");
             AtualizaTextura();

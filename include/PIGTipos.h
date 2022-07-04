@@ -75,7 +75,6 @@ Principais definições utilizadas pela PIG
 
 #define PIG_MAX_TELAS                   2000
 #define PIG_TEMPO_SAIDA_TELA_PADRAO     0.5
-#define PIG_MULTITHREAD_TELAS           1
 
 #define PIG_INTERVALO_FPS               1.0
 
@@ -98,7 +97,6 @@ typedef struct{
 /********************************
 O tipo PIGCor é um struct formado por 4 campos: r,g,b,a correspondendo aos valores de vermelho, verde, azul e alfa (transparência) do pixel
 ********************************/
-typedef __declspec(deprecated("PIG_Cor nao deve mais ser usado. Utilize PIGCor.")) SDL_Color PIG_Cor;
 typedef SDL_Color PIGCor;
 
 #define BRANCO          ((SDL_Color){255,255,255,255})
@@ -303,7 +301,6 @@ typedef struct PIGEvento{
     //InfoEventoVideo video;
     PIGInfoEventoRede rede;
 }PIGEvento;
-typedef __declspec(deprecated("PIG_Evento nao deve mais ser usado. Utilize PIGEvento.")) PIGEvento PIG_Evento;
 
 
 //Tipo de callback genérica utilizada em diversos locais
@@ -312,25 +309,18 @@ typedef int (*PIGFuncaoEvento)(int, PIGEvento, void*);
 typedef int (*PIGFuncaoBackground)(void*);
 typedef PIGCor (*PIGFuncaoPintarArea)(int, int, int, int, PIGCor, PIGCor);
 
-//#define PIG_Teclado                 const Uint8*
 typedef const Uint8* PIGTeclado;
-typedef __declspec(deprecated("PIG_Teclado nao deve mais ser usado. Utilize PIGTeclado.")) PIGTeclado PIG_Teclado;
 
 
 //Seção de flips de objetos
-//#define PIG_Flip                    SDL_RendererFlip
 typedef SDL_RendererFlip PIGFlip;
-typedef __declspec(deprecated("PIG_Flip nao deve mais ser usado. Utilize PIGFlip.")) PIGFlip PIG_Flip;
 
 #define PIG_FLIP_NENHUM             SDL_FLIP_NONE
 #define PIG_FLIP_HORIZONTAL         SDL_FLIP_HORIZONTAL
 #define PIG_FLIP_VERTICAL           SDL_FLIP_VERTICAL
-#define PIG_FLIP_HORIZ_VERT         (PIG_Flip)(PIG_FLIP_HORIZONTAL|PIG_FLIP_VERTICAL)
+#define PIG_FLIP_HORIZ_VERT         (PIGFlip)(PIG_FLIP_HORIZONTAL|PIG_FLIP_VERTICAL)
 
 //Seção de estilos
-
-//#define PIG_Estilo                  int
-typedef __declspec(deprecated("PIG_Estilo nao deve mais ser usado. Utilize PIGEvento.")) int PIG_Estilo;
 typedef int PIGEstilo;
 #define PIG_TOTALESTILOS            16
 #define PIG_FONTE_PADRAO_NOME       "..//fontes//arial.ttf"
@@ -358,7 +348,6 @@ typedef struct PIGMetricasFonte{
 }PIGMetricasFonte;
 
 //Seção de teclas
-
 #define PIG_TECLA_UNKNOWN           0
 
 #define PIG_TECLA_ENTER             SDL_SCANCODE_RETURN
