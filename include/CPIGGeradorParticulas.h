@@ -17,7 +17,7 @@ private:
     bool retiraFundoImagem;
     PIGAutomacao automacaoGDP;
 
-    void IniciaBase(int maximoParticulas, int audioCriacao,int audioEncerramento, PIGCor *corFundo, bool retiraFundo){
+    void IniciaBase(int maximoParticulas, int audioCriacao, int audioEncerramento, PIGCor *corFundo, bool retiraFundo){
         maxParticulas = maximoParticulas;
         audioInicio = audioCriacao;
         audioFim = audioEncerramento;
