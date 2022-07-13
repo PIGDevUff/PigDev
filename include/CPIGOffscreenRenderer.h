@@ -56,25 +56,25 @@ static void CriaPontosCirculo(int centroX, int centroY, int raio, double angInic
     pontos.clear();
 
     //colocar os pontos em ordem pelo ângulo
-    for (int i=0;i<q1.size();i++){//primeiro quadrante
+    for (unsigned int i=0;i<q1.size();i++){//primeiro quadrante
         if (ang1[i]<=angFinal-angInicial&&(i==0||ang1[i]>ang1[i-1])){
             angs.push_back(ang1[i]);
             pontos.push_back(q1[i]);
         }
     }
-    for (int i=0;i<q2.size();i++){//segundo quadrante
+    for (unsigned int i=0;i<q2.size();i++){//segundo quadrante
         if (ang2[i]<=angFinal-angInicial&&(i==0||ang2[i]>ang2[i-1])){
             angs.push_back(ang2[i]);
             pontos.push_back(q2[i]);
         }
     }
-    for (int i=0;i<q3.size();i++){//terceiro quadrante
+    for (unsigned int i=0;i<q3.size();i++){//terceiro quadrante
         if (ang3[i]<=angFinal-angInicial&&(i==0||ang3[i]>ang3[i-1])){
             angs.push_back(ang3[i]);
             pontos.push_back(q3[i]);
         }
     }
-    for (int i=0;i<q4.size();i++){//quarto quadrante
+    for (unsigned int i=0;i<q4.size();i++){//quarto quadrante
         if (ang4[i]<=angFinal-angInicial&&(i==0||ang4[i]>ang4[i-1])){
             angs.push_back(ang4[i]);
             pontos.push_back(q4[i]);
@@ -168,7 +168,7 @@ public:
 
         SDL_SetRenderDrawColor(layers[layer].render,cor.r,cor.g,cor.b,cor.a);
 
-        for (int i=1;i<pontos.size();i++){
+        for (unsigned int i=1;i<pontos.size();i++){
             SDL_RenderDrawLine(layers[layer].render,pontos[i-1].x,pontos[i-1].y,pontos[i].x,pontos[i].y);
         }
    }

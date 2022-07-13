@@ -8,7 +8,7 @@ class CPIGGeradorParticulas: public CPIGAnimacao{
 
 private:
 
-    int maxParticulas;       //qtd de partículas vivas e máximo de partículas vivas
+    unsigned int maxParticulas;       //qtd de partículas vivas e máximo de partículas vivas
     vector<PIGParticula> parts;
     double hpParticulas,maxTempo;
     SDL_Rect maxEspaco;

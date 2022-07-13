@@ -49,6 +49,7 @@ class CPIGSlideBar: public CPIGGauge{
                 xMarc = pos.x+margemEsq;
                 yMarc = pos.y+alt-margemCima-altMarcador-(int)((porcentagemConcluida)*(alt-margemBaixo-margemCima-altMarcador));
                 break;
+        default:break;
         }
 
         //xMarc += margemEsq;
@@ -81,8 +82,8 @@ class CPIGSlideBar: public CPIGGauge{
             break;
         case PIG_GAUGE_CIMA_BAIXO:
             perc = 1.0 - 1.0*(py-miny)/(maxy-miny);
-
             break;
+        default: break;
         }
         //printf("(%d %d %d) (%d %d %d ) vou definir perc %f\n",minx,px,maxx,miny,py,maxy,perc);
         SetPorcentagemConcluida(perc);
@@ -187,6 +188,7 @@ public:
                 if(evento.teclado.tecla == PIG_TECLA_CIMA) AvancaMarcador(-deltaTeclado);
                 if(evento.teclado.tecla == PIG_TECLA_BAIXO) AvancaMarcador(deltaTeclado);
                 break;
+            default: break;
             }
             return PIG_COMPONENTE_TRATADO;
         }

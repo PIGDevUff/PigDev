@@ -299,7 +299,7 @@ public:
         }
         //printf("arquivo %s\n",nomeArq.c_str());
         FILE *arq = fopen(nomeArq.c_str(),"r");
-        while (fscanf(arq,"%lf %d %d %d %d %lf %d %d %d %d %d\n",&tempo,&dx,&dy,&dAlt,&dLarg,&dAng,&dCor.r,&dCor.g,&dCor.b,&dCor.a,&dOpa)>0){
+        while (fscanf(arq,"%lf %d %d %d %d %lf %d %d %d %d %d\n",&tempo,&dx,&dy,&dAlt,&dLarg,&dAng,(int*)&dCor.r,(int*)&dCor.g,(int*)&dCor.b,(int*)&dCor.a,&dOpa)>0){
             //printf("%f %d %d %d %d %f %d %d %d %d %d\n",tempo,dx,dy,dAlt,dLarg,dAng,dCor.r,dCor.g,dCor.b,dCor.a,dOpa);
             (*automaExt)->InsereTransicao(new CPIGTransicao(tempo,{dx,dy,dAlt,dLarg,dAng,dCor,dOpa}));
         }

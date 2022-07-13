@@ -45,6 +45,7 @@ private:
         case PIG_GAUGE_CIMA_BAIXO:
             CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(pos.x+margemEsq,pos.y+alt-margemCima-altBarra*perc,altBarra*perc,largBarra,coresBasicas[3]);
             break;
+        default: break;
         }
     }
 
@@ -103,6 +104,7 @@ private:
             r.w = largBarraOrig;
             r.h = (altBarraOrig)*perc;
             break;
+        default: break;
         }
 
         //printf("x y w h %d %d %d %d %.1f\n",r.x,r.y,r.w,r.h,perc);

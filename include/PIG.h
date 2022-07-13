@@ -34,8 +34,8 @@
 
 
 /********************************
-/ Variáveis Globais
-/********************************/
+ Variáveis Globais
+********************************/
 PIGJogo jogo=NULL;
 
 /********************************
@@ -4709,7 +4709,7 @@ void ResumeTudoAudio(){
     CPIGGerenciadorAudios::ResumeTudo();
 }
 
-#endif PIGCOMAUDIO
+#endif /*PIGCOMAUDIO*/
 
 #ifdef PIGCOMREDE
 
@@ -5389,9 +5389,9 @@ A função SetFlipVideo() é responsável por virar o vídeo, invertendo-o em al
 desenhado na nova orientação no próximo comando DesenhaVideo().
 Parâmetros:
 idVideo (entrada, passagem por valor): identificador do vídeo a ser virado.
-valor (entrada, passagem por valor): valor do tipo de Flip. Pode ser FLIP_NENHUM (nenhum tipo de inversão),
-FLIP_HORIZONTAL (inverte da esquerda para a direita), FLIP_VERTICAL (inverte de cima para baixo),
-ou FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
+valor (entrada, passagem por valor): valor do tipo de Flip. Pode ser PIG_FLIP_NENHUM (nenhum tipo de inversão),
+PIG_FLIP_HORIZONTAL (inverte da esquerda para a direita), PIG_FLIP_VERTICAL (inverte de cima para baixo),
+ou PIG_FLIP_HORIZ_VERT (inverte da esquerda para direita e de cima para baixo).
 ********************************/
 void SetFlipVideo(int idVideo, PIGFlip valor){
     CPIGGerenciadorVideos::GetVideo(idVideo)->SetFlip(valor);
@@ -5957,7 +5957,7 @@ int PIGCriaListBox(int idForm, int larguraTotal, int alturaLinha, int alturaItem
     return CPIGGerenciadorForms::GetForm(idForm)->CriaListBox(larguraTotal,alturaLinha,alturaItem,largItem);
 }
 
-void PIGListBoxCriaItem(int idComponente, char* texto, char *imagemIcone = "", char *imagemFundo="", char *hintMsg="", int itemHabilitado=0, int retiraFundoImg=1, int retiraFundoIcone=1){
+void PIGListBoxCriaItem(int idComponente, char* texto, char *imagemIcone=(char*)"", char *imagemFundo=(char*)"", char *hintMsg=(char*)"", int itemHabilitado=0, int retiraFundoImg=1, int retiraFundoIcone=1){
     CPIGGerenciadorForms::GetComponente<PIGListBox>(idComponente)->CriaItem(texto,imagemIcone,imagemFundo,false,itemHabilitado,hintMsg,retiraFundoImg,retiraFundoIcone);
 }
 
@@ -6032,7 +6032,7 @@ int PIGCriaDropDown(int idForm, int larguraTotal, int alturaLinha, int alturaIte
     return CPIGGerenciadorForms::GetForm(idForm)->CriaDropDown(larguraTotal,alturaLinha,alturaItem,larguraItem);
 }
 
-void PIGDropDownCriaItem(int idComponente, char* texto, char* imagemIcone = "", char *imagemFundo="", char* hintMsg="", int itemHabilitado=1, int retiraFundoImg=1, int retiraFundoIcone=1){
+void PIGDropDownCriaItem(int idComponente, char* texto, char *imagemIcone = (char*)"", char *imagemFundo=(char*)"", char *hintMsg=(char*)"", int itemHabilitado=1, int retiraFundoImg=1, int retiraFundoIcone=1){
     CPIGGerenciadorForms::GetComponente<PIGDropDown>(idComponente)->CriaItem(texto,imagemIcone,imagemFundo,itemHabilitado,hintMsg,retiraFundoImg,retiraFundoIcone);
 }
 
@@ -6109,7 +6109,7 @@ int PIGCriaRadioBox(int idForm, int larguraTotal, int alturaLinha, char* imagemI
     return CPIGGerenciadorForms::GetForm(idForm)->CriaRadioBox(larguraTotal,alturaLinha,imagemItem,alturaItem,larguraItem);
 }
 
-void PIGRadioBoxCriaItem(int idComponente, char* itemLabel, char *imagemFundo="", char *hintMsg="", int itemHabilitado=1, int retiraFundo=1, int retiraFundoIcone=1){
+void PIGRadioBoxCriaItem(int idComponente, char* itemLabel, char *imagemFundo=(char*)"", char *hintMsg=(char*)"", int itemHabilitado=1, int retiraFundo=1, int retiraFundoIcone=1){
     CPIGGerenciadorForms::GetComponente<PIGRadioBox>(idComponente)->CriaItem(itemLabel,imagemFundo,itemHabilitado,hintMsg,retiraFundo,retiraFundoIcone);
 }
 
@@ -6183,7 +6183,7 @@ int PIGCriaCheckBox(int idForm, int larguraTotal, int alturaLinha, char* imagemI
     return CPIGGerenciadorForms::GetForm(idForm)->CriaCheckBox(larguraTotal,alturaLinha,imagemItem,alturaItem,larguraItem);
 }
 
-void PIGCheckBoxCriaItem(int idComponente, char* itemLabel, char *imagemFundo="", char* hintMsg="", int itemMarcado=0, int itemHabilitado=1, int retiraFundo=1, int retiraFundoIcone=1){
+void PIGCheckBoxCriaItem(int idComponente, char* itemLabel, char *imagemFundo=(char*)"", char* hintMsg=(char*)"", int itemMarcado=0, int itemHabilitado=1, int retiraFundo=1, int retiraFundoIcone=1){
     CPIGGerenciadorForms::GetComponente<PIGCheckBox>(idComponente)->CriaItem(itemLabel,imagemFundo,itemMarcado,itemHabilitado,hintMsg,retiraFundo,retiraFundoIcone);
 }
 
@@ -6256,7 +6256,7 @@ vector<int> PIGCheckBoxGetItensMarcados(int idComponente){
 
 /**********GAUGE**************/
 
-int PIGCriaGaugeBar(int idForm, int altura, int largura, char* imgMoldura, char *imgMarcador="", int retiraFundoMoldura=1, int retiraFundoMarcador=1){
+int PIGCriaGaugeBar(int idForm, int altura, int largura, char* imgMoldura, char *imgMarcador=(char*)"", int retiraFundoMoldura=1, int retiraFundoMarcador=1){
     return CPIGGerenciadorForms::GetForm(idForm)->CriaGaugeBar(altura,largura,imgMoldura,imgMarcador,retiraFundoMoldura,retiraFundoMarcador);
 }
 
@@ -6525,7 +6525,7 @@ void PIGSlideBarSetDeltas(int idComponente, int deltaPadrao, int deltaRodinha, i
 
 #ifdef PIGCOMTELA
 
-void PIGCriaTela(int idTela, int backgroundCriar=0, int backgroundCarregar=0, char *nomeArqCarregamento="", int janela=0){
+void PIGCriaTela(int idTela, int backgroundCriar=0, int backgroundCarregar=0, char *nomeArqCarregamento=(char*)"", int janela=0){
     CPIGGerenciadorTelas::CriaTela(idTela,backgroundCriar,backgroundCarregar,nomeArqCarregamento,janela);
 }
 
