@@ -32,9 +32,9 @@ public:
     int Put(AVPacket *srcPkt){
         AVPacketList *elt;
         AVPacket pkt;
-        int rv;
+        int rv=0;
 
-        if(srcPkt != &flushPkt && av_dup_packet(srcPkt) < 0) {
+        if(srcPkt != &flushPkt && av_packet_make_refcounted(srcPkt) < 0) {
             return -1;
         }
 
@@ -107,7 +107,7 @@ public:
         SDL_LockMutex(cs);
         for(pkt = first; pkt != NULL; pkt = pkt1) {
             pkt1 = pkt->next;
-            av_free_packet(&pkt->pkt);
+            av_packet_unref(&pkt->pkt);
             av_freep(&pkt);
         }
         last = NULL;

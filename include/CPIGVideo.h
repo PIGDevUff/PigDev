@@ -132,7 +132,7 @@ class CPIGVideo:public CPIGSprite{
                 }
 
                 if(av_seek_frame(is->pFormatCtx, stream_index, seek_target, is->seek_flags) < 0) {
-                    fprintf(stderr, "%s: error while seeking video-frame\n", is->pFormatCtx->filename);
+                    fprintf(stderr, "%s: error while seeking video-frame\n", is->pFormatCtx->url);
                 }else{
                     //printf("fui pro else\n");
                     if(is->audioStream >= 0){
@@ -277,7 +277,7 @@ class CPIGVideo:public CPIGSprite{
     static int VideoThread(void *pUserData){
         CPIGVideo *player = (CPIGVideo*)pUserData;
         VideoState *is = player->is;
-        int rv;
+        //int rv=0;
         double pts;
 
         AVFrame *pFrame = av_frame_alloc();
@@ -288,11 +288,11 @@ class CPIGVideo:public CPIGSprite{
 
             if (player->filaVideo->IgualFlushData(is->videoPkt.data)) {
                 if (is->videoSt->internal)
-                avcodec_flush_buffers(is->videoSt->codec);
+                avcodec_parameters_free(&(is->videoSt->codecpar));
                 continue;
             }
 
-            rv = avcodec_send_packet(is->videoCtx, &is->videoPkt);
+            int rv = avcodec_send_packet(is->videoCtx, &is->videoPkt);
             if (rv < 0) continue;
 
             while (!avcodec_receive_frame(is->videoCtx, pFrame)){
@@ -300,7 +300,7 @@ class CPIGVideo:public CPIGSprite{
                     break;
 
                 if (is->videoPkt.dts != AV_NOPTS_VALUE){
-                    pts = (double)av_frame_get_best_effort_timestamp(pFrame);
+                    pts = pFrame->pts;//(double)av_frame_get_best_effort_timestamp(pFrame);
                 }else{
                     pts = 0;
                 }
@@ -524,7 +524,7 @@ class CPIGVideo:public CPIGSprite{
             }
 
             if (filaAudio->IgualFlushData(is->audioPkt.data)) {
-                avcodec_flush_buffers(is->audioSt->codec);
+                avcodec_parameters_free(&(is->audioSt->codecpar));
                 continue;
             }
 
@@ -822,14 +822,14 @@ class CPIGVideo:public CPIGSprite{
 
     void DestroiStream(AVStream *stream){
         //printf("flushei1\n");
-        if (stream->codec->internal)
-            avcodec_flush_buffers(stream->codec);
+        if (stream->codecpar)
+            avcodec_parameters_free(&(stream->codecpar));
 
         //printf("fecha stream\n");
-        if (stream->codec){
-            avcodec_close(stream->codec);
-            stream->codec = NULL;
-        }
+        //if (stream->codec){
+        //    avcodec_close(stream->codec);
+        //    stream->codec = NULL;
+        //}
     }
 
     void DestroiVideoState(){
@@ -1000,6 +1000,9 @@ public:
         quit = 0;
 
         int erro = CriaVideoState();
+        if (erro>0){
+            printf("O video podera nao ser exibido!\n");
+        }
 
         //printf("Vou criar thread de video\n");
         hVideoThread = SDL_CreateThread(VideoThread,"iii",this);
