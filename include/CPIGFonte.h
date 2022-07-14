@@ -27,7 +27,7 @@ protected:
     }
 
     //converte cada caractere da string no índice correpondente do vetor de glifos
-    vector<int> Converte(string original){
+    static vector<int> Converte(string original){
         vector<int> resp;
         Uint16 aux;
         for (unsigned int i=0;i<original.size();i++){
