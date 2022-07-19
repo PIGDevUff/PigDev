@@ -6343,7 +6343,7 @@ int PIGCriaGaugeCircular(int idForm, int altura, int largura){
     return CPIGGerenciadorForms::GetForm(idForm)->CriaGaugeCircular(altura,largura);
 }
 
-int PIGCriaGaugeCircular(int idForm, int altura, int largura, string imgTrilha, int alturaMarcador, int larguraMarcador, string imgMarcador, int retiraFundoTrilha=1, int retiraFundoMarcador=1){
+int PIGCriaGaugeCircular(int idForm, int altura, int largura, char *imgTrilha, int alturaMarcador, int larguraMarcador, char *imgMarcador, int retiraFundoTrilha=1, int retiraFundoMarcador=1){
     return CPIGGerenciadorForms::GetForm(idForm)->CriaGaugeCircular(altura,largura,imgTrilha,alturaMarcador,larguraMarcador,imgMarcador,retiraFundoTrilha,retiraFundoMarcador);
 }
 
@@ -6432,12 +6432,9 @@ void PIGGaugeCircularSetDeltaAngulo(int idComponente, double novoDelta){
 }
 
 
-
-
-
 /**********SLIDEBAR**************/
 
-int PIGCriaSlideBar(int idForm, int altura, int largura, string imgTrilha, int alturaMarcador, int larguraMarcador, string imgMarcador, int retiraFundoTrilha=1, int retiraFundoMarcador=1){
+int PIGCriaSlideBar(int idForm, int altura, int largura, char *imgTrilha, int alturaMarcador, int larguraMarcador, char *imgMarcador, int retiraFundoTrilha=1, int retiraFundoMarcador=1){
     return CPIGGerenciadorForms::GetForm(idForm)->CriaSlideBar(altura,largura,imgTrilha,alturaMarcador,larguraMarcador,imgMarcador,retiraFundoTrilha,retiraFundoMarcador);
 }
 
@@ -6520,6 +6517,22 @@ void PIGSlideBarSetCorTrilha(int idComponente, PIGCor cor){
 void PIGSlideBarSetDeltas(int idComponente, int deltaPadrao, int deltaRodinha, int deltaTeclado){
     CPIGGerenciadorForms::GetComponente<PIGSlideBar>(idComponente)->SetDeltas(deltaPadrao,deltaRodinha,deltaTeclado);
 }
+
+
+/**********MENU**************/
+
+int PIGCriaItemMenu(int idForm, int altura, int largura, char *nomeArq){
+    return CPIGGerenciadorForms::GetForm(idForm)->CriaItemMenu(altura,largura,nomeArq);
+}
+
+int PIGMenuInsereSubMenu(int idMenuPai, int idMenuFilho){
+    return CPIGGerenciadorForms::GetComponente<PIGItemMenu>(idMenuPai)->InsereSubMenu(CPIGGerenciadorForms::GetComponente<PIGItemMenu>(idMenuFilho));
+}
+
+void PIGMenuSetPosicaoSubMenu(int idMenu, PIGPosicaoComponente pos){
+    CPIGGerenciadorForms::GetComponente<PIGItemMenu>(idMenu)->SetPosicaoSubMenu(pos);
+}
+
 
 #endif // PIGCOMFORM
 

@@ -14,6 +14,7 @@
 #include "CPIGSlideBar.h"
 #include "CPIGGaugeBar.h"
 #include "CPIGGaugeCircular.h"
+#include "CPIGItemMenu.h"
 
 class CPIGForm: public CPIGComponente{
 
@@ -335,6 +336,12 @@ public:
     int CriaSlideBar(int altura, int largura, int alturaMarcador, int larguraMarcador){
         int idComponente = GetProxIdComponente();
         componentes[totalComponentes++] = new CPIGSlideBar(idComponente,altura,largura,alturaMarcador,larguraMarcador,idJanela);
+        return idComponente;
+    }
+
+    int CriaItemMenu(int altura, int largura, string nomeArq){
+        int idComponente = GetProxIdComponente();
+        componentes[totalComponentes++] = new CPIGItemMenu(idComponente,nomeArq,"",largura,altura,1,idJanela);
         return idComponente;
     }
 

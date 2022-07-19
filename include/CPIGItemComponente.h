@@ -14,7 +14,7 @@ O label é posicionado sempre internamente, mas pode estar alinhado à direita (
 
 class CPIGItemComponente:public CPIGComponente{
 
-private:
+protected:
 
     void (*AjustaFrame)(CPIGItemComponente*);       //ponteiro para funçăo que será chamada sempre que algum estado do item mudar
     PIGSprite icone;
@@ -22,13 +22,15 @@ private:
     PIGPosicaoComponente posIcone,posRelativaLabel;
     bool habilitadoPorSi;
 
-    PIGEstadoEvento OnMouseClick(){
+    virtual PIGEstadoEvento OnMouseClick(){
         SetAcionado(!GetAcionado());
         #ifdef PIGCOMAUDIO
         if (audioComponente>=0) CPIGGerenciadorAudios::Play(audioComponente);
         #endif
         return PIG_COMPONENTE_TRATADO;
     }
+
+private:
 
     void IniciaBase(string labelItem, string arqImagemIcone="", int alturaIcone=0, int larguraIcone=0,int retiraFundoIcone=1){
         altIcone = alturaIcone;
@@ -88,7 +90,7 @@ public:
         if (AjustaFrame) AjustaFrame(this);
     }
 
-    void SetHabilitadoLista(bool valor){
+    virtual void SetHabilitadoLista(bool valor){
         if (valor){
            CPIGComponente::SetHabilitado(habilitadoPorSi);
         }else{
@@ -149,12 +151,14 @@ public:
                     SetPosicaoPersonalizadaLabel(larg-largLabel-margemDir,0);
                 }else SetPosicaoPersonalizadaLabel(larg-largLabel-largIcone-margemDir,0);
                 break;
+            default: break;
             }
         }else{
             switch(posRelativaLabel){
             case PIG_POSICAO_ESQ_CENTRO: SetPosicaoPersonalizadaLabel(margemEsq,0); break;
             case PIG_POSICAO_CENTRO_CENTRO: SetPosicaoPersonalizadaLabel(margemEsq+(larg-margemEsq-margemDir)/2-largLabel/2,0); break;
             case PIG_POSICAO_DIR_CENTRO: SetPosicaoPersonalizadaLabel(larg-largLabel-margemDir,0); break;
+            default: break;
             }
         }
 
