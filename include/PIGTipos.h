@@ -3,6 +3,8 @@ Principais definições utilizadas pela PIG
 ********************************/
 
 #include "SDL.h"
+#define _WIN32_WINNT 0x0501
+//#include "mingw.thread.h"
 
 #define PIG_ALT_TELA                    600
 #define PIG_LARG_TELA                   800
