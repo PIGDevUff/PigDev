@@ -106,7 +106,7 @@ class CPIGVideo:public CPIGSprite{
     void *bufferVideo;
 
     double get_video_clock() {
-      double delta = (av_gettime() - is->video_current_pts_time) / 1000000.0;
+      double delta = (av_gettime_relative() - is->video_current_pts_time) / 1000000.0;
       return is->video_current_pts + delta;
     }
 
@@ -287,7 +287,7 @@ class CPIGVideo:public CPIGSprite{
                 break;
 
             if (player->filaVideo->IgualFlushData(is->videoPkt.data)) {
-                if (is->videoSt->internal)
+                if (is->videoSt->codecpar)
                 avcodec_parameters_free(&(is->videoSt->codecpar));
                 continue;
             }
@@ -342,7 +342,7 @@ class CPIGVideo:public CPIGSprite{
                 // timing
 
                 is->video_current_pts = vp->pts;
-                is->video_current_pts_time = av_gettime();
+                is->video_current_pts_time = av_gettime_relative();
 
                 delay = vp->pts - is->lastFramePts;
 
@@ -372,7 +372,7 @@ class CPIGVideo:public CPIGSprite{
                 is->frameTimer += delay;
 
                 // computer the REAL delay
-                last = actualDelay = is->frameTimer - (av_gettime() / 1000000.0);
+                last = actualDelay = is->frameTimer - (av_gettime_relative() / 1000000.0);
                 if (actualDelay < 0.01) {
                     // Really it should skip the picture instead
                     actualDelay = 0.01;
@@ -589,7 +589,7 @@ class CPIGVideo:public CPIGSprite{
         AVCodecParameters *codecPar = pFormatCtx->streams[streamIndex]->codecpar;
         if (!codecPar) return -1;
 
-        AVCodec *codec = avcodec_find_decoder(codecPar->codec_id);
+        const AVCodec *codec = avcodec_find_decoder(codecPar->codec_id);
         if (!codec) return -1;
 
         AVCodecContext *codecCtx = avcodec_alloc_context3(codec);
@@ -610,9 +610,9 @@ class CPIGVideo:public CPIGSprite{
         is->videoCtx = codecCtx;
         is->videoStream = streamIndex;
         is->videoSt = pFormatCtx->streams[streamIndex];
-        is->frameTimer = (double)av_gettime()/ 1000000.0;
+        is->frameTimer = (double)av_gettime_relative()/ 1000000.0;
         //printf("frame timer: %.2f\n",is->frameTimer);
-        is->video_current_pts_time = av_gettime();
+        is->video_current_pts_time = av_gettime_relative();
         is->lastFrameDelay = 0.01;
         is->pSwsCtx = sws_getContext(codecCtx->width,
                                      codecCtx->height,
@@ -650,7 +650,6 @@ class CPIGVideo:public CPIGSprite{
     int StreamAudioComponentOpen(){
         AVFormatContext *pFormatCtx = is->pFormatCtx;
         AVCodecContext *codecCtx;
-        AVCodec *codec;
         AVCodecParameters *codecPar;
         SDL_AudioSpec wantedSpec = { 0 }, audioSpec = {0};
         int rv;
@@ -660,7 +659,7 @@ class CPIGVideo:public CPIGSprite{
             return -1;
 
         codecPar = pFormatCtx->streams[streamIndex]->codecpar;
-        codec = avcodec_find_decoder(codecPar->codec_id);
+        const AVCodec *codec = avcodec_find_decoder(codecPar->codec_id);
         if (!codec) return -1;
 
         codecCtx = avcodec_alloc_context3(codec);
@@ -1018,7 +1017,7 @@ public:
             return;
         }
 
-        pausa = av_gettime();
+        pausa = av_gettime_relative();
 
         timerProx->Reinicia(0);// = new CTimer(0);
         //printf("Audio device: %d\n",audioDeviceId);
@@ -1060,7 +1059,7 @@ public:
         if (is==NULL) return;
         if (estado==PIG_VIDEO_TOCANDO){
             estado = PIG_VIDEO_PAUSADO;
-            pausa = av_gettime();
+            pausa = av_gettime_relative();
             while (SDL_GetAudioDeviceStatus(audioDeviceId)==SDL_AUDIO_PLAYING)
                 SDL_PauseAudioDevice(audioDeviceId,1);
             timerProx->Pausa();
@@ -1071,7 +1070,7 @@ public:
         if (is==NULL) return;
         if (estado==PIG_VIDEO_PAUSADO){
             estado = PIG_VIDEO_TOCANDO;
-            is->frameTimer += (av_gettime()-pausa) / 1000000.0;// - is->vidclk.last_updated
+            is->frameTimer += (av_gettime_relative()-pausa) / 1000000.0;// - is->vidclk.last_updated
             //printf("pausa?\n");
             timerProx->Despausa();
             while (SDL_GetAudioDeviceStatus(audioDeviceId)==SDL_AUDIO_PAUSED)
