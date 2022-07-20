@@ -38,7 +38,7 @@ private:
     void DesenhaRetanguloMarcacao(){
         if(itemDestaque !=-1){
             PIGPonto2D p = itens[itemDestaque]->GetXY();
-            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado(p.x,p.y,altBaseLista,larg-(margemDir+margemEsq),coresBasicas[1]);
+            PIGDesenhaRetanguloVazado(p.x,p.y,altBaseLista,larg-(margemDir+margemEsq),coresBasicas[1]);
         }
     }
 
@@ -145,7 +145,7 @@ public:
 
         if (imagemPropria)//se tiver imagem de fundo
             CPIGSprite::Desenha();
-        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
+        else PIGDesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
 
         for (PIGItemComponente i: itens)
             i->Desenha();

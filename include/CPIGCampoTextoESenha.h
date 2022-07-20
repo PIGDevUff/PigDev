@@ -115,10 +115,30 @@ public:
     int Desenha() override{
         if (!visivel) return 0;
 
-        //imagem de fundo
+
         if (imagemPropria)
             CPIGSprite::Desenha();
-        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
+        else PIGDesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
+
+        PIGPreparaStencil();
+
+        PIGDesenhaRetangulo(pos.x+margemEsq-1,pos.y+margemBaixo,alt-margemBaixo-margemCima,larg-margemEsq-margemDir+1,VERDE);
+
+        PIGFixaStencil();
+
+        //printf("texto: <%s> xbase\n",GetTextoVisivel().c_str(),xTexto);
+        CPIGGerenciadorFontes::GetFonte(fonteTexto)->Escreve(GetTextoVisivel(),xTexto,yTexto,true,coresBasicas[1],PIG_TEXTO_ESQUERDA);
+        DesenhaCursor();//desenha o cursor (se estiver em ediçăo)
+
+        PIGLiberaStencil();
+
+        return CPIGComponente::Desenha();
+
+
+        //imagem de fundo
+        /*if (imagemPropria)
+            CPIGSprite::Desenha();
+        else PIGDesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
 
         CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea((int)pos.x+margemEsq,(int)pos.y+margemBaixo,alt-(margemBaixo+margemCima),larg-(margemEsq+margemDir));
 
@@ -128,7 +148,8 @@ public:
         //desbloqueia o desenho fora da area do componente
         CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
 
-        return CPIGComponente::Desenha();
+        return CPIGComponente::Desenha();*/
+
     }
 
     PIGEstadoEvento TrataEventoMouse(PIGEvento evento)override{

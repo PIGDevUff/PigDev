@@ -14,6 +14,12 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add directory="../include" />
+					<Add directory="../include/video" />
+					<Add directory="../include/video/libavcodec" />
+					<Add directory="../include/video/libavutil" />
+					<Add directory="../include/video/libdevice" />
+					<Add directory="../include/video/libavformat" />
+					<Add directory="../include/video/libavresample" />
 				</Compiler>
 				<Linker>
 					<Add directory="../lib" />

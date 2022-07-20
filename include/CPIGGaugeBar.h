@@ -34,16 +34,16 @@ private:
 
         switch(orientacaoCrescimento){
         case PIG_GAUGE_ESQ_DIR:
-            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(((int)pos.x)+margemEsq,((int)pos.y)+margemBaixo,altBarra,((int)largBarra*perc),coresBasicas[3]);
+            PIGDesenhaRetangulo(((int)pos.x)+margemEsq,((int)pos.y)+margemBaixo,altBarra,((int)largBarra*perc),coresBasicas[3]);
             break;
         case PIG_GAUGE_DIR_ESQ:
-            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(pos.x+larg-margemDir-largBarra*perc,pos.y+margemBaixo,altBarra,largBarra*perc,coresBasicas[3]);
+            PIGDesenhaRetangulo(pos.x+larg-margemDir-largBarra*perc,pos.y+margemBaixo,altBarra,largBarra*perc,coresBasicas[3]);
             break;
         case PIG_GAUGE_BAIXO_CIMA:
-            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(pos.x+margemEsq,pos.y+margemBaixo,altBarra*perc,largBarra,coresBasicas[3]);
+            PIGDesenhaRetangulo(pos.x+margemEsq,pos.y+margemBaixo,altBarra*perc,largBarra,coresBasicas[3]);
             break;
         case PIG_GAUGE_CIMA_BAIXO:
-            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(pos.x+margemEsq,pos.y+alt-margemCima-altBarra*perc,altBarra*perc,largBarra,coresBasicas[3]);
+            PIGDesenhaRetangulo(pos.x+margemEsq,pos.y+alt-margemCima-altBarra*perc,altBarra*perc,largBarra,coresBasicas[3]);
             break;
         default: break;
         }
@@ -155,7 +155,7 @@ public:
                 CPIGSprite::Desenha();
             }
         }else{
-            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
+            PIGDesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
             DesenhaBarraCor();
         }
 

@@ -54,11 +54,11 @@ private:
     }
 
     void DesenhaItemDestaque(){
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea((int)pos.x,((int)pos.y),altBaseLista+margemBaixo+margemCima,larg);
+        /*CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea((int)pos.x,((int)pos.y),altBaseLista+margemBaixo+margemCima,larg);
         if (imagemPropria){//se tiver imagem de fundo
             dest.h=altBaseLista+margemBaixo+margemCima;
             CPIGSprite::Desenha();
-        }else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,altBaseLista,larg,coresBasicas[0]);
+        }else PIGDesenhaRetangulo((int)pos.x,(int)pos.y,altBaseLista,larg,coresBasicas[0]);
 
         if (itemDestaque>=0){                       //desenha o item no cabeçalho do dropdown
             PIGPonto2D pItem = itens[itemDestaque]->GetXY();
@@ -68,21 +68,40 @@ private:
             itens[itemDestaque]->Move(pItem.x,pItem.y); //devolve o item para a posiçăo normal (onde também deverá ser desenhado)
         }
         CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
+        */
+        CPIGImagem::SetDimensoes(altBaseLista,larg);
+        CPIGImagem::Desenha();
+
+        if (itemDestaque>=0){                       //desenha o item no cabeçalho do dropdown
+            PIGPonto2D pItem = itens[itemDestaque]->GetXY();
+            itens[itemDestaque]->Move(pItem.x,pos.y);     //move o item para o ponto do cabeçalho
+            itens[itemDestaque]->Desenha();         //desenha o item no cabeçalho
+            itens[itemDestaque]->Move(pItem.x,pItem.y); //devolve o item para a posiçăo normal (onde também deverá ser desenhado)
+        }
     }
 
     void DesenhaListaItens(){
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea((int)pos.x,((int)pos.y)-(itens.size())*altBaseLista,(itens.size()+1)*altBaseLista+margemBaixo+margemCima,larg);
+        /*CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea((int)pos.x,((int)pos.y)-(itens.size())*altBaseLista,(itens.size()+1)*altBaseLista+margemBaixo+margemCima,larg);
         if (imagemPropria){
             frameAtual=0;
             dest.y = altJanela-pos.y-altBaseLista;
             dest.h = (itens.size()+1)*altBaseLista+margemBaixo+margemCima;
             CPIGSprite::Desenha();
-        }else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y-altBaseLista*itens.size(),(itens.size()+1)*altBaseLista,larg,coresBasicas[0]);
+        }else PIGDesenhaRetangulo((int)pos.x,(int)pos.y-altBaseLista*itens.size(),(itens.size()+1)*altBaseLista,larg,coresBasicas[0]);
 
         for (PIGItemComponente i: itens)
             i->Desenha();
 
         CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
+        */
+        pos.y -= altBaseLista*itens.size();         //ajusta a posição para o fundo ser desenhado por trás da lista
+        CPIGImagem::SetDimensoes(altBaseLista*itens.size(),larg); //ajusta a dimensão para ficar do tamanho da lista aberta
+        CPIGImagem::Desenha();                      //desenha a lista aberta
+
+        pos.y += altBaseLista*itens.size();         //volta à posição normal
+
+        for (PIGItemComponente i: itens)            //desenha os itens individualmente
+            i->Desenha();
     }
 
 public:

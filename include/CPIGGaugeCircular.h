@@ -40,7 +40,7 @@ private:
         return *resp;
     }
 
-    void AtualizaTextura()override{
+    /*void AtualizaTextura()override{
 
         if (this_thread::get_id()!=PIG_MAIN_THREAD_ID) return;
 
@@ -67,8 +67,10 @@ private:
         PIGOffscreenRenderer off = new CPIGOffscreenRenderer(alt,larg,3);
 
         //circulo interno para criar efeito de coroa circular
-        off->DesenhaCirculoFinal(raioInterno,croma2,croma1,0,360.0,2);
-        off->SetCorTransparente(2,true,croma2);
+        off->Ativa();
+        PIGDesenhaCirculoFinal(raioInterno,croma2,croma1,0,360.0,2);
+        off->Desativa();
+        //off->SetCorTransparente(2,true,croma2);
         //off->SalvarImagemPNG("interno.png",2);
 
         double deltaCrescimento=0;
@@ -106,22 +108,35 @@ private:
         precisaAtualizar = false;
 
         SetAngulo(angBase);
-    }
+    }*/
 
     virtual void AtualizaMarcador()override{
-        CPIGGauge::AtualizaMarcador();
-        OnAction();
-        if (marcador){
-            marcador->SetPivoAbsoluto({(double)margemEsq,(double)margemBaixo});
-            marcador->Move(pos.x+larg/2-margemEsq,pos.y+alt/2-margemBaixo);
-            double angMarcador=0;
-            if (orientacaoCrescimento==PIG_GAUGE_HORARIO)
-                angMarcador = porcentagemConcluida*(deltaAng)+angBase;
-            else angMarcador = angBase+deltaAng-porcentagemConcluida*(deltaAng);
-            marcador->SetAngulo(angMarcador);
-        }else{
-            AtualizaTextura();
+        //printf("porc conc %.1f\n",porcentagemConcluida);
+
+        PIGOffscreenRenderer off = new CPIGOffscreenRenderer(alt,larg,2);
+
+        PIGCor cor = PIGMixCor(coresBasicas[1],coresBasicas[2],porcentagemConcluida);//cor da barra mixada entre a cor inicial e a final
+
+        off->Ativa();
+        PIGDesenhaCirculo(larg/2,alt/2,larg/2,angBase,porcentagemConcluida*(deltaAng)+angBase,cor);
+        PIGDesenhaCirculo(larg/2,alt/2,raioInterno,0,360,coresBasicas[0]);
+        off->Desativa();
+
+        if (bitmap){
+            SDL_FreeSurface(bitmap);
+            LiberaTextura();
         }
+        bitmap = off->GetSurface();
+        //SDL_SaveBMP(bitmap,"gauge.bmp");
+        SDL_SetColorKey(bitmap,SDL_TRUE,0);
+        idTextura = PIGCriaTexturaSurface(bitmap,true);
+        delete off;
+
+        CPIGGerenciadorJanelas::GetJanela(idJanela)->Atualiza();
+
+        if (orientacaoCrescimento==PIG_GAUGE_HORARIO) SetFlip(PIG_FLIP_VERTICAL);
+
+        OnAction();
     }
 
     void IniciaBase(){

@@ -231,12 +231,12 @@ public:
 
         if (imagemPropria)
             CPIGSprite::Desenha();
-        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
+        else PIGDesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
 
 
         if (marcador)
             marcador->Desenha();
-        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(xMarc,yMarc,altMarcador,largMarcador,coresBasicas[1]);
+        else PIGDesenhaRetangulo(xMarc,yMarc,altMarcador,largMarcador,coresBasicas[1]);
         //CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado(xMarc,yMarc,altMarcador,largMarcador,VERDE);
 
         //CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado((int)pos.x,(int)pos.y,alt,larg,AMARELO);

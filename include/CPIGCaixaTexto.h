@@ -52,7 +52,7 @@ protected:
     void DesenhaCursor(){
         if (temFoco){
             if (cursorExibido){
-                CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(xCursor,yCursor,xCursor,yCursor+altLetra,coresBasicas[2]);
+                PIGDesenhaLinhaSimples(xCursor,yCursor,xCursor,yCursor+altLetra,coresBasicas[2]);
             }
             if (timer&&timer->GetTempoDecorrido()>1){
                 cursorExibido = !cursorExibido;

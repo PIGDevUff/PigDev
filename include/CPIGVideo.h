@@ -415,7 +415,7 @@ class CPIGVideo:public CPIGSprite{
             }
             SDL_GetWindowSize(janelaAtual->GetWindow(), &windowW, &windowH);
 
-            dest.h = windowH;
+            /*dest.h = windowH;
             dest.w = ((int)rint(dest.h * aspectRatio)) & -3;
             if (dest.w > windowW) {
                 dest.w = windowW;
@@ -423,6 +423,15 @@ class CPIGVideo:public CPIGSprite{
             }
             dest.x = (windowW - dest.w) / 2;
             dest.y = (windowH - dest.h) / 2;
+            */
+            alt = windowH;
+            larg = ((int)rint(alt * aspectRatio)) & -3;
+            if (larg > windowW) {
+                larg = windowW;
+                alt = ((int)rint(larg / aspectRatio)) & -3;
+            }
+            pos.x = (windowW - larg) / 2;
+            pos.y = (windowH - alt) / 2;
 
         }
         //printf("aspecto %d,%d\n",dest.h,dest.w);
@@ -884,11 +893,30 @@ class CPIGVideo:public CPIGSprite{
 
     inline void AtualizaTextura()override{
         if (precisaAtualizar){
-            SDL_LockMutex(mutexBuffer);
+            /*SDL_LockMutex(mutexBuffer);
             SDL_UpdateTexture(text,NULL,bufferVideo,pitch);
             SDL_UnlockMutex(mutexBuffer);
             SDL_SetTextureBlendMode(text, SDL_BLENDMODE_BLEND);
             SDL_SetTextureAlphaMod(text,opacidade);
+            SetColoracao(coloracao);
+            precisaAtualizar = false;
+            */
+            SDL_LockMutex(mutexBuffer);
+
+            /* Typical Texture Generation Using Data From The Bitmap */
+            glBindTexture( GL_TEXTURE_2D, idTextura );
+
+            /* Generate The Texture */
+            glTexImage2D(GL_TEXTURE_2D, 0, 4, largPixels,
+                  altPixels, 0, GL_RGB,
+                  GL_UNSIGNED_BYTE, bufferVideo);
+
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+            SDL_UnlockMutex(mutexBuffer);
             SetColoracao(coloracao);
             precisaAtualizar = false;
         }
@@ -927,11 +955,12 @@ public:
 
         DestroiVideoState();
 
-        text = SDL_CreateTexture(janelaAtual->GetRenderer(),
+        /*text = SDL_CreateTexture(janelaAtual->GetRenderer(),
             SDL_PIXELFORMAT_RGB24,
             SDL_TEXTUREACCESS_STREAMING,
             largPixels,
-            altPixels);
+            altPixels);*/
+        glGenTextures( 1, &idTextura );
 
         frames[frameAtual] = {0,0,largPixels,altPixels};
         precisaAtualizar = true;

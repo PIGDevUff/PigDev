@@ -1,5 +1,5 @@
-#ifndef _CPIGFONTEDINAMICA_
-#define _CPIGFONTEDINAMICA_
+#ifndef _CPIGMAPACARACTERESDINAMICOS_
+#define _CPIGMAPACARACTERESDINAMICOS_
 
 #include "CPIGStringFormatada.h"
 
@@ -8,27 +8,25 @@ class CPIGFonteDinamica:public CPIGFonte{
 private:
 
     //processa uma string para transformá-la em StringFormatada
-    //faz o processamento, utilizando uma máquina de estados finitos
-    CPIGStringFormatada Processa(string textoOrig, PIGCor corInicial=PIG_FONTE_PADRAO_COR){
+    CPIGStringFormatada Processa(std::string textoOrig){
         CPIGStringFormatada resp;
-        PIGCor cor = corInicial;
+        PIGCor cor = BRANCO;
         PIGEstilo estilo = PIG_ESTILO_NORMAL;
-        int larguraTotal = 0;                       //largura acumulada da string
-        int estado = 0;                             //estado atual da máquinda de estados
-        unsigned int i = 0;
+        int larguraTotal = 0;
+        int estado = 0;//estado atual da máquinda de estados
+        int i = 0;
 
         vector<PIGCor> pilhaCor;
         vector<PIGEstilo> pilhaEstilo;
         pilhaCor.push_back(cor);
         pilhaEstilo.push_back(estilo);
 
-        vector<int> letras = Converte(textoOrig);
+        Uint16 letra,letraAnt;
 
-        int letra,letraAnt;
-
-        while (i<letras.size()){
+        while (i<textoOrig.size()){
             letraAnt = letra;
-            letra = letras[i];
+            letra = textoOrig[i];
+            letra = letra %256;
 
             switch (estado){
             case 0://estado sem formatacao
@@ -39,7 +37,7 @@ private:
                 }else if (letra==PIG_SIMBOLO_NEGRITO||letra==PIG_SIMBOLO_ITALICO||letra==PIG_SIMBOLO_SUBLINHADO||letra==PIG_SIMBOLO_CORTADO){//alerta de saída de negrito, itálico, underline ou strike
                     estado = 4;
                 }else{
-                    larguraTotal += larguraLetra[estilo][letra-PIG_PRIMEIRO_CAR];
+                    larguraTotal += caracteres[estilo][letra-PIG_PRIMEIRO_CAR]->GetLargura();
                     resp.Adiciona(letra,larguraTotal,cor,estilo);
                 }
                 break;
@@ -62,11 +60,11 @@ private:
                     estilo |= PIG_ESTILO_CORTADO;
                     pilhaEstilo.push_back(estilo);
                     estado = 0;
-                }else{//năo é entrada de cor nem de formatacao de estilo
-                    larguraTotal += larguraLetra[estilo][letraAnt-PIG_PRIMEIRO_CAR];
+                }else{//não é entrada de cor nem de formatacao de estilo
+                    larguraTotal += caracteres[estilo][letraAnt-PIG_PRIMEIRO_CAR]->GetLargura();
                     resp.Adiciona(letraAnt,larguraTotal,cor,estilo);//devolve o token anterior
 
-                    larguraTotal += larguraLetra[estilo][letra-PIG_PRIMEIRO_CAR];
+                    larguraTotal += caracteres[estilo][letra-PIG_PRIMEIRO_CAR]->GetLargura();
                     resp.Adiciona(letra,larguraTotal,cor,estilo);
 
                     estado = 0;
@@ -85,14 +83,14 @@ private:
             case 3://alerta para saida de cor
                 if (letra == '>'){//realmente saída da cor
                     pilhaCor.pop_back();
-                    if (pilhaCor.size()>=1)//tira a cor da pilha e pega a de baixo
+                    if (pilhaCor.size()>1)//tira a cor da pilha e pega a de baixo
                         cor = pilhaCor[pilhaCor.size()-1];
                     else cor = BRANCO;
-                }else{//năo é saída de cor
-                    larguraTotal += larguraLetra[estilo][letraAnt-PIG_PRIMEIRO_CAR];
+                }else{//não é saída de cor
+                    larguraTotal += caracteres[estilo][letraAnt-PIG_PRIMEIRO_CAR]->GetLargura();
                     resp.Adiciona(letraAnt,larguraTotal,cor,estilo);//devolve o token anterior
 
-                    larguraTotal += larguraLetra[estilo][letra-PIG_PRIMEIRO_CAR];
+                    larguraTotal += caracteres[estilo][letra-PIG_PRIMEIRO_CAR]->GetLargura();
                     resp.Adiciona(letra,larguraTotal,cor,estilo);
                 }
                 estado = 0;
@@ -103,11 +101,11 @@ private:
                     if (pilhaEstilo.size()>1)//tira a cor da pilha e pega a de baixo
                         estilo = pilhaEstilo[pilhaEstilo.size()-1];
                     else estilo = PIG_ESTILO_NORMAL;
-                }else{//năo é saída de cor
-                    larguraTotal += larguraLetra[estilo][letraAnt-PIG_PRIMEIRO_CAR];
+                }else{//não é saída de cor
+                    larguraTotal += caracteres[estilo][letraAnt-PIG_PRIMEIRO_CAR]->GetLargura();
                     resp.Adiciona(letraAnt,larguraTotal,cor,estilo);//devolve o token anterior
 
-                    larguraTotal += larguraLetra[estilo][letra-PIG_PRIMEIRO_CAR];
+                    larguraTotal += caracteres[estilo][letra-PIG_PRIMEIRO_CAR]->GetLargura();
                     resp.Adiciona(letra,larguraTotal,cor,estilo);
                 }
                 estado = 0;
@@ -115,7 +113,7 @@ private:
             }
             i++;
         }
-
+        //system("pause");
         pilhaCor.clear();
         pilhaEstilo.clear();
 
@@ -125,37 +123,18 @@ private:
 public:
 
     //construtor com o nome do arquivo da fonte, o tamanha e a janela
-    CPIGFonteDinamica(string nomeFonte, int tamanhoFonte, int janela)
-       :CPIGFonte(nomeFonte,tamanhoFonte,PIG_ESTILO_NORMAL,BRANCO,janela){
+    CPIGFonteDinamica(string nomeFonte, int tamanhoFonte, int idJanela):CPIGFonte(nomeFonte,tamanhoFonte,PIG_ESTILO_NORMAL,BRANCO,idJanela){
         for (int estilo=1;estilo<PIG_TOTALESTILOS;estilo++)
             CriaLetrasSurface(estilo, 0, BRANCO, NULL, BRANCO);
-
-        SDL_SetRenderTarget(render, NULL);
     }
 
     //escreve uma string já formatada, alinhada com o ponto x,y e o parâmetro pos
-    void Escreve(CPIGStringFormatada formatada, int x, int y, PIGPosTexto pos=PIG_TEXTO_ESQUERDA, float ang=0, int alvoTextura=0){
-        int delta = 0;
-        switch(pos){
-        case PIG_TEXTO_ESQUERDA:
-            break;
-        case PIG_TEXTO_DIREITA:
-            x -= formatada.LargTotalPixels();delta = formatada.LargTotalPixels();break;
-        case PIG_TEXTO_CENTRO:
-            x -= formatada.LargTotalPixels()/2;delta = formatada.LargTotalPixels()/2;break;
-        }
+    void Escreve(CPIGStringFormatada formatada,int x,bool blend,int y,PIGPosicaoTexto pos=PIG_TEXTO_ESQUERDA,float ang=0){
+        int xIni = x;
+        x = CalculaXPosicao(x,formatada.LargTotalPixels(),pos);
 
-        SDL_Rect rectDestino;
-        rectDestino.x = x;
-        int altJanela = GetAlturaAtualJanela();
-        //rectDestino.y = CGerenciadorJanelas::GetJanela(janela)->GetAltura()-y-tamFonte;
         PIGCor corAtual = BRANCO;
         PIGEstilo estiloAtual = PIG_ESTILO_NORMAL;
-        SDL_Point ponto = {delta,tamFonte};
-
-        SDL_BlendMode bMode = SDL_BLENDMODE_BLEND;
-        if (alvoTextura)
-            bMode = SDL_BLENDMODE_NONE;
 
         for (int i=0;i<formatada.size();i++){
             int aux = formatada.GetIntLetra(i);
@@ -165,51 +144,40 @@ public:
             corAtual = formatada.GetCor(i);
             estiloAtual = formatada.GetEstilo(i);
 
-            SDL_SetTextureBlendMode(glyphsT[estiloAtual][indice], bMode);
-            SDL_SetTextureColorMod(glyphsT[estiloAtual][indice],corAtual.r,corAtual.g,corAtual.b);
+            caracteres[estiloAtual][indice]->Desenha(x,y,corAtual,ang,{(double)xIni-x,(double)y},blend);
 
-            rectDestino.w = larguraLetra[estiloAtual][indice];
-            rectDestino.h = tamFonte+alturaExtra[estiloAtual][indice];
-            rectDestino.y = altJanela-y-rectDestino.h;
-
-            SDL_Rect enquadrado = rectDestino;
-            if (idJanela>=0)
-                CPIGGerenciadorJanelas::GetJanela(idJanela)->ConverteCoordenadaWorldScreen(enquadrado.x,enquadrado.y,enquadrado.x,enquadrado.y);
-
-            SDL_RenderCopyEx(render,glyphsT[estiloAtual][indice],NULL,&enquadrado,-ang,&ponto,PIG_FLIP_NENHUM);
-
-            rectDestino.x += rectDestino.w;
-            ponto.x -= rectDestino.w;
+            x += caracteres[estiloAtual][indice]->GetLargura();
         }
     }
 
     //escreve ums string normal, alinha com o ponto x,y e o parâmetro pos
-    void Escreve(string texto, int x, int y, PIGCor cor=BRANCO, PIGPosTexto pos=PIG_TEXTO_ESQUERDA, float ang=0, int alvoTextura=0)override{
+    void Escreve(string texto,int x,int y,bool blend,PIGCor cor=BRANCO,PIGPosicaoTexto pos=PIG_TEXTO_ESQUERDA,float ang=0)override{
         if (texto=="") return;
         CPIGStringFormatada formatada = Processa(texto);
-        Escreve(formatada,x,y,pos,ang,alvoTextura);
+        Escreve(formatada,x,y,blend,pos,ang);
     }
 
-    //escreve uma string longa (múltiplas linhas), incluindo formataçăo interna, alinhada de acordo com o ponto x,y e o parâmetro pos
-    void EscreveLonga(string texto, int x, int y, int largMax, int espacoEntreLinhas, PIGCor corFonte=BRANCO, PIGPosTexto pos=PIG_TEXTO_ESQUERDA, float angulo=0) override{
+    //escreve uma string longa (múltiplas linhas), incluindo formatação interna, alinhada de acordo com o ponto x,y e o parâmetro pos
+    void EscreveLonga(string texto,int x,int y,int largMax,int espacoEntreLinhas,bool blend,PIGCor corFonte=BRANCO,PIGPosicaoTexto pos=PIG_TEXTO_ESQUERDA,float angulo=0) override{
         if (texto=="") return;
-        CPIGStringFormatada formatada = Processa(texto,corFonte);
+        CPIGStringFormatada formatada = Processa(texto);
         //formatada.Print();
         vector<CPIGStringFormatada> linhas = formatada.ExtraiLinhas(largMax,delimitadores);
-        EscreveLonga(linhas,x,y,espacoEntreLinhas,pos,angulo);
+        EscreveLonga(linhas,x,y,espacoEntreLinhas,blend,pos,angulo);
         linhas.clear();
         formatada.Clear();
     }
 
-    //escreve uma string longa (múltiplas linhas), com formataçăo já processada e fornecida, alinhada de acordo com o ponto x,y e o parâmetro pos
-    void EscreveLonga(vector<CPIGStringFormatada> linhas, int x, int y, int espacoEntreLinhas, PIGPosTexto pos=PIG_TEXTO_ESQUERDA, float angulo=0){
-        for (CPIGStringFormatada str:linhas){
-            Escreve(str,x,y,pos,angulo);
-            y -= espacoEntreLinhas;
+    //escreve uma string longa (múltiplas linhas), com formatação já processada e fornecida, alinhada de acordo com o ponto x,y e o parâmetro pos
+    void EscreveLonga(vector<CPIGStringFormatada> linhas, int x, int y, int espacoEntreLinhas,bool blend,PIGPosicaoTexto pos=PIG_TEXTO_ESQUERDA,float angulo=0){
+        int yTotal=y;
+        for (int k=0;k<linhas.size();k++){
+            Escreve(linhas[k],x,yTotal,blend,pos,angulo);
+            yTotal -= espacoEntreLinhas;
         }
     }
 
-    //retorna a largura em pixels da string fornecida (faz a formataçăo internamente)
+    //retorna a largura em pixels da string fornecida (faz a formatação internamente)
     int GetLarguraPixelsString(string texto) override{
         if (texto=="") return 0;
         CPIGStringFormatada formatada = Processa(texto);
@@ -228,4 +196,5 @@ public:
 };
 
 typedef CPIGFonteDinamica* PIGFonteDinamica;
-#endif //_CPIGFONTEDINAMICA_
+
+#endif //_CPIGMAPACARACTERESDINAMICOS_

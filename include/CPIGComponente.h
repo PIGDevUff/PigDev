@@ -52,7 +52,7 @@ protected:
             SDL_Rect r = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAreaBloqueada();
 
             if (r.h>0){
-                CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado(r.x,r.y,r.h,r.w,AMARELO);
+                PIGDesenhaRetanguloVazado(r.x,r.y,r.h,r.w,AMARELO);
                 CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
             }
 

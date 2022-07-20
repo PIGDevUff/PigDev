@@ -11,7 +11,7 @@ private:
     int idFonte;
     PIGCor corFonte;
 
-    void AtualizaTextura()override{
+    /*void AtualizaTextura()override{
         PIGFonte fonte = CPIGGerenciadorFontes::GetFonte(idFonte);
         larg = fonte->GetLarguraPixelsString(frase);
         alt = fonte->GetFonteAscent()+fonte->GetFonteDescent()+5;
@@ -41,13 +41,35 @@ private:
         SetDimensoes(alt,larg);
         DefineFrame(0,{0,0,larg,alt});
         MudaFrameAtual(0);
+    }*/
+
+void AtualizaTextura(){
+    if (bitmap){
+        SDL_FreeSurface(bitmap);
+        LiberaTextura();
     }
+
+    PIGFonte mapa = CPIGGerenciadorFontes::GetFonte(idFonte);
+    largOriginal = larg = mapa->GetLarguraPixelsString(frase);
+    altOriginal = alt = mapa->GetFonteAscent()+mapa->GetFonteDescent()+5;
+
+    PIGOffscreenRenderer off = new CPIGOffscreenRenderer(alt,larg,1);
+    off->Ativa();
+    mapa->Escreve(frase,0,0,false,coloracao,PIG_TEXTO_ESQUERDA,0);
+    bitmap = SDL_ConvertSurfaceFormat(off->GetSurface(),SDL_PIXELFORMAT_RGBA32,0);
+    delete off;
+
+    DefineFrame(0,{0,0,larg,alt});
+    MudaFrameAtual(0);
+
+    idTextura = PreparaTextura(0);
+}
 
 public:
 
     CPIGLabel(string texto, PIGCor cor, int numFonte, int idJanela=0):CPIGSprite(idJanela){
         idFonte = numFonte;
-        text = NULL;
+        //text = NULL;
         corFonte = cor;
         frase = texto;
         precisaAtualizar = true;

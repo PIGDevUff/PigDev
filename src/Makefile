@@ -8,19 +8,19 @@ EXE = Projeto.exe
 CC = g++
 
 #flags de compilação
-CC_FLAGS = -Wall -fexceptions -march=core2 -w -std=c++11 -O3
+CC_FLAGS = -fexceptions -march=core2 -w -std=c++11 -O3 -DGLEW_STATIC
 
 #flags de arquitetura
 CC_ARCH =
 
 #diretorios de busca de arquivos .h
-CC_INCLUDE = -I../include -I../include/SDL -I../include/SDL_image
+CC_INCLUDE = -I../include -I../include/SDL -I../include/SDL_image -I../include/glew-2.1.0/include
 
 #diretorios de busca de bibliotecas estáticas
 CC_LIB = -L../lib
 
 #bibliotecas necessárias
-LIBBASICAS = -lpthread -lm
+LIBBASICAS = -lglu32  ../include/glew-2.1.0/lib/Release/Win32/glew32s.lib ../include/glew-2.1.0/lib/Release/Win32/glew32.lib -lopengl32 -lpthread -lm
 
 #se o projeto não utilizar audios, mudar o valor de MODULOAUDIO abaixo para qualquer outro valor ou apenas comentar a linha abaixo
 MODULOAUDIO = SIM
@@ -78,9 +78,10 @@ endif
 RUNCOMMAND = $(EXE)
 
 ifeq ($(OS),Windows_NT)
-	CC_FLAGS += -m32
-	LIBMINGW32 = -m32 -lmingw32
+	CC_FLAGS +=
+	LIBMINGW32 = -lmingw32
 	CLEARCOMMAND = del /Q /F *.o
+	RUNCOMMAND = set %PATH%=../lib;%PATH% && echo %PATH% && $(EXE)
 else
 	CLEARCOMMAND = rm *.o
 	UNAME_S := $(shell uname -s)
@@ -95,11 +96,12 @@ endif
 all: $(EXE)
 
 $(EXE): $(MAIN).o
-	$(CC) $(CC_LIB) -o $(EXE) $(MAIN).o $(LIBMINGW32) -lSDL2main -lSDL2 $(LIBAUDIO) -lSDL2_image -lSDL2_ttf -O3 $(LIBBASICAS) $(LIBREDE) $(LIBVIDEO) $(OPTCONSOLE)
+	$(CC) $(CC_LIB) -o $(EXE) $(MAIN).o $(LIBMINGW32) -lSDL2main -lSDL2 $(LIBAUDIO) -lSDL2_image -lSDL2_ttf $(LIBREDE)  $(LIBBASICAS) -O3 $(LIBVIDEO) $(OPTCONSOLE)
 	$(CLEARCOMMAND)
 
 $(MAIN).o: $(MAIN).cpp
 	$(CC) $(CC_FLAGS) $(CC_ARCH) $(CC_INCLUDE) $(OPTCONSOLE) -c $(MAIN).cpp -o $(MAIN).o
 
+.PHONY:
 run:
 	$(RUNCOMMAND)

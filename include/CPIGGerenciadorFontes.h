@@ -37,22 +37,22 @@ public:
     }
 
     inline static int CriaFonteFundo(string nome, int tamanho, PIGEstilo estilo, string arquivoFundo, int contorno, PIGCor corContorno, int idJanela=0){
-        return fontes->Insere(new CPIGFonte(nome,tamanho,estilo,arquivoFundo,contorno,corContorno,idJanela,NULL));
+        return fontes->Insere(new CPIGFonte(nome,tamanho,estilo,arquivoFundo,contorno,corContorno,idJanela));
     }
 
     inline static int CriaFonteFundo(string nome, int tamanho, PIGEstilo estilo, string arquivoFundo, int idJanela=0){
-        return fontes->Insere(new CPIGFonte(nome,tamanho,estilo,arquivoFundo,idJanela,NULL));
+        return fontes->Insere(new CPIGFonte(nome,tamanho,estilo,arquivoFundo,idJanela));
     }
 
     inline static int CriaFonteNormal(string nome, int tamanho, PIGEstilo estilo, PIGCor corLetra, int contorno, PIGCor corContorno, int idJanela=0){
-        return fontes->Insere(new CPIGFonte(nome,tamanho,estilo,corLetra,contorno,corContorno,idJanela,NULL));
+        return fontes->Insere(new CPIGFonte(nome,tamanho,estilo,corLetra,contorno,corContorno,idJanela));
     }
 
     inline static int CriaFonteNormal(string nome, int tamanho, PIGEstilo estilo, PIGCor corLetra=PIG_FONTE_PADRAO_COR, int idJanela=0){
-        return fontes->Insere(new CPIGFonte(nome,tamanho,estilo,corLetra,idJanela,NULL));
+        return fontes->Insere(new CPIGFonte(nome,tamanho,estilo,corLetra,idJanela));
     }
 
-    inline static int CriaFonteFundoOffScreen(string nome, int tamanho, PIGEstilo estilo, string arquivoFundo, int contorno, PIGCor corContorno, PIGOffscreenRenderer off, int layer=0){
+    /*inline static int CriaFonteFundoOffScreen(string nome, int tamanho, PIGEstilo estilo, string arquivoFundo, int contorno, PIGCor corContorno, PIGOffscreenRenderer off, int layer=0){
         return fontes->Insere(new CPIGFonte(nome,tamanho,estilo,arquivoFundo,contorno,corContorno,-1,off->GetLayer(layer)->render));
     }
 
@@ -66,7 +66,7 @@ public:
 
     inline static int CriaFonteNormalOffScreen(string nome, int tamanho, PIGEstilo estilo, PIGOffscreenRenderer off, PIGCor corLetra=PIG_FONTE_PADRAO_COR, int layer=0){
         return fontes->Insere(new CPIGFonte(nome,tamanho,estilo,corLetra,-1,off->GetLayer(layer)->render));
-    }
+    }*/
 
     inline static int CriaFonteDinamica(string nome, int tamanho, int idJanela=0){
         return fontes->Insere(new CPIGFonteDinamica(nome,tamanho,idJanela));

@@ -19,20 +19,20 @@ protected:
 
     void DesenhaBB(){
         for (int i=0;i<4;i++)
-            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(bb[i].x,bb[i].y,bb[(i+1)%4].x,bb[(i+1)%4].y,VERDE);
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado(pos.x,pos.y,alt,larg,VERMELHO);
+            PIGDesenhaLinhaSimples(bb[i].x,bb[i].y,bb[(i+1)%4].x,bb[(i+1)%4].y,VERDE);
+        PIGDesenhaRetanguloVazado(pos.x,pos.y,alt,larg,VERMELHO);
     }
 
     void DesenhaPoligono(PIGCor cor) {
         int qtdVertices = vertices.size();
         for (int i=0;i<qtdVertices;i++){
-            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(vertices[i].x,vertices[i].y,10,10,cor);
-            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(vertices[i].x,vertices[i].y,vertices[(i + 1) % qtdVertices].x,vertices[(i + 1) % qtdVertices].y,cor);
+            PIGDesenhaRetangulo(vertices[i].x,vertices[i].y,10,10,cor);
+            PIGDesenhaLinhaSimples(vertices[i].x,vertices[i].y,vertices[(i + 1) % qtdVertices].x,vertices[(i + 1) % qtdVertices].y,cor);
         }
     }
 
     void DesenhaCircular(PIGCor cor) {
-        SDL_SetRenderDrawColor(renderer, cor.r, cor.g, cor.b, 255);
+        /*SDL_SetRenderDrawColor(renderer, cor.r, cor.g, cor.b, 255);
 
         SDL_RenderDrawLine(
             renderer,
@@ -50,7 +50,7 @@ protected:
             renderer,
             pos.x + pivoAbs.x, altJanela - (pos.y + pivoAbs.y - raio),
             pos.x + pivoAbs.x - raio, altJanela - (pos.y + pivoAbs.y));
-
+*/
     }
 
     void AtualizaBB() {

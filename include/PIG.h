@@ -1,3 +1,8 @@
+#include <GL/glew.h>
+///aqui pode ter problema no Macosx
+///#include <OpenGL/glu.h>
+#include <GL/glu.h>
+
 #include "PIGTipos.h"
 #include "PIGFuncoesBasicas.h"
 #include "CPIGErros.h"
@@ -556,9 +561,8 @@ posicaoY (entrada, passagem por valor): indica a posição no eixo Y onde a câm
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela a ser alterada.
 ********************************/
 void MoveCamera(int posicaoX, int posicaoY, int idJanela=0){
-    CPIGGerenciadorJanelas::GetJanela(idJanela)->MoveCamera(posicaoX,posicaoY);
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->Move(posicaoX,posicaoY,0);
 }
-
 /********************************
 A função DeslocaCamera() é responsável por deslocar a câmera em relação à sua posição atual.
 Parâmetros:
@@ -567,7 +571,7 @@ deltaY (entrada, passagem por valor): valor a ser somado ou subtraído na compon
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela a ser alterada.
 ********************************/
 void DeslocaCamera(int deltaX, int deltaY, int idJanela=0){
-    CPIGGerenciadorJanelas::GetJanela(idJanela)->DeslocaCamera(deltaX,deltaY);
+    CPIGGerenciadorJanelas::GetJanela(idJanela)->Desloca(deltaX,deltaY,0);
 }
 
 /********************************
@@ -845,7 +849,7 @@ cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho da
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde a linha será desenhada.
 ********************************/
 void DesenhaLinhaSimples(int pontoX1 ,int pontoY1, int pontoX2, int pontoY2, PIGCor cor, int idJanela=0){
-    CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(pontoX1,pontoY1,pontoX2,pontoY2,cor);
+    PIGDesenhaLinhaSimples(pontoX1,pontoY1,pontoX2,pontoY2,cor);
 }
 
 /********************************
@@ -859,7 +863,7 @@ cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho da
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde as linhas serão desenhadas.
 ********************************/
 void DesenhaLinhasDisjuntas(int pontosX[], int pontosY[], int qtdPontos, PIGCor cor, int idJanela=0){
-    CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhasDisjuntas(pontosX,pontosY,qtdPontos,cor);
+    PIGDesenhaLinhasDisjuntas(pontosX,pontosY,qtdPontos,cor);
 }
 
 /********************************
@@ -873,7 +877,7 @@ cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho da
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde as linhas serão desenhadas.
 ********************************/
 void DesenhaLinhasSequencia(int pontosX[], int pontosY[], int qtdPontos, PIGCor cor, int idJanela=0){
-    CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhasSequencia(pontosX,pontosY,qtdPontos,cor);
+    PIGDesenhaLinhasSequencia(pontosX,pontosY,qtdPontos,cor);
 }
 
 /********************************
@@ -888,7 +892,7 @@ cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho do
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde o retângulo será desenhado.
 ********************************/
 void DesenhaRetangulo(int posicaoX, int posicaoY, int altura, int largura, PIGCor cor, int idJanela=0){
-    CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(posicaoX,posicaoY,altura,largura,cor);
+    PIGDesenhaRetangulo(posicaoX,posicaoY,altura,largura,cor);
 }
 
 /********************************
@@ -903,7 +907,7 @@ cor (entrada, passagem por valor): indica a cor no sistema RGB para a borda do r
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde o retângulo será desenhado.
 ********************************/
 void DesenhaRetanguloVazado(int posicaoX, int posicaoY, int altura, int largura, PIGCor cor, int idJanela=0){
-    CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado(posicaoX,posicaoY,altura,largura,cor);
+    PIGDesenhaRetanguloVazado(posicaoX,posicaoY,altura,largura,cor);
 }
 
 /********************************
@@ -918,7 +922,7 @@ cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho do
 idJanela (entrada, passagem por valor não-obrigatório): indica o número da janela onde o polígono será desenhado.
 ********************************/
 void DesenhaPoligono(int pontosX[], int pontosY[], int qtdPontos, PIGCor cor, int idJanela=0){
-    CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaPoligono(pontosX,pontosY,qtdPontos,cor);
+    PIGDesenhaPoligono(pontosX,pontosY,qtdPontos,cor);
 }
 
 
@@ -1079,7 +1083,9 @@ Parâmetros:
 cor (entrada, passagem por valor): indica a cor que deve ser usada durante a pintura completa do bitmap offscreen.
 ********************************/
 void PintaFundoOffScreen(PIGCor cor){
-    jogo->GetOffScreenRender()->PintarFundo(cor);
+    jogo->GetOffScreenRender()->Ativa();
+    PIGLimparFundo(cor);
+    jogo->GetOffScreenRender()->Desativa();
 }
 
 /********************************
@@ -1093,7 +1099,9 @@ largura (entrada, passagem por valor): Valor onde o usuário irá fornecer o nú
 cor (entrada, passagem por valor): indica a cor no sistema RGB para o preenchimento do retângulo.
 ********************************/
 void DesenhaRetanguloOffScreen(int x1, int y1, int altura, int largura, PIGCor cor){
-    jogo->GetOffScreenRender()->DesenharRetangulo(x1,y1,altura,largura,cor);
+    jogo->GetOffScreenRender()->Ativa();
+    PIGDesenhaRetangulo(x1,y1,altura,largura,cor);
+    jogo->GetOffScreenRender()->Desativa();
 }
 
 /********************************
@@ -1107,7 +1115,9 @@ largura (entrada, passagem por valor): Valor onde o usuário irá fornecer o nú
 cor (entrada, passagem por valor): indica a cor no sistema RGB para a borda do retângulo.
 ********************************/
 void DesenhaRetanguloVazadoOffScreen(int x1, int y1, int altura, int largura, PIGCor cor){
-    jogo->GetOffScreenRender()->DesenharRetanguloVazado(x1,y1,altura,largura,cor);
+    jogo->GetOffScreenRender()->Ativa();
+    PIGDesenhaRetanguloVazado(x1,y1,altura,largura,cor);
+    jogo->GetOffScreenRender()->Desativa();
 }
 
 /********************************
@@ -1120,7 +1130,9 @@ pontoY2 (entrada, passagem por valor): inteiro que indica o fim da linha no eixo
 cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho das linhas.
 ********************************/
 void DesenhaLinhaSimplesOffScreen(int x1, int y1, int x2, int y2, PIGCor cor){
-    jogo->GetOffScreenRender()->DesenharLinha(x1,y1,x2,y2,cor);
+    jogo->GetOffScreenRender()->Ativa();
+    PIGDesenhaLinhaSimples(x1,y1,x2,y2,cor);
+    jogo->GetOffScreenRender()->Desativa();
 }
 
 /********************************
@@ -1133,7 +1145,9 @@ qtdPontos (entrada, passagem por valor): quantidade de linhas a serem desenhadas
 cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho das linhas.
 ********************************/
 void DesenhaLinhasDisjuntasOffScreen(int pontosX[], int pontosY[], int qtdPontos, PIGCor cor){
-    jogo->GetOffScreenRender()->DesenhaLinhasDisjuntas(pontosX,pontosY,qtdPontos,cor);
+    jogo->GetOffScreenRender()->Ativa();
+    PIGDesenhaLinhasDisjuntas(pontosX,pontosY,qtdPontos,cor);
+    jogo->GetOffScreenRender()->Desativa();
 }
 
 /********************************
@@ -1146,7 +1160,9 @@ qtdPontos (entrada, passagem por valor): quantidade de linhas a serem desenhadas
 cor (entrada, passagem por valor): indica a cor no sistema RGB para o desenho das linhas.
 ********************************/
 void DesenhaLinhasSequenciaOffScreen(int pontosX[], int pontosY[], int qtdPontos, PIGCor cor){
-    jogo->GetOffScreenRender()->DesenhaLinhasSequencia(pontosX,pontosY,qtdPontos,cor);
+    jogo->GetOffScreenRender()->Ativa();
+    PIGDesenhaLinhasSequencia(pontosX,pontosY,qtdPontos,cor);
+    jogo->GetOffScreenRender()->Desativa();
 }
 
 
@@ -1254,7 +1270,7 @@ retono:
 inteiro que representa a ideintificação única da fonte. Futuras referência a esta fonte devem idenitificá-las pelo número.
 ********************************/
 int CriaFonteNormalOffscreen(char *nome, int tamanho, PIGCor corLetra, int contorno, PIGCor corContorno, PIGEstilo estilo=PIG_ESTILO_NORMAL){
-    return CPIGGerenciadorFontes::CriaFonteNormalOffScreen(nome,tamanho,estilo,corLetra,contorno,corContorno,jogo->GetOffScreenRender(),0);
+    //return CPIGGerenciadorFontes::CriaFonteNormalOffScreen(nome,tamanho,estilo,corLetra,contorno,corContorno,jogo->GetOffScreenRender(),0);
 }
 
 /********************************
@@ -1269,7 +1285,7 @@ retono:
 inteiro que representa a ideintificação única da fonte. Futuras referência a esta fonte devem idenitificá-las pelo número.
 ********************************/
 int CriaFonteNormalOffscreen(char *nome, int tamanho, PIGCor corLetra=BRANCO, PIGEstilo estilo=PIG_ESTILO_NORMAL){
-    return CPIGGerenciadorFontes::CriaFonteNormalOffScreen(nome,tamanho,estilo,jogo->GetOffScreenRender(),corLetra,0);
+    //return CPIGGerenciadorFontes::CriaFonteNormalOffScreen(nome,tamanho,estilo,jogo->GetOffScreenRender(),corLetra,0);
 }
 
 
@@ -1287,7 +1303,7 @@ retono:
 inteiro que representa a ideintificação única da fonte. Futuras referência a esta fonte devem idenitificá-las pelo número.
 ********************************/
 int CriaFonteFundoOffscreen(char *nome, int tamanho, char *arquivoFundo, int contorno, PIGCor corContorno, PIGEstilo estilo=PIG_ESTILO_NORMAL){
-    return CPIGGerenciadorFontes::CriaFonteFundoOffScreen(nome,tamanho,estilo,arquivoFundo,contorno,corContorno,jogo->GetOffScreenRender(),0);
+    //return CPIGGerenciadorFontes::CriaFonteFundoOffScreen(nome,tamanho,estilo,arquivoFundo,contorno,corContorno,jogo->GetOffScreenRender(),0);
 }
 
 /********************************
@@ -1302,7 +1318,7 @@ retono:
 inteiro que representa a ideintificação única da fonte. Futuras referência a esta fonte devem idenitificá-las pelo número.
 ********************************/
 int CriaFonteFundoOffscreen(char *nome, int tamanho, char *arquivoFundo, PIGEstilo estilo=PIG_ESTILO_NORMAL){
-    return CPIGGerenciadorFontes::CriaFonteFundoOffScreen(nome,tamanho,estilo,arquivoFundo,jogo->GetOffScreenRender(),0);
+    //return CPIGGerenciadorFontes::CriaFonteFundoOffScreen(nome,tamanho,estilo,arquivoFundo,jogo->GetOffScreenRender(),0);
 }
 
 /********************************
@@ -1328,7 +1344,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação da string.
 ********************************/
 void EscreverDireita(char *str,int posicaoX, int posicaoY, PIGCor cor=BRANCO, int numFonte=0, float angulo=0){
-    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str,posicaoX,posicaoY,cor,PIG_TEXTO_DIREITA,angulo);
+    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str,posicaoX,posicaoY,true,cor,PIG_TEXTO_DIREITA,angulo);
 }
 
 /********************************
@@ -1342,7 +1358,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação da string.
 ********************************/
 void EscreverEsquerda(char *str, int posicaoX, int posicaoY, PIGCor cor=BRANCO, int numFonte=0,float angulo=0){
-    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str,posicaoX,posicaoY,cor,PIG_TEXTO_ESQUERDA,angulo);
+    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str,posicaoX,posicaoY,true,cor,PIG_TEXTO_ESQUERDA,angulo);
 }
 
 /********************************
@@ -1356,7 +1372,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação da string.
 ********************************/
 void EscreverCentralizada(char *str, int posicaoX, int posicaoY, PIGCor cor=BRANCO, int numFonte=0, float angulo=0){
-    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str,posicaoX,posicaoY,cor,PIG_TEXTO_CENTRO,angulo);
+    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str,posicaoX,posicaoY,true,cor,PIG_TEXTO_CENTRO,angulo);
 }
 
 /********************************
@@ -1374,7 +1390,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação das strings.
 ********************************/
 void EscreverLongaEsquerda(char *str, int posicaoX, int posicaoY, int largMax, int espacoEntreLinhas, PIGCor cor=BRANCO, int numFonte=0, float angulo=0){
-    CPIGGerenciadorFontes::GetFonte(numFonte)->EscreveLonga(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,cor,PIG_TEXTO_ESQUERDA,angulo);
+    CPIGGerenciadorFontes::GetFonte(numFonte)->EscreveLonga(str,posicaoX,posicaoY,true,largMax,espacoEntreLinhas,cor,PIG_TEXTO_ESQUERDA,angulo);
 }
 
 /********************************
@@ -1392,7 +1408,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação das strings.
 ********************************/
 void EscreverLongaDireita(char *str, int posicaoX, int posicaoY, int largMax, int espacoEntreLinhas, PIGCor cor=BRANCO, int numFonte=0, float angulo=0){
-    CPIGGerenciadorFontes::GetFonte(numFonte)->EscreveLonga(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,cor,PIG_TEXTO_DIREITA,angulo);
+    CPIGGerenciadorFontes::GetFonte(numFonte)->EscreveLonga(str,posicaoX,posicaoY,true,largMax,espacoEntreLinhas,cor,PIG_TEXTO_DIREITA,angulo);
 }
 
 /********************************
@@ -1410,7 +1426,7 @@ numFonte (entrada, passagem por valor): número da fonte a ser utilizada. Caso o
 angulo (entrada, passagem por valor): ângulo, em graus, para a rotação das strings.
 ********************************/
 void EscreverLongaCentralizada(char *str, int posicaoX, int posicaoY, int largMax, int espacoEntreLinhas, PIGCor cor=BRANCO, int numFonte=0, float angulo=0){
-    CPIGGerenciadorFontes::GetFonte(numFonte)->EscreveLonga(str,posicaoX,posicaoY,largMax,espacoEntreLinhas,cor,PIG_TEXTO_CENTRO,angulo);
+    CPIGGerenciadorFontes::GetFonte(numFonte)->EscreveLonga(str,posicaoX,posicaoY,true,largMax,espacoEntreLinhas,cor,PIG_TEXTO_CENTRO,angulo);
 }
 
 /********************************
@@ -1426,7 +1442,7 @@ angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do nú
 void EscreveInteiroEsquerda(int valor, int x, int y, PIGCor cor=BRANCO, int numFonte=0, float angulo=0){
     stringstream str;
     str<<valor;
-    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str.str(),x,y,cor,PIG_TEXTO_ESQUERDA,angulo);
+    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str.str(),x,y,true,cor,PIG_TEXTO_ESQUERDA,angulo);
 }
 
 /********************************
@@ -1442,7 +1458,7 @@ angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do nú
 void EscreveInteiroDireita(int valor, int x, int y, PIGCor cor=BRANCO, int numFonte=0, float angulo=0){
     stringstream str;
     str<<valor;
-    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str.str(),x,y,cor,PIG_TEXTO_DIREITA,angulo);
+    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str.str(),x,y,true,cor,PIG_TEXTO_DIREITA,angulo);
 }
 
 /********************************
@@ -1458,7 +1474,7 @@ angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do nú
 void EscreveInteiroCentralizado(int valor, int x, int y, PIGCor cor=BRANCO, int numFonte=0, float angulo=0){
     stringstream str;
     str<<valor;
-    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str.str(),x,y,cor,PIG_TEXTO_CENTRO,angulo);
+    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str.str(),x,y,true,cor,PIG_TEXTO_CENTRO,angulo);
 }
 
 /********************************
@@ -1476,7 +1492,7 @@ void EscreveDoubleEsquerda(double valor, int casas, int x, int y, PIGCor cor=BRA
     stringstream str;
     str.setf(std::ios_base::fixed, std::ios_base::floatfield);
     str<<std::setprecision(casas)<<valor;
-    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str.str(),x,y,cor,PIG_TEXTO_ESQUERDA,angulo);
+    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str.str(),x,y,true,cor,PIG_TEXTO_ESQUERDA,angulo);
 }
 
 /********************************
@@ -1494,7 +1510,7 @@ void EscreveDoubleDireita(double valor, int casas, int x, int y, PIGCor cor=BRAN
     stringstream str;
     str.setf(std::ios_base::fixed, std::ios_base::floatfield);
     str<<std::setprecision(casas)<<valor;
-    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str.str(),x,y,cor,PIG_TEXTO_DIREITA,angulo);
+    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str.str(),x,y,true,cor,PIG_TEXTO_DIREITA,angulo);
 }
 
 /********************************
@@ -1512,7 +1528,7 @@ void EscreveDoubleCentralizado(double valor, int casas, int x, int y, PIGCor cor
     stringstream str;
     str.setf(std::ios_base::fixed, std::ios_base::floatfield);
     str<<std::setprecision(casas)<<valor;
-    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str.str(),x,y,cor,PIG_TEXTO_CENTRO,angulo);
+    CPIGGerenciadorFontes::GetFonte(numFonte)->Escreve(str.str(),x,y,true,cor,PIG_TEXTO_CENTRO,angulo);
 }
 
 /********************************
@@ -1609,7 +1625,7 @@ retorno:
 inteiro que representa o espaçamento vertical ideal para que duas frases não se sobreponham verticalmente.
 ********************************/
 void SubstituiCaractere(char caractere, char *nomeArquivo, int largNova, int x, int y, int altura, int largura, int numFonte=0){
-    CPIGGerenciadorFontes::GetFonte(numFonte)->SubstituiGlyph(nomeArquivo,caractere,largNova,x,y,altura,largura);
+    CPIGGerenciadorFontes::GetFonte(numFonte)->SubstituiGlyph(nomeArquivo,caractere,{x,y,altura,largura},altura,largNova);
 }
 
 
@@ -2179,7 +2195,7 @@ Retorno:
 Número do frame atual do sprite.
 ********************************/
 int GetFrameAtualSprite(int idSprite){
-    return CPIGGerenciadorSprites::GetSprite(idSprite)->GetFrameAtual();
+    return CPIGGerenciadorSprites::GetSprite(idSprite)->GetIDFrameAtual();
 }
 
 /********************************
@@ -2433,7 +2449,7 @@ Retorno:
 Número do frame atual do objeto.
 ********************************/
 int GetFrameAtualObjeto(int idObjeto){
-    return CPIGGerenciadorSprites::GetObjeto(idObjeto)->GetFrameAtual();
+    return CPIGGerenciadorSprites::GetObjeto(idObjeto)->GetIDFrameAtual();
 }
 
 /********************************
@@ -3878,7 +3894,7 @@ Retorno:
 Número do frame atual da animação.
 ********************************/
 int GetFrameAtualAnimacao(int idAnimacao){
-    return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetFrameAtual();
+    return CPIGGerenciadorSprites::GetAnimacao(idAnimacao)->GetIDFrameAtual();
 }
 
 /********************************
@@ -5657,7 +5673,7 @@ Retorno:
 inteiro que representa o identificador do formulário que possui o componente em questão.
 ********************************/
 int PIGFormGetIdPorComponente(int idComponente){
-    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetId();
+    return CPIGGerenciadorForms::GetFormComponente(idComponente)->GetID();
 }
 
 /********************************

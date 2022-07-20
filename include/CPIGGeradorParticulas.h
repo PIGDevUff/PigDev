@@ -35,7 +35,7 @@ private:
             //printf("viva %d %d %d\n",i,parts[i]->ChecaViva(),parts[i]->GetId());
             if (parts[i]->ChecaViva()==false){;
                 //printf("antes del %d (%f)\n",parts[i]->GetID(),maxTempo);
-                CPIGGerenciadorSprites::DestroiAnimacao(parts[i]->GetId());
+                CPIGGerenciadorSprites::DestroiAnimacao(parts[i]->GetID());
 
                 #ifdef PIGCOMAUDIO
                 if (audioFim>=0)

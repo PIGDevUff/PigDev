@@ -194,7 +194,7 @@ private:
         int xLinha = pos.x+margemEsq;
 
         while(yLinha >= pos.y+margemBaixo){
-            CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaLinhaSimples(xLinha,yLinha,xLinha+larg-margemDir,yLinha,coresBasicas[2]);
+            PIGDesenhaLinhaSimples(xLinha,yLinha,xLinha+larg-margemDir,yLinha,coresBasicas[2]);
             yLinha -= (espacoEntreLinhas + altLetra);
         }
     }
@@ -296,16 +296,31 @@ public:
         //imagem de fundo
         if (imagemPropria)
             CPIGSprite::Desenha();
-        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
+        else PIGDesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
 
         //DesenhaMarcacaoMargem();
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x+margemEsq,pos.y+margemBaixo,alt-(margemBaixo+margemCima),larg-(margemEsq+margemDir));
+        /*CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x+margemEsq,pos.y+margemBaixo,alt-(margemBaixo+margemCima),larg-(margemEsq+margemDir));
 
         DesenhaCursor();//desenha o cursor (se estiver em ediçăo)
         CPIGGerenciadorFontes::GetFonte(fonteTexto)->EscreveLonga(texto,xTexto,yTexto,larg-(margemEsq+margemDir),(espacoEntreLinhas + altLetra),coresBasicas[1],PIG_TEXTO_ESQUERDA);
 
         //desbloqueia o desenho fora da area do componente
         CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
+*/
+        PIGPreparaStencil();
+
+        PIGDesenhaRetangulo(pos.x+margemEsq-1,pos.y+margemBaixo,alt-margemBaixo-margemCima,larg-margemEsq-margemDir+1,VERDE);
+
+        PIGFixaStencil();
+
+        //DesenhaMarcacaoMargem();
+
+        //printf("texto: <%s> xbase\n",GetTextoVisivel().c_str(),xTexto);
+        CPIGGerenciadorFontes::GetFonte(fonteTexto)->EscreveLonga(texto,xTexto,yTexto,larg-(margemEsq+margemDir),(espacoEntreLinhas + altLetra),true,coresBasicas[1],PIG_TEXTO_ESQUERDA);
+        DesenhaCursor();//desenha o cursor (se estiver em ediçăo)
+
+        PIGLiberaStencil();
+
 
         if(linhasPauta) DesenhaLinhasHorizontais();
 

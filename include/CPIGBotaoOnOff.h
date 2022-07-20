@@ -72,8 +72,8 @@ protected:
         }
 
         coresBasicas[0] = coresBasicas[corAtual];
-        if (text)
-            MudaFrameAtual(corAtual);
+        //if (text)
+        //    MudaFrameAtual(corAtual);
     }
 
     PIGEstadoEvento OnAction()override{

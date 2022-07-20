@@ -154,7 +154,7 @@ public:
     int GetIdComponente(string label){
         for(int i=0;i<totalComponentes;i++){
             if (componentes[i]->GetLabel()==label)
-                return componentes[i]->GetId();
+                return componentes[i]->GetID();
         }
         return -1;
     }
@@ -174,7 +174,7 @@ public:
         if (imagemPropria){
             CPIGSprite::Desenha();
         }
-        else CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
+        else PIGDesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
 
         //desenha primeiro os componentes fora do mouse
         for(int i=0;i<totalComponentes;i++){
