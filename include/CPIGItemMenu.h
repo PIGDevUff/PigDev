@@ -14,7 +14,10 @@ private:
             SetAcionado(true);
             if (acao!=NULL)
                 acao(id,param);
-        }else SetAcionado(!GetAcionado());
+        }else{
+            printf(" mudar de %d acionado\n",acionado);
+            SetAcionado(!GetAcionado());
+        }
 
         #ifdef PIGCOMAUDIO
         if (audioComponente>=0) CPIGGerenciadorAudios::Play(audioComponente);
@@ -155,9 +158,10 @@ public:
             PIGEstadoEvento resp = PIG_COMPONENTE_NAOTRATADO;
             for (CPIGItemMenu *sub:submenu){
                 PIGEstadoEvento aux = sub->TrataEventoMouse(evento);
-                if (aux == PIG_COMPONENTE_TRATADO)
+                if (aux != PIG_COMPONENTE_TRATADO&&aux!=PIG_COMPONENTE_MOUSEOVER)
+                    sub->SetAcionado(false);
+                else if (aux == PIG_COMPONENTE_TRATADO)
                     resp = aux;
-                else sub->SetAcionado(false);
             }
             return resp;
         }

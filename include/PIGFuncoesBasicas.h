@@ -100,7 +100,8 @@ void PIGPrepara2DFixa(int altura,int largura,int invertida){
     glLoadIdentity();
 //printf("passou 003\n");
     glDisable(GL_DEPTH_TEST);
-    glEnable(GL_LIGHTING);
+    //glEnable(GL_LIGHTING);
+    glDisable(GL_LIGHTING);
  //   printf("passou 004\n");
 }
 
@@ -117,7 +118,7 @@ void PIGPrepara2DMovel(int altura,int largura, double afastamento, float px,floa
     glTranslatef(-px-largura/2,-py-altura/2,-pz);
 
     glDisable(GL_DEPTH_TEST);
-    glEnable(GL_LIGHTING);
+    glDisable(GL_LIGHTING);
 }
 
 void PIGPrepara3D(int altura,int largura, float px,float py,float pz){

@@ -141,18 +141,16 @@ public:
     int Desenha(){
         if (visivel==false) return 0;
 
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x,pos.y,alt,larg);
-
         if (imagemPropria)//se tiver imagem de fundo
             CPIGSprite::Desenha();
-        else PIGDesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
+        else{
+            PIGDesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
+        }
 
         for (PIGItemComponente i: itens)
             i->Desenha();
 
         DesenhaRetanguloMarcacao();
-
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
 
         return CPIGComponente::Desenha();
     }

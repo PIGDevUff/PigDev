@@ -68,8 +68,8 @@ protected:
         }
 
         coresBasicas[0] = coresBasicas[corAtual];
-        //if (text)
-        //    MudaFrameAtual(corAtual);
+        if (imagemPropria)
+            MudaFrameAtual(corAtual);
     }
 
     void TrataTimer(){

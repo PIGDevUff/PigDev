@@ -142,7 +142,7 @@ public:
 
         if (!marcadorAtualizado) AtualizaMarcador();
 
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x,pos.y,alt,larg);
+        //CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x,pos.y,alt,larg);
 
         //moldura
         if (imagemPropria){
@@ -159,7 +159,7 @@ public:
             DesenhaBarraCor();
         }
 
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
+        //CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
 
         return CPIGComponente::Desenha();
     }

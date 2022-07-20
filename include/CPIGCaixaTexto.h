@@ -137,7 +137,7 @@ protected:
     }
 
     //reira um caracter com a tecla backspace
-    int RetiraTextoBackSpace(){
+    virtual int RetiraTextoBackSpace(){
         if (texto.size()==0||posCursor==0) return 0;//năo tem caractere atrés do cursor
 
         texto.erase(posCursor-1,1);//retira o caracter imediatamente atrás do cursor e retrocede com ele
@@ -149,7 +149,7 @@ protected:
     }
 
     //retira um caracter com a tecla delete
-    int RetiraTextoDelete(){
+    virtual int RetiraTextoDelete(){
         if (texto.size()==0||posCursor>=texto.size()) return 0;//năo tem caracter na frente do cursor
 
         texto.erase(posCursor,1);//retira o caracter imediatamente a frente do cursor

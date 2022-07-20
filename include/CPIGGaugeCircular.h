@@ -128,7 +128,7 @@ private:
         }
         bitmap = off->GetSurface();
         //SDL_SaveBMP(bitmap,"gauge.bmp");
-        SDL_SetColorKey(bitmap,SDL_TRUE,0);
+        //SDL_SetColorKey(bitmap,SDL_TRUE,0);
         idTextura = PIGCriaTexturaSurface(bitmap,true);
         delete off;
 
@@ -178,14 +178,10 @@ public:
 
         if (!marcadorAtualizado) AtualizaMarcador();
 
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x,pos.y,alt,larg);
-
         //vai desenhar o gauge em si
         CPIGSprite::Desenha();
         if (marcador)
             marcador->Desenha();
-
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
 
         return CPIGComponente::Desenha();
     }

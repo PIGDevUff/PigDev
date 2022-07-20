@@ -1,5 +1,5 @@
-#ifndef _CPIGJanela_
-#define _CPIGJanela_
+#ifndef _CPIGJANELA_
+#define _CPIGJANELA_
 
 #include "CPIGCamera.h"
 
@@ -37,7 +37,7 @@ CPIGJanela(string tituloJanela, int idJanela, int altTela, int largTela):
         SDL_GetWindowPosition(window,&pos.x,&pos.y);
 
         maincontext = SDL_GL_CreateContext(window);
-        //SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
+        SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
         renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED|SDL_RENDERER_TARGETTEXTURE);
         corFundo = PRETO;
         SDL_SetRenderDrawColor( renderer, corFundo.r, corFundo.g, corFundo.b, corFundo.a );
@@ -238,7 +238,7 @@ PIGCor GetPixel(int x, int y) {
     return resp;
 }
 
-void BloqueiaArea(int x, int y, int alt, int larg){
+/*void BloqueiaArea(int x, int y, int alt, int larg){
     block.x = x;
     block.y = altura-(y+alt);
     block.h = alt;
@@ -255,9 +255,9 @@ SDL_Rect GetAreaBloqueada(){
 void DesbloqueiaArea(){
     block = {0,0,-1,-1};
     SDL_RenderSetClipRect(renderer,NULL);
-}
+}*/
 
 };
 
 typedef CPIGJanela *PIGJanela;
-#endif // _CPIGJanela_
+#endif // _CPIGJANELA_

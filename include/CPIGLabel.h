@@ -43,26 +43,29 @@ private:
         MudaFrameAtual(0);
     }*/
 
-void AtualizaTextura(){
-    if (bitmap){
-        SDL_FreeSurface(bitmap);
-        LiberaTextura();
+void AtualizaTextura()override{
+    if (this_thread::get_id()==PIG_MAIN_THREAD_ID){
+        if (bitmap){
+            SDL_FreeSurface(bitmap);
+            LiberaTextura();
+        }
+
+        PIGFonte mapa = CPIGGerenciadorFontes::GetFonte(idFonte);
+        largOriginal = larg = mapa->GetLarguraPixelsString(frase);
+        altOriginal = alt = mapa->GetFonteAscent()+mapa->GetFonteDescent()+5;
+
+        PIGOffscreenRenderer off = new CPIGOffscreenRenderer(alt,larg,1);
+        off->Ativa();
+        mapa->Escreve(frase,0,0,false,coloracao,PIG_TEXTO_ESQUERDA,0);
+        bitmap = SDL_ConvertSurfaceFormat(off->GetSurface(),SDL_PIXELFORMAT_RGBA32,0);
+        delete off;
+
+        DefineFrame(0,{0,0,larg,alt});
+        MudaFrameAtual(0);
+
+        idTextura = PreparaTextura(0);
+        precisaAtualizar = false;
     }
-
-    PIGFonte mapa = CPIGGerenciadorFontes::GetFonte(idFonte);
-    largOriginal = larg = mapa->GetLarguraPixelsString(frase);
-    altOriginal = alt = mapa->GetFonteAscent()+mapa->GetFonteDescent()+5;
-
-    PIGOffscreenRenderer off = new CPIGOffscreenRenderer(alt,larg,1);
-    off->Ativa();
-    mapa->Escreve(frase,0,0,false,coloracao,PIG_TEXTO_ESQUERDA,0);
-    bitmap = SDL_ConvertSurfaceFormat(off->GetSurface(),SDL_PIXELFORMAT_RGBA32,0);
-    delete off;
-
-    DefineFrame(0,{0,0,larg,alt});
-    MudaFrameAtual(0);
-
-    idTextura = PreparaTextura(0);
 }
 
 public:

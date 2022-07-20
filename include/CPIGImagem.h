@@ -350,11 +350,9 @@ void CriaFramesAutomaticosPorColuna(int idFrameInicial,int qtdLinhas, int qtdCol
 
 virtual int Desenha(){
     if (idTextura==0) return 0;
-
-    cout<<"to aqui1"<<endl;
     //printf("%d\n",idTextura);
     CPIGGerenciadorJanelas::GetJanela(idJanela)->FazCorrente();
-cout<<"to aqui2"<<endl;
+
     glPushMatrix();
 
     glTranslated(pos.x+pivoAbs.x,pos.y+pivoAbs.y,0);
@@ -405,8 +403,6 @@ cout<<"to aqui2"<<endl;
     glEnd();
     glBindTexture(GL_TEXTURE_2D,0);
 
-    cout<<"to aqui"<<endl;
-
     glDisable(GL_COLOR_MATERIAL);
 
     glDisable(GL_BLEND);
@@ -416,7 +412,7 @@ cout<<"to aqui2"<<endl;
     return 0;
 }
 
-std::string GetNomeArquivo(){
+string GetNomeArquivo(){
     return nomeArquivo;
 }
 

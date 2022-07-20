@@ -88,6 +88,22 @@ private:
     //    CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetanguloVazado(pos.x+margemHorEsq,pos.y+margemVertBaixo,alt-margemVertBaixo-margemVertCima-1,larg-margemHorDir-margemHorEsq,coresBasicas[2]);
     //}
 
+     //reira um caracter com a tecla backspace
+    int RetiraTextoBackSpace()override{
+        int aux = CPIGCaixaTexto::RetiraTextoBackSpace();
+        AjustaPosicaoTextoCursor();
+        AjustaSlideVerticalPeloCursor();
+        return aux;
+    }
+
+    //retira um caracter com a tecla delete
+    int RetiraTextoDelete()override{
+        int aux = CPIGCaixaTexto::RetiraTextoDelete();
+        AjustaPosicaoTextoCursor();
+        AjustaSlideVerticalPeloCursor();
+        return aux;
+    }
+
     void IniciaPosicaoTexto(){
         yTexto = pos.y + alt-altLetra-margemCima;
         xTexto = pos.x + margemEsq;

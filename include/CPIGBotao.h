@@ -60,8 +60,9 @@ public:
         ChecaMouseOver(GetPosicaoMouse());
 
         if (mouseOver){
-            if(evento.mouse.acao==PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO)
+            if(evento.mouse.acao==PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO){
                 return OnAction();
+            }
             return PIG_COMPONENTE_MOUSEOVER;
         }
 
@@ -85,13 +86,9 @@ public:
     int Desenha()override{
         if (visivel==false) return 0;
 
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x,pos.y,alt,larg);
-
         if (imagemPropria)
             CPIGSprite::Desenha();
         else PIGDesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
-
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
 
         return CPIGComponente::Desenha();
     }

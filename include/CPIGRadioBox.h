@@ -103,7 +103,7 @@ public:
     int Desenha()override{
         if (visivel==false) return 0;
 
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x,pos.y,alt,larg);
+        //CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(pos.x,pos.y,alt,larg);
 
         if (imagemPropria)//se tiver imagem de fundo
             CPIGSprite::Desenha();
@@ -112,7 +112,7 @@ public:
         for (PIGItemComponente i: itens)
             i->Desenha();
 
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
+        //CPIGGerenciadorJanelas::GetJanela(idJanela)->DesbloqueiaArea();
 
         return CPIGComponente::Desenha();
     }

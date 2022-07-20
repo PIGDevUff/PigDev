@@ -49,7 +49,16 @@ protected:
     //escreve o hint do componente na tela
     void EscreveHint(){
         if (mouseOver&&hint->GetTexto()!=""){
-            SDL_Rect r = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAreaBloqueada();
+
+            SDL_Point p;
+            if (CPIGGerenciadorJanelas::GetJanela(idJanela)->GetTipoCamera()==PIG_CAMERA2D_FIXA)
+                p = CPIGMouse::PegaXYTela();
+            else p = CPIGMouse::PegaXYWorld();
+            hint->Move(p.x+16,p.y+5);
+            hint->Desenha();
+
+            //código SDL (antes opengl)
+            /*SDL_Rect r = CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAreaBloqueada();
 
             if (r.h>0){
                 PIGDesenhaRetanguloVazado(r.x,r.y,r.h,r.w,AMARELO);
@@ -65,6 +74,7 @@ protected:
 
             if (r.h>0)
                 CPIGGerenciadorJanelas::GetJanela(idJanela)->BloqueiaArea(r.x,r.y,r.h,r.w);
+            */
         }
     }
 
@@ -158,9 +168,9 @@ protected:
     }
 
     inline SDL_Point GetPosicaoMouse(){
-        if (CPIGGerenciadorJanelas::GetJanela(idJanela)->GetUsandoCameraFixa())
+        if (CPIGGerenciadorJanelas::GetJanela(idJanela)->GetUsandoCameraFixa()){
             return CPIGMouse::PegaXYTela();
-        else return CPIGMouse::PegaXYWorld();
+        }else return CPIGMouse::PegaXYWorld();
     }
 
     virtual void ProcessaAtributos(CPIGAtributos atrib){
