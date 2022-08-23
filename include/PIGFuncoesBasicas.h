@@ -87,52 +87,34 @@ GLuint PIGCriaTexturaSurface(SDL_Surface *surface,bool mipmap=true){
 }
 
 void PIGPrepara2DFixa(int altura,int largura,int invertida){
-    //printf("passou 000\n");
     glMatrixMode(GL_PROJECTION);
-    //printf("passou 0000000100\n");
     glLoadIdentity();
-    //printf("passou 0000000111\n");
     glViewport(0,0,largura,altura);
-//printf("passou 001\n");
     glOrtho(0, largura, invertida*altura, (1-invertida)*altura,-100, 100);
-//printf("passou 002\n");
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-//printf("passou 003\n");
     glDisable(GL_DEPTH_TEST);
-    //glEnable(GL_LIGHTING);
-    glDisable(GL_LIGHTING);
- //   printf("passou 004\n");
 }
 
 void PIGPrepara2DMovel(int altura,int largura, double afastamento, float px,float py,float pz){
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glViewport(0,0,largura,altura);
-
     glOrtho(-largura*afastamento/2, largura*afastamento/2, -altura*afastamento/2, altura*afastamento/2,-100, 100);
-
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-
-    glTranslatef(-px-largura/2,-py-altura/2,-pz);
-
+    glTranslatef(-px-largura/2,-py-altura/2,0);
     glDisable(GL_DEPTH_TEST);
-    glDisable(GL_LIGHTING);
 }
 
 void PIGPrepara3D(int altura,int largura, float px,float py,float pz){
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(60.0,largura*1.0/altura,0.5,700.0);
-
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-
     glTranslatef(-px,-py,-pz);
-
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_LIGHTING);
 }
 
 void PIGLimparFundo(PIGCor cor){
@@ -306,6 +288,13 @@ string PIGGetDiretorioAtual(){
         free(dir);
         return resp;
     }else return "./";
+}
+
+//retorna o caminho base de um diretorio ou arquivo
+string PIGCaminhoBaseDiretorio(string path)
+{
+	size_t pos = path.find_last_of("\\/");
+	return (string::npos == pos) ? "" : path.substr(0, pos + 1);
 }
 
 //retorna "valor" limitado entre [vMin, vMax]

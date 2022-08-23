@@ -300,7 +300,7 @@ public:
     }
 
     inline float GetFPS(int idJanela=0){
-        return 1;//return CPIGGerenciadorJanelas::GetJanela(idJanela)->GetFPS();
+        return CPIGGerenciadorJanelas::GetJanela(idJanela)->GetFPS();
     }
 
     void PreparaOffScreenRenderer(int altura, int largura){

@@ -8,19 +8,20 @@ EXE = Projeto.exe
 CC = g++
 
 #flags de compilação
-CC_FLAGS = -fexceptions -march=core2 -w -std=c++11 -O3 -DGLEW_STATIC
+CC_FLAGS = -fexceptions -march=core2 -w -std=c++11 -static-libstdc++ -O3 -DGLEW_STATIC
 
 #flags de arquitetura
 CC_ARCH =
 
 #diretorios de busca de arquivos .h
-CC_INCLUDE = -I../include -I../include/SDL -I../include/SDL_image -I../include/glew-2.1.0/include
+CC_INCLUDE = -I../include -I./ogldev -I../include/SDL -I../include/SDL_image -I../include/glew-2.1.0/include -I../include/assimp/include
 
 #diretorios de busca de bibliotecas estáticas
 CC_LIB = -L../lib
 
+#-static-libstdc++
 #bibliotecas necessárias
-LIBBASICAS = -lglu32  ../include/glew-2.1.0/lib/Release/Win32/glew32s.lib ../include/glew-2.1.0/lib/Release/Win32/glew32.lib -lopengl32 -lpthread -lm
+LIBBASICAS =  -lassimp.dll -lglu32 ../include/glew-2.1.0/lib/Release/Win32/glew32s.lib ../include/glew-2.1.0/lib/Release/Win32/glew32.lib -lopengl32 -lpthread -lm
 
 #se o projeto não utilizar audios, mudar o valor de MODULOAUDIO abaixo para qualquer outro valor ou apenas comentar a linha abaixo
 MODULOAUDIO = SIM

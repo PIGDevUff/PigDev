@@ -403,7 +403,7 @@ virtual int Desenha(){
     glEnd();
     glBindTexture(GL_TEXTURE_2D,0);
 
-    glDisable(GL_COLOR_MATERIAL);
+    //glDisable(GL_COLOR_MATERIAL);
 
     glDisable(GL_BLEND);
     glDisable(GL_TEXTURE_2D);

@@ -20,6 +20,9 @@ bool fechada;
 float opacidade;
 SDL_Rect block;
 string titulo;
+int contFPS;
+int lastFPS;
+PIGTimer timerFPS;
 
 public:
 
@@ -49,11 +52,19 @@ CPIGJanela(string tituloJanela, int idJanela, int altTela, int largTela):
     textFundo = NULL;
     SetTipoCamera(PIG_CAMERA2D_FIXA);
     FazCorrente();
+    contFPS = 0;
+    lastFPS = 0;
+    timerFPS = new CPIGTimer(false);
 }
 
 ~CPIGJanela(){
     SDL_DestroyRenderer(renderer);
+    delete timerFPS;
     if (window) SDL_DestroyWindow(window);
+}
+
+double GetFPS(){
+    return lastFPS/PIG_INTERVALO_FPS;
 }
 
 void PreparaCameraFixa(){
@@ -85,6 +96,13 @@ void IniciaDesenho(){
 void EncerraDesenho(){
     FazCorrente();
     SDL_GL_SwapWindow(window);
+    contFPS++;
+    if (timerFPS->GetTempoDecorrido()>PIG_INTERVALO_FPS){
+        lastFPS=contFPS;
+        contFPS=0;
+
+        timerFPS->Reinicia(false);
+    }
 }
 
 SDL_Window *GetWindow(){
@@ -237,25 +255,6 @@ PIGCor GetPixel(int x, int y) {
     }
     return resp;
 }
-
-/*void BloqueiaArea(int x, int y, int alt, int larg){
-    block.x = x;
-    block.y = altura-(y+alt);
-    block.h = alt;
-    block.w = larg;
-
-    //GetCamera()->ConverteCoordenadaWorldScreen(block.x,block.y,block.x,block.y);
-    //SDL_RenderSetClipRect(renderer,&block);
-}
-
-SDL_Rect GetAreaBloqueada(){
-    return block;
-}
-
-void DesbloqueiaArea(){
-    block = {0,0,-1,-1};
-    SDL_RenderSetClipRect(renderer,NULL);
-}*/
 
 };
 
