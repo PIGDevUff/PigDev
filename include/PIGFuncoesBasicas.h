@@ -48,8 +48,8 @@ void PIGLiberaStencil(){
     glDisable(GL_STENCIL_TEST);
 }
 
-GLuint PIGCriaTexturaSurface(SDL_Surface *surface,bool mipmap=true){
-    //printf("entreou1\n");
+GLuint PIGCriaTexturaSurface(SDL_Surface *surface){
+
     SDL_Surface *copia = SDL_ConvertSurfaceFormat(surface,SDL_PIXELFORMAT_RGBA32,0);//para forçar a aplicação da colorkey
 
     GLuint textureId;
@@ -58,19 +58,11 @@ GLuint PIGCriaTexturaSurface(SDL_Surface *surface,bool mipmap=true){
     /* Typical Texture Generation Using Data From The Bitmap */
     glBindTexture( GL_TEXTURE_2D, textureId );
     /* Generate The Texture */
-//printf("entreou2\n");
+
     glTexImage2D(GL_TEXTURE_2D, 0, copia->format->BytesPerPixel, copia->w,
           copia->h, 0, GL_RGBA,
           GL_UNSIGNED_BYTE, copia->pixels);
 
-
-
-    //printf("entreou3\n");
-
-    if (mipmap)
-        glGenerateMipmap(GL_TEXTURE_2D);
-
-    //printf("Erro: %d\n",glGetError());
 
     /* Linear Filtering */
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
@@ -78,11 +70,15 @@ GLuint PIGCriaTexturaSurface(SDL_Surface *surface,bool mipmap=true){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-//printf("entreou4\n");
     SDL_FreeSurface(copia);
+
+    //if (mipmap||1){
+        glGenerateMipmap(GL_TEXTURE_2D);
+    //}
+
+    //printf("Erro: %d\n",glGetError());
     glBindTexture(GL_TEXTURE_2D,0);
 
-//printf("entreou5\n");
     return textureId;
 }
 

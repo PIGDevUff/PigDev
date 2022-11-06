@@ -34,7 +34,7 @@ public:
             SDL_FreeSurface(out);
             TTF_SetFontOutline(font,0);
         }
-        texturas = PIGCriaTexturaSurface(surf,false);
+        texturas = PIGCriaTexturaSurface(surf);
     }
 
     ~CPIGCaractere(){

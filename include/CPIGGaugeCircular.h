@@ -129,7 +129,7 @@ private:
         bitmap = off->GetSurface();
         //SDL_SaveBMP(bitmap,"gauge.bmp");
         //SDL_SetColorKey(bitmap,SDL_TRUE,0);
-        idTextura = PIGCriaTexturaSurface(bitmap,true);
+        idTextura = PIGCriaTexturaSurface(bitmap);
         delete off;
 
         CPIGGerenciadorJanelas::GetJanela(idJanela)->Atualiza();

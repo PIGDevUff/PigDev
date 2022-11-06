@@ -41,7 +41,7 @@ public:
         layers[layerInferior]->Merge(layers[layerSuperior]);
     }
 
-    CPIGOffscreenRenderer(int altura,int largura,int qtdMaxCamadas=10){
+    CPIGOffscreenRenderer(int altura, int largura, int qtdMaxCamadas=10){
         alt = altura;
         larg=largura;
         depth = 32; //32 bits por pixel

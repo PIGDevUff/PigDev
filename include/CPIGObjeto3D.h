@@ -29,8 +29,6 @@ map<int,aiMatrix4x4> mapBone;
 
 float px,py,pz;
 
-
-
 bool Import3DFromFile(string pFile){
 	// Check if file exists
 	ifstream fin(pFile.c_str());
@@ -72,7 +70,7 @@ bool InitGL(){
 }
 
 //não está sendo utilizada
-void IniciaBone(const struct aiNode *nd){
+/*void IniciaBone(const struct aiNode *nd){
     aiMatrix4x4t<float> resp(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0);
     for (int n=0; n < nd->mNumMeshes; ++n){
         //cout<<"Começando mesh: "<<n<<endl;
@@ -84,10 +82,10 @@ void IniciaBone(const struct aiNode *nd){
     }
     for (int k=0;k<nd->mNumChildren;k++)
         IniciaBone(nd->mChildren[k]);
-}
+}*/
 
 //não está sendo utilizada
-void CriaMapBone(const struct aiNode* nd){
+/*void CriaMapBone(const struct aiNode* nd){
     for (int n=0; n < nd->mNumMeshes; ++n){
         //cout<<"Começando mesh: "<<n<<endl;
         const struct aiMesh* mesh = cena->mMeshes[nd->mMeshes[n]];
@@ -103,7 +101,7 @@ void CriaMapBone(const struct aiNode* nd){
     }
     for (int k=0;k<nd->mNumChildren;k++)
         CriaMapBone(nd->mChildren[k]);
-}
+}*/
 
 //não está sendo utilizada
 void recursive_render (const struct aiNode* nd, float scale){

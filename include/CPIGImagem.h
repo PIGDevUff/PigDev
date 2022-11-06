@@ -80,6 +80,7 @@ GLuint PreparaTextura(int retiraFundo, PIGCor *corFundo=NULL){
     }else SDL_SetColorKey( bitmap, SDL_FALSE, 0);
 
     CPIGGerenciadorJanelas::GetJanela(idJanela)->FazCorrente();
+
     return PIGCriaTexturaSurface(bitmap);
 }
 
@@ -114,11 +115,8 @@ CPIGImagem(int idSprite=-1,int altura=0,int largura=0,string nomeArq="",int jane
 //Construtor básico para leitura de imagens digitais
 CPIGImagem(int idSprite,string nomeArq,int retiraFundo=1,PIGCor *corFundo=NULL,int janela=0){
     id = idSprite;
-
     CarregaImagem(nomeArq);//carrega o bitmap
-
     IniciaBase(bitmap->h,bitmap->w,janela);
-
     idTextura = PreparaTextura(retiraFundo,corFundo);
 }
 

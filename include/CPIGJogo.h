@@ -32,6 +32,7 @@ public:
             printf( "Nao foi possivel iniciar o SDL! SDL_Error: %s\n", SDL_GetError() );
         }else{
             CPIGGerenciadorJanelas::Inicia(nome,altura,largura);
+            glewInit();
             CPIGAssetLoader::Inicia();
             CPIGMouse::Inicia(cursor);
             CPIGGerenciadorSprites::Inicia();
@@ -83,12 +84,12 @@ public:
         #endif
 
         CPIGGerenciadorGDP::Encerra();
-        CPIGGerenciadorTimers::Encerra();
         CPIGGerenciadorLabels::Encerra();
         CPIGGerenciadorFontes::Encerra();
         CPIGGerenciadorSprites::Encerra();
         CPIGMouse::Encerra();
         CPIGAssetLoader::Encerra();
+        CPIGGerenciadorTimers::Encerra();
         CPIGGerenciadorJanelas::Encerra();
     }
 
