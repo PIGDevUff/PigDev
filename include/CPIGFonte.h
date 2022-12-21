@@ -24,7 +24,6 @@ protected:
     //cria o conjunto de glifos das letras com as características fornecidas
     void CriaLetrasSurface(PIGEstilo estilo, int nivelOutline, PIGCor corOutline, SDL_Surface *fundo,  PIGCor corFonte=BRANCO){
         TTF_SetFontStyle(font,estilo);
-
         for (Uint16 letra=PIG_PRIMEIRO_CAR;letra<PIG_ULTIMO_CAR;letra++){
             caracteres[estilo][letra-PIG_PRIMEIRO_CAR] = new CPIGCaractere(font,tamFonte,letra,corFonte,nivelOutline,corOutline,fundo);
         }
@@ -106,7 +105,6 @@ public:
 
     CPIGFonte(string nomeFonte,int tamanhoFonte,int estilo, PIGCor corFonte, int idJanela){
         IniciaBase(nomeFonte,tamanhoFonte,idJanela, estilo);
-
         CriaLetrasSurface(estilo, 0, BRANCO, NULL);//, corFonte);
     }
 
@@ -269,7 +267,7 @@ public:
 
         //printf("x: %d\n",x);
 
-        CPIGGerenciadorJanelas::GetJanela(janela)->FazCorrente();
+        pigGerJanelas.GetElemento(janela)->FazCorrente();
 
         //bool carEspecial=false;
 

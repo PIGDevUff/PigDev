@@ -132,7 +132,7 @@ private:
         idTextura = PIGCriaTexturaSurface(bitmap);
         delete off;
 
-        CPIGGerenciadorJanelas::GetJanela(idJanela)->Atualiza();
+        pigGerJanelas.GetElemento(idJanela)->Atualiza();
 
         if (orientacaoCrescimento==PIG_GAUGE_HORARIO) SetFlip(PIG_FLIP_VERTICAL);
 

@@ -2,22 +2,21 @@
 #define _CPIGGERENCIADORTELAS_
 
 #include "CPIGTela.h"
+#include "CPIGRepositorio.h"
 
-class CPIGGerenciadorTelas{
+class CPIGGerenciadorTelas:public CPIGRepositorio<PIGTela>{
 
 private:
 
-    static int telaAtual;
-    static void *dadosGerais;
-    static PIGTela telas[PIG_MAX_TELAS];
-    static PIGComportamentoTela comportamento[PIG_MAX_TELAS];
+    int telaAtual;
+    void *dadosGerais;
+    PIGComportamentoTela comportamento[PIG_MAX_TELAS];
 
 public:
 
-    inline static void Inicia(){
+    CPIGGerenciadorTelas():CPIGRepositorio<PIGTela>(PIG_MAX_TELAS,"CPIGTela"){
         telaAtual = -1;
         for (int i=0;i<PIG_MAX_TELAS;i++){
-            telas[i] = NULL;
             comportamento[i].dados = NULL;
             comportamento[i].acaoCria = NULL;
             comportamento[i].acaoDestroi = NULL;
@@ -29,32 +28,22 @@ public:
         }
     }
 
-    inline static void Encerra(){
-        for (int i=0;i<PIG_MAX_TELAS;i++)
-            if (telas[i]) delete telas[i];
-    }
-
-    inline static PIGTela GetTela(int idTela){
-        if (idTela<0||idTela>=PIG_MAX_TELAS||telas[idTela]==NULL) throw CPIGErroIndice(idTela,"telas");
-        return telas[idTela];
-    }
-
-    inline static void SetDadosGerais(void *dados){
+    inline void SetDadosGerais(void *dados){
         dadosGerais = dados;
     }
 
-    inline static void *GetDadosGerais(){
+    inline void *GetDadosGerais(){
         return dadosGerais;
     }
 
-    inline static int CriaTela(int idTela, bool criarBackground=false, bool carregarBackground=false, string imgFundo="", int idJanela=0){
+    inline int CriaTela(int idTela, bool criarBackground=false, bool carregarBackground=false, string imgFundo="", int idJanela=0){
         if (idTela>=0&&idTela<PIG_MAX_TELAS){
-            if (telas[idTela]!=NULL){
+            if (elementos[idTela]!=NULL){
                 printf("Tela %d criada novamente\n",idTela);
                 return 0;
             }
 
-            telas[idTela] = new CPIGTela(idTela,comportamento[idTela],criarBackground,carregarBackground,imgFundo,idJanela);
+            elementos[idTela] = new CPIGTela(idTela,comportamento[idTela],criarBackground,carregarBackground,imgFundo,idJanela);
 
             if (telaAtual==-1)//se for a primeira tela criada, ela será considerada telaAtual
                 telaAtual = idTela;
@@ -63,14 +52,14 @@ public:
         return -1;
     }
 
-    inline static int InsereTela(int idTela, PIGTela tela){
+    inline int InsereTela(int idTela, PIGTela tela){
         if (idTela>=0&&idTela<PIG_MAX_TELAS){
-            if (telas[idTela]!=NULL){
+            if (elementos[idTela]!=NULL){
                 printf("Tela %d criada novamente\n",idTela);
                 return 0;
             }
 
-            telas[idTela] = tela;
+            elementos[idTela] = tela;
 
             if (telaAtual==-1)//se for a primeira tela criada, ela será considerada telaAtual
                 telaAtual = idTela;
@@ -79,47 +68,35 @@ public:
         return -1;
     }
 
-    inline static void SetComportamento(int idTela, void *dados, PIGFuncaoSimples cria, PIGFuncaoSimples destroi, PIGFuncaoSimples carrega, PIGFuncaoSimples descarrega, PIGFuncaoSimples atualiza, PIGFuncaoSimples desenha, PIGFuncaoEvento trataEvento){
-        if (idTela>=0&&idTela<PIG_MAX_TELAS){
-            PIGComportamentoTela comporta={dados,cria,destroi,carrega,descarrega,atualiza,desenha,trataEvento};
-            comportamento[idTela] = comporta;
-            if (telas[idTela])
-                telas[idTela]->SetComportamento(comporta);
-        }
+    inline void SetComportamento(int idTela, void *dados, PIGFuncaoSimples cria, PIGFuncaoSimples destroi, PIGFuncaoSimples carrega, PIGFuncaoSimples descarrega, PIGFuncaoSimples atualiza, PIGFuncaoSimples desenha, PIGFuncaoEvento trataEvento){
+        PIGComportamentoTela comporta={dados,cria,destroi,carrega,descarrega,atualiza,desenha,trataEvento};
+        GetElemento(idTela)->SetComportamento(comporta);
+        comportamento[idTela] = comporta;
     }
 
-    inline static int DestroiTela(int idTela){
-        if (idTela<0||idTela>=PIG_MAX_TELAS||telas[idTela]==NULL) throw CPIGErroIndice(idTela,"telas");
-        delete telas[idTela];
-        telas[idTela] = NULL;
-        return 1;
+    inline PIGEstadoTela GetEstadoTela(int idTela){
+        return GetElemento(idTela)->GetEstado();
     }
 
-    inline static PIGEstadoTela GetEstadoTela(int idTela){
-        if (idTela<0||idTela>=PIG_MAX_TELAS) throw CPIGErroIndice(idTela,"telas");
-        if (telas[idTela]==NULL) return PIG_TELA_INEXISTENTE;
-        return telas[idTela]->GetEstado();
+    inline int TrataEvento(PIGEvento evento){
+        return GetElemento(telaAtual)->TrataEvento(evento);
     }
 
-    inline static int TrataEvento(PIGEvento evento){
-        return GetTela(telaAtual)->TrataEvento(evento);
+    inline void PreparaMudancaTela(int novaTela, double tempoSaida=PIG_TEMPO_SAIDA_TELA_PADRAO, bool destroiDescarregar=false){
+        GetElemento(telaAtual)->PreparaSaida(novaTela,tempoSaida,destroiDescarregar);
     }
 
-    inline static void PreparaMudancaTela(int novaTela, double tempoSaida=PIG_TEMPO_SAIDA_TELA_PADRAO, bool destroiDescarregar=false){
-        GetTela(telaAtual)->PreparaSaida(novaTela,tempoSaida,destroiDescarregar);
-    }
-
-    inline static int Atualiza(){
-        PIGTela atual = GetTela(telaAtual);
+    inline int Atualiza(){
+        PIGTela atual = GetElemento(telaAtual);
         int novaTela = atual->Atualiza();
         if (novaTela>=0){
             //printf("mudando para %d\n",novaTela);
             atual->DescarregaTela();
             if (atual->GetDestruirAoDescarregar())
-                DestroiTela(telaAtual);
+                Remove(telaAtual);
             //printf("descarreg %d\n",novaTela);
             telaAtual = novaTela;
-            atual = GetTela(telaAtual);
+            atual = GetElemento(telaAtual);
             if (atual->CarregaTela()>0){
                 //printf("carregando %d\n",novaTela);
                 return atual->Atualiza();
@@ -128,14 +105,11 @@ public:
         return -1;
     }
 
-    inline static int Desenha(){
-        return GetTela(telaAtual)->Desenha();
+    inline int Desenha(){
+        return GetElemento(telaAtual)->Desenha();
     }
 
 };
 
-int CPIGGerenciadorTelas::telaAtual;
-void *CPIGGerenciadorTelas::dadosGerais;
-PIGComportamentoTela CPIGGerenciadorTelas::comportamento[PIG_MAX_TELAS];
-PIGTela CPIGGerenciadorTelas::telas[PIG_MAX_TELAS];
+CPIGGerenciadorTelas pigGerTelas;
 #endif // _CPIGGERENCIADORTELAS_

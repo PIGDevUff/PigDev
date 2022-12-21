@@ -1,6 +1,8 @@
 #ifndef _CPIGTRANSICAO_
 #define _CPIGTRANSICAO_
 
+#include "CPIGTimer.h"
+
 typedef struct {
     int x,y,alt,larg;
     double ang;

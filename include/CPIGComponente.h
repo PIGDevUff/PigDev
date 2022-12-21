@@ -51,9 +51,9 @@ protected:
         if (mouseOver&&hint->GetTexto()!=""){
 
             SDL_Point p;
-            if (CPIGGerenciadorJanelas::GetJanela(idJanela)->GetTipoCamera()==PIG_CAMERA2D_FIXA)
-                p = CPIGMouse::PegaXYTela();
-            else p = CPIGMouse::PegaXYWorld();
+            if (pigGerJanelas.GetElemento(idJanela)->GetTipoCamera()==PIG_CAMERA2D_FIXA)
+                p = pigMouse.PegaXYTela();
+            else p = pigMouse.PegaXYWorld();
             hint->Move(p.x+16,p.y+5);
             hint->Desenha();
 
@@ -162,15 +162,15 @@ protected:
     virtual PIGEstadoEvento OnAction(){
         if (acao) acao(id,param);//rever se NULL é necessário
         #ifdef PIGCOMAUDIO
-        if (audioComponente>=0) CPIGGerenciadorAudios::Play(audioComponente);
+        if (audioComponente>=0) pigGerAudios.Play(audioComponente);
         #endif
         return PIG_COMPONENTE_TRATADO;
     }
 
     inline SDL_Point GetPosicaoMouse(){
-        if (CPIGGerenciadorJanelas::GetJanela(idJanela)->GetUsandoCameraFixa()){
-            return CPIGMouse::PegaXYTela();
-        }else return CPIGMouse::PegaXYWorld();
+        if (pigGerJanelas.GetElemento(idJanela)->GetUsandoCameraFixa()){
+            return pigMouse.PegaXYTela();
+        }else return pigMouse.PegaXYWorld();
     }
 
     virtual void ProcessaAtributos(CPIGAtributos atrib){
@@ -291,8 +291,8 @@ public:
     }
 
     //define a fonte do hint
-    virtual void SetFonteHint(int fonte){
-        hint->SetFonte(fonte);
+    virtual void SetFonteHint(int idFonte){
+        hint->SetFonte(idFonte);
     }
 
     //recupera a fonte do hint

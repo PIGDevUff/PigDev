@@ -8,8 +8,9 @@ class CPIGAnimacao:public CPIGObjeto{
 private:
 
     PIGModoAnimacao modos[PIG_MAX_MODOS];   //modos da animação
-    int idTimer;                            //timer da animação (se estiver sendo utilizado o gerenciador de timers)
     SDL_Point offset;                       //offset (x,y) a ser utilizado junto com a posição (x,y) para desenhar oa animação
+    int idTimer;                            //timer para controle dos frames da animação (usado apenas na contrução e destruição de um objeto)
+    PIGTimer timer;                          //ponteiro para o timer indicado por idTimer (usado diretamente para otimizar a execução dos códigos)
     int modoAtual;                          //número que indica o modo atual
 
     //muda o frame a ser exibido do modo atual
@@ -24,11 +25,11 @@ private:
         #ifdef PIGCOMAUDIO
         int audio = modo->GetAudioAtual();
         if (audio>=0){
-            CPIGGerenciadorAudios::Play(audio);
+            pigGerAudios.Play(audio);
         }
         #endif
 
-        CPIGGerenciadorTimers::GetTimer(idTimer)->Reinicia(false);
+        timer->Reinicia(false);
     }
 
 public:
@@ -42,7 +43,8 @@ public:
         for (int i=0;i<PIG_MAX_MODOS;i++)
             modos[i] = NULL;
 
-        idTimer = CPIGGerenciadorTimers::CriaTimer();
+        idTimer = pigGerTimers.CriaTimer(false);
+        timer = pigGerTimers.GetElemento(idTimer);
     }
 
     //cria uma animação a partir deoutra animação já existente
@@ -51,13 +53,14 @@ public:
         for (int i=0;i<PIG_MAX_MODOS;i++){
             if (base->modos[i])
                 modos[i] = new CPIGModoAnimacao(base->modos[i]);
-            else modos[i]=NULL;
+            else modos[i] = NULL;
         }
 
         offset = base->offset;
         modoAtual = base->modoAtual;
 
-        idTimer = CPIGGerenciadorTimers::CriaTimer();
+        idTimer = pigGerTimers.CriaTimer(false);
+        timer = pigGerTimers.GetElemento(idTimer);
     }
 
     //cria uma animação a partir de um objeto
@@ -70,7 +73,8 @@ public:
             modos[i] = NULL;
         }
 
-        idTimer = CPIGGerenciadorTimers::CriaTimer();
+        idTimer = pigGerTimers.CriaTimer(false);
+        timer = pigGerTimers.GetElemento(idTimer);
     }
 
     //destroi uma animação
@@ -79,8 +83,8 @@ public:
             if (modos[i])
                 delete modos[i];
         }
-
-        CPIGGerenciadorTimers::DestroiTimer(idTimer);
+        timer = NULL;
+        pigGerTimers.Remove(idTimer);
     }
 
     //cria um modo vazio, sem frames associados
@@ -114,14 +118,24 @@ public:
         return modoAtual;
     }
 
+    virtual void Pausa(){
+        timer->Pausa();
+    }
+
+    virtual void Despausa(){
+        timer->Despausa();
+    }
+
+    virtual void Reinicia(bool congelado=false){
+        timer->Reinicia(congelado);
+    }
+
     //desenha a animação
     int Desenha()override{
         int resp=0; //0 indica que que o modo de animação atual não encerrou
 
         if (modos[modoAtual]!=NULL){
-            float tempoDecorrido;
-
-            tempoDecorrido = CPIGGerenciadorTimers::GetTimer(idTimer)->GetTempoDecorrido();
+            float tempoDecorrido = timer->GetTempoDecorrido();//tempo da própria animação (herdado de CPIGTimer)
 
             if (modos[modoAtual]->TestaTempo(tempoDecorrido)){
                 AtualizaFrameAtual(modos[modoAtual]);
@@ -140,16 +154,6 @@ public:
         CPIGObjeto::Move(px,py);
 
         return resp;
-    }
-
-    //pausa a animação
-    inline void Pausa(){
-        CPIGGerenciadorTimers::GetTimer(idTimer)->Pausa();
-    }
-
-    //despausa a animação
-    inline void Despausa(){
-        CPIGGerenciadorTimers::GetTimer(idTimer)->Despausa();
     }
 
     //define o tempo de um frame já criado
@@ -183,6 +187,5 @@ public:
     }
 
 };
-
 typedef CPIGAnimacao* PIGAnimacao;
 #endif // _CPIGANIMACAO_

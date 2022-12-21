@@ -50,7 +50,7 @@ void AtualizaTextura()override{
             LiberaTextura();
         }
 
-        PIGFonte mapa = CPIGGerenciadorFontes::GetFonte(idFonte);
+        PIGFonte mapa = pigGerFontes.GetElemento(idFonte);
         largOriginal = larg = mapa->GetLarguraPixelsString(frase);
         altOriginal = alt = mapa->GetFonteAscent()+mapa->GetFonteDescent()+5;
 

@@ -2,6 +2,7 @@
 #define _CPIGOFFSCREENRENDERER_
 
 #include "CPIGOffscreenLayer.h"
+#include "SDL_image.h"
 
 class CPIGOffscreenRenderer{
 

@@ -2,50 +2,25 @@
 #define _CPIGGERENCIADORGDP_
 
 #include "CPIGGeradorParticulas.h"
+#include "CPIGRepositorio.h"
 
-class CPIGGerenciadorGDP{
-
-private:
-
-    static CPIGRepositorio<PIGGeradorParticulas> *geradores;
+class CPIGGerenciadorGDP: public CPIGRepositorio<PIGGeradorParticulas>{
 
 public:
 
-    inline static PIGGeradorParticulas GetGerador(int idGerador){
-        return geradores->GetElemento(idGerador);
+    CPIGGerenciadorGDP():CPIGRepositorio<PIGGeradorParticulas>(PIG_MAX_GERADORPARTICULAS,"CPIGeradorParticulas"){}
+
+    inline int CriaGeradorParticulas(int maxParticulas, string nomeArquivoBMP, int audioCriacao, int audioEncerramento, bool retiraFundo=true, PIGCor *corFundo=NULL, int idJanela=0){
+        return Insere(new CPIGGeradorParticulas(ProxID(),maxParticulas,nomeArquivoBMP,audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela));
     }
 
-    inline static void Inicia(){
-        geradores = new CPIGRepositorio<PIGGeradorParticulas>(PIG_MAX_GERADORPARTICULAS,"geradores");
+    inline int CriaGeradorParticulas(int maxParticulas, PIGAnimacao animacaoBase, int audioCriacao, int audioEncerramento, bool retiraFundo=true, PIGCor *corFundo=NULL, int idJanela=0){
+        return Insere(new CPIGGeradorParticulas(ProxID(),maxParticulas,animacaoBase,audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela));
     }
 
-    inline static void Encerra(){
-        delete geradores;
-    }
-
-    inline static int CriaGeradorParticulas(int maxParticulas, string nomeArquivoBMP, int audioCriacao, int audioEncerramento, bool retiraFundo=true, PIGCor *corFundo=NULL, int idJanela=0){
-        int id = geradores->ProxID();
-        return geradores->Insere(new CPIGGeradorParticulas(id,maxParticulas,nomeArquivoBMP,audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela));
-    }
-
-    inline static int CriaGeradorParticulas(int maxParticulas, PIGAnimacao animacaoBase, int audioCriacao, int audioEncerramento, bool retiraFundo=true, PIGCor *corFundo=NULL, int idJanela=0){
-        int id = geradores->ProxID();
-        return geradores->Insere(new CPIGGeradorParticulas(id,maxParticulas,animacaoBase,audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela));
-    }
-
-    inline static int CriaGeradorParticulas(int maxParticulas, PIGObjeto objetoBase, int audioCriacao, int audioEncerramento, bool retiraFundo=true, PIGCor *corFundo=NULL, int idJanela=0){
-        int id = geradores->ProxID();
-        return geradores->Insere(new CPIGGeradorParticulas(id,maxParticulas,objetoBase,audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela));
-    }
-
-    inline static int InsereGeradorParticulas(PIGGeradorParticulas gerador){
-        return geradores->Insere(gerador);
-    }
-
-    inline static void DestroiGeradorParticulas(int idGerador){
-        geradores->Remove(idGerador);
+    inline int CriaGeradorParticulas(int maxParticulas, PIGObjeto objetoBase, int audioCriacao, int audioEncerramento, bool retiraFundo=true, PIGCor *corFundo=NULL, int idJanela=0){
+        return Insere(new CPIGGeradorParticulas(ProxID(),maxParticulas,objetoBase,audioCriacao,audioEncerramento,retiraFundo,corFundo,idJanela));
     }
 };
-
-CPIGRepositorio<PIGGeradorParticulas> *CPIGGerenciadorGDP::geradores;
+CPIGGerenciadorGDP pigGerGDP;
 #endif //_CPIGGERENCIADORGDP_

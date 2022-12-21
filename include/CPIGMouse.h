@@ -7,47 +7,51 @@ class CPIGMouse{
 
 private:
 
-    static PIGSprite cursores;
-    static SDL_Point pTela,pWorld;
-    static int estadoBotaoDireito,estadoBotaoEsquerdo,estadoBotaoCentral;
+    PIGSprite cursores;
+    SDL_Point pTela,pWorld;
+    int estadoBotaoDireito,estadoBotaoEsquerdo,estadoBotaoCentral;
 
 public:
 
-    static void Inicia(bool cursorCustomizado){
+    CPIGMouse(bool cursorCustomizado=false){
         SDL_ShowCursor(!cursorCustomizado);
         cursores = NULL;
     }
 
-    static void Encerra(){
+    ~CPIGMouse(){
         if (cursores) delete cursores;
     }
 
-    static int GetEstadoBotaoDireito(){
+    void SetCustomizado(bool cursorCustomizado){
+        SDL_ShowCursor(!cursorCustomizado);
+    }
+
+    int GetEstadoBotaoDireito(){
         return estadoBotaoDireito;
     }
 
-    static int GetEstadoBotaoCentral(){
+    int GetEstadoBotaoCentral(){
         return estadoBotaoCentral;
     }
 
-    static int GetEstadoBotaoEsquerdo(){
+    int GetEstadoBotaoEsquerdo(){
         return estadoBotaoEsquerdo;
     }
 
-    static void PegaXYTela(int &x, int &y){
+    void PegaXYTela(int &x, int &y){
         x = pTela.x;
         y = pTela.y;
     }
 
-    static SDL_Point PegaXYWorld(){
+    SDL_Point PegaXYWorld(){
         return pWorld;
     }
 
-    static SDL_Point PegaXYTela(){
+    SDL_Point PegaXYTela(){
         return pTela;
     }
 
-    static int ProcessaEvento(PIGEvento &evento){
+    int ProcessaEvento(PIGEvento &evento){
         if (evento.tipoEvento!=PIG_EVENTO_MOUSE) return 0;
         if (evento.mouse.acao==PIG_MOUSE_PRESSIONADO||evento.mouse.acao==PIG_MOUSE_LIBERADO){
             switch(evento.mouse.botao){
@@ -59,13 +63,13 @@ public:
             Move(evento.mouse.posX,evento.mouse.posY,evento.mouse.numeroJanela);
 
         }
-        CPIGGerenciadorJanelas::GetJanela(evento.mouse.numeroJanela)->ConverteCoordenadaScreenWorld(pTela.x,pTela.y,pWorld.x,pWorld.y);
+        pigGerJanelas.GetElemento(evento.mouse.numeroJanela)->ConverteCoordenadaScreenWorld(pTela.x,pTela.y,pWorld.x,pWorld.y);
         evento.mouse.worldX = pWorld.x;
         evento.mouse.worldY = pWorld.y;
         return 1;
     }
 
-    static int GetEstadoBotao(int botao){
+    int GetEstadoBotao(int botao){
         switch(botao){
         case PIG_MOUSE_DIREITO: return estadoBotaoDireito;
         case PIG_MOUSE_CENTRAL: return estadoBotaoCentral;
@@ -74,46 +78,40 @@ public:
         return 0;
     }
 
-    static int MudaCursor(int indice){
+    int MudaCursor(int indice){
         if (cursores)
             return cursores->MudaFrameAtual(indice);
         return 0;
     }
 
-    static void Desenha(int idJanela=0){
+    void Desenha(int idJanela=0){
         if (cursores) cursores->Desenha();
     }
 
-    static void Move(int x,int y, int idJanela=0){
+    void Move(int x,int y, int idJanela=0){
         pTela.x = x;
         pTela.y = y;
         if (cursores) cursores->Move(x,y-32);
     }
 
-    static void CarregaCursor(std::string nomeArquivo,int idJanela=0){
+    void CarregaCursor(string nomeArquivo, int idJanela=0){
         if (cursores) delete cursores;
         cursores = new CPIGSprite(-1,nomeArquivo,idJanela);
         cursores->SetDimensoes(32,32);
     }
 
-    static void CarregaFramesPorColuna(int frameInicial, int qtdLinhas, int qtdColunas){
+    void CarregaFramesPorColuna(int frameInicial, int qtdLinhas, int qtdColunas){
         if (cursores) cursores->CriaFramesAutomaticosPorColuna(frameInicial,qtdLinhas,qtdColunas);
     }
 
-    static void CarregaFramesPorLinha(int frameInicial, int qtdLinhas, int qtdColunas){
+    void CarregaFramesPorLinha(int frameInicial, int qtdLinhas, int qtdColunas){
         if (cursores) cursores->CriaFramesAutomaticosPorLinha(frameInicial,qtdLinhas,qtdColunas);
     }
 
-    static void CriaFrameCursor(int idFrame,int x, int y, int alt, int larg){
+    void CriaFrameCursor(int idFrame,int x, int y, int alt, int larg){
         if (cursores) cursores->DefineFrame(idFrame,{x,y,larg,alt});
     }
 
 };
-
-PIGSprite CPIGMouse::cursores;
-SDL_Point CPIGMouse::pTela;
-SDL_Point CPIGMouse::pWorld;
-int CPIGMouse::estadoBotaoDireito;
-int CPIGMouse::estadoBotaoEsquerdo;
-int CPIGMouse::estadoBotaoCentral;
+CPIGMouse pigMouse;
 #endif // _CPIGMouse_

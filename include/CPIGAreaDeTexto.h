@@ -54,7 +54,7 @@ private:
         int tamMaior = 0;
         int temp = 0;
         for(string linha : linhas){
-            temp = CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetLarguraPixelsString(linha);
+            temp = pigGerFontes.GetElemento(fonteTexto)->GetLarguraPixelsString(linha);
             tamMaior = (temp > tamMaior) ? (temp):(tamMaior);
         }
         return tamMaior;
@@ -114,7 +114,7 @@ private:
         string textoBase = GetTextoVisivel();
         string aux;
 
-        linhas = CPIGGerenciadorFontes::GetFonte(fonteTexto)->ExtraiLinhas(textoBase,larg-(margemEsq+margemDir));
+        linhas = pigGerFontes.GetElemento(fonteTexto)->ExtraiLinhas(textoBase,larg-(margemEsq+margemDir));
 
         int linhaPos = GetLinhaDeUmaPos(posCursor);
         int posInicial = GetPosInicialDeUmaLinha(linhaPos);
@@ -130,7 +130,7 @@ private:
 
         //definir a posição do cursor
         yCursor = yTexto - ( (espacoEntreLinhas + altLetra)*GetLinhaDeUmaPos(posCursor));                //descobrindo em qual das linhas o cursor está
-        xCursor = xTexto + CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetLarguraPixelsString(aux);     //descobrindo em qual posição horizontal o cursor está
+        xCursor = xTexto + pigGerFontes.GetElemento(fonteTexto)->GetLarguraPixelsString(aux);     //descobrindo em qual posição horizontal o cursor está
 
     }
 
@@ -332,7 +332,7 @@ public:
         //DesenhaMarcacaoMargem();
 
         //printf("texto: <%s> xbase\n",GetTextoVisivel().c_str(),xTexto);
-        CPIGGerenciadorFontes::GetFonte(fonteTexto)->EscreveLonga(texto,xTexto,yTexto,larg-(margemEsq+margemDir),(espacoEntreLinhas + altLetra),true,coresBasicas[1],PIG_TEXTO_ESQUERDA);
+        pigGerFontes.GetElemento(fonteTexto)->EscreveLonga(texto,xTexto,yTexto,larg-(margemEsq+margemDir),(espacoEntreLinhas + altLetra),true,coresBasicas[1],PIG_TEXTO_ESQUERDA);
         DesenhaCursor();//desenha o cursor (se estiver em ediçăo)
 
         PIGLiberaStencil();

@@ -2,6 +2,8 @@
 #define _CPIGIMAGEM_
 
 #include "CPIGOffscreenRenderer.h"
+#include "CPIGAssetLoader.h"
+#include "CPIGGerenciadorJanelas.h"
 
 class CPIGImagem{
 
@@ -28,7 +30,7 @@ void CarregaImagem(std::string nomeArq){
     nomeArquivo = nomeArq;
 
     #ifdef PIG_SHARE_BITMAP
-    bitmap = CPIGAssetLoader::LoadImage(nomeArquivo);
+    bitmap = gAssetLoader.LoadImage(nomeArquivo);
     #else
     bitmap = IMG_Load(nomeArquivo.c_str());
     #endif
@@ -79,7 +81,7 @@ GLuint PreparaTextura(int retiraFundo, PIGCor *corFundo=NULL){
         SDL_SetColorKey( bitmap, SDL_TRUE, SDL_MapRGBA(bitmap->format, red, green, blue,alpha) );
     }else SDL_SetColorKey( bitmap, SDL_FALSE, 0);
 
-    CPIGGerenciadorJanelas::GetJanela(idJanela)->FazCorrente();
+    pigGerJanelas.GetElemento(idJanela)->FazCorrente();
 
     return PIGCriaTexturaSurface(bitmap);
 }
@@ -170,7 +172,7 @@ CPIGImagem(int idSprite,CPIGImagem *imagemBase,int retiraFundo=1,PIGCor *corFund
         if (bitmap) SDL_FreeSurface(bitmap);
     }else{
         #ifdef PIG_SHARE_BITMAP
-        CPIGAssetLoader::FreeImage(nomeArquivo);
+        gAssetLoader.FreeImage(nomeArquivo);
         #else
         if (bitmap) SDL_FreeSurface(bitmap);
         #endif
@@ -183,16 +185,11 @@ int GetIdJanela(){
 }
 
 void DefineFrame(int idFrame,SDL_Rect r){
-    //printf("entrei %d\n",idFrame);
     unordered_map<int,SDL_Rect>::const_iterator it = frames.find(idFrame);
-    //printf(" terminei busca");
     if (it !=frames.end()){
-        //printf("sera 1 ? %d (%d,%d,%d,%d)\n",idFrame,r.x,r.y,r.w,r.h);
         frames.erase(it);
     }
-    //printf("sera ? %d (%d,%d,%d,%d)\n",idFrame,r.x,r.y,r.w,r.h);
     frames.insert({idFrame,r});
-    //printf("frame %d ok\n",idFrame);
 }
 
 PIGPonto2D GetXY(){
@@ -349,7 +346,7 @@ void CriaFramesAutomaticosPorColuna(int idFrameInicial,int qtdLinhas, int qtdCol
 virtual int Desenha(){
     if (idTextura==0) return 0;
     //printf("%d\n",idTextura);
-    CPIGGerenciadorJanelas::GetJanela(idJanela)->FazCorrente();
+    pigGerJanelas.GetElemento(idJanela)->FazCorrente();
 
     glPushMatrix();
 

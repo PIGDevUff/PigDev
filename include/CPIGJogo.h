@@ -3,6 +3,7 @@
 
 #include "CPIGAtributos.h"
 #include "CPIGMouse.h"
+#include "CPIGOffscreenRenderer.h"
 
 class CPIGJogo: public CPIGAtributos{
 
@@ -10,87 +11,31 @@ private:
 
     PIGEvento ultimoEvento;
     PIGTeclado teclado;
-    int estado;
     bool rodando;
     string diretorioAtual;
     PIGOffscreenRenderer offRenderer;
 
 public:
 
-    CPIGJogo(string nome, int cursor=0, int altura=PIG_ALT_TELA, int largura=PIG_LARG_TELA):CPIGAtributos(){
-        rodando = true;
-        teclado = SDL_GetKeyboardState(NULL);
-        estado = 0;
-
-        offRenderer = NULL;
-
-        diretorioAtual = PIGGetDiretorioAtual();
-        //printf("path: %s\n",diretorioAtual);//exibir a pasta original da PIG
-
-		//SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS,"1");
-        if( SDL_Init( SDL_INIT_EVERYTHING) < 0 ){
-            printf( "Nao foi possivel iniciar o SDL! SDL_Error: %s\n", SDL_GetError() );
+    CPIGJogo():CPIGAtributos(){
+        if (SDL_WasInit(0) > 0){
+            cout << "O jogo ja foi inicializado anteriormente!!!"<<endl;
         }else{
-            CPIGGerenciadorJanelas::Inicia(nome,altura,largura);
-            glewInit();
-            CPIGAssetLoader::Inicia();
-            CPIGMouse::Inicia(cursor);
-            CPIGGerenciadorSprites::Inicia();
-            CPIGGerenciadorFontes::Inicia();
-            CPIGGerenciadorLabels::Inicia();
-            CPIGGerenciadorTimers::Inicia();
-            CPIGGerenciadorGDP::Inicia();
-            #ifdef PIGCOMAUDIO
-            CPIGGerenciadorAudios::Inicia();
-            #endif
-            #ifdef PIGCOMCONTROLE
-            CPIGGerenciadorControles::Inicia();
-            #endif
-            #ifdef PIGCOMREDE
-            CPIGGerenciadorSockets::Inicia();
-            #endif
-            #ifdef PIGCOMVIDEO
-            CPIGGerenciadorVideos::Inicia();
-            #endif
-            #ifdef PIGCOMFORM
-            CPIGGerenciadorForms::Inicia();
-            #endif
-            #ifdef PIGCOMTELA
-            CPIGGerenciadorTelas::Inicia();
-            #endif
+            if (SDL_Init(SDL_INIT_EVERYTHING) < 0){
+                cout << "A SDL nao pode ser iniciaizada!!! Erro: "<<SDL_GetError()<<endl;
+            }else{
+                rodando = true;
+                teclado = SDL_GetKeyboardState(NULL);
+
+                offRenderer = NULL;
+
+                diretorioAtual = PIGGetDiretorioAtual();
+            }
         }
     }
 
     virtual ~CPIGJogo(){
         if (offRenderer) delete offRenderer;
-
-        #ifdef PIGCOMCONTROLE
-        CPIGGerenciadorControles::Encerra();
-        #endif
-        #ifdef PIGCOMAUDIO
-        CPIGGerenciadorAudios::Encerra();
-        #endif
-        #ifdef PIGCOMVIDEO
-        CPIGGerenciadorVideos::Encerra();
-        #endif
-        #ifdef PIGCOMREDE
-        CPIGGerenciadorSockets::Encerra();
-        #endif
-        #ifdef PIGCOMFORM
-        CPIGGerenciadorForms::Encerra();
-        #endif
-        #ifdef PIGCOMTELA
-        CPIGGerenciadorTelas::Encerra();
-        #endif
-
-        CPIGGerenciadorGDP::Encerra();
-        CPIGGerenciadorLabels::Encerra();
-        CPIGGerenciadorFontes::Encerra();
-        CPIGGerenciadorSprites::Encerra();
-        CPIGMouse::Encerra();
-        CPIGAssetLoader::Encerra();
-        CPIGGerenciadorTimers::Encerra();
-        CPIGGerenciadorJanelas::Encerra();
     }
 
     PIGEvento PegaEvento(){
@@ -126,9 +71,9 @@ public:
                 //ultimoEvento.mouse.posX = event.button.x;
                 SDL_GetMouseState(&ultimoEvento.mouse.posX,&ultimoEvento.mouse.posY);
                 //ultimoEvento.mouse.posY = CGerenciadorJanelas::GetAltura(ultimoEvento.mouse.numeroJanela) - event.button.y-1;
-                ultimoEvento.mouse.posY = CPIGGerenciadorJanelas::GetJanela(ultimoEvento.mouse.numeroJanela)->GetAltura() - ultimoEvento.mouse.posY-1;
+                ultimoEvento.mouse.posY = pigGerJanelas.GetElemento(ultimoEvento.mouse.numeroJanela)->GetAltura() - ultimoEvento.mouse.posY-1;
                 //CGerenciadorJanelas::GetJanela(ultimoEvento.mouse.numeroJanela)->GetCamera()->ConverteCoordenadaWorldScreen(ultimoEvento.mouse.posX,ultimoEvento.mouse.posY,&ultimoEvento.mouse.worldX,&ultimoEvento.mouse.worldY);
-                CPIGMouse::ProcessaEvento(ultimoEvento);
+                pigMouse.ProcessaEvento(ultimoEvento);
                 break;
 
             case SDL_MOUSEMOTION:
@@ -137,7 +82,7 @@ public:
                 ultimoEvento.mouse.numeroJanela = event.window.windowID-PIG_JANELA_INICIAL;
                 SDL_GetMouseState(&ultimoEvento.mouse.posX,&ultimoEvento.mouse.posY);
                 //ultimoEvento.mouse.posX = event.motion.x;
-                ultimoEvento.mouse.posY = CPIGGerenciadorJanelas::GetJanela(ultimoEvento.mouse.numeroJanela)->GetAltura() - ultimoEvento.mouse.posY-1;
+                ultimoEvento.mouse.posY = pigGerJanelas.GetElemento(ultimoEvento.mouse.numeroJanela)->GetAltura() - ultimoEvento.mouse.posY-1;
                 ultimoEvento.mouse.relX = event.motion.xrel;
                 ultimoEvento.mouse.relY = -event.motion.yrel;
                 //printf("%d\n",ultimoEvento.mouse.numeroJanela);
@@ -145,7 +90,7 @@ public:
                 //int mx,my;
                 //SDL_GetMouseState(&ultimoEvento.mouse.posX,&ultimoEvento.mouse.posY);
                 //printf("y %d  my %d\n",event.motion.y,my);
-                CPIGMouse::ProcessaEvento(ultimoEvento);
+                pigMouse.ProcessaEvento(ultimoEvento);
                 //CMouse::Move(ultimoEvento.mouse.posX, ultimoEvento.mouse.posY);
                 break;
 
@@ -155,7 +100,7 @@ public:
                 ultimoEvento.mouse.numeroJanela = event.window.windowID-PIG_JANELA_INICIAL;
                 ultimoEvento.mouse.relX = event.wheel.x;
                 ultimoEvento.mouse.relY = event.wheel.y;
-                CPIGMouse::ProcessaEvento(ultimoEvento);
+                pigMouse.ProcessaEvento(ultimoEvento);
                 break;
 
             case SDL_KEYDOWN:
@@ -182,7 +127,7 @@ public:
 
             case SDL_WINDOWEVENT:
                 if (event.window.event==PIG_JANELA_FECHADA){
-                    CPIGGerenciadorJanelas::GetJanela(event.window.windowID-PIG_JANELA_INICIAL)->Fecha();
+                    pigGerJanelas.GetElemento(event.window.windowID-PIG_JANELA_INICIAL)->Fecha();
                 }
                 ultimoEvento.tipoEvento = PIG_EVENTO_JANELA;
                 ultimoEvento.janela.acao = event.window.event;
@@ -233,11 +178,11 @@ public:
     }
 
     void IniciaDesenho(int idJanela=-1){
-        CPIGGerenciadorJanelas::IniciaDesenho(idJanela);
+        pigGerJanelas.IniciaDesenho(idJanela);
     }
 
     void EncerraDesenho(int idJanela=-1){
-        CPIGGerenciadorJanelas::EncerraDesenho(idJanela);
+        pigGerJanelas.EncerraDesenho(idJanela);
 
         //int off;
         //unsigned int frameTime = SDL_GetTicks();
@@ -296,12 +241,8 @@ public:
         return rodando;
     }
 
-    void SetEstado(int valor){
-        estado = valor;
-    }
-
     inline float GetFPS(int idJanela=0){
-        return CPIGGerenciadorJanelas::GetJanela(idJanela)->GetFPS();
+        return pigGerJanelas.GetElemento(idJanela)->GetFPS();
     }
 
     void PreparaOffScreenRenderer(int altura, int largura){
@@ -315,6 +256,5 @@ public:
     }
 
 };
-
-typedef CPIGJogo* PIGJogo;
+CPIGJogo pigJogo;
 #endif // _CPIGJOGO_

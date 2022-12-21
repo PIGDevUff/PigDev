@@ -925,9 +925,9 @@ class CPIGVideo:public CPIGSprite{
 public:
 
     CPIGVideo(string nomeArq, int idJanela=0):
-        CPIGSprite(-1,CPIGGerenciadorJanelas::GetJanela(idJanela)->GetAltura(),CPIGGerenciadorJanelas::GetJanela(idJanela)->GetLargura(),nomeArq,idJanela){
+        CPIGSprite(-1,pigGerJanelas.GetElemento(idJanela)->GetAltura(),pigGerJanelas.GetElemento(idJanela)->GetLargura(),nomeArq,idJanela){
         volume = 1.2;
-        janelaAtual = CPIGGerenciadorJanelas::GetJanela(idJanela);
+        janelaAtual = pigGerJanelas.GetElemento(idJanela);
 
         janelaToda = true;
         tempoFrame = -1;

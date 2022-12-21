@@ -2,16 +2,16 @@
 #define _CPIGGERENCIADORAUDIOS_
 
 #include "CPIGAudio.h"
+#include "CPIGRepositorio.h"
 
-class CPIGGerenciadorAudios{
+class CPIGGerenciadorAudios: public CPIGRepositorio<PIGAudio>{
 
 private:
 
-    static CPIGRepositorio<PIGAudio> *audios;
     static int audioIds[PIG_QTD_CANAIS_PADRAO];
-    static Mix_Music *background;
-    static int volumeBackground;
-    static PIGStatusAudio statusBackground;
+    Mix_Music *background;
+    int volumeBackground;
+    PIGStatusAudio statusBackground;
 
     inline static void TrataParadaAudio(int canal){
         SDL_Event eventoAudio;
@@ -34,12 +34,11 @@ private:
 
 public:
 
-    static void Inicia(){
+    CPIGGerenciadorAudios():CPIGRepositorio<PIGAudio>(PIG_MAX_AUDIOS,"CPIGAudio"){
         Mix_OpenAudio(PIG_FREQ_AUDIO_PADRAO,MIX_DEFAULT_FORMAT,2,PIG_TAMANHO_CHUNK);
 
         Mix_AllocateChannels(PIG_QTD_CANAIS_PADRAO);
 
-        audios = new CPIGRepositorio<PIGAudio>(PIG_MAX_AUDIOS,"audios");
         for (int i=0;i<PIG_QTD_CANAIS_PADRAO;i++){
             audioIds[i] = -1;
         }
@@ -51,130 +50,113 @@ public:
         Mix_HookMusicFinished(TrataParadaBackground);
     }
 
-    static void Encerra(){
+    ~CPIGGerenciadorAudios(){
         StopTudo();
 
-        delete audios;
         if (background)
             Mix_FreeMusic(background);
         Mix_CloseAudio();
     }
 
-    inline static PIGAudio GetAudio(int idAudio){
-        return audios->GetElemento(idAudio);
-    }
-
-    static void CarregaBackground(string nomeArquivo){
+    void CarregaBackground(string nomeArquivo){
         if (background)
             Mix_FreeMusic(background);
         background = Mix_LoadMUS(nomeArquivo.c_str());
     }
 
-    static void PlayBackground(int nVezes){
+    void PlayBackground(int nVezes){
         if (background){
             Mix_PlayMusic(background, nVezes);
             statusBackground = PIG_AUDIO_TOCANDO;
         }
     }
 
-    static void StopBackground(){
+    void StopBackground(){
         if (background){
             Mix_HaltMusic();
             statusBackground = PIG_AUDIO_PARADO;
         }
     }
 
-    static void PauseBackground(){
+    void PauseBackground(){
         if (background){
             Mix_PauseMusic();
             statusBackground = PIG_AUDIO_PAUSADO;
         }
     }
 
-    static void ResumeBackground(){
+    void ResumeBackground(){
         if (background){
             Mix_ResumeMusic();
             statusBackground = PIG_AUDIO_TOCANDO;
         }
     }
 
-    inline static PIGStatusAudio GetStatusBackground(){
+    PIGStatusAudio GetStatusBackground(){
         return statusBackground;
     }
 
-    inline static void SetVolumeBackground(int valor){
+    inline void SetVolumeBackground(int valor){
         volumeBackground = valor;
         Mix_VolumeMusic(volumeBackground);
     }
 
-    inline static int GetVolumeBackground(){
+    inline int GetVolumeBackground(){
         return volumeBackground;
     }
 
-    inline static int CriaAudio(string nomeArquivo, int nLoops, int tempoExecucao=-1){
-        return audios->Insere(new CPIGAudio(nomeArquivo,nLoops,tempoExecucao));
+    inline int CriaAudio(string nomeArquivo, int nLoops, int tempoExecucao=-1){
+        return Insere(new CPIGAudio(nomeArquivo,nLoops,tempoExecucao));
     }
 
-    inline static int InsereAudio(PIGAudio audio){
-        return audios->Insere(audio);
-    }
-
-    inline static void DestroiAudio(int idAudio){
-        audios->Remove(idAudio);
-    }
-
-    inline static void SetVolumeTudo(int volume){
+    inline void SetVolumeTudo(int volume){
         Mix_Volume(-1,volume);
 
-        PIGAudio audio = audios->GetPrimeiroElemento();
-        while (audio){
-            audio->SetVolume(volume);
-            audio = audios->GetProximoElemento();
+        auto it = elementos.begin();
+        while (it != elementos.end()){
+            it->second->SetVolume(volume);
+            it++;
         }
     }
 
-    inline static void Play(int idAudio){
-        PIGAudio audio = GetAudio(idAudio);
+    inline void Play(int idAudio){
+        PIGAudio audio = GetElemento(idAudio);
         int c = audio->Play();
         audioIds[c] = idAudio;
     }
 
-    inline static void StopTudo(){
+    inline void StopTudo(){
         Mix_HaltChannel(-1);
 
-        PIGAudio audio = audios->GetPrimeiroElemento();
-        while (audio){
-            audio->Stop();
-            audio = audios->GetProximoElemento();
+        auto it = elementos.begin();
+        while (it != elementos.end()){
+            it->second->Stop();
+            it++;
         }
     }
 
-    inline static void PauseTudo(){
+    inline void PauseTudo(){
         Mix_Pause(-1);
 
-        PIGAudio audio = audios->GetPrimeiroElemento();
-        while (audio){
-            audio->Pause();
-            audio = audios->GetProximoElemento();
-
+        auto it = elementos.begin();
+        while (it != elementos.end()){
+            it->second->Pause();
+            it++;
         }
     }
 
-    inline static void ResumeTudo(){
+    inline void ResumeTudo(){
         Mix_Resume(-1);
 
-        PIGAudio audio = audios->GetPrimeiroElemento();
-        while (audio){
-            audio->Resume();
-            audio = audios->GetProximoElemento();
+        auto it = elementos.begin();
+        while (it != elementos.end()){
+            it->second->Resume();
+            it++;
         }
     }
 
 };
 
-CPIGRepositorio<PIGAudio> *CPIGGerenciadorAudios::audios;
 int CPIGGerenciadorAudios::audioIds[PIG_QTD_CANAIS_PADRAO];
-Mix_Music *CPIGGerenciadorAudios::background;
-int CPIGGerenciadorAudios::volumeBackground;
-PIGStatusAudio CPIGGerenciadorAudios::statusBackground;
+CPIGGerenciadorAudios pigGerAudios;
 #endif // _CPIGGERENCIADORAUDIOS_

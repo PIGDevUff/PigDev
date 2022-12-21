@@ -1,6 +1,8 @@
 #ifndef _CPIGAUDIO_
 #define _CPIGAUDIO_
 
+#include "CPIGAssetLoader.h"
+
 class CPIGAudio{
 
 private:
@@ -18,7 +20,7 @@ public:
 CPIGAudio(string nomeArquivo, int nLoops, int tempoPlay=-1){
     nomeArq = nomeArquivo;
     #ifdef PIG_SHARE_AUDIO
-        chunk = CPIGAssetLoader::LoadAudio(nomeArq);
+        chunk = gAssetLoader.LoadAudio(nomeArq);
     #else
         chunk = Mix_LoadWAV(nomeArq.c_str());
     #endif
@@ -34,7 +36,7 @@ CPIGAudio(string nomeArquivo, int nLoops, int tempoPlay=-1){
 
 ~CPIGAudio(){
     #ifdef PIG_SHARE_AUDIO
-        CPIGAssetLoader::FreeAudio(nomeArq);
+        gAssetLoader.FreeAudio(nomeArq);
     #else
         Mix_FreeChunk(chunk);
     #endif

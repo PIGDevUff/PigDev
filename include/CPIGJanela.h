@@ -238,7 +238,7 @@ void SetTamanho(int alt, int larg){
 }
 
 PIGCor GetPixel(int x, int y) {
-    if (x<0 || x>=largura  ||y<0 ||y>=altura) return PRETO;
+    if (x<0 || x>=largura || y<0 || y>=altura) return PRETO;
     PIGCor resp;
     SDL_Surface* infoSurface = SDL_GetWindowSurface(window);
     if (infoSurface != NULL) {

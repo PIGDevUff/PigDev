@@ -45,7 +45,6 @@ void AplicaTransicao(PIGEstadoTransicao estado){
 
 public:
 
-
 //Construtor para arquivos de vídeo ou Componentes
 CPIGSprite(int idSprite,int altura,int largura,string nomeArq,int janela=0):CPIGImagem(idSprite,altura,largura,nomeArq,janela){
     pixels = NULL;

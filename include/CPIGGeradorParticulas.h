@@ -35,11 +35,11 @@ private:
             //printf("viva %d %d %d\n",i,parts[i]->ChecaViva(),parts[i]->GetId());
             if (parts[i]->ChecaViva()==false){;
                 //printf("antes del %d (%f)\n",parts[i]->GetID(),maxTempo);
-                CPIGGerenciadorSprites::DestroiAnimacao(parts[i]->GetID());
+                pigGerAnimacoes.Remove(parts[i]->GetID());
 
                 #ifdef PIGCOMAUDIO
                 if (audioFim>=0)
-                    CPIGGerenciadorAudios::Play(audioFim);
+                    pigGerAudios.Play(audioFim);
                 #endif
 
                 parts.erase(parts.begin()+i);
@@ -79,9 +79,9 @@ public:
     int CriaParticula(){
         if (parts.size()>=maxParticulas) return -1;
 
-        int idPart = CPIGGerenciadorSprites::GetProxIndiceAnimacao();
+        int idPart = pigGerAnimacoes.ProxID();
         PIGParticula part = new CPIGParticula(idPart,this,hpParticulas,retiraFundoImagem,corFundoImagem,idJanela);
-        idPart = CPIGGerenciadorSprites::InsereAnimacao(part);
+        idPart = pigGerAnimacoes.Insere(part);
 
         part->DefineLimites(maxEspaco,maxTempo);
         //printf("com tempo %f\n",maxTempo);
@@ -90,7 +90,7 @@ public:
 
         #ifdef PIGCOMAUDIO
         if (audioInicio>=0)
-            CPIGGerenciadorAudios::Play(audioInicio);
+            pigGerAudios.Play(audioInicio);
         #endif
 
         return parts.size();
@@ -102,7 +102,7 @@ public:
 
     int Desenha() override{
         AtualizaParticulas();
-        //CPIGGerenciadorJanelas::GetJanela(idJanela)->DesenhaRetangulo(pos.x,pos.y,10,10,ROXO);
+        //gGerJanelas.GetElemento(idJanela)->DesenhaRetangulo(pos.x,pos.y,10,10,ROXO);
         for (PIGParticula part:parts)
             part->Desenha();
 
@@ -172,6 +172,5 @@ public:
     }
 
 };
-
 typedef CPIGGeradorParticulas* PIGGeradorParticulas;
 #endif // _CPIGGERADORPARTICULAS_

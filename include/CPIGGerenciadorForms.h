@@ -2,60 +2,35 @@
 #define _CPIGGERENCIADORFORMS_
 
 #include "CPIGForm.h"
+#include "CPIGRepositorio.h"
 
-class CPIGGerenciadorForms{
-
-private:
-
-    static CPIGRepositorio<PIGForm> *forms;
+class CPIGGerenciadorForms: public CPIGRepositorio<PIGForm>{
 
 public:
 
-    inline static void Inicia(){
-        forms = new CPIGRepositorio<PIGForm>(PIG_MAX_FORMS,"forms");
-    }
+    CPIGGerenciadorForms():CPIGRepositorio<PIGForm>(PIG_MAX_FORMS,"CPIGForm"){}
 
-    inline static void Encerra(){
-        delete forms;
-    }
-
-    inline static PIGForm GetForm(int idForm){
-        return forms->GetElemento(idForm);
-    }
-
-    inline static PIGForm GetFormComponente(int idComponente){
-        return GetForm(idComponente / PIG_MAX_COMPONENTES);
+    inline PIGForm GetFormComponente(int idComponente){
+        return GetElemento(idComponente / PIG_MAX_COMPONENTES);
     }
 
     template <class T>
-    inline static T GetComponente(int idComponente){
+    inline T GetComponente(int idComponente){
         PIGForm f = GetFormComponente(idComponente);
         return f->GetComponente<T>(idComponente);
     }
 
-    inline static int CriaForm(int altura, int largura, int janela = 0){
-        int resp = forms->ProxID();
-        return forms->Insere(new CPIGForm(resp,altura,largura,janela));
+    inline int CriaForm(int altura, int largura, int janela = 0){
+        return Insere(new CPIGForm(ProxID(),altura,largura,janela));
     }
 
-    inline static int InsereForm(PIGForm form){
-        return forms->Insere(form);
+    inline int CriaForm(int altura, int largura, string nomeArq, int retiraFundo=1, int janela = 0){
+        return Insere(new CPIGForm(ProxID(),altura,largura,nomeArq,retiraFundo,janela));
     }
 
-    inline static int CriaForm(int altura, int largura, string nomeArq, int retiraFundo=1, int janela = 0){
-        int resp = forms->ProxID();
-        return forms->Insere(new CPIGForm(resp,altura,largura,nomeArq,retiraFundo,janela));
+    inline int CriaForm(string nomeArqTexto){
+        return Insere(new CPIGForm(ProxID(),nomeArqTexto));
     }
-
-    inline static int CriaForm(string nomeArqTexto){
-        int resp = forms->ProxID();
-        return forms->Insere(new CPIGForm(resp,nomeArqTexto));
-    }
-
-    inline static void DestroiForm(int idForm){
-        forms->Remove(idForm);
-    }
-
 };
-CPIGRepositorio<PIGForm> *CPIGGerenciadorForms::forms;
+CPIGGerenciadorForms pigGerForms;
 #endif // _CPIGGERENCIADORFORMS_

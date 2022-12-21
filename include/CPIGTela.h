@@ -24,7 +24,8 @@ protected:
     int mudarPara;
     int id,janela;
     double tempoSaida;
-    int timerSaida;
+    //int timerSaida;
+    PIGTimer timerSaida;
     int spriteCarrega;
     bool criaBackground,carregaBackground;
     PIGEstadoTela estado;
@@ -58,13 +59,14 @@ public:
         janela = idJanela;
         comportamento = comporta;
         tempoSaida = PIG_TEMPO_SAIDA_TELA_PADRAO;
-        timerSaida = CPIGGerenciadorTimers::CriaTimer(true);
+        //timerSaida = CPIGGerenciadorTimers::CriaTimer(true);
+        timerSaida = new CPIGTimer(true);
         criaBackground = criarBackground;
         carregaBackground = carregarBackground;
         spriteCarrega = -1;
         if (imgLoading!=""){
-            spriteCarrega = CPIGGerenciadorSprites::CriaSprite(imgLoading,1,NULL,janela);
-            CPIGGerenciadorSprites::GetSprite(spriteCarrega)->SetDimensoes(PIG_ALT_TELA,PIG_LARG_TELA);
+            spriteCarrega = pigGerSprites.CriaSprite(imgLoading,1,NULL,janela);
+            pigGerSprites.GetElemento(spriteCarrega)->SetDimensoes(PIG_ALT_TELA,PIG_LARG_TELA);
         }
 
         destruirAoDescarregar = false;
@@ -91,7 +93,7 @@ public:
         while (estado==PIG_TELA_CRIANDO||estado==PIG_TELA_CARREGANDO){
             SDL_Delay(10);
         }
-        CPIGGerenciadorTimers::DestroiTimer(timerSaida);
+        delete timerSaida;
         if (comportamento.acaoDestroi!=NULL)
             comportamento.acaoDestroi(id,comportamento.dados);
     }
@@ -110,7 +112,7 @@ public:
             return -1;
         }
         mudarPara = -1;
-        CPIGGerenciadorTimers::GetTimer(timerSaida)->Reinicia(true);
+        timerSaida->Reinicia(true);
         if (comportamento.acaoCarrega!=NULL){
             if (carregaBackground){
                 estado = PIG_TELA_CARREGANDO;
@@ -150,7 +152,7 @@ public:
             SDL_Delay(10);
         estado = PIG_TELA_SAINDO;
         tempoSaida = tempo;
-        CPIGGerenciadorTimers::GetTimer(timerSaida)->Despausa();
+        timerSaida->Despausa();
         mudarPara = outraTela;
         destruirAoDescarregar = destroiDescarga;
     }
@@ -171,15 +173,15 @@ public:
         }
 
         //se já passou o tempo de sair, sinaliza para qual tela o gerenciador tem que mudar
-        if (CPIGGerenciadorTimers::GetTimer(timerSaida)->GetTempoDecorrido()>tempoSaida)
+        if (timerSaida->GetTempoDecorrido()>tempoSaida)
             return mudarPara;
         else return -1;
     }
 
     int Desenha(){
         if (spriteCarrega!=-1&&(estado==PIG_TELA_CRIANDO||estado==PIG_TELA_CARREGANDO)){
-            CPIGGerenciadorJanelas::GetJanela(janela)->PreparaCameraFixa();
-            CPIGGerenciadorSprites::GetSprite(spriteCarrega)->Desenha();
+            pigGerJanelas.GetElemento(janela)->PreparaCameraFixa();
+            pigGerSprites.GetElemento(spriteCarrega)->Desenha();
         }
 
         int resp=0;

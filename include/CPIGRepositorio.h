@@ -5,60 +5,50 @@ template <class T>
 class CPIGRepositorio{
 
 protected:
-string tipoElementos;
-vector<int> posLivres;
-unordered_map<int,T> elementos;
-typename unordered_map<int,T>::iterator it;
+
+    string tipoElementos;
+    vector<int> posLivres;
+    unordered_map<int,T> elementos;
 
 public:
 
     CPIGRepositorio(int qtdElementos, string tipoDeElementos){
+        posLivres.reserve(qtdElementos);
         for (int i=qtdElementos-1;i>=0;i--)
             posLivres.push_back(i);
         tipoElementos = tipoDeElementos;
     }
 
     ~CPIGRepositorio(){
-        for(it = elementos.begin(); it != elementos.end(); ++it)
+        for(auto it = elementos.begin(); it != elementos.end(); it++)
             delete it->second;
     }
 
-    int Insere(T valor){
+    inline int Insere(T valor){
         int resp = posLivres.back();
         posLivres.pop_back();
         elementos[resp] = valor;
         return resp;
     }
 
-    void Remove(int id){
+    inline void Remove(int id){
         posLivres.push_back(id);
         T elem = GetElemento(id);
         delete elem;
         elementos.erase(id);
     }
 
-    T GetElemento(int id){
-        it = elementos.find(id);
-        if (it==elementos.end()) throw CPIGErroIndice(id,tipoElementos);
-        return it->second;
+    inline T GetElemento(int id){
+        if (elementos[id] == NULL) throw CPIGErroIndice(id,tipoElementos);
+        return elementos[id];
     }
 
     inline int ProxID(){
         return posLivres.back();
     }
 
-    T GetPrimeiroElemento(){
-        it = elementos.begin();
-        if (it == elementos.end()) return NULL;
-        return it->second;
+    inline int GetQtdElementos(){
+        return elementos.size();
     }
-
-    T GetProximoElemento(){
-        ++it;
-        if (it == elementos.end()) return NULL;
-        return it->second;
-    }
-
 };
-
 #endif // _CPIGREPOSITORIO_

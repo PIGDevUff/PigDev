@@ -7,7 +7,7 @@ class CPIGBotaoClick: public CPIGBotao{
 
 protected:
 
-    PIGTimer timer;
+    int timer;
     double tempoRepeticao,tempoAcionamento;
 
     void IniciaCoresBasicas(){
@@ -73,9 +73,9 @@ protected:
     }
 
     void TrataTimer(){
-        double tempo = timer->GetTempoDecorrido();
+        double tempo = pigGerTimers.GetElemento(timer)->GetTempoDecorrido();
         if (tempo>=tempoRepeticao){
-            if (tempoRepeticao>0&&mouseOver&&CPIGMouse::GetEstadoBotaoEsquerdo()==PIG_MOUSE_PRESSIONADO){
+            if (tempoRepeticao>0 && mouseOver && pigMouse.GetEstadoBotaoEsquerdo()==PIG_MOUSE_PRESSIONADO){
                 OnAction();
             }
         }else if (tempo>tempoAcionamento)
@@ -83,9 +83,9 @@ protected:
     }
 
     PIGEstadoEvento OnAction()override{
-        if (timer->GetTempoDecorrido()>tempoRepeticao){
+        if (pigGerTimers.GetElemento(timer)->GetTempoDecorrido()>tempoRepeticao){
             SetAcionado(true);
-            timer->Reinicia(false);
+            pigGerTimers.GetElemento(timer)->Reinicia(false);
         }
         return CPIGComponente::OnAction();
     }
@@ -93,7 +93,7 @@ protected:
     void IniciaBase(){
         tempoRepeticao = 0.5;
         tempoAcionamento = 0.2;
-        timer = new CPIGTimer(false);
+        timer = pigGerTimers.CriaTimer(false);
         tipo = PIG_BOTAOCLICK;
     }
 
@@ -115,7 +115,7 @@ public:
     CPIGBotaoClick(int idComponente,CPIGAtributos atrib):CPIGBotaoClick(LeParametros(idComponente,atrib)){}
 
     virtual ~CPIGBotaoClick(){
-        delete timer;
+        pigGerTimers.Remove(timer);
     }
 
     inline void DefineTempoRepeticao(double segundos){

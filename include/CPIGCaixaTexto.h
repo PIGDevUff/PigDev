@@ -143,7 +143,7 @@ protected:
         texto.erase(posCursor-1,1);//retira o caracter imediatamente atrás do cursor e retrocede com ele
         VoltaCursor();
         #ifdef PIGCOMAUDIO
-        if (audioComponente>=0) CPIGGerenciadorAudios::Play(audioComponente);
+        if (audioComponente>=0) pigGerAudios.Play(audioComponente);
         #endif
         return 1;
     }
@@ -155,7 +155,7 @@ protected:
         texto.erase(posCursor,1);//retira o caracter imediatamente a frente do cursor
 
         #ifdef PIGCOMAUDIO
-        if (audioComponente>=0) CPIGGerenciadorAudios::Play(audioComponente);
+        if (audioComponente>=0) pigGerAudios.Play(audioComponente);
         #endif
         return 1;
     }
@@ -194,7 +194,7 @@ protected:
 
             aux.assign(linha,0,i+1);
 
-            largParcial = CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetLarguraPixelsString(aux);
+            largParcial = pigGerFontes.GetElemento(fonteTexto)->GetLarguraPixelsString(aux);
 
             //printf("aux: <%s> %d %d\n",aux.c_str(),largParcial,delta);
 
@@ -265,7 +265,7 @@ public:
     //deifne a fonte de texto
     virtual void SetFonteTexto(int fonte){
         fonteTexto = fonte;
-        altLetra = CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetTamanhoBaseFonte()+CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetFonteDescent();
+        altLetra = pigGerFontes.GetElemento(fonteTexto)->GetTamanhoBaseFonte()+pigGerFontes.GetElemento(fonteTexto)->GetFonteDescent();
         AjustaPosicaoTextoCursor();
     }
 

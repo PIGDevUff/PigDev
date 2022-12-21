@@ -25,7 +25,7 @@ protected:
     virtual PIGEstadoEvento OnMouseClick(){
         SetAcionado(!GetAcionado());
         #ifdef PIGCOMAUDIO
-        if (audioComponente>=0) CPIGGerenciadorAudios::Play(audioComponente);
+        if (audioComponente>=0) pigGerAudios.Play(audioComponente);
         #endif
         return PIG_COMPONENTE_TRATADO;
     }

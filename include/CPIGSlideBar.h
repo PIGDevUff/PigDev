@@ -153,13 +153,13 @@ public:
                 return TrataRodinha(evento);
 
             if((evento.mouse.acao == PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO)||
-               (temFoco && CPIGMouse::GetEstadoBotao(PIG_MOUSE_ESQUERDO)==PIG_MOUSE_PRESSIONADO))
+               (temFoco && pigMouse.GetEstadoBotao(PIG_MOUSE_ESQUERDO)==PIG_MOUSE_PRESSIONADO))
                 return TrataClickTrilha(p.x,p.y);
 
             return PIG_COMPONENTE_MOUSEOVER;
         }else{
             if((evento.mouse.acao == PIG_MOUSE_PRESSIONADO && evento.mouse.botao == PIG_MOUSE_ESQUERDO)||
-               (temFoco && CPIGMouse::GetEstadoBotao(PIG_MOUSE_ESQUERDO)==PIG_MOUSE_PRESSIONADO))
+               (temFoco && pigMouse.GetEstadoBotao(PIG_MOUSE_ESQUERDO)==PIG_MOUSE_PRESSIONADO))
                 return TrataClickMarcador(p);
             return PIG_COMPONENTE_NAOTRATADO;
         }

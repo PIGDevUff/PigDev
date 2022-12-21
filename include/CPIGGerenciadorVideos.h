@@ -2,45 +2,26 @@
 #define _CPIGGERENCIADORVIDEOS_
 
 #include "CPIGVideo.h"
+#include "CPIGRepositorio.h"
 
-class CPIGGerenciadorVideos{
-
-private:
-
-    static CPIGRepositorio<PIGVideo> *videos;
+class CPIGGerenciadorVideos: public CPIGRepositorio<PIGVideo>{
 
 public:
 
-    inline static void Inicia(){
+    CPIGGerenciadorVideos():CPIGRepositorio<PIGVideo>(PIG_MAX_VIDEOS,"CPIGVideo"){
         //av_register_all();
         //avcodec_register_all();
         avdevice_register_all();
         avformat_network_init();
-
-        videos = new CPIGRepositorio<PIGVideo>(PIG_MAX_VIDEOS,"videos");
     }
 
-    inline static void Encerra(){
-        delete videos;
+    ~CPIGGerenciadorVideos(){
         avformat_network_deinit();
     }
 
-    inline static int CriaVideo(string nomeArquivo, int idJanela=0){
-        return videos->Insere(new CPIGVideo(nomeArquivo,idJanela));
+    inline int CriaVideo(string nomeArquivo, int idJanela=0){
+        return Insere(new CPIGVideo(nomeArquivo,idJanela));
     }
-
-    inline static int InsereVideo(PIGVideo video){
-        return videos->Insere(video);
-    }
-
-    inline static void DestroiVideo(int idVideo){
-        videos->Remove(idVideo);
-    }
-
-    inline static PIGVideo GetVideo(int idVideo){
-        return videos->GetElemento(idVideo);
-    }
-
 };
-CPIGRepositorio<PIGVideo> *CPIGGerenciadorVideos::videos;
+CPIGGerenciadorVideos pigGerVideos;
 #endif // _CPIGGERENCIADORVIDEOS_

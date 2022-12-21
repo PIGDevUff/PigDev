@@ -55,13 +55,13 @@ private:
     //ajusta o alinhamento do cursor
     void AjustaPosicaoTextoCursor()override{
         string textoBase = GetTextoVisivel();
-        int largTextoTotal = CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetLarguraPixelsString(textoBase); //largura total do texto todo (em pixels)
+        int largTextoTotal = pigGerFontes.GetElemento(fonteTexto)->GetLarguraPixelsString(textoBase); //largura total do texto todo (em pixels)
 
         IniciaPosicaoTexto();
 
         string aux;
         aux.assign(textoBase,0,posCursor); //pega a string apenas do início até onde o cursor está
-        int largTextoAteCursor = CPIGGerenciadorFontes::GetFonte(fonteTexto)->GetLarguraPixelsString(aux); //largura (em pixels) até o ponto do cursor
+        int largTextoAteCursor = pigGerFontes.GetElemento(fonteTexto)->GetLarguraPixelsString(aux); //largura (em pixels) até o ponto do cursor
 
         if (largTextoTotal>larg-margemDir-margemEsq){ //não cabe todo dentro da caixa
             xTexto = (pos.x+larg-margemDir)-largTextoTotal;
@@ -127,7 +127,7 @@ public:
         PIGFixaStencil();
 
         //printf("texto: <%s> xbase\n",GetTextoVisivel().c_str(),xTexto);
-        CPIGGerenciadorFontes::GetFonte(fonteTexto)->Escreve(GetTextoVisivel(),xTexto,yTexto,true,coresBasicas[1],PIG_TEXTO_ESQUERDA);
+        pigGerFontes.GetElemento(fonteTexto)->Escreve(GetTextoVisivel(),xTexto,yTexto,true,coresBasicas[1],PIG_TEXTO_ESQUERDA);
         DesenhaCursor();//desenha o cursor (se estiver em ediçăo)
 
         PIGLiberaStencil();
