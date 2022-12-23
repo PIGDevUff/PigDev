@@ -19,19 +19,15 @@ public:
     }
 
     inline void PausaTodos(){
-        auto it = elementos.begin();
-        while (it != elementos.end()){
-            it->second->PausaGeral();
-            it++;
-        }
+        for (int i=0;i<maxElementos;i++)
+            if (elementos[i])
+                elementos[i]->PausaGeral();
     }
 
     inline void DespausaTodos(){
-        auto it = elementos.begin();
-        while (it != elementos.end()){
-            it->second->DespausaGeral();
-            it++;
-        }
+        for (int i=0;i<maxElementos;i++)
+            if (elementos[i])
+                elementos[i]->DespausaGeral();
     }
 
     inline int AssociaTimerGrupo(int idTimer, int idGrupo){

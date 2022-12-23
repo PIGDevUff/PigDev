@@ -8,7 +8,7 @@ class CPIGGerenciadorAnimacoes: public CPIGRepositorio<PIGAnimacao>{
 
 public:
 
-    CPIGGerenciadorAnimacoes():CPIGRepositorio<PIGAnimacao>(PIG_MAX_ANIMACOES,"CPIGAnimcao"){}
+    CPIGGerenciadorAnimacoes():CPIGRepositorio<PIGAnimacao>(PIG_MAX_ANIMACOES,"CPIGAnimacao"){}
 
     inline int CriaAnimacao(string nomeArquivoBMP, int retiraFundo=1, PIGCor *corFundo=NULL, int idJanela=0){
         return Insere(new CPIGAnimacao(ProxID(),nomeArquivoBMP,retiraFundo,corFundo,idJanela));

@@ -118,15 +118,18 @@ public:
         return modoAtual;
     }
 
-    virtual void Pausa(){
+    //pausa apenas o timer de controle dos frames da animação
+    inline virtual void Pausa(){
         timer->Pausa();
     }
 
-    virtual void Despausa(){
+    //despausa apenas o timer de controle dos frames da animação
+    inline virtual void Despausa(){
         timer->Despausa();
     }
 
-    virtual void Reinicia(bool congelado=false){
+    //reinicia apenas o timer de controle dos frames da animação
+    inline virtual void Reinicia(bool congelado=false){
         timer->Reinicia(congelado);
     }
 

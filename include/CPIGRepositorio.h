@@ -6,28 +6,36 @@ class CPIGRepositorio{
 
 protected:
 
-    string tipoElementos;
-    vector<int> posLivres;
-    unordered_map<int,T> elementos;
+    string tipoElementos;           //string que armazena o tipo de elementos que serão armazenados neste repositório para fins de exibição de mensagem em caso de erro
+    vector<int> posLivres;          //vector com as posições livres (NULL) do vetor de elementos
+    T *elementos;                   //vetor de elementos em si (vetor é usado para que o acesso seja o mais rápido possível)
+    int qtdElementos,maxElementos;  //quantidade atual de elementos e quantidade máxima de elementos
 
 public:
 
-    CPIGRepositorio(int qtdElementos, string tipoDeElementos){
-        posLivres.reserve(qtdElementos);
-        for (int i=qtdElementos-1;i>=0;i--)
-            posLivres.push_back(i);
+    CPIGRepositorio(int maxQtd, string tipoDeElementos){
         tipoElementos = tipoDeElementos;
+        maxElementos = maxQtd;
+        posLivres.resize(maxElementos);
+        elementos = (T*)calloc(maxElementos,sizeof(T));
+        qtdElementos = 0;
+        for (int i=maxElementos-1;i>=0;i--){
+            posLivres.push_back(i);
+        }
     }
 
     ~CPIGRepositorio(){
-        for(auto it = elementos.begin(); it != elementos.end(); it++)
-            delete it->second;
+        for (int i=0;i<maxElementos;i++)
+            if (elementos[i])
+                delete elementos[i];
+        free(elementos);
     }
 
     inline int Insere(T valor){
         int resp = posLivres.back();
         posLivres.pop_back();
         elementos[resp] = valor;
+        qtdElementos++;
         return resp;
     }
 
@@ -35,11 +43,12 @@ public:
         posLivres.push_back(id);
         T elem = GetElemento(id);
         delete elem;
-        elementos.erase(id);
+        elementos[id] = NULL;
+        qtdElementos--;
     }
 
     inline T GetElemento(int id){
-        if (elementos[id] == NULL) throw CPIGErroIndice(id,tipoElementos);
+        if (id<0||id>=maxElementos||elementos[id] == NULL) throw CPIGErroIndice(id,tipoElementos);
         return elementos[id];
     }
 
@@ -48,7 +57,7 @@ public:
     }
 
     inline int GetQtdElementos(){
-        return elementos.size();
+        return qtdElementos;
     }
 };
 #endif // _CPIGREPOSITORIO_

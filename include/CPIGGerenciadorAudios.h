@@ -112,11 +112,9 @@ public:
     inline void SetVolumeTudo(int volume){
         Mix_Volume(-1,volume);
 
-        auto it = elementos.begin();
-        while (it != elementos.end()){
-            it->second->SetVolume(volume);
-            it++;
-        }
+        for (int i=0;i<maxElementos;i++)
+            if (elementos[i])
+                elementos[i]->SetVolume(volume);
     }
 
     inline void Play(int idAudio){
@@ -128,31 +126,25 @@ public:
     inline void StopTudo(){
         Mix_HaltChannel(-1);
 
-        auto it = elementos.begin();
-        while (it != elementos.end()){
-            it->second->Stop();
-            it++;
-        }
+        for (int i=0;i<maxElementos;i++)
+            if (elementos[i])
+                elementos[i]->Stop();
     }
 
     inline void PauseTudo(){
         Mix_Pause(-1);
 
-        auto it = elementos.begin();
-        while (it != elementos.end()){
-            it->second->Pause();
-            it++;
-        }
+        for (int i=0;i<maxElementos;i++)
+            if (elementos[i])
+                elementos[i]->Pause();
     }
 
     inline void ResumeTudo(){
         Mix_Resume(-1);
 
-        auto it = elementos.begin();
-        while (it != elementos.end()){
-            it->second->Resume();
-            it++;
-        }
+        for (int i=0;i<maxElementos;i++)
+            if (elementos[i])
+                elementos[i]->Resume();
     }
 
 };

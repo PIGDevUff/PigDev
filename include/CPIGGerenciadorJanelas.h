@@ -11,15 +11,16 @@ public:
     CPIGGerenciadorJanelas():CPIGRepositorio<PIGJanela>(PIG_MAX_JANELAS,"CPIGJanela"){}
 
     int CriaJanela(string nome, int altura=PIG_ALT_TELA, int largura=PIG_LARG_TELA){
-        return Insere(new CPIGJanela(nome,elementos.size(),altura,largura));;
+        return Insere(new CPIGJanela(nome,ProxID(),altura,largura));
     }
 
     void IniciaDesenho(int idJanela=-1){
         if (idJanela>-1){
             GetElemento(idJanela)->IniciaDesenho();
         }else{
-            for (int i=0;i<elementos.size();i++){
-                GetElemento(i)->IniciaDesenho();
+            for (int i=0;i<maxElementos;i++){
+                if (elementos[i])
+                    elementos[i]->IniciaDesenho();
             }
         }
     }
@@ -28,12 +29,12 @@ public:
         if (idJanela>-1){
             GetElemento(idJanela)->EncerraDesenho();
         }else{
-            for (int i=0;i<elementos.size();i++){
-                GetElemento(i)->EncerraDesenho();
+            for (int i=0;i<maxElementos;i++){
+                if (elementos[i])
+                    elementos[i]->EncerraDesenho();
             }
         }
     }
-
 };
 CPIGGerenciadorJanelas pigGerJanelas;
 #endif // _CPIGGERENCIADORJANELAS_

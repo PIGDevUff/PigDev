@@ -24,7 +24,7 @@ protected:
     int mudarPara;
     int id,janela;
     double tempoSaida;
-    //int timerSaida;
+    int idTimerSaida;
     PIGTimer timerSaida;
     int spriteCarrega;
     bool criaBackground,carregaBackground;
@@ -59,8 +59,8 @@ public:
         janela = idJanela;
         comportamento = comporta;
         tempoSaida = PIG_TEMPO_SAIDA_TELA_PADRAO;
-        //timerSaida = CPIGGerenciadorTimers::CriaTimer(true);
-        timerSaida = new CPIGTimer(true);
+        idTimerSaida = pigGerTimers.CriaTimer(true);
+        timerSaida = pigGerTimers.GetElemento(idTimerSaida);
         criaBackground = criarBackground;
         carregaBackground = carregarBackground;
         spriteCarrega = -1;
@@ -93,7 +93,7 @@ public:
         while (estado==PIG_TELA_CRIANDO||estado==PIG_TELA_CARREGANDO){
             SDL_Delay(10);
         }
-        delete timerSaida;
+        pigGerTimers.Remove(idTimerSaida);
         if (comportamento.acaoDestroi!=NULL)
             comportamento.acaoDestroi(id,comportamento.dados);
     }
