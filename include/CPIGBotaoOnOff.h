@@ -19,33 +19,33 @@ protected:
     virtual void ProcessaAtributos(CPIGAtributos atrib)override{
         CPIGBotao::ProcessaAtributos(atrib);
 
-        string valorStr = atrib.GetString("corNormalOff","");
+        string valorStr = atrib.GetString(PIG_STR_CORNORMALOFF,"");
         if (valorStr != "") SetCorNormalOff(PIGCriaCorString(valorStr));
 
-        valorStr = atrib.GetString("corMouseSobreOff","");
+        valorStr = atrib.GetString(PIG_STR_CORMOUSESOBREOFF,"");
         if (valorStr != "") SetCorMouseSobreOff(PIGCriaCorString(valorStr));
 
-        valorStr = atrib.GetString("corDesabilitadoOff","");
+        valorStr = atrib.GetString(PIG_STR_CORDESABILITADOOFF,"");
         if (valorStr != "") SetCorDesabilitadoOff(PIGCriaCorString(valorStr));
 
-        valorStr = atrib.GetString("corNormalOn","");
+        valorStr = atrib.GetString(PIG_STR_CORNORMAL,"");
         if (valorStr != "") SetCorNormalOn(PIGCriaCorString(valorStr));
 
-        valorStr = atrib.GetString("corMouseSobreOn","");
+        valorStr = atrib.GetString(PIG_STR_CORMOUSESOBRE,"");
         if (valorStr != "") SetCorMouseSobreOn(PIGCriaCorString(valorStr));
 
-        valorStr = atrib.GetString("corDesabilitadoOn","");
+        valorStr = atrib.GetString(PIG_STR_CORDESABILITADO,"");
         if (valorStr != "") SetCorDesabilitadoOn(PIGCriaCorString(valorStr));
     }
 
     static CPIGBotaoOnOff LeParametros(int idComponente,CPIGAtributos atrib){
         CPIGBotaoOnOff *resp;
 
-        if (atrib.GetString("nomeArq","")!=""){
-            resp = new CPIGBotaoOnOff(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),
-                       atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
+        if (atrib.GetString(PIG_STR_NOMEARQ,"")!=""){
+            resp = new CPIGBotaoOnOff(idComponente,atrib.GetInt(PIG_STR_ALTURA,0),atrib.GetInt(PIG_STR_LARGURA,0),
+                       atrib.GetString(PIG_STR_NOMEARQ,""),atrib.GetInt(PIG_STR_RETIRAFUNDO,1),atrib.GetInt(PIG_STR_JANELA,0));
         }else{
-            resp = new CPIGBotaoOnOff(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),atrib.GetInt("janela",0));
+            resp = new CPIGBotaoOnOff(idComponente,atrib.GetInt(PIG_STR_ALTURA,0),atrib.GetInt(PIG_STR_LARGURA,0),atrib.GetInt(PIG_STR_JANELA,0));
         }
 
         resp->ProcessaAtributos(atrib);
@@ -84,18 +84,18 @@ protected:
 
 public:
 
-    CPIGBotaoOnOff(int idComponente, int alt, int larg, string nomeArq, int retiraFundo=1, int janela=0):
-        CPIGBotao(idComponente,alt,larg,nomeArq,retiraFundo,janela){
-            CriaFramesAutomaticosPorLinha(1,2,3);
-            MudaFrameAtual(1); //frame de estado normal do botao
-            tipo = PIG_BOTAOONOFF;
-        }
+    CPIGBotaoOnOff(int idComponente, int alt, int larg, string nomeArq, int retiraFundo=1, int janela=0)
+    :CPIGBotao(idComponente,alt,larg,nomeArq,retiraFundo,janela){
+        CriaFramesAutomaticosPorLinha(1,2,3);
+        MudaFrameAtual(1); //frame de estado normal do botao
+        tipo = PIG_BOTAOONOFF;
+    }
 
-    CPIGBotaoOnOff(int idComponente, int alt, int larg, int janela=0):
-        CPIGBotao(idComponente,alt,larg,janela){
-            IniciaCoresBasicas();
-            tipo = PIG_BOTAOONOFF;
-        }
+    CPIGBotaoOnOff(int idComponente, int alt, int larg, int janela=0)
+    :CPIGBotao(idComponente,alt,larg,janela){
+        IniciaCoresBasicas();
+        tipo = PIG_BOTAOONOFF;
+    }
 
     CPIGBotaoOnOff(int idComponente,CPIGAtributos atrib):CPIGBotaoOnOff(LeParametros(idComponente,atrib)){}
 
@@ -122,8 +122,6 @@ public:
     inline void SetCorDesabilitadoOn(PIGCor cor){
         coresBasicas[6] = cor;
     }
-
 };
-
 typedef CPIGBotaoOnOff *PIGBotaoOnOff;
 #endif // _CPIGBOTAOONOFF_

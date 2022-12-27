@@ -19,10 +19,10 @@ public:
 
     CPIGJogo():CPIGAtributos(){
         if (SDL_WasInit(0) > 0){
-            cout << "O jogo ja foi inicializado anteriormente!!!"<<endl;
+            cout<<"O jogo ja foi inicializado anteriormente!!!"<<endl;
         }else{
             if (SDL_Init(SDL_INIT_EVERYTHING) < 0){
-                cout << "A SDL nao pode ser iniciaizada!!! Erro: "<<SDL_GetError()<<endl;
+                cout<<"A SDL nao pode ser iniciaizada!!! Erro: "<<SDL_GetError()<<endl;
             }else{
                 rodando = true;
                 teclado = SDL_GetKeyboardState(NULL);
@@ -162,6 +162,7 @@ public:
             */
             }
         }else ultimoEvento.tipoEvento = PIG_EVENTO_NULO;
+
         return ultimoEvento;
     }
 
@@ -169,19 +170,19 @@ public:
         return teclado;
     }
 
-    void IniciaInputTextoTela(){
+    inline void IniciaInputTextoTela(){
         SDL_StartTextInput();
     }
 
-    void EncerraInputTextoTela(){
+    inline void EncerraInputTextoTela(){
         SDL_StopTextInput();
     }
 
-    void IniciaDesenho(int idJanela=-1){
+    inline void IniciaDesenho(int idJanela=-1){
         pigGerJanelas.IniciaDesenho(idJanela);
     }
 
-    void EncerraDesenho(int idJanela=-1){
+    inline void EncerraDesenho(int idJanela=-1){
         pigGerJanelas.EncerraDesenho(idJanela);
 
         //int off;
@@ -237,7 +238,7 @@ public:
         //SDL_RenderPresent(renderer);
     }
 
-    bool GetRodando(){
+    inline bool GetRodando(){
         return rodando;
     }
 
@@ -245,7 +246,7 @@ public:
         return pigGerJanelas.GetElemento(idJanela)->GetFPS();
     }
 
-    void PreparaOffScreenRenderer(int altura, int largura){
+    inline void PreparaOffScreenRenderer(int altura, int largura){
         if (offRenderer) delete offRenderer;
         offRenderer = new CPIGOffscreenRenderer(altura,largura);
     }

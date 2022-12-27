@@ -1,9 +1,6 @@
 #ifndef _CPIGOFFSCREENLAYER_
 #define _CPIGOFFSCREENLAYER_
 
-//#include "CPIGPilhaCoordenada.h"
-#include <stack>
-
 class CPIGOffscreenLayer{
 
 private:
@@ -54,17 +51,17 @@ public:
         // bind fbo
         glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 
-        std::cout << "\n===== FBO STATUS =====\n";
+        cout<<"===== FBO STATUS ====="<<endl;
 
         // print max # of colorbuffers supported by FBO
         int colorBufferCount = 0;
         glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &colorBufferCount);
-        std::cout << "Max Number of Color Buffer Attachment Points: " << colorBufferCount << std::endl;
+        cout<<"Max Number of Color Buffer Attachment Points: "<<colorBufferCount<<endl;
 
         // get max # of multi samples
         int multiSampleCount = 0;
         glGetIntegerv(GL_MAX_SAMPLES, &multiSampleCount);
-        std::cout << "Max Number of Samples for MSAA: " << multiSampleCount << std::endl;
+        cout<<"Max Number of Samples for MSAA: "<<multiSampleCount<<endl;
 
         int objectType;
         int objectId;
@@ -83,16 +80,13 @@ public:
                                                       GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,
                                                       &objectId);
 
-                std::string formatName;
+                string formatName;
 
-                std::cout << "Color Attachment " << i << ": ";
-                if(objectType == GL_TEXTURE)
-                {
-                    //std::cout << "GL_TEXTURE, " << getTextureParameters(objectId) << std::endl;
-                }
-                else if(objectType == GL_RENDERBUFFER)
-                {
-                    //std::cout << "GL_RENDERBUFFER, " << getRenderbufferParameters(objectId) << std::endl;
+                cout<<"Color Attachment "<<i<<": ";
+                if(objectType == GL_TEXTURE){
+                    //cout<<"GL_TEXTURE, "<<getTextureParameters(objectId)<<endl;
+                }else if(objectType == GL_RENDERBUFFER){
+                    //cout<<"GL_RENDERBUFFER, "<<getRenderbufferParameters(objectId)<<endl;
                 }
             }
         }
@@ -109,14 +103,13 @@ public:
                                                   GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,
                                                   &objectId);
 
-            std::cout << "Depth Attachment: ";
-            switch(objectType)
-            {
+            cout<<"Depth Attachment: ";
+            switch(objectType){
             case GL_TEXTURE:
-                //std::cout << "GL_TEXTURE, " << getTextureParameters(objectId) << std::endl;
+                //cout<<"GL_TEXTURE, "<<getTextureParameters(objectId)<<endl;
                 break;
             case GL_RENDERBUFFER:
-                //std::cout << "GL_RENDERBUFFER, " << getRenderbufferParameters(objectId) << std::endl;
+                //cout<<"GL_RENDERBUFFER, "<<getRenderbufferParameters(objectId)<<endl;
                 break;
             }
         }
@@ -133,19 +126,18 @@ public:
                                                   GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,
                                                   &objectId);
 
-            std::cout << "Stencil Attachment: ";
-            switch(objectType)
-            {
+            cout<<"Stencil Attachment: ";
+            switch(objectType){
             case GL_TEXTURE:
-                //std::cout << "GL_TEXTURE, " << getTextureParameters(objectId) << std::endl;
+                //cout<<"GL_TEXTURE, "<<getTextureParameters(objectId)<<endl;
                 break;
             case GL_RENDERBUFFER:
-                //std::cout << "GL_RENDERBUFFER, " << getRenderbufferParameters(objectId) << std::endl;
+                //cout<<"GL_RENDERBUFFER, "<<getRenderbufferParameters(objectId)<<endl;
                 break;
             }
         }
 
-        std::cout << std::endl;
+        cout<<endl;
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
@@ -156,15 +148,15 @@ public:
         switch(status)
         {
         case GL_FRAMEBUFFER_COMPLETE:
-            std::cout << "Framebuffer complete." << std::endl;
+            cout<<"Framebuffer complete."<<endl;
             return true;
 
         case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
-            std::cout << "[ERROR] Framebuffer incomplete: Attachment is NOT complete." << std::endl;
+            cout<<"[ERROR] Framebuffer incomplete: Attachment is NOT complete."<<endl;
             return false;
 
         case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
-            std::cout << "[ERROR] Framebuffer incomplete: No image is attached to FBO." << std::endl;
+            cout<<"[ERROR] Framebuffer incomplete: No image is attached to FBO."<<endl;
             return false;
     /*
         case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
@@ -176,23 +168,23 @@ public:
             return false;
     */
         case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
-            std::cout << "[ERROR] Framebuffer incomplete: Draw buffer." << std::endl;
+            cout<<"[ERROR] Framebuffer incomplete: Draw buffer."<<endl;
             return false;
 
         case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
-            std::cout << "[ERROR] Framebuffer incomplete: Read buffer." << std::endl;
+            cout<<"[ERROR] Framebuffer incomplete: Read buffer."<<endl;
             return false;
 
         case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
-            std::cout << "[ERROR] Framebuffer incomplete: Multisample." << std::endl;
+            cout<<"[ERROR] Framebuffer incomplete: Multisample."<<endl;
             return false;
 
         case GL_FRAMEBUFFER_UNSUPPORTED:
-            std::cout << "[ERROR] Framebuffer incomplete: Unsupported by FBO implementation." << std::endl;
+            cout<<"[ERROR] Framebuffer incomplete: Unsupported by FBO implementation."<<endl;
             return false;
 
         default:
-            std::cout << "[ERROR] Framebuffer incomplete: Unknown error." << std::endl;
+            cout<<"[ERROR] Framebuffer incomplete: Unknown error."<<endl;
             return false;
         }
         glBindFramebuffer(GL_FRAMEBUFFER, 0);   // unbind
@@ -300,8 +292,6 @@ public:
         glDeleteFramebuffers(1,&frameBuffer);
         glDeleteRenderbuffers(1,&rbo);
     }
-
 };
-
 typedef CPIGOffscreenLayer *PIGOffscreenLayer;
 #endif // _CPIGOFFSCREENLAYER_

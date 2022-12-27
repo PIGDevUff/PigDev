@@ -15,18 +15,18 @@ public:
 
     CPIGControle(int idControle){
         if (SDL_IsGameController(idControle)) {
-            printf("Controle da posicao \'%d\' compativel\n", idControle);
-            ctrl = SDL_GameControllerOpen(idControle);
-            joy = SDL_GameControllerGetJoystick(ctrl);
             id = idControle;
+            cout<<"Controle da posicao "<<id<<" compativel!"<<endl;
+            ctrl = SDL_GameControllerOpen(id);
+            joy = SDL_GameControllerGetJoystick(ctrl);
             qtdEixos = SDL_JoystickNumAxes(joy);
             qtdBotoes = SDL_JoystickNumButtons(joy);
             nome.assign(SDL_JoystickName(joy));
-            printf("Eixos: %d\n",qtdEixos);
-            printf("Botoes: %d\n",qtdBotoes);
-            printf("Nome: %s\n",nome.c_str());
+            cout<<"Eixos: "<<qtdEixos<<endl;
+            cout<<"Botoes: "<<qtdBotoes<<endl;
+            cout<<"Nome: "<<nome<<endl;
         } else {
-            printf("Controle da posicao \'%d\' incompativel\n", idControle);
+            cout<<"Controle da posicao "<<id<<" incompativel!!"<<endl;
         }
     }
 
@@ -57,8 +57,6 @@ public:
     string GetNome(){
         return nome;
     }
-
 };
-
 typedef CPIGControle *PIGControle;
 #endif // _CPIGCONTROLE_

@@ -25,7 +25,7 @@ public:
             Insere(cliente);
             return resp;
         }else{
-            printf("ERRO: detectei o erro clienteTCP id %d\n",resp);
+            cout<<"ERRO: detectei o erro clienteTCP id "<<resp<<endl;
             delete cliente;
             return -1;
         }

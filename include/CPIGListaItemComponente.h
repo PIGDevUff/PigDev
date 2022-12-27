@@ -14,10 +14,10 @@ protected:
 
     static PIGPosicaoComponente GetAlinhamento(string alinhamento){
         transform(alinhamento.begin(), alinhamento.end(), alinhamento.begin(), ::toupper);
-        if (alinhamento=="ESQ_CENTRO") return PIG_POSICAO_ESQ_CENTRO;
-        if (alinhamento=="DIR_CENTRO") return PIG_POSICAO_DIR_CENTRO;
-        if (alinhamento=="CENTRO_CENTRO") return PIG_POSICAO_CENTRO_CENTRO;
-        return PIG_POSICAO_ESQ_CENTRO;
+        if (alinhamento==PIG_STR_ESQ_CENTRO) return PIG_POS_ESQ_CENTRO;
+        if (alinhamento==PIG_STR_DIR_CENTRO) return PIG_POS_DIR_CENTRO;
+        if (alinhamento==PIG_STR_CENTRO_CENTRO) return PIG_POS_CENTRO_CENTRO;
+        return PIG_POS_ESQ_CENTRO;
     }
 
     void IniciaCoresBasicas(){
@@ -36,10 +36,10 @@ protected:
     }
 
     void IniciaBase(int alturaLinha){
-        SetPosicaoPadraoLabel(PIG_POSICAO_CIMA_CENTRO);//posiçăo padrăo do label
+        SetPosicaoPadraoLabel(PIG_POS_CIMA_CENTRO);//posiçăo padrăo do label
         altBaseLista = alturaLinha;
         altIcone = largIcone = alturaLinha;
-        posIcones = PIG_POSICAO_ESQ_CENTRO;//só pode ser posicionamento à esquerda ou à direita
+        posIcones = PIG_POS_ESQ_CENTRO;//só pode ser posicionamento à esquerda ou à direita
         IniciaCoresBasicas();
     }
 
@@ -97,8 +97,8 @@ public:
     virtual void CriaItem(CPIGAtributos atrib)=0;
 
     void SetDimensoesIcone(int alturaIcone, int larguraIcone){
-        for (unsigned int i=0;i<itens.size();i++){
-            itens[i]->SetDimensoesIcone(alturaIcone,larguraIcone);
+        for (PIGItemComponente i: itens){
+            i->SetDimensoesIcone(alturaIcone,larguraIcone);
         }
     }
 
@@ -219,7 +219,6 @@ public:
 
         DeslocaItens(dx,dy);
     }
-
 };
 typedef CPIGListaItemComponente *PIGListaComponente;
 #endif //_CPIGLISTAITEMCOMPONENTE_

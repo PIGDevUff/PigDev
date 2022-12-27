@@ -40,13 +40,13 @@ protected:
     CPIGBotao(int idComponente, int alt, int larg, string nomeArq, int retiraFundo=1, int janela=0):
         CPIGComponente(idComponente,alt,larg,nomeArq,retiraFundo,janela){
             tecla = PIG_TECLA_ENTER;//sem tecla de atalho
-            SetPosicaoPadraoLabel(PIG_POSICAO_CENTRO_CENTRO);
+            SetPosicaoPadraoLabel(PIG_POS_CENTRO_CENTRO);
         }
 
     CPIGBotao(int idComponente, int alt, int larg, int janela=0):
         CPIGComponente(idComponente,alt,larg,janela){
             tecla = PIG_TECLA_ENTER;//sem tecla de atalho
-            SetPosicaoPadraoLabel(PIG_POSICAO_CENTRO_CENTRO);
+            SetPosicaoPadraoLabel(PIG_POS_CENTRO_CENTRO);
         }
 
     virtual ~CPIGBotao(){}
@@ -92,8 +92,6 @@ public:
 
         return CPIGComponente::Desenha();
     }
-
 };
-
 typedef CPIGBotao *PIGBotao;
 #endif // _CPIGBOTAO_

@@ -85,7 +85,7 @@ public:
     void FreeImage(string nomeArq){
         unordered_map<string, PIGHashNodeImagem>::iterator it = mapImagens.find(nomeArq);
         if (it == mapImagens.end()){//não achou
-            printf("Nao existe asset carregado: %s\n",nomeArq.c_str());
+            cout<<"Nao existe asset carregado: "<<nomeArq<<endl;
         }else{
             it->second->cont--;
             if (it->second->cont==0){
@@ -111,7 +111,7 @@ public:
     void FreeAudio(string nomeArq){
         unordered_map<string, PIGHashNodeAudio>::iterator it = mapAudios.find(nomeArq);
         if (it == mapAudios.end()){//não achou
-            printf("Nao existe asset carregado: %s\n",nomeArq.c_str());
+            cout<<"Nao existe asset carregado: "<<nomeArq<<endl;
         }else{
             it->second->cont--;
             if (it->second->cont==0){
@@ -121,7 +121,6 @@ public:
         }
     }
     #endif //PIGCOMAUDIO
-
 };
 CPIGAssetLoader gAssetLoader;
 #endif // _CPIGASSETLOADER_

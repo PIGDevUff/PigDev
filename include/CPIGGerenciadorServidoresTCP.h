@@ -25,7 +25,7 @@ public:
             Insere(servidor);
             return resp;
         }else{
-            printf("ERRO: detectei o erro servidorTCP id %d\n",resp);
+            cout<<"ERRO: detectei o erro servidorTCP id "<<resp<<endl;
             delete servidor;
             return -1;
         }

@@ -4,12 +4,12 @@
 #include "CPIGLabel.h"
 #include "CPIGMouse.h"
 
-typedef enum{PIG_POSICAO_CIMA_CENTRO,PIG_POSICAO_CIMA_ESQ,PIG_POSICAO_CIMA_DIR,PIG_POSICAO_BAIXO_CENTRO,PIG_POSICAO_BAIXO_DIR,PIG_POSICAO_BAIXO_ESQ,
-             PIG_POSICAO_DIR_CIMA,PIG_POSICAO_DIR_BAIXO,PIG_POSICAO_DIR_CENTRO,PIG_POSICAO_ESQ_BAIXO,PIG_POSICAO_ESQ_CENTRO,PIG_POSICAO_ESQ_CIMA,
-             PIG_POSICAO_CENTRO_CENTRO,PIG_POSICAO_PERSONALIZADA} PIGPosicaoComponente;
+typedef enum{PIG_POS_CIMA_CENTRO,PIG_POS_CIMA_ESQ,PIG_POS_CIMA_DIR,PIG_POS_BAIXO_CENTRO,PIG_POS_BAIXO_DIR,PIG_POS_BAIXO_ESQ,
+             PIG_POS_DIR_CIMA,PIG_POS_DIR_BAIXO,PIG_POS_DIR_CENTRO,PIG_POS_ESQ_BAIXO,PIG_POS_ESQ_CENTRO,PIG_POS_ESQ_CIMA,
+             PIG_POS_CENTRO_CENTRO,PIG_POS_PERSONALIZADA} PIGPosicaoComponente;
 typedef enum{PIG_ANCORA_NORTE,PIG_ANCORA_SUL,PIG_ANCORA_LESTE,PIG_ANCORA_OESTE,PIG_ANCORA_NORDESTE,PIG_ANCORA_NOROESTE,PIG_ANCORA_SUDESTE,PIG_ANCORA_SUDOESTE,PIG_ANCORA_CENTRO}PIGAncora;
 typedef enum{PIG_COMPONENTE_NAOTRATADO,PIG_COMPONENTE_SEMFOCO,PIG_COMPONENTE_MOUSEOVER,PIG_COMPONENTE_INVISIVEL,PIG_COMPONENTE_DESABILITADO,PIG_COMPONENTE_TRATADO}PIGEstadoEvento;
-typedef enum{PIG_FORM,PIG_BOTAOCLICK,PIG_BOTAOONOFF,PIG_AREADETEXTO,PIG_CAMPOTEXTO,PIG_RADIOBOX,PIG_CHECKBOX,PIG_LISTBOX,PIG_DROPDOWN,PIG_GAUGEBAR,PIG_GAUGECIRCULAR,PIG_SLIDEBAR,PIG_ITEMCOMPONENTE,PIG_ITEMMENU,PIG_OUTROCOMPONENTE}PIGTipoComponente;
+typedef enum{PIG_FORM,PIG_BOTAOCLICK,PIG_BOTAOONOFF,PIG_AREADETEXTO,PIG_CAMPODETEXTO,PIG_RADIOBOX,PIG_CHECKBOX,PIG_LISTBOX,PIG_DROPDOWN,PIG_GAUGEBAR,PIG_GAUGECIRCULAR,PIG_SLIDEBAR,PIG_ITEMCOMPONENTE,PIG_ITEMMENU,PIG_OUTROCOMPONENTE}PIGTipoComponente;
 
 class CPIGComponente: public CPIGSprite{
 
@@ -31,7 +31,7 @@ protected:
         lab = new CPIGLabel("",BRANCO,0,idJanela);
         hint = new CPIGLabel("",BRANCO,0,idJanela);
         imagemPropria = imagem;
-        SetPosicaoPadraoLabel(PIG_POSICAO_CENTRO_CENTRO);
+        SetPosicaoPadraoLabel(PIG_POS_CENTRO_CENTRO);
         audioComponente = -1;
         margemEsq = margemDir = margemCima = margemBaixo = 0;
         mouseOver = acionado = temFoco = false;
@@ -90,20 +90,20 @@ protected:
 
     static PIGPosicaoComponente ConverteStringPosicao(string str){
         transform(str.begin(), str.end(), str.begin(), ::toupper);
-        if (str=="CIMA_CENTRO") return PIG_POSICAO_CIMA_CENTRO;
-        if (str=="CIMA_ESQ") return PIG_POSICAO_CIMA_ESQ;
-        if (str=="CIMA_DIR") return PIG_POSICAO_CIMA_DIR;
-        if (str=="BAIXO_CENTRO") return PIG_POSICAO_BAIXO_CENTRO;
-        if (str=="BAIXO_DIR") return PIG_POSICAO_BAIXO_DIR;
-        if (str=="BAIXO_ESQ") return PIG_POSICAO_BAIXO_ESQ;
-        if (str=="DIR_CIMA") return PIG_POSICAO_DIR_CIMA;
-        if (str=="DIR_BAIXO") return PIG_POSICAO_DIR_BAIXO;
-        if (str=="DIR_CENTRO") return PIG_POSICAO_DIR_CENTRO;
-        if (str=="ESQ_BAIXO") return PIG_POSICAO_ESQ_BAIXO;
-        if (str=="ESQ_CENTRO") return PIG_POSICAO_ESQ_CENTRO;
-        if (str=="ESQ_CIMA") return PIG_POSICAO_ESQ_CIMA;
-        if (str=="CENTRO_CENTRO") return PIG_POSICAO_CENTRO_CENTRO;
-        return PIG_POSICAO_PERSONALIZADA;
+        if (str==PIG_STR_CIMA_CENTRO) return PIG_POS_CIMA_CENTRO;
+        else if (str==PIG_STR_CIMA_ESQ) return PIG_POS_CIMA_ESQ;
+        else if (str==PIG_STR_CIMA_DIR) return PIG_POS_CIMA_DIR;
+        else if (str==PIG_STR_BAIXO_CENTRO) return PIG_POS_BAIXO_CENTRO;
+        else if (str==PIG_STR_BAIXO_DIR) return PIG_POS_BAIXO_DIR;
+        else if (str==PIG_STR_BAIXO_ESQ) return PIG_POS_BAIXO_ESQ;
+        else if (str==PIG_STR_DIR_CIMA) return PIG_POS_DIR_CIMA;
+        else if (str==PIG_STR_DIR_BAIXO) return PIG_POS_DIR_BAIXO;
+        else if (str==PIG_STR_DIR_CENTRO) return PIG_POS_DIR_CENTRO;
+        else if (str==PIG_STR_ESQ_CIMA) return PIG_POS_ESQ_CIMA;
+        else if (str==PIG_STR_ESQ_BAIXO) return PIG_POS_ESQ_BAIXO;
+        else if (str==PIG_STR_ESQ_CENTRO) return PIG_POS_ESQ_CENTRO;
+        else if (str==PIG_STR_CENTRO_CENTRO) return PIG_POS_CENTRO_CENTRO;
+        return PIG_POS_PERSONALIZADA;
     }
 
     //move o label de acordo com a posição
@@ -111,47 +111,47 @@ protected:
         int altLabel,largLabel;
         lab->GetDimensoes(altLabel,largLabel);
         switch(posLabel){
-            case PIG_POSICAO_CIMA_CENTRO:
+            case PIG_POS_CIMA_CENTRO:
                 lab->Move(pos.x+larg/2-largLabel/2,pos.y+alt+5);
                 break;
-            case PIG_POSICAO_CIMA_DIR:
+            case PIG_POS_CIMA_DIR:
                 lab->Move(pos.x+larg,pos.y+alt+5);
                 break;
-            case PIG_POSICAO_CIMA_ESQ:
+            case PIG_POS_CIMA_ESQ:
                 lab->Move(pos.x-largLabel,pos.y+alt+5);
                 break;
-            case PIG_POSICAO_BAIXO_CENTRO:
+            case PIG_POS_BAIXO_CENTRO:
                 lab->Move(pos.x+larg/2-largLabel/2,pos.y-altLabel);
                 break;
-            case PIG_POSICAO_BAIXO_DIR:
+            case PIG_POS_BAIXO_DIR:
                 lab->Move(pos.x+larg,pos.y-altLabel);
                 break;
-            case PIG_POSICAO_BAIXO_ESQ:
+            case PIG_POS_BAIXO_ESQ:
                 lab->Move(pos.x-largLabel,pos.y-altLabel);
                 break;
-            case PIG_POSICAO_ESQ_BAIXO:
+            case PIG_POS_ESQ_BAIXO:
                 lab->Move(pos.x-5-largLabel,pos.y);
                 break;
-            case PIG_POSICAO_ESQ_CENTRO:
+            case PIG_POS_ESQ_CENTRO:
                 lab->Move(pos.x-5-largLabel,pos.y+(alt-altLabel)/2);
                 break;
-            case PIG_POSICAO_ESQ_CIMA:
+            case PIG_POS_ESQ_CIMA:
                 lab->Move(pos.x-5-largLabel,pos.y + (alt-altLabel));
                 break;
-            case PIG_POSICAO_DIR_BAIXO:
+            case PIG_POS_DIR_BAIXO:
                 lab->Move(pos.x+larg+5,pos.y);
                 break;
-            case PIG_POSICAO_DIR_CENTRO:
+            case PIG_POS_DIR_CENTRO:
                 lab->Move(pos.x+larg+5,pos.y + (alt-altLabel)/2);
                 break;
-            case PIG_POSICAO_DIR_CIMA:
+            case PIG_POS_DIR_CIMA:
                 lab->Move(pos.x+larg+5,pos.y + (alt-altLabel));
                 break;
-            case PIG_POSICAO_CENTRO_CENTRO:
+            case PIG_POS_CENTRO_CENTRO:
                 //printf("px %d larg %d larglabel %d py %d alt %d altLabel %d\n",(int)pos.x,larg,largLabel,(int)pos.y,alt,altLabel);
                 lab->Move(pos.x+larg/2-largLabel/2,pos.y+(alt-altLabel)/2);
                 break;
-            case PIG_POSICAO_PERSONALIZADA:
+            case PIG_POS_PERSONALIZADA:
                 //lab->Move(pos.x+labelX,pos.y+labelY);
                 break;
             }
@@ -174,52 +174,47 @@ protected:
     }
 
     virtual void ProcessaAtributos(CPIGAtributos atrib){
-        int valorInt;
-        string valorStr;
-
-        int px = 0, py = 0;
-        px = atrib.GetInt("px",0);
-        py = atrib.GetInt("py",0);
+        int px = atrib.GetInt(PIG_STR_PX,0);
+        int py = atrib.GetInt(PIG_STR_PY,0);
         Move(px,py);
 
-        int mEsq=0,mDir=0,mCima=0,mBaixo=0;
-        mEsq = atrib.GetInt("margemEsq",0);
-        mDir = atrib.GetInt("margemDir",0);
-        mCima = atrib.GetInt("margemSup",0);
-        mBaixo = atrib.GetInt("margemInf",0);
+        int mEsq = atrib.GetInt(PIG_STR_MARGEMESQ,0);
+        int mDir = atrib.GetInt(PIG_STR_MARGEMDIR,0);
+        int mCima = atrib.GetInt(PIG_STR_MARGEMSUP,0);
+        int mBaixo = atrib.GetInt(PIG_STR_MARGEMINF,0);
         SetMargens(mEsq,mDir,mCima,mBaixo);
 
-        valorStr = atrib.GetString("label","");
-        if (valorStr != "") SetLabel(atrib.GetString("label",""));
+        string valorStr = atrib.GetString(PIG_STR_LABEL,"");
+        if (valorStr != "") SetLabel(atrib.GetString(PIG_STR_LABEL,""));
 
-        valorStr = atrib.GetString("hint","");
+        valorStr = atrib.GetString(PIG_STR_HINT,"");
         if (valorStr != "") SetHint(valorStr);
 
-        valorInt = atrib.GetInt("audio",-1);
+        int valorInt = atrib.GetInt(PIG_STR_AUDIO,-1);
         if (valorInt != -1) SetAudio(valorInt);
 
-        valorInt = atrib.GetInt("fonteLabel",0);
+        valorInt = atrib.GetInt(PIG_STR_FONTELABEL,0);
         if (valorInt != 0) SetFonteLabel(valorInt);
 
-        valorInt = atrib.GetInt("fonteHint",0);
+        valorInt = atrib.GetInt(PIG_STR_FONTEHINT,0);
         if (valorInt != 0) SetFonteHint(valorInt);
 
-        valorInt = atrib.GetInt("acionado",0);
+        valorInt = atrib.GetInt(PIG_STR_ACIONADO,0);
         if (valorInt) SetAcionado(valorInt);
 
-        valorInt = atrib.GetInt("habilitado",1);
+        valorInt = atrib.GetInt(PIG_STR_HABILITADO,1);
         if (valorInt) SetHabilitado(1);
 
-        valorInt = atrib.GetInt("visivel",1);
+        valorInt = atrib.GetInt(PIG_STR_VISIVEL,1);
         if (valorInt) SetVisivel(1);
 
-        valorStr = atrib.GetString("corLabel","");
+        valorStr = atrib.GetString(PIG_STR_CORLABEL,"");
         if (valorStr != "") SetCorLabel(PIGCriaCorString(valorStr));
 
-        valorStr  = atrib.GetString("corHint","");
+        valorStr  = atrib.GetString(PIG_STR_CORHINT,"");
         if (valorStr != "") SetCorHint(PIGCriaCorString(valorStr));
 
-        valorStr = atrib.GetString("posLabel","");
+        valorStr = atrib.GetString(PIG_STR_POSLABEL,"");
         if (valorStr != "") SetPosicaoPadraoLabel(ConverteStringPosicao(valorStr));
     }
 
@@ -351,7 +346,7 @@ public:
     //define a posição do label (posição arbiraria, relativa à posição do componente)
     virtual void SetPosicaoPersonalizadaLabel(int rx, int ry){
         lab->Move(pos.x+rx,pos.y+ry);
-        posLabel = PIG_POSICAO_PERSONALIZADA;//evitar que o usuário esqueça de chamar também a SetPosicaoPadraoLabel
+        posLabel = PIG_POS_PERSONALIZADA;//evitar que o usuário esqueça de chamar também a SetPosicaoPadraoLabel
         PosicionaLabel();
     }
 
@@ -510,8 +505,6 @@ public:
         margemCima = mCima;
         margemBaixo = mBaixo;
     }
-
 };
-
 typedef CPIGComponente *PIGComponente;
 #endif // _CPIGCOMPONENTE_

@@ -1,10 +1,5 @@
-#include <GL/glew.h>
-///aqui pode ter problema no Macosx
-///#include <OpenGL/glu.h>
-#include <GL/glu.h>
-
-#include "PIGTipos.h"
 #include "PIGFuncoesBasicas.h"
+
 #include "CPIGErros.h"
 
 #include "CPIGJogo.h"
@@ -81,13 +76,13 @@ largura (entrada, passagem por valor não-obrigatório): indica a largura em pix
  *  \param altura       Altura da tela do jogo
  *  \param largura      Largura da tela do jogo
  *
- *
  *  \sa FinalizaJogo()
  */
 void CriaJogo(const char *nomeJanela, int cursorProprio=0, int altura=PIG_ALT_TELA, int largura=PIG_LARG_TELA){
     if (pigGerJanelas.GetQtdElementos()==0){
+        //gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress);
         pigGerJanelas.CriaJanela(nomeJanela,altura,largura);
-        glewInit();
+        //glewInit();
         pigGerFontes.CriaFonteNormal(PIG_FONTE_PADRAO_NOME,PIG_FONTE_PADRAO_TAM,PIG_ESTILO_NORMAL,PIG_FONTE_PADRAO_COR,0);
         pigMouse.SetCustomizado(cursorProprio);
     }
@@ -119,7 +114,7 @@ Parâmetros:
 indice (entrada, passagem por valor): relaciona um número inteiro ao atributo.
 valor (entrada, passagem por referência): valor do atributo string a ser associado ao jogo.
 ********************************/
-void SetValorStrinpigJogo(int indice, char *valor){
+void SetValorStringJogo(int indice, char *valor){
     pigJogo.SetValorString(indice,valor);
 }
 
@@ -149,7 +144,7 @@ Parâmetros:
 indice (entrada, passagem por referência): relaciona uma string ao atributo.
 valor (entrada, passagem por referência): valor do atributo string a ser associado ao jogo.
 ********************************/
-void SetValorStrinpigJogo(char *indice, char *valor){
+void SetValorStringJogo(char *indice, char *valor){
     pigJogo.SetValorString(indice,valor);
 }
 
@@ -178,14 +173,14 @@ int GetValorFloatJogo(int indice, float *valor){
 }
 
 /********************************
-A função GetValorStrinpigJogo() é responsável recuperar o valor de um atributo string relacionado ao jogo.
+A função GetValorStringJogo() é responsável recuperar o valor de um atributo string relacionado ao jogo.
 Parâmetros:
 indice (entrada, passagem por valor): indica o número do atributo que se deseja recuperar.
 valor (saída, passagem por referência): indica o valor do atributo, se a função retornar um resultado diferente de zero.
 Retorno:
 Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo não existir, a função retorna o valor 0 (zero).
 ********************************/
-int GetValorStrinpigJogo(int indice, char *valor){
+int GetValorStringJogo(int indice, char *valor){
     string str;
     bool resp = pigJogo.GetValorString(indice,str);
     strcpy(valor,str.c_str());
@@ -217,14 +212,14 @@ int GetValorFloatJogo(char *indice, float *valor){
 }
 
 /********************************
-A função GetValorStrinpigJogo() é responsável recuperar o valor de um atributo string relacionado ao jogo.
+A função GetValorStringJogo() é responsável recuperar o valor de um atributo string relacionado ao jogo.
 Parâmetros:
 indice (entrada, passagem por valor): indica o nome do atributo que se deseja recuperar.
 valor (saída, passagem por referência): indica o valor do atributo, se a função retornar um resultado diferente de zero.
 Retorno:
 Retorna um valor diferente de 0 (zero), se o atributo existir. Se o atributo não existir, a função retorna o valor 0 (zero).
 ********************************/
-int GetValorStrinpigJogo(char *indice, char *valor){
+int GetValorStringJogo(char *indice, char *valor){
     string str;
     bool resp = pigJogo.GetValorString(indice,str);
     strcpy(valor,str.c_str());
@@ -460,7 +455,7 @@ Retono:
 inteiro que representa a quantidade de janelas ainda abertas pelo jogo, incluindo as que estão minimizadas ou escondidas.
 ********************************/
 int GetQtdJanelas(){
-    return 1222;//pigGerJanelas.GetQtdJanelas();
+    return pigGerJanelas.GetQtdElementos();
 }
 
 /********************************
@@ -543,7 +538,6 @@ int GetLarguraJanela(int idJanela=0){
     return pigGerJanelas.GetElemento(idJanela)->GetLargura();
 }
 
-
 /********************************
 A função SetTamanhoJanela() é responsável por definir o tamanho para a janela.
 Parâmetros:
@@ -593,6 +587,7 @@ idJanela (entrada, passagem por valor não-obrigatório): indica o número da ja
 void MoveCamera(int posicaoX, int posicaoY, int idJanela=0){
     pigGerJanelas.GetElemento(idJanela)->Move(posicaoX,posicaoY,0);
 }
+
 /********************************
 A função DeslocaCamera() é responsável por deslocar a câmera em relação à sua posição atual.
 Parâmetros:
@@ -1520,8 +1515,8 @@ angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do nú
 ********************************/
 void EscreveDoubleEsquerda(double valor, int casas, int x, int y, PIGCor cor=BRANCO, int numFonte=0, float angulo=0){
     stringstream str;
-    str.setf(std::ios_base::fixed, std::ios_base::floatfield);
-    str<<std::setprecision(casas)<<valor;
+    str.setf(ios_base::fixed, ios_base::floatfield);
+    str<<setprecision(casas)<<valor;
     pigGerFontes.GetElemento(numFonte)->Escreve(str.str(),x,y,true,cor,PIG_TEXTO_ESQUERDA,angulo);
 }
 
@@ -1538,8 +1533,8 @@ angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do nú
 ********************************/
 void EscreveDoubleDireita(double valor, int casas, int x, int y, PIGCor cor=BRANCO, int numFonte=0, float angulo=0){
     stringstream str;
-    str.setf(std::ios_base::fixed, std::ios_base::floatfield);
-    str<<std::setprecision(casas)<<valor;
+    str.setf(ios_base::fixed, ios_base::floatfield);
+    str<<setprecision(casas)<<valor;
     pigGerFontes.GetElemento(numFonte)->Escreve(str.str(),x,y,true,cor,PIG_TEXTO_DIREITA,angulo);
 }
 
@@ -1556,8 +1551,8 @@ angulo (entrada, passagem por valor): ângulo, em graus, para a rotação do nú
 ********************************/
 void EscreveDoubleCentralizado(double valor, int casas, int x, int y, PIGCor cor=BRANCO, int numFonte=0, float angulo=0){
     stringstream str;
-    str.setf(std::ios_base::fixed, std::ios_base::floatfield);
-    str<<std::setprecision(casas)<<valor;
+    str.setf(ios_base::fixed, ios_base::floatfield);
+    str<<setprecision(casas)<<valor;
     pigGerFontes.GetElemento(numFonte)->Escreve(str.str(),x,y,true,cor,PIG_TEXTO_CENTRO,angulo);
 }
 
@@ -1657,8 +1652,6 @@ inteiro que representa o espaçamento vertical ideal para que duas frases não s
 void SubstituiCaractere(char caractere, char *nomeArquivo, int largNova, int x, int y, int altura, int largura, int numFonte=0){
     pigGerFontes.GetElemento(numFonte)->SubstituiGlyph(nomeArquivo,caractere,{x,y,altura,largura},altura,largNova);
 }
-
-
 
 
 /********************************
@@ -3578,7 +3571,7 @@ Retorno:
 inteiro que identifica o timer criado.
 ********************************/
 int CriaTimer(int congelado=false){
-    return pigGerTimers.CriaTimer(congelado);
+    return pigGerTimers.CriaTimer(congelado)->GetID();
 }
 
 /********************************
@@ -3629,14 +3622,26 @@ void DespausaTudo(){
 }
 
 /********************************
-A função ReiniciaTimer() é responsável por zerar a contagem do tempo de um timer, idependente do tempo já decorrido.
-Na prática, é equivalente a encerrer um temporizador e recriá-lo em seguida.
+A função ReiniciaTimer() é responsável por zerar a contagem do tempo de um timer, independente do tempo já decorrido.
+É semelhante à função SetTempoTimer, pssando o valor do parâmetro tempo igual a zero.
 Parâmetros:
 idTimer (entrada, passagem por valor): identificador do timer.
 congelado (entrada, passagem por valor): valor lógico que indica se o timer deve ser zerado sem iniciar de imediato a contagem de tempo ou não.
 ********************************/
 void ReiniciaTimer(int idTimer, int congelado=false){
     pigGerTimers.GetElemento(idTimer)->Reinicia(congelado);
+}
+
+/********************************
+A função SetTempoTimer() é responsável por definir a contagem do tempo de um timer, ignorando tudo o que já passou.
+É uma forma de reiniciar a contagem de tempo, mas não começando do valor zero, como na função ReiniciaTimer();
+Parâmetros:
+idTimer (entrada, passagem por valor): identificador do timer.
+tempo (entrada, passagem por valor): tempo inicial do timer imediatamente após a chamada da função.
+congelado (entrada, passagem por valor): valor lógico que indica se o timer deve ser ajustado sem iniciar de imediato a contagem de tempo ou não.
+********************************/
+void SetTempoTimer(int idTimer, float tempo, int congelado=false){
+    pigGerTimers.GetElemento(idTimer)->SetTempo(tempo,congelado);
 }
 
 /********************************
@@ -6036,23 +6041,23 @@ void PIGListBoxSetCorLabelItem(int idComponente, PIGCor cor, int item=-1){
 }
 
 void PIGListBoxAlinhaLabelDireita(int idComponente){
-    pigGerForms.GetComponente<PIGListBox>(idComponente)->AlinhaLabelItens(PIG_POSICAO_DIR_CENTRO);
+    pigGerForms.GetComponente<PIGListBox>(idComponente)->AlinhaLabelItens(PIG_POS_DIR_CENTRO);
 }
 
 void PIGListBoxAlinhaLabelEsquerda(int idComponente){
-    pigGerForms.GetComponente<PIGListBox>(idComponente)->AlinhaLabelItens(PIG_POSICAO_ESQ_CENTRO);
+    pigGerForms.GetComponente<PIGListBox>(idComponente)->AlinhaLabelItens(PIG_POS_ESQ_CENTRO);
 }
 
 void PIGListBoxAlinhaLabelCentro(int idComponente){
-    pigGerForms.GetComponente<PIGListBox>(idComponente)->AlinhaLabelItens(PIG_POSICAO_CENTRO_CENTRO);
+    pigGerForms.GetComponente<PIGListBox>(idComponente)->AlinhaLabelItens(PIG_POS_CENTRO_CENTRO);
 }
 
 void PIGListBoxAlinhaIconeDireita(int idComponente){
-    pigGerForms.GetComponente<PIGListBox>(idComponente)->AlinhaIcones(PIG_POSICAO_DIR_CENTRO);
+    pigGerForms.GetComponente<PIGListBox>(idComponente)->AlinhaIcones(PIG_POS_DIR_CENTRO);
 }
 
 void PIGListBoxAlinhaIconeEsquerda(int idComponente){
-    pigGerForms.GetComponente<PIGListBox>(idComponente)->AlinhaIcones(PIG_POSICAO_ESQ_CENTRO);
+    pigGerForms.GetComponente<PIGListBox>(idComponente)->AlinhaIcones(PIG_POS_ESQ_CENTRO);
 }
 
 void PIGListBoxDefineDimensaoIconeItem(int idComponente, int alturaIcone, int larguraIcone){
@@ -6111,23 +6116,23 @@ void PIGDropDownSetCorLabelItem(int idComponente,PIGCor cor, int item=-1){
 }
 
 void PIGDropDownAlinhaLabelDireita(int idComponente){
-    pigGerForms.GetComponente<PIGDropDown>(idComponente)->AlinhaLabelItens(PIG_POSICAO_DIR_CENTRO);
+    pigGerForms.GetComponente<PIGDropDown>(idComponente)->AlinhaLabelItens(PIG_POS_DIR_CENTRO);
 }
 
 void PIGDropDownAlinhaLabelEsquerda(int idComponente){
-    pigGerForms.GetComponente<PIGDropDown>(idComponente)->AlinhaLabelItens(PIG_POSICAO_ESQ_CENTRO);
+    pigGerForms.GetComponente<PIGDropDown>(idComponente)->AlinhaLabelItens(PIG_POS_ESQ_CENTRO);
 }
 
 void PIGDropDownAlinhaLabelCentro(int idComponente){
-    pigGerForms.GetComponente<PIGDropDown>(idComponente)->AlinhaLabelItens(PIG_POSICAO_CENTRO_CENTRO);
+    pigGerForms.GetComponente<PIGDropDown>(idComponente)->AlinhaLabelItens(PIG_POS_CENTRO_CENTRO);
 }
 
 void PIGDropDownAlinhaIconeDireita(int idComponente){
-    pigGerForms.GetComponente<PIGDropDown>(idComponente)->AlinhaIcones(PIG_POSICAO_DIR_CENTRO);
+    pigGerForms.GetComponente<PIGDropDown>(idComponente)->AlinhaIcones(PIG_POS_DIR_CENTRO);
 }
 
 void PIGDropDownAlinhaIconeEsquerda(int idComponente){
-    pigGerForms.GetComponente<PIGDropDown>(idComponente)->AlinhaIcones(PIG_POSICAO_ESQ_CENTRO);
+    pigGerForms.GetComponente<PIGDropDown>(idComponente)->AlinhaIcones(PIG_POS_ESQ_CENTRO);
 }
 
 void PIGDropDownDefineDimensaoIconeItem(int idComponente, int alturaIcone, int larguraIcone){
@@ -6188,23 +6193,23 @@ void PIGRadioBoxSetCorLabelItem(int idComponente, PIGCor cor, int item=-1){
 }
 
 void PIGRadioBoxAlinhaLabelDireita(int idComponente){
-    pigGerForms.GetComponente<PIGRadioBox>(idComponente)->AlinhaLabelItens(PIG_POSICAO_DIR_CENTRO);
+    pigGerForms.GetComponente<PIGRadioBox>(idComponente)->AlinhaLabelItens(PIG_POS_DIR_CENTRO);
 }
 
 void PIGRadioBoxAlinhaLabelEsquerda(int idComponente){
-    pigGerForms.GetComponente<PIGRadioBox>(idComponente)->AlinhaLabelItens(PIG_POSICAO_ESQ_CENTRO);
+    pigGerForms.GetComponente<PIGRadioBox>(idComponente)->AlinhaLabelItens(PIG_POS_ESQ_CENTRO);
 }
 
 void PIGRadioBoxAlinhaLabelCentro(int idComponente){
-    pigGerForms.GetComponente<PIGRadioBox>(idComponente)->AlinhaLabelItens(PIG_POSICAO_CENTRO_CENTRO);
+    pigGerForms.GetComponente<PIGRadioBox>(idComponente)->AlinhaLabelItens(PIG_POS_CENTRO_CENTRO);
 }
 
 void PIGRadioBoxAlinhaIconeDireita(int idComponente){
-    pigGerForms.GetComponente<PIGRadioBox>(idComponente)->AlinhaIcones(PIG_POSICAO_DIR_CENTRO);
+    pigGerForms.GetComponente<PIGRadioBox>(idComponente)->AlinhaIcones(PIG_POS_DIR_CENTRO);
 }
 
 void PIGRadioBoxAlinhaIconeEsquerda(int idComponente){
-    pigGerForms.GetComponente<PIGRadioBox>(idComponente)->AlinhaIcones(PIG_POSICAO_ESQ_CENTRO);
+    pigGerForms.GetComponente<PIGRadioBox>(idComponente)->AlinhaIcones(PIG_POS_ESQ_CENTRO);
 }
 
 void PIGRadioBoxDefineDimensaoIconeItem(int idComponente, int alturaIcone, int larguraIcone){
@@ -6262,23 +6267,23 @@ void PIGCheckBoxSetCorLabelItem(int idComponente, PIGCor cor, int item=-1){
 }
 
 void PIGCheckBoxAlinhaLabelDireita(int idComponente){
-    pigGerForms.GetComponente<PIGCheckBox>(idComponente)->AlinhaLabelItens(PIG_POSICAO_DIR_CENTRO);
+    pigGerForms.GetComponente<PIGCheckBox>(idComponente)->AlinhaLabelItens(PIG_POS_DIR_CENTRO);
 }
 
 void PIGCheckBoxAlinhaLabelEsquerda(int idComponente){
-    pigGerForms.GetComponente<PIGCheckBox>(idComponente)->AlinhaLabelItens(PIG_POSICAO_ESQ_CENTRO);
+    pigGerForms.GetComponente<PIGCheckBox>(idComponente)->AlinhaLabelItens(PIG_POS_ESQ_CENTRO);
 }
 
 void PIGCheckBoxAlinhaLabelCentro(int idComponente){
-    pigGerForms.GetComponente<PIGCheckBox>(idComponente)->AlinhaLabelItens(PIG_POSICAO_CENTRO_CENTRO);
+    pigGerForms.GetComponente<PIGCheckBox>(idComponente)->AlinhaLabelItens(PIG_POS_CENTRO_CENTRO);
 }
 
 void PIGCheckBoxAlinhaIconeDireita(int idComponente){
-    pigGerForms.GetComponente<PIGCheckBox>(idComponente)->AlinhaIcones(PIG_POSICAO_DIR_CENTRO);
+    pigGerForms.GetComponente<PIGCheckBox>(idComponente)->AlinhaIcones(PIG_POS_DIR_CENTRO);
 }
 
 void PIGCheckBoxAlinhaIconeEsquerda(int idComponente){
-    pigGerForms.GetComponente<PIGCheckBox>(idComponente)->AlinhaIcones(PIG_POSICAO_ESQ_CENTRO);
+    pigGerForms.GetComponente<PIGCheckBox>(idComponente)->AlinhaIcones(PIG_POS_ESQ_CENTRO);
 }
 
 void PIGCheckBoxDefineDimensaoIconeItem(int idComponente, int alturaIcone, int larguraIcone){

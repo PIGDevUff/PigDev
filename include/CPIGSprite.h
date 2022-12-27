@@ -17,7 +17,6 @@ vector<CPIGSprite*> filhos;
 private:
 
 void ExtraiPixels() {
-
     pixels = (PIGCor **)malloc(sizeof(PIGCor *) * bitmap->h);
     for (int i = 0; i < bitmap->h; i++) {
         pixels[i] = (PIGCor *)calloc(sizeof(PIGCor), bitmap->w);
@@ -30,7 +29,6 @@ void ExtraiPixels() {
             pix32++;
         }
     }
-
 }
 
 protected:
@@ -46,34 +44,36 @@ void AplicaTransicao(PIGEstadoTransicao estado){
 public:
 
 //Construtor para arquivos de vídeo ou Componentes
-CPIGSprite(int idSprite,int altura,int largura,string nomeArq,int janela=0):CPIGImagem(idSprite,altura,largura,nomeArq,janela){
+CPIGSprite(int idSprite,int altura,int largura,string nomeArq,int janela=0)
+:CPIGImagem(idSprite,altura,largura,nomeArq,janela){
     pixels = NULL;
     automacao = NULL;
 }
 
 //Construtor para sprite "vazio", cuja imagem será gerada posteriormente
-CPIGSprite(int janela):CPIGImagem(janela){
+CPIGSprite(int janela)
+:CPIGImagem(janela){
     pixels = NULL;
     automacao = NULL;
 }
 
 //Construtor básico para leitura de imagens digitais
-CPIGSprite(int idSprite,string nomeArq,int retiraFundo=1,PIGCor *corFundo=NULL,int janela=0):
-    CPIGImagem(idSprite,nomeArq,retiraFundo,corFundo,janela){
+CPIGSprite(int idSprite,string nomeArq,int retiraFundo=1,PIGCor *corFundo=NULL,int janela=0)
+:CPIGImagem(idSprite,nomeArq,retiraFundo,corFundo,janela){
     automacao = NULL;
     ExtraiPixels();
 }
 
 //Construtor para imagens provenientes do renderizador offscreen
-CPIGSprite(int idSprite,PIGOffscreenRenderer offRender, int retiraFundo=1,PIGCor *corFundo=NULL,int janela=0):
-    CPIGImagem(idSprite,offRender,retiraFundo,corFundo,janela){
+CPIGSprite(int idSprite,PIGOffscreenRenderer offRender, int retiraFundo=1,PIGCor *corFundo=NULL,int janela=0)
+:CPIGImagem(idSprite,offRender,retiraFundo,corFundo,janela){
     automacao = NULL;
     ExtraiPixels();
 }
 
 //Construtor para Sprite "copiado" de outro Sprite
-CPIGSprite(int idSprite,CPIGSprite *spriteBase,int retiraFundo=1,PIGCor *corFundo=NULL,int janela=0):
-    CPIGImagem(idSprite,spriteBase,retiraFundo,corFundo,janela){
+CPIGSprite(int idSprite,CPIGSprite *spriteBase,int retiraFundo=1,PIGCor *corFundo=NULL,int janela=0)
+:CPIGImagem(idSprite,spriteBase,retiraFundo,corFundo,janela){
 
     ExtraiPixels();
     if (spriteBase->automacao){
@@ -107,21 +107,21 @@ int Retirafilho(CPIGSprite *filho){
     return 0;
 }
 
-void InsereTransicao(PIGTransicao t,PIGAutomacao *automaExt=NULL){
+void InsereTransicao(PIGTransicao t, PIGAutomacao *automaExt=NULL){
     if (automaExt==NULL) automaExt=&automacao;
     if (*automaExt==NULL)
         *automaExt = new CPIGAutomacao(id);
     (*automaExt)->InsereTransicao(t);
 }
 
-void InsereTransicao(double tempo, PIGEstadoTransicao estado,PIGAutomacao *automaExt=NULL){
+void InsereTransicao(double tempo, PIGEstadoTransicao estado, PIGAutomacao *automaExt=NULL){
     if (automaExt==NULL) automaExt=&automacao;
     if (*automaExt==NULL)
         *automaExt = new CPIGAutomacao(id);
     (*automaExt)->InsereTransicao(new CPIGTransicao(tempo,estado));
 }
 
-void LeTransicoes(string nomeArq,PIGAutomacao *automaExt=NULL){
+void LeTransicoes(string nomeArq, PIGAutomacao *automaExt=NULL){
     int dx=0,dy=0,dAlt=0,dLarg=0,dOpa=0;
     double dAng=0,tempo=0;
     PIGCor dCor=BRANCO;
@@ -181,7 +181,7 @@ void DespausaAutomacao(PIGAutomacao *automaExt=NULL){
     }
 }
 
-void InsereAcao(double tempo, double repeticao, PIGFuncaoSimples acao, void *param,PIGAutomacao *automaExt=NULL){
+void InsereAcao(double tempo, double repeticao, PIGFuncaoSimples acao, void *param, PIGAutomacao *automaExt=NULL){
     if (automaExt==NULL) automaExt=&automacao;
     if (*automaExt==NULL)
         *automaExt = new CPIGAutomacao(id);
@@ -194,7 +194,7 @@ void LimpaAcoes(PIGAutomacao *automaExt=NULL){
     if (*automaExt) (*automaExt)->LimpaAcoes();
 }
 
-void DefineTipoTransicao(PIGTipoTransicao tipo,PIGAutomacao *automaExt=NULL){
+void DefineTipoTransicao(PIGTipoTransicao tipo, PIGAutomacao *automaExt=NULL){
     if (automaExt==NULL) automaExt=&automacao;
     if (*automaExt) (*automaExt)->SetTipoTransicao(tipo);
 }

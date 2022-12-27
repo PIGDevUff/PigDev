@@ -51,9 +51,9 @@ public:
 
         if (!last)
             first = elt;
-        else
-            last->next = elt;
+        else last->next = elt;
         last = elt;
+
         nb_packets++;
         size += elt->pkt.size;
         SDL_CondSignal(cv);

@@ -7,27 +7,27 @@ class CPIGCampoTextoESenha: public CPIGCaixaTexto{
 
 private:
 
-    char mascara;//símbolo usado quando o campo for de senha
-    bool somenteNumeros;//se o campo só aceita números ou aceita também letras
-    string (CPIGCampoTextoESenha::*GetTextoVisivelPtr)();//ponteiro para a funçăo que vai retornar o texto visivel
+    char mascara;                                           //símbolo usado quando o campo for de senha
+    bool somenteNumeros;                                    //se o campo só aceita números ou aceita também letras
+    string (CPIGCampoTextoESenha::*GetTextoVisivelPtr)();   //ponteiro para a funçăo que vai retornar o texto visivel
 
     void ProcessaAtributos(CPIGAtributos atrib)override{
         CPIGCaixaTexto::ProcessaAtributos(atrib);
 
-        string valorStr = atrib.GetString("mascara","");
+        string valorStr = atrib.GetString(PIG_STR_MASCARA,"");
         if (valorStr != "") SetMascara(valorStr[0]);
     }
 
     static CPIGCampoTextoESenha LeParametros(int idComponente,CPIGAtributos atrib){
         CPIGCampoTextoESenha *resp;
 
-        if (atrib.GetString("nomeArq","")!=""){
-            resp = new CPIGCampoTextoESenha(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),
-                        atrib.GetString("nomeArq",""),atrib.GetInt("maxCaracters",200),atrib.GetInt("apenasNumeros",0),atrib.GetInt("campoSenha",0),
-                        atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
+        if (atrib.GetString(PIG_STR_NOMEARQ,"")!=""){
+            resp = new CPIGCampoTextoESenha(idComponente,atrib.GetInt(PIG_STR_ALTURA,0),atrib.GetInt(PIG_STR_LARGURA,0),
+                        atrib.GetString(PIG_STR_NOMEARQ,""),atrib.GetInt(PIG_STR_MAXCARACTERS,200),atrib.GetInt(PIG_STR_APENASNUMEROS,0),
+                                            atrib.GetInt(PIG_STR_CAMPOSENHA,0),atrib.GetInt(PIG_STR_RETIRAFUNDO,1),atrib.GetInt(PIG_STR_JANELA,0));
         }else{
-            resp = new CPIGCampoTextoESenha(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),
-                        atrib.GetInt("maxCaracters",200),atrib.GetInt("apenasNumeros",0),atrib.GetInt("campoSenha",0),atrib.GetInt("janela",0));
+            resp = new CPIGCampoTextoESenha(idComponente,atrib.GetInt(PIG_STR_ALTURA,0),atrib.GetInt(PIG_STR_LARGURA,0),
+                        atrib.GetInt(PIG_STR_MAXCARACTERS,200),atrib.GetInt(PIG_STR_APENASNUMEROS,0),atrib.GetInt(PIG_STR_CAMPOSENHA,0),atrib.GetInt(PIG_STR_JANELA,0));
         }
 
         resp->ProcessaAtributos(atrib);
@@ -92,19 +92,19 @@ private:
             GetTextoVisivelPtr = &CPIGCampoTextoESenha::GetTexto;
         }
         CPIGCaixaTexto::IniciaCoresBasicas();
-        tipo = PIG_CAMPOTEXTO;
+        tipo = PIG_CAMPODETEXTO;
     }
 
 public:
 
-    CPIGCampoTextoESenha(int idComponente, int altura, int largura, string nomeArq, int maxCars=PIG_MAX_CARS_CAIXATEXTO, bool apenasNumeros=false, bool campoSenha = false, int retiraFundo=1, int janela=0):
-        CPIGCaixaTexto(idComponente,altura,largura,nomeArq,maxCars,retiraFundo,janela){
-            IniciaBase(campoSenha,apenasNumeros);
+    CPIGCampoTextoESenha(int idComponente, int altura, int largura, string nomeArq, int maxCars=PIG_MAX_CARS_CAIXATEXTO, bool apenasNumeros=false, bool campoSenha = false, int retiraFundo=1, int janela=0)
+    :CPIGCaixaTexto(idComponente,altura,largura,nomeArq,maxCars,retiraFundo,janela){
+        IniciaBase(campoSenha,apenasNumeros);
     }
 
-    CPIGCampoTextoESenha(int idComponente, int altura, int largura, int maxCars=PIG_MAX_CARS_CAIXATEXTO, bool apenasNumeros=false, bool campoSenha = false, int janela=0):
-        CPIGCaixaTexto(idComponente,altura,largura,maxCars,janela){
-            IniciaBase(campoSenha,apenasNumeros);
+    CPIGCampoTextoESenha(int idComponente, int altura, int largura, int maxCars=PIG_MAX_CARS_CAIXATEXTO, bool apenasNumeros=false, bool campoSenha = false, int janela=0)
+    :CPIGCaixaTexto(idComponente,altura,largura,maxCars,janela){
+        IniciaBase(campoSenha,apenasNumeros);
     }
 
     CPIGCampoTextoESenha(int idComponente,CPIGAtributos atrib):CPIGCampoTextoESenha(LeParametros(idComponente,atrib)){}
@@ -176,8 +176,6 @@ public:
         if (somenteNumeros&&!PIGSomenteNumeros(frase)) return 0;//năo é número
         return CPIGCaixaTexto::AdicionaTexto(frase);
     }
-
 };
-
 typedef CPIGCampoTextoESenha *PIGCampoTextoESenha;
 #endif // _CPIGCAMPOTEXTOESENHA_

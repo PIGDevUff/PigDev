@@ -8,9 +8,9 @@ class CPIGJanela: public CPIGCamera{
 private:
 
 SDL_Window *window;
-SDL_Renderer *renderer;
+SDL_Renderer *renderer;                 //usada ainda para tirar screenshot e GetPixel
 SDL_Texture *textFundo;
-SDL_GLContext maincontext;
+SDL_GLContext mainContext;
 PIGCor corFundo;
 int altura,largura;
 SDL_Point pos;
@@ -18,15 +18,13 @@ int id;
 int modo;
 bool fechada;
 float opacidade;
-SDL_Rect block;
 string titulo;
-int contFPS;
-int lastFPS;
+int contFPS,lastFPS;
 PIGTimer timerFPS;
 
 public:
 
-CPIGJanela(string tituloJanela, int idJanela, int altTela, int largTela):
+CPIGJanela(int idJanela, string tituloJanela, int altTela, int largTela):
     CPIGCamera(altTela,largTela){
 
     id = idJanela;
@@ -38,13 +36,11 @@ CPIGJanela(string tituloJanela, int idJanela, int altTela, int largTela):
         printf( "Janela %d nao pode ser criada! Erro da SDL: %s\n",id, SDL_GetError() );
     }else{
         SDL_GetWindowPosition(window,&pos.x,&pos.y);
-
-        maincontext = SDL_GL_CreateContext(window);
+        mainContext = SDL_GL_CreateContext(window);
+        gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress);
         SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
         renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED|SDL_RENDERER_TARGETTEXTURE);
         corFundo = PRETO;
-        SDL_SetRenderDrawColor( renderer, corFundo.r, corFundo.g, corFundo.b, corFundo.a );
-        SDL_SetRenderDrawBlendMode(renderer,SDL_BLENDMODE_BLEND);
         fechada = false;
         modo = PIG_JANELA_NORMAL;
     }
@@ -54,7 +50,7 @@ CPIGJanela(string tituloJanela, int idJanela, int altTela, int largTela):
     FazCorrente();
     contFPS = 0;
     lastFPS = 0;
-    timerFPS = new CPIGTimer(false);
+    timerFPS = new CPIGTimer(-1,false); //não será gerenciado pelo gerenciador de Timers, pois ele não terá pausa geral
 }
 
 ~CPIGJanela(){
@@ -80,7 +76,7 @@ bool GetUsandoCameraFixa(){
 }
 
 void FazCorrente(){
-    SDL_GL_MakeCurrent(window,maincontext);
+    SDL_GL_MakeCurrent(window,mainContext);
 }
 
 void SetVsync(bool valor){
@@ -89,8 +85,7 @@ void SetVsync(bool valor){
 
 void IniciaDesenho(){
     FazCorrente();
-    glClearColor(1.0*corFundo.r/255,1.0*corFundo.g/255,1.0*corFundo.b/255,1.0*corFundo.a/255);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    PIGLimparFundo(corFundo);
 }
 
 void EncerraDesenho(){
@@ -109,9 +104,9 @@ SDL_Window *GetWindow(){
     return window;
 }
 
-SDL_Renderer *GetRenderer(){
+/*SDL_Renderer *GetRenderer(){
     return renderer;
-}
+}*/
 
 void Fecha(){
     if (window==NULL) return;
@@ -150,14 +145,12 @@ void DefineFundo(string nomeArquivo){
 
 void SaveScreenshot(string nomeArquivo, bool BMP) {
     if (window==NULL) return;
-    SDL_Surface* saveSurface = NULL;
-    SDL_Surface* infoSurface = NULL;
-    infoSurface = SDL_GetWindowSurface(window);
+    SDL_Surface* infoSurface = SDL_GetWindowSurface(window);
     if (infoSurface != NULL) {
         unsigned char * pixels = new unsigned char[infoSurface->w * infoSurface->h * infoSurface->format->BytesPerPixel];
         if (pixels != 0) {
             if (SDL_RenderReadPixels(renderer, &infoSurface->clip_rect, infoSurface->format->format, pixels, infoSurface->w * infoSurface->format->BytesPerPixel) == 0) {
-                saveSurface = SDL_CreateRGBSurfaceFrom(pixels, infoSurface->w, infoSurface->h, infoSurface->format->BitsPerPixel, infoSurface->w * infoSurface->format->BytesPerPixel, infoSurface->format->Rmask, infoSurface->format->Gmask, infoSurface->format->Bmask, infoSurface->format->Amask);
+                SDL_Surface* saveSurface = SDL_CreateRGBSurfaceFrom(pixels, infoSurface->w, infoSurface->h, infoSurface->format->BitsPerPixel, infoSurface->w * infoSurface->format->BytesPerPixel, infoSurface->format->Rmask, infoSurface->format->Gmask, infoSurface->format->Bmask, infoSurface->format->Amask);
                 if (saveSurface != NULL) {
                     if (BMP)
                         SDL_SaveBMP(saveSurface, nomeArquivo.c_str());
@@ -215,9 +208,9 @@ SDL_Point GetXY(){
     return pos;
 }
 
-void SetBorda(int valor){
+void SetBorda(bool valor){
     if (window==NULL) return;
-    SDL_SetWindowBordered(window,SDL_bool(valor));
+    SDL_SetWindowBordered(window,(SDL_bool)valor);
 }
 
 void SetModo(int valor){

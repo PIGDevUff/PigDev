@@ -11,6 +11,7 @@ private:
     unsigned int maxParticulas;       //qtd de partículas vivas e máximo de partículas vivas
     vector<PIGParticula> parts;
     double hpParticulas,maxTempo;
+    bool destroiParticulasEncerrar;
     SDL_Rect maxEspaco;
     int audioInicio,audioFim;
     PIGCor *corFundoImagem;
@@ -19,6 +20,7 @@ private:
 
     void IniciaBase(int maximoParticulas, int audioCriacao, int audioEncerramento, PIGCor *corFundo, bool retiraFundo){
         maxParticulas = maximoParticulas;
+        destroiParticulasEncerrar = true;
         audioInicio = audioCriacao;
         audioFim = audioEncerramento;
         corFundoImagem = corFundo;
@@ -33,7 +35,7 @@ private:
         unsigned int i=0;
         while (i<parts.size()){
             //printf("viva %d %d %d\n",i,parts[i]->ChecaViva(),parts[i]->GetId());
-            if (parts[i]->ChecaViva()==false){;
+            if (parts[i]->ChecaViva()==false){
                 //printf("antes del %d (%f)\n",parts[i]->GetID(),maxTempo);
                 pigGerAnimacoes.Remove(parts[i]->GetID());
 
@@ -69,7 +71,16 @@ public:
         IniciaBase(maximoParticulas,audioCriacao,audioEncerramento,corFundo,retiraFundo);
     }
 
-    virtual ~CPIGGeradorParticulas(){}
+    virtual ~CPIGGeradorParticulas(){
+        if (destroiParticulasEncerrar){
+            for (PIGParticula part:parts)
+                pigGerAnimacoes.Remove(part->GetID());
+        }
+    }
+
+    void SetDestroiParticulasEncerrar(bool valor){
+        destroiParticulasEncerrar = valor;
+    }
 
     void DefineLimites(SDL_Rect espacoMax, double tempoMax){
         maxEspaco = espacoMax;
@@ -117,16 +128,11 @@ public:
         return resp;
     }
 
-    bool Colisao(){
+    bool ColisaoEntreParticulas(){
         bool resp = false;
-        unsigned int i=0;
-        while (i<parts.size()-1){
-            unsigned int j=i+1;
-            while (j<parts.size()){
+        for (unsigned int i=0;i<parts.size()-1;i++){
+            for (unsigned int j=i+1; j<parts.size(); j++)
                 resp |= parts[i]->Colisao(parts[j]);
-                j++;
-            }
-            i++;
         }
         return resp;
     }

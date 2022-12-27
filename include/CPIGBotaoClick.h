@@ -7,7 +7,7 @@ class CPIGBotaoClick: public CPIGBotao{
 
 protected:
 
-    int timer;
+    PIGTimer timer;
     double tempoRepeticao,tempoAcionamento;
 
     void IniciaCoresBasicas(){
@@ -20,33 +20,33 @@ protected:
     virtual void ProcessaAtributos(CPIGAtributos atrib)override{
         CPIGBotao::ProcessaAtributos(atrib);
 
-        float valorFloat = atrib.GetFloat("tempoRepeticao",-1);
+        float valorFloat = atrib.GetFloat(PIG_STR_TEMPOREPETICAO,-1);
         if (valorFloat > 0) DefineTempoRepeticao(valorFloat);
 
-        valorFloat = atrib.GetFloat("tempoAcionamento",-1);
+        valorFloat = atrib.GetFloat(PIG_STR_TEMPOACIONAMENTO,-1);
         if (valorFloat > 0) DefineTempoAcionamento(valorFloat);
 
-        string valorStr = atrib.GetString("corNormal","");
+        string valorStr = atrib.GetString(PIG_STR_CORNORMAL,"");
         if (valorStr != "") SetCorNormal(PIGCriaCorString(valorStr));
 
-        valorStr = atrib.GetString("corMouseSobre","");
+        valorStr = atrib.GetString(PIG_STR_CORMOUSESOBRE,"");
         if (valorStr != "") SetCorMouseSobre(PIGCriaCorString(valorStr));
 
-        valorStr = atrib.GetString("corAcionado","");
+        valorStr = atrib.GetString(PIG_STR_CORACIONADO,"");
         if (valorStr != "") SetCorAcionado(PIGCriaCorString(valorStr));
 
-        valorStr = atrib.GetString("corDesabilitado","");
+        valorStr = atrib.GetString(PIG_STR_CORDESABILITADO,"");
         if (valorStr != "") SetCorDesabilitado(PIGCriaCorString(valorStr));
     }
 
     static CPIGBotaoClick LeParametros(int idComponente, CPIGAtributos atrib){
         CPIGBotaoClick *resp;
 
-        if (atrib.GetString("nomeArq","")!=""){
-            resp = new CPIGBotaoClick(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),
-                       atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
+        if (atrib.GetString(PIG_STR_NOMEARQ,"")!=""){
+            resp = new CPIGBotaoClick(idComponente,atrib.GetInt(PIG_STR_ALTURA,0),atrib.GetInt(PIG_STR_LARGURA,0),
+                       atrib.GetString(PIG_STR_NOMEARQ,""),atrib.GetInt(PIG_STR_RETIRAFUNDO,1),atrib.GetInt(PIG_STR_JANELA,0));
         }else{
-            resp = new CPIGBotaoClick(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),atrib.GetInt("janela",0));
+            resp = new CPIGBotaoClick(idComponente,atrib.GetInt(PIG_STR_ALTURA,0),atrib.GetInt(PIG_STR_LARGURA,0),atrib.GetInt(PIG_STR_JANELA,0));
         }
 
         resp->ProcessaAtributos(atrib);
@@ -73,7 +73,7 @@ protected:
     }
 
     void TrataTimer(){
-        double tempo = pigGerTimers.GetElemento(timer)->GetTempoDecorrido();
+        double tempo = timer->GetTempoDecorrido();
         if (tempo>=tempoRepeticao){
             if (tempoRepeticao>0 && mouseOver && pigMouse.GetEstadoBotaoEsquerdo()==PIG_MOUSE_PRESSIONADO){
                 OnAction();
@@ -83,9 +83,9 @@ protected:
     }
 
     PIGEstadoEvento OnAction()override{
-        if (pigGerTimers.GetElemento(timer)->GetTempoDecorrido()>tempoRepeticao){
+        if (timer->GetTempoDecorrido()>tempoRepeticao){
             SetAcionado(true);
-            pigGerTimers.GetElemento(timer)->Reinicia(false);
+            timer->Reinicia(false);
         }
         return CPIGComponente::OnAction();
     }
@@ -99,23 +99,23 @@ protected:
 
 public:
 
-    CPIGBotaoClick(int idComponente, int alt, int larg, string nomeArq, int retiraFundo=1, int janela=0):
-        CPIGBotao(idComponente,alt,larg,nomeArq,retiraFundo,janela){
-            CriaFramesAutomaticosPorLinha(1,1,4);
-            MudaFrameAtual(1); //frame de estado normal do botao
-            IniciaBase();
-        }
+    CPIGBotaoClick(int idComponente, int alt, int larg, string nomeArq, int retiraFundo=1, int janela=0)
+    :CPIGBotao(idComponente,alt,larg,nomeArq,retiraFundo,janela){
+        CriaFramesAutomaticosPorLinha(1,1,4);
+        MudaFrameAtual(1); //frame de estado normal do botao
+        IniciaBase();
+    }
 
-    CPIGBotaoClick(int idComponente, int alt, int larg, int janela=0):
-        CPIGBotao(idComponente,alt,larg,janela){
-            IniciaCoresBasicas();
-            IniciaBase();
-        }
+    CPIGBotaoClick(int idComponente, int alt, int larg, int janela=0)
+    :CPIGBotao(idComponente,alt,larg,janela){
+        IniciaCoresBasicas();
+        IniciaBase();
+    }
 
     CPIGBotaoClick(int idComponente,CPIGAtributos atrib):CPIGBotaoClick(LeParametros(idComponente,atrib)){}
 
     virtual ~CPIGBotaoClick(){
-        pigGerTimers.Remove(timer);
+        pigGerTimers.Remove(timer->GetID());
     }
 
     inline void DefineTempoRepeticao(double segundos){
@@ -146,8 +146,6 @@ public:
     inline void SetCorDesabilitado(PIGCor cor){
         coresBasicas[4] = cor;
     }
-
 };
-
 typedef CPIGBotaoClick *PIGBotaoClick;
 #endif // _CPIGBOTAOCLICK_

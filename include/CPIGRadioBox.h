@@ -17,13 +17,13 @@ protected:
     static CPIGRadioBox LeParametros(int idComponente, CPIGAtributos atrib){
         CPIGRadioBox *resp;
 
-        if (atrib.GetString("nomeArq","")!=""){
-            resp = new CPIGRadioBox(idComponente,atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
-                          atrib.GetString("nomeArqIcone",""),atrib.GetInt("alturaIcone",0),atrib.GetInt("larguraIcone",0),
-                          atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
+        if (atrib.GetString(PIG_STR_NOMEARQ,"")!=""){
+            resp = new CPIGRadioBox(idComponente,atrib.GetInt(PIG_STR_LARGURA,0),atrib.GetInt(PIG_STR_ALTURALINHA,0),
+                          atrib.GetString(PIG_STR_NOMEARQICONE,""),atrib.GetInt(PIG_STR_ALTURAICONE,0),atrib.GetInt(PIG_STR_LARGURAICONE,0),
+                          atrib.GetString(PIG_STR_NOMEARQ,""),atrib.GetInt(PIG_STR_RETIRAFUNDO,1),atrib.GetInt(PIG_STR_JANELA,0));
         }else{
-            resp = new CPIGRadioBox(idComponente,atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
-                          atrib.GetString("nomeArqIcone",""),atrib.GetInt("alturaIcone",0),atrib.GetInt("larguraIcone",0),atrib.GetInt("janela",0));
+            resp = new CPIGRadioBox(idComponente,atrib.GetInt(PIG_STR_LARGURA,0),atrib.GetInt(PIG_STR_ALTURALINHA,0),
+                          atrib.GetString(PIG_STR_NOMEARQICONE,""),atrib.GetInt(PIG_STR_ALTURAICONE,0),atrib.GetInt(PIG_STR_LARGURAICONE,0),atrib.GetInt(PIG_STR_JANELA,0));
         }
 
         resp->ProcessaAtributos(atrib);
@@ -49,19 +49,19 @@ protected:
 
 public:
 
-    CPIGRadioBox(int idComponente, int larguraTotal, int alturaLinha, string imgIcone, int alturaIcone, int larguraIcone, string imgFundo, int retiraFundo=1, int janela = 0):
-        CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,imgFundo,retiraFundo,janela){
-            arqImagemIcone = imgIcone;
-            itemDestaque = -1;
-            tipo = PIG_RADIOBOX;
-        }
+    CPIGRadioBox(int idComponente, int larguraTotal, int alturaLinha, string imgIcone, int alturaIcone, int larguraIcone, string imgFundo, int retiraFundo=1, int janela = 0)
+    :CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,imgFundo,retiraFundo,janela){
+        arqImagemIcone = imgIcone;
+        itemDestaque = -1;
+        tipo = PIG_RADIOBOX;
+    }
 
-    CPIGRadioBox(int idComponente, int larguraTotal, int alturaLinha, string imgIcone, int alturaIcone, int larguraIcone, int janela = 0):
-        CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,janela){
-            arqImagemIcone = imgIcone;
-            itemDestaque = -1;
-            tipo = PIG_RADIOBOX;
-        }
+    CPIGRadioBox(int idComponente, int larguraTotal, int alturaLinha, string imgIcone, int alturaIcone, int larguraIcone, int janela = 0)
+    :CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,janela){
+        arqImagemIcone = imgIcone;
+        itemDestaque = -1;
+        tipo = PIG_RADIOBOX;
+    }
 
     CPIGRadioBox(int idComponente,CPIGAtributos atrib):CPIGRadioBox(LeParametros(idComponente,atrib)){}
 
@@ -93,8 +93,8 @@ public:
         DeslocaItens(0,altBaseLista);//desloca todos os itens para cima, pois o novo item vai entrar abaixo dos outros
 
         int yItem = pos.y+margemBaixo;
-        PIGItemComponente item = CPIGListaItemComponente::CriaItem(yItem,atrib.GetString("label",""),arqImagemIcone,atrib.GetString("nomeArq",""),
-                                                                   false,atrib.GetInt("habilitado",1),atrib.GetString("hint",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("retiraFundoIcone",1));
+        PIGItemComponente item = CPIGListaItemComponente::CriaItem(yItem,atrib.GetString(PIG_STR_LABEL,""),arqImagemIcone,atrib.GetString(PIG_STR_NOMEARQ,""),
+                                                                   false,atrib.GetInt(PIG_STR_HABILITADO,1),atrib.GetString(PIG_STR_HINT,""),atrib.GetInt(PIG_STR_RETIRAFUNDO,1),atrib.GetInt(PIG_STR_RETIRAFUNDOICONE,1));
         item->DefineFuncaoAjusteFrame(AjustaFrame);
         item->GetIcone()->CriaFramesAutomaticosPorLinha(1,1,6);
         AjustaFrame(item);
@@ -163,8 +163,6 @@ public:
         CPIGListaItemComponente::SetMargens(mEsq,mDir,mCima,mBaixo);
         alt = altBaseLista*itens.size()+margemBaixo+margemCima;
     }
-
 };
-
 typedef CPIGRadioBox *PIGRadioBox;
 #endif // _CPIGRADIOBOX_

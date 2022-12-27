@@ -11,7 +11,7 @@ public:
     CPIGGerenciadorJanelas():CPIGRepositorio<PIGJanela>(PIG_MAX_JANELAS,"CPIGJanela"){}
 
     int CriaJanela(string nome, int altura=PIG_ALT_TELA, int largura=PIG_LARG_TELA){
-        return Insere(new CPIGJanela(nome,ProxID(),altura,largura));
+        return Insere(new CPIGJanela(ProxID(),nome,altura,largura));
     }
 
     void IniciaDesenho(int idJanela=-1){

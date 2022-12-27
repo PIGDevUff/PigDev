@@ -221,10 +221,10 @@ protected:
 
     void IniciaBase(int maxCars){
         margemEsq = margemDir = margemCima = margemBaixo = 5;
-        posLabel = PIG_POSICAO_ESQ_BAIXO;//posiçăo padrăo do label
+        posLabel = PIG_POS_ESQ_BAIXO;//posiçăo padrăo do label
         posCursor = 0;//cursor no início do texto
         cursorExibido = true;
-        timer = new CPIGTimer(false);//o timer do cursor que só será exibido quando estiver editando
+        timer = pigGerTimers.CriaTimer(false);//o timer do cursor que só será exibido quando estiver editando
         SetFonteTexto(0);
         maxCaracteres = maxCars;
         IniciaCoresBasicas();
@@ -248,7 +248,7 @@ protected:
     }
 
     virtual ~CPIGCaixaTexto(){
-        delete timer;
+        pigGerTimers.Remove(timer->GetID());
     }
 
 
@@ -305,8 +305,6 @@ public:
         CPIGComponente::SetMargens(mEsq,mDir,mCima,mBaixo);
         AjustaPosicaoTextoCursor();
     }
-
 };
-
 typedef CPIGCaixaTexto *PIGCaixaTexto;
 #endif // _CPIGCAIXATEXTO_

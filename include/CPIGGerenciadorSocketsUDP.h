@@ -25,7 +25,7 @@ public:
             Insere(socketUDP);
             return resp;
         }else{
-            printf("ERRO: detectei o erro socketUDP id %d\n",resp);
+            cout<<"ERRO: detectei o erro socketUDP id "<<resp<<endl;
             delete socketUDP;
             return -1;
         }

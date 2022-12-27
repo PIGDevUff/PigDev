@@ -28,31 +28,31 @@ private:
 public:
 
     //item com icone e com fundo
-    CPIGItemMenu(int idComponente, int alturaIcone,int larguraIcone, string arqImagemIcone, string arqImagemFundo, string labelItem, int larguraLista, int alturaItemLista, int retiraFundo=1, int retiraFundoIcone=1, int janela=0):
-        CPIGItemComponente(idComponente,alturaItemLista,larguraLista,arqImagemIcone,arqImagemFundo,labelItem,larguraLista,alturaItemLista,retiraFundo,janela){
+    CPIGItemMenu(int idComponente, int alturaIcone,int larguraIcone, string arqImagemIcone, string arqImagemFundo, string labelItem, int larguraLista, int alturaItemLista, int retiraFundo=1, int retiraFundoIcone=1, int janela=0)
+    :CPIGItemComponente(idComponente,alturaItemLista,larguraLista,arqImagemIcone,arqImagemFundo,labelItem,larguraLista,alturaItemLista,retiraFundo,janela){
         tipo = PIG_ITEMMENU;
-        posSubmenu = PIG_POSICAO_DIR_BAIXO;
+        posSubmenu = PIG_POS_DIR_BAIXO;
     }
 
     //item com icone e sem fundo
-    CPIGItemMenu(int idComponente, int alturaIcone,int larguraIcone, string arqImagemIcone, string labelItem, int larguraLista, int alturaItemLista, int retiraFundoIcone=1, int janela=0):
-        CPIGItemComponente(idComponente,alturaIcone,larguraIcone,arqImagemIcone,labelItem,larguraLista,alturaItemLista,retiraFundoIcone,janela){
+    CPIGItemMenu(int idComponente, int alturaIcone,int larguraIcone, string arqImagemIcone, string labelItem, int larguraLista, int alturaItemLista, int retiraFundoIcone=1, int janela=0)
+    :CPIGItemComponente(idComponente,alturaIcone,larguraIcone,arqImagemIcone,labelItem,larguraLista,alturaItemLista,retiraFundoIcone,janela){
         tipo = PIG_ITEMMENU;
-        posSubmenu = PIG_POSICAO_DIR_BAIXO;
+        posSubmenu = PIG_POS_DIR_BAIXO;
     }
 
     //item sem icone e com fundo
-    CPIGItemMenu(int idComponente, string arqImagemFundo, string labelItem, int larguraLista, int alturaItemLista, int retiraFundo=1, int janela=0):
-        CPIGItemComponente(idComponente,arqImagemFundo,labelItem,larguraLista,alturaItemLista,retiraFundo,janela){
+    CPIGItemMenu(int idComponente, string arqImagemFundo, string labelItem, int larguraLista, int alturaItemLista, int retiraFundo=1, int janela=0)
+    :CPIGItemComponente(idComponente,arqImagemFundo,labelItem,larguraLista,alturaItemLista,retiraFundo,janela){
         tipo = PIG_ITEMMENU;
-        posSubmenu = PIG_POSICAO_DIR_BAIXO;
+        posSubmenu = PIG_POS_DIR_BAIXO;
     }
 
     //item sem icone e sem fundo
-    CPIGItemMenu(int idComponente, string labelItem, int larguraLista, int alturaItemLista, int retiraFundo=1, int janela=0):
-        CPIGItemComponente(idComponente,labelItem,larguraLista,alturaItemLista,retiraFundo,janela){
+    CPIGItemMenu(int idComponente, string labelItem, int larguraLista, int alturaItemLista, int retiraFundo=1, int janela=0)
+    :CPIGItemComponente(idComponente,labelItem,larguraLista,alturaItemLista,retiraFundo,janela){
         tipo = PIG_ITEMMENU;
-        posSubmenu = PIG_POSICAO_DIR_BAIXO;
+        posSubmenu = PIG_POS_DIR_BAIXO;
     }
 
     virtual ~CPIGItemMenu(){
@@ -62,13 +62,13 @@ public:
 
     void AjustaPosicao(CPIGItemMenu *sub, int indice){
         switch(posSubmenu){
-        case PIG_POSICAO_DIR_BAIXO:
+        case PIG_POS_DIR_BAIXO:
             sub->Move(pos.x+larg,pos.y-indice*alt);break;
-        case PIG_POSICAO_DIR_CIMA:
+        case PIG_POS_DIR_CIMA:
             sub->Move(pos.x+larg,pos.y+indice*alt);break;
-        case PIG_POSICAO_BAIXO_CENTRO:
+        case PIG_POS_BAIXO_CENTRO:
             sub->Move(pos.x,pos.y-(indice+1)*alt);break;
-        case PIG_POSICAO_BAIXO_DIR:
+        case PIG_POS_BAIXO_DIR:
             sub->Move(pos.x+indice*alt,pos.y-alt);break;
         default: break;
         }
@@ -174,8 +174,6 @@ public:
         for (CPIGItemMenu *sub:submenu)
             sub->Desloca(dx,dy);
     }
-
 };
-
 typedef CPIGItemMenu *PIGItemMenu;
 #endif //_CPIGITEMMENU_

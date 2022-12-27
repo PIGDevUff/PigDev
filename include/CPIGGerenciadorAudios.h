@@ -52,7 +52,6 @@ public:
 
     ~CPIGGerenciadorAudios(){
         StopTudo();
-
         if (background)
             Mix_FreeMusic(background);
         Mix_CloseAudio();
@@ -146,9 +145,7 @@ public:
             if (elementos[i])
                 elementos[i]->Resume();
     }
-
 };
-
 int CPIGGerenciadorAudios::audioIds[PIG_QTD_CANAIS_PADRAO];
 CPIGGerenciadorAudios pigGerAudios;
 #endif // _CPIGGERENCIADORAUDIOS_

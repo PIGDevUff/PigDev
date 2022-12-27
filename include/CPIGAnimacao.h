@@ -9,8 +9,8 @@ private:
 
     PIGModoAnimacao modos[PIG_MAX_MODOS];   //modos da animação
     SDL_Point offset;                       //offset (x,y) a ser utilizado junto com a posição (x,y) para desenhar oa animação
-    int idTimer;                            //timer para controle dos frames da animação (usado apenas na contrução e destruição de um objeto)
-    PIGTimer timer;                          //ponteiro para o timer indicado por idTimer (usado diretamente para otimizar a execução dos códigos)
+    //int idTimer;                            //timer para controle dos frames da animação (usado apenas na contrução e destruição de um objeto)
+    PIGTimer timer;                         //ponteiro para o timer indicado por idTimer (usado diretamente para otimizar a execução dos códigos)
     int modoAtual;                          //número que indica o modo atual
 
     //muda o frame a ser exibido do modo atual
@@ -43,8 +43,8 @@ public:
         for (int i=0;i<PIG_MAX_MODOS;i++)
             modos[i] = NULL;
 
-        idTimer = pigGerTimers.CriaTimer(false);
-        timer = pigGerTimers.GetElemento(idTimer);
+        //idTimer = pigGerTimers.CriaTimer(false);
+        timer = pigGerTimers.CriaTimer(false);
     }
 
     //cria uma animação a partir deoutra animação já existente
@@ -59,8 +59,8 @@ public:
         offset = base->offset;
         modoAtual = base->modoAtual;
 
-        idTimer = pigGerTimers.CriaTimer(false);
-        timer = pigGerTimers.GetElemento(idTimer);
+        //idTimer = pigGerTimers.CriaTimer(false);
+        timer = pigGerTimers.CriaTimer(false);
     }
 
     //cria uma animação a partir de um objeto
@@ -73,8 +73,8 @@ public:
             modos[i] = NULL;
         }
 
-        idTimer = pigGerTimers.CriaTimer(false);
-        timer = pigGerTimers.GetElemento(idTimer);
+        //idTimer = pigGerTimers.CriaTimer(false);
+        timer = pigGerTimers.CriaTimer(false);
     }
 
     //destroi uma animação
@@ -83,8 +83,7 @@ public:
             if (modos[i])
                 delete modos[i];
         }
-        timer = NULL;
-        pigGerTimers.Remove(idTimer);
+        pigGerTimers.Remove(timer->GetID());
     }
 
     //cria um modo vazio, sem frames associados

@@ -1,6 +1,8 @@
 #ifndef _CPIGFORM_
 #define _CPIGFORM_
 
+#include "CPIGStrings.h"
+
 #include "CPIGAtributos.h"
 #include "CPIGComponente.h"
 #include "CPIGBotaoClick.h"
@@ -73,19 +75,19 @@ private:
 
     static PIGTipoComponente GetTipoComponente(string tipo){
         transform(tipo.begin(), tipo.end(), tipo.begin(), ::toupper);
-        if (tipo=="BOTAOCLICK") return PIG_BOTAOCLICK;
-        if (tipo=="BOTAOONOFF") return PIG_BOTAOONOFF;
-        if (tipo=="CAMPODETEXTO") return PIG_CAMPOTEXTO;
-        if (tipo=="AREADETEXTO") return PIG_AREADETEXTO;
-        if (tipo=="CHECKBOX") return PIG_CHECKBOX;
-        if (tipo=="RADIOBOX") return PIG_RADIOBOX;
-        if (tipo=="LISTBOX") return PIG_LISTBOX;
-        if (tipo=="DROPDOWN") return PIG_DROPDOWN;
-        if (tipo=="GAUGEBAR") return PIG_GAUGEBAR;
-        if (tipo=="GAUGECIRCULAR") return PIG_GAUGECIRCULAR;
-        if (tipo=="SLIDEBAR") return PIG_SLIDEBAR;
-        if (tipo=="ITEM") return PIG_ITEMCOMPONENTE;
-        printf("componente <%s> invalido lido da linha da parametros!!!\n",tipo.c_str());
+        if (tipo==PIG_STR_BOTAOCLICK) return PIG_BOTAOCLICK;
+        else if (tipo==PIG_STR_BOTAOONOFF) return PIG_BOTAOONOFF;
+        else if (tipo==PIG_STR_CAMPODETEXTO) return PIG_CAMPODETEXTO;
+        else if (tipo==PIG_STR_AREADETEXTO) return PIG_AREADETEXTO;
+        else if (tipo==PIG_STR_CHECKBOX) return PIG_CHECKBOX;
+        else if (tipo==PIG_STR_RADIOBOX) return PIG_RADIOBOX;
+        else if (tipo==PIG_STR_LISTBOX) return PIG_LISTBOX;
+        else if (tipo==PIG_STR_DROPDOWN) return PIG_DROPDOWN;
+        else if (tipo==PIG_STR_GAUGEBAR) return PIG_GAUGEBAR;
+        else if (tipo==PIG_STR_GAUGECIRCULAR) return PIG_GAUGECIRCULAR;
+        else if (tipo==PIG_STR_SLIDEBAR) return PIG_SLIDEBAR;
+        else if (tipo==PIG_STR_ITEMMENU) return PIG_ITEMCOMPONENTE;
+        cout<<"Componente <"<<tipo<<"> invalido lido da linha da parametros!!!"<<endl;
         return (PIGTipoComponente)-1;
     }
 
@@ -95,22 +97,22 @@ private:
         ifstream arq(nomeArqTexto);
         string linha;
         if (!arq.is_open())
-            printf("Erro abrir arquivo <%s> para construir form\n",nomeArqTexto.c_str());
+            cout<<"Erro abrir arquivo <"<<nomeArqTexto<<"> para construir form!!!"<<endl;
         else{
             getline(arq,linha);
 
             CPIGAtributos atrib = CPIGAtributos::GetAtributos(linha);
 
-            if (atrib.GetString("nomeArq","")!=""){
-                resp = new CPIGForm(idForm,atrib.GetInt("altura",PIG_ALT_TELA),atrib.GetInt("largura",PIG_LARG_TELA),
-                                        atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
+            if (atrib.GetString(PIG_STR_NOMEARQ,"")!=""){
+                resp = new CPIGForm(idForm,atrib.GetInt(PIG_STR_ALTURA,PIG_ALT_TELA),atrib.GetInt(PIG_STR_LARGURA,PIG_LARG_TELA),
+                                        atrib.GetString(PIG_STR_NOMEARQ,""),atrib.GetInt(PIG_STR_RETIRAFUNDO,1),atrib.GetInt(PIG_STR_JANELA,0));
             }else{
-                resp = new CPIGForm(idForm,atrib.GetInt("altura",PIG_ALT_TELA),atrib.GetInt("largura",PIG_LARG_TELA),
-                                        atrib.GetInt("janela",0));
+                resp = new CPIGForm(idForm,atrib.GetInt(PIG_STR_ALTURA,PIG_ALT_TELA),atrib.GetInt(PIG_STR_LARGURA,PIG_LARG_TELA),
+                                        atrib.GetInt(PIG_STR_JANELA,0));
             }
 
-            int px = atrib.GetInt("px",0);
-            int py = atrib.GetInt("py",0);
+            int px = atrib.GetInt(PIG_STR_PX,0);
+            int py = atrib.GetInt(PIG_STR_PY,0);
             resp->Move(px,py);
 
             while (arq.eof()==false){
@@ -144,7 +146,6 @@ public:
 
     CPIGForm(int idForm, string nomeArqTexto):CPIGForm(LeArquivo(idForm,nomeArqTexto)){}
 
-
     virtual ~CPIGForm(){
         for(int i=0;i<totalComponentes;i++){
             delete componentes[i];
@@ -173,8 +174,7 @@ public:
 
         if (imagemPropria){
             CPIGSprite::Desenha();
-        }
-        else PIGDesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
+        }else PIGDesenhaRetangulo((int)pos.x,(int)pos.y,alt,larg,coresBasicas[0]);
 
         //desenha primeiro os componentes fora do mouse
         for(int i=0;i<totalComponentes;i++){
@@ -349,13 +349,13 @@ public:
         int idComponente = GetProxIdComponente();
 
         CPIGAtributos atrib = CPIGAtributos::GetAtributos(parametros);
-        int componente = GetTipoComponente(atrib.GetString("tipo",""));
+        int componente = GetTipoComponente(atrib.GetString(PIG_STR_TIPO,""));
 
         switch(componente){
             case PIG_BOTAOCLICK: componentes[totalComponentes++] = new CPIGBotaoClick(idComponente,atrib);break;
             case PIG_BOTAOONOFF: componentes[totalComponentes++] = new CPIGBotaoOnOff(idComponente,atrib);break;
             case PIG_AREADETEXTO: componentes[totalComponentes++] = new CPIGAreaDeTexto(idComponente,atrib);break;
-            case PIG_CAMPOTEXTO: componentes[totalComponentes++] = new CPIGCampoTextoESenha(idComponente,atrib);break;
+            case PIG_CAMPODETEXTO: componentes[totalComponentes++] = new CPIGCampoTextoESenha(idComponente,atrib);break;
             case PIG_RADIOBOX: componentes[totalComponentes++] = new CPIGRadioBox(idComponente,atrib);break;
             case PIG_CHECKBOX: componentes[totalComponentes++] = new CPIGCheckBox(idComponente,atrib);break;
             case PIG_LISTBOX: componentes[totalComponentes++] = new CPIGListBox(idComponente,atrib);break;
@@ -368,7 +368,6 @@ public:
 
         return idComponente;
     }
-
 };
 typedef CPIGForm *PIGForm;
 #endif // _CPIGFORM_

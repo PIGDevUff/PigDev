@@ -12,20 +12,20 @@ protected:
     virtual void ProcessaAtributos(CPIGAtributos atrib)override{
         CPIGListaItemComponente::ProcessaAtributos(atrib);
 
-        string valorStr = atrib.GetString("corDestaque","");
+        string valorStr = atrib.GetString(PIG_STR_CORDESTAQUE,"");
         if (valorStr != "") SetCorDestaque(PIGCriaCorString(valorStr));
     }
 
     static CPIGListBox LeParametros(int idComponente, CPIGAtributos atrib){
         CPIGListBox *resp;
 
-        if (atrib.GetString("nomeArq","")!=""){
-            resp = new CPIGListBox(idComponente,atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
-                          atrib.GetInt("alturaIcone",0),atrib.GetInt("larguraIcone",0),
-                          atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
+        if (atrib.GetString(PIG_STR_NOMEARQ,"")!=""){
+            resp = new CPIGListBox(idComponente,atrib.GetInt(PIG_STR_LARGURA,0),atrib.GetInt(PIG_STR_ALTURALINHA,0),
+                          atrib.GetInt(PIG_STR_ALTURAICONE,0),atrib.GetInt(PIG_STR_LARGURAICONE,0),
+                          atrib.GetString(PIG_STR_NOMEARQ,""),atrib.GetInt(PIG_STR_RETIRAFUNDO,1),atrib.GetInt(PIG_STR_JANELA,0));
         }else{
-            resp = new CPIGListBox(idComponente,atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
-                          atrib.GetInt("alturaIcone",0),atrib.GetInt("larguraIcone",0),atrib.GetInt("janela",0));
+            resp = new CPIGListBox(idComponente,atrib.GetInt(PIG_STR_LARGURA,0),atrib.GetInt(PIG_STR_ALTURALINHA,0),
+                          atrib.GetInt(PIG_STR_ALTURAICONE,0),atrib.GetInt(PIG_STR_LARGURAICONE,0),atrib.GetInt(PIG_STR_JANELA,0));
         }
 
         resp->ProcessaAtributos(atrib);
@@ -44,16 +44,16 @@ private:
 
 public:
 
-    CPIGListBox(int idComponente, int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, string nomeArqFundo="", int retiraFundo=1, int janela=0):
-        CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,nomeArqFundo,retiraFundo,janela){
-            itemDestaque = -1;
-            tipo = PIG_LISTBOX;
+    CPIGListBox(int idComponente, int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, string nomeArqFundo="", int retiraFundo=1, int janela=0)
+    :CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,nomeArqFundo,retiraFundo,janela){
+        itemDestaque = -1;
+        tipo = PIG_LISTBOX;
     }
 
-    CPIGListBox(int idComponente, int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, int janela=0):
-        CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,janela){
-            itemDestaque = -1;
-            tipo = PIG_LISTBOX;
+    CPIGListBox(int idComponente, int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, int janela=0)
+    :CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,janela){
+        itemDestaque = -1;
+        tipo = PIG_LISTBOX;
     }
 
     CPIGListBox(int idComponente,CPIGAtributos atrib):CPIGListBox(LeParametros(idComponente,atrib)){}
@@ -134,8 +134,8 @@ public:
         DeslocaItens(0,altBaseLista);//desloca todos os itens para cima, pois o novo item vai entrar abaixo dos outros
 
         int yItem = pos.y+margemBaixo;
-        CPIGListaItemComponente::CriaItem(yItem,atrib.GetString("label",""),atrib.GetString("nomeArqIcone",""),atrib.GetString("nomeArq",""),
-                                                                   false,atrib.GetInt("habilitado",1),atrib.GetString("hint",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("retiraFundoIcone",1));
+        CPIGListaItemComponente::CriaItem(yItem,atrib.GetString(PIG_STR_LABEL,""),atrib.GetString(PIG_STR_NOMEARQICONE,""),atrib.GetString(PIG_STR_NOMEARQ,""),
+                                                                   false,atrib.GetInt(PIG_STR_HABILITADO,1),atrib.GetString(PIG_STR_HINT,""),atrib.GetInt(PIG_STR_RETIRAFUNDO,1),atrib.GetInt(PIG_STR_RETIRAFUNDOICONE,1));
     }
 
     int Desenha(){
@@ -173,7 +173,6 @@ public:
         CPIGListaItemComponente::SetMargens(mEsq,mDir,mCima,mBaixo);
         alt = altBaseLista*itens.size()+margemBaixo+margemCima;
     }
-
 };
 typedef CPIGListBox* PIGListBox;
 #endif // _CPIGLISTBOX_

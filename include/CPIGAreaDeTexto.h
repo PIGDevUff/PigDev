@@ -18,26 +18,26 @@ private:
     void ProcessaAtributos(CPIGAtributos atrib)override{
         CPIGCaixaTexto::ProcessaAtributos(atrib);
 
-        int valorInt = atrib.GetInt("espacoEntreLinhas",0);
+        int valorInt = atrib.GetInt(PIG_STR_ESPACOENTRELINHAS,0);
         if (valorInt > 0) SetEspacoEntreAsLinhas(valorInt);
 
-        valorInt = atrib.GetInt("linhasVisiveis",0);
+        valorInt = atrib.GetInt(PIG_STR_LINHASVISIVEIS,0);
         if (valorInt != 0) SetLinhasAbaixoTexto(valorInt);
 
-        string valorStr = atrib.GetString("corLinhas","");
+        string valorStr = atrib.GetString(PIG_STR_CORLINHAS,"");
         if (valorStr != "") SetCorLinhas(PIGCriaCorString(valorStr));
     }
 
     static CPIGAreaDeTexto LeParametros(int idComponente, CPIGAtributos atrib){
         CPIGAreaDeTexto *resp;
 
-        if (atrib.GetString("nomeArq","")!=""){
-            resp = new CPIGAreaDeTexto(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),
-                        atrib.GetString("nomeArq",""),atrib.GetInt("maxCaracters",200),
-                        atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
+        if (atrib.GetString(PIG_STR_NOMEARQ,"")!=""){
+            resp = new CPIGAreaDeTexto(idComponente,atrib.GetInt(PIG_STR_ALTURA,0),atrib.GetInt(PIG_STR_LARGURA,0),
+                        atrib.GetString(PIG_STR_NOMEARQ,""),atrib.GetInt(PIG_STR_MAXCARACTERS,200),
+                        atrib.GetInt(PIG_STR_RETIRAFUNDO,1),atrib.GetInt(PIG_STR_JANELA,0));
         }else{
-            resp = new CPIGAreaDeTexto(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),
-                        atrib.GetInt("maxCaracters",200),atrib.GetInt("janela",0));
+            resp = new CPIGAreaDeTexto(idComponente,atrib.GetInt(PIG_STR_ALTURA,0),atrib.GetInt(PIG_STR_LARGURA,0),
+                        atrib.GetInt(PIG_STR_MAXCARACTERS,200),atrib.GetInt(PIG_STR_JANELA,0));
         }
 
         resp->ProcessaAtributos(atrib);
@@ -269,15 +269,15 @@ private:
 
 public:
 
-    CPIGAreaDeTexto(int idComponente, int altura, int largura, string nomeArq, int maxCars=PIG_MAX_CARS_CAIXATEXTO, int retiraFundo=1, int janela=0):
-        CPIGCaixaTexto(idComponente,altura,largura,nomeArq,maxCars,retiraFundo,janela){
-            IniciaBase();
-        }
+    CPIGAreaDeTexto(int idComponente, int altura, int largura, string nomeArq, int maxCars=PIG_MAX_CARS_CAIXATEXTO, int retiraFundo=1, int janela=0)
+    :CPIGCaixaTexto(idComponente,altura,largura,nomeArq,maxCars,retiraFundo,janela){
+        IniciaBase();
+    }
 
-    CPIGAreaDeTexto(int idComponente, int altura, int largura, int maxCars=PIG_MAX_CARS_CAIXATEXTO, int janela=0):
-        CPIGCaixaTexto(idComponente,altura,largura,maxCars,janela){
-            IniciaBase();
-        }
+    CPIGAreaDeTexto(int idComponente, int altura, int largura, int maxCars=PIG_MAX_CARS_CAIXATEXTO, int janela=0)
+    :CPIGCaixaTexto(idComponente,altura,largura,maxCars,janela){
+        IniciaBase();
+    }
 
     CPIGAreaDeTexto(int idComponente,CPIGAtributos atrib):CPIGAreaDeTexto(LeParametros(idComponente,atrib)){}
 
@@ -419,8 +419,6 @@ public:
     vector<string> GetLinhasTexto(){
         return linhas;
     }
-
 };
-
 typedef CPIGAreaDeTexto *PIGAreaDeTexto;
 #endif // _CPIGAREADETEXTO_

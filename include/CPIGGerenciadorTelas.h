@@ -39,7 +39,7 @@ public:
     inline int CriaTela(int idTela, bool criarBackground=false, bool carregarBackground=false, string imgFundo="", int idJanela=0){
         if (idTela>=0&&idTela<PIG_MAX_TELAS){
             if (elementos[idTela]!=NULL){
-                printf("Tela %d criada novamente\n",idTela);
+                cout<<"Tela "<<idTela<<" criada novamente!!!"<<endl;
                 return 0;
             }
 
@@ -55,7 +55,7 @@ public:
     inline int InsereTela(int idTela, PIGTela tela){
         if (idTela>=0&&idTela<PIG_MAX_TELAS){
             if (elementos[idTela]!=NULL){
-                printf("Tela %d criada novamente\n",idTela);
+                cout<<"Tela "<<idTela<<" criada novamente!!!"<<endl;
                 return 0;
             }
 

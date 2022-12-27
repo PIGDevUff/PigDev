@@ -12,12 +12,12 @@
 #ifdef __cplusplus
 extern "C"{
 #endif
-#include <libavfilter/avfilter.h>
+//#include <libavfilter/avfilter.h>
 #include <libavformat/avformat.h>
 #include <libavcodec/avcodec.h>
 #include <libavdevice/avdevice.h>
 #include <libavutil/imgutils.h>
-#include <libavutil/avstring.h>
+//#include <libavutil/avstring.h>
 #include <libavutil/time.h>
 #include <libswresample/swresample.h>
 #include <libswscale/swscale.h>
@@ -730,11 +730,10 @@ class CPIGVideo:public CPIGSprite{
 
         audioDeviceId = SDL_OpenAudioDevice(NULL,0,&wantedSpec, &audioSpec,SDL_AUDIO_ALLOW_ANY_CHANGE);
         if (audioDeviceId < 0) {
-            printf("Erro Video: nao foi possivel abrir o dispositivo de audio (%s)\n", SDL_GetError());
+            cout<<"Erro Video: nao foi possivel abrir o dispositivo de audio ("<<SDL_GetError()<<")"<<endl;
             return -1;
         }
         //printf("audiodeviceid: %d\n",audioDeviceId);
-
         return 0;
     }
 
@@ -744,7 +743,7 @@ class CPIGVideo:public CPIGSprite{
         is = (VideoState*)av_mallocz(sizeof(VideoState));
         if (!is){
             Stop();
-            printf("Erro Video: nao foi possivel alocar memoria!!!\n");
+            cout<<"Erro Video: nao foi possivel alocar memoria!!!"<<endl;
             return -1;
         }
 
@@ -760,7 +759,7 @@ class CPIGVideo:public CPIGSprite{
         is->pFormatCtx = avformat_alloc_context();
         if (!is->pFormatCtx){
             Stop();
-            printf("Erro Video: nao foi possivel criar o contexto de video!!!\n");
+            cout<<"Erro Video: nao foi possivel criar o contexto de video!!!"<<endl;
             return -2;
         }
 
@@ -771,7 +770,7 @@ class CPIGVideo:public CPIGSprite{
         int rv = avformat_open_input(&is->pFormatCtx, nomeArquivo.c_str(), NULL, NULL);
         if (rv < 0){
             Stop();
-            printf("Erro Video: nao foi possivel abrir a midia %s!!!\n",nomeArquivo.c_str());
+            cout<<"Erro Video: nao foi possivel abrir a midia <"<<nomeArquivo<<">"<<endl;
             return -3;
         }
 
@@ -779,7 +778,7 @@ class CPIGVideo:public CPIGSprite{
         rv = avformat_find_stream_info(is->pFormatCtx, NULL);
         if (rv < 0){
             Stop();
-            printf("Erro Video: nao foi possivel localizar a informacao dos streams!!!\n");
+            cout<<"Erro Video: nao foi possivel localizar a informacao dos streams!!!"<<endl;
             return -4;
         }
 
@@ -796,7 +795,7 @@ class CPIGVideo:public CPIGSprite{
         //printf("etapa2\n");
         if (is->audioStream < 0 && is->videoStream < 0){
             Stop();
-            printf("Erro Video: nao foi possivel encontrar os streams!!!\n");
+            cout<<"Erro Video: nao foi possivel encontrar os streams!!!"<<endl;
             return -5;
         }
 
@@ -805,7 +804,7 @@ class CPIGVideo:public CPIGSprite{
             rv = StreamAudioComponentOpen();
             if (rv < 0){
                 Stop();
-                printf("Erro Video: nao foi possivel abrir o stream de audio!!!\n");
+                cout<<"Erro Video: nao foi possivel abrir o stream de audio!!!"<<endl;
                 return -6;
             }
         }
@@ -817,7 +816,7 @@ class CPIGVideo:public CPIGSprite{
             rv = StreamVideoComponentOpen();
             if (rv < 0){
                 Stop();
-                printf("Erro Video: nao foi possivel abrir o stream de video!!!\n");
+                cout<<"Erro Video: nao foi possivel abrir o stream de video!!!"<<endl;
                 return -7;
             }
         }
@@ -931,7 +930,7 @@ public:
 
         janelaToda = true;
         tempoFrame = -1;
-        timerProx = new CPIGTimer(0);
+        timerProx = pigGerTimers.CriaTimer(false);
 
         quit = 0;
         decodeEncerrado = false;
@@ -1004,7 +1003,7 @@ public:
         //printf("Fim do stop");
 
         if (timerProx)
-            delete timerProx;
+            pigGerTimers.Remove(timerProx->GetID());
         if (mutexBuffer)
             SDL_DestroyMutex(mutexBuffer);
     }
@@ -1029,7 +1028,7 @@ public:
 
         int erro = CriaVideoState();
         if (erro>0){
-            printf("O video podera nao ser exibido!\n");
+            cout<<"O video podera nao ser exibido!"<<endl;
         }
 
         //printf("Vou criar thread de video\n");
@@ -1146,7 +1145,7 @@ public:
         int     M = static_cast<int>(fM);
         double fS = (fM - M) * 60.;
         //sprintf(str,"%d:%02d:%06.3f",H,M,fS);
-        return std::to_string(H) + ":" + std::to_string(M) + ":" + std::to_string(fS);
+        return to_string(H) + ":" + to_string(M) + ":" + to_string(fS);
     }
 
     double GetTempoTotal(){
@@ -1162,7 +1161,7 @@ public:
         int     M = static_cast<int>(fM);
         double fS = (fM - M) * 60.;
         //sprintf(str,"%d:%d:%.3f",H,M,fS);
-        return std::to_string(H) + ":" + std::to_string(M) + ":" + std::to_string(fS);
+        return to_string(H) + ":" + to_string(M) + ":" + to_string(fS);
     }
 
     double GetTempoFrame(){

@@ -22,32 +22,32 @@ public:
         if (cursores) delete cursores;
     }
 
-    void SetCustomizado(bool cursorCustomizado){
+    inline void SetCustomizado(bool cursorCustomizado){
         SDL_ShowCursor(!cursorCustomizado);
     }
 
-    int GetEstadoBotaoDireito(){
+    inline int GetEstadoBotaoDireito(){
         return estadoBotaoDireito;
     }
 
-    int GetEstadoBotaoCentral(){
+    inline int GetEstadoBotaoCentral(){
         return estadoBotaoCentral;
     }
 
-    int GetEstadoBotaoEsquerdo(){
+    inline int GetEstadoBotaoEsquerdo(){
         return estadoBotaoEsquerdo;
     }
 
-    void PegaXYTela(int &x, int &y){
+    inline void PegaXYTela(int &x, int &y){
         x = pTela.x;
         y = pTela.y;
     }
 
-    SDL_Point PegaXYWorld(){
+    inline SDL_Point PegaXYWorld(){
         return pWorld;
     }
 
-    SDL_Point PegaXYTela(){
+    inline SDL_Point PegaXYTela(){
         return pTela;
     }
 
@@ -78,17 +78,17 @@ public:
         return 0;
     }
 
-    int MudaCursor(int indice){
+    inline int MudaCursor(int indice){
         if (cursores)
             return cursores->MudaFrameAtual(indice);
         return 0;
     }
 
-    void Desenha(int idJanela=0){
+    inline void Desenha(int idJanela=0){
         if (cursores) cursores->Desenha();
     }
 
-    void Move(int x,int y, int idJanela=0){
+    inline void Move(int x,int y, int idJanela=0){
         pTela.x = x;
         pTela.y = y;
         if (cursores) cursores->Move(x,y-32);
@@ -100,18 +100,17 @@ public:
         cursores->SetDimensoes(32,32);
     }
 
-    void CarregaFramesPorColuna(int frameInicial, int qtdLinhas, int qtdColunas){
+    inline void CarregaFramesPorColuna(int frameInicial, int qtdLinhas, int qtdColunas){
         if (cursores) cursores->CriaFramesAutomaticosPorColuna(frameInicial,qtdLinhas,qtdColunas);
     }
 
-    void CarregaFramesPorLinha(int frameInicial, int qtdLinhas, int qtdColunas){
+    inline void CarregaFramesPorLinha(int frameInicial, int qtdLinhas, int qtdColunas){
         if (cursores) cursores->CriaFramesAutomaticosPorLinha(frameInicial,qtdLinhas,qtdColunas);
     }
 
-    void CriaFrameCursor(int idFrame,int x, int y, int alt, int larg){
+    inline void CriaFrameCursor(int idFrame,int x, int y, int alt, int larg){
         if (cursores) cursores->DefineFrame(idFrame,{x,y,larg,alt});
     }
-
 };
 CPIGMouse pigMouse;
 #endif // _CPIGMouse_

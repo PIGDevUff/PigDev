@@ -1,7 +1,7 @@
 #ifndef _CPIGTRANSICAO_
 #define _CPIGTRANSICAO_
 
-#include "CPIGTimer.h"
+#include "CPIGGerenciadorTimers.h"
 
 typedef struct {
     int x,y,alt,larg;
@@ -26,162 +26,164 @@ PIGEstadoTransicao operator+(PIGEstadoTransicao a, PIGEstadoTransicao b){
 class CPIGTransicao{
 
 private:
-PIGEstadoTransicao ini,fim,delta;
-double tempoAtual,tempoTotal,sobraAnterior; //sobraAnterior é um tempo excedido na transição anterior a ser descontado nesta transição
-PIGTimer timer;
+
+    PIGEstadoTransicao ini,fim,delta;
+    double tempoAtual,tempoTotal,sobraAnterior; //sobraAnterior é um tempo excedido na transição anterior a ser descontado nesta transição
+    //int idTimer;
+    PIGTimer timer;
 
 public:
 
-CPIGTransicao(double tempoTransicao, PIGEstadoTransicao modificacao){
-    tempoTotal = tempoTransicao;
-    timer = new CPIGTimer(true);
-    delta = modificacao;
-    sobraAnterior=0;
-}
-
-CPIGTransicao(CPIGTransicao *outro){
-    tempoTotal = outro->tempoTotal;
-    timer = new CPIGTimer(true);
-    delta = outro->delta;
-    sobraAnterior=0;
-}
-
-CPIGTransicao(string str){
-}
-
-virtual ~CPIGTransicao(){
-    delete timer;
-}
-
-void IniciaTransicao(PIGEstadoTransicao inicio, double sobra=0){
-    ini = inicio;
-    fim = ini+delta;
-    timer->Reinicia(false);
-    tempoAtual = 0.0;
-    sobraAnterior = sobra;
-}
-
-double CalculaTransicao(){
-    double t = timer->GetTempoDecorrido()+sobraAnterior;
-    tempoAtual =  t/tempoTotal;
-    if (tempoAtual>1){
-        tempoAtual=1;
+    CPIGTransicao(double tempoTransicao, PIGEstadoTransicao modificacao){
+        tempoTotal = tempoTransicao;
+        timer = pigGerTimers.CriaTimer(true);
+        //timer = pigGerTimers.GetElemento(idTimer);
+        delta = modificacao;
+        sobraAnterior=0;
     }
-    return t-tempoTotal;
-}
 
-void InsereTransicaoX(int valorIni, int valorFim){
-    ini.x = valorIni;
-    fim.x = valorFim;
-}
+    CPIGTransicao(CPIGTransicao *outro){
+        tempoTotal = outro->tempoTotal;
+        timer = pigGerTimers.CriaTimer(true);
+        //timer = pigGerTimers.GetElemento(idTimer);
+        delta = outro->delta;
+        sobraAnterior=0;
+    }
 
-void InsereTransicaoY(int valorIni, int valorFim){
-    ini.y = valorIni;
-    fim.y = valorFim;
-}
+    CPIGTransicao(string str){}
 
-void InsereTransicaoAltura(int valorIni, int valorFim){
-    ini.alt = valorIni;
-    fim.alt = valorFim;
-}
+    virtual ~CPIGTransicao(){
+        //timer = NULL;
+        pigGerTimers.Remove(timer->GetID());
+    }
 
-void InsereTransicaoLargura(int valorIni, int valorFim){
-    ini.larg = valorIni;
-    fim.larg = valorFim;
-}
+    void IniciaTransicao(PIGEstadoTransicao inicio, double sobra=0){
+        ini = inicio;
+        fim = ini+delta;
+        timer->Reinicia(false);
+        tempoAtual = 0.0;
+        sobraAnterior = sobra;
+    }
 
-void InsereTransicaoCor(PIGCor valorIni, PIGCor valorFim){
-    ini.cor = valorIni;
-    fim.cor = valorFim;
-}
+    double CalculaTransicao(){
+        double t = timer->GetTempoDecorrido()+sobraAnterior;
+        tempoAtual =  t/tempoTotal;
+        if (tempoAtual>1){
+            tempoAtual=1;
+        }
+        return t-tempoTotal;
+    }
 
-void InsereTransicaoOpacidade(int valorIni, int valorFim){
-    ini.opacidade = valorIni;
-    fim.opacidade = valorFim;
-}
+    void InsereTransicaoX(int valorIni, int valorFim){
+        ini.x = valorIni;
+        fim.x = valorFim;
+    }
 
-void InsereTransicaoAngulo(double valorIni, double valorFim){
-    ini.ang = valorIni;
-    fim.ang = valorFim;
-}
+    void InsereTransicaoY(int valorIni, int valorFim){
+        ini.y = valorIni;
+        fim.y = valorFim;
+    }
 
-void InsereTransicaoPersonalizada(int indice, double valorIni, double valorFim){
-    ini.personalizada[indice] = valorIni;
-    fim.personalizada[indice] = valorFim;
-}
+    void InsereTransicaoAltura(int valorIni, int valorFim){
+        ini.alt = valorIni;
+        fim.alt = valorFim;
+    }
 
-int GetX(){
-    return fim.x*(tempoAtual) + ini.x*(1-tempoAtual);
-}
+    void InsereTransicaoLargura(int valorIni, int valorFim){
+        ini.larg = valorIni;
+        fim.larg = valorFim;
+    }
 
-int GetY(){
-    return fim.y*(tempoAtual) + ini.y*(1-tempoAtual);
-}
+    void InsereTransicaoCor(PIGCor valorIni, PIGCor valorFim){
+        ini.cor = valorIni;
+        fim.cor = valorFim;
+    }
 
-int GetAltura(){
-    return fim.alt*(tempoAtual) + ini.alt*(1-tempoAtual);
-}
+    void InsereTransicaoOpacidade(int valorIni, int valorFim){
+        ini.opacidade = valorIni;
+        fim.opacidade = valorFim;
+    }
 
-int GetLargura(){
-    return fim.larg*(tempoAtual) + ini.larg*(1-tempoAtual);
-}
+    void InsereTransicaoAngulo(double valorIni, double valorFim){
+        ini.ang = valorIni;
+        fim.ang = valorFim;
+    }
 
-PIGCor GetCor(){
-    return PIGMixCor(ini.cor,fim.cor,tempoAtual);
-}
+    void InsereTransicaoPersonalizada(int indice, double valorIni, double valorFim){
+        ini.personalizada[indice] = valorIni;
+        fim.personalizada[indice] = valorFim;
+    }
 
-int GetOpacidade(){
-    return fim.opacidade*(tempoAtual) + ini.opacidade*(1-tempoAtual);
-}
+    int GetX(){
+        return fim.x*(tempoAtual) + ini.x*(1-tempoAtual);
+    }
 
-double GetAngulo(){
-    return fim.ang*(tempoAtual) + ini.ang*(1-tempoAtual);
-}
+    int GetY(){
+        return fim.y*(tempoAtual) + ini.y*(1-tempoAtual);
+    }
 
-double GetPersonalizada(int indice){
-    return fim.personalizada[indice]*(tempoAtual) + ini.personalizada[indice]*(1-tempoAtual);
-}
+    int GetAltura(){
+        return fim.alt*(tempoAtual) + ini.alt*(1-tempoAtual);
+    }
 
-PIGEstadoTransicao GetEstado(){
-    PIGEstadoTransicao atual;
-    //atual.tempoAtual = tempoAtual;
-    atual.x = fim.x*(tempoAtual) + ini.x*(1-tempoAtual);
-    atual.y = fim.y*(tempoAtual) + ini.y*(1-tempoAtual);
-    atual.alt = fim.alt*(tempoAtual) + ini.alt*(1-tempoAtual);
-    atual.larg = fim.larg*(tempoAtual) + ini.larg*(1-tempoAtual);
-    atual.ang = fim.ang*(tempoAtual) + ini.ang*(1-tempoAtual);
-    atual.cor = PIGMixCor(ini.cor,fim.cor,tempoAtual);
-    atual.opacidade = fim.opacidade*(tempoAtual) + ini.opacidade*(1-tempoAtual);
-    //fprintf(arqP,"get %f %d %d %d %d %f\n",atual.tempoAtual,atual.x,atual.y,atual.alt,atual.larg,atual.ang);
-    return atual;
-}
+    int GetLargura(){
+        return fim.larg*(tempoAtual) + ini.larg*(1-tempoAtual);
+    }
 
-PIGEstadoTransicao GetFim(){
-    return fim;
-}
+    PIGCor GetCor(){
+        return PIGMixCor(ini.cor,fim.cor,tempoAtual);
+    }
 
-void Inverte(){
-    delta.x *= -1;
-    delta.y *= -1;
-    delta.alt *= -1;
-    delta.larg *= -1;
-    delta.ang *= -1;
-    delta.opacidade *= -1;
-}
+    int GetOpacidade(){
+        return fim.opacidade*(tempoAtual) + ini.opacidade*(1-tempoAtual);
+    }
 
-CPIGTransicao *PreparaApos(double tempo, PIGEstadoTransicao estado){
-    return new CPIGTransicao(tempo,estado);
-}
+    double GetAngulo(){
+        return fim.ang*(tempoAtual) + ini.ang*(1-tempoAtual);
+    }
 
-void Pausa(){
-    timer->Pausa();
-}
+    double GetPersonalizada(int indice){
+        return fim.personalizada[indice]*(tempoAtual) + ini.personalizada[indice]*(1-tempoAtual);
+    }
 
-void Despausa(){
-    timer->Despausa();
-}
+    PIGEstadoTransicao GetEstado(){
+        PIGEstadoTransicao atual;
+        //atual.tempoAtual = tempoAtual;
+        atual.x = fim.x*(tempoAtual) + ini.x*(1-tempoAtual);
+        atual.y = fim.y*(tempoAtual) + ini.y*(1-tempoAtual);
+        atual.alt = fim.alt*(tempoAtual) + ini.alt*(1-tempoAtual);
+        atual.larg = fim.larg*(tempoAtual) + ini.larg*(1-tempoAtual);
+        atual.ang = fim.ang*(tempoAtual) + ini.ang*(1-tempoAtual);
+        atual.cor = PIGMixCor(ini.cor,fim.cor,tempoAtual);
+        atual.opacidade = fim.opacidade*(tempoAtual) + ini.opacidade*(1-tempoAtual);
+        //fprintf(arqP,"get %f %d %d %d %d %f\n",atual.tempoAtual,atual.x,atual.y,atual.alt,atual.larg,atual.ang);
+        return atual;
+    }
 
+    PIGEstadoTransicao GetFim(){
+        return fim;
+    }
+
+    void Inverte(){
+        delta.x *= -1;
+        delta.y *= -1;
+        delta.alt *= -1;
+        delta.larg *= -1;
+        delta.ang *= -1;
+        delta.opacidade *= -1;
+    }
+
+    CPIGTransicao *PreparaApos(double tempo, PIGEstadoTransicao estado){
+        return new CPIGTransicao(tempo,estado);
+    }
+
+    void Pausa(){
+        timer->Pausa();
+    }
+
+    void Despausa(){
+        timer->Despausa();
+    }
 };
 typedef CPIGTransicao *PIGTransicao;
-
 #endif // _CPIGTRANSICAO_

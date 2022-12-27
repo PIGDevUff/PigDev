@@ -10,8 +10,7 @@ private:
     SDL_Rect espacoVida;
     double hp;
     double tempoVida;
-    int idTimerVida;                        //timer para controle do tempo de vida da partícula, a partir da sua criação (usado apenas na contrução e destruição de um objeto)
-    PIGTimer timerVida;                     //ponteiro para o timer indicado por idTimerVida (usado diretamente para otimizar a execução dos códigos)
+    PIGTimer timerVida;                     //timer para macar o tempo de vida da partícula
     bool viva;
 
     double ModificaHP(double valor){
@@ -28,8 +27,7 @@ public:
         espacoVida = {INT_MIN,INT_MIN,INT_MAX,INT_MAX};
         tempoVida = 9999999;
         viva = true;
-        idTimerVida = pigGerTimers.CriaTimer(false);
-        timerVida = pigGerTimers.GetElemento(idTimerVida);
+        timerVida = pigGerTimers.CriaTimer(false);
     }
 
     inline void DefineLimites(SDL_Rect espacoMax, double tempoMax){
@@ -38,8 +36,7 @@ public:
     }
 
     virtual ~CPIGParticula(){
-        timerVida = NULL;
-        pigGerTimers.Remove(idTimerVida);
+        pigGerTimers.Remove(timerVida->GetID());
     }
 
     inline bool ChecaViva(){

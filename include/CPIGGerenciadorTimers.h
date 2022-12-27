@@ -8,14 +8,16 @@ class CPIGGerenciadorTimers: public CPIGRepositorio<PIGTimer>{
 
 private:
 
-    vector<int> grupos[PIG_MAX_GRUPOS_TIMERS];
+    vector<PIGTimer> grupos[PIG_MAX_GRUPOS_TIMERS];
 
 public:
 
     CPIGGerenciadorTimers():CPIGRepositorio<PIGTimer>(PIG_MAX_TIMERS,"CPIGTimer"){}
 
-    inline int CriaTimer(bool congelado=false){
-        return Insere(new CPIGTimer(congelado));
+    inline PIGTimer CriaTimer(bool congelado=false){
+        PIGTimer t = new CPIGTimer(ProxID(),congelado);
+        Insere(t);
+        return t;
     }
 
     inline void PausaTodos(){
@@ -32,15 +34,13 @@ public:
 
     inline int AssociaTimerGrupo(int idTimer, int idGrupo){
         if (idGrupo<0||idGrupo>=PIG_MAX_GRUPOS_TIMERS) return 0;
-        PIGTimer t = GetElemento(idTimer);  //apenas para checar se o idTimer é valido
-        grupos[idGrupo].push_back(idTimer);
+        grupos[idGrupo].push_back(GetElemento(idTimer));
         return 1;
     }
 
     inline int DesassociaTimerGrupo(int idTimer, int idGrupo){
         if (idGrupo<0||idGrupo>=PIG_MAX_GRUPOS_TIMERS) return 0;
-        PIGTimer t = GetElemento(idTimer);  //apenas para checar se o idTimer é valido
-        vector<int>::iterator it = find(grupos[idGrupo].begin(), grupos[idGrupo].end(), idTimer);
+        vector<PIGTimer>::iterator it = find(grupos[idGrupo].begin(), grupos[idGrupo].end(), GetElemento(idTimer));
         if (it!=grupos[idGrupo].end()){
             grupos[idGrupo].erase(it);
             return 1;
@@ -51,9 +51,8 @@ public:
     inline int PausaGrupo(int idGrupo){
         if (idGrupo<0||idGrupo>=PIG_MAX_GRUPOS_TIMERS) return -1;
         int cont=0;
-        for (unsigned int i=0;i<grupos[idGrupo].size();i++){
-            PIGTimer t = GetElemento(grupos[idGrupo][i]);
-            if (t) t->Pausa();
+        for (PIGTimer t: grupos[idGrupo]){
+            t->Pausa();
             cont++;
         }
         return cont;
@@ -62,25 +61,22 @@ public:
     inline int DespausaGrupo(int idGrupo){
         if (idGrupo<0||idGrupo>=PIG_MAX_GRUPOS_TIMERS) return -1;
         int cont=0;
-        for (unsigned int i=0;i<grupos[idGrupo].size();i++){
-            PIGTimer t = GetElemento(grupos[idGrupo][i]);
-            if (t) t->Despausa();
+        for (PIGTimer t: grupos[idGrupo]){
+            t->Despausa();
             cont++;
         }
         return cont;
     }
 
-    inline int ReiniciaGrupo(int idGrupo,bool valor){
+    inline int ReiniciaGrupo(int idGrupo, bool valor){
         if (idGrupo<0||idGrupo>=PIG_MAX_GRUPOS_TIMERS) return -1;
         int cont=0;
-        for (unsigned int i=0;i<grupos[idGrupo].size();i++){
-            PIGTimer t = GetElemento(grupos[idGrupo][i]);
-            if (t) t->Reinicia(valor);
+        for (PIGTimer t: grupos[idGrupo]){
+            t->Reinicia(valor);
             cont++;
         }
         return cont;
     }
-
 };
 CPIGGerenciadorTimers pigGerTimers;
 #endif // _CPIGGERENCIADORTIMERS_

@@ -17,13 +17,13 @@ private:
     static CPIGDropDown LeParametros(int idComponente, CPIGAtributos atrib){
         CPIGDropDown *resp;
 
-        if (atrib.GetString("nomeArq","")!=""){
-            resp = new CPIGDropDown(idComponente,atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
-                          atrib.GetInt("alturaIcone",0),atrib.GetInt("larguraIcone",0),
-                          atrib.GetString("nomeArq",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("janela",0));
+        if (atrib.GetString(PIG_STR_NOMEARQ,"")!=""){
+            resp = new CPIGDropDown(idComponente,atrib.GetInt(PIG_STR_LARGURA,0),atrib.GetInt(PIG_STR_ALTURALINHA,0),
+                          atrib.GetInt(PIG_STR_ALTURAICONE,0),atrib.GetInt(PIG_STR_LARGURAICONE,0),
+                          atrib.GetString(PIG_STR_NOMEARQ,""),atrib.GetInt(PIG_STR_RETIRAFUNDO,1),atrib.GetInt(PIG_STR_JANELA,0));
         }else{
-            resp = new CPIGDropDown(idComponente,atrib.GetInt("largura",0),atrib.GetInt("alturaLinha",0),
-                          atrib.GetInt("alturaIcone",0),atrib.GetInt("larguraIcone",0),atrib.GetInt("janela",0));
+            resp = new CPIGDropDown(idComponente,atrib.GetInt(PIG_STR_LARGURA,0),atrib.GetInt(PIG_STR_ALTURALINHA,0),
+                          atrib.GetInt(PIG_STR_ALTURAICONE,0),atrib.GetInt(PIG_STR_LARGURAICONE,0),atrib.GetInt(PIG_STR_JANELA,0));
         }
 
         resp->ProcessaAtributos(atrib);
@@ -106,18 +106,18 @@ private:
 
 public:
 
-    CPIGDropDown(int idComponente, int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, string nomeArqFundo="", int retiraFundo=1, int janela=0):
-        CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,nomeArqFundo,retiraFundo,janela){
-            SetRecolhida(true);
-            itemDestaque = -1;
-            tipo = PIG_DROPDOWN;
+    CPIGDropDown(int idComponente, int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, string nomeArqFundo="", int retiraFundo=1, int janela=0)
+    :CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,nomeArqFundo,retiraFundo,janela){
+        SetRecolhida(true);
+        itemDestaque = -1;
+        tipo = PIG_DROPDOWN;
     }
 
-    CPIGDropDown(int idComponente, int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, int janela=0):
-        CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,janela){
-            SetRecolhida(true);
-            itemDestaque = -1;
-            tipo = PIG_DROPDOWN;
+    CPIGDropDown(int idComponente, int larguraTotal, int alturaLinha, int alturaItem=0, int larguraItem=0, int janela=0)
+    :CPIGListaItemComponente(idComponente,larguraTotal,alturaLinha,janela){
+        SetRecolhida(true);
+        itemDestaque = -1;
+        tipo = PIG_DROPDOWN;
     }
 
     CPIGDropDown(int idComponente,CPIGAtributos atrib):CPIGDropDown(LeParametros(idComponente,atrib)){}
@@ -149,8 +149,8 @@ public:
     void CriaItem(CPIGAtributos atrib){
 
         int yItem = pos.y-altBaseLista*(itens.size()+1)+margemBaixo;
-        CPIGListaItemComponente::CriaItem(yItem,atrib.GetString("label",""),atrib.GetString("nomeArqIcone",""),atrib.GetString("nomeArq",""),
-                                                                   false,atrib.GetInt("habilitado",1),atrib.GetString("hint",""),atrib.GetInt("retiraFundo",1),atrib.GetInt("retiraFundoIcone",1));
+        CPIGListaItemComponente::CriaItem(yItem,atrib.GetString(PIG_STR_LABEL,""),atrib.GetString(PIG_STR_NOMEARQICONE,""),atrib.GetString(PIG_STR_NOMEARQ,""),
+                                                                   false,atrib.GetInt(PIG_STR_HABILITADO,1),atrib.GetString(PIG_STR_HINT,""),atrib.GetInt(PIG_STR_RETIRAFUNDO,1),atrib.GetInt(PIG_STR_RETIRAFUNDOICONE,1));
 
         if (recolhida){
             SetDimensoes(altBaseLista+margemBaixo+margemCima,larg);
@@ -214,15 +214,12 @@ public:
         return PIG_COMPONENTE_NAOTRATADO;
     }
 
-
     virtual void SetMargens(int mEsq, int mDir, int mCima, int mBaixo)override{
         CPIGListaItemComponente::SetMargens(mEsq,mDir,mCima,mBaixo);
         if (recolhida)
             alt = altBaseLista+margemBaixo+margemCima;
         else alt = altBaseLista*(itens.size()+1)+margemBaixo+margemCima;
     }
-
 };
-
 typedef CPIGDropDown *PIGDropDown;
 #endif // _CPIGDROPDOWN_

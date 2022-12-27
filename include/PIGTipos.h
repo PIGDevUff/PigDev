@@ -2,7 +2,6 @@
 Principais definições utilizadas pela PIG
 ********************************/
 
-#include "SDL.h"
 #define _WIN32_WINNT 0x0501
 //#include "mingw.thread.h"
 
@@ -22,14 +21,6 @@ Principais definições utilizadas pela PIG
 #define PIG_JANELA_INICIAL              1
 #else
 #define PIG_JANELA_INICIAL              1
-#endif
-
-#ifdef _WIN32
-    #include "direct.h"
-    #define CHDIR _chdir
-#else
-    #include "unistd.h"
-    #define CHDIR chdir
 #endif
 
 #define PIG_FF_REFRESH_EVENT            3333

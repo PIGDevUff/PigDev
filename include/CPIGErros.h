@@ -21,7 +21,7 @@ public:
     }
 
     inline void PrintErro(){
-        cout <<" Erro " <<codErro<<": "<<mensagem<<endl;
+        cout<<"Erro " <<codErro<<": "<<mensagem<<endl;
     }
 };
 

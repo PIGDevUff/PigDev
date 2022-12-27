@@ -14,12 +14,12 @@ private:
     static CPIGGaugeBar LeParametros(int idComponente, CPIGAtributos atrib){
         CPIGGaugeBar *resp;
 
-        if (atrib.GetString("nomeArq","")!=""){
-            resp = new CPIGGaugeBar(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),
-                          atrib.GetString("nomeArq",""),atrib.GetString("nomeArqMarcador",""),
-                          atrib.GetInt("retiraFundo",1),atrib.GetInt("retiraFundoMarcador",1),atrib.GetInt("janela",0));
+        if (atrib.GetString(PIG_STR_NOMEARQ,"")!=""){
+            resp = new CPIGGaugeBar(idComponente,atrib.GetInt(PIG_STR_ALTURA,0),atrib.GetInt(PIG_STR_LARGURA,0),
+                          atrib.GetString(PIG_STR_NOMEARQ,""),atrib.GetString(PIG_STR_NOMEARQMARCADOR,""),
+                          atrib.GetInt(PIG_STR_RETIRAFUNDO,1),atrib.GetInt(PIG_STR_RETIRAFUNDOMARCADOR,1),atrib.GetInt(PIG_STR_JANELA,0));
         }else{
-            resp = new CPIGGaugeBar(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),atrib.GetInt("janela",0));
+            resp = new CPIGGaugeBar(idComponente,atrib.GetInt(PIG_STR_ALTURA,0),atrib.GetInt(PIG_STR_LARGURA,0),atrib.GetInt(PIG_STR_JANELA,0));
         }
 
         resp->ProcessaAtributos(atrib);
@@ -117,8 +117,8 @@ private:
 
 public:
 
-    CPIGGaugeBar(int idComponente, int altura, int largura, string imgMoldura, string imgMarcador, int retiraFundoTrilha=1, int retiraFundoMarcador=1, int janela=0):
-        CPIGGauge(idComponente,altura,largura,imgMoldura,retiraFundoTrilha,janela){
+    CPIGGaugeBar(int idComponente, int altura, int largura, string imgMoldura, string imgMarcador, int retiraFundoTrilha=1, int retiraFundoMarcador=1, int janela=0)
+    :CPIGGauge(idComponente,altura,largura,imgMoldura,retiraFundoTrilha,janela){
         IniciaCoresBasicas();
         tipo = PIG_GAUGEBAR;
         if (imgMarcador!=""){
@@ -127,8 +127,8 @@ public:
         }
     }
 
-    CPIGGaugeBar(int idComponente, int altura, int largura, int janela=0):
-        CPIGGauge(idComponente,altura,largura,janela){
+    CPIGGaugeBar(int idComponente, int altura, int largura, int janela=0)
+    :CPIGGauge(idComponente,altura,largura,janela){
         tipo = PIG_GAUGEBAR;
         IniciaCoresBasicas();
     }
@@ -172,7 +172,6 @@ public:
         marcadorAtualizado = false;
         return 1;
     }
-
 };
 typedef CPIGGaugeBar *PIGGaugeBar;
 #endif // _CPIGGAUGE_

@@ -24,7 +24,6 @@ protected:
     int mudarPara;
     int id,janela;
     double tempoSaida;
-    int idTimerSaida;
     PIGTimer timerSaida;
     int spriteCarrega;
     bool criaBackground,carregaBackground;
@@ -59,8 +58,7 @@ public:
         janela = idJanela;
         comportamento = comporta;
         tempoSaida = PIG_TEMPO_SAIDA_TELA_PADRAO;
-        idTimerSaida = pigGerTimers.CriaTimer(true);
-        timerSaida = pigGerTimers.GetElemento(idTimerSaida);
+        timerSaida = pigGerTimers.CriaTimer(true);
         criaBackground = criarBackground;
         carregaBackground = carregarBackground;
         spriteCarrega = -1;
@@ -85,7 +83,6 @@ public:
                 estado = PIG_TELA_CRIADA;
             }
         }else estado = PIG_TELA_CRIADA;
-
         //printf("%d terminei o construtor\n",id);
     }
 
@@ -93,7 +90,7 @@ public:
         while (estado==PIG_TELA_CRIANDO||estado==PIG_TELA_CARREGANDO){
             SDL_Delay(10);
         }
-        pigGerTimers.Remove(idTimerSaida);
+        pigGerTimers.Remove(timerSaida->GetID());
         if (comportamento.acaoDestroi!=NULL)
             comportamento.acaoDestroi(id,comportamento.dados);
     }
@@ -196,8 +193,6 @@ public:
     void SetComportamento(PIGComportamentoTela comporta){
         comportamento = comporta;
     }
-
 };
-
 typedef CPIGTela *PIGTela;
 #endif // _CPIGTELA_

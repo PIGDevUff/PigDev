@@ -14,26 +14,26 @@ private:
     void ProcessaAtributos(CPIGAtributos atrib)override{
         CPIGGauge::ProcessaAtributos(atrib);
 
-        float valorFloat = atrib.GetFloat("anguloBase",0);
+        float valorFloat = atrib.GetFloat(PIG_STR_ANGULOBASE,0);
         if (valorFloat != 0) SetAnguloBase(valorFloat);
 
-        valorFloat = atrib.GetFloat("deltaAngulo",0);
+        valorFloat = atrib.GetFloat(PIG_STR_DELTAANGULO,0);
         if (valorFloat != 0) SetDeltaAngulo(valorFloat);
 
-        int valorInt = atrib.GetInt("raioInterno",0);
+        int valorInt = atrib.GetInt(PIG_STR_RAIOINTERNO,0);
         if (valorInt > 0) SetRaioInterno(valorInt);
     }
 
     static CPIGGaugeCircular LeParametros(int idComponente, CPIGAtributos atrib){
         CPIGGaugeCircular *resp;
 
-        if (atrib.GetString("nomeArq","") != ""){
-            resp = new CPIGGaugeCircular(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),
-                        atrib.GetString("nomeArq",""),atrib.GetInt("alturaMarcador",0),atrib.GetInt("larguraMarcador",0),atrib.GetString("nomeArqMarcador",""),
-                        atrib.GetInt("retiraFundo",1),atrib.GetInt("retiraFundoMarcador",1),atrib.GetInt("janela",0));
+        if (atrib.GetString(PIG_STR_NOMEARQ,"") != ""){
+            resp = new CPIGGaugeCircular(idComponente,atrib.GetInt(PIG_STR_ALTURA,0),atrib.GetInt(PIG_STR_LARGURA,0),
+                        atrib.GetString(PIG_STR_NOMEARQ,""),atrib.GetInt(PIG_STR_ALTURAMARCADOR,0),atrib.GetInt(PIG_STR_LARGURAMARCADOR,0),atrib.GetString(PIG_STR_NOMEARQMARCADOR,""),
+                        atrib.GetInt(PIG_STR_RETIRAFUNDO,1),atrib.GetInt(PIG_STR_RETIRAFUNDOMARCADOR,1),atrib.GetInt(PIG_STR_JANELA,0));
 
         }else{
-            resp = new CPIGGaugeCircular(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),atrib.GetInt("janela",0));
+            resp = new CPIGGaugeCircular(idComponente,atrib.GetInt(PIG_STR_ALTURA,0),atrib.GetInt(PIG_STR_LARGURA,0),atrib.GetInt(PIG_STR_JANELA,0));
         }
         resp->ProcessaAtributos(atrib);
 
@@ -150,8 +150,8 @@ private:
 
 public:
 
-    CPIGGaugeCircular(int idComponente, int altura, int largura, int janela=0):
-        CPIGGauge(idComponente,altura,largura,janela){
+    CPIGGaugeCircular(int idComponente, int altura, int largura, int janela=0)
+    :CPIGGauge(idComponente,altura,largura,janela){
 
         SetPivoProporcional({0.5,0.5});
 
@@ -160,8 +160,8 @@ public:
         IniciaBase();
     }
 
-    CPIGGaugeCircular(int idComponente, int altura, int largura, string imgTrilha, int alturaMarcador, int larguraMarcador, string imgMarcador, int retiraFundoTrilha=1, int retiraFundoMarcador=1, int janela=0):
-        CPIGGauge(idComponente,altura,largura,imgTrilha,retiraFundoTrilha,janela){
+    CPIGGaugeCircular(int idComponente, int altura, int largura, string imgTrilha, int alturaMarcador, int larguraMarcador, string imgMarcador, int retiraFundoTrilha=1, int retiraFundoMarcador=1, int janela=0)
+    :CPIGGauge(idComponente,altura,largura,imgTrilha,retiraFundoTrilha,janela){
 
         marcador = new CPIGSprite(-1,imgMarcador,retiraFundoMarcador,NULL,janela);
         marcador->SetDimensoes(alturaMarcador,larguraMarcador);
@@ -212,8 +212,6 @@ public:
         deltaAng = novoDelta;
         marcadorAtualizado = false;
     }
-
 };
-
 typedef CPIGGaugeCircular *PIGGaugeCircular;
 #endif // _CPIGGAUGECIRCULAR_

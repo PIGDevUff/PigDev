@@ -15,13 +15,13 @@ class CPIGSlideBar: public CPIGGauge{
     static CPIGSlideBar LeParametros(int idComponente,CPIGAtributos atrib){
         CPIGSlideBar *resp;
 
-        if (atrib.GetString("nomeArq","")!=""){
-            resp = new CPIGSlideBar(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),
-                          atrib.GetString("nomeArq",""),atrib.GetInt("alturaMarcador",0),atrib.GetInt("larguraMarcador",0),atrib.GetString("nomeArqMarcador",""),
-                          atrib.GetInt("retiraFundo",1),atrib.GetInt("retiraFundoMarcador",1),atrib.GetInt("janela",0));
+        if (atrib.GetString(PIG_STR_NOMEARQ,"")!=""){
+            resp = new CPIGSlideBar(idComponente,atrib.GetInt(PIG_STR_ALTURA,0),atrib.GetInt(PIG_STR_LARGURA,0),
+                          atrib.GetString(PIG_STR_NOMEARQ,""),atrib.GetInt(PIG_STR_ALTURAMARCADOR,0),atrib.GetInt(PIG_STR_LARGURAMARCADOR,0),atrib.GetString(PIG_STR_NOMEARQMARCADOR,""),
+                          atrib.GetInt(PIG_STR_RETIRAFUNDO,1),atrib.GetInt(PIG_STR_RETIRAFUNDOMARCADOR,1),atrib.GetInt(PIG_STR_JANELA,0));
         }else{
-            resp = new CPIGSlideBar(idComponente,atrib.GetInt("altura",0),atrib.GetInt("largura",0),
-                          atrib.GetInt("alturaMarcador",0),atrib.GetInt("larguraMarcador",0),atrib.GetInt("janela",0));
+            resp = new CPIGSlideBar(idComponente,atrib.GetInt(PIG_STR_ALTURA,0),atrib.GetInt(PIG_STR_LARGURA,0),
+                          atrib.GetInt(PIG_STR_ALTURAMARCADOR,0),atrib.GetInt(PIG_STR_LARGURAMARCADOR,0),atrib.GetInt(PIG_STR_JANELA,0));
         }
 
         resp->ProcessaAtributos(atrib);
@@ -117,24 +117,24 @@ class CPIGSlideBar: public CPIGGauge{
 
 public:
 
-    CPIGSlideBar(int idComponente, int altTrilha, int largTrilha, string imgTrilha, int alturaMarcador, int larguraMarcador, string imgMarcador,int retiraFundoTrilha=1, int retiraFundoMarcador=1, int janela=0):
-        CPIGGauge(idComponente,altTrilha,largTrilha,imgTrilha,retiraFundoTrilha,janela){
-            deltaTeclado = deltaRodinha = 10;
-            altMarcador = alturaMarcador;
-            largMarcador = larguraMarcador;
-            tipo = PIG_SLIDEBAR;
-            marcador = new CPIGSprite(-1,imgMarcador,retiraFundoMarcador,NULL,janela);
-            AtualizaMarcador();
+    CPIGSlideBar(int idComponente, int altTrilha, int largTrilha, string imgTrilha, int alturaMarcador, int larguraMarcador, string imgMarcador,int retiraFundoTrilha=1, int retiraFundoMarcador=1, int janela=0)
+    :CPIGGauge(idComponente,altTrilha,largTrilha,imgTrilha,retiraFundoTrilha,janela){
+        deltaTeclado = deltaRodinha = 10;
+        altMarcador = alturaMarcador;
+        largMarcador = larguraMarcador;
+        tipo = PIG_SLIDEBAR;
+        marcador = new CPIGSprite(-1,imgMarcador,retiraFundoMarcador,NULL,janela);
+        AtualizaMarcador();
     }
 
-    CPIGSlideBar(int idComponente, int altTrilha, int largTrilha, int alturaMarcador, int larguraMarcador,int janela=0):
-        CPIGGauge(idComponente,altTrilha,largTrilha,janela){
-            deltaTeclado = deltaRodinha = 10;
-            altMarcador = alturaMarcador;
-            largMarcador = larguraMarcador;
-            tipo = PIG_SLIDEBAR;
-            AtualizaMarcador();
-            IniciaCoresBasicas();
+    CPIGSlideBar(int idComponente, int altTrilha, int largTrilha, int alturaMarcador, int larguraMarcador,int janela=0)
+    :CPIGGauge(idComponente,altTrilha,largTrilha,janela){
+        deltaTeclado = deltaRodinha = 10;
+        altMarcador = alturaMarcador;
+        largMarcador = larguraMarcador;
+        tipo = PIG_SLIDEBAR;
+        AtualizaMarcador();
+        IniciaCoresBasicas();
     }
 
     CPIGSlideBar(int idComponente,CPIGAtributos atrib):CPIGSlideBar(LeParametros(idComponente,atrib)){}
@@ -195,7 +195,7 @@ public:
         return PIG_COMPONENTE_NAOTRATADO;
     }
 
-    void SetDeltas(int dPadrao = 1,int dRodinha = 10,int dTeclado = 10){
+    void SetDeltas(int dPadrao = 1, int dRodinha = 10, int dTeclado = 10){
         delta = dPadrao;
         deltaRodinha = dRodinha;
         deltaTeclado = dTeclado;
@@ -246,8 +246,6 @@ public:
 
         return CPIGComponente::Desenha();
     }
-
-
 };
 typedef CPIGSlideBar *PIGSlideBar;
 #endif // _CPIGSCROLLBAR_

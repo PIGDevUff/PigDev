@@ -6,6 +6,8 @@
 class CPIGTimer{
 
 private:
+
+    int id;
     chrono::system_clock::time_point inicio;
     chrono::system_clock::time_point pausa;
     double totalPausa;
@@ -13,9 +15,10 @@ private:
 
 public:
 
-    CPIGTimer(bool congelado){
+    CPIGTimer(int idTimer,bool congelado){
+        id = idTimer;
         pausadoGeral=false;
-        Reinicia(congelado);
+        SetTempo(0,congelado);
     }
 
     ~CPIGTimer(){}
@@ -28,6 +31,10 @@ public:
             tempo = chrono::duration_cast<chrono::duration<double>>(chrono::system_clock::now()-inicio);
         }
         return tempo.count()-totalPausa;
+    }
+
+    int GetID(){
+        return id;
     }
 
     virtual void Pausa(){
@@ -71,9 +78,13 @@ public:
         }
     }
 
-    void Reinicia(bool congelado){
+    inline void Reinicia(bool congelado){
+        SetTempo(0,congelado);
+    }
+
+    inline void SetTempo(double tempo, bool congelado){
         pausa = inicio = chrono::system_clock::now();
-        totalPausa = 0;
+        totalPausa = -tempo;
         pausado = congelado;
     }
 };

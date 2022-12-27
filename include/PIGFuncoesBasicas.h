@@ -1,25 +1,34 @@
-#ifndef _PIGFuncoesBasicas_
-#define _PIGFuncoesBascias_
+#ifndef _PIGFUNCOESBASICAS_
+#define _PIGFUNCOESBASICAS_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <string>
-#include <string.h>
-#include <time.h>
 #include <vector>
-#include <map>
 #include <iostream>
 #include <dirent.h>
 #include <fstream>
 #include <sstream>
 #include <iomanip>
 #include <algorithm>
-#include <cmath>
 #include <unordered_map>
-#include <stdint.h>
 #include <limits.h>
 #include <thread>
+#include <stack>
+
+#include "SDL.h"
+#include "glad.h"
+#include "gladLoader.h"
+///aqui pode ter problema no Macosx
+///#include <OpenGL/glu.h>
+#include <GL/glu.h>
+
+#ifdef _WIN32
+    #include "direct.h"
+    #define CHDIR _chdir
+#else
+    #include "unistd.h"
+    #define CHDIR chdir
+#endif
+
+#include "PIGTipos.h"
 
 using namespace std;
 
@@ -82,7 +91,7 @@ GLuint PIGCriaTexturaSurface(SDL_Surface *surface){
     return textureId;
 }
 
-void PIGPrepara2DFixa(int altura,int largura,int invertida){
+void PIGPrepara2DFixa(int altura, int largura, int invertida){
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glViewport(0,0,largura,altura);
@@ -92,7 +101,7 @@ void PIGPrepara2DFixa(int altura,int largura,int invertida){
     glDisable(GL_DEPTH_TEST);
 }
 
-void PIGPrepara2DMovel(int altura,int largura, double afastamento, float px,float py,float pz){
+void PIGPrepara2DMovel(int altura, int largura, double afastamento, float px, float py, float pz){
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glViewport(0,0,largura,altura);
@@ -103,7 +112,7 @@ void PIGPrepara2DMovel(int altura,int largura, double afastamento, float px,floa
     glDisable(GL_DEPTH_TEST);
 }
 
-void PIGPrepara3D(int altura,int largura, float px,float py,float pz){
+void PIGPrepara3D(int altura, int largura, float px, float py, float pz){
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(60.0,largura*1.0/altura,0.5,700.0);
@@ -113,8 +122,7 @@ void PIGPrepara3D(int altura,int largura, float px,float py,float pz){
     glEnable(GL_DEPTH_TEST);
 }
 
-void PIGLimparFundo(PIGCor cor){
-    // clear buffer
+inline void PIGLimparFundo(PIGCor cor){
     glClearColor(cor.r/255.0, cor.g/255.0, cor.b/255.0, cor.a/255.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
@@ -189,7 +197,7 @@ vector<string> PIGSeparaPalavras(string texto, string delim){
 
     for (unsigned int i=0;i<texto.size();i++){
 
-        if (delim.find(texto[i]) != std::string::npos){//achou delimitadores
+        if (delim.find(texto[i]) != string::npos){//achou delimitadores
             resp.push_back(strAtual);
 
             strAtual = texto[i];
@@ -209,8 +217,8 @@ vector<string> PIGSeparaPalavras(string texto, string delim){
 
 //verifica se uma string possui apenas digitos de 0 a 9
 inline bool PIGSomenteNumeros(string frase){
-    for (unsigned int i=0;i<frase.size();i++)
-        if (frase[i]<'0'||frase[i]>'9')
+    for (char c: frase)
+        if (c<'0'||c>'9')
             return false;
     return true;
 }
@@ -228,7 +236,7 @@ inline PIGCor operator *(PIGCor cor, double fator){
     return {(uint8_t)(cor.r*fator),(uint8_t)(cor.g*fator),(uint8_t)(cor.b*fator)};
 }
 
-inline PIGCor operator +(PIGCor cor1,PIGCor cor2){
+inline PIGCor operator +(PIGCor cor1, PIGCor cor2){
     return {(uint8_t)(cor1.r+cor2.r),(uint8_t)(cor1.g+cor2.g),(uint8_t)(cor1.b+cor2.b)};
 }
 
@@ -350,13 +358,13 @@ inline int PIGArredondaProximo(float valor) {
 }
 
 inline double PIGProjecaoY(double coefAngular, PIGPonto2D p) {
-    if (std::isinf(coefAngular))
+    if (isinf(coefAngular))
         return (double)p.y;
     return coefAngular * (-p.x) + p.y;
 }
 
 inline double PIGProjecaoX(double coefAngular, PIGPonto2D p){
-    if (std::isinf(coefAngular))
+    if (isinf(coefAngular))
         return (double)p.x;
     /*if (!swapei){
         char str[100]="";
@@ -392,4 +400,4 @@ inline bool PIGValorEntre(int x, int a, int b) {
     return (((x > a) && (x < b)) || ((x < a) && (x > b)));
 }
 
-#endif // _PigFuncoesBasicas_
+#endif // _PIGFUNCOESBASICAS_
