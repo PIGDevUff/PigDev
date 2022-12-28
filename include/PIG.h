@@ -80,9 +80,7 @@ largura (entrada, passagem por valor não-obrigatório): indica a largura em pix
  */
 void CriaJogo(const char *nomeJanela, int cursorProprio=0, int altura=PIG_ALT_TELA, int largura=PIG_LARG_TELA){
     if (pigGerJanelas.GetQtdElementos()==0){
-        //gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress);
         pigGerJanelas.CriaJanela(nomeJanela,altura,largura);
-        //glewInit();
         pigGerFontes.CriaFonteNormal(PIG_FONTE_PADRAO_NOME,PIG_FONTE_PADRAO_TAM,PIG_ESTILO_NORMAL,PIG_FONTE_PADRAO_COR,0);
         pigMouse.SetCustomizado(cursorProprio);
     }
@@ -247,17 +245,6 @@ estado (entrada, passagem por valor): indica o novo estado do jogo;
 //}
 
 /********************************
-A função DefineFundoJanela() permite escolher um arquivo de imagem como fundo (background) de uma janela que será automaticamente desenhado a cada nova etapa de desenho na tela.
-Parâmetros:
-nomeArquivoImagem (entrada, passagem por referência*): indica o caminho relativo ou absoluto do arquivo de imagem que será utilizado como fundo do jogo.
-É utilizado o operador * apenas por se tratar de um parâmetro string. O valor do parâmetro não é alterado dentro da função.
-idJanela (entrada, passagem por valor não-obrigatorio): indica de qual janela é a imagem.
-********************************/
-void DefineFundo(char *nomeArquivoImagem, int idJanela=0){
-    pigGerJanelas.GetElemento(idJanela)->DefineFundo(nomeArquivoImagem);
-}
-
-/********************************
 A função GetTeclado() faz um mapeamento entre o teclado físico a uma variável do tipo PIG_Teclado que funciona como um vetor de variáveis lógicas,
 sendo cada posição do vetor relativo a uma tecla física.
 Uma lista das possíveis teclas e seus código pode ser vista no arquivo Tipos_PIG.h.
@@ -278,39 +265,6 @@ O valor de retorno é um struct contendo o tipo de evento ocorrido e vários out
 ********************************/
 PIGEvento GetEvento(){
     return pigJogo.PegaEvento();
-}
-
-/********************************
-A função IniciaDesenho() é responsável por preparar a janela do jogo para que os objetos gráficos
-possam ser mostrados, além de desenhar a imagem de fundo do jogo, caso tenha sido definida.
-Deve ser chamada repetidamente a cada novo quadro (frame) a ser desenhado.
-Parâmetros:
-idJanela (entrada, passagem por valor não-obrigatório): indica qual janela deve preparar a renderização. O valor (-1) indica que todas as janelas devem ser preparadas.
-********************************/
-void IniciaDesenho(int idJanela=-1){
-    pigJogo.IniciaDesenho(idJanela);
-}
-
-/********************************
-A função EncerraDesenho() é responsável por encerrar o desenho que foi criado, mostrando na janela do jogo.
-Deve ser chamado sempre ao final do loop principal do jogo.
-Parâmetros:
-idJanela (entrada, passagem por valor não-obrigatório): indica qual janela deve preparar a renderização. O valor (-1) indica que todas as janelas devem ser exibidas.
-********************************/
-void EncerraDesenho(int idJanela=-1){
-    pigMouse.Desenha();
-    pigJogo.EncerraDesenho(idJanela);
-}
-
-/********************************
-A função SalvaTela() é responsável por criar um arquivo Bitmap, contendo uma cópia de uma janela do jogo naquele momento.
-Parâmetros:
-nomeArquivoBMP (entrada, passagem por referência*): indica o nome do arquivo Bitmap que será salvo. O valor do parâmetro deve conter a extensão ".bmp".
-É utilizado o operador * apenas por se tratar de um parâmetro string. O valor do parâmetro não é alterado dentro da função.
-idJanela (entrada, passagem por valor não-obrigatório): indica qual janela deve ter a imagem salva.
-********************************/
-void SalvaTela(char *nomeArquivoBMP, int idJanela=0){
-    pigGerJanelas.GetElemento(idJanela)->SaveScreenshot(nomeArquivoBMP,true);
 }
 
 /********************************
@@ -338,16 +292,6 @@ a função deve ser chamada e ela irá realizar a liberação de memória dos el
 ********************************/
 void FinalizaJogo(){
     //delete jogo;
-}
-
-/********************************
-A função GetFPS() é responsável por calcular o valor do Frames Per Seconds (FPS), que representa a quantidade de
-frames (quadros) desenhados por segundo pela PIG.
-Retorno:
-float que indica a média de quadros desenhados por segundo.
-********************************/
-float GetFPS(){
-    return pigJogo.GetFPS();
 }
 
 /********************************
@@ -514,6 +458,62 @@ idJanela (entrada, passagem por valor): indica o número da janela a ser reexibi
 ********************************/
 void GanhaFocoJanela(int idJanela){
     pigGerJanelas.GetElemento(idJanela)->GanhaFoco();
+}
+
+/********************************
+A função DefineFundoJanela() permite escolher um arquivo de imagem como fundo (background) de uma janela que será automaticamente desenhado a cada nova etapa de desenho na tela.
+Parâmetros:
+nomeArquivoImagem (entrada, passagem por referência*): indica o caminho relativo ou absoluto do arquivo de imagem que será utilizado como fundo do jogo.
+É utilizado o operador * apenas por se tratar de um parâmetro string. O valor do parâmetro não é alterado dentro da função.
+idJanela (entrada, passagem por valor não-obrigatorio): indica de qual janela é a imagem.
+********************************/
+void DefineFundo(char *nomeArquivoImagem, int idJanela=0){
+    pigGerJanelas.GetElemento(idJanela)->DefineFundo(nomeArquivoImagem);
+}
+
+/********************************
+A função GetFPS() é responsável por calcular o valor do Frames Per Seconds (FPS), que representa a quantidade de
+frames (quadros) desenhados por segundo pela PIG.
+Parâmetros:
+idJanela (entrada, passagem por valor não-obrigatorio): indica de qual janela é a contagem de FPS desejada.
+Retorno:
+float que indica a média de quadros desenhados por segundo.
+********************************/
+float GetFPS(int idJanela=0){
+    return pigGerJanelas.GetElemento(idJanela)->GetFPS();
+}
+
+/********************************
+A função IniciaDesenho() é responsável por preparar a janela do jogo para que os objetos gráficos
+possam ser mostrados, além de desenhar a imagem de fundo do jogo, caso tenha sido definida.
+Deve ser chamada repetidamente a cada novo quadro (frame) a ser desenhado.
+Parâmetros:
+idJanela (entrada, passagem por valor não-obrigatório): indica qual janela deve preparar a renderização. O valor (-1) indica que todas as janelas devem ser preparadas.
+********************************/
+void IniciaDesenho(int idJanela=-1){
+    pigGerJanelas.IniciaDesenho(idJanela);
+}
+
+/********************************
+A função EncerraDesenho() é responsável por encerrar o desenho que foi criado, mostrando na janela do jogo.
+Deve ser chamada sempre ao final do loop principal do jogo.
+Parâmetros:
+idJanela (entrada, passagem por valor não-obrigatório): indica qual janela deve preparar a renderização. O valor (-1) indica que todas as janelas devem ser exibidas.
+********************************/
+void EncerraDesenho(int idJanela=-1){
+    pigMouse.Desenha();
+    pigGerJanelas.EncerraDesenho(idJanela);
+}
+
+/********************************
+A função SalvaTela() é responsável por criar um arquivo Bitmap, contendo uma cópia de uma janela do jogo naquele momento.
+Parâmetros:
+nomeArquivoBMP (entrada, passagem por referência*): indica o nome do arquivo Bitmap que será salvo. O valor do parâmetro deve conter a extensão ".bmp".
+É utilizado o operador * apenas por se tratar de um parâmetro string. O valor do parâmetro não é alterado dentro da função.
+idJanela (entrada, passagem por valor não-obrigatório): indica qual janela deve ter a imagem salva.
+********************************/
+void SalvaTela(char *nomeArquivoBMP, int idJanela=0){
+    pigGerJanelas.GetElemento(idJanela)->SaveScreenshot(nomeArquivoBMP,true);
 }
 
 /********************************

@@ -26,9 +26,7 @@ public:
             }else{
                 rodando = true;
                 teclado = SDL_GetKeyboardState(NULL);
-
                 offRenderer = NULL;
-
                 diretorioAtual = PIGGetDiretorioAtual();
             }
         }
@@ -178,72 +176,12 @@ public:
         SDL_StopTextInput();
     }
 
-    inline void IniciaDesenho(int idJanela=-1){
-        pigGerJanelas.IniciaDesenho(idJanela);
-    }
-
-    inline void EncerraDesenho(int idJanela=-1){
-        pigGerJanelas.EncerraDesenho(idJanela);
-
-        //int off;
-        //unsigned int frameTime = SDL_GetTicks();
-        /*SDL_Surface* saveSurface = NULL;
-        SDL_Surface* infoSurface = NULL;
-        infoSurface = NULL;//SDL_GetWindowSurface(window);
-        if (infoSurface != NULL) {
-            int pitch = infoSurface->format->BytesPerPixel;
-
-            unsigned char * pixels = new unsigned char[infoSurface->w * infoSurface->h * infoSurface->format->BytesPerPixel];
-            if (pixels != 0) {
-
-                if (SDL_RenderReadPixels(renderer, &infoSurface->clip_rect, infoSurface->format->format, pixels, infoSurface->w * infoSurface->format->BytesPerPixel) == 0) {
-                    /*for (int i=0;i<infoSurface->h;i+=4){
-                        for (int j=0;j<infoSurface->w;j+=4){
-                            off = (i*infoSurface->w+j)*4;
-
-                            for (int k=0;k<4;k++){
-                                pixels[off+4+k]=pixels[off+k];
-                                pixels[off+8+k]=pixels[off+k];
-                                pixels[off+12+k]=pixels[off+k];
-                                pixels[off+infoSurface->w*4+k]=pixels[off+k];
-                                pixels[off+infoSurface->w*4+4+k]=pixels[off+k];
-                                pixels[off+infoSurface->w*4+8+k]=pixels[off+k];
-                                pixels[off+infoSurface->w*4+12+k]=pixels[off+k];
-                                pixels[off+infoSurface->w*8+k]=pixels[off+k];
-                                pixels[off+infoSurface->w*8+4+k]=pixels[off+k];
-                                pixels[off+infoSurface->w*8+8+k]=pixels[off+k];
-                                pixels[off+infoSurface->w*8+12+k]=pixels[off+k];
-                                pixels[off+infoSurface->w*12+k]=pixels[off+k];
-                                pixels[off+infoSurface->w*12+4+k]=pixels[off+k];
-                                pixels[off+infoSurface->w*12+8+k]=pixels[off+k];
-                                pixels[off+infoSurface->w*12+12+k]=pixels[off+k];
-                            }
-                        }
-                    }
-
-                    //saveSurface = SDL_CreateRGBSurfaceFrom(pixels, infoSurface->w, infoSurface->h, infoSurface->format->BitsPerPixel, infoSurface->w * infoSurface->format->BytesPerPixel, infoSurface->format->Rmask, infoSurface->format->Gmask, infoSurface->format->Bmask, infoSurface->format->Amask);
-                    //SDL_Texture *t= SDL_CreateTextureFromSurface(renderer,saveSurface);
-                    //SDL_Texture *t = SDL_CreateTexture(renderer,
-                    //                                   infoSurface->format->format,SDL_TEXTUREACCESS_STREAMING,LARG_TELA,ALT_TELA);
-                    //SDL_UpdateTexture(t,NULL,pixels,pitch*infoSurface->w);
-                    SDL_RenderCopy(renderer,t,NULL,NULL);
-                    SDL_DestroyTexture(t);
-                    //SDL_FreeSurface(saveSurface);
-                }
-
-            }
-            delete[] pixels;
-            SDL_FreeSurface(infoSurface);
-        }*/
-        //SDL_RenderPresent(renderer);
-    }
-
     inline bool GetRodando(){
         return rodando;
     }
 
-    inline float GetFPS(int idJanela=0){
-        return pigGerJanelas.GetElemento(idJanela)->GetFPS();
+    string GetDiretorioAtual(){
+        return diretorioAtual;
     }
 
     inline void PreparaOffScreenRenderer(int altura, int largura){
