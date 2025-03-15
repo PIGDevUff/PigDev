@@ -2,7 +2,7 @@
 MAIN = main
 
 #nome do executável
-EXE = Projeto.exe
+EXE = Projeto
 
 #compilador
 CC = g++
@@ -81,6 +81,7 @@ ifeq ($(OS),Windows_NT)
 	CC_FLAGS += -m32
 	LIBMINGW32 = -m32 -lmingw32
 	CLEARCOMMAND = del /Q /F *.o
+	RUNCOMMAND = $(EXE).exe
 else
 	CLEARCOMMAND = rm *.o
 	UNAME_S := $(shell uname -s)

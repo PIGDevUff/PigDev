@@ -98,7 +98,11 @@ typedef struct{
 /********************************
 O tipo PIGCor é um struct formado por 4 campos: r,g,b,a correspondendo aos valores de vermelho, verde, azul e alfa (transparência) do pixel
 ********************************/
+#if _MSC_VER
 typedef __declspec(deprecated("PIG_Cor nao deve mais ser usado. Utilize PIGCor.")) SDL_Color PIG_Cor;
+#else
+[[deprecated("PIG_Cor nao deve mais ser usado. Utilize PIGCor.")]] SDL_Color PIG_Cor;
+#endif
 typedef SDL_Color PIGCor;
 
 #define BRANCO          ((SDL_Color){255,255,255,255})
@@ -303,7 +307,11 @@ typedef struct PIGEvento{
     //InfoEventoVideo video;
     PIGInfoEventoRede rede;
 }PIGEvento;
+#if _MSC_VER
 typedef __declspec(deprecated("PIG_Evento nao deve mais ser usado. Utilize PIGEvento.")) PIGEvento PIG_Evento;
+#else
+[[deprecated("PIG_Evento nao deve mais ser usado. Utilize PIGEvento.")]]  PIGEvento PIG_Evento;
+#endif
 
 
 //Tipo de callback genérica utilizada em diversos locais
@@ -314,13 +322,21 @@ typedef PIGCor (*PIGFuncaoPintarArea)(int, int, int, int, PIGCor, PIGCor);
 
 //#define PIG_Teclado                 const Uint8*
 typedef const Uint8* PIGTeclado;
+#if _MSC_VER
 typedef __declspec(deprecated("PIG_Teclado nao deve mais ser usado. Utilize PIGTeclado.")) PIGTeclado PIG_Teclado;
+#else
+[[deprecated("PIG_Teclado nao deve mais ser usado. Utilize PIGTeclado.")]] PIGTeclado PIG_Teclado;
+#endif
 
 
 //Seção de flips de objetos
 //#define PIG_Flip                    SDL_RendererFlip
 typedef SDL_RendererFlip PIGFlip;
+#if _MSC_VER
 typedef __declspec(deprecated("PIG_Flip nao deve mais ser usado. Utilize PIGFlip.")) PIGFlip PIG_Flip;
+#else
+[[deprecated("PIG_Flip nao deve mais ser usado. Utilize PIGFlip.")]] PIGFlip PIG_Flip;
+#endif
 
 #define PIG_FLIP_NENHUM             SDL_FLIP_NONE
 #define PIG_FLIP_HORIZONTAL         SDL_FLIP_HORIZONTAL
@@ -330,7 +346,11 @@ typedef __declspec(deprecated("PIG_Flip nao deve mais ser usado. Utilize PIGFlip
 //Seção de estilos
 
 //#define PIG_Estilo                  int
+#if _MSC_VER
 typedef __declspec(deprecated("PIG_Estilo nao deve mais ser usado. Utilize PIGEvento.")) int PIG_Estilo;
+#else
+[[deprecated("PIG_Estilo nao deve mais ser usado. Utilize PIGEvento.")]] int PIG_Estilo;
+#endif
 typedef int PIGEstilo;
 #define PIG_TOTALESTILOS            16
 #define PIG_FONTE_PADRAO_NOME       "..//fontes//arial.ttf"
