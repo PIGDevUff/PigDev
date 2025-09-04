@@ -4,6 +4,10 @@ src/main.o
 src/main.cpp
 src/*.layout
 src/*.depend
+/.idea
+/lib/*.dylib
+/lib/*.la
+/lib/*.a
 *.wav
 *.mp3
 *.mp4
